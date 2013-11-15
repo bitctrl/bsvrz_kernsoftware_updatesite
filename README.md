@@ -1,4 +1,11 @@
-bsvrz_kernsoftware_updatesite
-=============================
+BSVRZ-Kernsoftware - Updateseite für Rahmenwerk (Eclipse ) - Entwicklung
+========================================================================
 
-Updateseite der BSVRZ-Kernsoftware per Maven-Build erstellen
+Das Projekt dient der Erstellung der Plugins, die die BSVRZ-Kernsoftware
+enthalten und für Eclipse-Projekte (insbesondere das Rahmenwerk bereitstellen)
+
+Nähere Informationen zur Kernsoftware finden sich unter:
+
+http://www.nerz-ev.de
+
+
