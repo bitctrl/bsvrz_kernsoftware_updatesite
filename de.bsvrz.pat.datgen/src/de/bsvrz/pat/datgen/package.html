@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<title></title>
+	<meta name="Generator" content="Cocoa HTML Writer">
+	<meta name="CocoaVersion" content="824.42">
+	<style type="text/css">
+		p.p1 {
+			margin: 0.0px 0.0px 0.0px 0.0px;
+			font: 16.0px Times New Roman
+		}
+
+		p.p2 {
+			margin: 0.0px 0.0px 16.0px 0.0px;
+			text-align: justify;
+			line-height: 16.0px;
+			font: 16.0px Arial
+		}
+
+		p.p3 {
+			margin: 0.0px 0.0px 0.0px 0.0px;
+			text-align: justify;
+			line-height: 16.0px;
+			font: 14.7px Arial
+		}
+
+		p.p4 {
+			margin: 0.0px 0.0px 0.0px 0.0px;
+			text-align: justify;
+			line-height: 16.0px;
+			font: 13.3px Arial
+		}
+
+		p.p5 {
+			margin: 0.0px 0.0px 0.0px 0.0px;
+			font: 16.0px Courier New
+		}
+
+		p.p6 {
+			margin: 0.0px 0.0px 0.0px 47.0px;
+			font: 16.0px Times New Roman
+		}
+
+		p.p7 {
+			margin: 0.0px 0.0px 0.0px 47.0px;
+			text-align: justify;
+			line-height: 16.0px;
+			font: 13.3px Arial
+		}
+
+		p.p8 {
+			margin: 0.0px 0.0px 0.0px 0.0px;
+			font: 16.0px Times;
+			min-height: 19.0px
+		}
+
+		p.p9 {
+			margin: 0.0px 0.0px 8.0px 0.0px;
+			font: 16.0px Times;
+			min-height: 19.0px
+		}
+
+		p.p10 {
+			margin: 0.0px 0.0px 0.0px 18.0px;
+			text-align: justify;
+			text-indent: -18.0px;
+			line-height: 16.0px;
+			font: 13.3px Arial
+		}
+
+		span.s1 {
+			font: 10.7px Times New Roman;
+			color: #0020e3
+		}
+
+		span.s2 {
+			font: 16.0px Courier New
+		}
+
+		span.s3 {
+			font: 13.3px Courier New
+		}
+
+		span.s4 {
+			font: 16.0px Times New Roman
+		}
+
+		span.s5 {
+			font: 10.7px Arial;
+			color: #0020e3
+		}
+	</style>
+</head>
+<body>
+<p class="p1">Der Datengenerator dient zum Generieren von Zufallsdaten von beliebigen Objekten des Systems und dazu, Dateien einzuspeisen, die vom
+	Online-Protokollierer aufgezeichnet bzw. von Hand oder maschinell erstellt wurden.</p>
+
+<p class="p2"><b>Komponente Generator</b></p>
+
+<p class="p3"><b>Modul Verwaltung</b></p>
+
+<p class="p1">Das Modul <i>Verwaltung</i> implementiert die Schnittstelle <i>Datengenerator &#x2013; Starter</i>, d. h. sorgt für die Weiterleitung der
+	Aufrufparameter<a href="#_ftn1"><span class="s1">[1]</span></a>. Es übernimmt die
+	Steuerung des Datengenerators. Außerdem sorgt es für die Anmeldung der erzeugten Daten, falls der Parameter <span class="s2">&#x2013;autark</span> nicht
+	angegeben wurde und so angezeigt wird, dass dies nicht geschehen soll.</p>
+
+<p class="p4">Werden Daten aus einer XML-Datei gelesen, so werden die Aufrufparameter <span class="s3">&#x2011;objekte</span> und
+	<span class="s3">&#x2011;daten</span> als Filter benutzt: Nur Daten, dieser Objekte und Attributgruppen-/Aspekt-Kombination werden berücksichtigt und
+	versendet.</p>
+
+<p class="p4">Telegramme, die an den DaV weitergeleitet werden, müssen parallel auch an das Modul <i>Protokollierungsmodul anbinden </i>weitergeleitet werden,
+	um die Möglichkeit des Protokollierens zu geben.</p>
+
+<p class="p3"><b>Modul Datenart bestimmen</b></p>
+
+<p class="p4"><span class="s1">Siehe </span>{@link de.bsvrz.pat.onlprot.onlprot.dataKindDeterminer}<span class="s1">.</span></p>
+
+<p class="p3"><b>Modul Timer</b></p>
+
+<p class="p1">Das Modul <i>Timer </i>sorgt für die zeitliche Steuerung der Sendung von Telegrammen. Zwei unterschiedliche Modi sind zu betrachten:</p>
+<ul>
+	<li style="margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Times New Roman">Erzeugen von Zufallsdatensätzen in vorgegebenen Intervallen</li>
+</ul>
+<p class="p6">Hierbei wird für jede Datenart ein Prozess gestartet, der die Erzeugung der Daten steuert. Über &#x2011;<span class="s2">zyklus=zyklusVon</span>
+	wird das Intervall für die Erzeugung der Daten angegeben: Also nach Ablauf von <span class="s2">zyklusVon</span> Zeiteinheiten wird der jeweils nächste
+	zufällige Datensatz generiert. Wurde beim Aufruf der Applikation ein Intervallzeitraum der Form &#x2011;<span class="s2">zyklus=zyklusVon-zyklusBis </span>angegeben,
+	so werden die Daten mit einem zufälligen zeitlichen Abstand generiert, der im angegebenen Intervall liegt.</p>
+
+<p class="p6">Ist mit <span class="s2">&#x2013;spreizung</span> eine verteilte Versendung der Daten über das Intervall gefordert, so ist dies hier zu
+	berücksichtigen.</p>
+
+<p class="p7">Nach der über <span class="s3">&#x2013;anzahl</span> angegebenen Anzahl von zu erzeugenden Datensätzen wird die Generierung von Daten gestoppt.
+</p>
+<ul>
+	<li style="margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Times New Roman">&#x201e;Abspielen&#x201c; der Telegrammdatensätze aus einer XML-Datei unter
+		Erhaltung des protokollierten Zeitverhaltens
+	</li>
+</ul>
+<p class="p6">In diesem Modus kommt es darauf an, die Datensätze in den Zeitabständen abzuspielen, die aus der XML-Datei hervorgehen. Das bedeutet, dass aus den
+	mit abgespeicherten Zeitstempeln zweier aufeinanderfolgend protokollierten Datensätzen jeweils die Zeit zwischen ihnen bestimmt wird und beim Abspielen
+	berücksichtigt werden muss.</p>
+
+<p class="p6">Zusätzlich ist das Modul <i>Timer </i>auch für die eventuelle Verschiebung der Daten in die Jetztzeit zuständig. Dann wird das vorgefundene
+	Zeitverhalten, also die Abstände zwischen den Datensätzen, beibehalten, allerdings wird die Zeit des ersten Datensatzes auf die aktuelle Uhrzeit gelegt und
+	auch die nachfolgenden Datensätze in der Zeit verschoben.</p>
+
+<p class="p1">Die Aufgabe des Moduls <i>Timer </i>beschränkt sich dabei auf die Zeitüberwachung und das aktivieren der entsprechenden anderen Module: Im ersten
+	Modus, beim Erzeugen von Zufallsdatensätzen, wird das Modul <i>Zufallsdatensätze generieren </i>angesprochen, im zweiten Modus, beim &#x201e;Abspielen&#x201c;
+	von XML-Dateien, wird das Modul <i>XML-Format lesen </i>aktiviert. Diese sorgen dann für das Bereitstellen eines Datensatzes, welcher vom Modul <i>Verwaltung </i>dann
+	versendet wird.</p>
+
+<p class="p3"><b>Modul Zufallsdatensätze generieren</b></p>
+
+<p class="p1">Das Modul <i>Zufallsdatensätze generieren </i>dient zum erzeugen von Telegrammen beliebigen Typs mit zufälligen Inhalten im Wertebereich der
+	Attribute.</p>
+
+<p class="p1">Der Zeitstempel wird entsprechend dem Parameter <span class="s2">&#x2013;zeit</span> gesetzt: Wurde <span class="s2">zyklus</span> angegeben bzw.
+	dieser Parameter weggelassen, so wird als Zeitstempel der Intervallbeginn der Daten verwendet. <span class="s2">versand</span> setzt als Zeitstempel die
+	Versandzeit der einzelnen Datensätze. Spontane Daten erhalten <i>immer </i>die Versandzeit als Zeitstempel.</p>
+
+<p class="p3"><b>Modul XML-Format lesen</b></p>
+
+<p class="p4">Dieses Modul wird vom Modul <i>Verwaltung </i>aufgerufen, um Kopf und Fuß der XML-Datei zu lesen. Die Aufrufparameter <span class="s3">&#x2011;objekte</span>
+	und <span class="s3">&#x2011;daten</span> werden als Filter benutzt: Nur Daten, dieser Objekte und Attributgruppen-/Aspekt-Kombination werden berücksichtigt
+	beim Lesen der XML-Datei.</p>
+
+<p class="p1">Vom Modul <i>Timer </i>wird es genutzt, um einzelne Telegramme zu vorgegebenen Zeiten einzulesen.</p>
+
+<p class="p1">Es muss vor Generieren des ersten Telegramms sichergestellt werden, dass nur XML-Dateien verarbeitet werden, die keine Fehler enthalten.</p>
+
+<p class="p3"><b>Modul Protokollierungsmodul anbinden</b></p>
+
+<p class="p4"><span class="s1">Siehe </span>{@link de.bsvrz.pat.onlprot.onlprot.protocolModuleConnector}<span class="s1">.</span></p>
+
+<p class="p2"><b>Modul Standardprotokollierer</b></p>
+
+<p class="p4"><span class="s1">Siehe </span>{@link de.bsvrz.pat.onlprot.standardProtocolModule}<span class="s1">.</span></p>
+
+<p class="p8"><br></p>
+
+<p class="p9"><br></p>
+
+<p class="p10"><span class="s5"><a name="_ftn1">[1]</a></span> Zu Beachten: Beim
+	Verarbeiten einer XML-Datei werden die Aufrufparameter <span class="s3">&#x2011;zyklus</span>, <span class="s3">&#x2011;anzahl</span>,
+	&#x2011;<span class="s3">spreizung </span>und <span class="s3">&#x2013;zeit</span> ignoriert.</p>
+</body>
+</html>

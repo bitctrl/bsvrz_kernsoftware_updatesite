@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>de.bsvrz.buv</groupId>
+	<artifactId>de.bsvrz.buv.kernsoftware.tycho.master</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>Kernsoftware Updateseite</name>
+	<modules>
+		<module>../de.bsvrz.dav.daf</module>
+		<module>../de.bsvrz.dav.daf.plus.funclibErweiterung</module>
+
+		<module>../de.bsvrz.pat.datgen</module>
+		<module>../de.bsvrz.pat.onlprot</module>
+		<module>../de.bsvrz.pat.sysbed</module>
+		<module>../de.bsvrz.pat.sysprot</module>
+
+		<module>../de.bsvrz.puk.config</module>
+
+		<module>../de.bsvrz.sys.funclib.application</module>
+		<module>../de.bsvrz.sys.funclib.asyncReceiver</module>
+		<module>../de.bsvrz.sys.funclib.commandLineArgs</module>
+		<module>../de.bsvrz.sys.funclib.communicationStreams</module>
+		<module>../de.bsvrz.sys.funclib.concurrent</module>
+		<module>../de.bsvrz.sys.funclib.configObjectAcquisition</module>
+		<module>../de.bsvrz.sys.funclib.consoleProcessFrame</module>
+		<module>../de.bsvrz.sys.funclib.crypt</module>
+		<module>../de.bsvrz.sys.funclib.dataIdentificationSettings</module>
+		<module>../de.bsvrz.sys.funclib.dataSerializer</module>
+		<module>../de.bsvrz.sys.funclib.debug</module>
+		<module>../de.bsvrz.sys.funclib.filelock</module>
+		<module>../de.bsvrz.sys.funclib.losb</module>
+		<module>../de.bsvrz.sys.funclib.hexdump</module>
+		<module>../de.bsvrz.sys.funclib.operatingMessage</module>
+		<module>../de.bsvrz.sys.funclib.timeout</module>
+		<module>../de.bsvrz.sys.funclib.xmlSupport</module>
+
+		<module>../de.bsvrz.vew.syskal</module>
+
+		<module>../de.bsvrz.buv.daf.feature</module>
+		<module>../de.bsvrz.buv.vew.feature</module>
+
+		<module>../de.bsvrz.buv.kernsoftware.repository</module>
+	</modules>
+
+	<properties>
+		<tycho-version>0.18.1</tycho-version>
+		<tycho-extras-version>0.18.1</tycho-extras-version>
+		<mockito-version>1.9.5</mockito-version>
+		<tycho-surefire-version>0.18.0</tycho-surefire-version>
+		<maven-site-plugin-version>3.2</maven-site-plugin-version>
+		<maven-project-info-reports-plugin-version>2.4</maven-project-info-reports-plugin-version>
+		<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
+		<taglist-maven-plugin-version>2.4</taglist-maven-plugin-version>
+		<maven-checkstyle-plugin-version>2.10</maven-checkstyle-plugin-version>
+		<maven-surefire-report-plugin-version>2.12</maven-surefire-report-plugin-version>
+		<maven-project-info-reports-plugin-version>2.6</maven-project-info-reports-plugin-version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<layout>default</layout>
+			<id>snapshots</id>
+			<url>http://bitctrlbuildserver:8081/nexus/content/repositories/snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<layout>default</layout>
+			<id>releases</id>
+			<url>http://bitctrlbuildserver:8081/nexus/content/repositories/releases</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<build>
+		<!-- Die SRC Directory brauchen wir, damit Checkstyle weiß wo unsere Sourcen 
+			sind, Eclipse Plugins sind halt anders. -->
+		<sourceDirectory>src</sourceDirectory>
+
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav</artifactId>
+				<version>1.0-beta-2</version>
+			</extension>
+		</extensions>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-versions-plugin</artifactId>
+				<version>${tycho-version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-director-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<pomDependencies>consider</pomDependencies>
+					<!-- <resolver>p2</resolver> -->
+					<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<compilerArguments>
+						<properties>${project.basedir}/.settings/org.eclipse.jdt.core.prefs</properties>
+					</compilerArguments>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<compilerArgument>-Xlint:all</compilerArgument>
+					<showWarnings>true</showWarnings>
+					<showDeprecation>true</showDeprecation>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<testFailureIgnore>true</testFailureIgnore>
+					<useUIHarness>true</useUIHarness>
+					<useUIThread>false</useUIThread>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${maven-checkstyle-plugin-version}</version>
+				<configuration>
+					<configLocation>config/checkstyle.xml</configLocation>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-source-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<strictSrcIncludes>false</strictSrcIncludes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>plugin-source</id>
+						<goals>
+							<goal>plugin-source</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho.extras</groupId>
+				<artifactId>tycho-source-feature-plugin</artifactId>
+				<version>${tycho-extras-version}</version>
+				<executions>
+					<execution>
+						<id>source-feature</id>
+						<phase>package</phase>
+						<goals>
+							<goal>source-feature</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<excludes>
+						<plugin id="de.bsvrz.sys.funclib.communicationStreams" />
+						<plugin id="de.bsvrz.sys.funclib.dataSerializer" />
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<executions>
+					<execution>
+						<id>attach-p2-metadata</id>
+						<phase>package</phase>
+						<goals>
+							<goal>p2-metadata</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-p2-director-plugin</artifactId>
+					<version>${tycho-version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-p2-repository-plugin</artifactId>
+					<version>${tycho-version}</version>
+				</plugin>
+			</plugins>
+
+		</pluginManagement>
+	</build>
+
+	<organization>
+		<name>BitCtrl Systems GmbH</name>
+		<url>http://www.bitctrl.de</url>
+	</organization>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<url>http://192.168.1.84:8081/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>releases</id>
+			<url>http://192.168.1.84:8081/nexus/content/repositories/releases</url>
+		</repository>
+	</distributionManagement>
+
+</project>

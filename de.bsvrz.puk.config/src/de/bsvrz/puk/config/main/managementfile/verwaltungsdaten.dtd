@@ -1,0 +1,15 @@
+<!ELEMENT verwaltungsdaten (konfigurationsverantwortlicher, konfigurationsbereich*)>
+<!ELEMENT konfigurationsverantwortlicher EMPTY>
+<!ATTLIST konfigurationsverantwortlicher
+	pid				ID 		#REQUIRED
+>
+<!ELEMENT konfigurationsbereich (version)*>
+<!ATTLIST konfigurationsbereich
+	pid 			ID 		#REQUIRED
+	verzeichnis 	CDATA 	#IMPLIED
+>
+<!ELEMENT version EMPTY>
+<!ATTLIST version
+	nr				NMTOKEN	#REQUIRED
+	zeitpunkt		CDATA 	#IMPLIED
+>

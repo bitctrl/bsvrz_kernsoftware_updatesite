@@ -1,0 +1,1105 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- ============================================================= -->
+<!--                    DTD für K2S Dokumente                      -->
+<!-- ============================================================= -->
+<!-- =================================================================
+    Autor:      cw, rs
+    Beschreibung:
+    Die Document Type Definition K2S enthält
+    - Elemente zur allgemeinen Dokumenterstellung
+    - Elemente zur  Beschreibung des Datenmodells
+    - Elemente zur Beschreibung von Schnittstellen
+================================================================== -->
+
+<!-- =================================================================
+================================================================== -->
+
+<!ELEMENT xi:include (xi:fallback?)>
+<!ATTLIST xi:include
+    xmlns:xi        CDATA       #FIXED    "http://www.w3.org/2001/XInclude"
+    href            CDATA       #IMPLIED
+    parse           (xml|text)  "xml"
+    xpointer        CDATA       #IMPLIED
+    encoding        CDATA       #IMPLIED
+    accept          CDATA       #IMPLIED
+    accept-language CDATA       #IMPLIED
+>
+
+<!ELEMENT xi:fallback ANY>
+<!ATTLIST xi:fallback
+    xmlns:xi   CDATA   #FIXED   "http://www.w3.org/2001/XInclude"
+>
+
+<!ELEMENT included ANY>
+
+<!-- =================================================================
+	Definition von Sonderzeichen
+================================================================== -->
+
+<!ENTITY mStrich          "&#x2014;"> <!-- EM DASH -->
+<!ENTITY nStrich          "&#x2013;"> <!-- EN DASH -->
+<!ENTITY kleinerGleich    "&lt;=">
+<!ENTITY kleiner          "&lt;">
+<!ENTITY größerGleich     "&gt;=">
+<!ENTITY größer	          "&gt;">
+
+<!-- =================================================================
+	Weitere Sonderzeichen können bei Bedarf included werden
+	und sind deshalb hier nicht mehr enthalten.
+================================================================== -->
+<!--
+<!ENTITY % sonderzeichen SYSTEM "sonderzeichen.ent">
+%sonderzeichen;
+-->
+
+<!-- =================================================================
+    Entities für die Auszeichnung von Textpassagen
+    - tief
+        Zur Auszeichnung von tiefgestellten Textpassagen (Indizes)
+    - hoch
+        Zur Auszeichnung von hochgestellten Textpassagen (Potenzen)
+    - code
+        Zur Auszeichnung von Codepassagen innerhalb des Textflusses
+    - adresse
+        Zur Hervorhebung von Adressen innerhalb des Textflusses
+    - pre
+        Text wird ohne Auswertung eventueller Tags direkt ausgegeben
+    - index
+        Legt einen Indexeintrag fest
+    - verweis
+        Verweis auf eine andere Stelle
+    - anker
+        Verweisanker
+
+================================================================== -->
+
+<!ENTITY % local.zeichenauszeichnung.klasse "">
+<!ENTITY % zeichenauszeichnung.klasse
+		"tief|hoch|code|adresse|pre|index|verweis|anker|schluesselwort|ze|hinweis|variable|wichtig|zitat
+         %local.zeichenauszeichnung.klasse;">
+
+<!ELEMENT  tief           (#PCDATA| %zeichenauszeichnung.klasse;)*      >
+<!ELEMENT  hoch           (#PCDATA| %zeichenauszeichnung.klasse;)*      >
+<!ELEMENT  code           (#PCDATA| %zeichenauszeichnung.klasse;)*      >
+<!ELEMENT  pre            (#PCDATA| %zeichenauszeichnung.klasse;)*      >
+<!ELEMENT  adresse        (#PCDATA| %zeichenauszeichnung.klasse;)*      >
+<!ELEMENT  schluesselwort (#PCDATA| %zeichenauszeichnung.klasse;)*      >
+<!ELEMENT  index          (#PCDATA| %zeichenauszeichnung.klasse;)*      >
+<!ATTLIST  index
+             sichtbar        (j|n)                #IMPLIED
+             id                 ID                #IMPLIED
+>
+<!ELEMENT  verweis      EMPTY                                           >
+<!ATTLIST  verweis
+             pid        NMTOKEN                   #REQUIRED
+             txt        CDATA                     #IMPLIED
+             num        (j|n)                     #IMPLIED
+             klammer    (j|n)                     #IMPLIED
+             direkt     (j|n)                     #IMPLIED
+             tooltip    (j|n)                     #IMPLIED
+>
+<!ELEMENT  anker        EMPTY                                           >
+<!ATTLIST  anker
+             pid        ID                        #REQUIRED
+             txt        CDATA                     #IMPLIED
+>
+<!ELEMENT  ze           EMPTY                                           >
+
+
+<!ELEMENT  variable           (#PCDATA| %zeichenauszeichnung.klasse;)*      >
+<!ELEMENT  wichtig           (#PCDATA| %zeichenauszeichnung.klasse;)*      >
+<!ELEMENT  zitat           (#PCDATA| %zeichenauszeichnung.klasse;)*      >
+
+<!-- ============================================================= -->
+<!--           Entities zur allgemeinen Dokumenterstellung         -->
+<!-- ============================================================= -->
+
+<!--                    Allgemeine Dokumentinformationen           -->
+
+<!ENTITY % dokumentInfo.klasse
+		"projekt,los,dokTitel+,autor+,ersteller,imAuftrag,
+         pid?,submodell?,vSEinstufung?,projektIdAG?,projektIdAN?">
+
+
+<!ELEMENT  projekt      (#PCDATA| %zeichenauszeichnung.klasse;)*        >
+<!ELEMENT  los          (#PCDATA| absatz | %zeichenauszeichnung.klasse;)*        >
+<!ELEMENT  dokTitel     (#PCDATA| %zeichenauszeichnung.klasse;)*        >
+<!ELEMENT  autor        (#PCDATA| %zeichenauszeichnung.klasse;)*        >
+<!ELEMENT  pid          (#PCDATA)                                       >
+<!ELEMENT  submodell    (#PCDATA| %zeichenauszeichnung.klasse;)*        >
+<!ELEMENT  vSEinstufung (#PCDATA)                                       >
+<!ELEMENT  projektIdAG  (#PCDATA)                                       >
+<!ELEMENT  projektIdAN  (#PCDATA)                                       >
+<!ELEMENT  ersteller    (#PCDATA| %zeichenauszeichnung.klasse;)*                                       >
+<!ELEMENT  imAuftrag    (#PCDATA)                                       >
+
+
+<!-- =================================================================
+    Entities für die möglichen Absatzgestaltungen
+    - absatz
+        Normaler Absatz
+    - abbildung
+        Zur Eingabe einer Abbildung
+    - liste
+        Zur Eingabe von Aufzählungslisten
+    - numListe
+        Zur Eingabe von nummerierten Listen
+    - sektion
+        Zur weiteren Untergliederung von Kapiteln
+	- anforderung
+		Zur Identifizierung von Anwenderforderungen und Technischen Anforderungen
+    - listing
+        Ausgabe von Quellcodelistings
+    - referenz
+        Festlegung von Referenzen
+================================================================== -->
+<!ENTITY % local.absatzauszeichnung.klasse "">
+<!ENTITY % absatzauszeichnung.klasse
+		"absatz|abbildung|liste|numListe|sektion|anforderung|swModulEinzelbeschreibungen|swModulListe|swExterneSchnittstellen|swInterneSchnittstellen|
+         listing|referenz|tabelle|kommentar
+         %local.absatzauszeichnung.klasse;">
+
+<!ELEMENT  absatz       (#PCDATA | %zeichenauszeichnung.klasse;)*       >
+<!ELEMENT  abbildung    (titel?)                                        >
+<!ATTLIST  abbildung
+            pid         ID             #IMPLIED
+            src         CDATA          #REQUIRED
+            alt         CDATA          #IMPLIED
+            hoehe       CDATA          #IMPLIED
+            weite       CDATA          #IMPLIED
+>
+<!ELEMENT  liste        (listenPunkt|liste|numListe)+                                  >
+<!ATTLIST  liste
+             zeichen    (punkt|eckig|kreis)     "punkt"                 >
+<!ELEMENT  numListe     (listenPunkt|liste|numListe)+                                  >
+<!ATTLIST  numListe
+             typ        (1|a|A|i|I) "1"
+             start      CDATA                                 #IMPLIED  >
+
+<!ELEMENT  listenPunkt  (#PCDATA |
+                          %absatzauszeichnung.klasse; |
+                          %zeichenauszeichnung.klasse;)*                >
+<!ELEMENT  listing      (#PCDATA)         >
+<!ATTLIST  listing	     xml:base        CDATA    #IMPLIED   >
+<!ELEMENT  referenz      (titel?,info?)                                       >
+<!ATTLIST  referenz
+             pid                    ID              #REQUIRED
+             link                   CDATA           #IMPLIED
+             inReferenzverzeichnis  (j|n)           #IMPLIED
+>
+
+<!--                    Tabellenbeschreibung                       -->
+
+<!ELEMENT tabelle   (titel?, spalte*, kopf?, rumpf)>
+<!ATTLIST  tabelle
+            pid        ID                              #IMPLIED
+            rahmen      (0|1|2|3|4|5) "1"
+            ausrichtung (l|r|m|s)   "m"
+            transponiert (j|n)      "n" >
+
+<!ELEMENT  spalte  EMPTY   >
+<!ATTLIST  spalte breite CDATA   #REQUIRED>
+<!ATTLIST  spalte hintergrund CDATA   #IMPLIED>
+
+
+<!ELEMENT kopf      (zeile)+>
+<!ELEMENT rumpf     (zeile)+>
+<!ELEMENT zeile     (zelle)+>
+
+<!ELEMENT  zelle   (#PCDATA |
+                        %zeichenauszeichnung.klasse; |
+                        %absatzauszeichnung.klasse;)*                   >
+<!ATTLIST  zelle
+            ausrichtung (l|r|m)        #IMPLIED
+            vertikal    (o|m|u)        #IMPLIED
+            hintergrund CDATA          #IMPLIED
+            kopf        (j|n)          #IMPLIED
+            breite      CDATA          #IMPLIED
+            anzSpalten  NMTOKEN        #IMPLIED
+            anzZeilen   NMTOKEN        #IMPLIED                         >
+
+<!ELEMENT  titel        (#PCDATA | %zeichenauszeichnung.klasse;)*       >
+
+<!ELEMENT  kommentar   ( #PCDATA|
+                        %zeichenauszeichnung.klasse; |
+                        %absatzauszeichnung.klasse;)* >
+
+<!ATTLIST  kommentar
+				titel CDATA #REQUIRED
+				status (unklar|erledigt) "unklar"
+>
+<!--
+<!ELEMENT  kommentar   (titel?,
+                       (
+                        %zeichenauszeichnung.klasse; |
+                        %absatzauszeichnung.klasse;))*                         >
+						-->
+<!--<!ELEMENT  hinweis         (#PCDATA| %zeichenauszeichnung.klasse;)*      >-->
+
+<!ELEMENT  hinweis   (#PCDATA |
+                        %zeichenauszeichnung.klasse; |
+                        %absatzauszeichnung.klasse;)*                   >
+
+<!ATTLIST  hinweis
+             pid        ID                        #IMPLIED
+			 typ        (seite|dokument|absatz)   "seite"
+>
+
+<!-- =================================================================
+    Entities für die möglichen Verzeichnisse
+    - inhaltsverzeichnis
+        fügt an der Stelle ein Inhaltsverzeichnis ein
+    - abbildungsverzeichnis
+        fügt an der Stelle ein Abbildungsverzeichnis ein
+    - anforderungsverzeichnis
+        fügt an der Stelle ein Verzeichnis der Anforderungen ein
+    - tabellenverzeichnis
+        fügt an der Stelle ein Tabellenverzeichnis ein
+    - referenzverzeichnis
+        Fügt an der angegebenen Stelle eine Tabelle der
+        referenzierten Dokumente ein.
+    - versionsuebersicht
+        Fügt an der angegebenen Stelle die Versionsübersicht ein
+    - aenderungsuebersicht
+        Fügt an der angegebenen Stelle die Änderungsübersicht ein
+================================================================== -->
+<!ENTITY % local.verzeichnis.klasse "">
+<!ENTITY % verzeichnis.klasse
+		"inhaltsverzeichnis|abbildungsverzeichnis|
+         tabellenverzeichnis|referenzverzeichnis|anforderungsverzeichnis|
+         indexverzeichnis|versionsuebersicht
+		| swAnforderungszuordnung | kritikalitaetsUebersicht | swEinheitUebersicht
+		|aenderungsuebersicht
+         %local.verzeichnis.klasse;"                                    >
+
+<!ELEMENT  inhaltsverzeichnis
+                        EMPTY                                           >
+<!ELEMENT  abbildungsverzeichnis
+                        EMPTY                                           >
+<!ELEMENT  anforderungsverzeichnis
+                        EMPTY                                           >
+<!ELEMENT  tabellenverzeichnis
+                        EMPTY                                           >
+<!ELEMENT  referenzverzeichnis
+                        EMPTY                                           >
+
+<!ATTLIST  referenzverzeichnis sortierung  (textfluss|alphabetisch) "alphabetisch">
+
+
+
+<!ELEMENT  indexverzeichnis
+                        EMPTY                                           >
+<!ELEMENT  versionsuebersicht
+                        EMPTY                                           >
+<!ELEMENT  swAnforderungszuordnung
+                        EMPTY                                           >
+<!ATTLIST  swAnforderungszuordnung pid IDREF #REQUIRED>
+<!ATTLIST  swAnforderungszuordnung anz CDATA  #IMPLIED>
+<!ATTLIST  swAnforderungszuordnung separator CDATA  #IMPLIED>
+
+
+<!ELEMENT  swModulListe
+                        EMPTY                                           >
+<!ATTLIST  swModulListe pid IDREF #REQUIRED>
+
+<!ELEMENT  swModulEinzelbeschreibungen
+                        EMPTY                                           >
+<!ATTLIST  swModulEinzelbeschreibungen pid IDREF #REQUIRED>
+
+<!ELEMENT  swExterneSchnittstellen
+                        EMPTY                                           >
+<!ATTLIST  swExterneSchnittstellen pid IDREF #REQUIRED>
+
+<!ELEMENT  swInterneSchnittstellen
+                        EMPTY                                           >
+<!ATTLIST  swInterneSchnittstellen pid IDREF #REQUIRED>
+
+<!ELEMENT  kritikalitaetsUebersicht
+                        EMPTY                                           >
+<!ATTLIST  kritikalitaetsUebersicht pid IDREF #REQUIRED>
+
+<!ELEMENT  swEinheitUebersicht
+                        EMPTY                                           >
+<!ATTLIST  swEinheitUebersicht pid IDREF #REQUIRED>
+
+<!ELEMENT  aenderungsuebersicht
+                        EMPTY                                           >
+
+
+
+<!--                    Wurzelelement                              -->
+<!--                    K2S Dokument                               -->
+<!ELEMENT  dokument     ((%dokumentInfo.klasse;),
+                          historie+,
+                          referenz*,
+                          referenzenAuf?,
+                          architekturSystem?,
+                          kapitel*,
+						              programmiersprache?,
+                          schnittstellen?,
+                          konfigurationsBereiche?,
+                          szenario?,
+                          (xi:include|referenzen)*
+                          )   >
+
+<!ELEMENT  referenzen     (referenz+)                         >
+<!ATTLIST referenzen
+            xml:base    CDATA   #IMPLIED>
+
+<!ELEMENT  referenzenAuf     (ankerTag*)                         >
+<!ELEMENT ankerTag EMPTY >
+<!ATTLIST ankerTag
+            tag CDATA #REQUIRED
+>
+
+<!--                    Änderungsverwaltung                        -->
+<!ELEMENT  historie     (autor+, grund, aenderung+)                         >
+<!ATTLIST  historie
+            version    CDATA                                #REQUIRED
+            datum      CDATA                                #REQUIRED
+            status     CDATA                                #IMPLIED
+>
+<!ELEMENT  aenderung           (geaendertesKapitel, grund)                  >
+<!ELEMENT  geaendertesKapitel  (#PCDATA | %zeichenauszeichnung.klasse;)*    >
+<!ELEMENT  grund               (#PCDATA | %zeichenauszeichnung.klasse; |
+                                          %absatzauszeichnung.klasse;)*     >
+
+<!--                    Kapitel                                    -->
+<!ELEMENT  kapitel      (titel,
+                         (
+							 xi:include|
+                             kapitel|
+                             anker|
+                             schnittstelle|
+                             schnittstellenUebersicht|
+                             schnittstellenUebersichtExtern|
+                             schnittstellenUebersichtIntern|
+                             datenkatalog|
+                             datenfluss|
+                             primitiveTypenAusgabe|
+                             (%absatzauszeichnung.klasse;)|
+                             (%verzeichnis.klasse;)
+                            )*
+                        )
+>
+
+
+
+<!ELEMENT  datenkatalog
+                        EMPTY                                        >
+<!ATTLIST  datenkatalog ref IDREF   #IMPLIED>
+
+
+<!ELEMENT  datenfluss
+                        EMPTY                                        >
+<!ATTLIST  datenfluss pfadDatK CDATA   #REQUIRED>
+
+
+<!ATTLIST  kapitel
+             pid        ID                              #IMPLIED
+            inhaltsverzeichnis  (ja|nein) "ja"
+			unterkapitelteilen   (ja|nein) "nein"
+            xml:base    CDATA   #IMPLIED
+>
+
+<!--                    Sektionen                                  -->
+<!ELEMENT  sektion      (titel,
+                         (
+                           anker|
+                          (%absatzauszeichnung.klasse;)|
+                          (%verzeichnis.klasse;)
+                         )*
+                        )
+>
+<!ATTLIST  sektion
+             pid        ID                              #IMPLIED  >
+
+<!--                    Anforderungen                                  -->
+<!-- Attribut nummer wird bei xslt lauf automatisch gesetzt!  -->
+<!ELEMENT  anforderung      (titel, ( %absatzauszeichnung.klasse;)*) >
+<!ATTLIST  anforderung
+             bezug      CDATA                           #REQUIRED
+             pid        ID                              #REQUIRED
+             nummer     CDATA                           #IMPLIED
+>
+
+
+
+
+
+<!-- ============================================================= -->
+<!--                    Datenmodell                                -->
+<!-- ============================================================= -->
+
+<!--
+<!ELEMENT datenmodell ( system, verkehrstechnik ) >
+<!ATTLIST datenmodell pid ID #REQUIRED >
+<!ATTLIST datenmodell version NMTOKEN #REQUIRED >
+
+<!ELEMENT system ( metamodell, objekte) >
+<!ELEMENT verkehrstechnik ( metamodell, objekte) >
+
+<!ELEMENT metamodell (
+	(	typDefinition |
+		attributgruppenDefinition |
+		aspektDefinition |
+		attributDefinition |
+		attributlistenDefinition |
+		attributauswahlDefinition |
+        mengenDefinition
+	)+
+) >
+-->
+
+<!ELEMENT konfigurationsBereiche ((konfigurationsBereich|xi:include)*) >
+<!ELEMENT konfigurationsBereich (info?, konfigurationsAenderung*, modell?, objekte?) >
+<!ATTLIST konfigurationsBereich pid ID #REQUIRED >
+<!ATTLIST konfigurationsBereich name CDATA #IMPLIED >
+<!ATTLIST konfigurationsBereich verantwortlich NMTOKEN #REQUIRED>
+<!ATTLIST konfigurationsBereich xml:base CDATA #IMPLIED >
+
+<!ELEMENT konfigurationsAenderung  (#PCDATA | %zeichenauszeichnung.klasse; |
+                                          %absatzauszeichnung.klasse;)* >
+
+
+<!ATTLIST konfigurationsAenderung
+			stand CDATA #REQUIRED
+			version CDATA #IMPLIED
+			autor CDATA #REQUIRED
+			grund CDATA #IMPLIED
+>
+
+<!ELEMENT modell (
+	(	typDefinition |
+		attributgruppenDefinition |
+		aspektDefinition |
+		attributDefinition |
+		attributlistenDefinition |
+		attributauswahlDefinition |
+        mengenDefinition |
+        transaktionsDefinition
+	)*
+) >
+
+
+<!ELEMENT objekte (konfigurationsObjekt*) >
+
+<!ELEMENT konfigurationsObjekt (info?, (datensatz|objektMenge|defaultParameter)*) >
+<!ATTLIST konfigurationsObjekt
+			pid ID #REQUIRED
+			id CDATA #IMPLIED
+			name CDATA #IMPLIED
+			typ NMTOKEN #REQUIRED
+>
+
+<!ELEMENT objektMenge (element*) >
+<!ATTLIST objektMenge
+			name CDATA #REQUIRED
+			verwaltung NMTOKEN #IMPLIED
+>
+
+<!ELEMENT element EMPTY >
+<!ATTLIST element
+			pid NMTOKEN #REQUIRED
+>
+
+<!ELEMENT defaultParameter ((datum|datenliste|datenfeld)+) >
+<!ATTLIST defaultParameter
+			typ NMTOKEN #IMPLIED
+			attributgruppe NMTOKEN #REQUIRED
+>
+
+<!-- Das XML-Attribut "pid" hat historische Gründe und wird durch das XML-Attribut "attributgruppe" ersetzt.-->
+<!ELEMENT datensatz ((datum|datenliste|datenfeld)+) >
+<!ATTLIST datensatz
+			pid NMTOKEN #IMPLIED
+			attributgruppe NMTOKEN #IMPLIED
+			aspekt NMTOKEN "asp.eigenschaften"
+>
+
+<!ELEMENT datum EMPTY >
+<!ATTLIST datum
+			name CDATA #REQUIRED
+			wert CDATA #REQUIRED
+>
+
+<!ELEMENT datenliste ((datum|datenliste|datenfeld)+) >
+<!ATTLIST datenliste
+			name CDATA #REQUIRED
+>
+
+<!ELEMENT datenfeld ((datum|datenliste)*) >
+<!ATTLIST datenfeld
+			name CDATA #REQUIRED
+>
+
+<!ELEMENT typDefinition ( info, (erweitert+ | basis), (attributgruppe | menge | transaktion)*, defaultParameter* ) >
+<!ATTLIST typDefinition
+			pid ID #REQUIRED
+			name CDATA #IMPLIED
+			objektNamenPermanent (ja|nein) "nein"
+			persistenzModus ( transient | persistent | persistentUndUngültigNachNeustart ) #IMPLIED
+>
+
+<!ELEMENT attributgruppenDefinition ( info, aspekt*, (attribut|attributliste|attributauswahl)+ ) >
+<!ATTLIST attributgruppenDefinition
+			pid ID #REQUIRED
+			name CDATA #IMPLIED
+			konfigurierend (ja|nein) "nein"
+			parametrierend (ja|nein) "nein"
+			code CDATA #IMPLIED
+>
+			<!-- code CDATA #REQUIRED --> <!-- wird durch Konfiguration festgelegt -->
+
+<!ELEMENT transaktionsDefinition ( info, aspekt*, akzeptiert?, benötigt? ) >
+<!ATTLIST transaktionsDefinition
+			pid ID #REQUIRED
+			name CDATA #IMPLIED
+>
+
+<!ELEMENT akzeptiert (transaktionsEinschränkung*)>
+
+<!ELEMENT benötigt (transaktionsEinschränkung*)>
+
+<!ELEMENT transaktionsEinschränkung EMPTY>
+<!ATTLIST transaktionsEinschränkung
+	nurTransaktionsObjekt (ja|nein) "nein"
+	objektTyp NMTOKEN #IMPLIED
+	attributGruppe NMTOKEN #IMPLIED
+	aspekt NMTOKEN #IMPLIED
+>
+
+<!ELEMENT aspekt (info?)>
+<!ATTLIST aspekt
+	pid NMTOKEN #REQUIRED
+	konfigurationsModus ( datensatzNotwendig | datensatzNotwendigUndÄnderbar | datensatzOptional | datensatzOptionalUndÄnderbar ) #IMPLIED
+	onlineModus (quelle | senke | quelleUndSenke ) #IMPLIED
+>
+<!--	persistent (ja|nein) "nein"  -->
+<!-- TODO klären: Eigenschaft "persistent" gehört in die aspektDefinition oder? -->
+
+<!ELEMENT aspektDefinition (info)>
+<!ATTLIST aspektDefinition
+	pid ID #REQUIRED
+	name CDATA #IMPLIED
+	code CDATA #IMPLIED
+>
+<!--	persistent (ja|nein) "nein" -->
+
+
+<!ELEMENT attributgruppe EMPTY>
+<!ATTLIST attributgruppe
+	pid NMTOKEN #REQUIRED
+>
+
+<!ELEMENT transaktion EMPTY>
+<!ATTLIST transaktion
+	pid NMTOKEN #REQUIRED
+>
+
+<!ELEMENT attributDefinition (
+	info,
+	( zeichenkette | ganzzahl | zeitstempel | objektReferenz | kommazahl ),
+	default?
+) >
+<!ATTLIST attributDefinition
+			pid ID #REQUIRED
+			name CDATA #IMPLIED
+>
+
+<!ELEMENT attribut ( info?, default? ) >
+<!ATTLIST attribut
+		pid NMTOKEN #REQUIRED
+		anzahl NMTOKEN #IMPLIED
+		anzahlIst (variabel|fest) "fest"
+		name NMTOKEN #REQUIRED
+>
+
+<!ELEMENT default EMPTY >
+<!ATTLIST default
+		wert CDATA #REQUIRED
+>
+
+<!ELEMENT attributliste ( info? ) >
+<!ATTLIST attributliste
+		pid NMTOKEN #REQUIRED
+		anzahl NMTOKEN #IMPLIED
+		anzahlIst (variabel|fest) "fest"
+		name NMTOKEN #REQUIRED
+>
+
+<!ELEMENT menge  ( info? )>
+<!ATTLIST menge
+        pid NMTOKEN #REQUIRED
+		name CDATA #REQUIRED
+		erforderlich (ja|nein) "ja"
+>
+
+<!ELEMENT mengenDefinition (info)>
+<!ATTLIST mengenDefinition
+        pid ID #REQUIRED
+        elemente NMTOKENS #REQUIRED
+		aenderbar (ja|nein) "nein"
+		mindestens CDATA #IMPLIED
+		hoechstens CDATA #IMPLIED
+		referenzierungsart (assoziation|aggregation|komposition) #IMPLIED
+>
+
+<!--
+<!ELEMENT elemente EMPTY>
+<!ATTLIST elemente
+		typ IDREF #REQUIRED
+>
+-->
+
+<!ELEMENT info ( kurzinfo , beschreibung? ) >
+<!--
+<!ELEMENT kurzinfo ( #PCDATA ) >
+<!ELEMENT beschreibung ( #PCDATA | referenz )* >
+-->
+<!ELEMENT kurzinfo ( #PCDATA| %zeichenauszeichnung.klasse; )* >
+<!ELEMENT beschreibung ( #PCDATA | %absatzauszeichnung.klasse; )* >
+
+<!ELEMENT erweitert EMPTY >
+<!ATTLIST erweitert pid NMTOKEN #REQUIRED >
+
+<!ELEMENT basis EMPTY >
+<!ATTLIST basis konfigurierend (ja|nein) #REQUIRED >
+
+<!--
+<!ELEMENT referenz EMPTY >
+<!ATTLIST referenz pid IDREF #REQUIRED >
+-->
+
+<!ELEMENT attributlistenDefinition ( info, (attribut|attributliste|attributauswahl)+ ) >
+<!ATTLIST attributlistenDefinition
+		pid ID #REQUIRED
+		name CDATA #IMPLIED
+>
+
+<!ELEMENT attributauswahl ( info? ) >
+<!ATTLIST attributauswahl
+		pid NMTOKEN #REQUIRED
+		name CDATA #IMPLIED
+>
+
+<!ELEMENT attributauswahlDefinition ( info, (auswahl)+ ) >
+<!ATTLIST attributauswahlDefinition
+		pid ID #REQUIRED
+		name CDATA #IMPLIED
+		typ (wert|id) #REQUIRED
+>
+
+<!ELEMENT auswahl ( info? ) >
+<!ATTLIST auswahl
+		pid NMTOKEN #IMPLIED
+		wert CDATA #IMPLIED
+		art (konfigurierendeAttributgruppe|onlineAttributgruppe|beliebigeAttributgruppe|beliebigesAttribut|beliebigeAttributliste) #IMPLIED
+		anzahl NMTOKEN #IMPLIED
+		anzahlIst (variabel|fest) "fest"
+		name CDATA #IMPLIED
+>
+
+
+
+<!ELEMENT zeichenkette EMPTY >
+<!ATTLIST zeichenkette laenge CDATA #REQUIRED >
+<!ATTLIST zeichenkette
+	kodierung (ISO-8859-1|TLS-Wechseltextzeichen) "ISO-8859-1" >
+
+<!ELEMENT ganzzahl ( ( bereich | zustand )+ ) >
+<!ATTLIST ganzzahl bits CDATA #IMPLIED >
+
+<!ELEMENT kommazahl  EMPTY >
+<!ATTLIST kommazahl einheit CDATA #IMPLIED >
+<!ATTLIST kommazahl genauigkeit (einfach|doppelt) "doppelt" >
+
+<!ELEMENT zeitstempel  EMPTY >
+<!ATTLIST zeitstempel
+	relativ (ja|nein) "nein"
+	genauigkeit (sekunden|millisekunden) "millisekunden"
+>
+
+<!ELEMENT bereich ( info? ) >
+
+<!ATTLIST bereich skalierung CDATA #IMPLIED >
+<!ATTLIST bereich minimum CDATA #REQUIRED >
+<!ATTLIST bereich maximum CDATA #IMPLIED >
+<!ATTLIST bereich einheit CDATA #IMPLIED >
+
+<!ELEMENT zustand ( info? ) >
+<!ATTLIST zustand name CDATA #REQUIRED >
+<!ATTLIST zustand wert CDATA #REQUIRED >
+
+<!ELEMENT objektReferenz EMPTY >
+<!ATTLIST objektReferenz typ NMTOKEN #IMPLIED>
+<!ATTLIST objektReferenz undefiniert (erlaubt|verboten) "verboten">
+<!ATTLIST objektReferenz referenzierungsart (assoziation|aggregation|komposition) "assoziation">
+
+<!ELEMENT bit ( ( bereich | zustand )+ ) >
+<!ATTLIST bit nummer NMTOKEN #REQUIRED >
+<!ATTLIST bit pid NMTOKEN #REQUIRED >
+<!ATTLIST bit name CDATA #IMPLIED >
+
+
+
+<!-- ============================================================= -->
+<!--                    Schnittstellenbeschreibung                 -->
+<!-- ============================================================= -->
+
+<!ELEMENT programmiersprache (primitiverTyp*)>
+<!ELEMENT primitiveTypenAusgabe EMPTY>
+
+<!ELEMENT primitiverTyp (info?)>
+<!ATTLIST primitiverTyp
+		pid   ID #REQUIRED
+		name  CDATA #REQUIRED
+        mid   NMTOKEN     #IMPLIED
+>
+
+
+<!ELEMENT schnittstellen ((schnittstelle|xi:include)*) >
+
+<!-- Eigentlich müßte bei den beteiligten Elementen ein sw-element referenziert werden.
+     Damit könnte bei den eingang/ausgang definitionen der logischen Schnittstellen
+     auch eine Referenz auf diese SW-Elemente erfolgen (Typ ApplikationX-Applikation),
+     wenn spezielle Kommunikationspartner explizit gemeint sind.
+<!ELEMENT sw-elementDefinitionen ((swEinheit|xi:include)*) >
+<!ELEMENT sw-elementDefinition (info) >
+<!ATTLIST sw-elementDefinition    pid           ID     #REQUIRED
+                         xml:base    CDATA   #IMPLIED
+>
+-->
+
+<!ELEMENT
+	schnittstelle (
+		info,
+		beteiligteElemente,
+		(
+			funktionsSchnittstelle |
+			logischeSchnittstelle |
+			kommunikationsSchnittstelle |
+			nutzerSchnittstelle |
+			dateiSchnittstelle |
+			externeSchnittstelle |
+			sonstigeSchnittstelle |
+            starterSchnittstelle
+		)
+	)
+>
+
+<!ELEMENT schnittstellenUebersicht EMPTY>
+<!ELEMENT schnittstellenUebersichtExtern EMPTY>
+<!ELEMENT schnittstellenUebersichtIntern EMPTY>
+
+<!ATTLIST schnittstelle pid           ID     #REQUIRED
+                         xml:base    CDATA   #IMPLIED
+>
+<!ATTLIST schnittstelle bearbeitungsstand (0|1|2|3|4|5|6|7|8|9|10) "0" >
+<!ATTLIST schnittstelle kommentar CDATA #IMPLIED >
+<!--Namenskonvention der pid einer schnittstelle: pid="sst.<schnittstellenname>" -->
+<!--Beispiel: pid="sst.LMS-Starter" -->
+
+    <!--
+	<!ELEMENT beteiligteElemente ((sw-element|applikation|extern|benutzer|starter)+) >
+
+          applikation ist bereits als Typ in sw-element enthalten.
+          wenn dort kein name angegeben wird, ist jede belibiege Applikation gemeint.
+        <!ELEMENT applikation ( info? ) >
+     -->
+
+    <!ELEMENT beteiligteElemente ((sw-element|extern|benutzer|starter)+) >
+
+		<!ELEMENT sw-element (info?) >
+		<!ATTLIST sw-element pid NMTOKEN #IMPLIED >
+		<!--Namenskonvention der pid einer swe: "swe.<segment>.<swe>", Beispiel: "swe.dav.datenverteiler" -->
+		<!--XSLT-Hint: aus der pid könnte ein Verweis auf das entsprechende Kapitel in TAnf generiert werden-->
+		<!ATTLIST sw-element name CDATA #IMPLIED >
+		<!ATTLIST sw-element typ (applikation|bibliothek|konfiguration|datenverteiler|swe|modul|komponente) "applikation" >
+
+		<!ELEMENT extern ( info? ) >
+
+		<!ELEMENT benutzer ( info? ) >
+		<!ELEMENT starter ( info? ) >
+
+	<!ELEMENT funktionsSchnittstelle (info?, ( klasse | schnittstellenKlasse | xi:include )* ) >
+
+		<!ELEMENT schnittstellenKlasse ( info, (feld|methode|konstruktor|anker)* ) >
+		<!ATTLIST schnittstellenKlasse	name            NMTOKEN  #REQUIRED  >
+		<!ATTLIST schnittstellenKlasse	pid             ID       #REQUIRED  >
+		<!ATTLIST schnittstellenKlasse	abgeleitetVon   IDREFS   #IMPLIED   >
+        <!ATTLIST schnittstellenKlasse	xml:base        CDATA    #IMPLIED   >
+
+
+		<!ELEMENT feld (info?, feldtyp)>
+		<!ATTLIST feld name             NMTOKEN     #REQUIRED >
+		<!ATTLIST feld pid              ID     #REQUIRED >
+		<!ATTLIST feld art              ( statisch | dynamisch ) "dynamisch" >
+		<!ATTLIST feld zugriff ( oeffentlich | geschuetzt ) "oeffentlich" >
+
+		<!ELEMENT feldtyp (info?) >
+		<!ATTLIST feldtyp typName  CDATA #REQUIRED>
+		<!ATTLIST feldtyp typPid  IDREF #REQUIRED>
+        <!ATTLIST feldtyp typDimension    CDATA    #IMPLIED >
+
+		<!ELEMENT klasse ( info, (feld|methode|konstruktor|anker)* ) >
+        <!-- name muß den vollständigen Klassenname incl paket enthalten -->
+		<!ATTLIST klasse name             NMTOKEN     #REQUIRED >
+		<!ATTLIST klasse pid              ID     #REQUIRED >
+		<!ATTLIST klasse abgeleitetVon  IDREFS #IMPLIED >
+        <!ATTLIST klasse xml:base        CDATA    #IMPLIED   >
+
+
+			<!ELEMENT methode ( info, parameter* , rueckgabe, ausnahme*) >
+			<!ATTLIST methode name    NMTOKEN  #REQUIRED >
+            <!ATTLIST methode pid              ID     #REQUIRED >
+            <!ATTLIST methode mid              NMTOKEN     #IMPLIED >
+			<!ATTLIST methode zugriff ( oeffentlich | geschuetzt ) "oeffentlich" >
+			<!ATTLIST methode art ( statisch | dynamisch ) "dynamisch" >
+
+			<!ELEMENT konstruktor ( info, parameter* , ausnahme*) >
+			<!ATTLIST konstruktor name    NMTOKEN  #REQUIRED >
+            <!ATTLIST konstruktor pid              ID     #REQUIRED >
+            <!ATTLIST konstruktor mid              NMTOKEN     #IMPLIED >
+			<!ATTLIST konstruktor zugriff ( oeffentlich | geschuetzt ) "oeffentlich" >
+
+
+				<!ELEMENT parameter ( info ) >
+				<!ATTLIST parameter name   NMTOKEN  #REQUIRED >
+				<!ATTLIST parameter typPid    IDREF    #REQUIRED >
+				<!ATTLIST parameter typDimension    CDATA    #IMPLIED >
+
+				<!ELEMENT rueckgabe ( info ) >
+				<!ATTLIST rueckgabe typPid    IDREF    #REQUIRED >
+                <!ATTLIST rueckgabe typName   CDATA    #IMPLIED >
+                <!ATTLIST rueckgabe typDimension    CDATA    #IMPLIED >
+
+				<!ELEMENT ausnahme ( info ) >
+				<!ATTLIST ausnahme typPid    IDREF    #REQUIRED >
+                <!ATTLIST ausnahme typName   CDATA    #IMPLIED >
+
+	<!ELEMENT logischeSchnittstelle ( konfigurationsDaten?, eingangsDaten?,  ausgangsDaten? )  >
+
+        <!ELEMENT konfigurationsDaten (info) >
+
+        <!ELEMENT eingangsDaten (info?, eingang*) >
+  		  <!ELEMENT eingang (info?, fuerObjekte*) >
+	    	<!ATTLIST eingang attributgruppe IDREF #REQUIRED >
+		    <!ATTLIST eingang aspekt IDREF #REQUIRED >
+		    <!--<!ATTLIST eingang objekte IDREFS #IMPLIED >-->
+        <!ATTLIST eingang typ (Senke|Empfänger) #REQUIRED >
+        <!-- Für den Fall, daß es sich bei dem Kommunikationspartner um eine Applikation handelt, die
+             detaillierter spezifiziert werden kann, diese Information wird beí der Auswertung der Datenflusses
+             aus Sicht der Attributgruppen verwendet. -->
+        <!ATTLIST eingang partner CDATA #IMPLIED >
+
+
+
+        <!ELEMENT ausgangsDaten (info?, ausgang*) >
+  		  <!ELEMENT ausgang (info?, fuerObjekte*) >
+  		  <!ATTLIST ausgang attributgruppe  IDREF    #REQUIRED >
+		    <!ATTLIST ausgang aspekt          IDREF  #REQUIRED >
+        <!ATTLIST ausgang typ (Quelle|Sender) #REQUIRED >
+        <!-- Für den Fall, daß es sich bei dem Kommunikationspartner um eine Applikation handelt, die
+             detaillierter spezifiziert werden kann, diese Information wird beí der Auswertung der Datenflusses
+             aus Sicht der Attributgruppen verwendet. -->
+        <!ATTLIST ausgang partner CDATA #IMPLIED >
+
+        <!ELEMENT fuerObjekte (info?) >
+        <!ATTLIST fuerObjekte pid   IDREF    #IMPLIED >
+
+	<!ELEMENT kommunikationsSchnittstelle (info?, telegramm*) >
+
+		<!ELEMENT telegramm (titel?, info, (telegrammElement|telegrammBlock)*) >
+		<!ATTLIST telegramm name NMTOKEN #REQUIRED>
+		<!ATTLIST telegramm pid ID #REQUIRED>
+
+			<!ELEMENT telegrammElement (titel?, info?) >
+			<!ATTLIST telegrammElement name NMTOKEN #REQUIRED>
+			<!ATTLIST telegrammElement typ (byte|short|int|long|double|text|datensatz) #REQUIRED>
+			<!ATTLIST telegrammElement wertVorgabe CDATA #IMPLIED>
+			<!ATTLIST telegrammElement anzahl CDATA #IMPLIED> <!-- Zahl oder * für beliebig, default ist 1-->
+
+			<!ELEMENT telegrammBlock (titel?, info?, (telegrammElement|telegrammBlock)* ) >
+			<!ATTLIST telegrammBlock name NMTOKEN #REQUIRED>
+			<!ATTLIST telegrammBlock anzahl CDATA #IMPLIED> <!-- Zahl oder * für beliebig, default ist 1-->
+
+	<!ELEMENT nutzerSchnittstelle (info?) >
+    <!ATTLIST nutzerSchnittstelle name CDATA #IMPLIED >
+	<!ELEMENT dateiSchnittstelle (info?) >
+    <!ATTLIST dateiSchnittstelle name CDATA #IMPLIED >
+	<!ELEMENT sonstigeSchnittstelle (info?) >
+    <!ATTLIST sonstigeSchnittstelle name CDATA #IMPLIED >
+
+	<!ELEMENT externeSchnittstelle (info?) >
+    <!ATTLIST externeSchnittstelle name CDATA #REQUIRED >
+
+
+<!--	<!ELEMENT starterSchnittstelle (info?, aufrufParameter+) > -->
+	<!ELEMENT starterSchnittstelle (info?, (aufrufParameter|aufrufParameterReferenz)*) >
+    <!ELEMENT aufrufParameter (info)>
+    <!ATTLIST aufrufParameter name CDATA #REQUIRED >
+    <!ATTLIST aufrufParameter pid ID #IMPLIED >
+    <!ATTLIST aufrufParameter typ (adresse|zahl|zeichenkette|zeichenkette:zahl|zeichenkette:zahl:zeichenkette|pid|dateiname) #IMPLIED >
+
+    <!ELEMENT aufrufParameterReferenz (info?) >
+    <!ATTLIST aufrufParameterReferenz pid IDREF #REQUIRED >
+
+
+
+<!-- ============================================================= -->
+<!--                    Szenario                                   -->
+<!-- ============================================================= -->
+
+<!ELEMENT szenario (global?, kapitel?, prozess+) >
+
+<!ELEMENT  global EMPTY>
+<!ATTLIST  global
+            jdkhome     CDATA    #IMPLIED
+            javaopts    CDATA    #IMPLIED
+            host        CDATA    #IMPLIED
+            classpath   CDATA    #IMPLIED
+            xmlParser   CDATA    #IMPLIED
+>
+
+<!ELEMENT prozess  (typDatenverteiler | typApplikation | typProgramm)>
+
+<!ATTLIST prozess
+    id  ID  #REQUIRED
+    start (sofort|aufforderung) #REQUIRED
+>
+
+<!ELEMENT typDatenverteiler (beschreibung?,startParameter*)>
+<!ATTLIST typDatenverteiler
+    class                              CDATA   #REQUIRED
+    classpath                          CDATA   #IMPLIED
+    extraCp                            CDATA   #IMPLIED
+    davAppPort                         CDATA   #IMPLIED
+    davDavPort                         CDATA   #IMPLIED
+    benutzer                           CDATA   #IMPLIED
+    authentifizierung                  CDATA   #IMPLIED
+    authentifizierungsVerfahren        CDATA   #IMPLIED
+    lokaleKonfiguration                CDATA   #IMPLIED
+    remoteKonfiguration                CDATA   #IMPLIED
+    timeoutSendeKeepAlive              CDATA   #IMPLIED
+    timeoutEmpfangeKeepAlive           CDATA   #IMPLIED
+    timeoutNachbar                     CDATA   #IMPLIED
+    timeoutAntwort                     CDATA   #IMPLIED
+    datenverteilerId                   CDATA   #IMPLIED
+>
+
+<!ELEMENT typApplikation (beschreibung?,startParameter*)>
+<!ATTLIST typApplikation
+    typ                                CDATA   #IMPLIED
+    class                              CDATA   #REQUIRED
+    classpath                          CDATA   #IMPLIED
+    extraCp                            CDATA   #IMPLIED
+    datenverteiler                     CDATA   #IMPLIED
+    datenhaltung                       CDATA   #IMPLIED
+    benutzer                           CDATA   #IMPLIED
+    authentifizierung                  CDATA   #IMPLIED
+    authentifizierungsVerfahren        CDATA   #IMPLIED
+    timeoutSendeKeepAlive              CDATA   #IMPLIED
+    timeoutEmpfangeKeepAlive           CDATA   #IMPLIED
+    konfiguration                      CDATA   #IMPLIED
+    lokaleSpeicherungKonfiguration     CDATA   #IMPLIED
+    aspekt                             CDATA   #IMPLIED
+    simVariante                        CDATA   #IMPLIED
+>
+<!--
+    davHost    CDATA   #IMPLIED
+    davPort     CDATA   #REQUIRED
+-->
+
+
+<!ELEMENT typProgramm (beschreibung?)>
+<!ATTLIST typProgramm
+	kommando	CDATA	#REQUIRED
+	ausgabe	CDATA	#IMPLIED
+>
+
+<!ELEMENT startParameter (beschreibung?)>
+<!ATTLIST startParameter
+	name	CDATA	#REQUIRED
+	wert	CDATA	#IMPLIED
+>
+
+
+<!-- architektur -->
+
+<!ELEMENT architekturSystem ((xi:include|anforderungen)*,abgedeckteAnforderung*,architekturSegment+) >
+<!ATTLIST architekturSystem
+          name CDATA #REQUIRED
+          pid ID #REQUIRED
+          identifikation CDATA #REQUIRED
+          xml:base    CDATA   #IMPLIED
+>
+
+<!ELEMENT anforderungen (anforderung*) >
+<!ATTLIST anforderungen xml:base CDATA #IMPLIED >
+
+<!ELEMENT abgedeckteAnforderung EMPTY >
+<!ATTLIST abgedeckteAnforderung
+          pid IDREF #REQUIRED
+          xml:base    CDATA   #IMPLIED
+>
+
+
+<!ELEMENT architekturSegment ((xi:include|anforderungen)*,abgedeckteAnforderung*,architekturSwEinheit+) >
+<!ATTLIST architekturSegment
+          name CDATA #REQUIRED
+          pid ID #REQUIRED
+          kuerzel CDATA #REQUIRED
+          identifikation CDATA #REQUIRED
+		  kritikalitaet (hoch|mittel|niedrig) "mittel"
+>
+
+<!ELEMENT architekturSwEinheitInterneWurzel ((xi:include|anforderungen)*,architekturSwEinheitIntern) >
+<!ELEMENT architekturSwEinheitIntern (abgedeckteAnforderung*,(architekturSwKomponente|architekturSwModul|architekturSwWiederverwendung)*,identifikationExterneSchnittstelle*,identifikationInterneSchnittstelle*) >
+
+<!ELEMENT identifikationExterneSchnittstelle (info?) >
+<!ATTLIST identifikationExterneSchnittstelle name CDATA #REQUIRED >
+<!ATTLIST identifikationExterneSchnittstelle zugeordnetesElement IDREF #REQUIRED >
+<!ATTLIST identifikationExterneSchnittstelle xml:base    CDATA   #IMPLIED >
+
+<!ELEMENT identifikationInterneSchnittstelle (info?) >
+<!ATTLIST identifikationInterneSchnittstelle name CDATA #REQUIRED >
+<!ATTLIST identifikationInterneSchnittstelle beteiligteModule IDREFS #REQUIRED >
+<!ATTLIST identifikationInterneSchnittstelle xml:base    CDATA   #IMPLIED >
+
+<!ELEMENT architekturSwEinheit ((xi:include)*,abgedeckteAnforderung*,(architekturSwKomponente|architekturSwModul|architekturSwWiederverwendung)*,identifikationExterneSchnittstelle*,identifikationInterneSchnittstelle*) >
+<!ATTLIST architekturSwEinheit
+          name CDATA #REQUIRED
+          pid ID #REQUIRED
+          kuerzel CDATA #IMPLIED
+          identifikation CDATA #REQUIRED
+		  kritikalitaet (hoch|mittel|niedrig) "mittel"
+>
+
+<!ELEMENT architekturSwKomponente (abgedeckteAnforderung*,(architekturSwModul|architekturSwWiederverwendung)*) >
+<!ATTLIST architekturSwKomponente
+          name CDATA #REQUIRED
+          pid ID #REQUIRED
+          kuerzel CDATA #IMPLIED
+          identifikation CDATA #REQUIRED
+		  kritikalitaet (hoch|mittel|niedrig) "mittel"
+          xml:base    CDATA   #IMPLIED
+>
+
+<!ELEMENT architekturSwModul (info?, abgedeckteAnforderung*) >
+<!ATTLIST architekturSwModul
+          name CDATA #REQUIRED
+          pid ID #REQUIRED
+          kuerzel CDATA #IMPLIED
+          identifikation CDATA #REQUIRED
+		  kritikalitaet (hoch|mittel|niedrig) "mittel"
+          xml:base    CDATA   #IMPLIED
+>
+
+<!ELEMENT architekturSwWiederverwendung (info?, abgedeckteAnforderung*) >
+<!ATTLIST architekturSwWiederverwendung
+          pid IDREF #REQUIRED
+          identifikation CDATA #REQUIRED
+>
+

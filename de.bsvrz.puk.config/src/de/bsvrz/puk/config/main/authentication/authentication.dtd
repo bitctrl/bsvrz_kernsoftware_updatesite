@@ -1,0 +1,15 @@
+<!ELEMENT benutzerkonten (benutzeridentifikation+)>
+
+<!ELEMENT benutzeridentifikation (autorisierungspasswort*)>
+<!ATTLIST benutzeridentifikation
+	name				CDATA 		#REQUIRED
+	passwort			CDATA 		#REQUIRED
+	admin 				NMTOKEN 	#REQUIRED
+>
+
+<!ELEMENT autorisierungspasswort EMPTY>
+<!ATTLIST autorisierungspasswort
+	passwort		CDATA 	#REQUIRED
+	passwortindex	NMTOKEN	#REQUIRED
+	gueltig			NMTOKEN #REQUIRED
+>

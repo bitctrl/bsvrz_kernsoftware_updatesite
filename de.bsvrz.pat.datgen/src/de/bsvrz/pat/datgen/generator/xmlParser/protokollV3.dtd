@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!ELEMENT protokoll ( kopf, koerper) >
+
+<!ELEMENT kopf ( start, aufrufparameter ) >
+
+<!ELEMENT start EMPTY >
+<!ATTLIST start wert CDATA #REQUIRED>
+
+<!ELEMENT aufrufparameter EMPTY >
+<!ATTLIST aufrufparameter wert CDATA #REQUIRED>
+
+<!ELEMENT koerper ( block* ) >
+
+<!ELEMENT block ( datensatz* ) >
+<!ATTLIST block empfangszeit CDATA #REQUIRED>
+
+<!ELEMENT datensatz ( objekt, attributgruppe, aspekt, simulationsvariante?, zeit, nachgeliefert, (((attribut|feld|liste)+)|keineQuelle|keineDaten) ) >
+
+<!ELEMENT objekt EMPTY >
+<!ATTLIST objekt id CDATA #IMPLIED>
+<!ATTLIST objekt pid CDATA #IMPLIED>
+
+<!ELEMENT attributgruppe EMPTY >
+<!ATTLIST attributgruppe id CDATA #IMPLIED>
+<!ATTLIST attributgruppe pid CDATA #IMPLIED>
+
+<!ELEMENT aspekt EMPTY >
+<!ATTLIST aspekt id CDATA #IMPLIED>
+<!ATTLIST aspekt pid CDATA #IMPLIED>
+
+<!ELEMENT simulationsvariante EMPTY>
+<!ATTLIST simulationsvariante wert CDATA #REQUIRED>
+
+<!ELEMENT nachgeliefert EMPTY >
+<!ATTLIST nachgeliefert wert CDATA #REQUIRED>
+
+<!ELEMENT zeit EMPTY >
+<!ATTLIST zeit wert CDATA #REQUIRED>
+
+<!ELEMENT attribut EMPTY >
+<!ATTLIST attribut name CDATA #IMPLIED>
+<!ATTLIST attribut wert CDATA #REQUIRED>
+
+<!ELEMENT feld (liste|attribut)* >
+<!ATTLIST feld name CDATA #REQUIRED>
+<!ATTLIST feld länge CDATA #REQUIRED>
+
+<!ELEMENT liste (attribut|feld|liste)+ >
+<!ATTLIST liste name CDATA #IMPLIED>
+
+<!ELEMENT keineQuelle EMPTY >
+
+<!ELEMENT keineDaten EMPTY >

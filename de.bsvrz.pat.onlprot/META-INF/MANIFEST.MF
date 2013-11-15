@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.7.1
+Created-By: Kappich Systemberatung
+Bundle-ManifestVersion: 2
+Bundle-Name: de.bsvrz.pat.onlprot
+Bundle-SymbolicName: de.bsvrz.pat.onlprot
+Bundle-Version: 3.5.0.qualifier
+Bundle-Vendor: Kappich Systemberatung
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: de.bsvrz.pat.onlprot,
+ de.bsvrz.pat.onlprot.protocoller.dataKindDeterminer,
+ de.bsvrz.pat.onlprot.protocoller.main,
+ de.bsvrz.pat.onlprot.protocoller.protocolModuleConnector,
+ de.bsvrz.pat.onlprot.standardProtocolModule
+Require-Bundle: de.bsvrz.dav.daf, de.bsvrz.sys.funclib.dataSerializer,
+  de.bsvrz.sys.funclib.communicationStreams, de.bsvrz.sys.funclib.conf
+ igObjectAcquisition, de.bsvrz.sys.funclib.debug, de.bsvrz.sys.funclib
+ .commandLineArgs
+Eclipse-BuddyPolicy: dependent
+Bundle-ClassPath: .
+

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package name="de.bsvrz.sys.funclib.operatingMessage">
+  <license name="LGPL" />
+  <release name="Kernsoftware 3.5.0" />
+  <version number="3.5.0.10129" />
+  <revision number="10129" />
+  <compile time="15.04.2012 14:07:38" />
+  <depends-on-compiled packages="de.bsvrz.dav.daf, de.bsvrz.sys.funclib.dataSerializer, de.bsvrz.sys.funclib.communicationStreams, de.bsvrz.sys.funclib.debug" />
+  <depends-on-source packages="" />
+  <depends-on-lib jars="" />
+  <jvm version="1.6" />
+</package>

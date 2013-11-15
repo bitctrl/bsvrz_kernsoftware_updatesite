@@ -1,0 +1,50 @@
+<HTML>
+<HEAD>
+   <TITLE>Allgemeine Beschreibung zum package communicationStreams</TITLE>
+</HEAD>
+<BODY>
+<p>
+Dieses Paket ermöglichet den streambasierten Versand von beliebigen Daten zwischen zwei Kommunikationspartnern. <br>
+Damit diese Aufgabe erledigt werden kann, müssen zwei Interfaces (StreamDemultiplexerDirector, StreamMultiplexerDirector) <br>
+implementiert werden. <br>
+<br>
+Der erste Kommunikationspartner ist die Sendeapplikation, diese stellt Nutzdaten zur Verfügung. <br>
+Der zweite Kommunikationspartner ist die Empfängerapplikation, diese fordert die Nutzdaten an um sie zu verarbeiten. <br>
+<br>
+Die Sendeapplikation erzeugt einen StreamMultiplexer um ihre Nutzdaten verschicken zu können. Die <br>
+Empfängerapplikation wird einen StreamDemultiplexer erzeugen um die Nutzdaten empfangen zu können. <br>
+<br>
+Der StreamMultiplexer übernimmt die Aufgabe des Senders. Er verschickt sogenannte Nutzdatenpakete an den <br>
+StreamDemultiplexer. Der StreamDemultiplexer ist der Empfänger der Nutzdatenpakete. Ein Nutzdatenaket<br>
+besteht aus den Nutzdaten und zusätzlichen Steuerungsinformationen. Die Nutzdaten sind die Daten, die <br>
+eigentlich versandt und weiter verarbeitet werden sollen. <br>
+<br>
+Die Nutzdaten werden also mit dem StreamMultiplexer verschickt, dieser bekommt die Nutzdaten von der Sendeapplikation. <br>
+Der StreamMultiplexer hat über das Interface <code>StreamMultiplexerDirector</code> Zugriff auf die Sendeapplikation <br>
+und kann Nutzdaten anfordern. <br>
+<br>
+Auf der Gegenseite kann die Empfängerapplikation den StreamDemultiplexer auffordern Nutzdaten bereitzustellen. <br>
+<br>
+Der StreamDemultiplexer speichert(puffert) eingehende Nutzdatenpakete, aus diesem Puffer werden Anforderungen <br>
+an die Empfängerapplikation bedient. <br>
+Der Puffer des StreamDemultiplexer wird durch den StreamMultiplexer gefüllt, damit der StreamMultiplexer (Sender) den <br>
+StreamDemultiplexer (Empfänger) nicht überlastet findet eine Flusskontrolle statt. <br>
+<br>
+Der Sender darf also nicht unkontrolliert Nutzdaten verschicken, sondern der Empfänger muss ihm eine Erlaubnis geben <br>
+neue Nutzdatenpakete zu verschicken. Diese Erlaubnis wird "Ticket" genannt. <br>
+Der Sender darf den Puffer des Empfängers nur bis zu einer gewissen Grad füllen (deblockingFactor). Somit sagt der <br>
+Empfänger dem Sender wie viele Pakete er verschicken darf, ist dieses Limit erreicht, stoppt der Sender bis ihm der <br>
+Empfänger wieder ein Ticket schickt. <br>
+Der Sender verschickt die Nutzdatenpakete nicht einzeln sondern verpackt diese in größere Pakete. <br>
+Die Größe des Senderpuffers kann ebenfalls eingestellt werden. <br>
+<br>
+Die gerade geschilderte Kommunikation bestand nur aus einem Stream. In der Realität entscheiden sich die <br>
+Empfangs/Sendeapplikation vorher über wie viele Stream sie kommunizieren möchten. Der Empfänger stellt dann <br>
+für jeden Stream einen Puffer zur Verfügung und der Sender sendet auf jedem Stream Nutzdatenpackete. <br>
+<br>
+Die Empfangsapplikation entscheidet dann, von welchem Stream sie Nutzdaten anfordern möchte.
+
+
+</p>
+</BODY>
+</HTML>

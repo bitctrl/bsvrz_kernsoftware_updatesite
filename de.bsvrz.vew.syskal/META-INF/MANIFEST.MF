@@ -1,0 +1,28 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Plugin zur Bereitstellung der API der SWE Systemkalender
+Bundle-SymbolicName: de.bsvrz.vew.syskal
+Bundle-Version: 1.2.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Vendor: BitCtrl Systems GmbH
+Export-Package: de.bsvrz.sys.funclib.dambach.dav.daf,
+ de.bsvrz.sys.funclib.dambach.konfiguration.netz,
+ de.bsvrz.sys.funclib.dambach.parameter,
+ de.bsvrz.sys.funclib.dambach.util,
+ de.bsvrz.sys.funclib.dambach.vewdynobj,
+ de.bsvrz.vew.syskal.syskal.benachrichtigungsfunktion,
+ de.bsvrz.vew.syskal.syskal.erinnerungsfunktion,
+ de.bsvrz.vew.syskal.syskal.systemkalendereintrag,
+ de.bsvrz.vew.syskal.syskal.verwaltung
+Bundle-ClassPath: .,
+ lib/de.bsvrz.sys.funclib.dambach.jar
+Require-Bundle: de.bsvrz.dav.daf;bundle-version="3.5.0",
+ de.bsvrz.sys.funclib.debug;bundle-version="3.5.0",
+ de.bsvrz.sys.funclib.commandLineArgs;bundle-version="3.5.0",
+ de.bsvrz.sys.funclib.concurrent;bundle-version="3.5.0",
+ de.bsvrz.sys.funclib.crypt;bundle-version="3.5.0",
+ de.bsvrz.sys.funclib.filelock;bundle-version="3.5.0",
+ de.bsvrz.sys.funclib.hexdump;bundle-version="3.5.0",
+ de.bsvrz.sys.funclib.timeout;bundle-version="3.5.0",
+ de.bsvrz.sys.funclib.operatingMessage;bundle-version="3.5.0",
+ de.bsvrz.sys.funclib.application;bundle-version="3.5.0"

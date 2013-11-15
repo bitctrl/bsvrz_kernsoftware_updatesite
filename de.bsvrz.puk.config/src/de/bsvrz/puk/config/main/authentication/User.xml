@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!DOCTYPE benutzerkonten PUBLIC "-//K2S//DTD Authentifizierung//DE" "authentication.dtd">
+<benutzerkonten>
+	<benutzeridentifikation admin="ja" name="Tester" passwort="geheim">
+</benutzeridentifikation>
+</benutzerkonten>

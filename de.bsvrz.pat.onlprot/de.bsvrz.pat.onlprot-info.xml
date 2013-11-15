@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package name="de.bsvrz.pat.onlprot">
+  <license name="GPL" />
+  <release name="Kernsoftware 3.5.0" />
+  <version number="3.5.0.10129" />
+  <revision number="10129" />
+  <compile time="15.04.2012 14:07:59" />
+  <depends-on-compiled packages="de.bsvrz.dav.daf, de.bsvrz.sys.funclib.dataSerializer, de.bsvrz.sys.funclib.communicationStreams, de.bsvrz.sys.funclib.configObjectAcquisition, de.bsvrz.sys.funclib.debug, de.bsvrz.sys.funclib.commandLineArgs" />
+  <depends-on-source packages="" />
+  <depends-on-lib jars="" />
+  <jvm version="1.6" />
+</package>
