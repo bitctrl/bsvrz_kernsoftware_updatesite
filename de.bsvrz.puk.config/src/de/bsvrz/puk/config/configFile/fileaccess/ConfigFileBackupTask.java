@@ -19,16 +19,9 @@
  */
 
 package de.bsvrz.puk.config.configFile.fileaccess;
-/**
- * @author Kappich Systemberatung
- * @version $Revision: 0 $
- *
- */
 
-import de.bsvrz.dav.daf.main.config.BackupProgressCallback;
-import de.bsvrz.dav.daf.main.config.BackupResult;
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.SimpleBackupResult;
+
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.dav.daf.main.impl.config.request.telegramManager.SenderReceiverCommunication;
 import de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel;
 import de.bsvrz.puk.config.main.authentication.ConfigAuthentication;
@@ -41,14 +34,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
-/** Klasse, die Konfigurationsdateien einer Konfiguration sichert. */
+/**
+ * Klasse, die Konfigurationsdateien einer Konfiguration sichert.
+ *
+ * @author Kappich Systemberatung
+ * @version $Revision: 11499 $
+ */
 public class ConfigFileBackupTask {
 
 	public static final int BACKUP_STATE_INITIALIZING = 0;
@@ -75,6 +68,8 @@ public class ConfigFileBackupTask {
 
 	private ConfigAuthentication _configAuthentication;
 
+	private ConfigurationAuthority _configurationAuthority;
+
 	private volatile ConfigAreaFile _currentFile;
 
 	private SenderReceiverCommunication _sender;
@@ -84,40 +79,41 @@ public class ConfigFileBackupTask {
 	/**
 	 * Erstellt einen neuen ConfigFileBackupTask, welches den Fortschritt an ein lokales BackupProgressCallback-Objekt übergibt
 	 *
-	 * @param authentication Klasse von der die Benutzerverwaltung.xml gesichert werden soll
-	 * @param dataModel      Lokale Konfiguration
-	 * @param target         Zielverzeichnis, welches innerhalb von {@link de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel#getBackupBaseDirectory()}
-	 *                       angelegt werden soll.
-	 * @param callback       Objekt, das über den Fortschritt des Backup-Vorgangs informiert werden soll.
-	 *
+	 * @param authentication         Klasse von der die Benutzerverwaltung.xml gesichert werden soll
+	 * @param dataModel              Lokale Konfiguration
+	 * @param target                 Zielverzeichnis, welches innerhalb von {@link de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel#getBackupBaseDirectory()}
+	 *                               angelegt werden soll.
+	 * @param configurationAuthority Konfigurationsverantwortlicher, dessen Konfigurations-Dateien gesichert werden sollen. Falls null werden
+	 *                               alle Dateien gesichert.
+	 * @param callback               Objekt, das über den Fortschritt des Backup-Vorgangs informiert werden soll.
 	 * @throws IOException Wenn das angegebene target-Verzeichnis ungültig ist
 	 */
 	public ConfigFileBackupTask(
-			final ConfigAuthentication authentication, final ConfigDataModel dataModel, final String target, final BackupProgressCallback callback)
+			final ConfigAuthentication authentication, final ConfigDataModel dataModel, final String target, final ConfigurationAuthority configurationAuthority, final BackupProgressCallback callback)
 			throws IOException {
-		this(authentication, dataModel, target);
+		this(authentication, dataModel, target, configurationAuthority);
 		_callback = callback;
 	}
 
 	/**
 	 * Erstellt einen neuen ConfigFileBackupTask, welches den Fortschritt über den Datenverteiler an ein RemoteRequester übermittelt
 	 *
-	 * @param senderReplyAreaTasks Verbindung mit dem RemoteRequestManager
-	 * @param queryIndex           Anfrageindex
-	 * @param authentication       Klasse von der die Benutzerverwaltung.xml gesichert werden soll
-	 * @param dataModel            Lokale Konfiguration
-	 * @param target               Zielverzeichnis, welches innerhalb von {@link de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel#getBackupBaseDirectory()}
-	 *                             angelegt werden soll.
-	 *
-	 * @throws IOException Wenn das angegebene target-Verzeichnis ungültig ist
+	 * @param authentication         Klasse von der die Benutzerverwaltung.xml gesichert werden soll
+	 * @param dataModel              Lokale Konfiguration
+	 * @param target                 Zielverzeichnis, welches innerhalb von {@link de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel#getBackupBaseDirectory()}
+	 *                               angelegt werden soll.
+	 * @param configurationAuthority Konfigurationsverantwortlicher, dessen Konfigurations-Dateien gesichert werden sollen. Falls null werden
+	 *                               alle Dateien gesichert.
+	 * @param senderReplyAreaTasks   Verbindung mit dem RemoteRequestManager
+	 * @param queryIndex             Anfrageindex   @throws IOException Wenn das angegebene target-Verzeichnis ungültig ist
 	 */
 	public ConfigFileBackupTask(
 			final ConfigAuthentication authentication,
 			final ConfigDataModel dataModel,
 			final String target,
-			final SenderReceiverCommunication senderReplyAreaTasks,
+			final ConfigurationAuthority configurationAuthority, final SenderReceiverCommunication senderReplyAreaTasks,
 			final int queryIndex) throws IOException {
-		this(authentication, dataModel, target);
+		this(authentication, dataModel, target, configurationAuthority);
 		_sender = senderReplyAreaTasks;
 		_queryIndex = queryIndex;
 	}
@@ -125,18 +121,21 @@ public class ConfigFileBackupTask {
 	/**
 	 * Erstellt einen neuen ConfigFileBackupTask, welches keinerlei Fortschrittsmeldungen sendet.
 	 *
-	 * @param authentication Klasse von der die Benutzerverwaltung.xml gesichert werden soll. Kann null sein, dann wird keine benuterverwaltung gesichert.
-	 * @param dataModel      Lokale Konfiguration
-	 * @param target         Zielverzeichnis, welches innerhalb von {@link de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel#getBackupBaseDirectory()}
-	 *                       angelegt werden soll. Falls null oder ein Leerstring angegeben wird, wird anhand des aktuellen Datums, der Uhrzeit und/oder anderen
-	 *                       nicht näher spezifizierten Mechanismen ein eindeutiges neues Verzeichnis erstellt. Falls im ConfigDataModel kein Zielverzeichnis über
-	 *                       {@link ConfigDataModel#setBackupBaseDirectory(java.io.File) } festgelegt wurde kann jedes beliebige absolute oder relative Verzeichnis
-	 *                       angegeben werden.
-	 *
+	 * @param authentication         Klasse von der die Benutzerverwaltung.xml gesichert werden soll. Kann null sein, dann wird keine
+	 *                               Benutzerverwaltung gesichert.
+	 * @param dataModel              Lokale Konfiguration
+	 * @param target                 Zielverzeichnis, welches innerhalb von {@link de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel#getBackupBaseDirectory()}
+	 *                               angelegt werden soll. Falls null oder ein Leerstring angegeben wird, wird anhand des aktuellen Datums, der
+	 *                               Uhrzeit und/oder anderen nicht näher spezifizierten Mechanismen ein eindeutiges neues Verzeichnis
+	 *                               erstellt. Falls im ConfigDataModel kein Zielverzeichnis über {@link de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel#setBackupBaseDirectory(java.io.File)
+	 *                               } festgelegt wurde kann jedes beliebige absolute oder relative Verzeichnis angegeben werden.
+	 * @param configurationAuthority Konfigurationsverantwortlicher, dessen Konfigurations-Dateien gesichert werden sollen. Falls null werden
+	 *                               alle Dateien gesichert.
 	 * @throws IOException Wenn das angegebene target-Verzeichnis ungültig ist
 	 */
-	public ConfigFileBackupTask(final ConfigAuthentication authentication, final ConfigDataModel dataModel, final String target) throws IOException {
+	public ConfigFileBackupTask(final ConfigAuthentication authentication, final ConfigDataModel dataModel, final String target, final ConfigurationAuthority configurationAuthority) throws IOException {
 		_dataModel = dataModel;
+		_configurationAuthority = configurationAuthority;
 		_configurationFileManager = dataModel.getConfigurationFileManager();
 		_configAuthentication = authentication;
 
@@ -162,12 +161,31 @@ public class ConfigFileBackupTask {
 		}
 	}
 
+	private ConfigurationAreaFile[] getConfigurationAreasToBackup() {
+		if(_configurationAuthority == null) {
+			return _configurationFileManager.getConfigurationAreas();
+		}
+		else {
+			final List<ConfigurationAreaFile> list = new ArrayList<ConfigurationAreaFile>();
+			for(ConfigurationAreaFile configurationAreaFile : _configurationFileManager.getConfigurationAreas()) {
+				final ConfigurationArea configurationArea = (ConfigurationArea) _dataModel.getObject(
+						configurationAreaFile.getConfigurationAreaInfo().getPid()
+				);
+				final boolean isSameConfigAuth = configurationArea.getConfigurationAuthority().equals(_configurationAuthority);
+				if(isSameConfigAuth) {
+					list.add(configurationAreaFile);
+				}
+			}
+			return list.toArray(new ConfigurationAreaFile[list.size()]);
+		}
+	}
+
 	/**
 	 * Formatiert das aktuelle Datum und Uhrzeit in einen als Pfadnamen darstellbaren, einfach sortierbaren String
 	 *
 	 * @return Beispielsweise 201009172210 wenn das aktuelle Datum der 17.09.2010 um 22:10 ist.
 	 */
-	private String generateDirectoryName() {
+	private static String generateDirectoryName() {
 		final SimpleDateFormat instance = new SimpleDateFormat("yyyyMMddHHmm", Locale.GERMAN);
 		return instance.format(new Date());
 	}
@@ -176,7 +194,9 @@ public class ConfigFileBackupTask {
 		return param == null || param.trim().length() == 0;
 	}
 
-	/** Startet einen Backup-Vorgang asynchron, wartet also nicht auf das Beenden. */
+	/**
+	 * Startet einen Backup-Vorgang asynchron, wartet also nicht auf das Beenden.
+	 */
 	public void startAsync() {
 		new Thread(new ConfigFileBackupTaskImplementation()).start(); // Neuen Thread starten
 	}
@@ -198,7 +218,7 @@ public class ConfigFileBackupTask {
 	 */
 	public double getFileProgress() {
 		if(_currentFile == null) return 0;
-		return ((double)_currentFile.getBackupProgress()) / _currentFile.getFileLength();
+		return ((double) _currentFile.getBackupProgress()) / _currentFile.getFileLength();
 	}
 
 	/**
@@ -227,10 +247,14 @@ public class ConfigFileBackupTask {
 		}
 	}
 
-	/** Klasse, die die eigentliche Arbeit macht */
+	/**
+	 * Klasse, die die eigentliche Arbeit macht
+	 */
 	private class ConfigFileBackupTaskImplementation implements Runnable {
 
-		/** Startet den Backup-Vorgang */
+		/**
+		 * Startet den Backup-Vorgang
+		 */
 		public void run() {
 			// Aktualisierung alle 10 Sekunden
 			final Timer timer = new Timer();
@@ -246,39 +270,45 @@ public class ConfigFileBackupTask {
 
 			try {
 				// Zu sichernde Konfigurationsdateien ermitteln
-				final ConfigurationAreaFile[] files = _configurationFileManager.getConfigurationAreas();
+				final ConfigurationAreaFile[] files = getConfigurationAreasToBackup();
 
 				// Danach sortieren, ob die Dateien zum lokalen KV gehören, also änderbar sind.
-				Arrays.sort(files, new Comparator<ConfigurationAreaFile>(){
+				Arrays.sort(
+						files, new Comparator<ConfigurationAreaFile>() {
 					public int compare(final ConfigurationAreaFile caf1, final ConfigurationAreaFile caf2) {
 						return groupChangeableFile(caf1).compareTo(groupChangeableFile(caf2));
 					}
 
 					private Integer groupChangeableFile(final ConfigurationAreaFile caf) {
-						final ConfigurationArea configurationArea = (ConfigurationArea)_dataModel.getObject(caf.getConfigurationAreaInfo().getPid());
-						final boolean isSameConfigAuth = configurationArea.getConfigurationAuthority() == _dataModel.getConfigurationAuthority();
+						final ConfigurationArea configurationArea = (ConfigurationArea) _dataModel.getObject(
+								caf.getConfigurationAreaInfo().getPid()
+						);
+						final boolean isSameConfigAuth = configurationArea.getConfigurationAuthority()
+								.getPid()
+								.equals(_dataModel.getConfigurationAuthorityPid());
 						return isSameConfigAuth ? 0 : 1;
 					}
-				});
+				}
+				);
 
 				// Sicherungsvorgang starten
 				_total = files.length + 1 + ((_configAuthentication != null) ? 1 : 0);
 				for(ConfigurationAreaFile file : files) {
-					_currentFile = (ConfigAreaFile)file;
+					_currentFile = (ConfigAreaFile) file;
 					try {
 						_currentFile.createBackupFile(_targetDirectory);
 						_completed++;
 					}
 					catch(IOException e) {
 						_failed++;
-						_debug.error("Fehler beim Sichern von " + _currentFile, e);
+						_debug.error("Fehler beim Sichern von " + _currentFile.getConfigAreaPid(), e);
 					}
 				}
 				_currentFile = null;
 
 				// Die Verwaltungs-XML sichern
 				try {
-					((ManagementFile)_dataModel.getManagementFile()).createBackupFile(_targetDirectory);
+					((ManagementFile) _dataModel.getManagementFile()).createBackupFile(_targetDirectory);
 					_completed++;
 				}
 				catch(IOException e) {
@@ -305,10 +335,15 @@ public class ConfigFileBackupTask {
 			}
 		}
 
-		/** Veröffentlicht den aktuellen Fortschritt über den Datenverteiler an einen RemoteRequestManager, der den Sicherungsauftrag gestartet hat */
+		/**
+		 * Veröffentlicht den aktuellen Fortschritt über den Datenverteiler an einen RemoteRequestManager, der den Sicherungsauftrag gestartet
+		 * hat
+		 */
 		public class RemoteProgressPublisher extends TimerTask {
 
-			/** Startet den periodischen Versand von Fortschrittsmeldungen */
+			/**
+			 * Startet den periodischen Versand von Fortschrittsmeldungen
+			 */
 			@Override
 			public void run() {
 				try {
@@ -351,10 +386,14 @@ public class ConfigFileBackupTask {
 			}
 		}
 
-		/** Veröffentlicht den aktuellen Fortschritt an ein BackupProgressCallback-Objekt */
+		/**
+		 * Veröffentlicht den aktuellen Fortschritt an ein BackupProgressCallback-Objekt
+		 */
 		public class LocalProgressPublisher extends TimerTask {
 
-			/** Startet den periodischen Versand von Fortschrittsmeldungen */
+			/**
+			 * Startet den periodischen Versand von Fortschrittsmeldungen
+			 */
 			@Override
 			public void run() {
 				_callback.backupProgress(_completed, _failed, _total, getFileProgress(), getOverallProgress());

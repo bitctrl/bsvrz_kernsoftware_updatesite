@@ -23,34 +23,24 @@ package de.bsvrz.dav.daf.main.impl.config.request.telegramManager;
 
 import de.bsvrz.dav.daf.communication.dataRepresentation.AttributeBaseValueDataFactory;
 import de.bsvrz.dav.daf.communication.dataRepresentation.AttributeHelper;
-import de.bsvrz.dav.daf.main.ClientDavInterface;
-import de.bsvrz.dav.daf.main.ClientReceiverInterface;
-import de.bsvrz.dav.daf.main.ClientSenderInterface;
-import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.DataDescription;
-import de.bsvrz.dav.daf.main.DataState;
-import de.bsvrz.dav.daf.main.OneSubscriptionPerSendData;
-import de.bsvrz.dav.daf.main.ReceiveOptions;
-import de.bsvrz.dav.daf.main.ReceiverRole;
-import de.bsvrz.dav.daf.main.ResultData;
-import de.bsvrz.dav.daf.main.SendSubscriptionNotConfirmed;
-import de.bsvrz.dav.daf.main.SenderRole;
+import de.bsvrz.dav.daf.main.*;
 import de.bsvrz.dav.daf.main.config.Aspect;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dav.daf.main.config.MutableCollectionChangeListener;
+import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dav.daf.main.impl.NonQueueingReceiver;
 import de.bsvrz.dav.daf.main.impl.config.request.RequestException;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Bietet eine Kommunikation mit einem Sender und einer Senke. Der Sender verschickt Aufträge, die Antworten auf diese Aufträge werden dann durch die Quelle
  * empfangen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 7776 $
+ * @version $Revision: 11922 $
  */
 public abstract class AbstractSenderReceiverCommunication implements SenderReceiverCommunication {
 
@@ -102,6 +92,9 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 	private ClientSenderInterface _requester;
 
 	private ClientReceiverInterface _receiver;
+
+	/** Verwaltet die angemeldeten Senken */
+	private static final Map<DataIdent, DrainSubscription> _drainSubscriptions = new HashMap<DataIdent, DrainSubscription>();
 
 	/**
 	 * @param connection    Verbindung zum DaV
@@ -176,7 +169,17 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 			// Senke für Antworten
 			_responseDescription = new DataDescription(responseAtg, responseAspect, simulationVariant);
 			_receiver = new AnswerReceiver();
-			_connection.subscribeReceiver(_receiver, _receiverObject, _responseDescription, ReceiveOptions.normal(), ReceiverRole.drain());
+			final DrainSubscription drain;
+			synchronized(_drainSubscriptions) {
+				DataIdent dataIdent = new DataIdent(_connection, _receiverObject, _responseDescription);
+				DrainSubscription drainSubscription = _drainSubscriptions.get(dataIdent);
+				if(drainSubscription == null){
+					drainSubscription = new DrainSubscription(_connection, _receiverObject, _responseDescription);
+					_drainSubscriptions.put(dataIdent, drainSubscription);
+				}
+				drain = drainSubscription;
+				drain.subscribeReceiver(_receiver);
+			}
 			_subscribeReceiver = true;
 			_debug.finer("Anmeldung als Senke Objekt " + _receiverObject + " Datenidentifikation " + _responseDescription);
 		}
@@ -245,11 +248,7 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 
 		data.getScaledValue("anfrageIndex").set(requestIndex);
 		data.getScaledValue("nachrichtenTyp").setText(messageType);
-		final Data.NumberArray messageArrayData = data.getUnscaledArray("daten");
-		messageArrayData.setLength(message.length);
-		for(int i = 0; i < message.length; i++) {
-			messageArrayData.getValue(i).set(message[i]);
-		}
+		data.getUnscaledArray("daten").set(message);
 		return data;
 	}
 
@@ -306,7 +305,16 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 		}
 		_connection.unsubscribeSender(_requester, _senderObject, _requestDescription);
 		if(_receiver != null) {
-			_connection.unsubscribeReceiver(_receiver, _receiverObject, _responseDescription);
+			synchronized(_drainSubscriptions) {
+				DataIdent dataIdent = new DataIdent(_connection, _receiverObject, _responseDescription);
+				DrainSubscription drainSubscription = _drainSubscriptions.get(dataIdent);
+				if(drainSubscription != null){
+					drainSubscription.unsubscribeReceiver(_receiver);
+					if(drainSubscription._receivers.isEmpty()){
+						_drainSubscriptions.remove(dataIdent);
+					}
+				}
+			}
 		}
 
 		if(_dataListener != null) {
@@ -349,15 +357,15 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 						_debug.fine("leerer Datensatz erhalten", data);
 					}
 					else {
-						SystemObject replySender = data.getReferenceValue("absender").getSystemObject();
+						long replySenderId = data.getReferenceValue("absender").getId();
 
-						
-
-
-
+						if(replySenderId != _senderObject.getId()) {
+							_debug.fine("Falscher Empfänger", replySenderId);
+							continue;
+						}
 
 						final boolean processTelegram;
-						_debug.finer("Empfangen von", replySender);
+						_debug.finer("Empfangen von", replySenderId);
 						if(_dataListener != null) {
 							// Soll das Telegramm vielleicht woanders bearbeitet werden und nicht durch
 							// den normalen Mechanismus ?
@@ -468,5 +476,80 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 	 */
 	public void setMutableCollectionChangeListener(final MutableCollectionChangeListener notifyingMutableCollectionChangeListener) {
 		throw new UnsupportedOperationException("setMutableCollectionChangeListener nicht implementiert");
+	}
+
+	/**
+	 * Klasse, die mehrere Empfängsobjekte an einer Senke kapselt
+	 */
+	private static class DrainSubscription implements ClientReceiverInterface, NonQueueingReceiver {
+
+		private final List<ClientReceiverInterface> _receivers = new CopyOnWriteArrayList<ClientReceiverInterface>();
+		private final ClientDavInterface _connection;
+		private final SystemObject _receiverObject;
+		private final DataDescription _dataDescription;
+
+		private DrainSubscription(final ClientDavInterface connection, final SystemObject receiverObject, final DataDescription dataDescription) {
+			_connection = connection;
+			_receiverObject = receiverObject;
+			_dataDescription = dataDescription;
+		}
+
+		public void unsubscribeReceiver(final ClientReceiverInterface receiver) {
+			_receivers.remove(receiver);
+			if(_receivers.size() == 0){
+				_connection.unsubscribeReceiver(this, _receiverObject, _dataDescription);
+			}
+		}
+
+		public void subscribeReceiver(final ClientReceiverInterface receiver) {
+			if(_receivers.size() == 0){
+				_connection.subscribeReceiver(this, _receiverObject, _dataDescription, ReceiveOptions.normal(), ReceiverRole.drain());
+			}
+			_receivers.add(receiver);
+		}
+
+		@Override
+		public void update(final ResultData[] results) {
+			for(ClientReceiverInterface receiver : _receivers) {
+				receiver.update(results);
+			}
+		}
+	}
+
+	/**
+	 * Klasse für eine Datenidentifikation, wird als Key in {@link #_drainSubscriptions} benutzt.
+	 */
+	private static class DataIdent {
+		private final ClientDavInterface _connection;
+		private final SystemObject _receiverObject;
+		private final DataDescription _responseDescription;
+
+		public DataIdent(final ClientDavInterface connection, final SystemObject receiverObject, final DataDescription responseDescription) {
+			_connection = connection;
+			_receiverObject = receiverObject;
+			_responseDescription = responseDescription;
+		}
+
+		@Override
+		public boolean equals(final Object o) {
+			if(this == o) return true;
+			if(!(o instanceof DataIdent)) return false;
+
+			final DataIdent dataIdent = (DataIdent) o;
+
+			if(!_connection.equals(dataIdent._connection)) return false;
+			if(!_receiverObject.equals(dataIdent._receiverObject)) return false;
+			if(!_responseDescription.equals(dataIdent._responseDescription)) return false;
+
+			return true;
+		}
+
+		@Override
+		public int hashCode() {
+			int result = _connection.hashCode();
+			result = 31 * result + _receiverObject.hashCode();
+			result = 31 * result + _responseDescription.hashCode();
+			return result;
+		}
 	}
 }

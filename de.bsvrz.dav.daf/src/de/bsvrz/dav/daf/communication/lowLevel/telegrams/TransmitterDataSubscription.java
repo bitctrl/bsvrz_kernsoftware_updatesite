@@ -34,7 +34,7 @@ import java.io.IOException;
  * Anmeldekette aufzubauen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 7691 $
+ * @version $Revision: 11783 $
  */
 public class TransmitterDataSubscription extends DataTelegram {
 
@@ -42,9 +42,10 @@ public class TransmitterDataSubscription extends DataTelegram {
 	private BaseSubscriptionInfo _baseSubscriptionInfo;
 
 	/** Die Information, ob die Anmeldung eine Sender- oder Empfängeranmeldung ist 0: Senderanmeldung 1: Empfängeranmeldung */
-	private byte _subscriptionState;
+	private byte _subscriptionType;
 
-	/** Die Liste der zu berücksichtigenden Datenverteiler */
+	/** Die Liste der zu berücksichtigenden möglichen Zentral-Datenverteiler. Bei einer Anmeldekette entscheiden die Datenverteiler "in der Mitte"
+	 * hierüber, in welche Richtung bzw. an welche Datenverteiler sie die Anmeldungen "weiterleiten" sollen */
 	private long _transmitterList[];
 
 	public TransmitterDataSubscription() {
@@ -56,15 +57,15 @@ public class TransmitterDataSubscription extends DataTelegram {
 	 * Erzeugt neues TransmitterDataSubscription-Telegramm.
 	 *
 	 * @param baseSubscriptionInfo Basisinformationen
-	 * @param subscriptionState    Anmeldung als Sender oder Empfänger (0: Senderanmeldung 1: Empfängeranmeldung)
+	 * @param subscriptionType    Anmeldung als Sender oder Empfänger (0: Senderanmeldung 1: Empfängeranmeldung)
 	 * @param transmitterList      Liste der zu berücksichtigenden Datenverteiler
 	 */
-	public TransmitterDataSubscription(BaseSubscriptionInfo baseSubscriptionInfo, byte subscriptionState, long transmitterList[]) {
+	public TransmitterDataSubscription(BaseSubscriptionInfo baseSubscriptionInfo, byte subscriptionType, long transmitterList[]) {
 		type = TRANSMITTER_DATA_SUBSCRIPTION_TYPE;
 		priority = CommunicationConstant.SYSTEM_TELEGRAM_PRIORITY;
 
 		_baseSubscriptionInfo = baseSubscriptionInfo;
-		_subscriptionState = subscriptionState;
+		_subscriptionType = subscriptionType;
 		_transmitterList = transmitterList;
 		length = 17;
 		if(_transmitterList != null) {
@@ -82,12 +83,21 @@ public class TransmitterDataSubscription extends DataTelegram {
 	}
 
 	/**
-	 * Gibt den Status der Anmeldung zurück 0: Senderanmeldung 1: Empfängeranmeldung.
+	 * Gibt den Typ der Anmeldung zurück 0: Senderanmeldung 1: Empfängeranmeldung.
 	 *
-	 * @return Status der Anmeldung
+	 * @return Typ der Anmeldung
+	 */
+	public final byte getSubscriptionType() {
+		return _subscriptionType;
+	}
+
+	/**
+	 * Gibt den Typ der Anmeldung zurück 0: Senderanmeldung 1: Empfängeranmeldung.
+	 *
+	 * @return Typ der Anmeldung
 	 */
 	public final byte getSubscriptionState() {
-		return _subscriptionState;
+		return _subscriptionType;
 	}
 
 	/**
@@ -102,7 +112,7 @@ public class TransmitterDataSubscription extends DataTelegram {
 	public final String parseToString() {
 		String str = "Datenverteiler Datenanmeldung Systemtelegramm: ";
 		str += _baseSubscriptionInfo.toString();
-		if(_subscriptionState == TransmitterSubscriptionsConstants.SENDER_SUBSCRIPTION) {
+		if(_subscriptionType == TransmitterSubscriptionsConstants.SENDER_SUBSCRIPTION) {
 			str += ", Anmeldung als Sender";
 		}
 		else {
@@ -121,7 +131,7 @@ public class TransmitterDataSubscription extends DataTelegram {
 	public final void write(DataOutputStream out) throws IOException {
 		out.writeShort(length);
 		_baseSubscriptionInfo.write(out);
-		out.writeByte(_subscriptionState);
+		out.writeByte(_subscriptionType);
 		if(_transmitterList == null) {
 			out.writeShort(0);
 		}
@@ -137,7 +147,7 @@ public class TransmitterDataSubscription extends DataTelegram {
 		int _length = in.readShort();
 		_baseSubscriptionInfo = new BaseSubscriptionInfo();
 		_baseSubscriptionInfo.read(in);
-		_subscriptionState = in.readByte();
+		_subscriptionType = in.readByte();
 		
 		length = 17;
 		int size = in.readShort();

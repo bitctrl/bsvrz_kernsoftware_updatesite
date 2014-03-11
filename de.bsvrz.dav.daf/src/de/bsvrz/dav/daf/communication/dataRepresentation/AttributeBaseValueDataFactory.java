@@ -72,7 +72,7 @@ import java.util.regex.Pattern;
  * Diese abstarkte Klasse stellt eine Oberklasse zur Erstellung der Basisattributwerte dar. Hier werden weiter Subklassen definiert, die zur
  *
  * @author Kappich Systemberatung
- * @version $Revision: 9268 $
+ * @version $Revision: 11583 $
  */
 public abstract class AttributeBaseValueDataFactory {
 
@@ -1487,7 +1487,7 @@ public abstract class AttributeBaseValueDataFactory {
 			}
 		}
 
-		private abstract class AttributeArray extends AbstractData.Array {
+		private abstract class AttributeArray extends AbstractData.Array implements ArrayRelaxedRangeCheckSupport {
 
 			public String toString() {
 				return AttributeArrayAdapter.this.toString();
@@ -1505,14 +1505,29 @@ public abstract class AttributeBaseValueDataFactory {
 				return AttributeArrayAdapter.this.getMaxCount();
 			}
 
-			abstract protected void setLength(int newLength, boolean initializeElements);
+			abstract protected void setLength(int newLength, boolean initializeElements, boolean relaxedRangeCheck);
 
 			public void setLength(int newLength) {
-				setLength(newLength, true);
+				setLength(newLength, true, false);
 			}
 
 			public void setLengthUninitialized(int newLength) {
-				setLength(newLength, false);
+				setLength(newLength, false, false);
+			}
+
+			@Override
+			public void setLengthRelaxedRangeCheck(int newLength) {
+				setLength(newLength, false, true);
+			}
+
+			protected void rangeCheck(final int newLength, final boolean relaxedRangeCheck) {
+				if(newLength < 0 ||
+						(!isCountVariable() && (newLength != getMaxCount())) ||
+						(isCountLimited() && (newLength > getMaxCount()) && !relaxedRangeCheck)) {
+					throw new IllegalArgumentException(
+							"Arraygröße " + newLength + " ist beim Attribut " + getName() + " vom Typ " + getAttributeType().getPid() + " nicht erlaubt"
+					);
+				}
 			}
 		}
 
@@ -1567,12 +1582,8 @@ public abstract class AttributeBaseValueDataFactory {
 				return _listValue.getElementsCount();
 			}
 
-			public void setLength(int newLength, boolean initializeElements) {
-				if(newLength < 0 || (!isCountVariable() && (newLength != getMaxCount())) || (isCountLimited() && (newLength > getMaxCount()))) {
-					throw new IllegalArgumentException(
-							"Arraygröße " + newLength + " ist beim Attribut " + getName() + " vom Typ " + getAttributeType().getPid() + " nicht erlaubt"
-					);
-				}
+			public void setLength(int newLength, boolean initializeElements, boolean relaxedRangeCheck) {
+				rangeCheck(newLength, relaxedRangeCheck);
 				try {
 					// Speichert die Anzahl alter Werte
 					final int numberOfOldValues = _listValue.getElementsCount();
@@ -1690,12 +1701,8 @@ public abstract class AttributeBaseValueDataFactory {
 				return results;
 			}
 
-			public void setLength(int newLength, boolean initializeElements) {
-				if(newLength < 0 || (!isCountVariable() && (newLength != getMaxCount())) || (isCountLimited() && (newLength > getMaxCount()))) {
-					throw new IllegalArgumentException(
-							"Arraygröße " + newLength + " ist beim Attribut " + getName() + " vom Typ " + getAttributeType().getPid() + " nicht erlaubt"
-					);
-				}
+			public void setLength(int newLength, boolean initializeElements, boolean relaxedRangeCheck) {
+				rangeCheck(newLength, relaxedRangeCheck);
 				if(newLength != 0 && _ids.length == newLength) return;
 				long[] newIds = new long[newLength];
 				_attributeValue.setValue(new LongArrayAttribute(newIds));
@@ -1862,12 +1869,8 @@ public abstract class AttributeBaseValueDataFactory {
 				return _millisArray.length;
 			}
 
-			public void setLength(int newLength, boolean initializeElements) {
-				if(newLength < 0 || (!isCountVariable() && (newLength != getMaxCount())) || (isCountLimited() && (newLength > getMaxCount()))) {
-					throw new IllegalArgumentException(
-							"Arraygröße " + newLength + " ist beim Attribut " + getName() + " vom Typ " + getAttributeType().getPid() + " nicht erlaubt"
-					);
-				}
+			public void setLength(int newLength, boolean initializeElements, boolean relaxedRangeCheck) {
+				rangeCheck(newLength, relaxedRangeCheck);
 				if(newLength != 0 && _millisArray.length == newLength) return;
 				long[] newTimes = new long[newLength];
 				_attributeValue.setValue(new LongArrayAttribute(newTimes));
@@ -1884,7 +1887,6 @@ public abstract class AttributeBaseValueDataFactory {
 					}
 				}
 			}
-
 
 			private class TimeArrayItemData extends ArrayItemData {
 
@@ -1995,12 +1997,8 @@ public abstract class AttributeBaseValueDataFactory {
 				return _secondsArray.length;
 			}
 
-			public void setLength(int newLength, boolean initializeElements) {
-				if(newLength < 0 || (!isCountVariable() && (newLength != getMaxCount())) || (isCountLimited() && (newLength > getMaxCount()))) {
-					throw new IllegalArgumentException(
-							"Arraygröße " + newLength + " ist beim Attribut " + getName() + " vom Typ " + getAttributeType().getPid() + " nicht erlaubt"
-					);
-				}
+			public void setLength(int newLength, boolean initializeElements, boolean relaxedRangeCheck) {
+				rangeCheck(newLength, relaxedRangeCheck);
 				if(newLength != 0 && _secondsArray.length == newLength) return;
 				int[] newSecondsArray = new int[newLength];
 				_attributeValue.setValue(new IntegerArrayAttribute(newSecondsArray));
@@ -2200,12 +2198,8 @@ public abstract class AttributeBaseValueDataFactory {
 				}
 			}
 
-			public void setLength(int newLength, boolean initializeElements) {
-				if(newLength < 0 || (!isCountVariable() && (newLength != getMaxCount())) || (isCountLimited() && (newLength > getMaxCount()))) {
-					throw new IllegalArgumentException(
-							"Arraygröße " + newLength + " ist beim Attribut " + getName() + " vom Typ " + getAttributeType().getPid() + " nicht erlaubt"
-					);
-				}
+			public void setLength(int newLength, boolean initializeElements, boolean relaxedRangeCheck) {
+				rangeCheck(newLength, relaxedRangeCheck);
 				if(newLength != 0 && _strings.length == newLength) return;
 				String[] newStrings = new String[newLength];
 				_attributeValue.setValue(new StringArrayAttribute(newStrings));
@@ -2309,12 +2303,8 @@ public abstract class AttributeBaseValueDataFactory {
 				return _values.length;
 			}
 
-			public void setLength(int newLength, boolean initializeElements) {
-				if(newLength < 0 || (!isCountVariable() && (newLength != getMaxCount())) || (isCountLimited() && (newLength > getMaxCount()))) {
-					throw new IllegalArgumentException(
-							"Arraygröße " + newLength + " ist beim Attribut " + getName() + " vom Typ " + getAttributeType().getPid() + " nicht erlaubt"
-					);
-				}
+			public void setLength(int newLength, boolean initializeElements, boolean relaxedRangeCheck) {
+				rangeCheck(newLength, relaxedRangeCheck);
 				if(newLength != 0 && _values.length == newLength) return;
 				double[] newValues = new double[newLength];
 				_attributeValue.setValue(new DoubleArrayAttribute(newValues));
@@ -2446,12 +2436,8 @@ public abstract class AttributeBaseValueDataFactory {
 				return _values.length;
 			}
 
-			public void setLength(int newLength, boolean initializeElements) {
-				if(newLength < 0 || (!isCountVariable() && (newLength != getMaxCount())) || (isCountLimited() && (newLength > getMaxCount()))) {
-					throw new IllegalArgumentException(
-							"Arraygröße " + newLength + " ist beim Attribut " + getName() + " vom Typ " + getAttributeType().getPid() + " nicht erlaubt"
-					);
-				}
+			public void setLength(int newLength, boolean initializeElements, boolean relaxedRangeCheck) {
+				rangeCheck(newLength, relaxedRangeCheck);
 				if(newLength != 0 && _values.length == newLength) return;
 				float[] newValues = new float[newLength];
 				_attributeValue.setValue(new FloatArrayAttribute(newValues));
@@ -2617,12 +2603,8 @@ public abstract class AttributeBaseValueDataFactory {
 				return _values.length;
 			}
 
-			public void setLength(int newLength, boolean initializeElements) {
-				if(newLength < 0 || (!isCountVariable() && (newLength != getMaxCount())) || (isCountLimited() && (newLength > getMaxCount()))) {
-					throw new IllegalArgumentException(
-							"Arraygröße " + newLength + " ist beim Attribut " + getName() + " vom Typ " + getAttributeType().getPid() + " nicht erlaubt"
-					);
-				}
+			public void setLength(int newLength, boolean initializeElements, boolean relaxedRangeCheck) {
+				rangeCheck(newLength, relaxedRangeCheck);
 				if(newLength != 0 && _values.length == newLength) return;
 				long[] newValues = new long[newLength];
 				Arrays.fill(newValues, (long)getDefaultValue());
@@ -2793,12 +2775,8 @@ public abstract class AttributeBaseValueDataFactory {
 				return _values.length;
 			}
 
-			public void setLength(int newLength, boolean initializeElements) {
-				if(newLength < 0 || (!isCountVariable() && (newLength != getMaxCount())) || (isCountLimited() && (newLength > getMaxCount()))) {
-					throw new IllegalArgumentException(
-							"Arraygröße " + newLength + " ist beim Attribut " + getName() + " vom Typ " + getAttributeType().getPid() + " nicht erlaubt"
-					);
-				}
+			public void setLength(int newLength, boolean initializeElements, boolean relaxedRangeCheck) {
+				rangeCheck(newLength, relaxedRangeCheck);
 				if(newLength != 0 && _values.length == newLength) return;
 				int[] newValues = new int[newLength];
 				Arrays.fill(newValues, (int)getDefaultValue());
@@ -2979,12 +2957,8 @@ public abstract class AttributeBaseValueDataFactory {
 				return _values.length;
 			}
 
-			public void setLength(int newLength, boolean initializeElements) {
-				if(newLength < 0 || (!isCountVariable() && (newLength != getMaxCount())) || (isCountLimited() && (newLength > getMaxCount()))) {
-					throw new IllegalArgumentException(
-							"Arraygröße " + newLength + " ist beim Attribut " + getName() + " vom Typ " + getAttributeType().getPid() + " nicht erlaubt"
-					);
-				}
+			public void setLength(int newLength, boolean initializeElements, boolean relaxedRangeCheck) {
+				rangeCheck(newLength, relaxedRangeCheck);
 				if(newLength != 0 && _values.length == newLength) return;
 				short[] newValues = new short[newLength];
 				Arrays.fill(newValues, (short)getDefaultValue());
@@ -3165,12 +3139,8 @@ public abstract class AttributeBaseValueDataFactory {
 				return _values.length;
 			}
 
-			public void setLength(int newLength, boolean initializeElements) {
-				if(newLength < 0 || (!isCountVariable() && (newLength != getMaxCount())) || (isCountLimited() && (newLength > getMaxCount()))) {
-					throw new IllegalArgumentException(
-							"Arraygröße " + newLength + " ist beim Attribut " + getName() + " vom Typ " + getAttributeType().getPid() + " nicht erlaubt"
-					);
-				}
+			public void setLength(int newLength, boolean initializeElements, boolean relaxedRangeCheck) {
+				rangeCheck(newLength, relaxedRangeCheck);
 				if(newLength != 0 && _values.length == newLength) return;
 				byte[] newValues = new byte[newLength];
 				Arrays.fill(newValues, (byte)getDefaultValue());

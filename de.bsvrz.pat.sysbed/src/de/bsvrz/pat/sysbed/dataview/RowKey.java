@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
  * Bereichs zu merken. Die Klasse ist ähnlich zu CellKey aufgebaut, nur viel einfacher.
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 8084 $
+ * @version $Revision: 11925 $
  *
  */
 public class RowKey {
@@ -114,4 +114,9 @@ public class RowKey {
     public static String getSeparator() {
     	return SEPARATOR;
     }
+
+	@Override
+	public String toString() {
+		return getDataIndex() + " - " + getPidOfDataTableObject();
+	}
 }

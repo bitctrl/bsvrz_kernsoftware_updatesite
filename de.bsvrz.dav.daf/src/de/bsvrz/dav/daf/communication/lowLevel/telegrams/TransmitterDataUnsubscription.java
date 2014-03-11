@@ -30,7 +30,7 @@ import java.io.IOException;
 /**
  * Der Datenverteiler meldet Daten für Empfänger oder Sender bei einem anderen Datenverteiler ab.
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
+ * @version $Revision: 11783 $
  */
 public class TransmitterDataUnsubscription extends DataTelegram {
 
@@ -38,7 +38,7 @@ public class TransmitterDataUnsubscription extends DataTelegram {
 	private BaseSubscriptionInfo baseSubscriptionInfo;
 
 	/** Die Information ob die Anmeldung als Sender- oder Empfängeranmeldung ist 0: Senderanmeldung 1: Empfängeranmeldung */
-	private byte subscriptionState;
+	private byte subscriptionType;
 
 	/** Die Liste der zu berücksichtigenden Datenverteiler */
 	private long transmitterList[];
@@ -49,7 +49,7 @@ public class TransmitterDataUnsubscription extends DataTelegram {
 	}
 
 	/**
-	 *
+	 * TBD Dokumentation
 	 * @param _baseSubscriptionInfo Basisinformationen
 	 * @param _subscriptionState    Anmeldung als Sender oder Empfänger
 	 * @param _transmitterList      Liste der zu berücksichtigenden Datenverteiler
@@ -58,7 +58,7 @@ public class TransmitterDataUnsubscription extends DataTelegram {
 		type = TRANSMITTER_DATA_UNSUBSCRIPTION_TYPE;
 		priority = CommunicationConstant.SYSTEM_TELEGRAM_PRIORITY;
 		baseSubscriptionInfo = _baseSubscriptionInfo;
-		subscriptionState = _subscriptionState;
+		subscriptionType = _subscriptionState;
 		transmitterList = _transmitterList;
 		length = 17;
 		if(transmitterList != null) {
@@ -76,14 +76,22 @@ public class TransmitterDataUnsubscription extends DataTelegram {
 	}
 
 	/**
-	 * Gibt der Status der Anmeldung zurück 0: Senderanmeldung 1: Empfängeranmeldung
+	 * Gibt der Typ der Anmeldung zurück 0: Senderanmeldung 1: Empfängeranmeldung
 	 *
-	 * @return der Status der Anmeldung
+	 * @return der Typ der Anmeldung
 	 */
-	public final byte getSubscriptionState() {
-		return subscriptionState;
+	public final byte getSubscriptionType() {
+		return subscriptionType;
 	}
 
+	/**
+	 * Gibt der Typ der Anmeldung zurück 0: Senderanmeldung 1: Empfängeranmeldung
+	 *
+	 * @return der Typ der Anmeldung
+	 */
+	public final byte getSubscriptionState() {
+		return subscriptionType;
+	}
 	/**
 	 * Gibt die Liste der zu berücksichtigenden Datenverteiler zurück
 	 *
@@ -96,7 +104,7 @@ public class TransmitterDataUnsubscription extends DataTelegram {
 	public final String parseToString() {
 		String str = "Datenverteiler Datenabmeldung Systemtelegramm: ";
 		str += baseSubscriptionInfo.toString();
-		if(subscriptionState == TransmitterSubscriptionsConstants.SENDER_SUBSCRIPTION) {
+		if(subscriptionType == TransmitterSubscriptionsConstants.SENDER_SUBSCRIPTION) {
 			str += ", Anmeldung als Sender";
 		}
 		else {
@@ -115,7 +123,7 @@ public class TransmitterDataUnsubscription extends DataTelegram {
 	public final void write(DataOutputStream out) throws IOException {
 		out.writeShort(length);
 		baseSubscriptionInfo.write(out);
-		out.writeByte(subscriptionState);
+		out.writeByte(subscriptionType);
 		if(transmitterList == null) {
 			out.writeShort(0);
 		}
@@ -131,7 +139,7 @@ public class TransmitterDataUnsubscription extends DataTelegram {
 		int _length = in.readShort();
 		baseSubscriptionInfo = new BaseSubscriptionInfo();
 		baseSubscriptionInfo.read(in);
-		subscriptionState = in.readByte();
+		subscriptionType = in.readByte();
 		length = 17;
 		int size = in.readShort();
 		if(size != 0) {

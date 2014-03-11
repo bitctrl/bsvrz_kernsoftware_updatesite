@@ -32,7 +32,7 @@ import java.util.*;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 5501 $ / $Date: 2007-11-17 04:22:14 +0100 (Sat, 17 Nov 2007) $ / ($Author: rs $)
+ * @version $Revision: 5501 $ / $Date: 2007-11-17 04:22:14 +0100 (Sa, 17 Nov 2007) $ / ($Author: rs $)
  */
 public class ConfigurationObjectInformation extends SystemObjectInformation implements ConfigurationObjectInfo {
 

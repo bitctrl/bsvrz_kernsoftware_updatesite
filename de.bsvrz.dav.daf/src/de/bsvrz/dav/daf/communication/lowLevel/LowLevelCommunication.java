@@ -71,7 +71,7 @@ import java.io.OutputStream;
  * TCP-Kommunikationskanal (Klasse TCP_IP_Communication)
  *
  * @author Kappich Systemberatung
- * @version $Revision: 9281 $
+ * @version $Revision: 11481 $
  */
 public class LowLevelCommunication implements LowLevelCommunicationInterface {
 
@@ -259,6 +259,10 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 		_receivingChannel.start();
 		_sendingChannel.start();
 		_keepAliveThread.start();
+	}
+
+	public HighLevelCommunicationCallbackInterface getHighLevelComponent() {
+		return _highLevelComponent;
 	}
 
 	public final void updateKeepAliveParameters(long keepAliveSendTimeOut, long keepAliveReceiveTimeOut) {
@@ -488,7 +492,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 	 * Dieser Thread verschickt Telegramme mittels einer Datenverteilerverbindung (Outputstream der Verbindung). Der Thread synchronisiert sich auf der
 	 * Datenstruktur <code>_sendingTable</code>, die alle zu versendenden Telegramme enthält.
 	 */
-	class SendingChannel extends Thread {
+	class SendingChannel extends LowLevelThread {
 
 		public SendingChannel() {
 			super("SendingChannel");
@@ -530,9 +534,14 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 			}
 			return;
 		}
+
+		@Override
+		public LowLevelCommunication getLowLevelCommunication() {
+			return LowLevelCommunication.this;
+		}
 	}
 
-	class ReceivingChannel extends Thread {
+	class ReceivingChannel extends LowLevelThread {
 
 		private ReceivingChannel() {
 			super("ReceivingChannel");
@@ -642,9 +651,14 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 				_debug.fine(getRemotePrefix() + "Thread LowLevelCommunication.ReceivingChannel beendet sich");
 			}
 		}
+
+		@Override
+		public LowLevelCommunication getLowLevelCommunication() {
+			return LowLevelCommunication.this;
+		}
 	}
 
-	class WorkerThread extends Thread {
+	class WorkerThread extends LowLevelThread {
 
 		private WorkerThread() {
 			super("LLWorker");
@@ -661,6 +675,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 					}
 					catch(RuntimeException e) {
 						_debug.warning(getRemotePrefix() + "Ausnahme bei der Verarbeitung eines empfangenen Telegramms: " + telegram, e);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -670,6 +685,11 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 			finally {
 				_debug.fine(getRemotePrefix() + "Thread LowLevelCommunication.WorkerThread beendet sich");
 			}
+		}
+
+		@Override
+		public LowLevelCommunication getLowLevelCommunication() {
+			return LowLevelCommunication.this;
 		}
 	}
 
@@ -845,7 +865,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 	 * <p/>
 	 * KeepAlive-Thread Empfangen: Wurde dreimal nacheinander eine bestimmte Zeit kein Telegramm empfangen, wird die Verbindung abgebaut.
 	 */
-	class KeepAliveThread extends Thread {
+	class KeepAliveThread extends LowLevelThread {
 
 		/** Maximale Anzahl für das Ablaufen des Empfangstimeouts bevor die Verbindung terminiert wird. */
 		private static final byte MAX_SOULS = 3;
@@ -1011,6 +1031,11 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 			finally {
 				_debug.fine(getRemotePrefix() + "Thread LowLevelCommunication.KeepAliveThread beendet sich");
 			}
+		}
+
+		@Override
+		public LowLevelCommunication getLowLevelCommunication() {
+			return LowLevelCommunication.this;
 		}
 	}
 }

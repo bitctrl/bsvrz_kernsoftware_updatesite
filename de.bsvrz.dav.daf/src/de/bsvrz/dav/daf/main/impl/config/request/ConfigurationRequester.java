@@ -22,24 +22,7 @@
 package de.bsvrz.dav.daf.main.impl.config.request;
 
 import de.bsvrz.dav.daf.main.DataAndATGUsageInformation;
-import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
-import de.bsvrz.dav.daf.main.config.BackupProgressCallback;
-import de.bsvrz.dav.daf.main.config.BackupResult;
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
-import de.bsvrz.dav.daf.main.config.ConfigurationObject;
-import de.bsvrz.dav.daf.main.config.ConfigurationObjectType;
-import de.bsvrz.dav.daf.main.config.ConfigurationTaskException;
-import de.bsvrz.dav.daf.main.config.DynamicObject;
-import de.bsvrz.dav.daf.main.config.DynamicObjectType;
-import de.bsvrz.dav.daf.main.config.MutableSet;
-import de.bsvrz.dav.daf.main.config.ObjectSet;
-import de.bsvrz.dav.daf.main.config.ObjectTimeSpecification;
-import de.bsvrz.dav.daf.main.config.SimpleBackupResult;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
-import de.bsvrz.dav.daf.main.config.MutableCollectionChangeListener;
-import de.bsvrz.dav.daf.main.config.MutableCollection;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.dav.daf.main.config.management.ConfigAreaAndVersion;
 import de.bsvrz.dav.daf.main.config.management.consistenycheck.ConsistencyCheckResultInterface;
 
@@ -50,7 +33,7 @@ import java.util.*;
  * Mit Hilfe dieses Interfaces können Anfragen an die Konfiguration gestellt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8278 $
+ * @version $Revision: 11499 $
  */
 public interface ConfigurationRequester {
 
@@ -526,25 +509,26 @@ public interface ConfigurationRequester {
 	public void exportConfigurationAreas(File exportPath, Collection<String> configurationAreaPids) throws RequestException, ConfigurationTaskException;
 
 	/**
-	 * Veranlasst die Konfiguration, die Konfigurationsdateien zu sichern. Diese Funktion wartet auf das Beenden des Vorgangs, erlaubt der Konfiguration aber,
-	 * andere Aufgaben asynchron durchzuführen.
+	 * Veranlasst die Konfiguration, die Konfigurationsdateien zu sichern. Diese Funktion wartet auf das Beenden des Vorgangs, erlaubt der
+	 * Konfiguration aber, andere Aufgaben asynchron durchzuführen.
 	 *
-	 * @param targetDirectory Relatives Zielverzeichnis innerhalb des in der Konfiguration (mit dem Parameter -sicherungsVerzeichnis) festgelegten
-	 *                        Sicherungsordners. Wird null oder ein Leerstring angegeben, generiert die Konfiguration aus aktuellem Datum und Uhrzeit einen neuen
-	 *                        Pfadnamen.
-	 * @param callback        Objekt, an das Statusmeldungen gesendet werden
-	 *
+	 * @param targetDirectory        Relatives Zielverzeichnis innerhalb des in der Konfiguration (mit dem Parameter -sicherungsVerzeichnis)
+	 *                               festgelegten Sicherungsordners. Wird null oder ein Leerstring angegeben, generiert die Konfiguration aus
+	 *                               aktuellem Datum und Uhrzeit einen neuen Pfadnamen.
+	 * @param configurationAuthority Verantwortlicher, dessen Konfigurationsdateien gesichert werden sollen
+	 * @param callback               Objekt, an das Statusmeldungen gesendet werden
 	 * @return Objekt, das Informationen über das Ergebnis des Sicherungsvorgangs enthält
-	 *
-	 * @throws ConfigurationTaskException Der Backup-Vorgang konnte nicht durchgeführt werden, beispielsweise weil das Zielverzeichnis falsch war. Falls das
-	 *                                    Sichern einzelner Dateien fehlschlägt wird keine solche Exception geworfen, stattdessen findet man innerhalb vom callback
-	 *                                    eventuelle Fehlschläge und BackupResult.getFailed ist größer 0.
-	 * @throws RequestException           Fehler bei der Übertragung der Anfrage oder beim Empfang von Statusmeldungen der Konfiguration. Achtung: Man kann nicht
-	 *                                    zwingend darauf schließen, dass der Backupvorgang nicht erfolgreich war, wenn eine Exception geworfen wurde. Wenn während
-	 *                                    des Vorgangs beispielsweise die Verbindung zwischen Datenverteiler und Konfiguration abbricht, wird eine Exception
-	 *                                    geworfen, aber die Konfiguration wird den Vorgang vermutlich dennoch korrekt beenden.
+	 * @throws ConfigurationTaskException Der Backup-Vorgang konnte nicht durchgeführt werden, beispielsweise weil das Zielverzeichnis falsch
+	 *                                    war. Falls das Sichern einzelner Dateien fehlschlägt wird keine solche Exception geworfen,
+	 *                                    stattdessen findet man innerhalb vom callback eventuelle Fehlschläge und BackupResult.getFailed ist
+	 *                                    größer 0.
+	 * @throws RequestException           Fehler bei der Übertragung der Anfrage oder beim Empfang von Statusmeldungen der Konfiguration.
+	 *                                    Achtung: Man kann nicht zwingend darauf schließen, dass der Backupvorgang nicht erfolgreich war, wenn
+	 *                                    eine Exception geworfen wurde. Wenn während des Vorgangs beispielsweise die Verbindung zwischen
+	 *                                    Datenverteiler und Konfiguration abbricht, wird eine Exception geworfen, aber die Konfiguration wird
+	 *                                    den Vorgang vermutlich dennoch korrekt beenden.
 	 */
-	public BackupResult backupConfigurationFiles(String targetDirectory, BackupProgressCallback callback) throws ConfigurationTaskException, RequestException;
+	public BackupResult backupConfigurationFiles(String targetDirectory, final ConfigurationAuthority configurationAuthority, BackupProgressCallback callback) throws ConfigurationTaskException, RequestException;
 
 	/**
 	 * Fordert für den angegebenen Bereich die Version an, in der der Bereich aktiv ist.

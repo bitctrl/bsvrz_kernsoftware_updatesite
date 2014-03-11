@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
  * @author Roland Schmitz (rs), Kappich Systemberatung
  * @author Achim Wullenkord (aw), Kappich Systemberatung
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 5084 $ / $Date: 2007-09-03 10:42:50 +0200 (Mon, 03 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 5084 $ / $Date: 2007-09-03 10:42:50 +0200 (Mo, 03 Sep 2007) $ / ($Author: rs $)
  * @see puk.configuration
  */
 public class SystemObjectInfo {

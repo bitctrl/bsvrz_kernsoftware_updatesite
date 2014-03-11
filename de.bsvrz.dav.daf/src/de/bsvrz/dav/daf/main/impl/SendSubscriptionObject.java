@@ -25,11 +25,14 @@ import de.bsvrz.dav.daf.main.impl.subscription.SenderSubscription;
 import de.bsvrz.sys.funclib.debug.Debug;
 import de.bsvrz.sys.funclib.timeout.TimeoutTimer;
 
+import java.util.Collection;
+import java.util.concurrent.CopyOnWriteArraySet;
+
 /**
  * TBD Beschreibung
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8625 $
+ * @version $Revision: 11279 $
  */
 public class SendSubscriptionObject {
 
@@ -37,14 +40,13 @@ public class SendSubscriptionObject {
 	private int _sendIndex;
 
 	/** Die Sendeanmeldeinformationen */
-	private SenderSubscription _senderSubscription;
+	private final Collection<SenderSubscription> _senderSubscriptions = new CopyOnWriteArraySet<SenderSubscription>();
 
 	/** Die Zeit des Sendeindexes */
 	private long _time;
 
 	/** DebugLogger für Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
-
 
 	/**
 	 * Falls auf die Sendesteuerung (positiv/negativ) gewartet werden muss, wird zum synchronisieren dieses Objekt benutzt. Falls sich die Sendesterung ändert,
@@ -65,8 +67,19 @@ public class SendSubscriptionObject {
 	 */
 	private boolean _checkedConnectionFirstTime = false;
 
+	/**
+	 * Anmeldung als Quelle?
+	 */
+	private final boolean _source;
+
+	/**
+	 * Letzter Sendestatus
+	 */
+	private byte _state = -1;
+
 	public SendSubscriptionObject(SenderSubscription senderSubscription) {
-		_senderSubscription = senderSubscription;
+		_source = senderSubscription.isSource();
+		_senderSubscriptions.add(senderSubscription);
 		_sendIndex = 0;
 		_time = (((System.currentTimeMillis() / 1000L) << 32) & 0xFFFFFFFF00000000L);
 	}
@@ -83,8 +96,8 @@ public class SendSubscriptionObject {
 	 *
 	 * @return Sendeanmeldeinformationen
 	 */
-	public final SenderSubscription getSenderSubscription() {
-		return _senderSubscription;
+	public final Collection<SenderSubscription> getSenderSubscriptions() {
+		return _senderSubscriptions;
 	}
 
 	/**
@@ -104,26 +117,11 @@ public class SendSubscriptionObject {
 	}
 
 	/**
-	 * Gibt das Sendestellvetreterobject zurück.
-	 *
-	 * @return Sendestellenvertreterobjekt
-	 */
-	public final ClientSenderInterface getClientSender() {
-		if(_senderSubscription == null) {
-			return null;
-		}
-		return _senderSubscription.getClientSender();
-	}
-
-	/**
-	 * Gibt die Information zurük, ob die Applikation Daten senden kann oder nicht.
+	 * Gibt die Information zurück, ob die Applikation Daten senden kann oder nicht.
 	 *
 	 * @return true: Applikation kann Daten senden, false: Applikation kann keine Daten senden.
 	 */
 	public final boolean canSendData() {
-		if(_senderSubscription == null) {
-			return false;
-		}
 		synchronized(_requestLock) {
 			// Falls beim ersten mal eine gar keine Sendesteuerung vorliegt (positiv/negativ), wird eine bestimmte Zeitdauer gewartet.
 			// In dieser Zeit muss die Sendesteuerung positiv oder negativ werden.
@@ -133,14 +131,14 @@ public class SendSubscriptionObject {
 			// Liegt gar keine Sendesteuerung vor, wird <code>false</code> zurückgegeben.
 
 			// Bei Anmeldung als Quelle wird direkt <code>true</code> zurückgegeben
-			if(_senderSubscription.isSource()) {
+			if(isSource()) {
 				return true;
 			}
 			else if(_checkedConnectionFirstTime == true && _requestAnswered == true) {
 				// Es wurde ein bestimmter Zeitraum abgewartet und es liegt eine Antwort vor, dann
 				// wird dieses Ergebnis benutzt (wenn also auch nach Ablauf der Zeit eine Sendersteuerung vorliegt,
 				// die nach Ablauf der Zeit noch nicht vorhanden war, wird dieser Zustand zurückgegeben)
-				return _senderSubscription.isRequestConfirmed();
+				return _state == 0;
 			}
 			else if(_checkedConnectionFirstTime == true && _requestAnswered == false) {
 				// Es wurde ein bestimmter Zeitraum abgewartet und es liegt !keine! Antwort vor, dann
@@ -176,10 +174,10 @@ public class SendSubscriptionObject {
 			_checkedConnectionFirstTime = true;
 			if(_requestAnswered == true) {
 				// Es wurde eine positive/negative Sendesteuerung gesetzt
-				return _senderSubscription.isRequestConfirmed();
+				return _state == 0;
 			}
 			else {
-				// Es wurde noch keine Sendesteuerung gesetzt, also eine Excpetion auslösen
+				// Es wurde noch keine Sendesteuerung gesetzt, also eine Exception auslösen
 				return false;
 			}
 		}
@@ -191,9 +189,9 @@ public class SendSubscriptionObject {
 	 * @param state Status
 	 */
 	public final void confirmSendDataRequest(byte state) {
+		_state = state;
 		if(state == 0) {
 			// Es liegt eine positive Sendesteuerung vor, falls jemand auf diese Nachricht wartet, wird er geweckt
-			_senderSubscription.confirmRequest(true);
 			synchronized(_requestLock) {
 				_requestAnswered = true;
 				_requestLock.notifyAll();
@@ -201,11 +199,36 @@ public class SendSubscriptionObject {
 		}
 		else {
 			// Es liegt keine positive Sendesteuerung vor, falls jemand auf die Antwort wartet, wird er geweckt
-			_senderSubscription.confirmRequest(false);
 			synchronized(_requestLock) {
 				_requestAnswered = true;
 				_requestLock.notifyAll();
 			}
 		}
+	}
+
+	public void addSender(final SenderSubscription senderSubscription) {
+		if(_senderSubscriptions.add(senderSubscription) && _state != -1){
+			// Bereits bekannten Zustand als Sendesteuerung versenden
+			senderSubscription.getClientSender().dataRequest(
+					senderSubscription.getSystemObject(),
+					senderSubscription.getDataDescription(),
+					_state);
+		}
+	}
+
+	public void removeSender(final ClientSenderInterface sender) {
+		for(SenderSubscription senderSubscription : _senderSubscriptions) {
+			if(senderSubscription.getClientSender() == sender){
+				_senderSubscriptions.remove(senderSubscription);
+			}
+		}
+	}
+
+	public boolean isEmpty() {
+		return _senderSubscriptions.isEmpty();
+	}
+
+	public boolean isSource() {
+		return _source;
 	}
 }

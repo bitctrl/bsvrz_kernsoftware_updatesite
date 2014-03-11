@@ -34,10 +34,10 @@ import java.io.IOException;
  * des Datensatzes mit den anderen Stücken zu verbinden um den gesamten Datensatz wieder zusammen zu bauen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 7980 $
+ * @version $Revision: 11481 $
  */
 
-public class ApplicationDataTelegram extends DataTelegram {
+public class ApplicationDataTelegram extends DataTelegram implements DataTelegramInterface {
 	/** Objekt für Debugausgaben */
 	private static Debug _debug = Debug.getLogger();
 
@@ -278,7 +278,7 @@ public class ApplicationDataTelegram extends DataTelegram {
 
 	public String toShortDebugParamString() {
 		return "tn: " + telegramNumber + "/" + totalTelegramCount + ", " + " dataNumber: " + (dataNumber >>> 32) + "#" + ((dataNumber & 0xffffffffL) >> 2) + "#"
-		       + (dataNumber & 3) + ", " + baseSubscriptionInfo.toString();
+		       + (dataNumber & 3) + ", ef: " + errorFlag + ", " + baseSubscriptionInfo.toString();
 	}
 
 

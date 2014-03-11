@@ -25,13 +25,7 @@ package de.bsvrz.pat.sysbed.dataEditor;
 import de.bsvrz.dav.daf.main.ClientDavInterface;
 import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.ResultData;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.IntegerAttributeType;
-import de.bsvrz.dav.daf.main.config.IntegerValueRange;
-import de.bsvrz.dav.daf.main.config.IntegerValueState;
-import de.bsvrz.dav.daf.main.config.ReferenceAttributeType;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.pat.sysbed.preselection.panel.PreselectionDialog;
 import de.bsvrz.sys.funclib.debug.Debug;
 
@@ -39,7 +33,10 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -47,7 +44,9 @@ import java.awt.event.FocusEvent;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -55,7 +54,7 @@ import java.util.List;
  * der Einschränkungen des Datenmodells editierbar. Bei Bedarf kann auch eine nicht editierbar Form gewählt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 10125 $
+ * @version $Revision: 11780 $
  * @see #DataEditorPanel(de.bsvrz.dav.daf.main.ClientDavInterface)
  * @see #setData(de.bsvrz.dav.daf.main.Data)
  * @see #setResultData(de.bsvrz.dav.daf.main.ResultData)
@@ -83,6 +82,16 @@ public class DataEditorPanel extends JPanel {
 	/**
 	 * Das Zahlenformat erhält eine Formatierung.
 	 */
+	private static ImageIcon _iconAdd;
+
+	private static ImageIcon _iconFolder;
+
+	private static ImageIcon _iconAddFolder;
+
+	private static ImageIcon _iconRemove;
+
+	private static ImageIcon _iconCopy;
+
 	static {
 		_integerNumberFormat.setMinimumIntegerDigits(1);
 		_integerNumberFormat.setMaximumIntegerDigits(999);
@@ -91,6 +100,12 @@ public class DataEditorPanel extends JPanel {
 		symbols.setDecimalSeparator(',');
 		_precisionTestNumberFormat = new DecimalFormat("0.#", symbols);
 		_precisionTestNumberFormat.setMaximumFractionDigits(999);
+
+		_iconAdd = new ImageIcon(DataEditorPanel.class.getResource("add.png"));
+		_iconFolder = new ImageIcon(DataEditorPanel.class.getResource("folder.png"));
+		_iconAddFolder = new ImageIcon(DataEditorPanel.class.getResource("addFolder.png"));
+		_iconRemove = new ImageIcon(DataEditorPanel.class.getResource("remove.png"));
+		_iconCopy = new ImageIcon(DataEditorPanel.class.getResource("copy.png"));
 	}
 
 
@@ -208,7 +223,7 @@ public class DataEditorPanel extends JPanel {
 			box.add(Box.createRigidArea(new Dimension(5, 5)));
 			final JLabel suffixBox = new JLabel(data.asTextValue().getSuffixText());
 
-			JButton optionalButton = null;
+			Collection<JButton> optionalButtons = new LinkedList<JButton>();
 
 			JComponent valueBox;
 			if(data.getAttributeType() instanceof ReferenceAttributeType) {
@@ -237,7 +252,9 @@ public class DataEditorPanel extends JPanel {
 				textBox.setEditable(false);
 				valueBox = textBox;
 				if(_editable) {
-					final JButton changeButton = new JButton("Referenz ändern");
+					final JButton changeButton = new JButton(_iconFolder);
+					styleIconButton(changeButton);
+					changeButton.setToolTipText("Referenz ändern");
 					changeButton.addActionListener(
 							new ActionListener() {
 								public void actionPerformed(ActionEvent e) {
@@ -252,20 +269,27 @@ public class DataEditorPanel extends JPanel {
 									}
 									if(dialog.show()) {
 										data.asReferenceValue().setSystemObject((SystemObject)dialog.getSelectedObjects().get(0));
-										if(data.isDefined()) {
-											textBox.setText(data.asTextValue().getValueText());
-											suffixBox.setText(data.asTextValue().getSuffixText());
-											textBox.setBackground(_backgroundColorDefinedValue);
-										}
-										else {
-											textBox.setText(_undefinedString);
-											textBox.setBackground(_backgroundUndefinedValue);
-										}
+										refreshReferenceValue(data, textBox, suffixBox);
 									}
 								}
 							}
 					);
-					optionalButton = changeButton;
+					optionalButtons.add(changeButton);
+					if(att.isUndefinedAllowed()){
+						final JButton removeButton = new JButton(_iconRemove);
+						styleIconButton(removeButton);
+						removeButton.setToolTipText("Eintrag entfernen");
+						removeButton.addActionListener(
+								new ActionListener() {
+									@Override
+									public void actionPerformed(final ActionEvent e) {
+										data.asReferenceValue().setSystemObject(null);
+										refreshReferenceValue(data, textBox, suffixBox);
+									}
+								}
+						);
+						optionalButtons.add(removeButton);
+					}
 				}
 			}
 			else if(data.getAttributeType() instanceof IntegerAttributeType) {
@@ -362,7 +386,7 @@ public class DataEditorPanel extends JPanel {
 			box.add(valueBox);
 			box.add(Box.createRigidArea(new Dimension(5, 5)));
 			box.add(suffixBox);
-			if(optionalButton != null) {
+			for(JButton optionalButton : optionalButtons) {
 				box.add(Box.createRigidArea(new Dimension(5, 5)));
 				box.add(optionalButton);
 			}
@@ -372,23 +396,22 @@ public class DataEditorPanel extends JPanel {
 			box = Box.createVerticalBox();
 			box.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(data.getName() + ": "), new EmptyBorder(5, 20, 5, 5)));
 			if(data.isArray()) {
-				final Box arrayHeaderBox = Box.createHorizontalBox();
-				arrayHeaderBox.add(new JLabel("Arraygröße: "));
-				Data.Array array = data.asArray();
+				final JPanel arrayHeaderBox = new JPanel(new FlowLayout(FlowLayout.LEFT,3,0));
+				arrayHeaderBox.add(new JLabel("Arraygröße:"));
+				final Data.Array array = data.asArray();
 				if(array.isCountVariable() && _editable) {
-					SpinnerNumberModel spinnerModel = new SpinnerNumberModel(array.getLength(), 0, Integer.MAX_VALUE, 1);
-					if(array.isCountLimited()) spinnerModel.setMaximum(new Integer(array.getMaxCount()));
+					SpinnerNumberModel spinnerModel = new SpinnerNumberModel(array.getLength(), 0, 9999, 1);
+					if(array.isCountLimited()) spinnerModel.setMaximum(array.getMaxCount());
 					final JSpinner arraySizeBox = new JSpinner(spinnerModel);
 					arraySizeBox.addChangeListener(
 							new ChangeListener() {
 								public void stateChanged(ChangeEvent e) {
-									data.asArray().setLength(((Number)arraySizeBox.getValue()).intValue());
+									setArrayLength(data.asArray(), ((Number)arraySizeBox.getValue()).intValue());
 									box.removeAll();
 									box.add(arrayHeaderBox);
-									Iterator iterator = data.iterator();
-									while(iterator.hasNext()) {
-										Data subData = (Data)iterator.next();
-										box.add(createBox(subData));
+									for(int i = 0; i < array.getLength(); i++) {
+										Data d = array.getItem(i);
+										box.add(createBoxWithArrayButtons(d, i, array, arraySizeBox));
 									}
 									box.revalidate();
 									box.repaint();
@@ -396,23 +419,316 @@ public class DataEditorPanel extends JPanel {
 							}
 					);
 					arrayHeaderBox.add(arraySizeBox);
+					final JButton addEntryButton = new JButton(_iconAdd);
+					addEntryButton.addActionListener(
+								new ActionListener() {
+									public void actionPerformed(ActionEvent e) {
+										setArrayLength(array, array.getLength()+1);
+										for(int i = array.getLength() - 2; i >= 0; i--) {
+											copyData(array.getItem(i), array.getItem(i+1));
+										}
+										array.getItem(0).setToDefault();
+										arraySizeBox.setValue(((Number)arraySizeBox.getValue()).intValue() + 1);
+									}
+								});
+
+					styleIconButton(addEntryButton);
+					arrayHeaderBox.add(addEntryButton);
+					if(data.getAttributeType() instanceof ReferenceAttributeType) {
+						final JButton addMultipleEntriesButton = new JButton(_iconAddFolder);
+						addMultipleEntriesButton.setToolTipText("Objekte hinzufügen");
+						ReferenceAttributeType att = (ReferenceAttributeType)data.getAttributeType();
+						SystemObjectType objectType = att.getReferencedObjectType();
+						final List<SystemObjectType> types = new LinkedList<SystemObjectType>();
+						final String title;
+						if(objectType == null) {
+							DataModel configuration = _connection.getDataModel();
+							types.add(configuration.getType("typ.konfigurationsObjekt"));
+							types.add(configuration.getType("typ.dynamischesObjekt"));
+							title = "Beliebige Objekte hinzufügen";
+						}
+						else {
+							types.add(objectType);
+							title = "Objekte vom Typ " + objectType.getNameOrPidOrId() + " hinzufügen";
+						}
+						addMultipleEntriesButton.addActionListener(
+								new ActionListener() {
+									public void actionPerformed(ActionEvent e) {
+										PreselectionDialog dialog = new PreselectionDialog(title, addMultipleEntriesButton, null, types);
+										dialog.setMaximumSelectedAspects(0);
+										dialog.setMaximumSelectedAttributeGroups(0);
+										if(array.isCountLimited()) {
+											final int objectsToChoose = array.getMaxCount() - array.getLength();
+											if(objectsToChoose <= 0)
+											{
+												JOptionPane.showMessageDialog(addMultipleEntriesButton, "Das Array kann keine zusätzlichen Objekte mehr aufnehmen.");
+												return;
+											}
+											dialog.setMaximumSelectedObjects(objectsToChoose);
+										}
+										if(dialog.show()) {
+
+											final List<SystemObject> objects = dialog.getSelectedObjects();
+
+											final int oldLength = array.getLength();
+											setArrayLength(array, oldLength + objects.size());
+
+											//Objekte nach hinten verschieben
+											for(int i = array.getLength() - 1 - objects.size(); i >= 0; i--) {
+												copyData(array.getItem(i), array.getItem(i + objects.size()));
+											}
+
+
+											for(int i = 0, objectsSize = objects.size(); i < objectsSize; i++) {
+												final SystemObject object = objects.get(i);
+												array.asReferenceArray().getReferenceValue(i).setSystemObject(object);
+											}
+											arraySizeBox.setValue(array.getLength());
+										}
+									}
+								}
+						);
+						styleIconButton(addMultipleEntriesButton);
+						arrayHeaderBox.add(addMultipleEntriesButton);
+					}
+
+					arrayHeaderBox.add(Box.createHorizontalGlue());
+					box.add(arrayHeaderBox);
+					final Data.Array arr = data.asArray();
+					for(int i = 0; i < arr.getLength(); i++) {
+						Data d = arr.getItem(i);
+						box.add(createBoxWithArrayButtons(d, i, arr, arraySizeBox));
+					}
 				}
 				else {
 					if(!array.isCountVariable()) {
-						array.setLength(array.getMaxCount());
+						setArrayLength(array, array.getMaxCount());
 					}
 					arrayHeaderBox.add(new JLabel(String.valueOf(array.getLength())));
+					arrayHeaderBox.add(Box.createHorizontalGlue());
+					box.add(arrayHeaderBox);
+					final Data.Array arr = data.asArray();
+					for(int i = 0; i < arr.getLength(); i++) {
+						Data d = arr.getItem(i);
+						box.add(createBox(d));
+					}
 				}
-				arrayHeaderBox.add(Box.createHorizontalGlue());
-				box.add(arrayHeaderBox);
 			}
-			Iterator iterator = data.iterator();
-			while(iterator.hasNext()) {
-				Data subData = (Data)iterator.next();
-				box.add(createBox(subData));
+			else {
+				Iterator iterator = data.iterator();
+				while(iterator.hasNext()) {
+					Data subData = (Data)iterator.next();
+					box.add(createBox(subData));
+				}
 			}
 		}
 		return box;
+	}
+
+	private void refreshReferenceValue(final Data data, final JTextField textBox, final JLabel suffixBox) {
+		if(data.isDefined()) {
+			textBox.setText(data.asTextValue().getValueText());
+			suffixBox.setText(data.asTextValue().getSuffixText());
+			textBox.setBackground(_backgroundColorDefinedValue);
+		}
+		else {
+			textBox.setText(_undefinedString);
+			textBox.setBackground(_backgroundUndefinedValue);
+		}
+	}
+
+	/**
+	 * Erstellt eine Box für Daten in einem Array, bei denen zusätzlich Buttons für Kopieren, Löschen, einfügen usw. vorhanden sind
+	 * @param data Daten-Objekt für das die Box erstellt werden soll
+	 * @param index Index im Array
+	 * @param array Array
+	 * @param scrollbox Steuerelement, das für die Arrayeinträge zuständig ist
+	 * @return Die erstellte Box
+	 */
+	private Box createBoxWithArrayButtons(final Data data, final int index, final Data.Array array, final JSpinner scrollbox) {
+		final Box box;
+		box = createBox(data);
+
+		final JPanel contextPanel = new JPanel();
+		contextPanel.setLayout(new FlowLayout(FlowLayout.LEFT,3,0));
+		contextPanel.setPreferredSize(new Dimension(100,22));
+
+
+		// Button zum einfügen von Elementen
+		final JButton insertButton = new JButton(_iconAdd);
+		styleIconButton(insertButton);
+		insertButton.setToolTipText("Eintrag einfügen");
+		insertButton.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						setArrayLength(array, array.getLength()+1);
+						for(int i = array.getLength() - 2; i > index; i--) {
+							copyData(array.getItem(i), array.getItem(i+1));
+						}
+						array.getItem(index+1).setToDefault();
+						scrollbox.setValue(((Number)scrollbox.getValue()).intValue() + 1);
+					}
+				}
+		);
+		contextPanel.add(insertButton);
+
+		// Button zum Einfügen von mehreren (Referenz-)Elementen
+		if(data.getAttributeType() instanceof ReferenceAttributeType) {
+			final JButton insertMultipleButton = new JButton(_iconAddFolder);
+			styleIconButton(insertMultipleButton);
+			insertMultipleButton.setToolTipText("Objekte hinzufügen");
+			insertMultipleButton.addActionListener(
+					new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							ReferenceAttributeType att = (ReferenceAttributeType)data.getAttributeType();
+							SystemObjectType objectType = att.getReferencedObjectType();
+							final List<SystemObjectType> types = new LinkedList<SystemObjectType>();
+							final String title;
+							if(objectType == null) {
+								DataModel configuration = _connection.getDataModel();
+								types.add(configuration.getType("typ.konfigurationsObjekt"));
+								types.add(configuration.getType("typ.dynamischesObjekt"));
+								title = "Beliebige Objekte hinzufügen";
+							}
+							else {
+								types.add(objectType);
+								title = "Objekte vom Typ " + objectType.getNameOrPidOrId() + " hinzufügen";
+							}
+							PreselectionDialog dialog = new PreselectionDialog(title, insertMultipleButton, null, types);
+							dialog.setMaximumSelectedAspects(0);
+							dialog.setMaximumSelectedAttributeGroups(0);
+							if(array.isCountLimited()) {
+								final int objectsToChoose = array.getMaxCount() - array.getLength();
+								if(objectsToChoose <= 0) {
+									JOptionPane.showMessageDialog(insertMultipleButton, "Das Array kann keine zusätzlichen Objekte mehr aufnehmen.");
+									return;
+								}
+								dialog.setMaximumSelectedObjects(objectsToChoose);
+							}
+							if(dialog.show()) {
+
+								final List<SystemObject> objects = dialog.getSelectedObjects();
+
+								final int oldLength = array.getLength();
+								setArrayLength(array, oldLength + objects.size());
+
+								//Objekte nach hinten verschieben
+								for(int i = array.getLength() - 1 - objects.size(); i > index; i--) {
+									copyData(array.getItem(i), array.getItem(i + objects.size()));
+								}
+
+
+								for(int i = 0, objectsSize = objects.size(); i < objectsSize; i++) {
+									final SystemObject object = objects.get(i);
+									final int newPosition = i + index + 1;
+									array.asReferenceArray().getReferenceValue(newPosition).setSystemObject(object);
+								}
+								scrollbox.setValue(array.getLength());
+							}
+						}
+					}
+			);
+			contextPanel.add(insertMultipleButton);
+		}
+
+		// Button zum Klonen von Einträgen
+		final JButton cloneButton = new JButton(_iconCopy);
+		styleIconButton(cloneButton);
+		cloneButton.setToolTipText("Eintrag duplizieren");
+		cloneButton.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						setArrayLength(array, array.getLength()+1);
+						for(int i = array.getLength() - 2; i >= index; i--) {
+							copyData(array.getItem(i), array.getItem(i+1));
+						}
+						scrollbox.setValue(((Number)scrollbox.getValue()).intValue() + 1);
+					}
+				}
+		);
+		contextPanel.add(cloneButton);
+
+		//Button zum Löschen von Einträgen
+		final JButton removeButton = new JButton(_iconRemove);
+		styleIconButton(removeButton);
+		removeButton.setToolTipText("Eintrag entfernen");
+		removeButton.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						for(int i = index; i < array.getLength() - 1; i++) {
+							copyData(array.getItem(i+1), array.getItem(i));
+						}
+						scrollbox.setValue(((Number)scrollbox.getValue()).intValue() - 1);
+					}
+				}
+		);
+		contextPanel.add(removeButton);
+		box.add(contextPanel);
+		return box;
+	}
+
+	/**
+	 * Hilfsmethode zum setzen einer Arraylänge. Damit keine unschönen Runtime-Exceptions entstehen wird hier der Bereich noch einmal geprüft.
+	 * @param array Array
+	 * @param newLength neue Länge
+	 */
+	private void setArrayLength(final Data.Array array, final int newLength) {
+		if(array.isCountVariable() && array.getMaxCount() > 0){
+			if(array.getMaxCount() < newLength || newLength < 0){
+				JOptionPane.showMessageDialog(this, "Array-Länge " + newLength + " außerhalb des gültigen Bereichs: 0 - " + array.getMaxCount());
+
+				
+			}
+		}
+		array.setLength(newLength);
+	}
+
+	private void styleIconButton(JButton button){
+		button.setPreferredSize(new Dimension(22,22));
+		//button.setBorderPainted(true);
+		//button.setBackground(new Color(0, true));
+		button.setContentAreaFilled(false);
+	}
+
+	/**
+	 * 	Kopiert die Inhalte von einem Data-Objekt zu einem anderen.
+	 *
+	 * @param from Quelle
+	 * @param to Ziel
+	 */
+	private static void copyData(final Data from, final Data to) {
+		if(from.isPlain()) {
+			if(from.getAttributeType() instanceof IntegerAttributeType) {
+				to.asUnscaledValue().set(from.asUnscaledValue().longValue());
+			}
+			else if(from.getAttributeType() instanceof DoubleAttributeType) {
+				to.asUnscaledValue().set(from.asUnscaledValue().doubleValue());
+			}
+			else if(from.getAttributeType() instanceof TimeAttributeType) {
+				to.asTimeValue().setMillis(from.asTimeValue().getMillis());
+			}
+			else if(from.getAttributeType() instanceof ReferenceAttributeType) {
+				to.asReferenceValue().setSystemObject(from.asReferenceValue().getSystemObject());
+			}
+			else {
+				to.asTextValue().setText(from.asTextValue().getText());
+			}
+		}
+		else if(from.isArray()) {
+			final Data.Array toArray = to.asArray();
+			final Data.Array fromArray = from.asArray();
+			toArray.setLength(fromArray.getLength());
+			for(int i = 0; i < toArray.getLength(); i++) {
+				copyData(fromArray.getItem(i), toArray.getItem(i));
+			}
+		}
+		else if(from.isList()) {
+			Iterator toIterator = to.iterator();
+			Iterator fromIterator = from.iterator();
+			while(toIterator.hasNext() && fromIterator.hasNext()) {
+				copyData((Data)fromIterator.next(), (Data)toIterator.next());
+			}
+		}
 	}
 
 	private String getScaledValueText(final long unscaledValue, double conversionFactor) {
@@ -497,7 +813,7 @@ public class DataEditorPanel extends JPanel {
 			// und der Benutzer muss sich Gedanken um den Wert machen
 			textBox.setBackground(_backgroundUndefinedValue);
 			textBox.setText(_undefinedString);
-			_debug.error("In einem Dateneingabedialog (z.B. Payrametereditor) wurde in einem Textfeld ein Wert eingegeben, der nicht im gültigen Wertebereich des jeweiligen Attributtyps liegt." + ex);
+			_debug.error("In einem Dateneingabedialog (z.B. Parametereditor) wurde in einem Textfeld ein Wert eingegeben, der nicht im gültigen Wertebereich des jeweiligen Attributtyps liegt." + ex);
 		}
 	}
 }

@@ -38,6 +38,7 @@ import de.bsvrz.puk.config.configFile.fileaccess.ConfigurationObjectInfo;
 import de.bsvrz.puk.config.configFile.fileaccess.DynamicObjectInfo;
 import de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformation;
 import de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformationInterface;
+import de.bsvrz.puk.config.main.consistencycheck.RelaxedModelChanges;
 import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 import de.bsvrz.sys.funclib.dataSerializer.Serializer;
 import de.bsvrz.sys.funclib.dataSerializer.SerializingFactory;
@@ -58,7 +59,7 @@ import static de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentificatio
  * implementiert.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 9179 $
+ * @version $Revision: 11583 $
  */
 public abstract class ConfigSystemObject extends AbstractConfigSystemObject implements SystemObject {
 
@@ -107,8 +108,10 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 	public void setName(String name) throws ConfigurationChangeException {
 		// prüfen, ob die Berechtigung vorliegt, an diesem Objekt etwas zu ändern
 		if(checkChangePermit()) {
+
 			// prüfen, ob der Name geändert werden darf
-			if(getType().isNameOfObjectsPermanent()) {
+			if(getType().isNameOfObjectsPermanent() && !isNotActivatedYet()) {
+				// Bei schon aktivierten Objekten Namensänderung verbieten, wenn der Name permanent ist
 				throw new ConfigurationChangeException(
 						"Der Name des Objekts (" + getNameOrPidOrId() + ") darf nicht geändert werden. Er wurde permanent gespeichert."
 				);
@@ -317,6 +320,10 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 		return (int)(getId() ^ (getId() >>> 32));
 	}
 
+	public final int originalHashCode() {
+		return super.hashCode();
+	}
+
 	public void setConfigurationData(AttributeGroup atg, Aspect asp, Data data) throws ConfigurationChangeException {
 		final AttributeGroupUsage atgUsage = atg.getAttributeGroupUsage(asp);
 		if(atgUsage == null) {
@@ -344,6 +351,16 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 			else if(isNotActivatedYet()) {
 				// wenn das Objekt noch nicht aktiviert wurde (sich also noch in Bearbeitung befindet), dann darf es geändert werden
 				// dynamische Objekte dürfen nicht mehr geändert werden, da sie sofort aktiv sind!!
+			}
+			else if("atg.werteBereichsEigenschaften".equals(atgUsage.getAttributeGroup().getPid())
+					&& RelaxedModelChanges.getInstance(getDataModel()).allowChangeValueRange(this, this.getConfigurationData(atgUsage), data)){
+				// Erlaubt durch Spezialbehandlung unversionierte Datenmodelländerung
+			}
+			else if("atg.attributEigenschaften".equals(atgUsage.getAttributeGroup().getPid())
+					&& RelaxedModelChanges.getInstance(getDataModel()).allowChangeArrayMaxCount(
+					this, this.getConfigurationData(atgUsage), data
+			)){
+				// Erlaubt durch Spezialbehandlung unversionierte Datenmodelländerung
 			}
 			else {
 				// der Datensatz darf nicht geändert werden
@@ -495,6 +512,6 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 	 *         Konfiguration diese Berechtigung nicht hat
 	 */
 	boolean checkChangePermit() {
-		return getDataModel().getConfigurationAuthority() == getConfigurationArea().getConfigurationAuthority();
+		return getDataModel().getConfigurationAuthority() == getConfigurationArea().getConfigurationAuthority() || getDataModel().getConfigurationAuthorityPid().equals(getConfigurationArea().getConfigurationAuthority().getPid());
 	}
 }

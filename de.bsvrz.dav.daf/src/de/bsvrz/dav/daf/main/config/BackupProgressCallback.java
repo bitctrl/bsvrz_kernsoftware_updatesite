@@ -22,7 +22,7 @@ package de.bsvrz.dav.daf.main.config;
 /**
  * Schnittstelle die für Statusmeldungen des Sicherungs-Vorgangs für Konfigurationsdateien benutzt wird.
  * @see de.bsvrz.puk.config.main.ConfigDataBackup
- * @see de.bsvrz.dav.daf.main.impl.config.request.RemoteRequestManager.RemoteRequester#backupConfigurationFiles(java.lang.String, BackupProgressCallback)
+ * @see de.bsvrz.dav.daf.main.impl.config.request.ConfigurationRequester#backupConfigurationFiles(String, ConfigurationAuthority, BackupProgressCallback)
  * @author Kappich Systemberatung
  * @version $Revision: 0 $
  *

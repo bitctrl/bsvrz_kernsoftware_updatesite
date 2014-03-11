@@ -27,7 +27,7 @@ package de.bsvrz.sys.funclib.losb.datk;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 8785 $ / $Date: 2011-02-15 14:57:22 +0100 (Tue, 15 Feb 2011) $ / ($Author: jh $)
+ * @version $Revision: 8785 $ / $Date: 2011-02-15 14:57:22 +0100 (Di, 15 Feb 2011) $ / ($Author: jh $)
  */
 public class PidScript {
 

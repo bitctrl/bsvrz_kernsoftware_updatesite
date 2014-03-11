@@ -25,70 +25,11 @@ package de.bsvrz.puk.config.main.importexport;
 import de.bsvrz.dav.daf.communication.dataRepresentation.AttributeBaseValueDataFactory;
 import de.bsvrz.dav.daf.communication.dataRepresentation.AttributeHelper;
 import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.config.Aspect;
-import de.bsvrz.dav.daf.main.config.Attribute;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
-import de.bsvrz.dav.daf.main.config.AttributeListDefinition;
-import de.bsvrz.dav.daf.main.config.AttributeSet;
-import de.bsvrz.dav.daf.main.config.AttributeType;
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.ConfigurationAuthority;
-import de.bsvrz.dav.daf.main.config.ConfigurationObject;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.DoubleAttributeType;
-import de.bsvrz.dav.daf.main.config.DynamicObjectType;
-import de.bsvrz.dav.daf.main.config.IntegerAttributeType;
-import de.bsvrz.dav.daf.main.config.IntegerValueRange;
-import de.bsvrz.dav.daf.main.config.IntegerValueState;
-import de.bsvrz.dav.daf.main.config.MutableSet;
-import de.bsvrz.dav.daf.main.config.NonMutableSet;
-import de.bsvrz.dav.daf.main.config.ObjectSet;
-import de.bsvrz.dav.daf.main.config.ObjectSetType;
-import de.bsvrz.dav.daf.main.config.ObjectSetUse;
-import de.bsvrz.dav.daf.main.config.Pid;
-import de.bsvrz.dav.daf.main.config.ReferenceAttributeType;
-import de.bsvrz.dav.daf.main.config.ReferenceType;
-import de.bsvrz.dav.daf.main.config.StringAttributeType;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.SystemObjectInfo;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
-import de.bsvrz.dav.daf.main.config.TimeAttributeType;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.puk.config.configFile.datamodel.ConfigConfigurationArea;
 import de.bsvrz.puk.config.configFile.datamodel.ConfigSystemObject;
-import de.bsvrz.puk.config.xmlFile.properties.AspectProperties;
-import de.bsvrz.puk.config.xmlFile.properties.AttributeGroupProperties;
-import de.bsvrz.puk.config.xmlFile.properties.AttributeListProperties;
-import de.bsvrz.puk.config.xmlFile.properties.AttributeProperties;
-import de.bsvrz.puk.config.xmlFile.properties.AttributeTypeProperties;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationAreaChangeInformation;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationAreaProperties;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationAspect;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationAttributeType;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationConfigurationObject;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationData;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationDataField;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationDataList;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationDataset;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationDefaultParameter;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationDoubleDef;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationIntegerDef;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationIntegerValueRange;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationObjectElements;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationObjectReference;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationObjectSet;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationSet;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationState;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationString;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationTimeStamp;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationValueRange;
-import de.bsvrz.puk.config.xmlFile.properties.DatasetElement;
-import de.bsvrz.puk.config.xmlFile.properties.ListAttributeProperties;
-import de.bsvrz.puk.config.xmlFile.properties.ObjectSetTypeProperties;
-import de.bsvrz.puk.config.xmlFile.properties.PlainAttributeProperties;
-import de.bsvrz.puk.config.xmlFile.properties.SystemObjectProperties;
-import de.bsvrz.puk.config.xmlFile.properties.SystemObjectTypeProperties;
-import de.bsvrz.puk.config.xmlFile.properties.TargetValue;
+import de.bsvrz.puk.config.main.consistencycheck.RelaxedModelChanges;
+import de.bsvrz.puk.config.xmlFile.properties.*;
 import de.bsvrz.sys.funclib.dataSerializer.Serializer;
 import de.bsvrz.sys.funclib.dataSerializer.SerializingFactory;
 import de.bsvrz.sys.funclib.debug.Debug;
@@ -535,10 +476,18 @@ class ComparePropertiesWithSystemObjects {
 			return false;
 		}
 		if(!isInfoProcessable(info, attribute.getInfo())) return false;
-		if(maxCount != attribute.getMaxCount() || isCountVariable != attribute.isCountVariable() || attributeType != attribute.getAttributeType()
-		   || position != attribute.getPosition()) {
-			if(!isConfigurationDataChangeable("atg.attributEigenschaften")) {
+		if(!isConfigurationDataChangeable("atg.attributEigenschaften")) {
+			if(isCountVariable != attribute.isCountVariable() || attributeType != attribute.getAttributeType()
+					|| position != attribute.getPosition()) {
 				return false;
+			}
+			if(maxCount != attribute.getMaxCount()) {
+				if(isCountVariable) {
+					return RelaxedModelChanges.getInstance(_dataModel).isChangeArrayMaxCountProcessable(attribute.getMaxCount(), maxCount);
+				}
+				else {
+					return false;
+				}
 			}
 		}
 
@@ -931,14 +880,14 @@ class ComparePropertiesWithSystemObjects {
 	 *         lässt<br><code>false</code>, sonst
 	 */
 	boolean isIntegerAttributeTypeValueRangePropertiesProcessable(ConfigurationValueRange configurationValueRange, IntegerValueRange integerValueRange) {
-		if(isIntegerAttributeTypeValueRangePropertiesDifferent(configurationValueRange, integerValueRange) && !isConfigurationDataChangeable(
-				"atg.werteBereichsEigenschaften"
-		)) {
-			return false;
-		}
-		else {
+		if(!isIntegerAttributeTypeValueRangePropertiesDifferent(configurationValueRange, integerValueRange)) {
 			return true;
 		}
+		if(isConfigurationDataChangeable("atg.werteBereichsEigenschaften")) {
+			return true;
+		}
+		if(RelaxedModelChanges.getInstance(_dataModel).isValueRangeChangeProcessable(configurationValueRange, integerValueRange)) return true;
+		return false;
 	}
 
 	/**
@@ -997,39 +946,40 @@ class ComparePropertiesWithSystemObjects {
 			List<IntegerValueState> states = integerAttributeType.getStates();
 
 			// stimmt die Anzahl?
-			if(states.size() != counter && !isSetChangeable(integerAttributeType, "zustände")) {
+			boolean sizeOk = RelaxedModelChanges.getInstance(_dataModel).isAddStatesProcessable(integerAttributeType) ? states.size() > counter : states.size() != counter;
+			if(sizeOk && !isSetChangeable(integerAttributeType, "zustände")) {
 				_debug.finer("Anzahl stimmt nicht", integerAttributeType.getPidOrNameOrId());
 				return false;
 			}
 
-			for(ConfigurationIntegerValueRange rangeOrState : rangeAndStates) {
-				if(rangeOrState instanceof ConfigurationState) {
-					ConfigurationState configurationState = (ConfigurationState)rangeOrState;
-					// passendes Gegenstück raussuchen
-					IntegerValueState valueState = null;
-					for(IntegerValueState integerValueState : states) {
-						if(integerValueState.getName().equals(configurationState.getName())) {
+			for(IntegerValueState valueState : states) {
+				ConfigurationState configurationState = null;
+				// passendes Gegenstück raussuchen
+				for(ConfigurationIntegerValueRange rangeOrState : rangeAndStates) {
+						if(rangeOrState instanceof ConfigurationState) {
+							ConfigurationState tmp = (ConfigurationState) rangeOrState;
+							if(valueState.getValue() == tmp.getValue()) {
 							// richtigen State gefunden
-							valueState = integerValueState;
+								configurationState = tmp;
 							break;
 						}
 					}
-					if(valueState == null && !isSetChangeable(integerAttributeType, "zustände")) {
-						_debug.finer("Hier fehlt ein Zustand " + configurationState.getName() + " Typ: " + integerAttributeType.getPidOrNameOrId());
-						return false;	// Der State muss vorhanden sein!
+				}
+				if(configurationState == null && !isSetChangeable(integerAttributeType, "zustände")) {
+					_debug.finer("Hier fehlt ein Zustand " + valueState.getName() + " Typ: " + integerAttributeType.getPidOrNameOrId());
+					return false;	// Der State muss vorhanden sein!
+				}
+				else if(configurationState != null){
+					if(!isInfoProcessable(configurationState.getInfo(), valueState.getInfo())) {
+						_debug.finer("Info eines Zustands ist unterschiedlich", integerAttributeType.getPidOrNameOrId());
+						return false;
 					}
-					if(valueState != null) {
-						if(!isInfoProcessable(configurationState.getInfo(), valueState.getInfo())) {
-							_debug.finer("Info eines Zustands ist unterschiedlich", integerAttributeType.getPidOrNameOrId());
-							return false;
-						}
-						if(configurationState.getValue() != valueState.getValue() && !isConfigurationDataChangeable("atg.werteZustandsEigenschaften")) {
-							_debug.finer(
-									"Wert des Zustands '" + valueState.getName() + "' ist unterschiedlich (alt|neu): (" + valueState.getValue() + "|"
-									+ configurationState.getValue() + ")", integerAttributeType.getPidOrNameOrId()
-							);
-							return false;
-						}
+					if(!configurationState.getName().equals(valueState.getName()) && !isConfigurationDataChangeable("atg.werteZustandsEigenschaften")) {
+						_debug.finer(
+								"Wert des Zustands '" + valueState.getName() + "' ist unterschiedlich (alt|neu): (" + valueState.getValue() + "|"
+										+ configurationState.getValue() + ")", integerAttributeType.getPidOrNameOrId()
+						);
+						return RelaxedModelChanges.getInstance(_dataModel).isChangeValueNameProcessable(valueState);
 					}
 				}
 			}
@@ -2659,6 +2609,10 @@ class ComparePropertiesWithSystemObjects {
 					);
 				}
 				final String atgPid = atg.getPid();
+//				System.out.println("atg.getId() = " + atg.getId());
+//				System.out.println("atg.isValid() = " + atg.isValid());
+//				System.out.println("getObject(atgPid).getId() = " + getObject(atgPid).getId());
+//				System.out.println("getObject(atgPid).isValid() = " + getObject(atgPid).isValid());
 				if(getObject(atgPid) != atg) {
 					_debug.fine("Attributgruppe " + atgPid + " im Defaultparameter von " + systemObject.getPidOrNameOrId() + " hat sich geändert");
 					return true;
@@ -2688,6 +2642,9 @@ class ComparePropertiesWithSystemObjects {
 					// Datensatz mit der angegebenen ATG erstellen
 					final Data defaultData = AttributeBaseValueDataFactory.createAdapter(atg, AttributeHelper.getAttributesValues(atg));
 					defaultData.setToDefault();
+//					System.out.println("atg.getPidOrNameOrId() = " + atg.getPidOrNameOrId());
+//					System.out.println("atg.isValid() = " + atg.isValid());
+//					System.out.println("defaultData = " + defaultData);
 					_configurationImport.fillData(defaultData, defaultParameter.getDataAnddataListAndDataField());
 					// aus dem Data ein byte-Array machen
 					final ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -2703,7 +2660,9 @@ class ComparePropertiesWithSystemObjects {
 					}
 				}
 				catch(Exception ex) {
-					throw new IllegalStateException(ex);
+					_debug.fine("Fehler beim Vergleich der Defaultparameter wird ignoriert", ex);
+					return true;
+//					throw new IllegalStateException(ex);
 				}
 			}
 		}

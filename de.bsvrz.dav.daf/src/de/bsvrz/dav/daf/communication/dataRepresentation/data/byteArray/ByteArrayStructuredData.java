@@ -29,7 +29,7 @@ import java.util.Iterator;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 5055 $ / $Date: 2007-09-01 11:31:09 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 5055 $ / $Date: 2007-09-01 11:31:09 +0200 (Sa, 01 Sep 2007) $ / ($Author: rs $)
  */
 public abstract class ByteArrayStructuredData extends ByteArrayData {
 	protected ByteArrayStructuredData(byte[] bytes, int offset, AttributeInfo info) {

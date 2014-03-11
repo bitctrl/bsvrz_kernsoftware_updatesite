@@ -21,27 +21,25 @@
 
 package de.bsvrz.puk.config.configFile.datamodel;
 
-import static de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentifications.CONFIGURATION_ELEMENTS_IN_NON_MUTABLE_SET;
-import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.SystemObject;
+import de.bsvrz.dav.daf.main.config.*;
+import de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformationInterface;
+import de.bsvrz.puk.config.main.consistencycheck.RelaxedModelChanges;
 import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 import de.bsvrz.sys.funclib.dataSerializer.Serializer;
 import de.bsvrz.sys.funclib.dataSerializer.SerializingFactory;
-import de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformationInterface;
-import de.bsvrz.dav.daf.main.config.NonMutableSet;
-import de.bsvrz.dav.daf.main.config.ReferenceType;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.*;
 
+import static de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentifications.CONFIGURATION_ELEMENTS_IN_NON_MUTABLE_SET;
+
 /**
  * Implementierung des Interfaces {@link de.bsvrz.dav.daf.main.config.NonMutableSet} für nicht veränderbare Mengen auf Seiten der Konfiguration.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 8542 $ / $Date: 2011-01-05 14:40:38 +0100 (Wed, 05 Jan 2011) $ / ($Author: jh $)
+ * @version $Revision: 11583 $ / $Date: 2013-08-22 15:59:25 +0200 (Do, 22 Aug 2013) $ / ($Author: jh $)
  */
 public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSet {
 
@@ -138,7 +136,8 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 		if(checkChangePermit()) {
 			// wenn die Menge bereits aktiviert oder freigegeben wurde, dann darf nichts mehr geändert werden, es sei denn
 			// die Referenzierungsart ist "Gerichtete Assoziation", dann darf in der in Bearbeitung befindlichen Version Elemente hinzugefügt werden
-			if(!(getObjectSetType().getReferenceType() == ReferenceType.ASSOCIATION)) {
+			if(!(getObjectSetType().getReferenceType() == ReferenceType.ASSOCIATION)
+					&& !RelaxedModelChanges.getInstance(getDataModel()).allowObjectSetAdd(this)) {
 				// also Komposition und Aggregation
 				if(getValidSince() < getConfigurationArea().getModifiableVersion()) {
 					// die Menge wurde bereits aktiviert

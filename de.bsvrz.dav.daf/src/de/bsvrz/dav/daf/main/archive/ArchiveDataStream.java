@@ -31,8 +31,8 @@ import java.io.IOException;
  * werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
- * @see ArchiveRequestManager#request(ArchiveQueryPriority,ArchiveDataSpecification)
+ * @version $Revision: 11925 $
+ * @see ArchiveRequestManager#request(ArchiveQueryPriority, de.bsvrz.dav.daf.main.archive.ArchiveDataSpecification)
  * @see ArchiveRequestManager#request(ArchiveQueryPriority, java.util.List)
  * @see ArchiveDataQueryResult#getStreams
  */

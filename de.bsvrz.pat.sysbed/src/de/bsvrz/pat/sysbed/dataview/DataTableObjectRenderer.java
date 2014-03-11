@@ -25,7 +25,10 @@ package de.bsvrz.pat.sysbed.dataview;
 import de.bsvrz.dav.daf.main.DataState;
 import de.bsvrz.dav.daf.main.archive.ArchiveDataKind;
 import de.bsvrz.dav.daf.main.archive.TimingType;
+import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.pat.sysbed.dataview.selectionManagement.SelectionManager;
+import de.bsvrz.pat.sysbed.main.SelectionModel;
+import de.bsvrz.pat.sysbed.main.TooltipAndContextUtil;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -46,7 +49,7 @@ import java.util.List;
  * Alle abrufbaren Informationen werden erst beim ersten Abruf gebildet.
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 8084 $
+ * @version $Revision: 11925 $
  */
 public class DataTableObjectRenderer {
 	
@@ -526,12 +529,15 @@ public class DataTableObjectRenderer {
 		timeLabel.setVerticalAlignment(SwingConstants.NORTH);
 		
 		timeLabel.setToolTipText(toolTipText);
-		
-		JLabel objectLabel = new JLabel(dataTableObject.getObject().getNameOrPidOrId());
+
+		final SystemObject object = dataTableObject.getObject();
+		final JLabel objectLabel = new JLabel(object.getNameOrPidOrId());
 		objectLabel.setBorder(new EtchedBorder());
 		objectLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		objectLabel.setVerticalAlignment(SwingConstants.NORTH);
-		
+
+		objectLabel.setToolTipText(TooltipAndContextUtil.getTooltip(object));
+
 		JPanel gridPanel = new JPanel(new GridLayout(1, 2));
 		gridPanel.add(timeLabel);
 		gridPanel.add(objectLabel);
@@ -575,7 +581,8 @@ public class DataTableObjectRenderer {
 		rowHeaderPanel.addMouseListener( mouseListener);
 		timeLabel.addMouseListener( mouseListener);
 		dataKindLabel.addMouseListener( mouseListener);
-		
+		objectLabel.addMouseListener( mouseListener);
+
 		return rowHeaderPanel;
 	}
 	

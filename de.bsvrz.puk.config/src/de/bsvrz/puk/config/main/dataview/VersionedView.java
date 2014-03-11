@@ -21,16 +21,7 @@
 
 package de.bsvrz.puk.config.main.dataview;
 
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.ConfigurationObject;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.MutableSet;
-import de.bsvrz.dav.daf.main.config.NonMutableSet;
-import de.bsvrz.dav.daf.main.config.ObjectLookup;
-import de.bsvrz.dav.daf.main.config.ObjectSet;
-import de.bsvrz.dav.daf.main.config.ObjectSetUse;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel;
 import de.bsvrz.sys.funclib.debug.Debug;
 
@@ -192,8 +183,7 @@ public class VersionedView implements ObjectLookup {
 					final Collection<SystemObject> newObjects = configurationArea.getNewObjects();
 					for(SystemObject newObject : newObjects) {
 						final String newObjectPid = newObject.getPid();
-						// Sans, STS, KonfigAss: isValid(newObject) nicht benötigt
-						if(newObjectPid != null && newObjectPid.length()>0) {
+						if(newObjectPid != null && newObjectPid.length()>0 && isValid(newObject)) {
 							_newlyActiveObjects.put(newObjectPid,newObject);
 						}
 					}

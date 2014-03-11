@@ -21,7 +21,7 @@
 
 package de.bsvrz.sys.funclib.concurrent;
 
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * Diese Klasse implementiert einen größenbeschränkten Kommunikationskanal zum Datenaustausch zwischen Threads. Es
@@ -35,7 +35,7 @@ import java.util.LinkedList;
  * von Objekten ist proportional zur Anzahl verschiedener Prioritätsklassen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5006 $
+ * @version $Revision: 10187 $
  */
 public class PriorityChannel {
 	private final int _numberOfPriorityClasses;

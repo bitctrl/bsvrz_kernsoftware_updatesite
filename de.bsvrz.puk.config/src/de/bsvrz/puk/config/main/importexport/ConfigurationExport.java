@@ -52,10 +52,7 @@ import de.bsvrz.dav.daf.main.config.SystemObjectType;
 import de.bsvrz.dav.daf.main.config.TimeAttributeType;
 import de.bsvrz.dav.daf.main.config.management.ConfigAreaAndVersion;
 import de.bsvrz.dav.daf.main.config.management.ConfigurationControl;
-import de.bsvrz.puk.config.configFile.datamodel.ConfigConfigurationArea;
-import de.bsvrz.puk.config.configFile.datamodel.ConfigDynamicObject;
-import de.bsvrz.puk.config.configFile.datamodel.ConfigSystemObject;
-import de.bsvrz.puk.config.configFile.datamodel.ConfigurationAreaDependency;
+import de.bsvrz.puk.config.configFile.datamodel.*;
 import de.bsvrz.puk.config.main.dataview.VersionedView;
 import de.bsvrz.puk.config.xmlFile.properties.AccuracyDouble;
 import de.bsvrz.puk.config.xmlFile.properties.AccuracyTimeStamp;
@@ -319,6 +316,7 @@ public class ConfigurationExport {
 						dependenciesFromOtherConfigurationAreas
 				);
 				configurationAreaProperties.setConfigurationAreaChangeInformation(createChangeInformation(configurationArea));
+				configurationAreaProperties.setUnversionedChanges(getUnversionedChanges(dataModel, configurationArea));
 				// Writer für die XML-Ausgabe initialisieren
 				final ConfigAreaWriter writer = new ConfigAreaWriter(configurationAreaProperties);
 				// File-Objekt erzeugen
@@ -351,6 +349,22 @@ public class ConfigurationExport {
 				throw new IllegalArgumentException("Dieser Konfigurationsbereich hat kein ConfigurationArea-Objekt.");
 			}
 		}
+	}
+
+	private Collection<ConfigurationAreaUnversionedChange> getUnversionedChanges(final DataModel dataModel, final ConfigurationArea configurationArea) {
+		final List<ConfigurationAreaUnversionedChange> result = new ArrayList<ConfigurationAreaUnversionedChange>();
+		AttributeGroup attributeGroup = dataModel.getAttributeGroup("atg.konfigurationsBereichUnversionierteÄnderungen");
+		if(attributeGroup != null){
+			Data configurationData = configurationArea.getConfigurationData(attributeGroup);
+			if(configurationData != null){
+				for(Data data : configurationData.getItem("versionen")) {
+					result.add(new ConfigurationAreaUnversionedChange(
+							data.getUnscaledValue("Version").shortValue(),
+							data.getTextArray("AttributTypen").getTextArray()));
+				}
+			}
+		}
+		return result;
 	}
 
 	/**

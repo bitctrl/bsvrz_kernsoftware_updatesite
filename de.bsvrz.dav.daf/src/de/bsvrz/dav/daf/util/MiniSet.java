@@ -19,51 +19,63 @@
  */
 package de.bsvrz.dav.daf.util;
 
-import java.util.Set;
+import java.util.*;
 
 /**
- * Minimalimplementierung eines Sets als verkettete Liste mit einem Bloom-Filter. Gut geeignet für kleine Sets mit
- * typischerweise etwa 0-10 Einträgen. Das Set ist optimiert fürs iterieren und Hinzufügen von neuen Elementen. Das
- * häufige Entfernen (und wieder Einfügen) von Elementen (ohne das Set komplett zu leeren) verschlechtert den
- * Bloom-Filter und damit die Performance.
- *
+ * Minimalimplementierung eines Sets. Nur geeignet für wenige Elemente.
  * @author Kappich Systemberatung
- * @version $Revision: 9883 $
+ * @version $Revision: 10763 $
  */
-public class MiniSet<E> extends MiniCollection<E> implements Set<E> {
+public class MiniSet<E> extends AbstractSet<E> {
 
-	protected int hash = 0xffffffff;
+	private MiniList<E> _innerList = null;
 
-	public MiniSet() {
-		super();
+	@Override
+	public Iterator<E> iterator() {
+		if(_innerList != null) return _innerList.iterator();
+		return Collections.<E>emptyList().iterator();
 	}
 
 	@Override
-	public boolean contains(final Object o) {
-		if((hash(o) & hash) != 0) return false;
-		return super.contains(o);
+	public int size() {
+		if(_innerList == null) return 0;
+		return _innerList.size();
 	}
 
 	@Override
 	public boolean add(final E e) {
-		if(contains(e)) return false;
-		super.add(e);
-		hash &= ~hash(e);
-		return true;
+		if(_innerList == null){
+			_innerList = new MiniList<E>(e);
+			return true;
+		}
+		else {
+			if(_innerList.contains(e)) return false;
+			return _innerList.add(e);
+		}
 	}
 
 	@Override
-	protected void addFirst(final E element) {
-		hash = 0xffffffff;
-		super.addFirst(element);
+	public boolean remove(final Object o) {
+		return _innerList.remove(o);
 	}
 
-	protected static int hash(Object o) {
-		int i = o == null ? 13 : o.hashCode();
-		i ^= i << 3;
-		i ^= i << 5;
-		i ^= i << 17;
-		i &= ((i << 3) ^ (i >>> 7));
-		return i;
+	@Override
+	public boolean removeAll(final Collection<?> c) {
+		return _innerList.removeAll(c);
+	}
+
+	@Override
+	public boolean retainAll(final Collection<?> c) {
+		return _innerList.retainAll(c);
+	}
+
+	@Override
+	public boolean containsAll(final Collection<?> c) {
+		return _innerList.containsAll(c);
+	}
+
+	@Override
+	public void clear() {
+		_innerList = null;
 	}
 }

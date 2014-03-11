@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
  * die ATG entfernen oder eines Tages noch den Aspekt hinzufügen.
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 8084 $
+ * @version $Revision: 11925 $
  * 
  */
 public class CellKey {
@@ -522,5 +522,9 @@ public class CellKey {
     public static String getSECOND_SEPARATOR() {
     	return SECOND_SEPARATOR;
     }
-	
+
+	@Override
+	public String toString() {
+		return getCellKeyAsString();
+	}
 }

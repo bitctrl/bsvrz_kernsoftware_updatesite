@@ -47,7 +47,7 @@ import java.util.zip.Inflater;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 6420 $ / $Date: 2009-03-10 23:19:01 +0100 (Tue, 10 Mar 2009) $ / ($Author: rs $)
+ * @version $Revision: 11423 $ / $Date: 2013-07-22 12:02:01 +0200 (Mo, 22 Jul 2013) $ / ($Author: jh $)
  */
 public class SerializerUtil {
 
@@ -328,19 +328,20 @@ public class SerializerUtil {
 	}
 
 	/**
-	 * Fügt einen Byte-Array in den Datensatz ein.
+	 * Fügt einen Byte-Array in den Datensatz ein. Kann normalerweise durch {@link Data.NumberArray#set(byte...)} ersetzt werden.
 	 *
 	 * @param dest   Datensatz, in den der Byte-Array kopiert wird.
 	 * @param source Byte-Array mit den Quelldaten. Falls source <code>null</code> ist, wird ein leerer Datensatz (d.h. ein Feld mit Länge 0) gesendet.
 	 * @param length Anzahl der zu kopierenden Bytes. Muss <code><= source.length</code> sein.
 	 */
 	public static void insertArray(Data.Array dest, byte source[], int length) {
-		//OPT Ändern, sobald ein Kernsoftware-Release eine schnellere Methode zum Belegen eines Arrays anbietet.
 		if(source != null) {
-			dest.setLength(length);
-			for(int i = 0; i < length; i++) {
-				dest.getUnscaledValue(i).set(source[i]);
+			if(length != source.length) {
+				byte[] tmp = new byte[length];
+				System.arraycopy(source, 0, tmp, 0, length);
+				source = tmp;
 			}
+			dest.asUnscaledArray().set(source);
 		}
 		else {
 			dest.setLength(0);

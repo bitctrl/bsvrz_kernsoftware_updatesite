@@ -23,19 +23,7 @@
 package de.bsvrz.pat.sysbed.plugins.archiverequest;
 
 import de.bsvrz.dav.daf.main.DataDescription;
-import de.bsvrz.dav.daf.main.archive.ArchiveAvailabilityListener;
-import de.bsvrz.dav.daf.main.archive.ArchiveData;
-import de.bsvrz.dav.daf.main.archive.ArchiveDataKind;
-import de.bsvrz.dav.daf.main.archive.ArchiveDataKindCombination;
-import de.bsvrz.dav.daf.main.archive.ArchiveDataQueryResult;
-import de.bsvrz.dav.daf.main.archive.ArchiveDataSpecification;
-import de.bsvrz.dav.daf.main.archive.ArchiveDataStream;
-import de.bsvrz.dav.daf.main.archive.ArchiveOrder;
-import de.bsvrz.dav.daf.main.archive.ArchiveQueryPriority;
-import de.bsvrz.dav.daf.main.archive.ArchiveRequestManager;
-import de.bsvrz.dav.daf.main.archive.ArchiveRequestOption;
-import de.bsvrz.dav.daf.main.archive.ArchiveTimeSpecification;
-import de.bsvrz.dav.daf.main.archive.TimingType;
+import de.bsvrz.dav.daf.main.archive.*;
 import de.bsvrz.dav.daf.main.config.Aspect;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
@@ -72,7 +60,7 @@ import java.util.List;
  * zur Verfügung. Es ist möglich nach der Zeit oder nach den Datenidentifikationen zu sortieren.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8378 $
+ * @version $Revision: 11925 $
  */
 public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter implements ExternalModule {
 
@@ -241,6 +229,9 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 		/** Die Auswahlbox für die Sortierung der Archivdatensätze zur Darstellung in einer Tabelle. */
 		private JComboBox _viewSortComboBox;
 
+		/** zur Auswahl, ob historische Objekte berücksichtigt werden sollen */
+		private JCheckBox _useOldObjectsBox;
+
 		/** Auswahlschaltfläche, ob alle Datensätze in dem spezifizierten Zeitraum übergeben werden sollen. */
 		private JRadioButton _stateRadioButton;
 
@@ -328,6 +319,9 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 				else if(key.equals("viewsort")) {
 					setViewSort(value);
 				}
+				else if(key.equals("oldobj")) {
+					setUseOldObjects(value);
+				}
 			}
 			setFrom(timing, from, relative);
 			setTo(timing, to);
@@ -344,6 +338,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 			ArchiveQueryPriority archiveQueryPriority = ArchiveQueryPriority.LOW;
 			TimingType timingType = TimingType.ARCHIVE_TIME;
 			boolean startRelative = false;
+			boolean useOldObjects = false;
 			long intervalStart = 0;
 			long intervalEnd = 0;
 			ArchiveDataKindCombination archiveDataKindCombination = new ArchiveDataKindCombination(ArchiveDataKind.ONLINE);
@@ -441,6 +436,9 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 				else if(key.equals("viewsort")) {	 // Sortierung bei mehreren Datenidentifikationen
 					_debug.fine("Sortierung bei mehreren Datenidentifikationen noch nicht implementiert");
 				}
+				else if(key.equals("oldobj")){
+					useOldObjects = (value.equals("true"));
+				}
 			}
 			DataDescription dataDescription = new DataDescription(
 					settingsData.getAttributeGroup(), settingsData.getAspect(), (short)settingsData.getSimulationVariant()
@@ -451,15 +449,26 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 
 			List<ArchiveDataSpecification> archiveDataSpecifications = new LinkedList<ArchiveDataSpecification>();
 			List objects = settingsData.getObjects();
+			boolean usePidQuery = useOldObjects;
 			for(Iterator iterator = objects.iterator(); iterator.hasNext();) {
 				SystemObject systemObject = (SystemObject)iterator.next();
-				archiveDataSpecifications.add(
-						new ArchiveDataSpecification(
-								archiveTimeSpecification, archiveDataKindCombination, archiveOrder, archiveRequestOption, dataDescription, systemObject
-						)
+				ArchiveDataSpecification ads = new ArchiveDataSpecification(
+						archiveTimeSpecification, archiveDataKindCombination, archiveOrder, archiveRequestOption, dataDescription,
+						systemObject
 				);
+				if(usePidQuery){
+					try{
+						ads.setQueryWithPid();
+					}
+					catch(NoSuchMethodError e){
+						usePidQuery = false;
+					}
+				}
+				archiveDataSpecifications.add(ads);
 			}
-
+			if(useOldObjects && !usePidQuery){
+				_debug.warning("Archivanfrage kann historische Objekte nicht berücksichtigen, bitte DAF-Bibliothek aktualisieren.");
+			}
 			// Erzeugen des Ausgabefensters mit der Online-Tabelle
 			final ArchiveDataTableView dataTableView = new ArchiveDataTableView(settingsData, getConnection(), dataDescription);	// anzeigen der Tabelle
 
@@ -662,6 +671,8 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 			sortSequencePanel.add(sortSequenceLabel);
 			sortSequencePanel.add(_sortSequenceComboBox);
 
+			_useOldObjectsBox = new JCheckBox("Historische Objekte mit gleicher Pid berücksichtigen");
+
 			_oaDataCheckBox.addItemListener(
 					new ItemListener() {
 						public void itemStateChanged(ItemEvent e) {
@@ -758,6 +769,11 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 			requestPanel.add(_stateRadioButton);
 			requestPanel.add(_deltaRadioButton);
 			archivePanel.add(requestPanel);
+
+			// Historische Objekte berücksichtigen
+			JPanel box = new JPanel(new FlowLayout(FlowLayout.LEFT));
+			box.add(_useOldObjectsBox);
+			archivePanel.add(box);
 
 			// Sortierung der Darstellung
 			JPanel viewSortPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -1180,6 +1196,24 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 			_viewSortComboBox.setSelectedItem(viewSort);
 		}
 
+		/**
+		 * Gibt zurück, historische Objekte mit gleicher Pid berücksichtigt werden sollen
+		 *
+		 * @return
+		 */
+		private String getUseOldObjects() {
+			return String.valueOf(_useOldObjectsBox.isSelected());
+		}
+
+		/**
+		 * Das Flag des Moduls wird gesetzt, wenn historische Objekte mit gleicher Pid berücksichtigt werden sollen
+		 *
+		 * @param relative
+		 */
+		private void setUseOldObjects(String relative) {
+			_useOldObjectsBox.setSelected((relative.equals("true")));
+		}
+
 
 		/**
 		 * Erstellt die Einstellungsdaten.
@@ -1222,6 +1256,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 			}
 			keyValueList.add(new KeyValueObject("requestview", getRequestView()));
 			keyValueList.add(new KeyValueObject("viewsort", getViewSort()));
+			keyValueList.add(new KeyValueObject("oldobj", getUseOldObjects()));
 
 			return keyValueList;
 		}

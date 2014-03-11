@@ -33,6 +33,7 @@ import de.bsvrz.dav.daf.communication.protocol.ClientHighLevelCommunication;
 import de.bsvrz.dav.daf.main.archive.ArchiveRequestManager;
 import de.bsvrz.dav.daf.main.config.Aspect;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
+import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
 import de.bsvrz.dav.daf.main.config.ClientApplication;
 import de.bsvrz.dav.daf.main.config.ConfigurationAuthority;
 import de.bsvrz.dav.daf.main.config.ConfigurationTaskException;
@@ -56,6 +57,7 @@ import de.bsvrz.dav.daf.main.impl.config.request.RequestException;
 import de.bsvrz.sys.funclib.debug.Debug;
 import de.bsvrz.sys.funclib.timeout.TimeoutTimer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -69,7 +71,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Diese Klasse repräsentiert die logische Verbindung zum Datenverteiler.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 9135 $
+ * @version $Revision: 11481 $
  */
 
 public class ClientDavConnection implements ClientDavInterface {
@@ -1365,6 +1367,39 @@ public class ClientDavConnection implements ClientDavInterface {
 	 */
 	public int getTimeStampFromSenderSubscription(BaseSubscriptionInfo info) {
 		return subscriptionManager.getTimeStampFromSenderSubscription(info);
+	}
+
+	/**
+	 * Gibt Informationen über eine Datenanmeldung zurück
+	 *
+	 * @param davApplication Datenverteiler, der gefragt werden soll
+	 * @param object Systemobjekt
+	 * @param usage Attributgruppenverwendung
+	 * @param simulationVariant Simulationsvariante
+	 * @return Klasse mit Informationen über die angemeldeten Applikationen auf dieses Datum
+	 */
+	public ClientSubscriptionInfo getSubscriptionInfo(
+			final DavApplication davApplication, final SystemObject object, final AttributeGroupUsage usage, final short simulationVariant) throws IOException {
+		if(_clientDavRequester == null) {
+			_clientDavRequester = new ClientDavRequester(this);
+		}
+		return _clientDavRequester.getSubscriptionInfo(davApplication, object, usage, simulationVariant);
+	}
+
+	/**
+	 * Gibt Informationen über die Datenanmeldungen eien Appliaktion zurück
+	 *
+	 * @param davApplication Datenverteiler, der gefragt werden soll
+	 * @param application    Applikation von der vorhandene Anmeldungen abgefragt werden sollen
+	 *
+	 * @return Klasse mit Informationen über die angemeldeten Applikationen auf dieses Datum
+	 */
+	public ApplicationSubscriptionInfo getSubscriptionInfo(
+			final DavApplication davApplication, final ClientApplication application) throws IOException {
+		if(_clientDavRequester == null) {
+			_clientDavRequester = new ClientDavRequester(this);
+		}
+		return _clientDavRequester.getSubscriptionInfo(davApplication, application);
 	}
 
 	// Eine Hilfsklasse für die implizite Anmeldung

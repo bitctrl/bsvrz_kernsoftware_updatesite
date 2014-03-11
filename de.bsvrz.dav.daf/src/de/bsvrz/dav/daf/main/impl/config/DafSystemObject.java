@@ -51,7 +51,7 @@ import java.util.List;
  * sollte aus diesem Grund nicht zur Referenzierung von Objekten eingesetzt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 9234 $ / $Date: 2011-05-13 11:48:55 +0200 (Fri, 13 May 2011) $ / ($Author: jh $)
+ * @version $Revision: 9234 $ / $Date: 2011-05-13 11:48:55 +0200 (Fr, 13 Mai 2011) $ / ($Author: jh $)
  */
 public abstract class DafSystemObject implements SystemObject {
 

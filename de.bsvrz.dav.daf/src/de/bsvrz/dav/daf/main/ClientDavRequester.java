@@ -20,12 +20,14 @@
 
 package de.bsvrz.dav.daf.main;
 
+import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
+import de.bsvrz.dav.daf.main.config.ClientApplication;
+import de.bsvrz.dav.daf.main.config.DavApplication;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +36,7 @@ import java.util.Map;
  * Implementiert die Schnittstelle Applikation-Dav (siehe {@link #DavRequester}) auf Client-Seite
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8953 $
+ * @version $Revision: 11481 $
  */
 public class ClientDavRequester extends DavRequester {
 
@@ -79,13 +81,18 @@ public class ClientDavRequester extends DavRequester {
 			throw new IllegalStateException("Das verwendete Datenmodell unterstützt keine Transaktionen.");
 		}
 		final long id = generateRequestId();
-		sendBytes(
-				_connection.getLocalDav(),
-				id,
-				isSource ? SUBSCRIBE_TRANSMITTER_SOURCE : SUBSCRIBE_TRANSMITTER_DRAIN,
-				serializeSubscriptions(dataDescription, subscriptions),
-				_connection.getLocalApplicationObject()
-		);
+		try {
+			sendBytes(
+					_connection.getLocalDav(),
+					id,
+					isSource ? SUBSCRIBE_TRANSMITTER_SOURCE : SUBSCRIBE_TRANSMITTER_DRAIN,
+					serializeTransactionSubscriptions(dataDescription, subscriptions),
+					_connection.getLocalApplicationObject()
+			);
+		}
+		catch(IOException e) {
+			throw new IllegalStateException(e);
+		}
 		synchronized(_answerIdMap){
 			while(!_answerIdMap.containsKey(id)){
 				try {
@@ -102,7 +109,8 @@ public class ClientDavRequester extends DavRequester {
 		}
 	}
 
-	private byte[] serializeSubscriptions(final TransactionDataDescription transactionDataDescription, final Collection<InnerDataSubscription> subscriptions) {
+	private byte[] serializeTransactionSubscriptions(
+			final TransactionDataDescription transactionDataDescription, final Collection<InnerDataSubscription> subscriptions) {
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
 		final DataOutputStream dataOutputStream = new DataOutputStream(out);
 		try {
@@ -133,8 +141,141 @@ public class ClientDavRequester extends DavRequester {
 		return out.toByteArray();
 	}
 
+	private byte[] serializeSubscriptionQuery(final SystemObject object, final AttributeGroupUsage usage, final short simulationVariant) {
+		final ByteArrayOutputStream out = new ByteArrayOutputStream();
+		final DataOutputStream dataOutputStream = new DataOutputStream(out);
+		try {
+			dataOutputStream.writeLong(object.getId());
+			dataOutputStream.writeLong(usage.getId());
+			dataOutputStream.writeShort(
+					simulationVariant == -1 ? _connection.getClientDavParameters().getSimulationVariant() : simulationVariant
+			);
+		}
+		catch(IOException e) {
+			throw new IllegalStateException(e);
+		}
+		finally {
+			try {
+				dataOutputStream.close();
+			}
+			catch(IOException ignored) {
+			}
+		}
+		return out.toByteArray();
+	}
+
+	private byte[] serializeSubscriptionQuery(final ClientApplication application) {
+		final ByteArrayOutputStream out = new ByteArrayOutputStream();
+		final DataOutputStream dataOutputStream = new DataOutputStream(out);
+		try {
+			dataOutputStream.writeLong(application.getId());
+		}
+		catch(IOException e) {
+			throw new IllegalStateException(e);
+		}
+		finally {
+			try {
+				dataOutputStream.close();
+			}
+			catch(IOException ignored) {
+			}
+		}
+		return out.toByteArray();
+	}
+
 	private static synchronized long generateRequestId() {
-		return _requestId++;
+		final long result = _requestId;
+		_requestId++;
+		return result;
+	}
+
+	/**
+	 * Gibt Informationen über die Anmeldungen am lokalen Datenverteiler heraus
+	 *
+	 * @param davApplication
+	 * @param object Objekt
+	 * @param usage Attributgruppenverwendung
+	 * @param simulationVariant Simulationsvariante
+	 * @return Info-Objekt
+	 */
+	public ClientSubscriptionInfo getSubscriptionInfo(
+			final DavApplication davApplication, final SystemObject object, final AttributeGroupUsage usage, final short simulationVariant) throws IOException {
+		if(_attributeGroup == null) return null;
+		final long id = generateRequestId();
+		sendBytes(
+				davApplication,
+				id,
+				SUBSCRIPTION_INFO,
+				serializeSubscriptionQuery(object, usage, simulationVariant),
+				_connection.getLocalApplicationObject()
+		);
+		synchronized(_answerIdMap){
+			while(!_answerIdMap.containsKey(id)){
+				try {
+					_answerIdMap.wait();
+				}
+				catch(InterruptedException e) {
+					throw new IllegalStateException(e);
+				}
+			}
+			final Result answer = _answerIdMap.get(id);
+			if(answer.getRequestKind() != SUBSCRIPTION_INFO){
+				throw new IOException(new String(answer.getBytes()));
+			}
+			else{
+				try {
+					return new ClientSubscriptionInfo(_connection, usage, answer.getBytes());
+				}
+				catch(IOException e) {
+					_debug.warning("Fehler beim Verarbeiten der Anmelde-Informationen", e);
+					throw e;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Gibt Informationen über die Anmeldungen am lokalen Datenverteiler heraus
+	 *
+	 *
+	 * @param davApplication
+	 * @param application Applikation, von der Anmeldungen ermittelt werden sollen
+	 * @return Info-Objekt
+	 */
+	public ApplicationSubscriptionInfo getSubscriptionInfo(
+			final DavApplication davApplication, final ClientApplication application) throws IOException {
+		if(_attributeGroup == null) return null;
+		final long id = generateRequestId();
+		sendBytes(
+				davApplication,
+				id,
+				APP_SUBSCRIPTION_INFO,
+				serializeSubscriptionQuery(application),
+				_connection.getLocalApplicationObject()
+		);
+		synchronized(_answerIdMap){
+			while(!_answerIdMap.containsKey(id)){
+				try {
+					_answerIdMap.wait();
+				}
+				catch(InterruptedException e) {
+					throw new IllegalStateException(e);
+				}
+			}
+			final Result answer = _answerIdMap.get(id);
+			if(answer.getRequestKind() != APP_SUBSCRIPTION_INFO){
+				throw new IOException(new String(answer.getBytes()));
+			}
+			else{
+				try {
+					return new ApplicationSubscriptionInfo(_connection, application, answer.getBytes());
+				}
+				catch(IOException e) {
+					_debug.warning("Fehler beim Verarbeiten der Anmelde-Informationen", e);
+					throw e;
+				}
+			}
+		}
 	}
 
 	/**
@@ -169,7 +310,7 @@ public class ClientDavRequester extends DavRequester {
 
 		@Override
 		public String toString() {
-			return "Result{" + "_sender=" + _sender + ", _requestKind=" + _requestKind + ", _bytes=" + Arrays.toString(_bytes) + '}';
+			return "Result{" + "_sender=" + _sender + ", _requestKind=" + _requestKind + ", _bytes=" + new String(_bytes) + '}';
 		}
 	}
 }

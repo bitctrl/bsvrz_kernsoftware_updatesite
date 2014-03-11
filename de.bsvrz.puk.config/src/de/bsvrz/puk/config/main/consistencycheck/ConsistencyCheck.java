@@ -81,6 +81,9 @@ import java.util.*;
  */
 public class ConsistencyCheck {
 
+	/** Flag zum Umschalten des Verhaltens beim Import für TestModelChanges **/
+	public static boolean ALLOW_SPECIAL_CONFIG_CHANGES_FOR_TEST = false;
+
 	/** DebugLogger für Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
@@ -921,16 +924,21 @@ public class ConsistencyCheck {
 								if(!dataSet.isDefined()) {
 									if(ignoreAttributeValueError(systemObject, atgUsage.getAttributeGroup(), atgUsage.getAspect(), dataSet) == false) {
 
-										// Der Datensatz kann so nicht über den Datenverteiler verschickt werden -> Die Werte der Attribute sind nicht korrekt.
-										final ConsistencyCheckResultEntry entry = new ConsistencyCheckResultEntry(
-												ConsistencyCheckResultEntryType.LOCAL_ERROR,
-												verifyingConfigArea,
-												new SystemObject[]{systemObject, atgUsage.getAttributeGroup(), atgUsage.getAspect()},
-												"Es sind nicht alle Attribute der Attributgruppe mit Werten versehen. Der Datensatz kann nicht über den Datenverteiler verschickt werden: "
-												+ dataSet
+										if(ALLOW_SPECIAL_CONFIG_CHANGES_FOR_TEST && verifyingConfigArea.getConfigurationAuthority().getPid().startsWith( "kv.dav.")) {
+											// Für TestModelChanges zulassen
+										}
+										else {
+											// Der Datensatz kann so nicht über den Datenverteiler verschickt werden -> Die Werte der Attribute sind nicht korrekt.
+											final ConsistencyCheckResultEntry entry = new ConsistencyCheckResultEntry(
+													ConsistencyCheckResultEntryType.LOCAL_ERROR,
+													verifyingConfigArea,
+													new SystemObject[]{systemObject, atgUsage.getAttributeGroup(), atgUsage.getAspect()},
+													"Es sind nicht alle Attribute der Attributgruppe mit Werten versehen. Der Datensatz kann nicht über den Datenverteiler verschickt werden: "
+													+ dataSet
 
-										);
-										result.addEntry(entry);
+											);
+											result.addEntry(entry);
+										}
 									}
 								}
 							}
@@ -939,8 +947,16 @@ public class ConsistencyCheck {
 
 					// Prüfen, ob auch alle Datensätze, die am Objekt gespeichert sind, auch dort wirklich gespeichert sein dürfen. (Fall e)
 					for(AttributeGroupUsage usedAttributeGroupUsage : usedAttributeGroupUsages) {
+//						if(systemObject.getType().getPid().equals("typ.benutzer")) {
+//							System.out.println("############ usedAttributeGroupUsage = " + usedAttributeGroupUsage);
+//							System.out.println("usedAttributeGroupUsage.getId() = " + usedAttributeGroupUsage.getId());
+//							System.out.println("usedAttributeGroupUsage.getValidSince() = " + usedAttributeGroupUsage.getValidSince());
+//							System.out.println("usedAttributeGroupUsage.getNotValidSince() = " + usedAttributeGroupUsage.getNotValidSince());
+//						}
 						if(!allowedATGUsages.contains(usedAttributeGroupUsage)) {
-
+//							if(systemObject.getType().getPid().equals("typ.benutzer")) {
+//								System.out.println("-> nicht gut");
+//							}
 							// Es wurde eine ATG-Verwendung gefunden, zu der ein Datensatz an dem Objekt gespeichert wurde,
 							// aber diese ATG-Verwendung ist an diesem Objekt gar nicht zugelassen.
 							final ConsistencyCheckResultEntry entry = new ConsistencyCheckResultEntry(
@@ -951,6 +967,11 @@ public class ConsistencyCheck {
 							);
 							result.addEntry(entry);
 						}
+//						else {
+//							if(systemObject.getType().getPid().equals("typ.benutzer")) {
+//								System.out.println("-> ok");
+//							}
+//						}
 					}
 
 					// Prüfung 4:
@@ -1340,10 +1361,12 @@ public class ConsistencyCheck {
 				_areasDependencies.clear();
 			}
 			catch(ConfigurationChangeException e) {
+				final ConfigurationAuthority configurationAuthority = _dataModel.getConfigurationAuthority();
+				final ConfigurationArea configurationArea = configurationAuthority == null ? null : configurationAuthority.getConfigurationArea();
 				result.addEntry(
 						new ConsistencyCheckResultEntry(
 								ConsistencyCheckResultEntryType.LOCAL_ERROR,
-								_dataModel.getConfigurationAuthority().getConfigurationArea(),
+								configurationArea,
 								Collections.<SystemObject>emptyList(),
 								"Fehler in der Konsistenzprüfung beim Schreiben der Datensätze, die die Abhängigkeiten zwischen den Bereichen speichern:\n" +
 								getStackTrace(e)
@@ -1354,10 +1377,12 @@ public class ConsistencyCheck {
 		catch(Exception e){
 			String stacktrace = getStackTrace(e);
 
+			final ConfigurationAuthority configurationAuthority = _dataModel.getConfigurationAuthority();
+			final ConfigurationArea configurationArea = configurationAuthority == null ? null : configurationAuthority.getConfigurationArea();
 			result.addEntry(
 					new ConsistencyCheckResultEntry(
 							ConsistencyCheckResultEntryType.LOCAL_ERROR,
-							_dataModel.getConfigurationAuthority().getConfigurationArea(),
+							configurationArea,
 							Collections.<SystemObject>emptyList(),
 							"Bei der Konsistenzprüfung ist ein unerwarteter Fehler aufgetreten:\n" + stacktrace
 					)
@@ -2208,7 +2233,7 @@ public class ConsistencyCheck {
 									return false;
 								}
 							}
-							else {
+							else if(!referenceAttributeType.isUndefinedAllowed()) {
 								// Das Objekt ist nicht mehr gültig, also tritt ein Interferenzfehler auf
 								final ConsistencyCheckResultEntry entry = new ConsistencyCheckResultEntry(
 										ConsistencyCheckResultEntryType.INTERFERENCE_ERROR,
@@ -2219,6 +2244,18 @@ public class ConsistencyCheck {
 								);
 								errorObject.addEntry(entry);
 								return false;
+							}
+							else {
+								// Das Objekt darf fehlen. Es muss eine Warnung ausgegeben werden.
+								final ConsistencyCheckResultEntry entry = new ConsistencyCheckResultEntry(
+										ConsistencyCheckResultEntryType.WARNING,
+										configArea,
+										new SystemObject[]{systemObject, data.asReferenceValue().getSystemObject()},
+										"Das referenzierte Objekt einer optionalen Referenz (Aggregation/Assoziation) ist in der geprüften Version nicht gültig. "
+												+ getAttributeDescription(parentData, data)
+								);
+								errorObject.addEntry(entry);
+								return true;
 							}
 						}
 					}

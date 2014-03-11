@@ -26,15 +26,15 @@ import de.bsvrz.dav.daf.main.config.Aspect;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dav.daf.main.config.SystemObjectType;
+import de.bsvrz.pat.sysbed.preselection.util.SortUtil;
 
-import java.text.Collator;
 import java.util.*;
 
 /**
  * Die Klasse <code>PreselectionListsHandler</code> verarbeitet die Daten des Panels {@link PreselectionLists}.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 10126 $
+ * @version $Revision: 10130 $
  */
 class PreselectionListsHandler {
 
@@ -80,7 +80,7 @@ class PreselectionListsHandler {
 		final Set<SystemObject> set = new HashSet<SystemObject>();
 		set.addAll(systemObjects);
 
-		_objectsDependOnTree = sortCollection(new ArrayList<SystemObject>(set));
+		_objectsDependOnTree = SortUtil.sortCollection(set) ;
 
 		final List<SystemObjectType> objectTypes = new LinkedList<SystemObjectType>();
 		if(_objectTypeFilter != null) objectTypes.addAll(_objectTypeFilter);
@@ -103,25 +103,6 @@ class PreselectionListsHandler {
 	}
 
 	/**
-	 * Sortiert eine Liste lexikographisch unter Berücksichtigung von deutschen Umlauten.
-	 *
-	 * @param list zu sortierende Liste
-	 *
-	 * @return die lexikographisch sortierte Liste
-	 */
-	private List<SystemObject> sortCollection(List<SystemObject> list) {
-		Collections.sort(
-				list, new Comparator<SystemObject>() {
-			public int compare(SystemObject o1, SystemObject o2) {
-				Collator deCollator = Collator.getInstance(Locale.GERMANY);
-				return deCollator.compare(o1.toString(), o2.toString());
-			}
-		}
-		);
-		return list;
-	}
-
-	/**
 	 * Liefert zu den übergebenden SystemObjekten ihre Objekttypen und die Objekttypen von denen sie abgeleitet sind.
 	 *
 	 * @param objects SystemObjekte, zu denen die Objekttypen gebraucht werden
@@ -129,14 +110,20 @@ class PreselectionListsHandler {
 	 * @return alle Objekttypen passend zu den SystemObjekten
 	 */
 	private List getObjectTypeData(List<SystemObject> objects) {
+		final HashSet<SystemObjectType> allObjectTypes = new HashSet<SystemObjectType>();
 		final HashSet<SystemObjectType> allObjectTypeSet = new HashSet<SystemObjectType>();
+		// Erst die Typen der selektierten Objekte ermitteln
 		for(SystemObject systemObject : objects) {
-			allObjectTypeSet.addAll(getAllSuperTypes(systemObject.getType(), allObjectTypeSet));
+			allObjectTypes.add(systemObject.getType());
+		}
+		// Dann für jeden Typ die übergeordneten Typen abfragen
+		for(SystemObjectType objectType : allObjectTypes) {
+			allObjectTypeSet.addAll(getAllSuperTypes(objectType, allObjectTypeSet));
 		}
 		// Alle Objekt-Typen ermittelt - prüfen, ob eine Filterung vorliegt
 		if(_objectTypeFilter == null || _objectTypeFilter.isEmpty()) {
 			// Menge sortieren nach Name
-			return sortCollection(new ArrayList<SystemObject>(allObjectTypeSet));
+			return SortUtil.sortCollection(allObjectTypeSet);
 		}
 		else {
 			final HashSet<SystemObjectType> filteredObjectTypeSet = new HashSet<SystemObjectType>();
@@ -144,7 +131,7 @@ class PreselectionListsHandler {
 				if(_objectTypeFilter.contains(objectType)) filteredObjectTypeSet.add(objectType);
 			}
 			// Menge sortieren nach Name
-			return sortCollection(new ArrayList<SystemObject>(filteredObjectTypeSet));
+			return SortUtil.sortCollection(filteredObjectTypeSet);
 		}
 	}
 
@@ -181,9 +168,15 @@ class PreselectionListsHandler {
 	 */
 	private List getAtgData(List<SystemObject> objects) {
 		// ermittelt die Atgs
+		final HashSet<SystemObjectType> allObjectTypes = new HashSet<SystemObjectType>();
 		final HashSet<AttributeGroup> allAttributeGroups = new HashSet<AttributeGroup>();
+		// Erst die Typen der selektierten Objekte ermitteln
 		for(SystemObject systemObject : objects) {
-			final List<AttributeGroup> attributeGroups = systemObject.getType().getAttributeGroups();
+			allObjectTypes.add(systemObject.getType());
+		}
+		// Dann für jeden Typ die Attributgruppen abrufen
+		for(SystemObjectType objectType : allObjectTypes) {
+			final List<AttributeGroup> attributeGroups = objectType.getAttributeGroups();
 			for(AttributeGroup attributeGroup : attributeGroups) {
 				allAttributeGroups.add(attributeGroup);
 			}
@@ -191,7 +184,7 @@ class PreselectionListsHandler {
 		// Prüfen, ob Filterung vorliegt
 		if(_attributeGroupFilter == null || _attributeGroupFilter.isEmpty()) {
 			// Menge nach Namen sortieren
-			return sortCollection(new ArrayList<SystemObject>(allAttributeGroups));
+			return SortUtil.sortCollection(allAttributeGroups);
 		}
 		else {
 			// erst filtern, danach sortieren
@@ -200,7 +193,7 @@ class PreselectionListsHandler {
 				if(_attributeGroupFilter.contains(attributeGroup)) filteredAttributeGroups.add(attributeGroup);
 			}
 			// Menge sortieren
-			return sortCollection(new ArrayList<SystemObject>(filteredAttributeGroups));
+			return SortUtil.sortCollection(filteredAttributeGroups);
 		}
 	}
 
@@ -215,27 +208,40 @@ class PreselectionListsHandler {
 	private List getAspData(List<SystemObject> objects, List<AttributeGroup> selectedAtgs) {
 		// ermittelt die Aspekte
 		final HashSet<Aspect> allAspects = new HashSet<Aspect>();
+
+		final HashSet<SystemObjectType> allObjectTypes = new HashSet<SystemObjectType>();
+		final HashSet<AttributeGroup> allAttributeGroups = new HashSet<AttributeGroup>();
+		// Erst die Typen der selektierten Objekte ermitteln
 		for(SystemObject systemObject : objects) {
-			final List<AttributeGroup> atgs = systemObject.getType().getAttributeGroups();
-			for(AttributeGroup attributeGroup : atgs) {
-				if(selectedAtgs != null && !selectedAtgs.isEmpty()) {
-					if(selectedAtgs.contains(attributeGroup)) {
-						for(Aspect aspect : attributeGroup.getAspects()) {
-							allAspects.add(aspect);
-						}
-					}
-				}
-				else {
+			allObjectTypes.add(systemObject.getType());
+		}
+		// Dann für jeden Typ die Attributgruppen abrufen
+		for(SystemObjectType objectType : allObjectTypes) {
+			final List<AttributeGroup> attributeGroups = objectType.getAttributeGroups();
+			for(AttributeGroup attributeGroup : attributeGroups) {
+				allAttributeGroups.add(attributeGroup);
+			}
+		}
+		
+		for(AttributeGroup attributeGroup : allAttributeGroups) {
+			if(selectedAtgs != null && !selectedAtgs.isEmpty()) {
+				if(selectedAtgs.contains(attributeGroup)) {
 					for(Aspect aspect : attributeGroup.getAspects()) {
 						allAspects.add(aspect);
 					}
 				}
 			}
+			else {
+				for(Aspect aspect : attributeGroup.getAspects()) {
+					allAspects.add(aspect);
+				}
+			}
 		}
+
 		// Prüfen, ob Filterung vorliegt
 		if(_aspectFilter == null || _aspectFilter.isEmpty()) {
 			// Menge sortieren
-			return sortCollection(new ArrayList<SystemObject>(allAspects));
+			return SortUtil.sortCollection(allAspects);
 		}
 		else {
 			// erst filtern, danach sortieren
@@ -244,7 +250,7 @@ class PreselectionListsHandler {
 				if(_aspectFilter.contains(aspect)) filteredAspects.add(aspect);
 			}
 			// Menge sortieren
-			return sortCollection(new ArrayList<SystemObject>(filteredAspects));
+			return SortUtil.sortCollection(filteredAspects);
 		}
 	}
 
@@ -298,7 +304,7 @@ class PreselectionListsHandler {
 					set.add(systemObject);
 				}
 			}
-			_objectsDependOnObjectType = sortCollection(new ArrayList<SystemObject>(set));
+			_objectsDependOnObjectType = SortUtil.sortCollection(set);
 		}
 		else {								// es gibt keine
 			_objectsDependOnObjectType = _objectsDependOnTree;
@@ -322,7 +328,7 @@ class PreselectionListsHandler {
 					}
 				}
 			}
-			_objectsDependOnAtg = sortCollection(new ArrayList<SystemObject>(set));
+			_objectsDependOnAtg = SortUtil.sortCollection(set);
 		}
 		else {								// es gibt keine
 			_objectsDependOnAtg = _objectsDependOnObjectType;
@@ -348,7 +354,7 @@ class PreselectionListsHandler {
 					}
 				}
 			}
-			_objectsDependOnAsp = sortCollection(new ArrayList<SystemObject>(set));
+			_objectsDependOnAsp = SortUtil.sortCollection(set);
 		}
 		else {								// es gibt keine
 			_objectsDependOnAsp = _objectsDependOnAtg;

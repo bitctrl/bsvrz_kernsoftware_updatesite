@@ -26,7 +26,7 @@ import de.bsvrz.dav.daf.main.config.SystemObjectInfo;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 5091 $ / $Date: 2007-09-03 15:31:49 +0200 (Mon, 03 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 5091 $ / $Date: 2007-09-03 15:31:49 +0200 (Mo, 03 Sep 2007) $ / ($Author: rs $)
  */
 public class ConfigurationObjectProperties extends SystemObjectProperties {
 	public ConfigurationObjectProperties(String name, String pid, long id, String typePid, SystemObjectInfo info) {

@@ -53,7 +53,7 @@ import java.util.*;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 6346 $ / $Date: 2009-02-14 19:07:41 +0100 (Sat, 14 Feb 2009) $ / ($Author: rs $)
+ * @version $Revision: 11918 $ / $Date: 2013-12-19 13:46:47 +0100 (Do, 19 Dez 2013) $ / ($Author: jh $)
  */
 class Query implements ArchiveDataQueryResult {
 
@@ -71,7 +71,7 @@ class Query implements ArchiveDataQueryResult {
 	private final ArchiveQueryPriority _priority;
 
 	/** ArchiveDataSpecification einer Anfrage in einer Liste speichern */
-	private final List _spec;
+	private final List<ArchiveDataSpecification> _spec;
 
 	private StreamDemultiplexer _streamDemultiplexer;
 
@@ -139,7 +139,7 @@ class Query implements ArchiveDataQueryResult {
 		_receiveBufferSize = receiveBufferSize;
 		_defaultSimulationVariant = defaultSimulationVariant;
 
-		_spec = new LinkedList();
+		_spec = new LinkedList<ArchiveDataSpecification>();
 		_spec.add(spec);
 
 		// Es wird nur ein Objekt angefragt, somit gibt es nur einen Stream
@@ -157,7 +157,7 @@ class Query implements ArchiveDataQueryResult {
 	public Query(
 			ArchiveQueryID archiveRequestID,
 			ArchiveQueryPriority priority,
-			List spec,
+			List<ArchiveDataSpecification> spec,
 			int receiveBufferSize,
 			StreamedArchiveRequester streamedArchiveRequester,
 			short defaultSimulationVariant
@@ -210,7 +210,7 @@ class Query implements ArchiveDataQueryResult {
 				// Jede Anfrage, die in der spec-Liste steht, in das byte-Array speichern
 				for(int i = 0; i < _spec.size(); i++) {
 
-					ArchiveDataSpecification archiveDataSpecification = (ArchiveDataSpecification)_spec.get(i);
+					ArchiveDataSpecification archiveDataSpecification = _spec.get(i);
 
 					{
 						// ArchiveTimeSpecification anfordern und einzeln speichern
@@ -489,7 +489,7 @@ class Query implements ArchiveDataQueryResult {
 
 					// Der Index des Arrays identifiziert auch den Stream
 					for(int indexOfStream = 0; indexOfStream < _arrayOfStreams.length; indexOfStream++) {
-						ArchiveDataSpecification archiveDataSpecification = (ArchiveDataSpecification)_spec.get(indexOfStream);
+						ArchiveDataSpecification archiveDataSpecification = _spec.get(indexOfStream);
 						DataStream dataStream = new DataStream(indexOfStream, _streamDemultiplexer, archiveDataSpecification, this);
 						_arrayOfStreams[indexOfStream] = dataStream;
 					}

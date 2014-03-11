@@ -28,7 +28,7 @@ package de.bsvrz.dav.daf.main.archive;
  * durch Anzahl Datensätze
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5064 $
+ * @version $Revision: 11925 $
  */
 public class ArchiveTimeSpecification {
 	private final TimingType _timingType;
@@ -45,6 +45,7 @@ public class ArchiveTimeSpecification {
 	private final long _intervalEnd;
 
 	/**
+	 * Erzeugt eine ArchiveTimeSpecification, mit der ein Intervall beschrieben werden kann, für das eine Archivanfrage gilt.
 	 * @param timingType    Typ der Intervallangabe in den folgenden Parametern. Je nach Wert beziehen sich die Angaben in
 	 *                      <code>intervalStart</code> und <code>intervalEnd</code> auf den Datenzeitstempel, den
 	 *                      Archivzeitstempel oder den Datensatzindex.
@@ -52,12 +53,19 @@ public class ArchiveTimeSpecification {
 	 *                      Parameters <code>timingType</code> auf den Datenzeitstempel, den Archivzeitstempel oder den
 	 *                      Datensatzindex. Wenn <code>startRelative</code> auf <code>true</code> gesetzt wurde, wird der
 	 *                      Wert als Anzahl Datensätze vor dem <code>intervalEnd</code> interpretiert, unabhängig vom
-	 *                      gewählten <code>timingType</code>.
+	 *                      gewählten <code>timingType</code>. In diesem Fall sollten die Anzahl an Datensätzen nicht zu groß gewählt werden,
+	 *                      da
+	 *                      <ul>
+	 *                        <li>das Archivsystem die Anzahl der angefragten Datensätze typischerweise auf 16000 begrenzt</li>
+	 *                        <li>bei Anfragen mit Pid ({@link ArchiveDataSpecification#setQueryWithPid()}) möglicherweise
+	 *                        sehr viele Daten angefragt werden müssen, die dann unter hohem Aufwand und Speicherverbrauch entsprechend
+	 *                        gefiltert werden müssen.</li>
+	 *                      </ul>
 	 * @param intervalEnd   Ende des Intervalls. Dieser Wert bezieht sich je nach <code>timingType</code> auf den
 	 *                      Datenzeitstempel, den Archivzeitstempel oder den Datensatzindex.
-	 * @param startRelative true = Der Wert in <code>intervalStart</code> wird als Anzahl Datensätze interpretiert, die vor
-	 *                      dem <code>intervalEnd</code> liegen müssen; false =  <code>intervalStart, intervalEnd</code>
-	 *                      sind absolute Werte
+	 * @param startRelative Wenn <code>true</code> wird der Wert in <code>intervalStart</code> als Anzahl Datensätze interpretiert, die vor
+	 *                      dem <code>intervalEnd</code> liegen, sonst werden <code>intervalStart</code> und <code>intervalEnd</code> als
+	 *                      absolute Werte interpretiert.
 	 */
 	public ArchiveTimeSpecification(TimingType timingType, boolean startRelative, long intervalStart, long intervalEnd) {
 		_timingType = timingType;
@@ -86,8 +94,8 @@ public class ArchiveTimeSpecification {
 	}
 
 	/**
-	 * Der Rückgabewert ist entweder ein aboluter Wert oder eine gewisse Anzahl Datensätze, die vor dem Intervallende
-	 * liegen müssen ({@link ArchiveTimeSpecification#isStartRelative}).
+	 * Der Rückgabewert ist entweder ein absoluter Wert oder eine Anzahl Datensätze, die vor dem Intervalende
+	 * liegen. ({@link ArchiveTimeSpecification#isStartRelative}).
 	 *
 	 * @return absoluter Wert oder Anzahl Datensätze
 	 */

@@ -31,11 +31,11 @@ import java.util.WeakHashMap;
  * jederzeit durch den Garbage-Collector entsorgt werden, sofern sie nirgendwo anders direkt referenziert werden.
  * <p/>
  * Das Hinzufügen von null-Elementen wird still ignoriert, da null-Elemente hier bedeuten, dass ein entsprechendes
- * Objekt vom Garbage-Collector entfernt wurde. Das Hinzufgen von null kann also so interpretiert werden, dass ein
+ * Objekt vom Garbage-Collector entfernt wurde. Das Hinzufügen von null kann also so interpretiert werden, dass ein
  * bereits nicht mehr verfügbares Element hinzugefügt werden soll, was in keiner Änderung des Sets resultiert.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 9883 $
+ * @version $Revision: 11291 $
  */
 public class WeakHashSet<E> extends AbstractSet<E> {
 	private final WeakHashMap<E, Reference<E>> _backingHashMap;

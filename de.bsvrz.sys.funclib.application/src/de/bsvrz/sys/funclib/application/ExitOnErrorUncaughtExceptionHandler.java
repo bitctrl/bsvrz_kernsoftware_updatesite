@@ -27,7 +27,7 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * Prozess terminiert.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5923 $
+ * @version $Revision: 11347 $
  */
 public class ExitOnErrorUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
 
@@ -55,7 +55,7 @@ public class ExitOnErrorUncaughtExceptionHandler implements Thread.UncaughtExcep
 			System.err.println("Laufzeitfehler: Ein Thread hat sich wegen einer Exception beendet:");
 			System.err.println(t);
 			e.printStackTrace(System.err);
-			_debug.warning("Laufzeitfehler: " + t + " hat sich wegen einer Exception beendet", e);
+			_debug.error("Laufzeitfehler: " + t + " hat sich wegen einer Exception beendet", e);
 		}
 	}
 }

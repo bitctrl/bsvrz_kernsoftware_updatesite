@@ -43,7 +43,7 @@ import java.util.*;
  *
  * @author Roland Schmitz (rs), Kappich Systemberatung
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 5961 $ / $Date: 2008-03-26 18:29:53 +0100 (Wed, 26 Mar 2008) $ / ($Author: rs $)
+ * @version $Revision: 5961 $ / $Date: 2008-03-26 18:29:53 +0100 (Mi, 26 Mrz 2008) $ / ($Author: rs $)
  */
 public class RemoteDynamicObject implements DynamicObject {
 

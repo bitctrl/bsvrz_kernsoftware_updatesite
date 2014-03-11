@@ -54,7 +54,7 @@ import java.util.concurrent.TimeUnit;
  * TBD RS dokumentieren.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 9259 $
+ * @version $Revision: 11422 $
  */
 public class ForeignConfigRequester {
 
@@ -318,11 +318,7 @@ public class ForeignConfigRequester {
 
 		requestData.getScaledValue("anfrageIndex").set(requestIndex);
 		requestData.getScaledValue("nachrichtenTyp").setText(messageType);
-		final Data.NumberArray messageArrayData = requestData.getUnscaledArray("daten");
-		messageArrayData.setLength(data.length);
-		for(int i = 0; i < data.length; i++) {
-			messageArrayData.getValue(i).set(data[i]);
-		}
+		requestData.getUnscaledArray("daten").set(data);
 		_foreignConfigCommunicator.sendData(requestData);
 		return requestIndex;
 	}

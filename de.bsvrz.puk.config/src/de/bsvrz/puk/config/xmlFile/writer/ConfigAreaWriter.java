@@ -26,6 +26,7 @@ import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
 import de.bsvrz.dav.daf.main.config.ReferenceType;
 import de.bsvrz.dav.daf.main.config.SystemObjectInfo;
 import de.bsvrz.puk.config.configFile.datamodel.ConfigurationAreaDependency;
+import de.bsvrz.puk.config.configFile.datamodel.ConfigurationAreaUnversionedChange;
 import de.bsvrz.puk.config.xmlFile.properties.AspectProperties;
 import de.bsvrz.puk.config.xmlFile.properties.AttributeGroupProperties;
 import de.bsvrz.puk.config.xmlFile.properties.AttributeListProperties;
@@ -72,7 +73,7 @@ import java.util.*;
  * Diese Klasse schreibt einen Konfigurationsbereich in eine XML-Datei, dabei wird die K2S.DTD berücksichtigt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 10127 $
+ * @version $Revision: 11583 $
  */
 public class ConfigAreaWriter {
 
@@ -107,7 +108,23 @@ public class ConfigAreaWriter {
 
 		// Die Datei steht zur Verfügung
 		OutputStream fileOutput = new FileOutputStream(file);
-		OutputStream out = new PrintStream(fileOutput, false, "ISO-8859-1");
+		try {
+			writeConfigAreaAsXML(fileOutput);
+		}
+		finally {
+			fileOutput.close();
+		}
+	}
+
+	/**
+	 * Schreibt die im Konstruktor übergebenen Objekte als XML in einen OutputStream, als Grundlage dient die K2S.DTD.
+	 *
+	 * @param outputStream OutputStream, in der die Objekte gespeichert werden sollen.
+	 *
+	 * @throws IOException Falls es einen Fehler beim erstellen der Versorgungsdatei gab.
+	 */
+	public void writeConfigAreaAsXML(final OutputStream outputStream) throws IOException {
+		OutputStream out = new PrintStream(outputStream, false, "ISO-8859-1");
 		PrintWriter pw = new PrintWriter(out);
 		try {
 
@@ -128,6 +145,9 @@ public class ConfigAreaWriter {
 
 			// Schreibt alle Abhängigkeiten als Kommentar in die Datei
 			writeDependencies(_area.getAreaDependencies(), pw, 1);
+
+			// Schreibt alle Unversionierten Änderungen als Kommentar in die Datei
+			writeUnversionedChanges(_area.getUnversionedChanges(), pw, 1);
 
 			// Anzahl Tabs, bis das modell-Tag beginnt
 			final int numberOfTabs = 1;
@@ -213,7 +233,6 @@ public class ConfigAreaWriter {
 		finally {
 			// Steams schliessen
 			pw.close();
-			out.close();
 		}
 	}
 
@@ -368,6 +387,74 @@ public class ConfigAreaWriter {
 		writer.print(spacesBetweenTitleHeader);
 		writer.print("Benötigter Bereich");
 		writer.println();
+	}
+
+
+	/**
+	 * Schreibt alle unversionierten Änderungen des Konfigurationsbereichs in den übergebenen Writer
+	 *
+	 * @param unversionedChanges Unversionierte Änderungen. Wird <code>null</code> übergeben, wird nichts gemacht.
+	 * @param writer           Writer, in den die Abhängigkeiten geschrieben werden
+	 * @param textDepth        Einrückungstiefe
+	 */
+	private void writeUnversionedChanges(Collection<ConfigurationAreaUnversionedChange> unversionedChanges, final PrintWriter writer, final int textDepth) {
+
+		if(unversionedChanges != null) {
+			final String initialBlanks = createEmptyString(textDepth);
+
+			{
+				// Die Abhängigkeiten sollen, wie im Datensatz gespeichert, ausgegeben werden
+
+				writer.print(initialBlanks);
+
+				// Kommentartag (öffnen)
+				final String commentStringOpen = "<!--";
+				// Kommentartag (schliessen)
+				final String commentStringClose = "-->";
+
+				if(!unversionedChanges.isEmpty()) {
+
+					// Kommentar in XML öffnen
+					writer.println(commentStringOpen);
+					writer.println(initialBlanks + "Unversionierte Änderungen des Bereichs " + _area.getPid());
+					// Tabellenüberschrift erzeugen
+
+					writer.print(initialBlanks);
+					writer.print("Aktiv ab Version");
+					writer.print("      ");
+					writer.print("Geänderte Attribut-Typen");
+					writer.println();
+
+					for(ConfigurationAreaUnversionedChange unversionedChange : unversionedChanges) {
+						writer.print(initialBlanks);
+						String[] attributeTypePids = unversionedChange.getAttributeTypePids();
+						String first = "Keine";
+						if(attributeTypePids.length > 0) {
+							first = attributeTypePids[0];
+						}
+						writer.printf(
+								"%-21s %s",
+								unversionedChange.getConfigurationAreaVersion(),
+								first
+						);
+						for(int i = 1; i < attributeTypePids.length; i++) {
+							// Zeilenumbruch
+							writer.println();
+							writer.print(initialBlanks);
+							String attributeTypePid = attributeTypePids[i];
+							writer.printf(
+									"%-21s %s",
+									"",
+									attributeTypePid
+							);
+						}
+						writer.println();
+					}
+					// Kommentar wieder schließen
+					writer.println(initialBlanks + commentStringClose);
+				}
+			}
+		}
 	}
 
 	/**

@@ -358,7 +358,7 @@ public class ConfigurationImport implements ObjectLookup {
 				}
 			}
 
-			// Nach dem Import muss noch aufgeräumt werden. Nicht mehr benötigte Objekte werden auf ungültig gesetzt oder gelöscht werden.
+			// Nach dem Import muss noch aufgeräumt werden. Nicht mehr benötigte Objekte werden auf ungültig gesetzt oder werden gelöscht.
 			// Bereits auf ungültig gesetzte Objekte, werden wieder gültig, wenn sie gebraucht werden.
 			_debug.config("Aufräumen bestehender Objekte nach dem Import.");
 			invalidateNoLongerRequiredObjects();
@@ -478,7 +478,7 @@ public class ConfigurationImport implements ObjectLookup {
 			catch(IllegalStateException ignore) {
 			}
 
-			if(areaAuthority == _dataModel.getConfigurationAuthority()) {
+			if(areaAuthority == _dataModel.getConfigurationAuthority() || areaAuthority.getPid().equals(_dataModel.getConfigurationAuthorityPid())) {
 				_usingVersionOfConfigurationArea.put(configurationArea, configurationArea.getModifiableVersion());
 			}
 			else {
@@ -1628,7 +1628,7 @@ public class ConfigurationImport implements ObjectLookup {
 						final ConfigurationState configurationState = (ConfigurationState)rangeAndStates;
 						IntegerValueState integerValueState = null;
 						for(IntegerValueState state : stateList) {
-							if(state.getName().equals(configurationState.getName())) {
+							if(state.getValue() == configurationState.getValue()) {
 								integerValueState = state;
 							}
 						}
@@ -1646,10 +1646,12 @@ public class ConfigurationImport implements ObjectLookup {
 							setInfo(integerValueState, configurationState.getInfo());
 						}
 						// Eigenschaften überpüfen
-//						if(integerValueState.getConfigurationData(_dataModel.getAttributeGroup("atg.werteZustandsEigenschaften")) == null
-						if(getConfigurationData(integerValueState, _dataModel.getAttributeGroup("atg.werteZustandsEigenschaften")) == null
-						   || configurationState.getValue() != integerValueState.getValue()) {
+						if(getConfigurationData(integerValueState, _dataModel.getAttributeGroup("atg.werteZustandsEigenschaften")) == null) {
 							setIntegerValueStateProperties(integerValueState, configurationState);
+						}
+						if(!configurationState.getName().equals(integerValueState.getName())) {
+							// Statuswert umbenennen
+							integerValueState.setName(configurationState.getName());
 						}
 					}
 				}
@@ -3267,7 +3269,16 @@ public class ConfigurationImport implements ObjectLookup {
 					else {
 
 						// Falls der Datensatz unterschiedlich ist, wird er neu abgespeichert
-						if(_objectDiffs.isDatasetDifferent(dataset, systemObject)) {
+						boolean datasetDifferent = _objectDiffs.isDatasetDifferent(dataset, systemObject);
+//						if(atg.getPid().equals("atg.benutzerParameter")) {
+//							System.out.println("atgUsage.getValidSince() = " + atgUsage.getValidSince());
+//							System.out.println("atgUsage.getNotValidSince() = " + atgUsage.getNotValidSince());
+//							System.out.println("atg = " + atg);
+//							System.out.println("asp = " + asp);
+//							System.out.println("systemObject.getPid() = " + systemObject.getPid());
+//							System.out.println("############### datasetDifferent = " + datasetDifferent);
+//						}
+						if(datasetDifferent) {
 							Data data = AttributeBaseValueDataFactory.createAdapter(atg, AttributeHelper.getAttributesValues(atg));
 //						printData(data);
 							fillData(data, dataset.getDataAnddataListAndDataField());
@@ -3448,9 +3459,13 @@ public class ConfigurationImport implements ObjectLookup {
 			else {
 				// es handelt sich um ein dynamisches Objekt - notwendige DS werden hier nicht betrachtet (sie dürfen nicht gelöscht werden)
 				for(AttributeGroupUsage atgUsage : systemObject.getUsedAttributeGroupUsages()) {
+//					System.out.println("############### Betrachte atgUsage = " + atgUsage);
+//					System.out.println("atgUsage.getValidSince() = " + atgUsage.getValidSince());
+//					System.out.println("atgUsage.getNotValidSince() = " + atgUsage.getNotValidSince());
 					if(atgUsage.getUsage() == AttributeGroupUsage.Usage.ChangeableRequiredConfigurationData
 					   || atgUsage.getUsage() == AttributeGroupUsage.Usage.RequiredConfigurationData) {
 						// nicht weiter beachten
+//						System.out.println("-> bleibt, weil notwendig");
 					}
 					else {
 						if(!usedAtgUsages.contains(atgUsage) && !(atgUsage.getAttributeGroup().getPid().equals("atg.info")
@@ -3459,7 +3474,11 @@ public class ConfigurationImport implements ObjectLookup {
 						))) {
 							// die ATGV wurde nicht verwendet -> muss also gelöscht werden
 							((ConfigSystemObject)systemObject).createConfigurationData(atgUsage, null);
+//							System.out.println("-> wird auf null gesetzt");
 						}
+//						else {
+//							System.out.println("-> bleibt");
+//						}
 					}
 				}
 			}
@@ -3525,6 +3544,9 @@ public class ConfigurationImport implements ObjectLookup {
 				// Datensatz mit der angegebenen ATG erstellen
 				final Data defaultData = AttributeBaseValueDataFactory.createAdapter(atg, AttributeHelper.getAttributesValues(atg));
 				defaultData.setToDefault();
+//System.out.println("atg.getPid() = " + atg.getPid());
+//System.out.println("atg.isValid() = " + atg.isValid());
+//System.out.println("defaultData = " + defaultData);
 				fillData(defaultData, defaultParameter.getDataAnddataListAndDataField());
 				if(!defaultData.isDefined()) {
 					throw new IllegalStateException(

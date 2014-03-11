@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: de.bsvrz.dav.daf.plus.funclibErweiterung
-Bundle-SymbolicName: de.bsvrz.dav.daf.plus.funclibErweiterung
-Bundle-Version: 3.5.1.qualifier
-Bundle-Vendor: BitCtrl Systems GmbH, Swarco Traffic Systems GmbH
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: de.bsvrz.dav.daf;bundle-version="[3.5.0,4.0.0)";visibility:=reexport
-Bundle-ClassPath: .

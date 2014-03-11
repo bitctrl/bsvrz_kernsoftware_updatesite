@@ -21,15 +21,12 @@
 
 package de.bsvrz.puk.config.configFile.datamodel;
 
+import de.bsvrz.dav.daf.main.config.*;
+import de.bsvrz.puk.config.main.consistencycheck.RelaxedModelChanges;
 import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 import de.bsvrz.sys.funclib.dataSerializer.SerializingFactory;
 import de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformationInterface;
 import de.bsvrz.sys.funclib.debug.Debug;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.Aspect;
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.IntegerValueState;
-import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
 
 import java.io.ByteArrayInputStream;
 
@@ -37,7 +34,7 @@ import java.io.ByteArrayInputStream;
  * Implementierung des Interfaces {@link IntegerValueState} auf Seiten der Konfiguration.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 8550 $ / $Date: 2011-01-06 10:48:12 +0100 (Thu, 06 Jan 2011) $ / ($Author: jh $)
+ * @version $Revision: 11583 $ / $Date: 2013-08-22 15:59:25 +0200 (Do, 22 Aug 2013) $ / ($Author: jh $)
  */
 public class ConfigIntegerValueState extends ConfigConfigurationObject implements IntegerValueState {
 	/**
@@ -58,6 +55,22 @@ public class ConfigIntegerValueState extends ConfigConfigurationObject implement
 	 */
 	public ConfigIntegerValueState(ConfigurationArea configurationArea, SystemObjectInformationInterface systemObjectInfo) {
 		super(configurationArea, systemObjectInfo);
+	}
+
+	@Override
+	public void setName(final String name) throws ConfigurationChangeException {
+		// Sind im fehlerhafterweise als änderbar markiert, dürfen aber nur über eine "unversionierte Datenmodelländerung"
+		// umbenannt werden
+		RelaxedModelChanges relaxedModelChanges = RelaxedModelChanges.getInstance(getDataModel());
+		if(relaxedModelChanges.allowChangeValueName(this)){
+			super.setName(name);
+		}
+		else {
+			throw new ConfigurationChangeException(
+					"Der Name des Objekts (" + getNameOrPidOrId() + ") darf nur über unversionierte Datenmodelländerungen geändert werden. " +
+							"Bitte kb.metaModellGlobal in Mindestversion 16 installieren."
+			);
+		}
 	}
 
 	public long getValue() {

@@ -49,7 +49,7 @@ import java.util.logging.LogRecord;
  * FINEST </CODE></PRE>
  *
  * @author Hans Christian Kniﬂ (HCK)
- * @version $Revision: 6566 $ / $Date: 2009-04-20 17:21:33 +0200 (Mon, 20 Apr 2009) $
+ * @version $Revision: 6566 $ / $Date: 2009-04-20 17:21:33 +0200 (Mo, 20 Apr 2009) $
  */
 public class DebugFormatterStdErrText extends Formatter {
 

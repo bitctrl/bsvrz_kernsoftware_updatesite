@@ -25,6 +25,7 @@ import de.bsvrz.puk.config.configFile.fileaccess.ConfigFileHeaderInfo;
 import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 import de.bsvrz.sys.funclib.dataSerializer.NoSuchVersionException;
 import de.bsvrz.sys.funclib.dataSerializer.SerializingFactory;
+import de.bsvrz.sys.funclib.hexdump.HexDumper;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -42,12 +43,13 @@ import java.util.zip.InflaterInputStream;
 
 /**
  * @author Kappich Systemberatung
- * @version $Revision: 8953 $
+ * @version $Revision: 11530 $
  */
 @SuppressWarnings({"UseOfSystemOutOrSystemErr"})
 public class ConfigFileReader {
 
 	private static final boolean SHOW_GAP_INFO = false;
+	private static final boolean SHOW_DATA_BYTES = false;
 
 	private ConfigFileHeaderInfo _configFileHeaderInfo;
 
@@ -256,6 +258,7 @@ public class ConfigFileReader {
 				final int sizeOfData = deserializer.readInt();
 				final byte[] data = deserializer.readBytes(sizeOfData);
 				System.out.println("Konfigurationsdaten: " + data.length + " bytes, ATGU: " + atgUseId);
+				if(SHOW_DATA_BYTES) HexDumper.dumpTo(System.out, data);
 			}
 
 			// alle Daten einlesen, die spezifisch für ein Konfigurationsobjekt sind und

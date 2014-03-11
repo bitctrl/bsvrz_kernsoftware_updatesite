@@ -102,9 +102,7 @@ public class ConfigurationApp {
 	/** Thread, der beim Herunterfahren des Systems die Daten sichert. */
 	private AutoCloser _autoCloser = null;
 
-	/**
-	 * Zeitspanne, die gewartet wird bis die Konfiguration die gepufferten Daten persistent speichert.
-	 */
+	/** Zeitspanne, die gewartet wird bis die Konfiguration die gepufferten Daten persistent speichert. */
 	public static final long _bufferTime = 10 * 60 * 1000;
 
 	private ForeignObjectManager _foreignObjectManager;
@@ -168,7 +166,7 @@ public class ConfigurationApp {
 			}
 			else if(argumentList.hasArgument("-editor")) {
 				System.out.println("Editor");
-				argumentList.fetchArgument("-editor");	// entfernt dieses Argument
+				argumentList.fetchArgument("-editor");    // entfernt dieses Argument
 				if(argumentList.hasArgument("-verwaltung")) {
 					// wenn die Argumente editor und verwaltung angegeben wurden, dann wird der Konfigurationseditor im Offline-Modus gestartet
 					final File managementFile = argumentList.fetchArgument("-verwaltung").asExistingFile();
@@ -187,8 +185,9 @@ public class ConfigurationApp {
 				final File managementFile = argumentList.fetchArgument("-verwaltung").asExistingFile();
 				final boolean allowDoublePids = argumentList.fetchArgument("-doppeltePidsZulassen=nein").booleanValue();
 				final boolean ignoreDependencyErrorsInConsistencyCheck =
-						argumentList.fetchArgument("-ignoriereFehlerDerAbhängigkeitenBeiKonsistenzprüfung=nein").booleanValue()
-						|| argumentList.fetchArgument( "-ignoriereFehlerDerAbhaengigkeitenBeiKonsistenzpruefung=nein").booleanValue();
+						argumentList.fetchArgument("-ignoriereFehlerDerAbhängigkeitenBeiKonsistenzprüfung=nein").booleanValue() || argumentList.fetchArgument(
+								"-ignoriereFehlerDerAbhaengigkeitenBeiKonsistenzpruefung=nein"
+						).booleanValue();
 				argumentList.fetchArgument("-konsistenzprüfung");
 				checkConsistency(managementFile, allowDoublePids, ignoreDependencyErrorsInConsistencyCheck);
 				correctUsage = true;
@@ -197,8 +196,9 @@ public class ConfigurationApp {
 				final File managementFile = argumentList.fetchArgument("-verwaltung").asExistingFile();
 				final boolean allowDoublePids = argumentList.fetchArgument("-doppeltePidsZulassen=nein").booleanValue();
 				final boolean ignoreDependencyErrorsInConsistencyCheck =
-						argumentList.fetchArgument("-ignoriereFehlerDerAbhängigkeitenBeiKonsistenzprüfung=nein").booleanValue()
-						|| argumentList.fetchArgument( "-ignoriereFehlerDerAbhaengigkeitenBeiKonsistenzpruefung=nein").booleanValue();
+						argumentList.fetchArgument("-ignoriereFehlerDerAbhängigkeitenBeiKonsistenzprüfung=nein").booleanValue() || argumentList.fetchArgument(
+								"-ignoriereFehlerDerAbhaengigkeitenBeiKonsistenzpruefung=nein"
+						).booleanValue();
 				argumentList.fetchArgument("-aktivierung");
 				startActivation(managementFile, allowDoublePids, ignoreDependencyErrorsInConsistencyCheck);
 				correctUsage = true;
@@ -209,13 +209,15 @@ public class ConfigurationApp {
 				startReleaseAreasForActivation(managementFile);
 				correctUsage = true;
 			}
-			else
-			if((argumentList.hasArgument("-freigabeübernahme") || argumentList.hasArgument("-freigabeuebernahme")) && argumentList.hasArgument("-verwaltung")) {
+			else if((argumentList.hasArgument("-freigabeübernahme") || argumentList.hasArgument("-freigabeuebernahme")) && argumentList.hasArgument(
+					"-verwaltung"
+			)) {
 				final File managementFile = argumentList.fetchArgument("-verwaltung").asExistingFile();
 				final boolean allowDoublePids = argumentList.fetchArgument("-doppeltePidsZulassen=nein").booleanValue();
 				final boolean ignoreDependencyErrorsInConsistencyCheck =
-						argumentList.fetchArgument("-ignoriereFehlerDerAbhängigkeitenBeiKonsistenzprüfung=nein").booleanValue()
-						|| argumentList.fetchArgument( "-ignoriereFehlerDerAbhaengigkeitenBeiKonsistenzpruefung=nein").booleanValue();
+						argumentList.fetchArgument("-ignoriereFehlerDerAbhängigkeitenBeiKonsistenzprüfung=nein").booleanValue() || argumentList.fetchArgument(
+								"-ignoriereFehlerDerAbhaengigkeitenBeiKonsistenzpruefung=nein"
+						).booleanValue();
 				if(argumentList.hasArgument("-freigabeübernahme")) {
 					argumentList.fetchArgument("-freigabeübernahme");
 				}
@@ -229,8 +231,9 @@ public class ConfigurationApp {
 				final File managementFile = argumentList.fetchArgument("-verwaltung").asExistingFile();
 				final boolean allowDoublePids = argumentList.fetchArgument("-doppeltePidsZulassen=nein").booleanValue();
 				final boolean ignoreDependencyErrorsInConsistencyCheck =
-						argumentList.fetchArgument("-ignoriereFehlerDerAbhängigkeitenBeiKonsistenzprüfung=nein").booleanValue()
-						|| argumentList.fetchArgument( "-ignoriereFehlerDerAbhaengigkeitenBeiKonsistenzpruefung=nein").booleanValue();
+						argumentList.fetchArgument("-ignoriereFehlerDerAbhängigkeitenBeiKonsistenzprüfung=nein").booleanValue() || argumentList.fetchArgument(
+								"-ignoriereFehlerDerAbhaengigkeitenBeiKonsistenzpruefung=nein"
+						).booleanValue();
 				final String activatePids = argumentList.fetchArgument("-freigabeZurAktivierungOhneLokaleAktivierungDurchDenKV").asNonEmptyString();
 
 				final String[] pids = activatePids.split(",");
@@ -258,9 +261,11 @@ public class ConfigurationApp {
 				final File backupDirectory;
 				if(argumentList.hasArgument("-sicherungsVerzeichnis")) {
 					backupDirectory = argumentList.fetchArgument("-sicherungsVerzeichnis").asFile();
-					if(backupDirectory.exists() && !backupDirectory.isDirectory()) throw new java.lang.IllegalArgumentException("Argument -sicherungsVerzeichnis: Ist kein Verzeichnis: " + backupDirectory);
+					if(backupDirectory.exists() && !backupDirectory.isDirectory()) {
+						throw new java.lang.IllegalArgumentException("Argument -sicherungsVerzeichnis: Ist kein Verzeichnis: " + backupDirectory);
+					}
 				}
-				else{
+				else {
 					// Standard: Ordner innerhalb des Speicherortes der Verwaltungsdaten.xml
 					backupDirectory = new File(managementFile.getParentFile(), "Sicherungen");
 				}
@@ -407,8 +412,8 @@ public class ConfigurationApp {
 		// Startet den Mechanismus, der Konfigurationsanfragen entgegennimmt und verarbeitet
 		final ConfigurationCommunicator configurationCommunicator;
 		try {
-			configurationCommunicator = new ConfigurationCommunicator(asyncRequestQueue, dataModel, userManagementFile, dafParameters,
-			                                                          dataModel.getManagementFile().getForeignObjectCacheFile()
+			configurationCommunicator = new ConfigurationCommunicator(
+					asyncRequestQueue, dataModel, userManagementFile, dafParameters, dataModel.getManagementFile().getForeignObjectCacheFile()
 			);
 		}
 		catch(Exception e) {
@@ -416,7 +421,7 @@ public class ConfigurationApp {
 			dataModel.close();
 			throw e;
 		}
-		
+
 		((ConfigDataModel)dataModel).setBackupBaseDirectory(backupDirectory);
 		((ConfigDataModel)dataModel).setUserManagement(configurationCommunicator.getAuthentication());
 
@@ -477,16 +482,16 @@ public class ConfigurationApp {
 	 * Unterzieht alle Bereiche in der aktuellsten Version einer Konsistenzprüfung. Die Version muss nicht unbedingt die aktuelle Version sein, sondern die
 	 * Version, die aktiviert werden könnte.
 	 *
-	 * @param managementFile Verwaltungsdatei, wird zum erzeugen des DataModel gebraucht
+	 * @param managementFile  Verwaltungsdatei, wird zum erzeugen des DataModel gebraucht
 	 * @param allowDoublePids <code>true</code> falls doppelte Pids in verschiedenen Konfigurationsbereichen von der Konsistenzprüfung zugelassen werden sollen.
-	 * @param ignoreDependencyErrorsInConsistencyCheck <code>true</code> falls Fehler bei der Prüfung der Abhängigkeiten in der Konsistenzprüfung ignoriert
-	 * werden sollen.
+	 * @param ignoreDependencyErrorsInConsistencyCheck
+	 *                        <code>true</code> falls Fehler bei der Prüfung der Abhängigkeiten in der Konsistenzprüfung ignoriert werden sollen.
 	 */
 	private void checkConsistency(File managementFile, final boolean allowDoublePids, final boolean ignoreDependencyErrorsInConsistencyCheck) {
 		_debug.info("Konsistenzprüfung wird gestartet: " + managementFile.toString());
-		final ConfigDataModel dataModel = new ConfigDataModel(managementFile);
+		final ConfigDataModel dataModel = new ConfigDataModel(managementFile, ignoreDependencyErrorsInConsistencyCheck);
 		dataModel.setAllowDoublePids(allowDoublePids);
-		dataModel.setIgnoreDependencyErrorsInConsistencyCheck(ignoreDependencyErrorsInConsistencyCheck);
+//		dataModel.setIgnoreDependencyErrorsInConsistencyCheck(ignoreDependencyErrorsInConsistencyCheck);
 		// Alle Dateien sind für andere gesperrt worden (lock-Dateien). Diese müssen wieder freigegeben werden, sobald
 		// die Aktion beendet wurde.
 		startAutoCloser(dataModel, null);
@@ -501,7 +506,9 @@ public class ConfigurationApp {
 
 		for(ConfigurationArea configurationArea : configurationAreas) {
 			final short version;
-			if(dataModel.getConfigurationAuthority() == configurationArea.getConfigurationAuthority()) {
+			if(dataModel.getConfigurationAuthority() == configurationArea.getConfigurationAuthority() || dataModel.getConfigurationAuthorityPid().equals(
+					configurationArea.getConfigurationAuthority().getPid()
+			)) {
 				// In der neusten Version prüfen
 				version = ((ConfigConfigurationArea)configurationArea).getLastModifiedVersion();
 			}
@@ -524,16 +531,16 @@ public class ConfigurationApp {
 	/**
 	 * Aktiviert alle Bereiche in der höchst möglichen Version.
 	 *
-	 * @param managementFile Verwaltungsdatei, wird zum erzeugen des DataModel gebraucht
+	 * @param managementFile  Verwaltungsdatei, wird zum erzeugen des DataModel gebraucht
 	 * @param allowDoublePids <code>true</code> falls doppelte Pids in verschiedenen Konfigurationsbereichen von der Konsistenzprüfung zugelassen werden sollen.
-	 * @param ignoreDependencyErrorsInConsistencyCheck <code>true</code> falls Fehler bei der Prüfung der Abhängigkeiten in der Konsistenzprüfung ignoriert
-	 * werden sollen.
+	 * @param ignoreDependencyErrorsInConsistencyCheck
+	 *                        <code>true</code> falls Fehler bei der Prüfung der Abhängigkeiten in der Konsistenzprüfung ignoriert werden sollen.
 	 */
 	private void startActivation(File managementFile, final boolean allowDoublePids, final boolean ignoreDependencyErrorsInConsistencyCheck) {
 		_debug.info("Aktivierung wird gestartet: " + managementFile.toString());
-		final ConfigDataModel dataModel = new ConfigDataModel(managementFile);
+		final ConfigDataModel dataModel = new ConfigDataModel(managementFile, ignoreDependencyErrorsInConsistencyCheck);
 		dataModel.setAllowDoublePids(allowDoublePids);
-		dataModel.setIgnoreDependencyErrorsInConsistencyCheck(ignoreDependencyErrorsInConsistencyCheck);
+		//dataModel.setIgnoreDependencyErrorsInConsistencyCheck(ignoreDependencyErrorsInConsistencyCheck);
 
 		// Alle Dateien sind für andere gesperrt worden (lock-Dateien). Diese müssen wieder freigegeben werden, sobald
 		// die Aktion beendet wurde.
@@ -606,16 +613,16 @@ public class ConfigurationApp {
 	/**
 	 * Gibt alle Bereiche zur Übernahme für andere Konfigurationen in der höchst möglichen Version frei.
 	 *
-	 * @param managementFile Verwaltungsdatei, wird zum erzeugen des DataModel gebraucht
+	 * @param managementFile  Verwaltungsdatei, wird zum erzeugen des DataModel gebraucht
 	 * @param allowDoublePids <code>true</code> falls doppelte Pids in verschiedenen Konfigurationsbereichen von der Konsistenzprüfung zugelassen werden sollen.
-	 * @param ignoreDependencyErrorsInConsistencyCheck <code>true</code> falls Fehler bei der Prüfung der Abhängigkeiten in der Konsistenzprüfung ignoriert
-	 * werden sollen.
+	 * @param ignoreDependencyErrorsInConsistencyCheck
+	 *                        <code>true</code> falls Fehler bei der Prüfung der Abhängigkeiten in der Konsistenzprüfung ignoriert werden sollen.
 	 */
 	private void startReleaseAreasForTransfer(File managementFile, final boolean allowDoublePids, final boolean ignoreDependencyErrorsInConsistencyCheck) {
 		_debug.info("Freigabe zur Übernahme wird gestartet: " + managementFile.toString());
-		final ConfigDataModel dataModel = new ConfigDataModel(managementFile);
+		final ConfigDataModel dataModel = new ConfigDataModel(managementFile, ignoreDependencyErrorsInConsistencyCheck);
 		dataModel.setAllowDoublePids(allowDoublePids);
-		dataModel.setIgnoreDependencyErrorsInConsistencyCheck(ignoreDependencyErrorsInConsistencyCheck);
+		//dataModel.setIgnoreDependencyErrorsInConsistencyCheck(ignoreDependencyErrorsInConsistencyCheck);
 
 		// Alle Dateien sind für andere gesperrt worden (lock-Dateien). Diese müssen wieder freigegeben werden, sobald
 		// die Aktion beendet wurde.
@@ -645,22 +652,22 @@ public class ConfigurationApp {
 
 
 	/**
-	 * Gibt die angegebenen Bereiche zur Aktivierung für andere Konfigurationen in der höchst möglichen Version frei. Die entsprechenden Bereiche müssen
-	 * vorher nicht lokal aktiviert worden sein.
+	 * Gibt die angegebenen Bereiche zur Aktivierung für andere Konfigurationen in der höchst möglichen Version frei. Die entsprechenden Bereiche müssen vorher
+	 * nicht lokal aktiviert worden sein.
 	 *
-	 * @param managementFile Verwaltungsdatei, wird zum erzeugen des DataModel gebraucht
-	 * @param pids Pids der Konfigurationsbereiche, die freigegeben werden sollen.
+	 * @param managementFile  Verwaltungsdatei, wird zum erzeugen des DataModel gebraucht
+	 * @param pids            Pids der Konfigurationsbereiche, die freigegeben werden sollen.
 	 * @param allowDoublePids <code>true</code> falls doppelte Pids in verschiedenen Konfigurationsbereichen von der Konsistenzprüfung zugelassen werden sollen.
-	 * @param ignoreDependencyErrorsInConsistencyCheck <code>true</code> falls Fehler bei der Prüfung der Abhängigkeiten in der Konsistenzprüfung ignoriert
-	 * werden sollen.
+	 * @param ignoreDependencyErrorsInConsistencyCheck
+	 *                        <code>true</code> falls Fehler bei der Prüfung der Abhängigkeiten in der Konsistenzprüfung ignoriert werden sollen.
 	 */
 	private void startReleaseForActivationWithoutCAActivation(
 			final File managementFile, final List<String> pids, final boolean allowDoublePids, final boolean ignoreDependencyErrorsInConsistencyCheck) {
 
 		_debug.info("Freigabe zur Übernahme wird gestartet: " + managementFile.toString());
-		final ConfigDataModel dataModel = new ConfigDataModel(managementFile);
+		final ConfigDataModel dataModel = new ConfigDataModel(managementFile, ignoreDependencyErrorsInConsistencyCheck);
 		dataModel.setAllowDoublePids(allowDoublePids);
-		dataModel.setIgnoreDependencyErrorsInConsistencyCheck(ignoreDependencyErrorsInConsistencyCheck);
+//		dataModel.setIgnoreDependencyErrorsInConsistencyCheck(ignoreDependencyErrorsInConsistencyCheck);
 
 		// Alle Dateien sind für andere gesperrt worden (lock-Dateien). Diese müssen wieder freigegeben werden, sobald
 		// die Aktion beendet wurde.
@@ -722,7 +729,7 @@ public class ConfigurationApp {
 		System.out.println("\t-freigabeübernahme          für die Freigabe von Konfigurationsbereichen zur Übernahme");
 		System.out.println("\t-sicherungsVerzeichnis=pfad Verzeichnis zur Sicherung von Konfigurationsdateien");
 
-		System.out.println();	// Leerzeile
+		System.out.println();    // Leerzeile
 		System.out.println("Folgende Optionen werden unterstützt:");
 		System.out.println("\t-Konfiguration benötigt die Parameter '-verwaltung', '-benutzer', '-authentifizierung' und optional '-benutzerverwaltung'");
 		System.out.println("\t-Import benötigt die Parameter '-import', '-verzeichnis' und '-verwaltung'");
@@ -769,7 +776,7 @@ public class ConfigurationApp {
 			}
 			catch(Exception ex) {
 				// falls das Speichern nicht gelingt wird nur eine Warnung ausgegeben, evtl. gelingt es beim nächsten Mal
-				_debug.warning("Zwischenspeicher für Fremdobjekte konnte nicht gespeichert werden", ex.getMessage());
+				_debug.warning("Zwischenspeicher für Fremdobjekte konnte nicht gespeichert werden", ex);
 			}
 			try {
 				((ConfigDataModel)_dataModel).save();
@@ -848,9 +855,8 @@ public class ConfigurationApp {
 				System.err.println("Laufzeitfehler: Ein Thread hat sich wegen einer Exception beendet:");
 				System.err.println(t);
 				e.printStackTrace(System.err);
-				_debug.warning("Laufzeitfehler: " + t + " hat sich wegen einer Exception beendet", e);
+				_debug.error("Laufzeitfehler: " + t + " hat sich wegen einer Exception beendet", e);
 			}
 		}
 	}
-
 }

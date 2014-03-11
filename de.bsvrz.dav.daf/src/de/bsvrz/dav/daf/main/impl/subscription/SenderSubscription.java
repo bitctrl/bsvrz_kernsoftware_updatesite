@@ -32,7 +32,7 @@ import de.bsvrz.dav.daf.communication.lowLevel.telegrams.BaseSubscriptionInfo;
 /**
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 5059 $
+ * @version $Revision: 11279 $
  */
 public class SenderSubscription {
 
@@ -47,9 +47,6 @@ public class SenderSubscription {
 
 	/** Senderanmeldeinformationen */
 	private SendSubscriptionInfo _sendSubscriptionInfo;
-
-	/** Gibt an, ob es sich um eine bestätigte Anmeldung handelt */
-	private boolean _requestConfirmed;
 
 	/**
 	 * Erzeugt ein neues Objekt mit den gegebenen Parametern.
@@ -81,12 +78,6 @@ public class SenderSubscription {
 		// Falls keine Sendesteuerung vorliegt, kann eine Exception geworfen werden
 		boolean requestSupported = isRequestSupported() || senderRole == SenderRole.sender();
 		_sendSubscriptionInfo = new SendSubscriptionInfo(baseSubscriptionInfo, senderRole, requestSupported);
-		if(requestSupported) {
-			_requestConfirmed = false;
-		}
-		else {
-			_requestConfirmed = true;
-		}
 	}
 
 	/**
@@ -153,25 +144,6 @@ public class SenderSubscription {
 			return false;
 		}
 		return _clientSender.isRequestSupported(_systemObject, _dataDescription);
-	}
-
-	/**
-	 * Gibt die Information ob die Anmeldung bestätigt wurde.
-	 *
-	 * @return <code>true: Anmeldung bestätigt </code>, <code>false:</code> Anmeldung nicht bestätigt
-	 */
-
-	public final boolean isRequestConfirmed() {
-		return _requestConfirmed;
-	}
-
-	/**
-	 * Setzt die Anmeldungsbestätigung.
-	 *
-	 * @param confirmation Bestätigung
-	 */
-	public final void confirmRequest(boolean confirmation) {
-		_requestConfirmed = confirmation;
 	}
 
 	/**

@@ -24,12 +24,35 @@ package de.bsvrz.dav.daf.main.impl;
 
 import de.bsvrz.dav.daf.communication.dataRepresentation.data.byteArray.ByteArrayData;
 import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.SendDataObject;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.*;
+import de.bsvrz.dav.daf.communication.lowLevel.telegrams.BaseSubscriptionInfo;
+import de.bsvrz.dav.daf.communication.lowLevel.telegrams.ReceiveSubscriptionInfo;
+import de.bsvrz.dav.daf.communication.lowLevel.telegrams.RequestSenderDataTelegram;
+import de.bsvrz.dav.daf.communication.lowLevel.telegrams.SendSubscriptionInfo;
 import de.bsvrz.dav.daf.communication.protocol.ClientHighLevelCommunication;
-import de.bsvrz.dav.daf.main.*;
-import de.bsvrz.dav.daf.main.config.*;
+import de.bsvrz.dav.daf.main.ClientDavParameters;
+import de.bsvrz.dav.daf.main.ClientReceiverInterface;
+import de.bsvrz.dav.daf.main.ClientSenderInterface;
+import de.bsvrz.dav.daf.main.Data;
+import de.bsvrz.dav.daf.main.DataDescription;
+import de.bsvrz.dav.daf.main.DataNotSubscribedException;
+import de.bsvrz.dav.daf.main.InitialisationNotCompleteException;
+import de.bsvrz.dav.daf.main.OneSubscriptionPerSendData;
+import de.bsvrz.dav.daf.main.ReceiveOptions;
+import de.bsvrz.dav.daf.main.ReceiverRole;
+import de.bsvrz.dav.daf.main.ResultData;
+import de.bsvrz.dav.daf.main.SendSubscriptionNotConfirmed;
+import de.bsvrz.dav.daf.main.SenderRole;
+import de.bsvrz.dav.daf.main.config.Aspect;
+import de.bsvrz.dav.daf.main.config.AttributeGroup;
+import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
+import de.bsvrz.dav.daf.main.config.ConfigurationTaskException;
+import de.bsvrz.dav.daf.main.config.DataModel;
+import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentifications;
-import de.bsvrz.dav.daf.main.impl.subscription.*;
+import de.bsvrz.dav.daf.main.impl.subscription.CollectingReceiver;
+import de.bsvrz.dav.daf.main.impl.subscription.CollectingReceiverManager;
+import de.bsvrz.dav.daf.main.impl.subscription.ReceiverSubscription;
+import de.bsvrz.dav.daf.main.impl.subscription.SenderSubscription;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 import java.util.*;
@@ -51,7 +74,7 @@ import java.util.*;
  * angemeldeten Empfänger weiter.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 9135 $
+ * @version $Revision: 11359 $
  */
 public class SubscriptionManager {
 
@@ -59,10 +82,10 @@ public class SubscriptionManager {
 	private static final Debug _debug = Debug.getLogger();
 
 	/** Eine Tabelle wo die Sendeanmeldungen und deren Informationen gehalten werden */
-	private Hashtable _senderObjectTable;
+	private Hashtable<BaseSubscriptionInfo, SendSubscriptionObject> _senderObjectTable;
 
 	/** Eine Tabelle wo die Empfangsanmeldungen und deren Informationen gehalten werden */
-	private Hashtable _receiverObjectTable;
+	private Hashtable<BaseSubscriptionInfo, ReceiveSubscriptionObject> _receiverObjectTable;
 
 	/** Der Cachemanager */
 	private CacheManager _cacheManager;
@@ -104,8 +127,8 @@ public class SubscriptionManager {
 		_receiverManager = new CollectingReceiverManager(dafParameters.getDeliveryBufferSize());
 		_dafParameters = dafParameters;
 
-		_receiverObjectTable = new Hashtable();
-		_senderObjectTable = new Hashtable();
+		_receiverObjectTable = new Hashtable<BaseSubscriptionInfo, ReceiveSubscriptionObject>();
+		_senderObjectTable = new Hashtable<BaseSubscriptionInfo, SendSubscriptionObject>();
 		_dataDeliveryThread = new DataDeliveryThread();
 
 		_initialisationComplete = false;
@@ -266,7 +289,7 @@ public class SubscriptionManager {
 			);
 		}
 		BaseSubscriptionInfo baseSubscriptionInfo = receiverSubscription.getBaseSubscriptionInfo();
-		ReceiveSubscriptionObject receiveSubscriptionObject = (ReceiveSubscriptionObject)_receiverObjectTable.get(
+		ReceiveSubscriptionObject receiveSubscriptionObject = _receiverObjectTable.get(
 				baseSubscriptionInfo
 		);
 
@@ -394,7 +417,7 @@ public class SubscriptionManager {
 	 * @return Sekunden seit 1970
 	 */
 	public int getTimeStampFromSenderSubscription(final BaseSubscriptionInfo info) {
-		final SendSubscriptionObject o = (SendSubscriptionObject)_senderObjectTable.get(info);
+		final SendSubscriptionObject o = _senderObjectTable.get(info);
 		return o.getTimeStamp();
 	}
 
@@ -532,7 +555,7 @@ public class SubscriptionManager {
 			BaseSubscriptionInfo baseSubscriptionInfo = new BaseSubscriptionInfo(
 					objects[i].getId(), dataDescription.getAttributeGroup().getAttributeGroupUsage(dataDescription.getAspect()), externalSimulationVariant
 			);
-			ReceiveSubscriptionObject receiveSubscriptionObject = (ReceiveSubscriptionObject)_receiverObjectTable.get(
+			ReceiveSubscriptionObject receiveSubscriptionObject = _receiverObjectTable.get(
 					baseSubscriptionInfo
 			);
 			if(receiveSubscriptionObject == null) {
@@ -600,7 +623,7 @@ public class SubscriptionManager {
 			if(baseSubscriptionInfo == null) {
 				continue;
 			}
-			SendSubscriptionObject sendSubscriptionObject = (SendSubscriptionObject)_senderObjectTable.get(baseSubscriptionInfo);
+			SendSubscriptionObject sendSubscriptionObject = _senderObjectTable.get(baseSubscriptionInfo);
 			if(sendSubscriptionObject == null) {
 				sendSubscriptionObject = new SendSubscriptionObject(_senderSubscription);
 				_senderObjectTable.put(baseSubscriptionInfo, sendSubscriptionObject);
@@ -609,7 +632,12 @@ public class SubscriptionManager {
 					_highLevelCommunication.sendSendSubscription(_sendSubscriptionInfo);
 				}
 			}
+			else if(role.equals(SenderRole.sender()) && !sendSubscriptionObject.isSource()){
+				// Mehrere Sender dürfen sich auf eine Identifikation anmelden
+				sendSubscriptionObject.addSender(_senderSubscription);
+			}
 			else {
+				// ... aber nicht mehrere Quellen
 				throw new OneSubscriptionPerSendData("Ein Datum kann nur von einer Quelle angemeldet sein.");
 			}
 		}
@@ -644,9 +672,10 @@ public class SubscriptionManager {
 			BaseSubscriptionInfo baseSubscriptionInfo = new BaseSubscriptionInfo(
 					objects[i].getId(), dataDescription.getAttributeGroup().getAttributeGroupUsage(dataDescription.getAspect()), externalSimulationVariant
 			);
-			SendSubscriptionObject sendSubscriptionObject = (SendSubscriptionObject)_senderObjectTable.get(baseSubscriptionInfo);
+			SendSubscriptionObject sendSubscriptionObject = _senderObjectTable.get(baseSubscriptionInfo);
 			if(sendSubscriptionObject != null) {
-				if(sendSubscriptionObject.getClientSender() == sender) {
+				sendSubscriptionObject.removeSender(sender);
+				if(sendSubscriptionObject.isEmpty()) {
 					_senderObjectTable.remove(baseSubscriptionInfo);
 					if(_highLevelCommunication != null) {
 						_highLevelCommunication.sendSendUnsubscription(baseSubscriptionInfo);
@@ -695,7 +724,7 @@ public class SubscriptionManager {
 				return;
 			}
 		}
-		SendSubscriptionObject sendSubscriptionObject = (SendSubscriptionObject)_senderObjectTable.get(info);
+		SendSubscriptionObject sendSubscriptionObject = _senderObjectTable.get(info);
 		if(sendSubscriptionObject == null) {
 			throw new DataNotSubscribedException("Der Datensatz kann nicht versendet werden. Er muss vorher angemeldet sein (" + info.getObjectID() + ", "
 			        + info.getUsageIdentification() + ")");
@@ -747,7 +776,7 @@ public class SubscriptionManager {
 				id, attributeGroup.getAttributeGroupUsage(aspect), externalSimulationVariant
 		);
 
-		SendSubscriptionObject sendSubscriptionObject = (SendSubscriptionObject)_senderObjectTable.get(baseSubscriptionInfo);
+		SendSubscriptionObject sendSubscriptionObject = _senderObjectTable.get(baseSubscriptionInfo);
 		if(sendSubscriptionObject == null) {
 			throw new DataNotSubscribedException("Der Datensatz kann nicht versendet werden. Er muss vorher angemeldet sein ("
 			        + systemObject.getPidOrNameOrId() + ", " + attributeGroup.getPidOrNameOrId() + ", " + aspect.getPidOrNameOrId() + ")");
@@ -855,7 +884,7 @@ public class SubscriptionManager {
 				return;
 			}
 		}
-		SendSubscriptionObject sendSubscriptionObject = (SendSubscriptionObject)_senderObjectTable.get(info);
+		SendSubscriptionObject sendSubscriptionObject = _senderObjectTable.get(info);
 		if(sendSubscriptionObject != null) {
 			if(_configurationManager == null) {
 				throw new InitialisationNotCompleteException(
@@ -865,29 +894,38 @@ public class SubscriptionManager {
 			sendSubscriptionObject.confirmSendDataRequest(state);
 			DataModel dataModel = _configurationManager.getDataModel();
 			if(dataModel != null) {
-				ClientSenderInterface client = sendSubscriptionObject.getClientSender();
+
 				String warning = null;
 				if(state == RequestSenderDataTelegram.STOP_SENDING_NOT_A_VALID_SUBSCRIPTION) {
 					warning = "Ungültige Anmeldung";
 				}
 				if(state == RequestSenderDataTelegram.STOP_SENDING_NO_RIGHTS) {
-					warning = "Ungültige Anmeldung";
+					warning = "Ungültige Anmeldung (keine Rechte)";
 				}
-				if(client != null) {
-					SystemObject object = (SystemObject)dataModel.getObject(info.getObjectID());
-					DataDescription dataDescription = sendSubscriptionObject.getSenderSubscription().getDataDescription();
-					if(warning != null) _debug.warning("Negative Sendesteuerung: " + warning + " (" + (object == null ? "null" : object.getPidOrNameOrId()) + " " + dataDescription);
-					if(dataDescription != null) {
-						AttributeGroup attributeGroup = dataDescription.getAttributeGroup();
-						Aspect aspect = dataDescription.getAspect();
-						if((attributeGroup != null) && (aspect != null)) {
-							Aspect _aspect = substituteToAspect(attributeGroup, aspect);
-							if(!_aspect.equals(aspect)) {
-								dataDescription = dataDescription.getRedirectedDescription(_aspect);
+
+				Collection<SenderSubscription> senderSubscriptions = sendSubscriptionObject.getSenderSubscriptions();
+				for(SenderSubscription senderSubscription : senderSubscriptions) {
+					ClientSenderInterface client = senderSubscription.getClientSender();
+
+					if(client != null) {
+						SystemObject object = dataModel.getObject(info.getObjectID());
+						DataDescription dataDescription = senderSubscription.getDataDescription();
+						if(warning != null) {
+							_debug.warning("Negative Sendesteuerung: " + warning + " (" + (object == null ? "null" : object.getPidOrNameOrId()) + " " + dataDescription);
+							warning = null;
+						}
+						if(dataDescription != null) {
+							AttributeGroup attributeGroup = dataDescription.getAttributeGroup();
+							Aspect aspect = dataDescription.getAspect();
+							if((attributeGroup != null) && (aspect != null)) {
+								Aspect _aspect = substituteToAspect(attributeGroup, aspect);
+								if(!_aspect.equals(aspect)) {
+									dataDescription = dataDescription.getRedirectedDescription(_aspect);
+								}
 							}
 						}
+						client.dataRequest(object, dataDescription, state);
 					}
-					client.dataRequest(object, dataDescription, state);
 				}
 			}
 		}
@@ -901,7 +939,7 @@ public class SubscriptionManager {
 	 * @return Verweilzeit in Millisekunden
 	 */
 	long getTimeInCache(BaseSubscriptionInfo info) {
-		ReceiveSubscriptionObject receiveSubscriptionObject = (ReceiveSubscriptionObject)_receiverObjectTable.get(info);
+		ReceiveSubscriptionObject receiveSubscriptionObject = _receiverObjectTable.get(info);
 		if(receiveSubscriptionObject == null) {
 			return 0; // Wenn es keine Anmeldungen (mehr) gibt, dann muss auch nicht länger vorgehalten werden.
 		}
@@ -934,7 +972,7 @@ public class SubscriptionManager {
 		}
 		BaseSubscriptionInfo baseSubscriptionInfo = cachedObject.getBaseSubscriptionInfo();
 		if(baseSubscriptionInfo != null) {
-			ReceiveSubscriptionObject receiveSubscriptionObject = (ReceiveSubscriptionObject)_receiverObjectTable.get(
+			ReceiveSubscriptionObject receiveSubscriptionObject = _receiverObjectTable.get(
 					baseSubscriptionInfo
 			);
 			if(receiveSubscriptionObject != null) {
@@ -995,7 +1033,7 @@ public class SubscriptionManager {
 	 * @return der Index der Sendung
 	 */
 	final long getSendDataIndex(BaseSubscriptionInfo info) {
-		SendSubscriptionObject sendSubscriptionObject = (SendSubscriptionObject)_senderObjectTable.get(info);
+		SendSubscriptionObject sendSubscriptionObject = _senderObjectTable.get(info);
 		if(sendSubscriptionObject != null) {
 			return sendSubscriptionObject.getSendDataIndex();
 		}

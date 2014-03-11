@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 by Kappich Systemberatung Aachen
+ * Copyright 2012 by Kappich Systemberatung Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
@@ -21,24 +21,15 @@
 package de.bsvrz.dav.daf.util;
 
 import java.io.Serializable;
-import java.util.AbstractSet;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
- * Klasse, die zu einem Key mehrere Values zuordnen kann. Unter jedem Key wird ein Set gespeichert, sodass pro Key das gleiche Objekt maximal einmal gespeichert
- * wird.
+ * Klasse, die zu einem Key mehrere Values zuordnen kann. Unter jedem Key wird ein Set gespeichert, sodass pro Key das
+ * gleiche Objekt maximal einmal gespeichert wird. Dies kann durch den Optionalen useSet-parameter geändert werden,
+ * wodurch dann eine Liste verwendet wird.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 9883 $
+ * @version $Revision: 11131 $
  */
 @SuppressWarnings({"unchecked"})
 public class HashBagMap<K, V> implements Serializable {
@@ -48,22 +39,51 @@ public class HashBagMap<K, V> implements Serializable {
 
 	private final HashMap<K, Collection<V>> _backingHashMap;
 
+	private final boolean _useSet;
+
+	/**
+	 * Erstellt eine HashBagMap, die zu einem Key mehrere Values speichert, und für die Speicherung der Values ein
+	 * {@link Set} verwendet, sodass pro Key jedes Objekt nur einmal gespeichert wird.
+	 */
 	public HashBagMap() {
-		this(8);
+		this(8, true);
+	}
+	/**
+	 * Erstellt eine HashBagMap, die zu einem Key mehrere Values speichert. Über den useSet-parameter kann festgelegt werden,
+	 * ob für die Speicherung der Values intern ein Set (keine doppelten Values pro Key) oder eine Liste (doppelte Values pro Key möglich,
+	 * ggf. etwas speichersparender) verwendet wird.
+	 *
+	 * @param useSet ob ein Set verwendet werden soll
+	 */
+	public HashBagMap(boolean useSet) {
+		this(8, useSet);
 	}
 
+	/**
+	 * Erstellt eine HashBagMap, die zu einem Key mehrere Values speichert, und für die Speicherung der Values ein
+	 * {@link Set} verwendet, sodass pro Key jedes Objekt nur einmal gespeichert wird.
+	 * @param initialCapacity Initiale Key-Kapazität
+	 */
 	public HashBagMap(final int initialCapacity) {
-		_backingHashMap = new HashMap<K, Collection<V>>(initialCapacity);
+		this(initialCapacity, true);
+	}
+	/**
+	 * Erstellt eine HashBagMap, die zu einem Key mehrere Values speichert. Über den useSet-parameter kann festgelegt werden,
+	 * ob für die Speicherung der Values intern ein Set (keine doppelten Values pro Key) oder eine Liste (doppelte Values pro Key möglich,
+	 * ggf. etwas speichersparender) verwendet wird.
+	 *
+	 * @param useSet ob ein Set verwendet werden soll
+	 * @param initialCapacity Initiale Key-Kapazität
+	 */
+	public HashBagMap(final int initialCapacity, boolean useSet) {
+		_useSet = useSet;
+		_backingHashMap = new LinkedHashMap<K, Collection<V>>(initialCapacity);
 	}
 
-	public Iterable<Map.Entry<K, V>> elements() {
-		return new Iterable<Map.Entry<K, V>>() {
-			public Iterator<Map.Entry<K, V>> iterator() {
-				return new Itr();
-			}
-		};
-	}
-
+	/**
+	 * Gibt die Anzahl der gespeicherten Werte (Values) zurück
+	 * @return die Anzahl der gespeicherten Werte (Values)
+	 */
 	public int size() {
 		return values().size();
 	}
@@ -81,6 +101,10 @@ public class HashBagMap<K, V> implements Serializable {
 		return true;
 	}
 
+	/**
+	 * Gibt <tt>true</tt> zurück, wenn ein Objekt vom Typ Map.Entry enthalten ist, also hier dem Entry-Key mindestens das Entry-Value zugeordnet ist.
+	 * @return <tt>true</tt>, wenn ein Objekt vom Typ Map.Entry enthalten ist, sonst <tt>false</tt>
+	 */
 	public boolean contains(final Object o) {
 		if(o instanceof Map.Entry) {
 			final Map.Entry<K, V> entry = (Map.Entry<K, V>) o;
@@ -90,14 +114,18 @@ public class HashBagMap<K, V> implements Serializable {
 		return false;
 	}
 
+	/**
+	 * Fügt einen Entry hinzu. Shortcut für add(entry.getKey(), entry.getValue()).
+	 * @param entry Entry
+	 * @return siehe {@link #add(Object, Object)}
+	 */
 	public boolean add(final Map.Entry<K, V> entry) {
 		return add(entry.getKey(), entry.getValue());
 	}
 
 	/**
-	 * Entfernt ein Map.Entry<K, V> aus der HashBagMap
-	 * <p/>
-	 * {@inheritDoc}
+	 * Entfernt ein Map.Entry<K, V> aus der HashBagMap. Entspricht remove(entry.getKey(), entry.getValue). Tut nichts und gibt false
+	 * zurück, falls o kein Map.Entry ist.
 	 */
 	private boolean remove(final Object o) {
 		if(o instanceof Map.Entry) {
@@ -152,7 +180,8 @@ public class HashBagMap<K, V> implements Serializable {
 			collection.add(value);
 			_backingHashMap.put(key, collection);
 			return true;
-		} else {
+		}
+		else {
 			return checkAdd(key, v, value);
 		}
 	}
@@ -172,15 +201,16 @@ public class HashBagMap<K, V> implements Serializable {
 			collection.addAll(value);
 			_backingHashMap.put(key, collection);
 			return collection.size() > 0;
-		} else {
+		}
+		else {
 			return checkAdd(key, v, value);
 		}
 	}
 
 	private boolean checkAdd(final K key, final Collection<V> col, final V add) {
 		Collection<V> set = col;
-		if(col instanceof MiniSet && col.size() + 1 > HASHSET_THRESHOLD){
-			set = new HashSet<V>(col.size() + 1);
+		if(isMini(col) && col.size() + 1 > HASHSET_THRESHOLD) {
+			set = createNewInstance(col.size() + 1);
 			set.addAll(col);
 			set.add(add);
 			_backingHashMap.put(key, set);
@@ -190,8 +220,8 @@ public class HashBagMap<K, V> implements Serializable {
 
 	private boolean checkAdd(final K key, final Collection<V> col, final Collection<? extends V> add) {
 		Collection<V> set = col;
-		if(col instanceof MiniSet && col.size() + add.size() > HASHSET_THRESHOLD){
-			set = new HashSet<V>(col.size() + 1);
+		if(isMini(col) && col.size() + add.size() > HASHSET_THRESHOLD) {
+			set = createNewInstance(col.size() + 1);
 			set.addAll(col);
 			set.addAll(add);
 			_backingHashMap.put(key, set);
@@ -206,11 +236,20 @@ public class HashBagMap<K, V> implements Serializable {
 	 * @return Leere Collection
 	 */
 	private Collection<V> createNewInstance(final int size) {
-		if(size < HASHSET_THRESHOLD) {
-			return new MiniSet<V>();
-		} else {
-			return new HashSet<V>(size);
+		if(_useSet) {
+			if(size < HASHSET_THRESHOLD) {
+				return new MiniSet<V>();
+			}
+			else {
+				return new LinkedHashSet<V>(size);
+			}
 		}
+		return new ArrayList<V>(size);
+	}
+
+	private boolean isMini(final Collection<V> col) {
+		if(_useSet) return col instanceof MiniSet;
+		return false;
 	}
 
 	/**
@@ -237,7 +276,8 @@ public class HashBagMap<K, V> implements Serializable {
 	 * @return true falls ein Wert entfernt wurde
 	 */
 	public Collection<V> removeAll(final Object key) {
-		return _backingHashMap.remove(key);
+		Collection<V> remove = _backingHashMap.remove(key);
+		return remove == null ? Collections.<V>emptyList() : remove;
 	}
 
 	/**
@@ -257,8 +297,9 @@ public class HashBagMap<K, V> implements Serializable {
 	}
 
 	/**
-	 * Gibt eine Liste über alle values zurück. Änderungen an der zurückgegeben Collection haben keine Auswirkungen auf die HashBagMap. Einträge, die mehreren
-	 * Keys zugeordnet sind werden mehrfach zurückgegeben. Die Reihenfolge der Listeneinträge ist nicht definiert.
+	 * Gibt eine Liste über alle values zurück. Änderungen an der zurückgegeben Collection haben keine Auswirkungen auf die
+	 * HashBagMap. Einträge, die mehreren Keys zugeordnet sind werden mehrfach zurückgegeben. Die Reihenfolge der
+	 * Listeneinträge ist nicht definiert.
 	 *
 	 * @return eine Liste über alle values
 	 */
@@ -271,8 +312,8 @@ public class HashBagMap<K, V> implements Serializable {
 	}
 
 	/**
-	 * Gibt ein Set über alle values zurück. Änderungen an der zurückgegeben Collection haben keine Auswirkungen auf die HashBagMap. Einträge, die mehreren
-	 * Keys zugeordnet sind werden mehrfach zurückgegeben
+	 * Gibt ein Set über alle values zurück. Änderungen an der zurückgegeben Collection haben keine Auswirkungen auf die
+	 * HashBagMap.
 	 *
 	 * @return eine Liste über alle values
 	 */
@@ -312,7 +353,7 @@ public class HashBagMap<K, V> implements Serializable {
 	}
 
 	/**
-	 * Findet Keys, die den angegeben Wert als Value haben
+	 * Findet Keys, die mindestens den angegeben Wert als Value haben
 	 *
 	 * @param value Wert
 	 * @return Collection mit Keys die den angegebenen Werten zugeordnet sind
@@ -322,7 +363,7 @@ public class HashBagMap<K, V> implements Serializable {
 	}
 
 	/**
-	 * Findet Keys, die mindestens einen der angegebenen Werte als Value haben
+	 * Findet Keys, die mindestens einen der angegebenen Werte als (nicht unbedingt einzigen) Value haben
 	 *
 	 * @param values Werte
 	 * @return Collection mit Keys die den angegebenen Werten zugeordnet sind
@@ -353,67 +394,6 @@ public class HashBagMap<K, V> implements Serializable {
 
 	private void addAll(final Map.Entry<K, Collection<V>> entry) {
 		addAll(entry.getKey(), entry.getValue());
-	}
-
-	private class Itr implements Iterator<Map.Entry<K, V>> {
-
-		private final Iterator<Map.Entry<K, Collection<V>>> _itr;
-
-		private Iterator<V> _itr2 = null;
-
-		private K _k = null;
-
-		public Itr() {
-			_itr = _backingHashMap.entrySet().iterator();
-		}
-
-		public boolean hasNext() {
-			return _itr.hasNext() || (_itr2 != null && _itr2.hasNext());
-		}
-
-		public Map.Entry<K, V> next() {
-			while(_itr2 == null || !_itr2.hasNext()) {
-				final Map.Entry<K, Collection<V>> next = _itr.next();
-				_k = next.getKey();
-				_itr2 = next.getValue().iterator();
-			}
-			final V next = _itr2.next();
-			return new Entr(next);
-		}
-
-		public void remove() {
-			_itr2.remove();
-		}
-
-		private class Entr implements Map.Entry<K, V> {
-
-			private V _v;
-
-			public Entr(final V v) {
-				_v = v;
-			}
-
-			public K getKey() {
-				return _k;
-			}
-
-			public V getValue() {
-				return _v;
-			}
-
-			public V setValue(final Object value) {
-				final V newValue = (V) value;
-				HashBagMap.this.remove(_k, _v);
-				HashBagMap.this.add(_k, newValue);
-				_v = newValue;
-				return _v;
-			}
-
-			@Override
-			public String toString() {
-				return _k + "=" + _v;
-			}
-		}
 	}
 
 	private class Col extends AbstractSet<V> {

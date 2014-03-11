@@ -43,7 +43,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Implementierung der {@link SystemObjectType Typen von System-Objekten} auf Seiten der Konfiguration.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 6096 $
+ * @version $Revision: 10502 $
  */
 public class ConfigSystemObjectType extends ConfigConfigurationObject implements SystemObjectType {
 
@@ -257,7 +257,9 @@ public class ConfigSystemObjectType extends ConfigConfigurationObject implements
 	}
 
 	public List<SystemObject> getElements() {
-		return Collections.unmodifiableList(getAllElements());
+		List<SystemObject> allElements = getAllElements();
+		List<SystemObject> systemObjects = Collections.unmodifiableList(allElements);
+		return systemObjects;
 	}
 
 	/**
@@ -281,8 +283,8 @@ public class ConfigSystemObjectType extends ConfigConfigurationObject implements
 					_allElements = new CopyOnWriteArrayList<SystemObject>(objects);
 				}
 			}
-			return _allElements;
 		}
+		return _allElements;
 	}
 
 	public List<SystemObject> getElements(long time) {

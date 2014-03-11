@@ -20,22 +20,12 @@
  */
 package de.bsvrz.sys.funclib.operatingMessage;
 
-import de.bsvrz.dav.daf.main.OneSubscriptionPerSendData;
-import de.bsvrz.dav.daf.main.SendSubscriptionNotConfirmed;
-import de.bsvrz.dav.daf.main.ClientDavInterface;
-import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.SenderRole;
-import de.bsvrz.dav.daf.main.ClientSenderInterface;
-import de.bsvrz.dav.daf.main.DataDescription;
-import de.bsvrz.dav.daf.main.ResultData;
+import de.bsvrz.dav.daf.main.*;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.sys.funclib.debug.Debug;
-import de.bsvrz.dav.daf.main.config.ClientApplication;
-import de.bsvrz.dav.daf.main.config.ConfigurationException;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.Aspect;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 /**
  * Diese Klasse dient zur Erzeugung von Betriebsmeldungen. Diese Klasse ist als Singleton erstellt. Somit wird nur ein
@@ -45,7 +35,7 @@ import de.bsvrz.dav.daf.main.config.AttributeGroup;
  * keine Verbindung zum Datenverteiler beim Senden einer Betriebsmeldung, so wird eine <i>Warnung</i> zurückgegeben.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5058 $
+ * @version $Revision: 11565 $
  * @see #init
  * @see #sendMessage
  */
@@ -117,6 +107,10 @@ public class MessageSender {
 	 */
 	private String _rootName;
 
+	/**
+	 * Maximale Anzahl an zwischengespeicherten Nachrichten falls es keine positive Sendesteuerugn gibt
+	 */
+	private int _maxQueueSize = 100;
 
 	/* ################# Methoden ################# */
 	/**
@@ -279,21 +273,7 @@ public class MessageSender {
 
 		data.getTextValue("MeldungsText").setText(message);
 
-		if (_operatingMessageSender.getState() == 0) {
-			try {
-				final ResultData resultData = new ResultData(_messageObject, _dataDescriptionSender, System.currentTimeMillis(), data);
-				_connection.sendData(resultData);
-			} catch (SendSubscriptionNotConfirmed sendSubscriptionNotConfirmed) {
-				_debug.error("Fehler", sendSubscriptionNotConfirmed);
-				sendSubscriptionNotConfirmed.printStackTrace();
-			} catch (ConfigurationException ex) {
-				_debug.error("Fehler", ex);
-				throw new RuntimeException(ex);
-			}
-		} else {
-			_debug.warning("Senden ist nicht möglich, da die Sendesteuerung noch keine Sendeerlaubnis gibt! Evtl. fehlt die Betriebsmeldungsverwaltung. " +
-					"Folgende Meldung wurde nicht verschickt", data);
-		}
+		_operatingMessageSender.sendData(data);
 	}
 
 	/**
@@ -336,17 +316,39 @@ public class MessageSender {
 		_applicationLabel = applicationLabel;
 	}
 
+	/**
+	 * Setzt die Größe der Warteschlange, in der Betriebsmeldungen gehalten werden solange es noch keine Sendesteuerung gibt. (Standardwert:100)
+	 * @param maxQueueSize neue Größe (>=0)
+	 */
+	public void setMaxQueueSize(final int maxQueueSize) {
+		if(maxQueueSize < 0) throw new IllegalArgumentException("maxQueueSize = " +maxQueueSize);
+		_maxQueueSize = maxQueueSize;
+	}
 
 	/**
 	 * Diese Klasse fragt den aktuellen Zustand der Sendesteuerung ab. Durch Abfrage der Methode {@link #getState()} kann
-	 * ermittelt werden, ob eine Betriebsmeldung an die Betriebsmeldungsverwaltung geschickt werden kann, oder nicht.
+	 * ermittelt werden, ob aktuell eine Betriebsmeldung an die Betriebsmeldungsverwaltung geschickt werden kann, oder nicht.
 	 */
 	private final class OperatingMessageSender implements ClientSenderInterface {
-		private byte _state = 1;
+		private byte _state = STOP_SENDING;
+
+		/**
+		 * In dieser Queue warten Datensätze wenn aktuell die Betriebsmeldungsverwaltung nicht erreichbar ist (bzw. keine positive Sendesteuerung vorliegt)
+		 */
+		private final Deque<ResultData> _waitQueue = new ArrayDeque<ResultData>();
 
 		public void dataRequest(SystemObject object, DataDescription dataDescription, byte state) {
 			_debug.finest("Änderung der Sendesteuerung", state);
-			_state = state;
+			synchronized(_waitQueue) {
+				_state = state;
+				if(state == START_SENDING){
+					// In Queue wartende Nachrichten verschicken
+					while(!_waitQueue.isEmpty()){
+						ResultData data = _waitQueue.removeFirst();
+						sendDataDirect(data);
+					}
+				}
+			}
 		}
 
 		public boolean isRequestSupported(SystemObject object, DataDescription dataDescription) {
@@ -354,7 +356,39 @@ public class MessageSender {
 		}
 
 		public byte getState() {
-			return _state;
+			synchronized(_waitQueue) {
+				return _state;
+			}
+		}
+
+		private void sendData(final Data data) {
+			final ResultData resultData = new ResultData(_messageObject, _dataDescriptionSender, System.currentTimeMillis(), data);
+			synchronized(_waitQueue) {
+				if (_state == START_SENDING) {
+					sendDataDirect(resultData);
+				} else {
+					enqueue(resultData);
+				}
+			}
+		}
+
+		private void sendDataDirect(final ResultData resultData) {
+			try {
+				_connection.sendData(resultData);
+			} catch (SendSubscriptionNotConfirmed sendSubscriptionNotConfirmed) {
+				_debug.error("Fehler", sendSubscriptionNotConfirmed);
+				sendSubscriptionNotConfirmed.printStackTrace();
+			}
+		}
+
+		private void enqueue(final ResultData data) {
+			_waitQueue.addLast(data);
+			while(_waitQueue.size() > _maxQueueSize){
+				// Bei Queue-Überlauf älteste Nachrichten entfernen und auf Debug ausgeben
+				ResultData removed = _waitQueue.removeFirst();
+				_debug.warning("Senden ist nicht möglich, da die Sendesteuerung negativ und der Zwischenspeicher voll ist. Evtl. fehlt die Betriebsmeldungsverwaltung. " +
+						               "Folgende Meldung wurde nicht verschickt", removed.getData());
+			}
 		}
 	}
 }

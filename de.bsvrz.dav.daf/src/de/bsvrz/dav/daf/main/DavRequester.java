@@ -22,9 +22,17 @@ package de.bsvrz.dav.daf.main;
 
 import de.bsvrz.dav.daf.main.config.Aspect;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
+import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
+import de.bsvrz.dav.daf.main.config.ConfigurationArea;
+import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
+import de.bsvrz.dav.daf.main.config.DataModel;
 import de.bsvrz.dav.daf.main.config.SystemObject;
+import de.bsvrz.dav.daf.main.config.SystemObjectInfo;
+import de.bsvrz.dav.daf.main.config.SystemObjectType;
 import de.bsvrz.sys.funclib.debug.Debug;
 
+import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -34,7 +42,7 @@ import java.util.Queue;
  * Klasse zur Kommunikations mit dem Datenverteiler. Wird derzeit nur für Anmeldungen von Transaktionsquellen/Senken benutzt, ist aber erweiterbar.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8953 $
+ * @version $Revision: 11481 $
  */
 public abstract class DavRequester {
 
@@ -43,6 +51,10 @@ public abstract class DavRequester {
 	protected static final int SUBSCRIBE_TRANSMITTER_SOURCE = 1;
 
 	protected static final int SUBSCRIBE_TRANSMITTER_DRAIN = 2;
+
+	protected static final int SUBSCRIPTION_INFO = 3;
+
+	protected static final int APP_SUBSCRIPTION_INFO = 4;
 
 	protected static final int ANSWER_OK = 1000;
 
@@ -56,7 +68,7 @@ public abstract class DavRequester {
 
 	protected final Aspect _sendAspect;
 
-	private final Map<SystemObject, Sender> _senderMap = new HashMap<SystemObject, Sender>();
+	private final Map<Long, Sender> _senderMap = new HashMap<Long, Sender>();
 
 	/**
 	 * Erzeugt einen neuen DavRequester
@@ -100,8 +112,10 @@ public abstract class DavRequester {
 	 * @param errorString Fehlermeldung
 	 * @param senderObject Eigenes Systemobjekt
 	 */
-	protected void sendError(
-			final SystemObject target, final long requestId, final String errorString, final SystemObject senderObject) {
+	protected void sendError(final SystemObject target, final long requestId, final String errorString, final SystemObject senderObject) throws IOException {
+		sendError(target.getId(), requestId, errorString, senderObject);
+	}
+	protected void sendError(final long target, final long requestId, final String errorString, final SystemObject senderObject) throws IOException {
 		try {
 			Sender sender = _senderMap.get(target);
 			if(sender == null || !sender.isRunning()) {
@@ -113,7 +127,7 @@ public abstract class DavRequester {
 			waitUntilSent(sender);
 		}
 		catch(OneSubscriptionPerSendData oneSubscriptionPerSendData) {
-			_debug.warning("Kann Antwort nicht senden", oneSubscriptionPerSendData);
+			throw new IOException("Kann Nachricht nicht senden", oneSubscriptionPerSendData);
 		}
 	}
 
@@ -125,7 +139,13 @@ public abstract class DavRequester {
 	 * @param data Daten
 	 * @param senderObject Eigenes Systemobjekt
 	 */
-	protected void sendBytes(final SystemObject target, final long requestId, final long answerKind, final byte[] data, final SystemObject senderObject) {
+	protected void sendBytes(final SystemObject target, final long requestId, final long answerKind, final byte[] data, final SystemObject senderObject)
+			throws IOException {
+		sendBytes(target.getId(), requestId, answerKind, data, senderObject);
+	}
+
+	protected void sendBytes(final long target, final long requestId, final long answerKind, final byte[] data, final SystemObject senderObject)
+			throws IOException {
 		try {
 			Sender sender = _senderMap.get(target);
 			if(sender == null || !sender.isRunning()) {
@@ -137,18 +157,18 @@ public abstract class DavRequester {
 			waitUntilSent(sender);
 		}
 		catch(OneSubscriptionPerSendData oneSubscriptionPerSendData) {
-			_debug.warning("Kann Nachricht nicht senden", oneSubscriptionPerSendData);
+			throw new IOException("Kann Nachricht nicht senden", oneSubscriptionPerSendData);
 		}
 	}
 
-	private void waitUntilSent(final Sender sender) {
+	private void waitUntilSent(final Sender sender) throws IOException {
 		final long startTime = System.currentTimeMillis();
 		synchronized(sender){
 			while(!sender.hasSentData()){
 				try {
 					sender.wait(1000);
-					if(System.currentTimeMillis() - startTime > 60 * 1000) {
-						_debug.warning("Kann Nachricht nicht senden: Timeout beim Warten auf Sendesteuerung; " + sender);
+					if(System.currentTimeMillis() - startTime > 5 * 1000) {
+						throw new IOException("Timeout beim Warten auf Sendesteuerung");
 					}
 				}
 				catch(InterruptedException ignored) {
@@ -201,8 +221,8 @@ public abstract class DavRequester {
 
 		private boolean _running = true;
 
-		public Sender(final SystemObject object) throws OneSubscriptionPerSendData {
-			_object = object;
+		public Sender(final long object) throws OneSubscriptionPerSendData {
+			_object = new DummyObject(object);
 			_dataDescription = new DataDescription(_attributeGroup, _sendAspect);
 			_connection.subscribeSender(this, _object, _dataDescription, SenderRole.sender());
 			final Thread thread = new Thread(new QueueHandler());
@@ -304,6 +324,133 @@ public abstract class DavRequester {
 		@Override
 		public String toString() {
 			return "Sender{" + "_queue=" + _queue + ", _state=" + _state + ", _object=" + _object + ", _dataDescription=" + _dataDescription + "_running=" + isRunning() + '}';
+		}
+	}
+
+	private class DummyObject implements SystemObject {
+
+		private final long _objectId;
+
+		private SystemObjectType _type = _connection.getDataModel().getType("typ.applikation");
+
+		public DummyObject(final long objectId) {
+			_objectId = objectId;
+		}
+
+		@Override
+		public long getId() {
+			return _objectId;
+		}
+
+		@Override
+		public SystemObjectType getType() {
+			return _type;
+		}
+
+		@Override
+		public boolean isOfType(final SystemObjectType type) {
+			return type == _type;
+		}
+
+		@Override
+		public boolean isOfType(final String typePid) {
+			return typePid.equals(_type.getPid());
+		}
+
+		@Override
+		public String getPid() {
+			return null;
+		}
+
+		@Override
+		public String getName() {
+			return null;
+		}
+
+		@Override
+		public void setName(final String name) throws ConfigurationChangeException {
+			throw new UnsupportedOperationException("Nicht implementiert");
+		}
+
+		@Override
+		public String getNameOrPidOrId() {
+			return String.valueOf(_objectId);
+		}
+
+		@Override
+		public String getPidOrNameOrId() {
+			return String.valueOf(_objectId);
+		}
+
+		@Override
+		public String getPidOrId() {
+			return String.valueOf(_objectId);
+		}
+
+		@Override
+		public boolean isValid() {
+			return false;
+		}
+
+		@Override
+		public void invalidate() throws ConfigurationChangeException {
+			throw new UnsupportedOperationException("Nicht implementiert");
+		}
+
+		@Override
+		public DataModel getDataModel() {
+			return null;
+		}
+
+		@Override
+		public Data getConfigurationData(final AttributeGroup atg) {
+			return null;
+		}
+
+		@Override
+		public Data getConfigurationData(final AttributeGroup atg, final Aspect asp) {
+			return null;
+		}
+
+		@Override
+		public Data getConfigurationData(final AttributeGroupUsage atgUsage) {
+			return null;
+		}
+
+		@Override
+		public void setConfigurationData(final AttributeGroup atg, final Data data) throws ConfigurationChangeException {
+			throw new UnsupportedOperationException("Nicht implementiert");
+		}
+
+		@Override
+		public void setConfigurationData(
+				final AttributeGroup atg, final Aspect asp, final Data data) throws ConfigurationChangeException {
+			throw new UnsupportedOperationException("Nicht implementiert");
+		}
+
+		@Override
+		public void setConfigurationData(final AttributeGroupUsage atgUsage, final Data data) throws ConfigurationChangeException {
+			throw new UnsupportedOperationException("Nicht implementiert");
+		}
+
+		@Override
+		public Collection<AttributeGroupUsage> getUsedAttributeGroupUsages() {
+			return _connection.getLocalApplicationObject().getUsedAttributeGroupUsages();
+		}
+
+		@Override
+		public SystemObjectInfo getInfo() {
+			return null;
+		}
+
+		@Override
+		public ConfigurationArea getConfigurationArea() {
+			return null;
+		}
+
+		@Override
+		public int compareTo(final Object o) {
+			return 0;
 		}
 	}
 }

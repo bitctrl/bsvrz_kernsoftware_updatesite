@@ -35,7 +35,7 @@ import java.io.IOException;
  * Diese Hilfsklasse stellt Methoden zur Verfügung, mit denen DatenTelegramme zerlegt und wieder zusammengefügt werden können.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8322 $
+ * @version $Revision: 11572 $
  */
 public class TelegramUtility {
 

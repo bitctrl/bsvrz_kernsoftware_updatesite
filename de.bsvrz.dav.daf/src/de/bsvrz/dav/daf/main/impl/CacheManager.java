@@ -41,7 +41,7 @@ import java.util.*;
  * ihrer beim Anmelden angegebenen Verweilzeit, aus dem Cache gelöscht werden. Diese Subkomponente wird von ClientDavConnection erzeugt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8005 $
+ * @version $Revision: 11437 $
  */
 public class CacheManager {
 
@@ -231,6 +231,9 @@ public class CacheManager {
 							cachedObject = new CachedObject(
 									baseSubscriptionInfo, delayedDataFlag, dataIndex, newData.getDataTime(), errorFlag, _dataModel
 							);
+							if(dataInside) {
+								cachedObject.update(attributesIndicator, data, delayedDataFlag);
+							}
 							cachedObject.setActionTime(System.currentTimeMillis());
 						}
 						break;
@@ -428,11 +431,24 @@ public class CacheManager {
 
 		public void run() {
 			int loopCount = 0;
+			final String debugEnabledSetting = System.getProperty("de.bsvrz.dav.daf.main.impl.CacheManager.CacheCleaner.run.debug", "nein").trim().toLowerCase();
+			final boolean debugEnabled;
+			if(debugEnabledSetting.startsWith("n")) {
+				debugEnabled = false;
+			}
+			else {
+				debugEnabled = true;
+			}
 			while(!interrupted()) {
 				try {
 					sleep(10000);
+					final long startTime = System.currentTimeMillis();
 					// Alle Daten, die sich im Cache befinden (Jedes Element der Liste entspricht den gecachten Daten(Liste) einer BaseSubscriptionInfo)
 					ArrayList list = new ArrayList(cache.values());
+					final int numberOfSubscription = list.size();
+					int numberOfCheckedDatasets = 0;
+					int numberOfDeletedDatasets = 0;
+
 					for(int i = list.size() - 1; i > -1; --i) {
 						// Alle Daten im Cache, die zu einer BaseSubscriptionInfo gehören
 						LinkedList allCachedDataOfABaseSubscriptionInfo = (LinkedList)list.get(i);
@@ -455,9 +471,11 @@ public class CacheManager {
 										while(_iterator.hasNext()) {
 											_cachedObject = (CachedObject)_iterator.next();
 											if(_cachedObject != null) {
+												numberOfCheckedDatasets ++;
 												if(_cachedObject.getActionTime() < thresholdTime) {
 													// Die If-Abfrage verhindert, dass das letzte Element gelöscht wird
 													if(_iterator.hasNext()) {
+														numberOfDeletedDatasets ++;
 														_iterator.remove();
 													}
 												}
@@ -470,6 +488,11 @@ public class CacheManager {
 								}
 							}
 						}
+					}
+					final long endTime = System.currentTimeMillis();
+					if(debugEnabled) {
+						long duration = endTime - startTime;
+						_debug.info("CacheCleanerlauf hat in " + duration + "ms " + numberOfSubscription + " Anmeldungen mit " + numberOfCheckedDatasets + " gespeicherten Datensätzen geprüft und " + numberOfDeletedDatasets + " Datensätze gelöscht");
 					}
 //					// Garbage Collection nur nach jedem 10. Durchlauf aufrufen.
 //					if((++loopCount % 10) == 0) {

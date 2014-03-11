@@ -73,7 +73,7 @@ import java.util.Set;
  * Implementierung des Konfigurationsbereichs auf Seiten der Konfiguration.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8591 $
+ * @version $Revision: 11583 $
  */
 public class ConfigConfigurationArea extends ConfigConfigurationObject implements ConfigurationArea, ConfigConfigurationAreaInterface {
 
@@ -332,6 +332,17 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 			else {
 				_debug.error("Element vom Typ 'typ.konfigurationsMenge' ist kein konfigurierender MengenTyp: ", systemObject);
 				throw new IllegalStateException("Element vom Typ 'typ.konfigurationsMenge' ist kein konfigurierender MengenTyp: " + systemObject.getPid());
+			}
+		}
+
+		// Prüfung auf unversionierte Änderungen
+		AttributeGroup attributeGroup = _dataModel.getAttributeGroup("atg.konfigurationsBereichUnversionierteÄnderungen");
+		if(attributeGroup != null){
+			Data configurationData = getConfigurationData(attributeGroup);
+			if(configurationData != null){
+				for(Data data : configurationData.getItem("versionen")) {
+					if(data.getUnscaledValue("Version").shortValue() == modifiableVersion) return modifiableVersion;
+				}
 			}
 		}
 

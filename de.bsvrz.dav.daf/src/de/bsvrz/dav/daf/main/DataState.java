@@ -26,7 +26,7 @@ package de.bsvrz.dav.daf.main;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 5064 $ / $Date: 2007-09-01 22:25:35 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 11248 $ / $Date: 2013-04-30 18:18:30 +0200 (Di, 30 Apr 2013) $ / ($Author: rs $)
  */
 public final class DataState {
 
@@ -124,7 +124,7 @@ public final class DataState {
 			case 9:
 				return INVALID_SUBSCRIPTION;
 			default:
-				throw new IllegalArgumentException("Undefinierte Objektkodierung");
+				throw new IllegalArgumentException("Undefinierte Objektkodierung: " + code);
 		}
 	}
 

@@ -84,7 +84,7 @@ import java.util.*;
  * hier zusammengeführt und entsprechend des {@link DataModel Datenmodells} zur Verfügung gestellt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 10099 $
+ * @version $Revision: 11641 $
  * @see DataModel
  */
 public class ConfigDataModel implements DataModel, ConfigurationControl {
@@ -125,9 +125,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	/** Der Konfigurationsverantwortliche der Konfiguration. */
 	private ConfigurationAuthority _configurationAuthority;
 
-	/**
-	 * Flag, mit dem die Konsistenzprüfung entscheiden soll, ob doppelte Pids in verschiedenen Konfigurationsbereichen erlaubt sind.
-	 */
+	/** Flag, mit dem die Konsistenzprüfung entscheiden soll, ob doppelte Pids in verschiedenen Konfigurationsbereichen erlaubt sind. */
 	private boolean _allowDoublePids = false;
 
 	private Set<ConfigMutableSet> _dirtyMutableSets = Collections.synchronizedSet(new HashSet<ConfigMutableSet>());
@@ -146,14 +144,26 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	 * @param adminFile Datei mit den Verwaltungsdaten der Konfiguration oder leere Datei.
 	 */
 	public ConfigDataModel(File adminFile) {
-		
+		this(adminFile, false);
+	}
+
+	/**
+	 * Erzeugt das Datenmodell der Konfiguration.
+	 *
+	 * @param adminFile Datei mit den Verwaltungsdaten der Konfiguration oder leere Datei.
+	 * @param ignoreDependencyErrorsInConsistencyCheck
+	 *                  Flag zum ignorieren fehlender Abhängigkeiten zwischen Konfigurationsbereichen
+	 */
+	public ConfigDataModel(File adminFile, boolean ignoreDependencyErrorsInConsistencyCheck) {
+		_ignoreDependencyErrorsInConsistencyCheck = ignoreDependencyErrorsInConsistencyCheck;
+
 		// Falls es im Konstruktor zu einem Fehler kommt, wird die close()-Methode aufgerufen,
 		// damit alle lock-Dateien, die bisher erzeugt wurden, wieder gelöscht werden.
 		try {
-			long startTime = System.currentTimeMillis();	// Startzeit gibt an, wann das Datenmodell eingeladen wird
+			long startTime = System.currentTimeMillis();    // Startzeit gibt an, wann das Datenmodell eingeladen wird
 
 			// Erstellt ein Objekt für den Zugriff auf die Verwaltungsdaten.
-			_adminFile = adminFile;	// wird nur für toString benötigt
+			_adminFile = adminFile;    // wird nur für toString benötigt
 			_managementFile = new ManagementFile(adminFile);
 
 			// Prüfung der für die Konfiguration selbst notwendigen Konfigurationsbereiche 
@@ -196,26 +206,21 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 					_debug.error(errorMessage, ex);
 					throw new IllegalStateException(errorMessage, ex);
 				}
-
-				// Nachdem der Bereich in den Speicher geladen wurde, wird die GC erzwungen. Dies ist nötig, da das Programm
-				// sehr viele externe Ressourcen anfordert, die nicht sofort freigegeben werden. Somit "stauen" sich diese Ressourcen im
-				// Speicher und führen dann zu einer Fehlermeldung (entweder OutOfMemory oder "Not Enough Swap Space").
-				System.gc();
-				
+				manualGc();
 			}// for, über alle Bereiche der Datei
-			
+
 			// alle Konfigurationsbereiche, die eine neue Version erhalten haben, werden, wenn zulässig, reorganisiert.
-			
+
 			_debug.finer("Anzahl der Konfigurationsbereiche, die in eine neue Version überführt wurden", configurationAreaWithNewActivatedVersion.size());
-			
-			for(String pid : configurationAreaWithNewActivatedVersion) {				
+
+			for(String pid : configurationAreaWithNewActivatedVersion) {
 				final ConfigurationArea configurationArea = getAllConfigurationAreas().get(pid);
 				ConfigurationAuthority configurationAuthority = configurationArea.getConfigurationAuthority();
 				_debug.finest("KV Bereich: " + configurationAuthority.getPid() + " KV Konfiguration: " + _managementFile.getConfigurationAuthority());
 				if(configurationAuthority.getPid().equals(_managementFile.getConfigurationAuthority())) {
 					_debug.finest("Restrukturierung in folgendem Bereich erforderlich", configurationArea.getPidOrNameOrId());
 					((ConfigAreaFile)_configurationFileManager.getAreaFile(pid)).initialVersionRestructure();
-					System.gc();
+					manualGc();
 				}
 			}
 
@@ -230,42 +235,44 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 					throw new RuntimeException(errorMessage, ex);
 				}
 			}
-			
+
 			// nächste zu aktivierende Version festlegen
 			for(ConfigurationAreaManagementInfo managementInfo : managementInfos) {
-				
+
 				ConfigurationAreaFile areaFile = _configurationFileManager.getAreaFile(managementInfo.getPid());
 				if(areaFile != null) {
-					
+
 					ConfigurationArea configurationArea = getConfigurationArea(managementInfo.getPid());
-					
-					if(configurationArea == null) {						
+
+					if(configurationArea == null) {
 						configurationArea = getAllConfigurationAreas().get(managementInfo.getPid());
-                    }
+					}
 					
 					/* Der Bereich konnte nicht gefunden werden, dann ist configurationArea == null und es wird eine
 					 * NullpointerException ausgelöst. Diese wird gefangen, dafür wird eine neue erzeugt, die eine
 					 * hilfreiche Fehlermeldung enthält.
 					 */
 					short transferableVersion;
-                    short activatableVersion;
-                    try {
-	                    transferableVersion = configurationArea.getTransferableVersion();
-	                    activatableVersion = configurationArea.getActivatableVersion();
-                    }
-                    catch(NullPointerException e) {
-                    	throw new RuntimeException("Fehler beim Zugriff auf den Bereich " + managementInfo.getPid() + 
-                		", bitte Groß-/Kleinschreibung der Pid in der Verwaltungsdatei prüfen.", e);
-                    }
+					short activatableVersion;
+					try {
+						transferableVersion = configurationArea.getTransferableVersion();
+						activatableVersion = configurationArea.getActivatableVersion();
+					}
+					catch(NullPointerException e) {
+						throw new RuntimeException(
+								"Fehler beim Zugriff auf den Bereich " + managementInfo.getPid() +
+								", bitte Groß-/Kleinschreibung der Pid in der Verwaltungsdatei prüfen.", e
+						);
+					}
 
-					short modifiableVersion = configurationArea.getActiveVersion(); 
+					short modifiableVersion = configurationArea.getActiveVersion();
 					if(transferableVersion > modifiableVersion) modifiableVersion = transferableVersion;
 					if(activatableVersion > modifiableVersion) modifiableVersion = activatableVersion;
-					modifiableVersion++;	// um eins erhöhen!!
+					modifiableVersion++;    // um eins erhöhen!!
 					areaFile.setNextActiveVersion(modifiableVersion);
 					//				_debug.info("Nächste zu aktivierende Version " + modifiableVersion + " des KB " + managementInfo.getPid());
 				} // Falls die Bereichsdatei noch nicht existiert, muss auch keine Versionsnummer angegeben werden. Dies wird beim Erstellen des Bereichs gesetzt!
-				System.gc();
+				manualGc();
 			}
 
 			// Überprüfung auf Eindeutigkeit der Kodierung des Konfigurationsverantwortlichen
@@ -317,6 +324,14 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			close();
 			throw new RuntimeException(ex);
 		}
+	}
+
+	private void manualGc() {
+		// Nachdem der Bereich in den Speicher geladen wurde, wird die GC erzwungen. Dies ist nötig, da das Programm
+		// sehr viele externe Ressourcen anfordert, die nicht sofort freigegeben werden. Somit "stauen" sich diese Ressourcen im
+		// Speicher und führen dann zu einer Fehlermeldung (entweder OutOfMemory oder "Not Enough Swap Space").
+		// jh: manueller System.gc() ist eigentlich immer eine schlechte Idee, standardmäßig deaktiviert.
+		if(System.getProperty("config.manual.gc") != null) System.gc();
 	}
 
 	private void checkRequiredArea(final String configurationAreaPid, final int recommendedVersion) {
@@ -597,8 +612,10 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 
 	/**
 	 * Führt die Konsistenzprüfung aus und gibt das Ergebnis im Fehlerfalls auf dem Bildschirm aus.
-	 * @param configurationAreas Konfigurationsbereiche in den zu betrachtenden Versionen.
+	 *
+	 * @param configurationAreas     Konfigurationsbereiche in den zu betrachtenden Versionen.
 	 * @param kindOfConsistencyCheck Art der durchzuführenden Prüfung.
+	 *
 	 * @return Ergebnisse der Konsistenzprüfung
 	 */
 	private ConsistencyCheckResultInterface checkConsistency(
@@ -790,12 +807,12 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	/**
 	 * Diese Methode beauftragt die Konfiguration alle Konfigurationsbereiche einer Konsistenzprüfung zu unterziehen und behebbare Probleme zu beheben.
 	 *
-	 * @param configurationAreas Definiert alle Konfigurationsbereiche, die einer Konsistenzprüfung unterzogen werden sollen. Der Bereich wird über seine Pid
-	 *                           identifiziert, zusätzlich wird die Version angegeben in der der Konfigurationsbereich geprüft werden soll. Alle Bereiche der
-	 *                           Konfiguration, die nicht angegeben werden, werden in die Prüfung einbezogen und zwar mit ihrer aktuellen Version und müssen somit
-	 *                           nicht explizit angegeben werden.
-	 *
+	 * @param configurationAreas     Definiert alle Konfigurationsbereiche, die einer Konsistenzprüfung unterzogen werden sollen. Der Bereich wird über seine Pid
+	 *                               identifiziert, zusätzlich wird die Version angegeben in der der Konfigurationsbereich geprüft werden soll. Alle Bereiche der
+	 *                               Konfiguration, die nicht angegeben werden, werden in die Prüfung einbezogen und zwar mit ihrer aktuellen Version und müssen
+	 *                               somit nicht explizit angegeben werden.
 	 * @param kindOfConsistencyCheck Art der Prüfung
+	 *
 	 * @return Ergebnis der Konsistenzprüfung
 	 */
 	private ConsistencyCheckResultInterface checkConsistencyAndFixErrors(
@@ -827,9 +844,11 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 				}
 			}
 
-			_debug.warning("Fehlerbehebung beendet.\n" +
-			               "Anzahl erfolgreich behobene Probleme: " + fixed + "\n" +
-			               "Anzahl nicht erfolgreich behobene Probleme: " + failed);
+			_debug.warning(
+					"Fehlerbehebung beendet.\n" +
+					"Anzahl erfolgreich behobene Probleme: " + fixed + "\n" +
+					"Anzahl nicht erfolgreich behobene Probleme: " + failed
+			);
 
 			// ... erneut eine Prüfung durchführen ...
 			final ConsistencyCheckResultInterface secondRun = new ConsistencyCheck(
@@ -856,17 +875,19 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 				if(entry instanceof FixableConsistencyCheckResultEntry) {
 					hasFixableProblems = true;
 				}
-				tmp.addEntry(entry); 
+				tmp.addEntry(entry);
 			}
 
 			if(hasFixableProblems) {
+				final ConfigurationAuthority configurationAuthority = getConfigurationAuthority();
+				final ConfigurationArea configurationArea = configurationAuthority == null ? null : configurationAuthority.getConfigurationArea();
 				tmp.addEntry(
 						new ConsistencyCheckResultEntry(
 								ConsistencyCheckResultEntryType.LOCAL_ERROR,
-								getConfigurationAuthority().getConfigurationArea(),
+								configurationArea,
 								Collections.<SystemObject>emptyList(),
-								"Es sind auch nach der Fehlerkorrektur noch behebbare Fehler vorhanden. " +
-								"Eventuell trat beim Korrigieren des Fehlers ein Problem auf, oder der Vorgang muss wiederholt werden."
+								"Es sind auch nach der Fehlerkorrektur noch behebbare Fehler vorhanden. "
+								+ "Eventuell trat beim Korrigieren des Fehlers ein Problem auf, oder der Vorgang muss wiederholt werden."
 						)
 				);
 			}
@@ -1152,7 +1173,8 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 		final Collection<ConfigurationArea> allAreas = getAllConfigurationAreas().values();
 
 		for(ConfigurationArea area : allAreas) {
-			if(area.getConfigurationAuthority() == getConfigurationAuthority()) {
+			if(area.getConfigurationAuthority() == getConfigurationAuthority()
+			   || area.getConfigurationAuthority().getPid().equals(getConfigurationAuthorityPid())) {
 				final ConfigAreaAndVersion simplifiedConfigAreaAndVersion;
 				if(areaWithHighestPossibleVersion.containsKey(area)) {
 					// Der Bereich soll in der höchst möglichen Version freigegeben werden oder aber in der übergebenen Version.
@@ -1460,7 +1482,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			else if(typePid.equals(Pid.Type.TYPE)) {
 				systemObject = new ConfigConfigurationObjectType(configurationArea, systemObjectInfo);
 			}
-			else {	// Sonderbehandlung verschiedener Fälle
+			else {    // Sonderbehandlung verschiedener Fälle
 //				SystemObjectType type = (SystemObjectType) getObject(typePid);
 				// hier brauche ich die ID, da ich sonst zukünftige Typen nicht erhalte
 				SystemObjectType type = (SystemObjectType)getObject(systemObjectInfo.getTypeId());
@@ -1476,18 +1498,18 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 							+ systemObjectInfo
 					);
 				}
-				String typeTypePid = typeType.getPid();	// Pid des Typs vom Typ
+				String typeTypePid = typeType.getPid();    // Pid des Typs vom Typ
 				if(typeTypePid == null) {
 					throw new NullPointerException(
 							"Beim Anlegen eines Systemobjekts konnte die Pid vom Typ des Objekttyps mit der Pid '" + typePid
 							+ "' nicht ermittelt werden. ObjektInfo: " + systemObjectInfo
 					);
 				}
-				if(typeTypePid.equals(Pid.Type.OBJECT_SET_TYPE)) {	// es handelt sich um eine Menge
-					if(((ObjectSetType)type).isMutable()) {	// veränderbare Menge
+				if(typeTypePid.equals(Pid.Type.OBJECT_SET_TYPE)) {    // es handelt sich um eine Menge
+					if(((ObjectSetType)type).isMutable()) {    // veränderbare Menge
 						systemObject = new ConfigMutableSet(configurationArea, systemObjectInfo);
 					}
-					else {	// nicht veränderbare Menge
+					else {    // nicht veränderbare Menge
 						systemObject = new ConfigNonMutableSet(configurationArea, systemObjectInfo);
 					}
 				}
@@ -1501,16 +1523,16 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 						// für den Datenverteiler
 						systemObject = new ConfigDavApplication(configurationArea, systemObjectInfo);
 					}
-					else {			// für alle anderen Konfigurationsobjekte
+					else {            // für alle anderen Konfigurationsobjekte
 						systemObject = new ConfigConfigurationObject(configurationArea, systemObjectInfo);
 					}
 				}
-				else {	// wenn keiner der oberen Fälle zutrifft, dann muss es ein dynamisches Objekt sein
+				else {    // wenn keiner der oberen Fälle zutrifft, dann muss es ein dynamisches Objekt sein
 					if(type.inheritsFrom(getType(Pid.Type.CLIENT_APPLICATION))) {
 						// für die verschiedenen Applikationen
 						systemObject = new ConfigClientApplication(configurationArea, systemObjectInfo);
 					}
-					else {	// alle anderen dynamischen Objekte
+					else {    // alle anderen dynamischen Objekte
 						systemObject = new ConfigDynamicObject(configurationArea, systemObjectInfo);
 					}
 				}
@@ -1704,6 +1726,8 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	public void deleteObjects(short simulationVariant) {
 		final List<DynamicObjectInfo> dynamicObjectInfos = _configurationFileManager.getObjects(simulationVariant);
 		for(DynamicObjectInfo dynamicObjectInfo : dynamicObjectInfos) {
+//			DynamicObject dynamicObject = (DynamicObject) getObject(dynamicObjectInfo.getID());
+//			((ConfigDynamicObjectType) dynamicObject.getType()).informInvalidationListener(dynamicObject);
 			dynamicObjectInfo.remove();
 		}
 	}
@@ -1787,9 +1811,18 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	public BackupResult backupConfigurationFiles(final String targetDirectory, final BackupProgressCallback callback) throws ConfigurationTaskException {
+		return backupConfigurationFiles(targetDirectory, null, callback);
+	}
+
+	public BackupResult backupConfigurationFiles(
+			final String targetDirectory,
+			final ConfigurationAuthority configurationAuthority,
+			final BackupProgressCallback callback) throws ConfigurationTaskException {
 		try {
-			final ConfigFileBackupTask fileBackupTask = new ConfigFileBackupTask(getUserManagement(), this, targetDirectory, callback);
-			if(callback!= null) callback.backupStarted(fileBackupTask.getTargetPath());
+			final ConfigFileBackupTask fileBackupTask = new ConfigFileBackupTask(
+					getUserManagement(), this, targetDirectory, configurationAuthority, callback
+			);
+			if(callback != null) callback.backupStarted(fileBackupTask.getTargetPath());
 			return fileBackupTask.startSync();
 		}
 		catch(IOException e) {
@@ -1894,10 +1927,11 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 
 			// Konfigurationsbereich anlegen
 			// Sans, STS, KonfigAss: Falls KB noch nicht vorhanden war - benutze Verzeichnis der Verwaltungsdatei
-			final ConfigurationAreaFile areaFile = getConfigurationFileManager().createAreaFile(areaPid, 
-			    managementInfo != null ? managementInfo.getDirectory() : _adminFile.getParentFile());
-			    
-			areaFile.setNextActiveVersion((short)1);	// Version festlegen, ab der die Objekte gültig werden sollen
+			final ConfigurationAreaFile areaFile = getConfigurationFileManager().createAreaFile(
+					areaPid, managementInfo != null ? managementInfo.getDirectory() : _adminFile.getParentFile()
+			);
+
+			areaFile.setNextActiveVersion((short)1);    // Version festlegen, ab der die Objekte gültig werden sollen
 			final SystemObjectType objectType = getType("typ.konfigurationsBereich");
 			final ConfigurationObjectInfo areaInfo = areaFile.createConfigurationObject(getNextObjectId(), objectType.getId(), areaPid, areaName);
 			final ConfigurationArea configurationArea = (ConfigurationArea)createSystemObject(areaInfo);
@@ -1930,7 +1964,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			areaReleaseData.getUnscaledValue("übernehmbareVersion").set((short)0);
 			final AttributeGroupUsage areaReleaseAtgUsage = areaReleaseAtg.getAttributeGroupUsage(propertyAsp);
 			((ConfigSystemObject)configurationArea).createConfigurationData(areaReleaseAtgUsage, areaReleaseData);
-			
+
 			// Sans, STS, KonfigAss: Falls KB noch nicht vorhanden war - Eintrag in Verwaltungsdatei
 			if(managementInfo == null) {
 				// neuen Eintrag erstellen, da noch keiner in der Versorgungsdatei vorhanden ist
@@ -2055,6 +2089,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 
 	/**
 	 * Setzt das Flag, mit dem die Konsistenzprüfung entscheiden soll, ob doppelte Pids in verschiedenen Konfigurationsbereichen erlaubt sind.
+	 *
 	 * @param allowDoublePids <code>true</code> falls doppelte Pids in verschiedenen Konfigurationsbereichen von der Konsistenzprüfung zugelassen werden sollen.
 	 */
 	public void setAllowDoublePids(final boolean allowDoublePids) {
@@ -2063,6 +2098,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 
 	/**
 	 * Liefert das Flag, mit dem die Konsistenzprüfung entscheiden soll, ob doppelte Pids in verschiedenen Konfigurationsbereichen erlaubt sind.
+	 *
 	 * @return <code>true</code> falls doppelte Pids in verschiedenen Konfigurationsbereichen von der Konsistenzprüfung zugelassen werden sollen.
 	 */
 	public boolean getAllowDoublePids() {
@@ -2070,11 +2106,11 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Setzt das Flag, mit dem die Konsistenzprüfung entscheidet, ob Fehler bei der Prüfung der Abhängigkeiten in der Konsistenzprüfung ignoriert werden oder
-	 * zum Abbruch führen sollen.
-	 * werden sollen.
-	 * @param ignoreDependencyErrorsInConsistencyCheck <code>true</code> falls Fehler bei der Prüfung der Abhängigkeiten in der Konsistenzprüfung ignoriert
-	 * werden sollen.
+	 * Setzt das Flag, mit dem die Konsistenzprüfung entscheidet, ob Fehler bei der Prüfung der Abhängigkeiten in der Konsistenzprüfung ignoriert werden oder zum
+	 * Abbruch führen sollen. werden sollen.
+	 *
+	 * @param ignoreDependencyErrorsInConsistencyCheck
+	 *         <code>true</code> falls Fehler bei der Prüfung der Abhängigkeiten in der Konsistenzprüfung ignoriert werden sollen.
 	 */
 	public void setIgnoreDependencyErrorsInConsistencyCheck(final boolean ignoreDependencyErrorsInConsistencyCheck) {
 		_ignoreDependencyErrorsInConsistencyCheck = ignoreDependencyErrorsInConsistencyCheck;
@@ -2097,19 +2133,23 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 
 	/**
 	 * Leitet die Aktualisierungsnachrichten bzgl. Änderungen von dynamischen Mengen und dynamischen Typen an das entsprechende Verwaltungsobjekt weiter.
+	 *
 	 * @param mutableCollectionSupport Verwaltungsobjekt für Aktualisierungsnachrichten
-	 * @param simulationVariant Simulationsvariante der Änderung
-	 * @param addedElements Hinzugefügte Elemente der dynamischen Zusammenstellung
-	 * @param removedElements Entfernte Elemente der dynamischen Zusammenstellung
+	 * @param simulationVariant        Simulationsvariante der Änderung
+	 * @param addedElements            Hinzugefügte Elemente der dynamischen Zusammenstellung
+	 * @param removedElements          Entfernte Elemente der dynamischen Zusammenstellung
 	 */
 	public void sendCollectionChangedNotification(
-			final ConfigMutableCollectionSupport mutableCollectionSupport, final short simulationVariant, final List<SystemObject> addedElements,
+			final ConfigMutableCollectionSupport mutableCollectionSupport,
+			final short simulationVariant,
+			final List<SystemObject> addedElements,
 			final List<SystemObject> removedElements) {
 		mutableCollectionSupport.collectionChanged(simulationVariant, addedElements, removedElements);
 	}
 
 	/**
 	 * Gibt das Verzeichnis für Sicherungen der Konfigurationsdateien zurück
+	 *
 	 * @return das Verzeichnis, in dem Konfigurationsdateien gesichert werden sollen. null wenn keines festgelegt wurde
 	 */
 	public File getBackupBaseDirectory() {
@@ -2118,6 +2158,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 
 	/**
 	 * Setzt das Verzeichnis, in dem Konfigurationsdateien gesichert werden sollen
+	 *
 	 * @param backupBaseDirectory das Verzeichnis, in dem Konfigurationsdateien gesichert werden sollen
 	 */
 	public void setBackupBaseDirectory(final File backupBaseDirectory) {
@@ -2126,6 +2167,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 
 	/**
 	 * Setzt die Benutzerverwaltung
+	 *
 	 * @param userManagement Benutzerverwaltungsklasse
 	 */
 	public void setUserManagement(final ConfigAuthentication userManagement) {
@@ -2134,6 +2176,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 
 	/**
 	 * Gibt die Benutzerverwaltung zurück, falls über setUserManagement festgelegt
+	 *
 	 * @return eine ConfigAuthentication oder null falls keine festgelegt wurde
 	 */
 	public ConfigAuthentication getUserManagement() {

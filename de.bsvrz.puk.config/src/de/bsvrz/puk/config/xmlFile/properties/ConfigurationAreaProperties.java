@@ -22,6 +22,7 @@ package de.bsvrz.puk.config.xmlFile.properties;
 
 import de.bsvrz.dav.daf.main.config.SystemObjectInfo;
 import de.bsvrz.puk.config.configFile.datamodel.ConfigurationAreaDependency;
+import de.bsvrz.puk.config.configFile.datamodel.ConfigurationAreaUnversionedChange;
 
 import java.util.*;
 
@@ -30,7 +31,7 @@ import java.util.*;
  *
  * @author Kappich+Kniß Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 5091 $ / $Date: 2007-09-03 15:31:49 +0200 (Mon, 03 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 11583 $ / $Date: 2013-08-22 15:59:25 +0200 (Do, 22 Aug 2013) $ / ($Author: jh $)
  */
 public class ConfigurationAreaProperties extends ConfigurationObjectProperties {
 
@@ -43,6 +44,7 @@ public class ConfigurationAreaProperties extends ConfigurationObjectProperties {
 
 	/** Alle Abhängigkeiten des Bereichs oder <code>null</code>, falls für diesen Bereich noch keine Abhängigkeiten geprüft wurden. */
 	private final Collection<ConfigurationAreaDependency> _areaDependencies;
+	private Collection<ConfigurationAreaUnversionedChange> _unversionedChanges;
 
 	/**
 	 * @param name
@@ -130,6 +132,22 @@ public class ConfigurationAreaProperties extends ConfigurationObjectProperties {
 	 */
 	public Collection<ConfigurationAreaDependency> getAreaDependencies() {
 		return _areaDependencies;
+	}
+
+	/**
+	 * Gibt alle unversionierten Änderungen des Konfigurationsbereichs zurück
+	 * @return unversionierte Änderungen
+	 */
+	public Collection<ConfigurationAreaUnversionedChange> getUnversionedChanges() {
+		return _unversionedChanges;
+	}
+
+	/**
+	 * Setzt alle unversionierte Änderungen des Konfigurationsbereichs
+	 * @param unversionedChanges alle unversionierte Änderungen
+	 */
+	public void setUnversionedChanges(final Collection<ConfigurationAreaUnversionedChange> unversionedChanges) {
+		_unversionedChanges = unversionedChanges;
 	}
 
 	protected StringBuilder appendParamString(StringBuilder stringBuilder) {

@@ -30,7 +30,7 @@ import java.text.NumberFormat;
  *
  * @author Achim Wullenkord (AW), Kappich Systemberatung
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 5091 $ / $Date: 2007-09-03 15:31:49 +0200 (Mon, 03 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 5091 $ / $Date: 2007-09-03 15:31:49 +0200 (Mo, 03 Sep 2007) $ / ($Author: rs $)
  */
 public class ConfigurationValueRange implements ConfigurationIntegerValueRange {
 	/**

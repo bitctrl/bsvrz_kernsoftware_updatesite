@@ -29,7 +29,7 @@ import de.bsvrz.sys.funclib.debug.Debug;
  *
  * @author Achim Wullenkord (AW), Kappich Systemberatung
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 6356 $ / $Date: 2009-02-15 23:11:21 +0100 (Sun, 15 Feb 2009) $ / ($Author: gk $)
+ * @version $Revision: 6356 $ / $Date: 2009-02-15 23:11:21 +0100 (So, 15 Feb 2009) $ / ($Author: gk $)
  */
 public class ConfigurationDataList implements DatasetElement {
 

@@ -35,7 +35,7 @@ import de.bsvrz.dav.daf.main.Data;
  * immer gleich bleiben.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 9020 $ / $Date: 2011-04-06 15:45:28 +0200 (Wed, 06 Apr 2011) $ / ($Author: jh $)
+ * @version $Revision: 9020 $ / $Date: 2011-04-06 15:45:28 +0200 (Mi, 06 Apr 2011) $ / ($Author: jh $)
  */
 public abstract class AbstractConfigSystemObject implements SystemObject {
 	/**

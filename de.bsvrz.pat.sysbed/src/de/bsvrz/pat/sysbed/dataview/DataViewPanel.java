@@ -34,11 +34,13 @@ import de.bsvrz.sys.funclib.debug.Debug;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.util.*;
-import java.util.List;
 
 
 /**
@@ -49,7 +51,7 @@ import java.util.List;
  * mit der Methode {@link #initHeaderSize()} initialisiert werden.
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 8369 $
+ * @version $Revision: 11925 $
  */
 
 @SuppressWarnings("serial")
@@ -162,7 +164,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 				}
             }
 		});
-		
+
 		createAndShowGui();
 	}
 	

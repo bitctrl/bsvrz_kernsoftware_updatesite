@@ -24,35 +24,28 @@
 
 package de.bsvrz.puk.config.configFile.fileaccess;
 
-import de.bsvrz.dav.daf.main.config.TimeSpecificationType;
 import de.bsvrz.dav.daf.main.config.DynamicObjectType;
+import de.bsvrz.dav.daf.main.config.TimeSpecificationType;
+import de.bsvrz.puk.config.main.managementfile.VersionInfo;
 import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 import de.bsvrz.sys.funclib.dataSerializer.NoSuchVersionException;
 import de.bsvrz.sys.funclib.dataSerializer.Serializer;
 import de.bsvrz.sys.funclib.dataSerializer.SerializingFactory;
-import de.bsvrz.puk.config.main.managementfile.VersionInfo;
 import de.bsvrz.sys.funclib.debug.Debug;
 import de.bsvrz.sys.funclib.filelock.FileLock;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.zip.DeflaterOutputStream;
-import java.util.zip.InflaterInputStream;
+import java.util.zip.InflaterOutputStream;
 
 /**
  * Diese Klasse stellt eine Konfigurationsbereichsdatei dar und speichert alle Objekte des Bereichs mit Historie.
  *
  * @author Achim Wullenkord (AW), Kappich Systemberatung
- * @version $Revision: 9664 $ / $Date: 2011-11-07 09:34:21 +0100 (Mon, 07 Nov 2011) $ / ($Author: jh $)
+ * @version $Revision: 11501 $ / $Date: 2013-08-02 12:41:53 +0200 (Fr, 02 Aug 2013) $ / ($Author: jh $)
  */
 public class ConfigAreaFile implements ConfigurationAreaFile {
 
@@ -2461,28 +2454,16 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		return packedData.toByteArray();
 	}
 
-	private byte[] unzip(byte[] zippedData) {
+	private byte[] unzip(byte[] zippedData) throws IOException {
 
-		ByteArrayInputStream inputStream = new ByteArrayInputStream(zippedData);
-		InflaterInputStream unzip = new InflaterInputStream(inputStream);
-		// In diesem Stream werden die entpackten Daten gespeichert
-		ByteArrayOutputStream unzippedData = new ByteArrayOutputStream();
+		ByteArrayOutputStream unpackedData = new ByteArrayOutputStream();
+		InflaterOutputStream unzipper = new InflaterOutputStream(unpackedData);
 
-		try {
-			// Die ungepackten Daten
-			int unpackedData = unzip.read();
+		// Entpacken
+		unzipper.write(zippedData);
+		unzipper.close();
 
-			while(unpackedData != -1) {
-				unzippedData.write(unpackedData);
-				unpackedData = unzip.read();
-			}
-			
-			unzip.close();
-		}
-		catch(IOException e) {
-			e.printStackTrace();
-		}
-		return unzippedData.toByteArray();
+		return unpackedData.toByteArray();
 	}
 
 	/**

@@ -29,7 +29,7 @@ import java.util.List;
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
  * @author Stephan Homeyer (sth)
- * @version $Revision: 5763 $ / $Date: 2008-01-06 15:35:57 +0100 (Sun, 06 Jan 2008) $ / ($Author: rs $)
+ * @version $Revision: 5763 $ / $Date: 2008-01-06 15:35:57 +0100 (So, 06 Jan 2008) $ / ($Author: rs $)
  */
 public interface DavApplication extends ConfigurationObject {
 	/**

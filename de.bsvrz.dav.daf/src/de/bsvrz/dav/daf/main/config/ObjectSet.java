@@ -36,7 +36,7 @@ package de.bsvrz.dav.daf.main.config;
  * @author Roland Schmitz (rs)
  * @author Fouad
  * @author Stephan Homeyer (sth)
- * @version $Revision: 5084 $ / $Date: 2007-09-03 10:42:50 +0200 (Mon, 03 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 5084 $ / $Date: 2007-09-03 10:42:50 +0200 (Mo, 03 Sep 2007) $ / ($Author: rs $)
  * @see MutableSet
  * @see NonMutableSet
  */

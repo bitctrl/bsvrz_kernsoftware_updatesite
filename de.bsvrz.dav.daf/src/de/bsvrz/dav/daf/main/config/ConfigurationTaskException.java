@@ -27,7 +27,7 @@ package de.bsvrz.dav.daf.main.config;
  * Auftrag bearbeiten können, wenn dieser erneut an die Konfiguration geschickt wird.
  *
  * @author Achim Wullenkord (AW), Kappich Systemberatung
- * @version $Revision: 5052 $ / $Date: 2007-08-31 20:02:55 +0200 (Fri, 31 Aug 2007) $ / ($Author: rs $)
+ * @version $Revision: 5052 $ / $Date: 2007-08-31 20:02:55 +0200 (Fr, 31 Aug 2007) $ / ($Author: rs $)
  */
 public class ConfigurationTaskException extends Exception {
 	/**

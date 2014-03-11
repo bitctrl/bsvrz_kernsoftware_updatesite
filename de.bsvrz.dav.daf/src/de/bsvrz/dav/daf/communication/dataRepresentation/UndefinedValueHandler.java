@@ -28,6 +28,7 @@ import de.bsvrz.dav.daf.main.config.IntegerValueState;
 import de.bsvrz.dav.daf.main.config.ReferenceAttributeType;
 import de.bsvrz.dav.daf.main.config.StringAttributeType;
 import de.bsvrz.dav.daf.main.config.TimeAttributeType;
+import de.bsvrz.dav.daf.util.WeakIdentityHashMap;
 
 import java.util.*;
 
@@ -36,7 +37,7 @@ import java.util.*;
  * Attribut undefiniert ist.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5055 $
+ * @version $Revision: 11572 $
  */
 public class UndefinedValueHandler {
 
@@ -58,7 +59,7 @@ public class UndefinedValueHandler {
 	private final Long _marker = new Long(4711);
 
 	/** Speichert zu jedem IntegerAttributeType den dazugehörigen undefiniert Wert. So muss dieser nicht ständig neu berechnet werden. */
-	private final Map<IntegerAttributeType, Long> _integerUndefinedValues = new HashMap<IntegerAttributeType, Long>();
+	private final Map<IntegerAttributeType, Long> _integerUndefinedValues = new WeakIdentityHashMap<IntegerAttributeType, Long>();
 
 	/**
 	 * Gibt eine Instanz der Klasse zurück. Es existiert nur eine Instanz der Klasse, ein erneuter Aufruf stellt das selbe Objekt zur Verfügung.

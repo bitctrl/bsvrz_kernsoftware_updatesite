@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  *
  * @author beck et al. projects GmbH
  * @author Alexander Schmidt
- * @version $Revision: 9877 $ / $Date: 2012-01-26 15:00:50 +0100 (Thu, 26 Jan 2012) $ / ($Author: rs $)
+ * @version $Revision: 10736 $ / $Date: 2012-11-19 20:42:12 +0100 (Mo, 19 Nov 2012) $ / ($Author: rs $)
  */
 public class Util {
 

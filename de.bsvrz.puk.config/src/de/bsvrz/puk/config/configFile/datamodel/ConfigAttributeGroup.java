@@ -36,7 +36,7 @@ import java.util.*;
  * Implementierung der Attributgruppe auf Seiten der Konfiguration.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 8583 $ / $Date: 2011-01-11 12:33:20 +0100 (Tue, 11 Jan 2011) $ / ($Author: rr $)
+ * @version $Revision: 8583 $ / $Date: 2011-01-11 12:33:20 +0100 (Di, 11 Jan 2011) $ / ($Author: rr $)
  */
 public class ConfigAttributeGroup extends ConfigAttributeSet implements AttributeGroup {
 

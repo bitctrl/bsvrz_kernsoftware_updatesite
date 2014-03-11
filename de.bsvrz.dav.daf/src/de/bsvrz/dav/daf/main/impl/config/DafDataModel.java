@@ -30,29 +30,7 @@ import de.bsvrz.dav.daf.main.ClientDavConnection;
 import de.bsvrz.dav.daf.main.ClientDavInterface;
 import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.DavConnectionListener;
-import de.bsvrz.dav.daf.main.config.Aspect;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
-import de.bsvrz.dav.daf.main.config.AttributeType;
-import de.bsvrz.dav.daf.main.config.BackupProgressCallback;
-import de.bsvrz.dav.daf.main.config.BackupResult;
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.ConfigurationAuthority;
-import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
-import de.bsvrz.dav.daf.main.config.ConfigurationObject;
-import de.bsvrz.dav.daf.main.config.ConfigurationObjectType;
-import de.bsvrz.dav.daf.main.config.ConfigurationTaskException;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.DynamicObject;
-import de.bsvrz.dav.daf.main.config.MutableCollection;
-import de.bsvrz.dav.daf.main.config.MutableCollectionChangeListener;
-import de.bsvrz.dav.daf.main.config.ObjectSet;
-import de.bsvrz.dav.daf.main.config.ObjectSetType;
-import de.bsvrz.dav.daf.main.config.ObjectTimeSpecification;
-import de.bsvrz.dav.daf.main.config.Pid;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
-import de.bsvrz.dav.daf.main.config.UpdateDynamicObjects;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.dav.daf.main.config.management.UserAdministration;
 import de.bsvrz.dav.daf.main.impl.CommunicationConstant;
 import de.bsvrz.dav.daf.main.impl.ConfigurationManager;
@@ -60,27 +38,7 @@ import de.bsvrz.dav.daf.main.impl.config.request.ConfigurationRequester;
 import de.bsvrz.dav.daf.main.impl.config.request.RemoteRequestManager;
 import de.bsvrz.dav.daf.main.impl.config.request.RequestException;
 import de.bsvrz.dav.daf.main.impl.config.request.telegramManager.ConfigurationUserAdministration;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.ConfigTelegram;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.IdsToObjectsAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.IdsToObjectsRequest;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.MetaDataAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.MetaDataRequest;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.NewObjectAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.NewObjectRequest;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.ObjectInvalidateAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.ObjectInvalidateRequest;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.ObjectRevalidateAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.ObjectRevalidateRequest;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.ObjectSetNameAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.ObjectSetNameRequest;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.ObjectsList;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.PidsToObjectsAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.PidsToObjectsRequest;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.SystemObjectAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.SystemObjectRequestInfo;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.SystemObjectsRequest;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.TypeIdsToObjectsAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.TypeIdsToObjectsRequest;
+import de.bsvrz.dav.daf.main.impl.config.telegrams.*;
 import de.bsvrz.sys.funclib.concurrent.UnboundedQueue;
 import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 import de.bsvrz.sys.funclib.dataSerializer.Serializer;
@@ -88,23 +46,16 @@ import de.bsvrz.sys.funclib.dataSerializer.SerializingFactory;
 import de.bsvrz.sys.funclib.debug.Debug;
 import de.bsvrz.sys.funclib.filelock.FileLock;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Applikationsseitige Implementierung der DataModel Schnittstelle, die Zugriffe auf die Datenmodelle und Versorgungsdaten ermöglicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 9276 $
+ * @version $Revision: 11937 $
  */
 public class DafDataModel implements DataModel, UpdateDynamicObjects {
 
@@ -779,7 +730,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 				remoteRequestManager = RemoteRequestManager.getInstance(_connection, this, _connection.getLocalApplicationObject());
 			}
 
-			_remoteRequester = remoteRequestManager.getRequester(_connection.getLocalConfigurationAuthority());
+			_remoteRequester = remoteRequestManager.getRequester(_configurationAuthority);
 			_notifyingMutableCollectionChangeListener = new NotifyingMutableCollectionChangeListener();
 			_remoteRequester.setMutableCollectionChangeListener(_notifyingMutableCollectionChangeListener);
 			_notifyingMutableCollectionChangeListener.start();
@@ -1380,10 +1331,15 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 		return _userAdministration;
 	}
 
-	public BackupResult backupConfigurationFiles(final String targetDirectory, final BackupProgressCallback callback)
+	@Override
+	public BackupResult backupConfigurationFiles(final String targetDirectory, final BackupProgressCallback callback) throws ConfigurationTaskException, RequestException {
+		return backupConfigurationFiles(targetDirectory, null, callback);
+	}
+
+	public BackupResult backupConfigurationFiles(final String targetDirectory, final ConfigurationAuthority configurationAuthority, final BackupProgressCallback callback)
 			throws ConfigurationTaskException, RequestException {
 		final ConfigurationRequester requester = getRequester();
-		return requester.backupConfigurationFiles(targetDirectory, callback);
+		return requester.backupConfigurationFiles(targetDirectory, configurationAuthority, callback);
 	}
 
 	/**
@@ -1436,67 +1392,123 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	 * @return <code>true</code>, falls das Objekt gelöscht bzw. ungültig gesetzt wurde; <code>false</code> wenn die Operation nicht durchgeführt werden konnte.
 	 */
 	final boolean invalidate(DafSystemObject object) {
-		ObjectInvalidateRequest telegram = new ObjectInvalidateRequest(_configurationTime, object.getId());
-		String info = Integer.toString(telegram.hashCode());
-		telegram.setInfo(info);
-		_configurationManager.sendConfigData(_readBaseSubscriptionInfo, telegram);
+		ObjectInvalidationWaiter objectInvalidationWaiter = new ObjectInvalidationWaiter(object);
+		try {
+			objectInvalidationWaiter.start();
+			ObjectInvalidateRequest telegram = new ObjectInvalidateRequest(_configurationTime, object.getId());
+			String info = Integer.toString(telegram.hashCode());
+			telegram.setInfo(info);
+			_configurationManager.sendConfigData(_readBaseSubscriptionInfo, telegram);
 
-		// Waiting for Answer
-		ConfigTelegram responce = null;
-		long waitingTime = 0, startTime = System.currentTimeMillis();
-		long sleepTime = 10;
-		while(waitingTime < CommunicationConstant.MAX_WAITING_TIME_FOR_SYNC_RESPONCE) {
-			try {
-				synchronized(_pendingResponces) {
-					if(_connectionClosed) {
-						throw new RuntimeException("Verbindung zum Datenverteiler wurde geschlossen");
-					}
-					_pendingResponces.wait(sleepTime);
-					if(sleepTime < 1000) {
-						sleepTime *= 2;
-					}
+			// Waiting for Answer
+			ConfigTelegram responce = null;
+			long waitingTime = 0, startTime = System.currentTimeMillis();
+			long sleepTime = 10;
+			while(waitingTime < CommunicationConstant.MAX_WAITING_TIME_FOR_SYNC_RESPONCE) {
+				try {
+					synchronized(_pendingResponces) {
+						if(_connectionClosed) {
+							throw new RuntimeException("Verbindung zum Datenverteiler wurde geschlossen");
+						}
+						_pendingResponces.wait(sleepTime);
+						if(sleepTime < 1000) {
+							sleepTime *= 2;
+						}
 
-					ListIterator _iterator = _pendingResponces.listIterator(_pendingResponces.size());
-					while(_iterator.hasPrevious()) {
-						responce = (ConfigTelegram)_iterator.previous();
-						if((responce != null) && (responce.getType() == ConfigTelegram.OBJECT_INVALIDATE_ANSWER_TYPE) && (info.equals(responce.getInfo()))) {
-							_iterator.remove();
-							try {
-								ObjectInvalidateAnswer objectInvalidateAnswer = (ObjectInvalidateAnswer)responce;
-								if(telegram.getObjectId() == objectInvalidateAnswer.getObjectId()) {
-									if(objectInvalidateAnswer.isInvalidated()) {
-										if(object instanceof DafDynamicObject) {
-											object.setState(DafSystemObject.OBJECT_DELETED);
-											DafDynamicObject dynamicObject = (DafDynamicObject)object;
-											dynamicObject.setNotValidSince(objectInvalidateAnswer.getConfigTime());
-											if(updateInternalDataStructure(object) != object) {
-												_debug
-														.error("Es wurde ein Systemobjekt auf ungültig gesetzt, zu dessen Id ein anderes Objekt im Cache gewesen ist");
-												Thread.dumpStack();
+						ListIterator _iterator = _pendingResponces.listIterator(_pendingResponces.size());
+						while(_iterator.hasPrevious()) {
+							responce = (ConfigTelegram)_iterator.previous();
+							if((responce != null) && (responce.getType() == ConfigTelegram.OBJECT_INVALIDATE_ANSWER_TYPE) && (info.equals(responce.getInfo()))) {
+								_iterator.remove();
+								try {
+									ObjectInvalidateAnswer objectInvalidateAnswer = (ObjectInvalidateAnswer)responce;
+									if(telegram.getObjectId() == objectInvalidateAnswer.getObjectId()) {
+										if(objectInvalidateAnswer.isInvalidated()) {
+											if(object instanceof DafDynamicObject) {
+												object.setState(DafSystemObject.OBJECT_DELETED);
+												DafDynamicObject dynamicObject = (DafDynamicObject)object;
+												dynamicObject.setNotValidSince(objectInvalidateAnswer.getConfigTime());
+												if(updateInternalDataStructure(object) != object) {
+													_debug
+															.error("Es wurde ein Systemobjekt auf ungültig gesetzt, zu dessen Id ein anderes Objekt im Cache gewesen ist");
+													Thread.dumpStack();
+												}
 											}
+											objectInvalidationWaiter.await();
+											return true;
 										}
-										return true;
-									}
-									else {
-										return false;
+										else {
+											return false;
+										}
 									}
 								}
+								catch(ClassCastException ex) {
+									ex.printStackTrace();
+								}
+								return false;
 							}
-							catch(ClassCastException ex) {
-								ex.printStackTrace();
-							}
-							return false;
 						}
 					}
+					waitingTime = System.currentTimeMillis() - startTime;
 				}
-				waitingTime = System.currentTimeMillis() - startTime;
+				catch(InterruptedException ex) {
+					ex.printStackTrace();
+					break;
+				}
 			}
-			catch(InterruptedException ex) {
-				ex.printStackTrace();
-				break;
+			throw new RuntimeException("Die Konfiguration antwortet nicht");
+		} finally {
+			objectInvalidationWaiter.stop();
+		}
+	}
+
+	static private class ObjectInvalidationWaiter {
+
+		private final SystemObject _object;
+		private final CountDownLatch _invalidationCountDown;
+		private InvalidationListener _invalidationListener;
+
+		public ObjectInvalidationWaiter(SystemObject object) {
+			if(isDynamic(object)) {
+				_object = object;
+				_invalidationCountDown = new CountDownLatch(1);
+				_invalidationListener = new InvalidationListener() {
+					@Override
+					public void invalidObject(final DynamicObject dynamicObject) {
+						if(_object.equals(dynamicObject)) _invalidationCountDown.countDown();
+					}
+				};
+			}
+			else {
+				_object = null;
+				_invalidationCountDown = null;
+				_invalidationListener = null;
 			}
 		}
-		throw new RuntimeException("Die Konfiguration antwortet nicht");
+
+		static boolean isDynamic(SystemObject object) {
+			return object instanceof DynamicObject;
+		}
+
+		DynamicObjectType getType() {
+			return (DynamicObjectType)_object.getType();
+		}
+
+		public void start() {
+			if(isDynamic(_object)) getType().addInvalidationListener(_invalidationListener);
+		}
+
+		public void await() {
+			try {
+				if(isDynamic(_object)) _invalidationCountDown.await(500, TimeUnit.MILLISECONDS);
+			} catch (InterruptedException e) {
+				// InterruptedException führt zum sofortigen Ende der Methode
+			}
+		}
+
+		public void stop() {
+			if(isDynamic(_object)) getType().removeInvalidationListener(_invalidationListener);
+		}
 	}
 
 	/**
@@ -1828,7 +1840,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 		ConfigurationRequester requester = getRequester();
 		AttributeGroup atg = usage.getAttributeGroup();
 		try {
-			byte[][] propertiesDataBytesArray = requester.getConfigurationData(objects.toArray(new SystemObject[]{}), usage);
+			byte[][] propertiesDataBytesArray = requester.getConfigurationData(objects.toArray(new SystemObject[objects.size()]), usage);
 			for(int i = 0; i < propertiesDataBytesArray.length; i++) {
 				ConfigDataKey configDataKey = new ConfigDataKey(objects.get(i), usage);
 				byte[] bytes = propertiesDataBytesArray[i];

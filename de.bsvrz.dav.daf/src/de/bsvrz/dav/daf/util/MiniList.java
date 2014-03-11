@@ -23,377 +23,302 @@ import java.util.*;
 
 /**
  * @author Kappich Systemberatung
- * @version $Revision: 9888 $
+ * @version $Revision: 10831 $
  */
-public class MiniList<E> extends MiniCollection<E> implements List<E> {
+public final class MiniList<E> implements List<E> {
+
+	private Object[] _elements = null;
 
 	public MiniList() {
-		super();
+		_elements = null;
+	}
+
+	public MiniList(final Collection<? extends E> c) {
+		_elements = c.toArray();
+	}
+
+	public MiniList(final E[] e) {
+		_elements = Arrays.copyOf(e, e.length, Object[].class);
 	}
 
 	public MiniList(final E element) {
-		super(element);
+		this(Collections.singletonList(element));
 	}
 
-	private MiniList(final E element, final MiniList<E> next) {
-		super(element, next);
+	@Override
+	public int size() {
+		return _elements == null ? 0 : _elements.length;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return next == this;
+		return _elements == null;
 	}
 
-	public E get(int index) {
-		if(isEmpty()) throw new IndexOutOfBoundsException();
-		MiniCollection<E> l = this;
-		while(index != 0) {
-			l = l.next;
-			if(l == null) throw new IndexOutOfBoundsException();
-			index--;
+	@Override
+	public boolean contains(final Object o) {
+		if(_elements == null) return false;
+		for(final Object element : _elements) {
+			if(element != null) {
+				if(element.equals(o)) return true;
+			}
+			else {
+				if(o == null) return true;
+			}
 		}
-		return l.object;
+		return false;
 	}
 
-	public E set(int index, E element) {
-		if(isEmpty()) throw new IndexOutOfBoundsException();
-		MiniCollection<E> l = this;
-		while(index != 0) {
-			l = l.next;
-			if(l == null) throw new IndexOutOfBoundsException();
-			index--;
+	@Override
+	public Iterator<E> iterator() {
+		if(_elements == null) return Collections.<E>emptyList().iterator();
+		return (Iterator<E>) Arrays.asList(_elements).iterator();
+	}
+
+	@Override
+	public Object[] toArray() {
+		if(_elements == null) return new Object[0];
+		return _elements.clone();
+	}
+
+	@Override
+	public <T> T[] toArray(final T[] a) {
+		if(_elements == null){
+			if(a.length > 0) a[0] = null;
+			return a;
 		}
-		E tmp = l.object;
-		l.object = element;
-		return tmp;
+		if(a.length < _elements.length) {
+			return (T[]) Arrays.copyOf(_elements, _elements.length, a.getClass());
+		}
+		System.arraycopy(_elements, 0, a, 0, _elements.length);
+		if(a.length > _elements.length) a[_elements.length] = null;
+		return a;
 	}
 
+	@Override
 	public boolean add(final E e) {
-		modCount++;
-		if(isEmpty()) {
-			addFirstWhenEmpty(e);
-		} else {
-			MiniCollection<E> l = this;
-			while(l.next != null) {
-				l = l.next;
-			}
-			l.next = new MiniList<E>(e);
-		}
-		return true;
-	}
-
-	private void addFirstWhenEmpty(final E element) {
-		next = null;
-		object = element;
-	}
-
-	public void add(int index, E element) {
-		modCount++;
-		if(isEmpty()) {
-			if(index != 0) throw new IndexOutOfBoundsException();
-			addFirstWhenEmpty(element);
-			return;
-		}
-		MiniCollection<E> l = this;
-		while(index != 0) {
-			l = l.next;
-			if(l == null) throw new IndexOutOfBoundsException();
-			index--;
-		}
-		l.next = new MiniCollection<E>(l.object, l.next);
-		l.object = element;
-	}
-
-
-	public boolean addAll(int index, final Collection<? extends E> c) {
-		if(c.isEmpty()) return false;
-		modCount++;
-		if(isEmpty()) {
-			if(index != 0) throw new IndexOutOfBoundsException();
-			Iterator<? extends E> iterator = c.iterator();
-			addFirstWhenEmpty(iterator.next());
-			while(iterator.hasNext()){
-				add(0, iterator.next());
-			}
+		if(_elements == null){
+			_elements = new Object[]{e};
 			return true;
 		}
-		MiniCollection<E> l = this;
-		while(index != 0) {
-			l = l.next;
-			if(l == null) throw new IndexOutOfBoundsException();
-			index--;
-		}
-		Iterator<? extends E> iterator = c.iterator();
-		while (iterator.hasNext()){
-			l.next = new MiniCollection<E>(l.object, l.next);
-			l.object = iterator.next();
+		Object[] tmp = Arrays.copyOf(_elements, _elements.length + 1);
+		tmp[_elements.length] = e;
+		_elements = tmp;
+		return true;
+	}
+
+	@Override
+	public boolean remove(final Object o) {
+		int i = indexOf(o);
+		if(i == -1) return false;
+		remove(i);
+		return true;
+	}
+
+	@Override
+	public boolean containsAll(final Collection<?> c) {
+		for(Object o : c) {
+			if(!contains(o)) return false;
 		}
 		return true;
 	}
 
-	public E remove(int index) {
-		MiniCollection<E> l = this;
-		MiniCollection<E> p = null;
-		while(index != 0) {
-			p = l;
-			l = l.next;
-			if(l == null) throw new IndexOutOfBoundsException();
-			index--;
+	@Override
+	public boolean addAll(final Collection<? extends E> c) {
+		if(_elements == null){
+			_elements = c.toArray();
+			return true;
 		}
-		modCount++;
-		E tmp = l.object;
-		MiniCollection<E> n = l.next;
-		if(n != null) {
-			l.object = n.object;
-			l.next = n.next;
-		} else if(p != null) {
-			// Letztes Objekt entfernen
-			p.next = null;
-		} else {
-			// leere Liste
-			next = this;
-			object = null;
+		Object[] tmp = Arrays.copyOf(_elements, _elements.length + c.size());
+		int i = _elements.length;
+		for(E e : c) {
+			tmp[i++] = e;
 		}
-		return tmp;
+		_elements = tmp;
+		return true;
 	}
 
+	@Override
+	public boolean addAll(final int index, final Collection<? extends E> c) {
+		if(_elements == null){
+			if(index != 0) throw new IndexOutOfBoundsException("index : " + index);
+			_elements = c.toArray();
+			return true;
+		}
+		Object[] tmp = new Object[_elements.length + c.size()];
+		System.arraycopy(_elements, 0, tmp, 0, index);
+		int i = index;
+		for(E e : c) {
+			tmp[i++] = e;
+		}
+		System.arraycopy(_elements, index, tmp, i, _elements.length-index);
+		_elements = tmp;
+		return true;
+	}
+
+	@Override
+	public boolean removeAll(final Collection<?> c) {
+		boolean changed = false;
+		for(Object o : c) {
+			changed |= remove(o);
+		}
+		return changed;
+	}
+
+	@Override
+	public boolean retainAll(final Collection<?> c) {
+		ArrayList<E> tmp = new ArrayList<E>(this);
+		boolean b = tmp.retainAll(c);
+		_elements = tmp.toArray();
+		return b;
+	}
+
+	@Override
+	public void clear() {
+		_elements = null;
+	}
+
+	@Override
+	public E get(final int index) {
+		if(_elements == null) throw new IndexOutOfBoundsException("List is empty");
+		return (E) _elements[index];
+	}
+
+	@Override
+	public E set(final int index, final E element) {
+		if(_elements == null) throw new IndexOutOfBoundsException("List is empty");
+		Object old = _elements[index];
+		_elements[index] = element;
+		return (E) old;
+	}
+
+	@Override
+	public void add(final int index, final E element) {
+		addAll(index, Collections.singletonList(element));
+	}
+
+	@Override
+	public E remove(final int index) {
+		if(_elements == null) throw new IndexOutOfBoundsException("List is empty");
+		E old = (E) _elements[index];
+		if(_elements.length == 1){
+			_elements = null;
+			return old;
+		}
+		Object[] tmp = new Object[_elements.length - 1];
+		System.arraycopy(_elements, 0, tmp, 0, index);
+		System.arraycopy(_elements, index + 1, tmp, index, _elements.length - index - 1);
+		_elements = tmp;
+		return old;
+	}
+
+	@Override
 	public int indexOf(final Object o) {
-		int i = 0;
-		if(o == null){
-			for(E e : this) {
-				if(e == null) return i;
-				i++;
+		if(_elements == null) return -1;
+		if(o != null){
+			for(int i = 0; i < _elements.length; i++) {
+				final Object element = _elements[i];
+				if(o.equals(element)) return i;
 			}
 		}
-		else{
-			for(E e : this) {
-				if(e.equals(o)) return i;
-				i++;
+		else {
+			for(int i = 0; i < _elements.length; i++) {
+				final Object element = _elements[i];
+				if(element == null) return i;
 			}
 		}
 		return -1;
 	}
 
+	@Override
 	public int lastIndexOf(final Object o) {
-		int i = 0, index = -1;
-		if(o == null){
-			for(E e : this) {
-				if(e == null) index = i;
-				i++;
+		if(_elements == null) return -1;
+		if(o != null){
+			for(int i = _elements.length - 1; i >= 0; i--) {
+				final Object element = _elements[i];
+				if(o.equals(element)) return i;
 			}
 		}
-		else{
-			for(E e : this) {
-				if(e.equals(o)) index = i;
-				i++;
+		else {
+			for(int i = _elements.length - 1; i >= 0; i--) {
+				final Object element = _elements[i];
+				if(element == null) return i;
 			}
 		}
-		return index;
+		return -1;
 	}
 
 	@Override
-	public void clear() {
-		modCount++;
-		next = this;
-		object = null;
-	}
-
 	public ListIterator<E> listIterator() {
-		return listIterator(0);
+		if(_elements == null) return Collections.<E>emptyList().listIterator();
+		return (ListIterator<E>) Arrays.asList(_elements).listIterator();
 	}
 
+	@Override
 	public ListIterator<E> listIterator(final int index) {
-		return new Itr(index);
+		if(_elements == null) return Collections.<E>emptyList().listIterator(index);
+		return (ListIterator<E>) Arrays.asList(_elements).listIterator(index);
 	}
 
+	@Override
 	public List<E> subList(final int fromIndex, final int toIndex) {
-		if (fromIndex < 0)
-			throw new IndexOutOfBoundsException("fromIndex = " + fromIndex);
-		if (toIndex > size())
-			throw new IndexOutOfBoundsException("toIndex = " + toIndex);
-		if (fromIndex > toIndex)
-			throw new IllegalArgumentException("fromIndex(" + fromIndex +
-					") > toIndex(" + toIndex + ")");
-		return new SubList(this, fromIndex, toIndex);
+		return new SubList(fromIndex, toIndex);
 	}
 
-	public boolean equals(Object o) {
-		if (o == this)
-			return true;
-		if (!(o instanceof List))
-			return false;
-
-		ListIterator<E> e1 = listIterator();
-		ListIterator e2 = ((List) o).listIterator();
-		while(e1.hasNext() && e2.hasNext()) {
-			E o1 = e1.next();
-			Object o2 = e2.next();
-			if (!(o1==null ? o2==null : o1.equals(o2)))
-				return false;
-		}
-		return !(e1.hasNext() || e2.hasNext());
+	@Override
+	public boolean equals(final Object obj) {
+		if(_elements == null) return Collections.emptyList().equals(obj);
+		return Arrays.asList(_elements).equals(obj);
 	}
 
+	@Override
 	public int hashCode() {
-		int hashCode = 1;
-		Iterator<E> i = iterator();
-		while (i.hasNext()) {
-			E obj = i.next();
-			hashCode = 31*hashCode + (obj==null ? 0 : obj.hashCode());
-		}
-		return hashCode;
+		if(_elements == null) return Collections.emptyList().hashCode();
+		return Arrays.asList(_elements).hashCode();
 	}
-	
-	class SubList extends AbstractList<E> {
-		private MiniList<E> l;
-		private int offset;
-		private int size;
-		private int expectedModCount;
 
-		SubList(MiniList<E> list, int fromIndex, int toIndex) {
-			if (fromIndex < 0)
-				throw new IndexOutOfBoundsException("fromIndex = " + fromIndex);
-			if (toIndex > list.size())
-				throw new IndexOutOfBoundsException("toIndex = " + toIndex);
-			if (fromIndex > toIndex)
-				throw new IllegalArgumentException("fromIndex(" + fromIndex +
-						") > toIndex(" + toIndex + ")");
-			l = list;
-			offset = fromIndex;
-			size = toIndex - fromIndex;
-			expectedModCount = l.modCount;
+	@Override
+	public String toString() {
+		if(_elements == null) return Collections.emptyList().toString();
+		return Arrays.asList(_elements).toString();
+	}
+
+	private class SubList extends AbstractList<E> {
+		private final int _fromIndex;
+		private final int _toIndex;
+
+		public SubList(final int fromIndex, final int toIndex) {
+			_fromIndex = fromIndex;
+			_toIndex = toIndex;
 		}
 
-		public E set(int index, E element) {
-			rangeCheck(index);
-			checkForComodification();
-			return l.set(index+offset, element);
+		@Override
+		public E get(final int index) {
+			if(index < 0 || index >= size()) throw new IndexOutOfBoundsException("index: " + index);
+			return MiniList.this.get(index + _fromIndex);
 		}
 
-		public E get(int index) {
-			rangeCheck(index);
-			checkForComodification();
-			return l.get(index+offset);
-		}
-
+		@Override
 		public int size() {
-			checkForComodification();
-			return size;
+			return _toIndex - _fromIndex;
 		}
 
-		public void add(int index, E element) {
-			if (index<0 || index>size)
-				throw new IndexOutOfBoundsException();
-			checkForComodification();
-			l.add(index+offset, element);
-			expectedModCount = l.modCount;
-			size++;
-			modCount++;
+		@Override
+		public E set(final int index, final E element) {
+			if(index < 0 || index >= size()) throw new IndexOutOfBoundsException("index: " + index);
+			return MiniList.this.set(index + _fromIndex, element);
 		}
 
-		public E remove(int index) {
-			rangeCheck(index);
-			checkForComodification();
-			E result = l.remove(index+offset);
-			expectedModCount = l.modCount;
-			size--;
-			modCount++;
-			return result;
+		@Override
+		public void add(final int index, final E element) {
+			if(index < 0 || index > size()) throw new IndexOutOfBoundsException("index: " + index);
+			MiniList.this.add(index + _fromIndex, element);
 		}
 
-		public boolean addAll(Collection<? extends E> c) {
-			return addAll(size, c);
-		}
-
-		public boolean addAll(int index, Collection<? extends E> c) {
-			if (index<0 || index>size)
-				throw new IndexOutOfBoundsException(
-						"Index: "+index+", Size: "+size);
-			int cSize = c.size();
-			if (cSize==0)
-				return false;
-
-			checkForComodification();
-			l.addAll(offset+index, c);
-			expectedModCount = l.modCount;
-			size += cSize;
-			modCount++;
-			return true;
-		}
-
-		public Iterator<E> iterator() {
-			return listIterator();
-		}
-
-		public ListIterator<E> listIterator(final int index) {
-			checkForComodification();
-			if (index<0 || index>size)
-				throw new IndexOutOfBoundsException(
-						"Index: "+index+", Size: "+size);
-
-			return new ListIterator<E>() {
-				private ListIterator<E> i = l.listIterator(index+offset);
-
-				public boolean hasNext() {
-					return nextIndex() < size;
-				}
-
-				public E next() {
-					if (hasNext())
-						return i.next();
-					else
-						throw new NoSuchElementException();
-				}
-
-				public boolean hasPrevious() {
-					return previousIndex() >= 0;
-				}
-
-				public E previous() {
-					if (hasPrevious())
-						return i.previous();
-					else
-						throw new NoSuchElementException();
-				}
-
-				public int nextIndex() {
-					return i.nextIndex() - offset;
-				}
-
-				public int previousIndex() {
-					return i.previousIndex() - offset;
-				}
-
-				public void remove() {
-					i.remove();
-					expectedModCount = l.modCount;
-					size--;
-					modCount++;
-				}
-
-				public void set(E e) {
-					i.set(e);
-				}
-
-				public void add(E e) {
-					i.add(e);
-					expectedModCount = l.modCount;
-					size++;
-					modCount++;
-				}
-			};
-			
-		}
-
-		private void rangeCheck(int index) {
-			if (index<0 || index>=size)
-				throw new IndexOutOfBoundsException("Index: "+index+
-						",Size: "+size);
-		}
-
-		private void checkForComodification() {
-			if (l.modCount != expectedModCount)
-				throw new ConcurrentModificationException();
+		@Override
+		public E remove(final int index) {
+			if(index < 0 || index >= size()) throw new IndexOutOfBoundsException("index: " + index);
+			return MiniList.this.remove(index + _fromIndex) ;
 		}
 	}
 }

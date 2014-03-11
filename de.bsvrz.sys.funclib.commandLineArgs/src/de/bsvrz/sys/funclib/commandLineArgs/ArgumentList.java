@@ -24,8 +24,12 @@ package de.bsvrz.sys.funclib.commandLineArgs;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
-import java.text.*;
 /**
  * Klasse zum Zugriff auf die Aufrufargumente einer Applikation.
  * Eine Applikation bekommt die Aufrufargumente von der Laufzeitumgebung in einem String-Array als Parameter
@@ -37,7 +41,7 @@ import java.text.*;
  * angegebenen Argumente verwendet wurden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5005 $
+ * @version $Revision: 11270 $
  */
 public class ArgumentList {
 	/**
@@ -475,7 +479,7 @@ public class ArgumentList {
 			}
 			if(value>=minimum && value<=maximum) return value;
 			throw new IllegalArgumentException(
-				"Argumentwert " +getValue() + "von Argument " + getName() +
+				"Argumentwert " +getValue() + " von Argument " + getName() +
 				" liegt nicht zwischen " + minimum + " und " + maximum
 			);
 		}
@@ -708,6 +712,47 @@ public class ArgumentList {
 		}
 
 		/**
+		 * Bestimmt den Wert des Arguments als Enum-Konstante.
+		 * @param typeClass Klasse von dem der Enum-Wert eingelesen werden soll. Unterstützt native Enum-Klassen und Enum-ähnliche Klassen,
+		 *                  mit festen öffentlichen Konstanten. Groß- und Kleinschreibung wird ignoriert.
+		 * @return  Wert des Arguments.
+		 * @throws IllegalArgumentException  Wenn der Argumentwert leer oder ungültig ist.
+		 */
+		public <E> E asEnum(final Class<E> typeClass) {
+			final List<String> validValues = new ArrayList<String>();
+			String value = getValue();
+			E[] enumConstants = typeClass.getEnumConstants();
+			if(enumConstants != null){
+				for(E e : enumConstants) {
+					if(((Enum)e).name().equalsIgnoreCase(value)) return e;
+					if(e.toString().equalsIgnoreCase(value)) return e;
+					validValues.add(e.toString());
+				}
+			}
+			else {
+				try {
+					Field[] fields = typeClass.getFields();
+					for(Field field : fields) {
+						if(Modifier.isStatic(field.getModifiers()) && Modifier.isFinal(field.getModifiers()) && field.getType()
+								.equals(typeClass)) {
+							Object fieldValue = field.get(null);
+							if(field.getName().equalsIgnoreCase(value)) return (E) fieldValue;
+							if(fieldValue.toString().equalsIgnoreCase(value)) return (E) fieldValue;
+							validValues.add(fieldValue.toString());
+						}
+					}
+				}
+				catch(IllegalAccessException e) {
+					e.printStackTrace();
+				}
+			}
+			throw new IllegalArgumentException(
+					"Argument " + getName() + " hat einen ungültigen Wert: \"" + value +
+							"\", erlaubt sind folgende Werte: " + validValues
+			);
+		}
+
+		/**
 		 * Bestimmt den Wert des Arguments als Kommunikationsadresse.
 		 * Der Argumentwert muss dabei einem der folgenden folgenden Formate entsprechen:
 		 * <code>"Protokoll:Adresse:Subadresse"</code> , <code>"Adresse:Subadresse"</code> , <code>"Adresse"</code>.
@@ -891,6 +936,8 @@ public class ArgumentList {
 		public String toString() {
 			return "Argument " + _name + (hasValue() ? "=" + _value : "");
 		}
+
+
 	}
 
 	/**

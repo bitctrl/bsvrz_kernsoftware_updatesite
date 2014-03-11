@@ -33,7 +33,7 @@ import java.io.IOException;
  * Verwaltet eine Datenidentifikation bestehend aus Systemobjekt, Attributgruppenverwendung und Simulationsvariante.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5052 $
+ * @version $Revision: 11481 $
  */
 public final class BaseSubscriptionInfo {
 
@@ -174,4 +174,5 @@ public final class BaseSubscriptionInfo {
 	public long getUsageIdentification() {
 		return _usageIdentification;
 	}
+
 }

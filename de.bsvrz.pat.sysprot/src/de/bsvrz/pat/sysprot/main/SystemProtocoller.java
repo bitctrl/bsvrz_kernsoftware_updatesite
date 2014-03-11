@@ -26,18 +26,7 @@ import de.bsvrz.dav.daf.main.ClientReceiverInterface;
 import de.bsvrz.dav.daf.main.DataDescription;
 import de.bsvrz.dav.daf.main.DataState;
 import de.bsvrz.dav.daf.main.ResultData;
-import de.bsvrz.dav.daf.main.archive.ArchiveData;
-import de.bsvrz.dav.daf.main.archive.ArchiveDataKind;
-import de.bsvrz.dav.daf.main.archive.ArchiveDataKindCombination;
-import de.bsvrz.dav.daf.main.archive.ArchiveDataQueryResult;
-import de.bsvrz.dav.daf.main.archive.ArchiveDataSpecification;
-import de.bsvrz.dav.daf.main.archive.ArchiveDataStream;
-import de.bsvrz.dav.daf.main.archive.ArchiveOrder;
-import de.bsvrz.dav.daf.main.archive.ArchiveQueryPriority;
-import de.bsvrz.dav.daf.main.archive.ArchiveRequestManager;
-import de.bsvrz.dav.daf.main.archive.ArchiveRequestOption;
-import de.bsvrz.dav.daf.main.archive.ArchiveTimeSpecification;
-import de.bsvrz.dav.daf.main.archive.TimingType;
+import de.bsvrz.dav.daf.main.archive.*;
 import de.bsvrz.dav.daf.main.config.Aspect;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.dav.daf.main.config.SystemObject;
@@ -194,9 +183,19 @@ public class SystemProtocoller implements StandardApplication {
 
             List<ArchiveDataSpecification> archiveDataSpecifications = new LinkedList<ArchiveDataSpecification>();
             DataDescription dataDescription = new DataDescription(attributeGroup, aspect, simVariant);
-            for (SystemObject so : sysObjects)
-                archiveDataSpecifications.add(new ArchiveDataSpecification(archiveTimeSpecification, archiveDataKindCombination, archiveOrder,
-                        archiveRequestOption, dataDescription, so));
+            for (SystemObject so : sysObjects) {
+	            ArchiveDataSpecification ads = new ArchiveDataSpecification(
+			            archiveTimeSpecification, archiveDataKindCombination, archiveOrder,
+			            archiveRequestOption, dataDescription, so
+	            );
+	            try{
+		            ads.setQueryWithPid();
+	            }
+	            catch(NoSuchMethodError e){
+		            System.err.println("Archivanfrage kann historische Objekte nicht berücksichtigen, bitte DAF-Bibliothek aktualisieren.");
+	            }
+	            archiveDataSpecifications.add(ads);
+            }
             ArchiveDataQueryResult queryResult = archive.request(archiveQueryPriority, archiveDataSpecifications);
 
             // Anfrage verarbeiten

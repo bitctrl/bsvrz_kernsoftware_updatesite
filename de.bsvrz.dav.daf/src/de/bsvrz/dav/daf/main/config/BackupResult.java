@@ -33,7 +33,7 @@ public interface BackupResult {
 	/**
 	 * Nicht gesicherte Dateien
 	 *
-	 * @return Anzahl der nicht gesicherten dateien (z.B. wegen Lsefehlern, zu wenig Sopeicherplatz etc.)
+	 * @return Anzahl der nicht gesicherten dateien (z.B. wegen Lesefehlern, zu wenig Speicherplatz etc.)
 	 */
 	long getFailed();
 

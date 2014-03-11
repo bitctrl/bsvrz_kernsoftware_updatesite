@@ -26,7 +26,7 @@ import de.bsvrz.dav.daf.communication.dataRepresentation.data.info.AttributeInfo
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 5049 $ / $Date: 2007-08-31 17:49:39 +0200 (Fri, 31 Aug 2007) $ / ($Author: rs $)
+ * @version $Revision: 5049 $ / $Date: 2007-08-31 17:49:39 +0200 (Fr, 31 Aug 2007) $ / ($Author: rs $)
  */
 public class ByteArrayListArrayItemData extends ByteArrayListData {
 	private final int _itemIndex;

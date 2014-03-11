@@ -41,7 +41,7 @@ import java.io.ByteArrayInputStream;
  * Implementierung des Interfaces {@link ReferenceAttributeType} auf Seiten der Konfiguration.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 8550 $ / $Date: 2011-01-06 10:48:12 +0100 (Thu, 06 Jan 2011) $ / ($Author: jh $)
+ * @version $Revision: 8550 $ / $Date: 2011-01-06 10:48:12 +0100 (Do, 06 Jan 2011) $ / ($Author: jh $)
  */
 public class ConfigReferenceAttributeType extends ConfigAttributeType implements ReferenceAttributeType {
 	/**

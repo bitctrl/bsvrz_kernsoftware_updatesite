@@ -30,7 +30,7 @@ import java.io.Serializable;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 8432 $ / $Date: 2010-12-13 11:31:48 +0100 (Mon, 13 Dec 2010) $ / ($Author: jh $)
+ * @version $Revision: 11423 $ / $Date: 2013-07-22 12:02:01 +0200 (Mo, 22 Jul 2013) $ / ($Author: jh $)
  */
 public class AtlDetail implements Serializable {
 
@@ -72,11 +72,8 @@ public class AtlDetail implements Serializable {
 		data.getUnscaledValue(PidScript.version).set(version);
 		data.getTextValue(PidScript.fileName).setText(fileName);
 
-		Data.Array array = data.getArray(PidScript.checksum);
-		array.setLength(checksum.length);
-		for(int i = 0; i < checksum.length; i++) {
-			array.getUnscaledValue(i).set(checksum[i]);
-		}
+		Data.NumberArray array = data.getUnscaledArray(PidScript.checksum);
+		array.set(checksum);
 	}
 
 	/**

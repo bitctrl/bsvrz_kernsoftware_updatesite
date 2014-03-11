@@ -21,31 +21,9 @@
 
 package de.bsvrz.dav.daf.main.impl.archive.request;
 
-import de.bsvrz.dav.daf.main.ClientDavInterface;
-import de.bsvrz.dav.daf.main.ClientSenderInterface;
-import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.DataDescription;
-import de.bsvrz.dav.daf.main.DataNotSubscribedException;
-import de.bsvrz.dav.daf.main.OneSubscriptionPerSendData;
-import de.bsvrz.dav.daf.main.ReceiveOptions;
-import de.bsvrz.dav.daf.main.ResultData;
-import de.bsvrz.dav.daf.main.SendSubscriptionNotConfirmed;
-import de.bsvrz.dav.daf.main.SenderRole;
-import de.bsvrz.dav.daf.main.archive.ArchiveAvailabilityListener;
-import de.bsvrz.dav.daf.main.archive.ArchiveDataQueryResult;
-import de.bsvrz.dav.daf.main.archive.ArchiveDataSpecification;
-import de.bsvrz.dav.daf.main.archive.ArchiveDataStream;
-import de.bsvrz.dav.daf.main.archive.ArchiveInfoQueryResult;
-import de.bsvrz.dav.daf.main.archive.ArchiveInformationResult;
-import de.bsvrz.dav.daf.main.archive.ArchiveQueryPriority;
-import de.bsvrz.dav.daf.main.archive.ArchiveQueryResult;
-import de.bsvrz.dav.daf.main.archive.ArchiveRequestManager;
-import de.bsvrz.dav.daf.main.archive.DatasetReceiverInterface;
-import de.bsvrz.dav.daf.main.archive.HistoryTypeParameter;
-import de.bsvrz.dav.daf.main.config.Aspect;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.SystemObject;
+import de.bsvrz.dav.daf.main.*;
+import de.bsvrz.dav.daf.main.archive.*;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.dav.daf.main.impl.archive.ArchiveQueryID;
 import de.bsvrz.sys.funclib.debug.Debug;
 import de.bsvrz.sys.funclib.timeout.TimeoutTimer;
@@ -59,7 +37,7 @@ import java.util.*;
  * erzeugt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8573 $
+ * @version $Revision: 11925 $
  */
 public class StreamedArchiveRequester implements ArchiveRequestManager {
 
@@ -206,14 +184,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 
 			ArchiveQueryID archiveQueryID = new ArchiveQueryID(indexOfRequest, _archiveSystem);
 
-			Query archiveQuery = new Query(archiveQueryID, priority, specs, _receiveBufferSize, this, _defaultSimulationVariant);
-			// Die Anfrage speichern, sobald Daten für diese Anfrage kommen, kann die Archivanfrage über ihren Index
-			// identifiziert werden. Der Index wird mit der Nachricht versandt.
-			_requests.put(archiveQuery.getArchiveRequestID(), archiveQuery);
-
-			archiveQuery.initiateArchiveRequest();
-
-			return archiveQuery;
+			return query(priority, specs, archiveQueryID);
 		}
 		else {
 			if(specs == null) {
@@ -222,7 +193,107 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 			}
 			else {
 				// Die Liste enthält keine Elemente, also ein Array der Größe 0 zurückgeben
-				ArchiveDataQueryResult queryResult = new ArchiveDataQueryResult() {
+				return getEmptyResult();
+			}
+		}
+	}
+
+	private ArchiveDataQueryResult query(final ArchiveQueryPriority priority, final List<ArchiveDataSpecification> specs, final ArchiveQueryID archiveQueryID) {
+		final List<ArchiveDataSpecification> rawSpecs = new ArrayList<ArchiveDataSpecification>(specs.size());
+		final ArchiveStreamCombiner combiner = new ArchiveStreamCombiner();
+		for(ArchiveDataSpecification spec : specs) {
+			if(spec.getQueryWithPid()) {
+				Collection<ArchiveDataSpecification> split = splitQueryBetweenObjects(spec);
+				rawSpecs.addAll(split);
+				combiner.addQuery(split.size(), spec);
+			}
+			else {
+				rawSpecs.add(spec);
+				combiner.addQuery(1, spec);
+			}
+		}
+		combiner.setRawResult(rawQuery(priority, rawSpecs, archiveQueryID));
+		return combiner;
+	}
+
+	private Collection<ArchiveDataSpecification> splitQueryBetweenObjects(final ArchiveDataSpecification spec) {
+		final List<ArchiveDataSpecification> result = new ArrayList<ArchiveDataSpecification>();
+		for(SystemObject object : getAffectedObjects(spec)) {
+			result.add(new ArchiveDataSpecification(spec.getTimeSpec(), spec.getDataKinds(), spec.getSortOrder(), spec.getRequestOption(), spec.getDataDescription(), object));
+		}
+		return result;
+	}
+
+	private SystemObject[] getAffectedObjects(final ArchiveDataSpecification spec) {
+		String pid = spec.getObject().getPid();
+
+		if(pid == null || pid.isEmpty()) {
+			// Fallback, keine Pid
+			return new SystemObject[]{spec.getObject()};
+		}
+
+		long start;
+		long end;
+		ArchiveTimeSpecification timeSpec = spec.getTimeSpec();
+		if(timeSpec.getTimingType() == TimingType.DATA_TIME
+				|| timeSpec.getTimingType() == TimingType.ARCHIVE_TIME){
+			start = timeSpec.getIntervalStart();
+			end = timeSpec.getIntervalEnd();
+		}
+		else {
+			// Start und Ende aus angefragtem Datenindex extrahieren
+			start = (timeSpec.getIntervalStart() >> 32) * 1000;
+			end = (timeSpec.getIntervalEnd() >> 32) * 1000;
+		}
+
+		if(timeSpec.isStartRelative()){
+			start = 0;
+		}
+
+		Collection<SystemObject> tmp = _connection.getDataModel().getObjects(pid, start, end);
+		if(tmp.isEmpty()){
+			// Fallback, keine passenden Objekte ermittelbar
+			return new SystemObject[]{spec.getObject()};
+		}
+		SystemObject[] objects = tmp.toArray(new SystemObject[tmp.size()]);
+
+		// Objekte nach Gültigkeit sortieren
+		Arrays.sort(objects, new Comparator<SystemObject>() {
+			@Override
+			public int compare(final SystemObject o1, final SystemObject o2) {
+				if(o1 instanceof ConfigurationObject && o2 instanceof ConfigurationObject) {
+					int x = ((ConfigurationObject) o1).getValidSince();
+					int y = ((ConfigurationObject) o2).getValidSince();
+					return (x < y) ? -1 : ((x == y) ? 0 : 1);
+				}
+				if(o1 instanceof DynamicObject && o2 instanceof DynamicObject) {
+					long x = ((DynamicObject) o1).getValidSince();
+					long y = ((DynamicObject) o2).getValidSince();
+					return (x < y) ? -1 : ((x == y) ? 0 : 1);
+				}
+				return 0;
+			}
+		});
+
+		return objects;
+	}
+
+	private ArchiveDataQueryResult rawQuery(final ArchiveQueryPriority priority, final List<ArchiveDataSpecification> specs, final ArchiveQueryID archiveQueryID) {
+		if(specs.size()==0){
+			return getEmptyResult();
+		}
+		Query archiveQuery = new Query(archiveQueryID, priority, specs, _receiveBufferSize, this, _defaultSimulationVariant);
+		// Die Anfrage speichern, sobald Daten für diese Anfrage kommen, kann die Archivanfrage über ihren Index
+		// identifiziert werden. Der Index wird mit der Nachricht versandt.
+		_requests.put(archiveQuery.getArchiveRequestID(), archiveQuery);
+
+		archiveQuery.initiateArchiveRequest();
+
+		return archiveQuery;
+	}
+
+	private static ArchiveDataQueryResult getEmptyResult() {
+		return new ArchiveDataQueryResult() {
 					public ArchiveDataStream[] getStreams() throws InterruptedException, IllegalStateException {
 						return new ArchiveDataStream[0];  //To change body of implemented methods use File | Settings | File Templates.
 					}
@@ -235,9 +306,6 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 						return "";
 					}
 				};
-				return queryResult;
-			}
-		}
 	}
 
 	/**
@@ -253,37 +321,8 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	 * @throws IllegalStateException Das Archiv, an das die Anfrage gestellt wurde, kann nicht erreicht werden, die Anfrage wird verworfen.
 	 */
 	public ArchiveDataQueryResult request(ArchiveQueryPriority priority, ArchiveDataSpecification spec) throws IllegalStateException {
-
 		if(spec != null) {
-			try {
-				if(isConnectionOk(_timeOutArchiveRequest) == false) {
-					_debug.warning(
-							"Die Applikation: " + _connection.getLocalApplicationObject().getNameOrPidOrId() + " will eine Archivanfrage beim Archivsystem: "
-							+ _archiveSystem.getNameOrPidOrId() + " stellen, bekommt aber keine Rückmeldung vom Archivsystem. Die Archivanfrage wird verworfen."
-					);
-					throw new IllegalStateException("Das Archivsystem " + _archiveSystem.getNameOrPidOrId() + " kann nicht erreicht werden");
-				}
-			}
-			catch(InterruptedException e) {
-				e.printStackTrace();
-			}
-
-			// über diese ID ist jede Archivanfrage eindeutig zu identifizieren
-			final int indexOfRequest;
-			synchronized(this) {
-				indexOfRequest = _indexOfRequest;
-				_indexOfRequest++;
-			}
-			final ArchiveQueryID archiveQueryID = new ArchiveQueryID(indexOfRequest, _archiveSystem);
-
-			Query archiveQuery = new Query(archiveQueryID, priority, spec, _receiveBufferSize, this, _defaultSimulationVariant);
-			// Die Anfrage speichern, sobald Daten für diese Anfrage kommen, kann die Archivanfrage über ihren Index
-			// identifiziert werden. Der Index wird mit der Nachricht versandt.
-			_requests.put(archiveQuery.getArchiveRequestID(), archiveQuery);
-
-			archiveQuery.initiateArchiveRequest();
-
-			return archiveQuery;
+			return request(priority, Collections.singletonList(spec));
 		}
 		else {
 			throw new IllegalArgumentException("Die geforderte Spezifikation einer Archivanfrage war null");
@@ -420,6 +459,10 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 				requestDataResponse(data);
 				break;
 			}
+			case 22: {
+				requestNumQueriesResponse(data);
+				break;
+			}
 		}
 	}
 
@@ -464,7 +507,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	 * @throws DataNotSubscribedException   Es sollen Daten ohne Anmeldung auf die Daten verschickt werden
 	 * @throws SendSubscriptionNotConfirmed Es liegt keine positive Sendesteuerung vom Datenverteiler für die zu versendenden Daten vor
 	 */
-	void sendTicketToArchive(ArchiveQueryID archiveRequest, byte[] ticket) throws DataNotSubscribedException, SendSubscriptionNotConfirmed {
+	void sendTicketToArchive(ArchiveQueryID archiveRequest, byte[] ticket) throws DataNotSubscribedException, SendSubscriptionNotConfirmed, DataModelException {
 
 		// Datensatz erzeugen und verschicken
 		createArchivRequestResultData(archiveRequest, 4, ticket);
@@ -511,7 +554,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	 * @throws IllegalStateException        Die Verbindng zum Archive wurde abgebrochen, gleichzeitig wird versucht Datenpakete an das Archiv zu verschicken
 	 */
 	void createArchivRequestResultData(ArchiveQueryID archiveRequest, int messageType, byte[] dataArray)
-			throws DataNotSubscribedException, SendSubscriptionNotConfirmed, IllegalStateException {
+			throws DataNotSubscribedException, SendSubscriptionNotConfirmed, IllegalStateException, DataModelException {
 
 		DataModel configuration = _connection.getDataModel();
 
@@ -541,15 +584,11 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		if(dataArray != null) {
 			// Es gibt ein Array
 
-			// Die Länge des Arrays setzen
-			final int lengthDataArray = dataArray.length;
+			requestData.getUnscaledArray("daten").set(dataArray); // Array in Daten einfügen
+		}
 
-			requestData.getUnscaledArray("daten").setLength(lengthDataArray);
-			// Byteweise kopieren
-
-			for(int nr = 0; nr < lengthDataArray; nr++) {
-				requestData.getUnscaledArray("daten").getValue(nr).set(dataArray[nr]);
-			}
+		if(!requestData.isDefined()){
+			throw new DataModelException("Das verwendete Datenmodell unterstützt diese Anfrage nicht. kb.systemModellGlobal aktualisieren.");
 		}
 
 		ResultData result = new ResultData(_archiveSystem, dataDescription, System.currentTimeMillis(), requestData);
@@ -769,6 +808,63 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 			return;
 		}
 		requestInfo.archiveResponse(data);
+
+		// Die Antwort wurde übermittelt, es wird für diesen Auftrag keine Antwort mehr kommen.
+		// Den Auftrag entfernen
+		removeRequest(hashObject);
+	}
+
+	@Override
+	public ArchiveNumQueriesResult getNumArchiveQueries() {
+		try {
+			if(isConnectionOk(_timeOutArchiveRequest) == false) {
+				throw new IllegalStateException("Das Archivsystem " + _archiveSystem.getNameOrPidOrId() + " ist nicht erreichbar");
+			}
+		}
+		catch(InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		final int indexOfRequest;
+		synchronized(this) {
+			indexOfRequest = _indexOfRequest;
+			_indexOfRequest++;
+		}
+
+		ArchiveQueryID archiveQueryID = new ArchiveQueryID(indexOfRequest, _archiveSystem);
+
+		RequestNumQueries requestNumQueries = new RequestNumQueries(archiveQueryID, this, _defaultSimulationVariant);
+
+		_debug.finest(
+				"Eine Archivanfrage (requestNumQueries) wird in einer Hashtable gespeichert. Schlüssel: IndexAnfrage: "
+						+ requestNumQueries.getArchiveRequestID().getIndexOfRequest() + " Archiv: " + requestNumQueries.getArchiveRequestID()
+						.getObjectReference()
+		);
+		_requests.put(requestNumQueries.getArchiveRequestID(), requestNumQueries);
+		// Anfrage verschicken
+		requestNumQueries.sendRequestInfo();
+		return requestNumQueries;
+	}
+
+	/**
+	 * Diese Methode wird aufgerufen, wenn eine Antwort auf eine Archiveinformationsanfrage vorliegt. Die Antwort wird an den Auftraggeber weitergeleitet.
+	 *
+	 * @param data Archivantwort auf einen Archivinformationsanfrage
+	 */
+	private void requestNumQueriesResponse(Data data) {
+		// Für welche Archivanfrage ist das Paket
+		final int indexOfRequest = data.getUnscaledValue("anfrageIndex").intValue();
+
+		// Welches Archiv hat die Daten verschickt
+		final SystemObject archiveReference = data.getReferenceValue("absender").getSystemObject();
+
+		ArchiveQueryID hashObject = new ArchiveQueryID(indexOfRequest, archiveReference);
+		RequestNumQueries requestNumQueries = (RequestNumQueries)_requests.get(hashObject);
+		if(requestNumQueries == null) {
+			_debug.warning("Unerwartete Antwort (bzgl. einer Archivinformationsanfrage) vom Archivsystem empfangen", data);
+			return;
+		}
+		requestNumQueries.archiveResponse(data);
 
 		// Die Antwort wurde übermittelt, es wird für diesen Auftrag keine Antwort mehr kommen.
 		// Den Auftrag entfernen

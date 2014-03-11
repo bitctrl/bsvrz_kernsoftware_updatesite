@@ -36,7 +36,7 @@ import java.util.*;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 6914 $ / $Date: 2009-11-05 15:41:41 +0100 (Thu, 05 Nov 2009) $ / ($Author: rs $)
+ * @version $Revision: 6914 $ / $Date: 2009-11-05 15:41:41 +0100 (Do, 05 Nov 2009) $ / ($Author: rs $)
  */
 public class DynamicObjectInformation extends SystemObjectInformation implements DynamicObjectInfo {
 

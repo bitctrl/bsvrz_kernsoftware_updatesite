@@ -47,7 +47,7 @@ import java.util.zip.InflaterInputStream;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 6324 $ / $Date: 2009-02-09 16:47:39 +0100 (Mon, 09 Feb 2009) $ / ($Author: rs $)
+ * @version $Revision: 6324 $ / $Date: 2009-02-09 16:47:39 +0100 (Mo, 09 Feb 2009) $ / ($Author: rs $)
  */
 class DataStream implements ArchiveDataStream {
 

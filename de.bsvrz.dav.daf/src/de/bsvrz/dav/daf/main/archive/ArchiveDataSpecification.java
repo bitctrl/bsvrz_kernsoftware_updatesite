@@ -24,11 +24,10 @@ import de.bsvrz.dav.daf.main.DataDescription;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 
 /**
- * Ein Objekt dieser Klasse spiegelt eine Archivanfrage(ohne Priorität) wieder. Eine genauere Beschreibung steht in den
- * "gettern" der Klasse.
+ * Ein Objekt dieser Klasse spiegelt eine Archivanfrage (ohne Priorität) wieder.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5064 $
+ * @version $Revision: 11955 $
  */
 public class ArchiveDataSpecification {
 	private final ArchiveTimeSpecification _timeSpec;
@@ -37,7 +36,17 @@ public class ArchiveDataSpecification {
 	private final ArchiveRequestOption _requestOption;
 	private final DataDescription _dataDescription;
 	private final SystemObject _object;
+	private boolean _queryWithPid = false;
 
+	/**
+	 * Erzeugt eine Definition für eine Archivanfrage, die Archivdaten für ein Systemobjekt abfragt
+	 * @param timeSpec Definition des angefragten Zeitbereichs/Indexbereichs
+	 * @param dataKinds Datenarten
+	 * @param sortOrder Sortierung
+	 * @param requestOption Anfrageart
+	 * @param dataDescription Angefragte Datenart (Attributguppe/Aspekt/Simulationsvariante-Kombination)
+	 * @param object Systemobjekt, von dem die Daten abgefragt werden sollen
+	 */
 	public ArchiveDataSpecification(ArchiveTimeSpecification timeSpec,
 									ArchiveDataKindCombination dataKinds,
 									ArchiveOrder sortOrder,
@@ -45,52 +54,66 @@ public class ArchiveDataSpecification {
 									DataDescription dataDescription,
 									SystemObject object) {
 		_timeSpec = timeSpec;
-		_dataKinds = dataKinds;
-		_sortOrder = sortOrder;
 		_requestOption = requestOption;
 		_dataDescription = dataDescription;
+		_dataKinds = dataKinds;
+		_sortOrder = sortOrder;
 		_object = object;
 	}
 
 	/**
-	 *
-	 * @return Zeit/Indexbereich auf den sich die Archivanfrage bezieht
+	 * Erzeugt eine Definition für eine Archivanfrage, die Archivdaten für ein Systemobjekt und optional historische Objekte mit gleicher Pid abfragt.
+	 * Dieser Konstruktor ist möglicherweise bei älteren DAF nicht vorhanden.
+	 * @param timeSpec Definition des angefragten Zeitbereichs/Indexbereichs
+	 * @param dataKinds Datenarten
+	 * @param sortOrder Sortierung
+	 * @param requestOption Anfrageart
+	 * @param dataDescription Angefragte Datenart (Attributguppe/Aspekt/Simulationsvariante-Kombination)
+	 * @param object Systemobjekt, von dem die Daten abgefragt werden sollen
+	 * @param queryWithPid Bestimmt ob anhand der Objekt-Pid eventuell noch Daten von zusätzlichen historischen Objekten abgefragt werden sollen. Siehe {@link #setQueryWithPid()}.
 	 */
-	public ArchiveTimeSpecification getTimeSpec() {
-		return _timeSpec;
+	public ArchiveDataSpecification(ArchiveTimeSpecification timeSpec,
+									ArchiveDataKindCombination dataKinds,
+									ArchiveOrder sortOrder,
+									ArchiveRequestOption requestOption,
+									DataDescription dataDescription,
+									SystemObject object,
+									boolean queryWithPid) {
+		_timeSpec = timeSpec;
+		_requestOption = requestOption;
+		_dataDescription = dataDescription;
+		_dataKinds = dataKinds;
+		_sortOrder = sortOrder;
+		_object = object;
+		_queryWithPid = queryWithPid;
 	}
 
 	/**
-	 *
-	 * @return Welche Art von Daten sollen in die Archivantwort einbezogen werden (online, onlineDelayd, ...)
+	 * Sorgt dafür, dass anhand der Objekt-Pid eventuell noch Daten von zusätzlichen historischen Objekten abgefragt werden sollen.
+	 * Archivsystemseitig oder bei Systemobjekten ohne Pid hat dieses Flag keine Funktion.
+	 * Diese Methode ist möglicherweise bei älteren DAF nicht vorhanden. Es kann daher aus Kompatibilitätsgründen sinnvoll sein,
+	 * den klassischen Konstruktor ohne <code>queryWithPid</code>-Parameter zu verwenden und nachher diese Funktion in einem try-catch-Block aufzurufen:
+	 * <pre>{@code
+	 * ArchiveDataSpecification ads = new ArchiveDataSpecification(...);
+	 * try {
+	 *     ads.setQueryWithPid();
+	 * }
+	 * catch(NoSuchMethodError e) {}
+	 * }
+	 * </pre>
 	 */
-	public ArchiveDataKindCombination getDataKinds() {
-		return _dataKinds;
+	public void setQueryWithPid() {
+		_queryWithPid = true;
 	}
 
 	/**
-	 *
-	 * @return Wie sollen die nachgelieferten Datensätze einsortiert werden (Zeit, Index)
+	 * Gibt zurück, ob anhand der Objekt-Pid eventuell noch Daten von zusätzlichen historischen Objekten abgefragt werden sollen.
+	 * Archivsystemseitig oder bei Systemobjekten ohne Pid hat dieses Flag keine Funktion.
+	 * Diese Methode ist möglicherweise bei älteren DAF nicht vorhanden.
+	 * @return true wenn anhand der Pid historische Objekte berücksichtigt werden sollen, sonst false
 	 */
-	public ArchiveOrder getSortOrder() {
-		return _sortOrder;
-	}
-
-	/**
-	 *
-	 * @return Zustandsanfrage oder Deltaanfrage
-	 */
-	public ArchiveRequestOption getRequestOption() {
-		return _requestOption;
-	}
-
-	/**
-	 *
-	 *
-	 * @return DataDescription
-	 */
-	public DataDescription getDataDescription() {
-		return _dataDescription;
+	public boolean getQueryWithPid() {
+		return _queryWithPid;
 	}
 
 	/**
@@ -114,6 +137,48 @@ public class ArchiveDataSpecification {
 				", _requestOption=" + _requestOption +
 				", _dataDescription=" + _dataDescription +
 				", _object=" + _object +
+				", _queryWithPid=" + _queryWithPid +
 				"}";
 	}
+
+	/**
+	 *
+	 * @return Zeit/Indexbereich auf den sich die Archivanfrage bezieht
+	 */
+	public ArchiveTimeSpecification getTimeSpec() {
+		return _timeSpec;
+	}
+
+	/**
+	 *
+	 * @return Welche Art von Daten sollen in die Archivantwort einbezogen werden (online, onlineDelayed, ...)
+	 */
+	public ArchiveDataKindCombination getDataKinds() {
+		return _dataKinds;
+	}
+
+	/**
+	 *
+	 * @return Wie sollen die nachgelieferten Datensätze einsortiert werden (Zeit, Index)
+	 */
+	public ArchiveOrder getSortOrder() {
+		return _sortOrder;
+	}
+
+	/**
+	 *
+	 * @return Zustandsanfrage oder Deltaanfrage
+	 */
+	public ArchiveRequestOption getRequestOption() {
+		return _requestOption;
+	}
+
+	/**
+	 * Angefragte Datenart (Attributguppe/Aspekt/Simulationsvariante-Kombination)
+	 * @return DataDescription
+	 */
+	public DataDescription getDataDescription() {
+		return _dataDescription;
+	}
+
 }

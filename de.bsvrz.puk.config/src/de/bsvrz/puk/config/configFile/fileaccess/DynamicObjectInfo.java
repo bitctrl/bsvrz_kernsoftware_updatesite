@@ -28,7 +28,7 @@ import de.bsvrz.dav.daf.main.config.DynamicObjectType;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 5074 $ / $Date: 2007-09-02 14:19:12 +0200 (Sun, 02 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 5074 $ / $Date: 2007-09-02 14:19:12 +0200 (So, 02 Sep 2007) $ / ($Author: rs $)
  */
 public interface DynamicObjectInfo extends SystemObjectInformationInterface {
 

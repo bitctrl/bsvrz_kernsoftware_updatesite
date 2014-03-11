@@ -22,20 +22,8 @@
 
 package de.bsvrz.puk.config.configFile.datamodel;
 
-import static de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentifications.CONFIGURATION_ELEMENTS_IN_MUTABLE_SET;
-
 import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
-import de.bsvrz.dav.daf.main.config.ConfigurationCommunicationChangeListener;
-import de.bsvrz.dav.daf.main.config.ConfigurationCommunicationInterface;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.MutableSet;
-import de.bsvrz.dav.daf.main.config.MutableSetChangeListener;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
-import de.bsvrz.dav.daf.main.config.MutableCollectionChangeListener;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.dav.daf.main.impl.config.ConfigurationCommunicationListenerSupport;
 import de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformationInterface;
 import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
@@ -43,22 +31,16 @@ import de.bsvrz.sys.funclib.dataSerializer.Serializer;
 import de.bsvrz.sys.funclib.dataSerializer.SerializingFactory;
 import de.bsvrz.sys.funclib.debug.Debug;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
+
+import static de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentifications.CONFIGURATION_ELEMENTS_IN_MUTABLE_SET;
 
 /**
  * Implementierung des Interfaces {@link MutableSet} für dynamische Mengen auf Seiten der Konfiguration.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8550 $
+ * @version $Revision: 11495 $
  */
 public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	
@@ -421,8 +403,7 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	private void loadElementAccessProperties() {
 		synchronized(_lockElementAccessProperties) {
 			if(!_elementAccessFieldsInitialized) {
-				
-				_elementChangesAllowed = getDataModel().getConfigurationAuthority() == getConfigurationArea().getConfigurationAuthority();
+				_elementChangesAllowed = getDataModel().getConfigurationAuthorityPid().equals(getConfigurationArea().getConfigurationAuthority().getPid());
 				_elementsFile = null;
 				
 				final DataModel configuration = getDataModel();
@@ -431,10 +412,12 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 					final Data data = this.getConfigurationData(atg);
 					if(data != null) {
 						_elementsManagementPid = data.getTextValue("verwaltung").getValueText();
-						_elementChangesAllowed = getDataModel().getConfigurationAuthority().getPid().equals(_elementsManagementPid);
-						if(_elementChangesAllowed) {
-							_elementsFile = new File(((ConfigDataModel)getDataModel()).getManagementFile().getObjectSetDirectory(), String.valueOf(getId())
-							        + ".menge");
+						if(!_elementsManagementPid.equals("")) {
+							_elementChangesAllowed = getDataModel().getConfigurationAuthorityPid().equals(_elementsManagementPid);
+							if(_elementChangesAllowed) {
+								_elementsFile = new File(((ConfigDataModel)getDataModel()).getManagementFile().getObjectSetDirectory(), String.valueOf(getId())
+								                                                                                                        + ".menge");
+							}
 						}
 					}
 				}

@@ -76,12 +76,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Klasse, die noch zu dokumentieren ist.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8301 $
+ * @version $Revision: 11931 $
  */
 public class RemoteRequestManager implements DavConnectionListener {
 
@@ -113,19 +115,23 @@ public class RemoteRequestManager implements DavConnectionListener {
 	}
 
 	/**
-	 * Erzeugt eine Instanz des RemoteRequestMangagers
+	 * Erzeugt eine Instanz des RemoteRequestManagers
 	 *
 	 * @param connection         Verbindung über die sich angemeldet wird
-	 * @param localConfiguration Datenmodell
+	 * @param configuration      Datenmodell
 	 * @param localApplicationId Id des Objekts das zur Anmeldung für Sender/Empfänger benutzt wird
 	 *
 	 * @return Instanz des RemoteRequestManager´s
 	 */
 	public static RemoteRequestManager getInstance(
-			ClientDavInterface connection, DataModel localConfiguration, long localApplicationId
+			ClientDavInterface connection, DataModel configuration, long localApplicationId
 	) {
-		final SystemObject systemObject = localConfiguration.getObject(localApplicationId);
-		return RemoteRequestManager.getInstance(connection, localConfiguration, systemObject);
+		// Folgender Code ist falsch, da configuration eine Remote-Konfiguration sein kann
+		// und folglich das lokale Applikationsobjekt vom falschen KV abgefragt wird,
+		// da im allgemeinen nur der lokale KV das lokale Applikationsobjekt kennt.
+//		final SystemObject systemObject = configuration.getObject(localApplicationId);
+		final SystemObject systemObject = connection.getDataModel().getObject(localApplicationId);
+		return RemoteRequestManager.getInstance(connection, configuration, systemObject);
 	}
 
 	public void connectionClosed(ClientDavInterface connection) {
@@ -234,10 +240,23 @@ public class RemoteRequestManager implements DavConnectionListener {
 
 		/** Teilt einem Request mit, dass er sich beenden soll */
 		public void close() {
-			_senderConfigAreaTask.close();
-			_senderReadConfigObjects.close();
-			_senderUserAdministration.close();
-			_senderWriteConfigObjects.close();
+			SenderReceiverCommunication[] channels = {_senderConfigAreaTask, _senderReadConfigObjects, _senderUserAdministration, _senderWriteConfigObjects};
+			for(final SenderReceiverCommunication channel : channels) {
+				Thread thread = new Thread(new Runnable() {
+					public void run() {
+						channel.close();
+					}
+				});
+				thread.setDaemon(true);
+				thread.setName("SenderReceiverCommunicationCloser");
+				thread.start();
+				try {
+					thread.join(50);
+				}
+				catch(InterruptedException e) {
+					_debug.warning("Thread wurde unterbrochen", e);
+				}
+			}
 		}
 
 		private SystemObject getReplyObject(Data reply) throws RequestException {
@@ -711,6 +730,7 @@ public class RemoteRequestManager implements DavConnectionListener {
 				throw new RequestException("Fehler beim Versand der Anfrage", e);
 			}
 			Data reply = _senderReadConfigObjects.waitForReply(requestIndex);
+//			System.out.println("-----reply size = " + ((ByteArrayData)reply.createUnmodifiableCopy()).getBytes().length);
 			Deserializer deserializer = getMessageDeserializer(reply, "DatensatzAntwort");
 			try {
 				int numberOfDatasets = deserializer.readInt();
@@ -1539,10 +1559,10 @@ public class RemoteRequestManager implements DavConnectionListener {
 		}
 
 
-		public BackupResult backupConfigurationFiles(String targetDirectory, BackupProgressCallback callback)
+		public BackupResult backupConfigurationFiles(String targetDirectory, final ConfigurationAuthority configurationAuthority, BackupProgressCallback callback)
 				throws ConfigurationTaskException, RequestException {	
 			try {
-				return sendConfigAreaBackupTask(serializeBackupTask(targetDirectory), callback);
+				return sendConfigAreaBackupTask(serializeBackupTask(targetDirectory, configurationAuthority), callback);
 			}
 			catch(IOException e) {
 				throw new ConfigurationChangeException(e);
@@ -1826,39 +1846,47 @@ public class RemoteRequestManager implements DavConnectionListener {
 
 		public DynamicObject createDynamicObject(ConfigurationArea configurationArea, DynamicObjectType type, String pid, String name)
 				throws ConfigurationChangeException, RequestException {
-			final int requestIndex;
-
+			ObjectCreationWaiter objectCreationWaiter = new ObjectCreationWaiter(type, pid);
 			try {
-				ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
-				Serializer serializer = SerializingFactory.createSerializer(byteArrayStream);
+				final int requestIndex;
 
-				// Aufbau des Telegramms:
-				// Konfigurationsobjekt(false), boolean
-				// Konfigurationsbereich, Referenz
-				// Pid, string
-				// name, string
-				// DynamicObjectType, Referenz
+				try {
+					ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
+					Serializer serializer = SerializingFactory.createSerializer(byteArrayStream);
 
-				// Es ist ein Konfigurationsobjekt
-				serializer.writeBoolean(false);
-				// Bereich, in dem das Objekte angelegt werden soll
-				serializer.writeObjectReference(configurationArea);
-				// Pid
-				serializer.writeString(pid);
-				// Name
-				serializer.writeString(name);
-				// Type des Objekts
-				serializer.writeObjectReference(type);
+					// Aufbau des Telegramms:
+					// Konfigurationsobjekt(false), boolean
+					// Konfigurationsbereich, Referenz
+					// Pid, string
+					// name, string
+					// DynamicObjectType, Referenz
 
-				requestIndex = _senderWriteConfigObjects.sendData("ObjektAnlegen", byteArrayStream.toByteArray());
+					// Es ist ein Konfigurationsobjekt
+					serializer.writeBoolean(false);
+					// Bereich, in dem das Objekte angelegt werden soll
+					serializer.writeObjectReference(configurationArea);
+					// Pid
+					serializer.writeString(pid);
+					// Name
+					serializer.writeString(name);
+					// Type des Objekts
+					serializer.writeObjectReference(type);
+
+					objectCreationWaiter.start();
+					requestIndex = _senderWriteConfigObjects.sendData("ObjektAnlegen", byteArrayStream.toByteArray());
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+					_debug.error("Fehler beim Senden der Konfigurationsanfrage zum Erzeugen eines neuen dynamischen Objekts", e);
+					throw new RequestException(e);
+				}
+
+				DynamicObject dynamicObject = waitForResponseAndDeserializeDynamicObject(requestIndex);
+				objectCreationWaiter.await();
+				return dynamicObject;
+			} finally {
+    			objectCreationWaiter.stop();
 			}
-			catch(Exception e) {
-				e.printStackTrace();
-				_debug.error("Fehler beim Senden der Konfigurationsanfrage zum Erzeugen eines neuen dynamischen Objekts", e);
-				throw new RequestException(e);
-			}
-
-			return waitForResponseAndDeserializeDynamicObject(requestIndex);
 		}
 
 		/**
@@ -1898,54 +1926,62 @@ public class RemoteRequestManager implements DavConnectionListener {
 		public DynamicObject createDynamicObject(
 				ConfigurationArea configurationArea, DynamicObjectType type, String pid, String name, List<DataAndATGUsageInformation> data
 		) throws ConfigurationChangeException, RequestException {
-			final int requestIndex;
-
-
+			ObjectCreationWaiter objectCreationWaiter = new ObjectCreationWaiter(type, pid);
 			try {
-				ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
-				Serializer serializer = SerializingFactory.createSerializer(byteArrayStream);
+				final int requestIndex;
 
-				// Aufbau des Telegramms:
-				// Konfigurationsbereich, Referenz
-				// Pid, string
-				// name, string
-				// DynamicObjectType, Referenz
-				// Anzahl folgender Datensätze+ATG-Verwendungen, int (Wert 0 bedeutet, dass eine leere Liste oder null übergeben wurde)
-				//  ATG-Verwendung, Referenz
-				//  Datensatz, serialisierter Datensatz
 
-				serializer.writeObjectReference(configurationArea);
-				serializer.writeString(pid);
-				serializer.writeString(name);
-				serializer.writeObjectReference(type);
+				try {
+					ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
+					Serializer serializer = SerializingFactory.createSerializer(byteArrayStream);
 
-				// Nun die Liste
-				final int dataLength;
-				if(data != null) {
-					dataLength = data.size();
-				}
-				else {
-					dataLength = 0;
-				}
+					// Aufbau des Telegramms:
+					// Konfigurationsbereich, Referenz
+					// Pid, string
+					// name, string
+					// DynamicObjectType, Referenz
+					// Anzahl folgender Datensätze+ATG-Verwendungen, int (Wert 0 bedeutet, dass eine leere Liste oder null übergeben wurde)
+					//  ATG-Verwendung, Referenz
+					//  Datensatz, serialisierter Datensatz
 
-				serializer.writeInt(dataLength);
+					serializer.writeObjectReference(configurationArea);
+					serializer.writeString(pid);
+					serializer.writeString(name);
+					serializer.writeObjectReference(type);
 
-				if(dataLength > 0) {
-					for(DataAndATGUsageInformation dataAndATGUsageInformation : data) {
-						serializer.writeObjectReference(dataAndATGUsageInformation.getAttributeGroupUsage());
-						serializer.writeData(dataAndATGUsageInformation.getData());
+					// Nun die Liste
+					final int dataLength;
+					if(data != null) {
+						dataLength = data.size();
 					}
-				}
-				requestIndex = _senderWriteConfigObjects.sendData("DynamischesObjektMitKonfigurierendenDatensaetzenAnlegen", byteArrayStream.toByteArray());
-			}
-			catch(Exception e) {
-				e.printStackTrace();
-				_debug.error("Fehler beim Senden der Konfigurationsanfrage zum Erzeugen eines neuen dynamischen Objekts", e);
-				throw new RequestException("Fehler beim Versand der Daten: " + e);
-			}
+					else {
+						dataLength = 0;
+					}
 
-			// Telegramm wurde verschickt, nun auf die Antwort warten
-			return waitForResponseAndDeserializeDynamicObject(requestIndex);
+					serializer.writeInt(dataLength);
+
+					if(dataLength > 0) {
+						for(DataAndATGUsageInformation dataAndATGUsageInformation : data) {
+							serializer.writeObjectReference(dataAndATGUsageInformation.getAttributeGroupUsage());
+							serializer.writeData(dataAndATGUsageInformation.getData());
+						}
+					}
+					objectCreationWaiter.start();
+					requestIndex = _senderWriteConfigObjects.sendData("DynamischesObjektMitKonfigurierendenDatensaetzenAnlegen", byteArrayStream.toByteArray());
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+					_debug.error("Fehler beim Senden der Konfigurationsanfrage zum Erzeugen eines neuen dynamischen Objekts", e);
+					throw new RequestException("Fehler beim Versand der Daten: " + e);
+				}
+
+				// Telegramm wurde verschickt, nun auf die Antwort warten
+				DynamicObject dynamicObject = waitForResponseAndDeserializeDynamicObject(requestIndex);
+				objectCreationWaiter.await();
+				return dynamicObject;
+			} finally {
+				objectCreationWaiter.stop();
+			}
 		}
 
 		public SystemObject duplicate(final SystemObject systemObject, final Map<String, String> substitutePids)
@@ -2292,7 +2328,7 @@ public class RemoteRequestManager implements DavConnectionListener {
 			return outputStream.toByteArray();
 		}
 
-		private byte[] serializeBackupTask(String path) throws NoSuchVersionException, IOException {
+		private byte[] serializeBackupTask(String path, final ConfigurationAuthority configurationAuthority) throws NoSuchVersionException, IOException {
 			final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			final Serializer serializer = SerializingFactory.createSerializer(2, outputStream);
 			if(path != null){
@@ -2301,6 +2337,7 @@ public class RemoteRequestManager implements DavConnectionListener {
 			else{
 				serializer.writeString("");
 			}
+			serializer.writeObjectReference(configurationAuthority);
 
 			return outputStream.toByteArray();
 		}
@@ -2549,6 +2586,43 @@ public class RemoteRequestManager implements DavConnectionListener {
 			final boolean versionOk = getSystemModelVersion() >= requiredVersion;
 			if(!versionOk) {
 				throw new RequestException(errorMessage + ". Der Bereich kb.systemModellGlobal wird in Version " + requiredVersion +" oder höher benötigt.");
+			}
+		}
+
+		private class ObjectCreationWaiter {
+
+			private DynamicObjectType _type;
+			private String _pid;
+			private final CountDownLatch _objectCreatedCountDown = new CountDownLatch(1);
+			private final DynamicObjectType.DynamicObjectCreatedListener _objectCreatedListener;
+
+			public ObjectCreationWaiter(DynamicObjectType type, String pid) {
+				_type = type;
+				_pid = pid;
+				_objectCreatedListener = new DynamicObjectType.DynamicObjectCreatedListener() {
+					@Override
+					public void objectCreated(DynamicObject createdObject) {
+						if(_type.getPid().equals(createdObject.getType().getPid()) && (_pid == null || _pid.equals(createdObject.getPid()))) {
+							_objectCreatedCountDown.countDown();
+						}
+					}
+				};
+			}
+
+			public void start() {
+				_type.addObjectCreationListener(_objectCreatedListener);
+			}
+
+			public void await() {
+				try {
+					_objectCreatedCountDown.await(500, TimeUnit.MILLISECONDS);
+				} catch (InterruptedException e) {
+					// InterruptedException führt zum sofortigen Ende der Methode
+				}
+			}
+
+			public void stop() {
+				_type.removeObjectCreationListener(_objectCreatedListener);
 			}
 		}
 	}

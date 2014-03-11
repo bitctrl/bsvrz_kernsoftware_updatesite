@@ -33,7 +33,7 @@ import java.util.*;
  * de.bsvrz.dav.daf.main.ClientDavInterface#getArchive} zur Verfügung gestellt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 6831 $
+ * @version $Revision: 11925 $
  */
 public interface ArchiveRequestManager {
 
@@ -55,7 +55,7 @@ public interface ArchiveRequestManager {
 	 * zugegriffen werden kann. Im Ergebnis wird für die im Parameter <code>spec</code> spezifizierten Daten ein Stream von Ergebnisdatensätzen erwartet.
 	 *
 	 * @param priority Priorität der Anfrage
-	 * @param spec     Spezifikation der gewünschten Archivdaten
+	 * @param spec     Spezifikation der gewünschten Archivdaten. Ein Objekt der Klasse {@link de.bsvrz.dav.daf.main.archive.ArchiveDataSpecification}
 	 *
 	 * @return Ergebnisobjekt über das asynchron auf die gewünschten Ergebnisdatensätze zugegriffen werden kann.
 	 *
@@ -70,7 +70,7 @@ public interface ArchiveRequestManager {
 	 * Ergebnisdatensätzen erwartet.
 	 *
 	 * @param priority Priorität der Anfrage
-	 * @param specs    Liste mit Spezifikationen der gewünschten Archivdaten
+	 * @param specs    Liste mit Spezifikationen der gewünschten Archivdaten.
 	 *
 	 * @return Ergebnisobjekt über das asynchron auf die Ergebnisdatenströme mit den gewünschten Ergebnisdatensätzen zugegriffen werden kann.
 	 *
@@ -273,4 +273,13 @@ public interface ArchiveRequestManager {
 	 * @return Ergebnisobjekt, über das Informationen über den Zustand des Auftrags abgefragt werden können
 	 */
 	ArchiveQueryResult requestData(long startTime, long endTime, Collection<SystemObject> requestedArchives);
+
+	/**
+	 * Gibt Informationen über die Anzahl Anfragen zurück, die eine Applikation gleichzeitig stellen darf. Wenn die Anfrage fehlschlägt
+	 * ({@link de.bsvrz.dav.daf.main.archive.ArchiveNumQueriesResult#isRequestSuccessful()} liefert false zurück und es gibt eine entsprechende Fehlermeldung) kann davon ausgegangen werden,
+	 * dass eine ältere Archivsystem-Version eingesetzt wird und maximal 5 gleichzeitige Anfragen pro Applikation zulässig sind.
+	 *
+	 * @return Ergebnisobjekt, über dass Informationen zu der maximalen Anzahl Anfragen pro Applikation abgefragt werden können.
+	 */
+	ArchiveNumQueriesResult getNumArchiveQueries();
 }

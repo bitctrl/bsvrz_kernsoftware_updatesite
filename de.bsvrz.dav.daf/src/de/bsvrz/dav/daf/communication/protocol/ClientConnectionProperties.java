@@ -35,7 +35,7 @@ import de.bsvrz.dav.daf.communication.lowLevel.LowLevelCommunication;
  * Diese Klasse enthält die Eigenschaften, die benötigt werden, um eine Verbindung zum Datenverteiler aufzubauen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5512 $
+ * @version $Revision: 11285 $
  */
 public class ClientConnectionProperties extends ConnectionProperties {
 
@@ -112,13 +112,13 @@ public class ClientConnectionProperties extends ConnectionProperties {
 			_communicationParameters = clientDavParameters.getCommunicationParameters();
 		}
 		catch(ClassNotFoundException ex) {
-			throw new InitialisationNotCompleteException("Fehler beim Erzeugen der logischen Verbindung zum Datenverteiler.");
+			throw new InitialisationNotCompleteException("Fehler beim Erzeugen der logischen Verbindung zum Datenverteiler.", ex);
 		}
 		catch(InstantiationException ex) {
-			throw new InitialisationNotCompleteException("Fehler beim Erzeugen der logischen Verbindung zum Datenverteiler.");
+			throw new InitialisationNotCompleteException("Fehler beim Erzeugen der logischen Verbindung zum Datenverteiler.", ex);
 		}
 		catch(IllegalAccessException ex) {
-			throw new InitialisationNotCompleteException("Fehler beim Erzeugen der logischen Verbindung zum Datenverteiler.");
+			throw new InitialisationNotCompleteException("Fehler beim Erzeugen der logischen Verbindung zum Datenverteiler.", ex);
 		}
 	}
 

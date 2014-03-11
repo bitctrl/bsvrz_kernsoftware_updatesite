@@ -36,7 +36,7 @@ import java.io.Serializable;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 6420 $ / $Date: 2009-03-10 23:19:01 +0100 (Tue, 10 Mar 2009) $ / ($Author: rs $)
+ * @version $Revision: 11423 $ / $Date: 2013-07-22 12:02:01 +0200 (Mo, 22 Jul 2013) $ / ($Author: jh $)
  */
 public class AtgProtocolRequest {
 
@@ -66,9 +66,7 @@ public class AtgProtocolRequest {
 	 */
 	public static Data build(ClientDavInterface dav, SystemObject sender, long protocolId, int opCode, byte[] dataRequest) throws FailureException {
 		Data data = setData(dav, sender, protocolId, opCode);
-
-		SerializerUtil.insertArray(data.getArray(PidProtocol.data), dataRequest, dataRequest.length);
-
+		data.getUnscaledArray(PidProtocol.data).set(dataRequest);
 		return data;
 	}
 

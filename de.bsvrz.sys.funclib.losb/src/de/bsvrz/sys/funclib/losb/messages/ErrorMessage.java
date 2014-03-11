@@ -27,7 +27,7 @@ package de.bsvrz.sys.funclib.losb.messages;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 8878 $ / $Date: 2011-03-09 15:36:58 +0100 (Wed, 09 Mar 2011) $ / ($Author: rs $)
+ * @version $Revision: 8878 $ / $Date: 2011-03-09 15:36:58 +0100 (Mi, 09 Mrz 2011) $ / ($Author: rs $)
  */
 public class ErrorMessage {
 

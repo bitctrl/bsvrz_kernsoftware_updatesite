@@ -35,9 +35,9 @@ import java.io.IOException;
  * Telegrammelemente Zeitstempel, Fehlerkennung sowie die Angaben zum Attributindikator nur im ersten Telegramm übertragen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 7980 $
+ * @version $Revision: 11481 $
  */
-public class TransmitterDataTelegram extends DataTelegram {
+public class TransmitterDataTelegram extends DataTelegram implements DataTelegramInterface{
 	/** Objekt für Debugausgaben */
 	private static Debug _debug = Debug.getLogger();
 

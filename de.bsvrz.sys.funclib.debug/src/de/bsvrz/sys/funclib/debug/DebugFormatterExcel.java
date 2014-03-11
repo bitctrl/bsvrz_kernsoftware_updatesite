@@ -27,7 +27,7 @@ import java.text.*;
 /** Gibt die Debugmeldungen als *.csv Datei aus, so dass diese direkt in Excel als
  * Tabellenblatt geöffnet und weiterverarbeitet werden können.
  * @author Hans Christian Kniß (HCK)
- * @version $Revision: 5003 $ / $Date: 2007-08-27 21:41:46 +0200 (Mon, 27 Aug 2007) $
+ * @version $Revision: 5003 $ / $Date: 2007-08-27 21:41:46 +0200 (Mo, 27 Aug 2007) $
  */
 public class DebugFormatterExcel extends java.util.logging.Formatter {
 

@@ -26,7 +26,7 @@ package de.bsvrz.sys.funclib.losb.datk;
  *
  * @author beck et al. projects GmbH
  * @author Thomas Schaefer
- * @version $Revision: 6420 $ / $Date: 2009-03-10 23:19:01 +0100 (Tue, 10 Mar 2009) $ / ($Author: rs $)
+ * @version $Revision: 11353 $ / $Date: 2013-06-25 16:12:23 +0200 (Di, 25 Jun 2013) $ / ($Author: jh $)
  */
 public class MessageType {
 
@@ -89,4 +89,10 @@ public class MessageType {
 
 	/** Ergebnis Nachforderungsauftrag */
 	public static final int REQUEST_AUTOM_RESULT = 20;
+
+	/** Anfrage Anzahl Aufträge pro Applikation */
+	public static final int NUM_QUERIES_INFO = 21;
+
+	/** Ergebnis Anzahl Aufträge pro Applikation */
+	public static final int NUM_QUERIES_INFO_RESULT = 22;
 }

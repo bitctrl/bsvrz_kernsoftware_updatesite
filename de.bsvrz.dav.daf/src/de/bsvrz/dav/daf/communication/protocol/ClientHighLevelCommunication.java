@@ -100,7 +100,7 @@ import java.util.*;
  * Telegrammverwaltung gemeldet werden, führen zu einem Abbruch der Verbindung und zu einer Benachrichtigung des Moduls Verwaltung.</ul>
  *
  * @author Kappich Systemberatung
- * @version $Revision: 9135 $
+ * @version $Revision: 10161 $
  */
 public class ClientHighLevelCommunication implements HighLevelCommunicationCallbackInterface {
 
@@ -772,7 +772,7 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 		LowLevelCommunicationInterface lowLevelCommunication = properties.getLowLevelCommunication();
 		lowLevelCommunication.send(authentificationRequest);
 
-		return (AuthentificationAnswer)getDataTelegram(CommunicationConstant.MAX_WAITING_TIME_FOR_SYNC_RESPONCE, DataTelegram.AUTHENTIFICATION_ANSWER_TYPE);
+		return (AuthentificationAnswer)getDataTelegram(CommunicationConstant.MAX_WAITING_TIME_FOR_CONNECTION, DataTelegram.AUTHENTIFICATION_ANSWER_TYPE);
 	}
 
 	/**

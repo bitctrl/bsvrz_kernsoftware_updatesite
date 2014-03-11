@@ -47,7 +47,7 @@ import de.bsvrz.sys.funclib.operatingMessage.MessageSender;
  *
  * @author beck et al. projects GmbH
  * @author Alexander Schmidt
- * @version $Revision: 7731 $ / $Date: 2010-05-27 20:41:19 +0200 (Thu, 27 May 2010) $ / ($Author: rs $)
+ * @version $Revision: 7731 $ / $Date: 2010-05-27 20:41:19 +0200 (Do, 27 Mai 2010) $ / ($Author: rs $)
  */
 public class DAVAppBase implements ApplicationCloseActionHandler {
 

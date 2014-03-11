@@ -22,23 +22,20 @@
 
 package de.bsvrz.dav.daf.main.impl.config;
 
+import de.bsvrz.dav.daf.main.ClientDavConnection;
+import de.bsvrz.dav.daf.main.ClientDavInterface;
+import de.bsvrz.dav.daf.main.ClientDavParameters;
 import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
-import de.bsvrz.dav.daf.main.config.InvalidationListener;
+import de.bsvrz.dav.daf.main.config.*;
 
 import java.util.*;
-
-import de.bsvrz.dav.daf.main.config.DynamicObjectType;
-import de.bsvrz.dav.daf.main.config.MutableCollectionChangeListener;
-import de.bsvrz.dav.daf.main.config.SystemObject;
 
 
 /**
  * Klasse, die den Zugriff auf Typen von dynamischen Objekten seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8548 $
+ * @version $Revision: 11921 $
  */
 public class DafDynamicObjectType extends DafSystemObjectType implements DynamicObjectType {
 
@@ -408,4 +405,23 @@ public class DafDynamicObjectType extends DafSystemObjectType implements Dynamic
 	public void collectionChanged(final short simVariant, final List<SystemObject> addedElements, final List<SystemObject> removedElements) {
 		_mutableCollectionSupport.collectionChanged(simVariant, addedElements, removedElements);
 	}
+
+	public List getElements() {
+		DataModel dataModel = getDataModel();
+		if (dataModel instanceof DafDataModel) {
+			DafDataModel model = (DafDataModel) dataModel;
+			ClientDavInterface connection = model.getConnection();
+			if (connection instanceof ClientDavConnection) {
+				ClientDavConnection clientDavConnection = (ClientDavConnection) connection;
+				short simulationVariant = clientDavConnection.getClientDavParameters().getSimulationVariant();
+				return getElements(simulationVariant);
+			}
+		}
+		return super.getElements();
+	}
+
+	public List getObjects() {
+		return getElements();
+	}
+
 }

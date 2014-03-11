@@ -27,6 +27,7 @@ import de.bsvrz.dav.daf.main.config.Aspect;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dav.daf.main.config.SystemObjectType;
+import de.bsvrz.pat.sysbed.main.TooltipAndContextUtil;
 import de.bsvrz.pat.sysbed.preselection.tree.PreselectionTreeListener;
 import de.bsvrz.sys.funclib.debug.Debug;
 
@@ -54,7 +55,7 @@ import java.util.List;
  * Der Konstruktor <code>PreselectionLists</code> erstellt das Panel und mit der Methode <code>setObjects</code> werden die Listen gefüllt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 10126 $
+ * @version $Revision: 11925 $
  * @see #PreselectionLists
  * @see #setObjects
  */
@@ -73,16 +74,16 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	private PreselectionListsFilter _listsFilter = null;
 
 	/** speichert die Liste Objekttyp */
-	private JList _objtypList;
+	private SystemObjectList _objtypList;
 
 	/** speichert die Liste Attributgruppe */
-	private JList _atgList;
+	private SystemObjectList _atgList;
 
 	/** speichert die Liste Aspekt */
-	private JList _aspList;
+	private SystemObjectList _aspList;
 
 	/** speichert die Liste Objekt */
-	private JList _objList;
+	private SystemObjectList _objList;
 
 	/** speichert die linke Seite des Splitpane */
 	private final Box _leftBox = Box.createVerticalBox();
@@ -163,13 +164,13 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 		_preselectionListsHandler = new PreselectionListsHandler(this);
 		createAndShowGui();
 	}
-	
+
 	/**
-     * @return Liste der Objekte
-     */
-    public JList getObjList() {
-    	return _objList;
-    }
+	 * @return Liste der Objekte
+	 */
+	public JList getObjList() {
+		return _objList;
+	}
 
 
 
@@ -337,7 +338,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 		objecttypeHeadlineBox.add(_deselectObjectTypes);
 
 		// Liste der Objekttypen
-		_objtypList = new JList();
+		_objtypList = new SystemObjectList();
 		_objtypList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		_objtypList.addListSelectionListener(
 				new ListSelectionListener() {
@@ -385,37 +386,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 							if(object != null) {
 								try {
 									SystemObjectType systemObjecttype = (SystemObjectType)object;
-									String tooltip = "<html>";
-									String info = null;
-									String pidOrID = null;
-									String typ = null;
-									if(systemObjecttype.getInfo().getShortInfo().length() > 0) {
-										info = "Info: " + systemObjecttype.getInfo().getShortInfo();
-									}
-									String pid = systemObjecttype.getPid();
-									if(pid != null && !pid.equals("")) {
-										pidOrID = "Pid: " + pid;
-									}
-									else {
-										pidOrID = "ID: " + systemObjecttype.getId();
-									}
-									typ = "Typ: " + systemObjecttype.getType().getNameOrPidOrId();
-									if(info != null) {
-										tooltip += info;
-									}
-									if((info != null) && (pidOrID != null)) {
-										tooltip += "<br>" + pidOrID;
-									}
-									else if(pidOrID != null) {
-										tooltip += pidOrID;
-									}
-									if(((info != null) || (pidOrID != null)) && typ != null) {
-										tooltip += "<br>" + typ;
-									}
-									else if(typ != null) {
-										tooltip += typ;
-									}
-									tooltip += "</html>";
+									String tooltip = TooltipAndContextUtil.getTooltip(systemObjecttype);
 									_objtypList.setToolTipText(tooltip);
 								}
 								catch(Exception ex) {
@@ -475,7 +446,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 		atgHeadlineBox.add(_deselectAtgs);
 
 		// Liste der Attributgruppen
-		_atgList = new JList(); // List
+		_atgList = new SystemObjectList(); // List
 		_atgList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		_atgList.addListSelectionListener(
 				new ListSelectionListener() {
@@ -523,37 +494,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 							if(object != null) {
 								try {
 									AttributeGroup attributeGroup = (AttributeGroup)object;
-									String tooltip = "<html>";
-									String info = null;
-									String pidOrID = null;
-									String typ = null;
-									if(attributeGroup.getInfo().getShortInfo().length() > 0) {
-										info = "Info: " + attributeGroup.getInfo().getShortInfo();
-									}
-									String pid = attributeGroup.getPid();
-									if(pid != null && !pid.equals("")) {
-										pidOrID = "Pid: " + pid;
-									}
-									else {
-										pidOrID = "ID: " + attributeGroup.getId();
-									}
-									typ = "Typ: " + attributeGroup.getType().getNameOrPidOrId();
-									if(info != null) {
-										tooltip += info;
-									}
-									if((info != null) && (pidOrID != null)) {
-										tooltip += "<br>" + pidOrID;
-									}
-									else if(pidOrID != null) {
-										tooltip += pidOrID;
-									}
-									if(((info != null) || (pidOrID != null)) && typ != null) {
-										tooltip += "<br>" + typ;
-									}
-									else if(typ != null) {
-										tooltip += typ;
-									}
-									tooltip += "</html>";
+									String tooltip = TooltipAndContextUtil.getTooltip(attributeGroup);
 									_atgList.setToolTipText(tooltip);
 								}
 								catch(Exception ex) {
@@ -613,7 +554,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 		aspHeadlineBox.add(_deselectAsps);
 
 		// Liste der Aspekte
-		_aspList = new JList(); // List
+		_aspList = new SystemObjectList(); // List
 		_aspList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		_aspList.addListSelectionListener(
 				new ListSelectionListener() {
@@ -660,37 +601,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 							if(object != null) {
 								try {
 									Aspect aspect = (Aspect)object;
-									String tooltip = "<html>";
-									String info = null;
-									String pidOrID = null;
-									String typ = null;
-									if(aspect.getInfo().getShortInfo().length() > 0) {
-										info = "Info: " + aspect.getInfo().getShortInfo();
-									}
-									String pid = aspect.getPid();
-									if(pid != null && !pid.equals("")) {
-										pidOrID = "Pid: " + pid;
-									}
-									else {
-										pidOrID = "ID: " + aspect.getId();
-									}
-									typ = "Typ: " + aspect.getType().getNameOrPidOrId();
-									if(info != null) {
-										tooltip += info;
-									}
-									if((info != null) && (pidOrID != null)) {
-										tooltip += "<br>" + pidOrID;
-									}
-									else if(pidOrID != null) {
-										tooltip += pidOrID;
-									}
-									if(((info != null) || (pidOrID != null)) && typ != null) {
-										tooltip += "<br>" + typ;
-									}
-									else if(typ != null) {
-										tooltip += typ;
-									}
-									tooltip += "</html>";
+									String tooltip = TooltipAndContextUtil.getTooltip(aspect);
 									_aspList.setToolTipText(tooltip);
 								}
 								catch(Exception ex) {
@@ -770,7 +681,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 		objectHeadlineBox.add(Box.createRigidArea(new Dimension(5, 0)));
 		objectHeadlineBox.add(_deselectObjects);
 		// Liste der Objekte
-		_objList = new JList();
+		_objList = new SystemObjectList();
 		_objList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		_objList.addListSelectionListener(
 				new ListSelectionListener() {
@@ -808,27 +719,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 							if(object != null) {
 								try {
 									SystemObject systemObject = (SystemObject)object;
-									String tooltip = "<html>";
-									String info = null;
-									String pidAndID = "";
-									String typ = null;
-									if(systemObject.getInfo().getShortInfo().length() > 0) {
-										info = "Info: " + systemObject.getInfo().getShortInfo();
-									}
-									String pid = systemObject.getPid();
-									if(pid != null && !pid.equals("")) {
-										pidAndID = "Pid: " + pid + "<br>";
-									}
-									pidAndID += "ID: " + systemObject.getId();
-									typ = "Typ: " + systemObject.getType().getNameOrPidOrId();
-									if(info != null) {
-										tooltip += info + "<br>" + pidAndID;
-									}
-									else {
-										tooltip += pidAndID;
-									}
-									tooltip += "<br>" + typ;
-									tooltip += "</html>";
+									String tooltip = TooltipAndContextUtil.getTooltip(systemObject);
 									_objList.setToolTipText(tooltip);
 								}
 								catch(Exception ex) {
@@ -986,7 +877,8 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	 *
 	 * @return die Liste incl. Selektion der Objekte
 	 */
-	private JList selectElements(JList list, Object[] objects) {
+	private SystemObjectList selectElements(SystemObjectList list, Object[] objects) {
+		list.getSelectionModel().setValueIsAdjusting(true);
 		list.clearSelection();
 		DefaultListModel defaultListModel = (DefaultListModel)list.getModel();
 		for(int i = 0; i < objects.length; i++) {
@@ -996,6 +888,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 				list.addSelectionInterval(position, position);
 			}
 		}
+		list.getSelectionModel().setValueIsAdjusting(false);
 		list.ensureIndexIsVisible(list.getSelectedIndex());
 		return list;
 	}

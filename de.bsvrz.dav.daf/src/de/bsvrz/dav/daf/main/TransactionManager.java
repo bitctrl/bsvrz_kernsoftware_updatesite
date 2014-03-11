@@ -32,7 +32,7 @@ import java.util.Map;
  * Klasse, die Transaktionen verwaltet.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8953 $
+ * @version $Revision: 11481 $
  */
 public class TransactionManager implements Transactions {
 
@@ -113,12 +113,6 @@ public class TransactionManager implements Transactions {
 		final Collection<InnerDataSubscription> allowed = _allowedDataIdentifications.get(data.getDataDescription());
 		final Collection<InnerDataSubscription> required = _requiredDataIdentifications.get(data.getDataDescription());
 
-		if(allowed == null || required == null){
-				throw new IllegalArgumentException(
-						"Zu dieser Transaktion liegt keine bekannte Anmeldung vor"
-				);
-		}
-		
 		for(final TransactionDataset dataset : data.getData()) {
 			if(!allowed.contains(
 					new InnerDataSubscription(

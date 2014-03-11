@@ -37,7 +37,7 @@ import de.bsvrz.sys.funclib.operatingMessage.MessageSender;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 8553 $ / $Date: 2011-01-06 18:19:32 +0100 (Thu, 06 Jan 2011) $ / ($Author: rs $)
+ * @version $Revision: 8553 $ / $Date: 2011-01-06 18:19:32 +0100 (Do, 06 Jan 2011) $ / ($Author: rs $)
  */
 public class StandardApplicationRunner {
 

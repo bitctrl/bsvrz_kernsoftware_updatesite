@@ -24,7 +24,7 @@ package de.bsvrz.puk.config.configFile.fileaccess;
  * Schnittstelle, die noch zu dokumentieren ist.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5074 $, $Date: 2007-09-02 14:19:12 +0200 (Sun, 02 Sep 2007) $, $Author: rs $
+ * @version $Revision: 5074 $, $Date: 2007-09-02 14:19:12 +0200 (So, 02 Sep 2007) $, $Author: rs $
  */
 public interface ConfigurationAreaFileInformationReader {
 

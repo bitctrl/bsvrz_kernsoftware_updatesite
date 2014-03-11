@@ -32,7 +32,7 @@ import java.io.Serializable;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 8861 $ / $Date: 2011-02-25 14:19:03 +0100 (Fri, 25 Feb 2011) $ / ($Author: jh $)
+ * @version $Revision: 8861 $ / $Date: 2011-02-25 14:19:03 +0100 (Fr, 25 Feb 2011) $ / ($Author: jh $)
  */
 public class AtgAnswer implements Serializable {
 

@@ -27,7 +27,7 @@ import java.util.*;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 6056 $ / $Date: 2008-05-09 14:08:32 +0200 (Fri, 09 May 2008) $ / ($Author: rs $)
+ * @version $Revision: 6056 $ / $Date: 2008-05-09 14:08:32 +0200 (Fr, 09 Mai 2008) $ / ($Author: rs $)
  */
 public class ConsistencyCheckResult implements ConsistencyCheckResultInterface {
 

@@ -69,6 +69,7 @@ import de.bsvrz.sys.funclib.xmlSupport.saxPullAdapter.StartElementEvent;
 import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -79,7 +80,7 @@ import java.util.regex.Pattern;
  * K2S.dtd bearbeitet.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8620 $
+ * @version $Revision: 11100 $
  */
 public class ConfigAreaParser {
 
@@ -151,6 +152,50 @@ public class ConfigAreaParser {
 					+ areaFile.getName() + " (" + pidFile + "). Der Dateiname paßt also nicht zur Pid des zu importierenden Bereichs."
 			);
 		}
+
+		return configurationArea;
+	}
+
+	/**
+	 * @param inputStream InputStream mit XML-Inhalt. Wird für Tests und andere Fälle benutzt, um nicht unnötigerweise temporäre Dateien anlegen zu müssen.
+	 *
+	 * @return Objekte, die aus den XML-Daten erzeugt wurden und mit Hilfe des Imports in die Konfiguration importiert werden können
+	 *
+	 * @throws SAXException             Fehler beim parsen der XML-Daten
+	 */
+	public ConfigurationAreaProperties parse(InputStream inputStream) throws SAXException {
+		CountingErrorHandler errorHandler = new CountingErrorHandler();
+		SAXException exception = null;
+		ConfigurationAreaProperties configurationArea = null;
+		try {
+			_xmlStream = _saxPullAdapter.start(inputStream, errorHandler);
+			configurationArea = parseConfigurationArea();
+			_saxPullAdapter.stop();
+		}
+		catch(IllegalStateException e) {
+			_debug.error("Ungültiger Zustand beim Parsen " + _xmlStream.getLocationHint(), e);
+			exception = new SAXException(e);
+		}
+		catch(InterruptedException e) {
+			_debug.error("Unterbrechung beim Parsen " + _xmlStream.getLocationHint(), e);
+			exception = new SAXException(e);
+		}
+		catch(RuntimeException e) {
+			_debug.error("Laufzeitfehler beim Parsen " + _xmlStream.getLocationHint(), e.toString());
+			exception = new SAXException(e);
+		}
+
+		if(errorHandler.getWarningCount() > 0) {
+			final String message = errorHandler.getWarningCount() + " Warnung" + (errorHandler.getWarningCount() > 1 ? "en" : "") + " in " + inputStream;
+			_debug.error(message);
+			exception = new SAXException(message);
+		}
+		if(errorHandler.getErrorCount() > 0) {
+			final String message = errorHandler.getErrorCount() + " Fehler in " + inputStream;
+			_debug.error(message);
+			exception = new SAXException(message);
+		}
+		if(exception != null) throw exception;
 
 		return configurationArea;
 	}

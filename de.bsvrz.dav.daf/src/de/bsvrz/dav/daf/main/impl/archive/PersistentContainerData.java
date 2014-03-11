@@ -28,7 +28,7 @@ import de.bsvrz.dav.daf.main.DataState;
  * und die Nutzdaten in serialisierter Form.
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 5064 $ / $Date: 2007-09-01 22:25:35 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 5064 $ / $Date: 2007-09-01 22:25:35 +0200 (Sa, 01 Sep 2007) $ / ($Author: rs $)
  */
 public final class PersistentContainerData {
 	public static final byte NO_COMPRESSION = 0;

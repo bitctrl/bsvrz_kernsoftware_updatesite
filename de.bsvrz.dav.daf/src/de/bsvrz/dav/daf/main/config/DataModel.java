@@ -50,7 +50,7 @@ import java.util.*;
  *
  * @author Roland Schmitz (rs), Kappich Systemberatung
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 8278 $ / $Date: 2010-10-20 11:44:07 +0200 (Wed, 20 Oct 2010) $ / ($Author: jh $)
+ * @version $Revision: 11499 $ / $Date: 2013-08-02 11:34:13 +0200 (Fr, 02 Aug 2013) $ / ($Author: jh $)
  */
 
 
@@ -315,7 +315,7 @@ public interface DataModel extends ObjectLookup {
 	public UserAdministration getUserAdministration();
 
 	/**
-	 * Veranlasst die Konfiguration, die Konfigurationsdateien zu sichern. Diese Funktion wartet auf das Beenden des Vorgangs. Wird der Auftrag über den
+	 * Veranlasst die Konfiguration, alle Konfigurationsdateien zu sichern. Diese Funktion wartet auf das Beenden des Vorgangs. Wird der Auftrag über den
 	 * Datenverteiler ausgeführt (DafDataModel) kann die Konfiguration andere Anfragen parallel ausführen. Wird die Funktion lokal ausgeführt (ConfigDataModel),
 	 * kann es möglicherweise sinnvoll sein, die Funktion in einem eigenen Thread auszuführen.
 	 *
@@ -329,13 +329,40 @@ public interface DataModel extends ObjectLookup {
 	 *
 	 * @return Objekt, das Informationen über das Ergebnis des Sicherungsvorgangs enthält
 	 *
+	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationTaskException Der Backup-Vorgang konnte nicht durchgeführt werden, beispielsweise weil das Zielverzeichnis falsch war. Falls das
+	 *                                    Sichern einzelner Dateien fehlschlägt wird keine solche Exception geworfen, stattdessen findet man innerhalb vom callback
+	 *                                    eventuelle Fehlschläge und BackupResult.getFailed ist größer 0.
+	 * @throws de.bsvrz.dav.daf.main.impl.config.request.RequestException           Fehler bei der Übertragung der Anfrage oder beim Empfang von Statusmeldungen der Konfiguration. Achtung: Man kann nicht
+	 *                                    zwingend darauf schließen, dass der Backupvorgang nicht erfolgreich war, wenn eine Exception geworfen wurde. Wenn während
+	 *                                    des Vorgangs beispielsweise die Verbindung zwischen Datenverteiler und Konfiguration abbricht, wird eine Exception
+	 *                                    geworfen, aber die Konfiguration wird den Vorgang vermutlich dennoch korrekt beenden.
+	 */
+	BackupResult backupConfigurationFiles(String targetDirectory, BackupProgressCallback callback) throws ConfigurationTaskException, RequestException;
+
+	/**
+	 * Veranlasst die Konfiguration, ausgewählte Konfigurationsdateien zu sichern. Diese Funktion wartet auf das Beenden des Vorgangs. Wird der Auftrag über den
+	 * Datenverteiler ausgeführt (DafDataModel) kann die Konfiguration andere Anfragen parallel ausführen. Wird die Funktion lokal ausgeführt (ConfigDataModel),
+	 * kann es möglicherweise sinnvoll sein, die Funktion in einem eigenen Thread auszuführen.
+	 *
+	 * @param targetDirectory Relatives Zielverzeichnis innerhalb des in der Konfiguration (mit dem Parameter -sicherungsVerzeichnis) festgelegten
+	 *                        Sicherungsordners. Wird null oder ein Leerstring angegeben, generiert die Konfiguration aus aktuellem Datum und Uhrzeit einen neuen
+	 *                        Pfadnamen. Falls das {@link de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel} direkt benutzt wird und mit {@link
+	 *                        de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel#setBackupBaseDirectory(java.io.File) } noch keine Zielverzeichnis angelegt
+	 *                        wurde, kann auch ein absoluter Pfadname angegeben werden. Ein relativer Pfadname würde dann relativ zum Arbeitsverzeichnis
+	 *                        interpretiert.
+	 * @param configurationAuthority  Konfigurationsverantwortlicher, dessen Konfigurations-Dateien gesichert werden sollen. Falls null werden
+	 *                                alle Dateien gesichert.
+	 * @param callback        Objekt, an das Statusmeldungen gesendet werden oder null, falls keine Rückmeldungen gewünscht sind
+	 *
+	 * @return Objekt, das Informationen über das Ergebnis des Sicherungsvorgangs enthält
+	 *
 	 * @throws ConfigurationTaskException Der Backup-Vorgang konnte nicht durchgeführt werden, beispielsweise weil das Zielverzeichnis falsch war. Falls das
 	 *                                    Sichern einzelner Dateien fehlschlägt wird keine solche Exception geworfen, stattdessen findet man innerhalb vom callback
 	 *                                    eventuelle Fehlschläge und BackupResult.getFailed ist größer 0.
 	 * @throws RequestException           Fehler bei der Übertragung der Anfrage oder beim Empfang von Statusmeldungen der Konfiguration. Achtung: Man kann nicht
 	 *                                    zwingend darauf schließen, dass der Backupvorgang nicht erfolgreich war, wenn eine Exception geworfen wurde. Wenn während
 	 *                                    des Vorgangs beispielsweise die Verbindung zwischen Datenverteiler und Konfiguration abbricht, wird eine Exception
-	 *                                    geworfen, aber die Konfiguration den Vorgang vermutlich dennoch korrekt beenden werden.
+	 *                                    geworfen, aber die Konfiguration wird den Vorgang vermutlich dennoch korrekt beenden.
 	 */
-	public BackupResult backupConfigurationFiles(String targetDirectory, BackupProgressCallback callback) throws ConfigurationTaskException, RequestException;
+	public BackupResult backupConfigurationFiles(String targetDirectory, final ConfigurationAuthority configurationAuthority, BackupProgressCallback callback) throws ConfigurationTaskException, RequestException;
 }

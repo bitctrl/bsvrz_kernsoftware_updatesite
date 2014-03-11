@@ -28,7 +28,7 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 6566 $ / $Date: 2009-04-20 17:21:33 +0200 (Mon, 20 Apr 2009) $ / ($Author: rs $)
+ * @version $Revision: 6566 $ / $Date: 2009-04-20 17:21:33 +0200 (Mo, 20 Apr 2009) $ / ($Author: rs $)
  */
 public class ArchiveQueryID {
 

@@ -22,33 +22,24 @@
 package de.bsvrz.sys.funclib.dataSerializer;
 
 
+import de.bsvrz.dav.daf.communication.dataRepresentation.ArrayRelaxedRangeCheckSupport;
 import de.bsvrz.dav.daf.communication.dataRepresentation.AttributeBaseValueDataFactory;
 import de.bsvrz.dav.daf.communication.dataRepresentation.AttributeHelper;
 import de.bsvrz.dav.daf.main.ClientDavConnection;
 import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.AttributeType;
-import de.bsvrz.dav.daf.main.config.DoubleAttributeType;
-import de.bsvrz.dav.daf.main.config.IntegerAttributeType;
-import de.bsvrz.dav.daf.main.config.ObjectLookup;
-import de.bsvrz.dav.daf.main.config.ReferenceAttributeType;
-import de.bsvrz.dav.daf.main.config.ReferenceType;
-import de.bsvrz.dav.daf.main.config.StringAttributeType;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.TimeAttributeType;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
 
 /**
  * Implementierung eines Deserialisierers zum deserialisieren von Datensätzen. Die Klasse ist nicht öffentlich
  * zugänglich. Ein Objekt dieser Klasse kann mit der Methode {@link SerializingFactory#createDeserializer}
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5515 $
+ * @version $Revision: 11583 $
  */
 final class DeserializerImplementationA implements Deserializer {
 	/** DebugLogger für Debug-Ausgaben */
@@ -179,20 +170,25 @@ final class DeserializerImplementationA implements Deserializer {
 				final Data.Array array = data.asArray();
 				final int maxCount = array.getMaxCount();
 				if (array.isCountVariable()) {
+					int newLength;
 					if (maxCount <= 0 || maxCount > 65535) {
-						array.setLength(readInt());
+						newLength = readInt();
 					} else if (maxCount > 255) {
-						array.setLength(readUnsignedShort());
+						newLength = readUnsignedShort();
 					} else {
-						array.setLength(readUnsignedByte());
+						newLength = readUnsignedByte();
+					}
+					if(array instanceof ArrayRelaxedRangeCheckSupport) {
+						((ArrayRelaxedRangeCheckSupport) array).setLengthRelaxedRangeCheck(newLength);
+					}
+					else {
+						array.setLength(newLength);
 					}
 				} else {
 					array.setLength(maxCount);
 				}
 			}
-			final Iterator iterator = data.iterator();
-			while (iterator.hasNext()) {
-				final Data subData = (Data) iterator.next();
+			for(final Data subData : data) {
 				readData(subData, objectLookup);
 			}
 		}

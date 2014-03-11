@@ -51,7 +51,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 8537 $ / $Date: 2011-01-04 16:11:56 +0100 (Tue, 04 Jan 2011) $ / ($Author: jh $)
+ * @version $Revision: 11945 $ / $Date: 2014-01-20 11:00:04 +0100 (Mo, 20 Jan 2014) $ / ($Author: jh $)
  */
 public class ConnectionManager {
 
@@ -452,8 +452,10 @@ public class ConnectionManager {
 		Hashtable<DataIdentification, CMDrain> localDrains = (Hashtable<DataIdentification, CMDrain>)cm.drains.clone();
 		Hashtable<DataIdentification, CMSender> localSenders = (Hashtable<DataIdentification, CMSender>)cm.senders.clone();
 
+		// Die folgenden new ArrayList(...) verhindern eine ConcurrentModificationException
+
 		for(DataIdentification di : localSenders.keySet()) {
-			for(ClientSenderInterface sender : localSenders.get(di).elements()) {
+			for(ClientSenderInterface sender : new ArrayList<ClientSenderInterface>(localSenders.get(di).elements())) {
 				try {
 					unsubscribeSender(dav, sender, di.getObject(), di.getDataDescription());
 				}
@@ -463,7 +465,7 @@ public class ConnectionManager {
 			}
 		}
 		for(DataIdentification di : localDrains.keySet()) {
-			for(ClientReceiverInterface drain : localDrains.get(di).elements()) {
+			for(ClientReceiverInterface drain : new ArrayList<ClientReceiverInterface>(localDrains.get(di).elements())) {
 				try {
 					unsubscribeReceiver(dav, drain, di.getObject(), di.getDataDescription());
 				}
@@ -474,7 +476,7 @@ public class ConnectionManager {
 		}
 
 		for(DataIdentification di : localReceivers.keySet()) {
-			for(ClientReceiverInterface receiver : localReceivers.get(di)) {
+			for(ClientReceiverInterface receiver : new ArrayList<ClientReceiverInterface>(localReceivers.get(di))) {
 				try {
 					unsubscribeReceiver(dav, receiver, di.getObject(), di.getDataDescription());
 				}
