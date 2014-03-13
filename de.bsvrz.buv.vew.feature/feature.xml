@@ -27,6 +27,7 @@
       <import plugin="de.bsvrz.sys.funclib.timeout" version="3.5.0" match="greaterOrEqual"/>
       <import plugin="de.bsvrz.sys.funclib.operatingMessage" version="3.5.0" match="greaterOrEqual"/>
       <import plugin="de.bsvrz.sys.funclib.application" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="de.bsvrz.dav.daf" version="3.5.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

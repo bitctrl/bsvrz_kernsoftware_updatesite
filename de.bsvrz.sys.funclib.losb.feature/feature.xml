@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.bsvrz.sys.funclib.losb.feature"
+      label="Bibliotheken Los B"
+      version="3.6.0.qualifier">
+
+   <description url="http://www.example.com/description">
+      %descriptionText
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      %copyrightText
+   </copyright>
+
+   <license url="http://www.gnu.org/licenses/gpl-2.0.html">
+      %licenseText
+   </license>
+
+   <requires>
+      <import plugin="de.bsvrz.dav.daf"/>
+      <import plugin="de.bsvrz.sys.funclib.commandLineArgs"/>
+      <import plugin="de.bsvrz.sys.funclib.debug"/>
+      <import plugin="de.bsvrz.sys.funclib.operatingMessage"/>
+      <import plugin="de.bsvrz.sys.funclib.dataIdentificationSettings"/>
+   </requires>
+
+   <plugin
+         id="de.bsvrz.sys.funclib.losb"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+</feature>
