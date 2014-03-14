@@ -39,11 +39,11 @@ Export-Package: de.bsvrz.dav.daf,
  de.bsvrz.dav.daf.util.fileBackedQueue,
  de.bsvrz.sys.funclib.communicationStreams,
  de.bsvrz.sys.funclib.dataSerializer
-Require-Bundle: de.bsvrz.sys.funclib.debug;bundle-version="3.5.0",
- de.bsvrz.sys.funclib.commandLineArgs;bundle-version="3.5.0",
- de.bsvrz.sys.funclib.timeout;bundle-version="3.5.0",
- de.bsvrz.sys.funclib.filelock;bundle-version="3.5.0",
- de.bsvrz.sys.funclib.crypt;bundle-version="3.5.0",
- de.bsvrz.sys.funclib.hexdump;bundle-version="3.5.0",
- de.bsvrz.sys.funclib.concurrent;bundle-version="3.5.0"
+Require-Bundle: de.bsvrz.sys.funclib.debug;bundle-version="3.5.0";visibility:=reexport,
+ de.bsvrz.sys.funclib.commandLineArgs;bundle-version="3.5.0";visibility:=reexport,
+ de.bsvrz.sys.funclib.timeout;bundle-version="3.5.0";visibility:=reexport,
+ de.bsvrz.sys.funclib.filelock;bundle-version="3.5.0";visibility:=reexport,
+ de.bsvrz.sys.funclib.crypt;bundle-version="3.5.0";visibility:=reexport,
+ de.bsvrz.sys.funclib.hexdump;bundle-version="3.5.0";visibility:=reexport,
+ de.bsvrz.sys.funclib.concurrent;bundle-version="3.5.0";visibility:=reexport
 
