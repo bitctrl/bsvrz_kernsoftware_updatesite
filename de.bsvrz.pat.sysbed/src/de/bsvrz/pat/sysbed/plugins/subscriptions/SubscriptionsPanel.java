@@ -43,13 +43,17 @@ import java.util.List;
  */
 public class SubscriptionsPanel extends JPanel {
 
-	private final JSplitPane _jSplitPane;
+	private final JSplitPane _jSplitPaneH;
+
+	private final JSplitPane _jSplitPaneV;
 
 	private final JLabel _label;
 
 	private final JList _senderList;
 
 	private final JList _receiverList;
+
+	private final JList _potDavList;
 
 
 	public SubscriptionsPanel(
@@ -59,7 +63,8 @@ public class SubscriptionsPanel extends JPanel {
 			final short simulationVariant,
 			final DavApplication dav) {
 		super(new BorderLayout());
-		_jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		_jSplitPaneH = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		_jSplitPaneV = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		ClientSubscriptionInfo subscriptionInfo;
 		try {
 			subscriptionInfo = connection.getSubscriptionInfo(
@@ -73,26 +78,39 @@ public class SubscriptionsPanel extends JPanel {
 		}
 		final TitledBorder sendBorder = BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Sende-Anmeldungen");
 		final TitledBorder receiveBorder = BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Empfangs-Anmeldungen");
+		final TitledBorder potDavBorder = BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Potentielle Zentraldatenverteiler");
 		final TitledBorder labelBorder = BorderFactory.createTitledBorder("Details");
-		final JComponent paneSend = new JPanel(new BorderLayout());
 
+		final JComponent paneSend = new JPanel(new BorderLayout());
 		_senderList = new JList(new MyListModel(subscriptionInfo == null ? Collections.emptyList() : subscriptionInfo.getSenderSubscriptions()));
 		_senderList.setCellRenderer(new MyListCellRenderer());
 		paneSend.add(new JScrollPane(_senderList), BorderLayout.CENTER);
+		paneSend.setBorder(sendBorder);
+
 		final JComponent paneReceive = new JPanel(new BorderLayout());
 		_receiverList = new JList(new MyListModel(subscriptionInfo == null ? Collections.emptyList() : subscriptionInfo.getReceiverSubscriptions()));
 		_receiverList.setCellRenderer(new MyListCellRenderer());
 		paneReceive.add(new JScrollPane(_receiverList), BorderLayout.CENTER);
-		paneSend.setBorder(sendBorder);
 		paneReceive.setBorder(receiveBorder);
-		_jSplitPane.setLeftComponent(paneSend);
-		_jSplitPane.setRightComponent(paneReceive);
-		_jSplitPane.setResizeWeight(0.5);
+
+		final JComponent panePotDav = new JPanel(new BorderLayout());
+		_potDavList = new JList(new MyListModel(subscriptionInfo == null ? Collections.emptyList() : subscriptionInfo.getPotentialCentralDavs()));
+		_potDavList.setCellRenderer(new MyListCellRenderer());
+		panePotDav.add(new JScrollPane(_potDavList), BorderLayout.CENTER);
+		panePotDav.setBorder(potDavBorder);
+
+		_jSplitPaneH.setLeftComponent(paneSend);
+		_jSplitPaneH.setRightComponent(paneReceive);
+		_jSplitPaneH.setResizeWeight(0.5);
+		_jSplitPaneV.setTopComponent(_jSplitPaneH);
+		_jSplitPaneV.setBottomComponent(panePotDav);
+		_jSplitPaneV.setResizeWeight(0.5);
 		_senderList.addMouseListener(new MyMouseListener(_senderList));
 		_receiverList.addMouseListener(new MyMouseListener(_receiverList));
+		_potDavList.addMouseListener(new MyMouseListener(_potDavList));
 		_senderList.setFocusable(false);
 		_receiverList.setFocusable(false);
-		this.add(_jSplitPane, BorderLayout.CENTER);
+		this.add(_jSplitPaneV, BorderLayout.CENTER);
 		_label = new JLabel();
 		_label.setFont(_label.getFont().deriveFont(Font.PLAIN));
 		_label.setBorder(labelBorder);
@@ -145,14 +163,18 @@ public class SubscriptionsPanel extends JPanel {
 			if(element instanceof ClientSubscriptionInfo.ClientReceivingSubscription) {
 				showSubscriptionInfo((ClientSubscriptionInfo.ClientReceivingSubscription)element);
 			}
+			if(element instanceof ClientSubscriptionInfo.DavInformation){
+				showDavInfo((ClientSubscriptionInfo.DavInformation) element);
+			}
 		}
 	}
 
 	private void showSubscriptionInfo(final ClientSubscriptionInfo.ClientReceivingSubscription clientReceivingSubscription) {
 		_senderList.clearSelection();
+		_potDavList.clearSelection();
 		_label.setText(
 				"<html>" +
-				"<b>Anwendung: </b>" + clientReceivingSubscription.getApplicationPidOrId() + "<br>" +
+				"<b>Verbindung mit: </b>" + clientReceivingSubscription.getApplicationPidOrId() + "<br>" +
 				"<b>Benutzer: </b>" + clientReceivingSubscription.getUserPidOrId() + "<br>" +
 				"<b>Typ: </b>" + (clientReceivingSubscription.isDrain() ? "Senke" : "Empfänger") + "<br>" +
 				"<b>Nachgelieferte Daten: </b>" + (clientReceivingSubscription.isDelayed() ? "Ja" : "Nein") + "<br>" +
@@ -164,14 +186,24 @@ public class SubscriptionsPanel extends JPanel {
 
 	private void showSubscriptionInfo(final ClientSubscriptionInfo.ClientSendingSubscription clientSendingSubscription) {
 		_receiverList.clearSelection();
+		_potDavList.clearSelection();
 		_label.setText(
 				"<html>" +
-				"<b>Anwendung: </b>" + clientSendingSubscription.getApplicationPidOrId() + "<br>" +
+				"<b>Verbindung mit: </b>" + clientSendingSubscription.getApplicationPidOrId() + "<br>" +
 				"<b>Benutzer: </b>" + clientSendingSubscription.getUserPidOrId() + "<br>" +
 				"<b>Typ: </b>" + (clientSendingSubscription.isSource() ? "Quelle" : "Sender") + "<br>" +
 				"<b>Unterstützt Sendesteuerung: </b>" + (clientSendingSubscription.isRequestSupported() ? "Ja" : "Nein") + "<br>" +
 				"<b>Status: </b>" + stateToString(clientSendingSubscription.getState()) + "<br>" +
 				"<b>Verbindung: </b>" + stateToString(clientSendingSubscription.getConnectionState())
+		);
+	}	
+	private void showDavInfo(final ClientSubscriptionInfo.DavInformation davInfo) {
+		_receiverList.clearSelection();
+		_senderList.clearSelection();
+		_label.setText(
+				"<html>" +
+				"<b>Zentraldatenverteiler: </b>" + davInfo.getCentralDavPidOrId() + "<br>" +
+				"<b>Verbindung über: </b>" + davInfo.getConnectionDavPidOrId()
 		);
 	}
 
@@ -231,15 +263,21 @@ public class SubscriptionsPanel extends JPanel {
 				list,value,index,isSelected,cellHasFocus);
 			if(value instanceof ClientSubscriptionInfo.ClientSendingSubscription) {
 				ClientSubscriptionInfo.ClientSendingSubscription subscription = (ClientSubscriptionInfo.ClientSendingSubscription)value;
-				if(!subscription.isLocal()){
-					c.setForeground(new Color(143, 137, 0));
-				}
+//				if(subscription.isSource()){
+//					c.setForeground(new Color(95, 0, 66));
+//				}
+//				if(!subscription.isLocal()){
+//					c.setForeground(new Color(0, 95, 66));
+//				}
 			}
 			if(value instanceof ClientSubscriptionInfo.ClientReceivingSubscription) {
 				ClientSubscriptionInfo.ClientReceivingSubscription subscription = (ClientSubscriptionInfo.ClientReceivingSubscription)value;
-				if(!subscription.isLocal()){
-					c.setForeground(new Color(143, 137, 0));
-				}
+//				if(subscription.isDrain()){
+//					c.setForeground(new Color(95, 0, 66));
+//				}
+//				if(!subscription.isLocal()){
+//					c.setForeground(new Color(0, 95, 66));
+//				}
 			}
 			return c;
 		}

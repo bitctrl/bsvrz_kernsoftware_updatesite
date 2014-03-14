@@ -2,10 +2,10 @@
             package de.bsvrz.sys.funclib.operatingMessage;
             public class PackageRuntimeInfo {
             public static String getLicence() { return "LGPL";}
-            public static String getRelease() { return "Kernsoftware 3.6.0";}
-            public static String getVersion() { return "3.6.0.v12056";}
-            public static String getRevision() { return "12056";}
-            public static String getCompileTime() { return "25.02.2014 08:45:51";}
+            public static String getRelease() { return "Kernsoftware 3.6.1";}
+            public static String getVersion() { return "3.6.1.v12117";}
+            public static String getRevision() { return "12117";}
+            public static String getCompileTime() { return "13.03.2014 20:31:51";}
             public static String getDependsOnCompiled() { return "de.bsvrz.dav.daf, de.bsvrz.sys.funclib.dataSerializer, de.bsvrz.sys.funclib.communicationStreams, de.bsvrz.sys.funclib.debug";}
             public static String getDependsOnSource() { return "";}
             public static String getDependsOnLib() { return "";}

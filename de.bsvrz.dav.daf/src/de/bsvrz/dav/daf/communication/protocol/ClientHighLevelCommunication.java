@@ -100,7 +100,7 @@ import java.util.*;
  * Telegrammverwaltung gemeldet werden, führen zu einem Abbruch der Verbindung und zu einer Benachrichtigung des Moduls Verwaltung.</ul>
  *
  * @author Kappich Systemberatung
- * @version $Revision: 10161 $
+ * @version $Revision: 12107 $
  */
 public class ClientHighLevelCommunication implements HighLevelCommunicationCallbackInterface {
 
@@ -185,7 +185,6 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 		_syncSystemTelegramList = new LinkedList<DataTelegram>();
 		splittedTelegramsTable = new SplittedApplicationTelegramsTable();
 		_readyForConfigDependantData = false;
-		_sendControlNotifier = new SendControlNotifier();
 
 		lowLevelCommunication = properties.getLowLevelCommunication();
 		String ip = properties.getCommunicationAddress();
@@ -209,6 +208,8 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 			lowLevelCommunication.disconnect(true, errorMessage, null);
 			throw new CommunicationError(errorMessage);
 		}
+
+		_sendControlNotifier = new SendControlNotifier();
 	}
 
 	/**

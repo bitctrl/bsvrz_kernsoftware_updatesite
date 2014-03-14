@@ -22,6 +22,7 @@ package de.bsvrz.dav.daf.main;
 
 
 import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
+import de.bsvrz.dav.daf.main.config.DavApplication;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 
 import java.io.ByteArrayInputStream;
@@ -42,6 +43,8 @@ public class ClientSubscriptionInfo {
 	private final List<ClientSendingSubscription> _senderSubscriptions = new ArrayList<ClientSendingSubscription>();
 
 	private final List<ClientReceivingSubscription> _receiverSubscriptions = new ArrayList<ClientReceivingSubscription>();
+
+	private final List<DavInformation> _potentialCentralDavs = new ArrayList<DavInformation>();
 
 	public List<ClientSendingSubscription> getSenderSubscriptions() {
 		return Collections.unmodifiableList(_senderSubscriptions);
@@ -84,6 +87,16 @@ public class ClientSubscriptionInfo {
 						applicationId, userId, isDrain, isDelayed, isDelta, state, constate
 				);
 				_receiverSubscriptions.add(clientReceivingSubscription);
+			}
+			if(dataInputStream.available() > 0){
+				int numpotCentralDavs = dataInputStream.readInt();
+				for(int i = 0; i < numpotCentralDavs; i++){
+					long centralDavId = dataInputStream.readLong();
+					long connectionDavId = dataInputStream.readLong();
+					int throughputResistance = dataInputStream.readInt();
+					long userId = dataInputStream.readLong();
+					_potentialCentralDavs.add(new DavInformation(centralDavId, connectionDavId, userId, throughputResistance));
+				}
 			}
 		}
 		finally {
@@ -321,8 +334,76 @@ public class ClientSubscriptionInfo {
 		}
 	}
 
+	public List<DavInformation> getPotentialCentralDavs() {
+		return Collections.unmodifiableList(_potentialCentralDavs);
+	}
+
 	@Override
 	public String toString() {
 		return "ClientSubscriptionInfo{" + "_receiverSubscriptions=" + _senderSubscriptions + ", _senderSubscriptions=" + _receiverSubscriptions + '}';
+	}
+
+	public class DavInformation {
+		private final long _centralDavId;
+		private final long _connectionDavId;
+		private final long _userId;
+		private final int _throughputResistance;
+
+		private DavInformation(final long centralDavId, final long connectionDavId, final long userId, final int throughputResistance) {
+			_centralDavId = centralDavId;
+			_connectionDavId = connectionDavId;
+			_userId = userId;
+			_throughputResistance = throughputResistance;
+		}
+
+		public long getCentralDavId() {
+			return _centralDavId;
+		}
+
+		public long getConnectionDavId() {
+			return _connectionDavId;
+		}
+
+		public DavApplication getCentralDav() {
+			return (DavApplication) _connection.getDataModel().getObject(_centralDavId);
+		}
+
+		public DavApplication getConnectionDav() {
+			return (DavApplication) _connection.getDataModel().getObject(_connectionDavId);
+		}
+
+		public long getUserId() {
+			return _userId;
+		}
+
+		public SystemObject getUser() {
+			return _connection.getDataModel().getObject(_userId);
+		}
+
+
+		public int getThroughputResistance() {
+			return _throughputResistance;
+		}
+
+
+		@Override
+		public String toString() {
+			return getCentralDavPidOrId();
+		}
+
+		public String getCentralDavPidOrId() {
+			DavApplication centralDav = getCentralDav();
+			return centralDav == null ? "[" + _centralDavId + "]" : centralDav.toString();
+		}
+
+		public String getConnectionDavPidOrId() {
+			DavApplication connectionDav = getConnectionDav();
+			return connectionDav == null ? "[" + _connectionDavId + "]" : connectionDav.toString();
+		}
+
+		public String getUserPidOrId() {
+			SystemObject user = getUser();
+			return user == null ? "[" + _userId + "]" : user.toString();
+		}
 	}
 }
