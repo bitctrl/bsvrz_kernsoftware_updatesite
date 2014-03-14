@@ -12,16 +12,8 @@
    <feature url="features/de.bsvrz.buv.daf.feature.source_0.0.0.jar" id="de.bsvrz.buv.daf.feature.source" version="0.0.0">
       <category name="de.bsvrz.daf.sources"/>
    </feature>
-   <feature url="features/de.bsvrz.sys.funclib.losb.feature_0.0.0.jar" id="de.bsvrz.sys.funclib.losb.feature" version="0.0.0">
-      <category name="de.bsvrz.sys.funclib.losb"/>
-   </feature>
-   <feature url="features/de.bsvrz.sys.funclib.losb.feature.source_0.0.0.jar" id="de.bsvrz.sys.funclib.losb.feature.source" version="0.0.0">
-      <category name="de.bsvrz.sys.funclib.losb.source"/>
-   </feature>
    <category-def name="de.bsvrz.daf" label="Datenverteiler Applikationsfunktionen"/>
    <category-def name="de.bsvrz.daf.sources" label="Datenverteiler Applikationsfunktionen (Quellen)"/>
    <category-def name="de.bsvrz.vew" label="Segment Verwaltung"/>
    <category-def name="de.bsvrz.vew.sources" label="Segment Verwaltung (Quellen)"/>
-   <category-def name="de.bsvrz.sys.funclib.losb" label="Los B Bibliotheken"/>
-   <category-def name="de.bsvrz.sys.funclib.losb.source" label="Los B Bibliotheken (Quellen)"/>
 </site>

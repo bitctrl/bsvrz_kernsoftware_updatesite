@@ -42,7 +42,6 @@
 
 		<module>../de.bsvrz.buv.daf.feature</module>
 		<module>../de.bsvrz.buv.vew.feature</module>
-		<module>../de.bsvrz.sys.funclib.losb.feature</module>
 
 		<module>../de.bsvrz.buv.kernsoftware.repository</module>
 	</modules>
