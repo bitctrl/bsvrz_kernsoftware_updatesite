@@ -4,7 +4,7 @@ Created-By: Kappich Systemberatung
 Bundle-ManifestVersion: 2
 Bundle-Name: de.bsvrz.sys.funclib.timeout
 Bundle-SymbolicName: de.bsvrz.sys.funclib.timeout
-Bundle-Version: 3.6.1.qualifier
+Bundle-Version: 3.6.2.qualifier
 Bundle-Vendor: Kappich Systemberatung
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
