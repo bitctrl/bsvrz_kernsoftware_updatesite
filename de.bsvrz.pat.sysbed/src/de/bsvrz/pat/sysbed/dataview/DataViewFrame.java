@@ -3,19 +3,19 @@
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2005 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
- * 
+ *
  * This file is part of de.bsvrz.pat.sysbed.
- * 
+ *
  * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -60,7 +60,7 @@ public class DataViewFrame implements PrintFrame {
 	/** stellt nur den neuesten Datensatz dar */
 	public static final int ONLY_LATEST = 2;
 
-	private final Debug _debug = Debug.getLogger();
+	private final static Debug _debug = Debug.getLogger();
 
 	private final UnsubscribingJFrame _frame;
 
@@ -278,7 +278,7 @@ public class DataViewFrame implements PrintFrame {
 					_dataViewModel.addDatasetAbove(new DataTableObject(results[i]));
 				}
 			}
-			else if(_displayOptions == ONLY_LATEST) { 
+			else if(_displayOptions == ONLY_LATEST) {
 				List<DataTableObject> dataTableObjects = new LinkedList<DataTableObject>();
 				for(int i = 0; i < results.length; i++) {
 					dataTableObjects.add(new DataTableObject(results[i]));

@@ -2,19 +2,19 @@
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
- * 
+ *
  * This file is part of de.bsvrz.pat.sysbed.
- * 
+ *
  * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -51,59 +51,59 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Die Klasse <code>HeaderGrid</code> dient zur Darstellung einer hierarchischen Struktur (z.B. Baum). 
- * Die Darstellung kann dazu verwendet werden, einen verschachtelten Tabellenkopf einer Tabelle zu 
- * erstellen. Ein Objekt dieser Klasse besteht aus einem Vater-Element und beliebig vielen Nachfolgern. 
- * Bei der Darstellung werden die Nachfolger mittels eines {@link HeaderGrid.Splitter Schiebereglers} 
+ * Die Klasse <code>HeaderGrid</code> dient zur Darstellung einer hierarchischen Struktur (z.B. Baum).
+ * Die Darstellung kann dazu verwendet werden, einen verschachtelten Tabellenkopf einer Tabelle zu
+ * erstellen. Ein Objekt dieser Klasse besteht aus einem Vater-Element und beliebig vielen Nachfolgern.
+ * Bei der Darstellung werden die Nachfolger mittels eines {@link HeaderGrid.Splitter Schiebereglers}
  * voneinander getrennt.
  *
  * @author Kappich Systemberatung
  * @version $Revision: 8084 $
  */
 public class HeaderGrid {
-	
+
 	/** der Debug-Logger */
-	private Debug _debug = Debug.getLogger();
-	
+	private final static Debug _debug = Debug.getLogger();
+
 	/* ############# Variablen ############## */
 	/** speichert das Objekt des Schiebereglers */
 	private final Splitter _splitter;
-	
+
 	/** speichert die Attributliste oder das Attribut, welches dargestellt werden soll */
 	private final HeaderElement _headerElement;
-	
+
 	/** Liste aller Nachfolger vom Vater-Element */
 	private final List<HeaderGrid> _successors;
-	
+
 	/** speichert alle angemeldeten Objekte, u.a. zwecks Größenanpassung */
 	private final List<ColumnWidthChangeListener> _columnWidthListeners;
-	
+
 	/** speichert ein Exemplar des DataViewPanels */
 	private final DataViewPanel _dataViewPanel;
-	
+
 	/** Gibt an, ob die mouseDragged-Methode des Splitters von einem Vaterknoten aus aufgerufen wurde. */
 	private boolean _fromParent = false;
-	
+
 	/** Gibt an, ob die Spalte vom Benutzer nicht geschlossen wurde. */
 	private boolean _notClosedByUser = true;
-	
+
 	/** Gibt die prozentuale Veränderung des Vater-Elements beim Vergrößern bzw. Verkleinern an. */
 	private int _percent = 0;
-	
+
 	/** Speichert die Spaltenbreite, bevor die Spalte verkleinert wird. */
 	private int _lastColumnWidth = 0;
-	
+
 	/** Speichert zu jedem Element die Anzahl der Spalten unter sich. */
 	private int _numberOfColumns = 0;
-	
+
 	/** Speichert den Vaterknoten. */
 	private HeaderGrid _parent = null;
-	
+
 	/** Verhindert gegebenenfalls das Neuanlegen von MouseListenern. */
 	private boolean _noNewMouseListener = false;
-	
+
 	/* ########### Konstruktor ############ */
-	
+
 	/**
 	 * Es wird ein Objekt der Klasse <code>HeaderGrid</code> erzeugt.
 	 *
@@ -119,7 +119,7 @@ public class HeaderGrid {
 		_successors = new ArrayList<HeaderGrid>();
 		_columnWidthListeners = new ArrayList<ColumnWidthChangeListener>();
 	}
-	
+
 	/* #### Zeilenobjekte melden sich beim Header an, damit u.a. Größenänderung weitergereicht werden können ### */
 	/**
 	 * Objekte, die sich hier anmelden, werden benachrichtigt, sobald im Spaltenheader ein Schieberegler bewegt wird.
@@ -129,7 +129,7 @@ public class HeaderGrid {
 	public void addColumnWidthChangeListener(ColumnWidthChangeListener listener) {
 		_columnWidthListeners.add( listener);
 	}
-	
+
 	/**
 	 * Objekt, welches beim Listener wieder abgemeldet werden soll.
 	 *
@@ -138,7 +138,7 @@ public class HeaderGrid {
 	public void removeColumnWidthChangeListener(ColumnWidthChangeListener rowListener) {
 		_columnWidthListeners.remove(rowListener);
 	}
-	
+
 	/**
 	 * An alle angemeldeten Objekte wird die neue Breite der veränderten Spalte übergeben.
 	 *
@@ -149,7 +149,7 @@ public class HeaderGrid {
 			rowListener.setWidth(width);
 		}
 	}
-	
+
 	/**
 	 * Liefert die optimale Spaltenbreite, so dass alle Einträge zu sehen sind.
 	 *
@@ -163,8 +163,8 @@ public class HeaderGrid {
 		}
 		return optimalColumnWidth;
 	}
-	
-	
+
+
 	/* ############# Get-/ Set- und Add-Methoden ############# */
 	/**
 	 * Fügt einen Nachfolger hinzu.
@@ -174,7 +174,7 @@ public class HeaderGrid {
 	public void addHeaderSuccessor(HeaderGrid headerGrid) {
 		_successors.add(headerGrid);
 	}
-	
+
 	/**
 	 * Gibt die Nachfolger des Grids zurück.
 	 *
@@ -183,7 +183,7 @@ public class HeaderGrid {
 	public List<HeaderGrid> getHeaderSuccessors() {
 		return _successors;
 	}
-	
+
 	/**
 	 * Gibt das Vater-Element zurück.
 	 *
@@ -192,7 +192,7 @@ public class HeaderGrid {
 	public HeaderElement getHeaderElement() {
 		return _headerElement;
 	}
-	
+
 	/**
 	 * Gibt den Schieberegler zurück.
 	 *
@@ -201,7 +201,7 @@ public class HeaderGrid {
 	public Splitter getSplitter() {
 		return _splitter;
 	}
-	
+
 	/**
 	 * Gibt die Anzahl der Spalten zurück, die sich unterhalb dieses Grids befinden.
 	 *
@@ -210,7 +210,7 @@ public class HeaderGrid {
 	public int getNumberOfColumns() {
 		return _numberOfColumns;
 	}
-	
+
 	/**
 	 * Setzt die Anzahl der Spalten, die sich unterhalb dieses Grids befinden.
 	 *
@@ -219,11 +219,11 @@ public class HeaderGrid {
 	public void setNumberOfColumns(int numberOfColumns) {
 		_numberOfColumns = numberOfColumns;
 	}
-	
-	
+
+
 	/* ########### Konstruktion des Headers ############# */
 	/**
-	 * Erstellt ein Panel aus den im Objekt gesammelten Daten. Dieses Objekt besteht aus einem Element 
+	 * Erstellt ein Panel aus den im Objekt gesammelten Daten. Dieses Objekt besteht aus einem Element
 	 * und seinen Nachfolgern. Wird für den Aufbau eines hierarchischen Tabellenkopfes genutzt.
 	 *
 	 * @return das Panel des Objekts
@@ -231,7 +231,7 @@ public class HeaderGrid {
 	public JPanel createHeader() {
 		int column = 0;
 		int row = 0;
-		
+
 		GridBagLayout gbl = new GridBagLayout();
 		JPanel panel = new JPanel(gbl);
 		// es gibt genau einen Header (nicht mehr und nicht weniger)
@@ -246,19 +246,19 @@ public class HeaderGrid {
 		JPanel headerPanel = createHeaderElement();
 		gbl.setConstraints(headerPanel, gbc);
 		panel.add(headerPanel);
-		
+
 		// Nachfolger ...
 		for(HeaderGrid headerGrid : _successors) {
 			gbc = makeGBC(column++, row, 1, 1, 100, 100);
 			gbc.fill = GridBagConstraints.BOTH;
-			
+
 			JPanel gridPanel = headerGrid.createHeader();
 			gbl.setConstraints(gridPanel, gbc);
 			panel.add(gridPanel);
 		}
 		return panel;
 	}
-	
+
 	/**
 	 * Erstellt ein Panel, welches ein Element mit zugehörigem Schieberegler auf der rechten Seite darstellt.
 	 *
@@ -272,16 +272,16 @@ public class HeaderGrid {
 		gbc.fill = GridBagConstraints.BOTH;
 		gbl.setConstraints(_headerElement, gbc);
 		panel.add(_headerElement);
-		
+
 		// Splitter einfügen
 		gbc = makeGBC(1, 0, 1, 1, 0, 0);
 		gbc.fill = GridBagConstraints.VERTICAL;
 		gbl.setConstraints(_splitter, gbc);
 		panel.add(_splitter);
-		
+
 		return panel;
 	}
-	
+
 	/**
 	 * Hilfsfunktion zur Konstruktion des Panels. Hierüber werden die Bedingungen für die Anordnung der Elemente gesetzt.
 	 *
@@ -304,9 +304,9 @@ public class HeaderGrid {
 		gbc.weighty = weighty;
 		return gbc;
 	}
-	
-	
-	
+
+
+
 
 	/**
 	 * Setzt bei allen Komponenten den Cursor, sobald der Schieberegler betätigt wird.
@@ -325,9 +325,9 @@ public class HeaderGrid {
 			setHeaderCursors(headerGrid, cursor);
 		}
 	}
-	
+
 	/* ############## Innere Klasse Splitter von der Klasse HeaderGrid ############## */
-	
+
 	/**
 	 * Die Klasse implementiert einen Schieberegler. Mit diesem Regler wird eine links benachbarte Spalte durch Benutzung der Maus vergrößert bzw. verkleinert,
 	 * indem der Schieberegler nach links bzw. rechts verschoben wird.
@@ -337,32 +337,32 @@ public class HeaderGrid {
 	 */
 	@SuppressWarnings("serial")
 	class Splitter extends JPanel implements MouseListener, MouseMotionListener {
-		
+
 		/* ######### Variablen ######### */
 		/** speichert die Breite des Schiebereglers */
 		private final int _splitterWidth = 5;
-		
+
 		/** speichert bei betätigen der Maustaste die aktuelle Mausposition innerhalb des Schiebereglers */
 		private int _posInSplitter;
-		
+
 		/** speichert den nach rechts gerichteten Pfeil incl. seiner Funktionalität */
 		private Arrow _arrow = null;
-		
+
 		/* ######### Konstruktor ########## */
 		/** Erzeugt ein Objekt der Klasse <code>Splitter</code>. */
 		public Splitter() {
 			// Mauscursor setzen
 			setCursor(new Cursor(Cursor.E_RESIZE_CURSOR));
-			
+
 			setBorder(new EtchedBorder());
 			setPreferredSize(new Dimension(_splitterWidth, 1));
-			
+
 			if ( !_noNewMouseListener) {
 				addMouseListener(this);
 				addMouseMotionListener(this);
 			}
 		}
-		
+
 		/* ############# Public-Methoden ############## */
 		/**
 		 * Setzt die Variable im gesamten untergeordneten Grid, welche angibt, ob die mouseDragged-Methode des Schiebereglers von einem Vaterknoten aus aufgerufen
@@ -378,7 +378,7 @@ public class HeaderGrid {
 				headerGrid.getSplitter().setFromParent(headerGrid, fromParent);
 			}
 		}
-		
+
 		/** Fügt den Pfeil zum Aufklappen in den Schieberegler ein. */
 		public void addRightArrow() {
 			if(_arrow == null) {
@@ -398,7 +398,7 @@ public class HeaderGrid {
 									removeUpperArrows();
 									removeLowerArrows();
 								}
-								
+
 								/**
 								 * Falls die Spalte durch ziehen wieder verbreitert wurde, dann werden die Pfeile in den betroffenen Schiebereglern entfernt.
 								 *
@@ -425,7 +425,7 @@ public class HeaderGrid {
 			setLayout(new BorderLayout());
 			add(_arrow, BorderLayout.CENTER);
 		}
-		
+
 		/** Setzt die optimale Spaltenbreite, so dass alle Daten vollständig zu sehen sind. */
 		public void setOptimalColumnWidth() {
 			if(_successors.isEmpty()) {    // Blattknoten
@@ -441,10 +441,10 @@ public class HeaderGrid {
 				}
 			}
 		}
-		
-		
+
+
 		/* ######### MouseListener und MouseMotionListener - Methoden ############ */
-		/** Beim Doppelklick wird die optimale Spaltenbreite in Abhängigkeit der angezeigten Daten 
+		/** Beim Doppelklick wird die optimale Spaltenbreite in Abhängigkeit der angezeigten Daten
 		 * ermittelt und gesetzt. */
 		public void mouseClicked(MouseEvent e) {
 			if(e.getClickCount() > 1) {         // Doppelklick
@@ -452,23 +452,23 @@ public class HeaderGrid {
 				return;
 			}
 		}
-		
+
 		/** wird hier nicht benötigt */
 		public void mouseEntered(MouseEvent e) {
 		}
-		
+
 		/** wird hier nicht benötigt */
 		public void mouseExited(MouseEvent e) {
 		}
-		
+
 		/** wird hier nicht benötigt */
 		public void mouseMoved(MouseEvent e) {
 		}
-		
+
 		/**
-		 * Beim Betätigen der linken Maustaste wird die aktuelle Position der Maus innerhalb des 
-		 * Schiebereglers abgespeichert. Ist dies der erste Aufruf, dann werden die Größen der 
-		 * Elemente mittels der Methode {@link DataViewPanel#setHeaderSizes(HeaderGrid,int)} 
+		 * Beim Betätigen der linken Maustaste wird die aktuelle Position der Maus innerhalb des
+		 * Schiebereglers abgespeichert. Ist dies der erste Aufruf, dann werden die Größen der
+		 * Elemente mittels der Methode {@link DataViewPanel#setHeaderSizes(HeaderGrid,int)}
 		 * initialisiert.
 		 *
 		 * @param e Mausereignis
@@ -480,18 +480,18 @@ public class HeaderGrid {
 					_dataViewPanel.setFirstRun(false);
 				}
 			}
-			
+
 			// Position im Splitter
 			_posInSplitter = e.getX();
-			
+
 			// Aussehen des Cursors setzen
 			setHeaderCursors(_dataViewPanel.getHeaderGrid(), Cursor.E_RESIZE_CURSOR);
 			_dataViewPanel.setCursor(new Cursor(Cursor.E_RESIZE_CURSOR));
-			
+
 			// ursprüngliche Breite merken
 			setLastColumnWidth();
 		}
-		
+
 		/** Speichert in allen untergeordneten Spalten, die vorher noch nicht geschlossen wurden, die Spaltenbreite. */
 		private void setLastColumnWidth() {
 			if(_notClosedByUser) { // nur hier die Variable _lastColumnWidth ändern
@@ -506,7 +506,7 @@ public class HeaderGrid {
 				}
 			}
 		}
-		
+
 		/**
 		 * Beim Loslassen der linken Maustaste werden ggf. gesetzte Werte zurückgesetzt.
 		 *
@@ -518,11 +518,11 @@ public class HeaderGrid {
 				getHeaderElement().addUpperArrows();
 			}
 			addRightArrows();
-			
+
 			setHeaderCursors(_dataViewPanel.getHeaderGrid(), Cursor.DEFAULT_CURSOR);
 			_dataViewPanel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
-		
+
 		/** Fügt bei darunter liegenden Elementen einen Pfeil ein, falls noch keiner vorhanden ist. */
 		private void addRightArrows() {
 			_fromParent = false;
@@ -534,9 +534,9 @@ public class HeaderGrid {
 				headerGrid.getSplitter().addRightArrows();
 			}
 		}
-		
+
 		/**
-		 * Bei gedrückter linker Maustaste und ziehen der Maus, wird links stehende Spalte vergrößert 
+		 * Bei gedrückter linker Maustaste und ziehen der Maus, wird links stehende Spalte vergrößert
 		 * bzw. verkleinert. Der Layoutmanager macht sein übriges und passt alle anderen Elemente ggf. an.
 		 *
 		 * @param e Mausereignis
@@ -592,8 +592,8 @@ public class HeaderGrid {
 				setRowWidth(size.width + _splitterWidth);
 			}
 		}
-		
-		
+
+
 		/* ############ Private-Methoden ############# */
 		/**
 		 * Setzt die Spaltenbreite auf einen beliebigen Wert.
@@ -605,7 +605,7 @@ public class HeaderGrid {
 			_headerElement.revalidate();
 			setRowWidth(width);
 		}
-		
+
 		/** Entfernt den Pfeil zum Aufklappen aus dem Schieberegler. */
 		private void removeRightArrow() {
 			remove(_arrow);
@@ -613,7 +613,7 @@ public class HeaderGrid {
 			setCursor(new Cursor(Cursor.E_RESIZE_CURSOR));
 			_arrow = null;	// Wenn das fehlt, so erscheinen beim Drucken alte Rechtspfeile. Unverstanden.
 		}
-		
+
 		/** Alle darüber liegenden Elemente werden überprüft, ob der Pfeil aus dem Schieberegler entfernt werden kann. Falls ja, dann wird er entfernt. */
 		private void removeUpperArrows() {
 			if(_parent != null) {      // ist parent == null -> fertig
@@ -625,7 +625,7 @@ public class HeaderGrid {
 				}
 			}
 		}
-		
+
 		/** Bei allen darunter liegenden Elementen werden die Pfeile aus den Schiebereglern entfernt. */
 		private void removeLowerArrows() {
 			if(_notClosedByUser) {
@@ -635,7 +635,7 @@ public class HeaderGrid {
 				}
 			}
 		}
-		
+
 		/** Die Spaltenbreite wird wieder auf den ursprünglichen Wert gesetzt. */
 		private void undoColumnWidth() {
 			if(_notClosedByUser) {
@@ -650,26 +650,26 @@ public class HeaderGrid {
 			}
 		}
 	}
-	
-	
-	/** 
-	 * Diese Klasse repräsentiert eine Zelle des hierarchischen {@link HeaderGrid Spaltenheaders}. 
-	 * 
+
+
+	/**
+	 * Diese Klasse repräsentiert eine Zelle des hierarchischen {@link HeaderGrid Spaltenheaders}.
+	 *
 	 * */
 	@SuppressWarnings("serial")
 	public class HeaderElement extends JComponent {
-		
+
 		/* ########### Variablen ############ */
 		/** speichert das Objekt, welches im Header dargestellt werden soll */
 		private final Object _headerObject;
-		
+
 		/** speichert den darzustellenden Text */
 		private final String _text;
-		
+
 		/** speichert die Pid der Attributgruppe bzw. des Attributes */
 		private final String _pid;
-		
-		
+
+
 		/* ############ Konstruktor ################ */
 		/**
 		 * Konstruktor. Zeichnet ein HeaderElement.
@@ -700,12 +700,12 @@ public class HeaderGrid {
 			}
 			createHeaderElement();
 		}
-		
+
 		/** Diese Methode ist für das Aussehen und die Funktionalität des HeaderElements verantwortlich. */
 		private void createHeaderElement() {
 			JLabel label = new JLabel(_text);
 			label.setHorizontalAlignment(SwingConstants.CENTER);
-			
+
 			Arrow icon = new Arrow(SwingConstants.WEST);
 			if ( !_noNewMouseListener) {
 				icon.addMouseListener(
@@ -725,8 +725,8 @@ public class HeaderGrid {
 			add(label, BorderLayout.CENTER);
 			add(icon, BorderLayout.EAST);
 		}
-		
-		
+
+
 		/* ############# Hilfsmethoden ############ */
 		/** Fügt bei hierarchisch höher liegenden Elementen Pfeile hinzu, wenn sie auch komplett geschlossen sind. */
 		private void addUpperArrows() {
@@ -743,9 +743,9 @@ public class HeaderGrid {
 				}
 			}
 		}
-		
+
 		/**
-		 * Beim Betätigen des Pfeils zum Einklappen der Spalte, wird dieser Spalte und allen 
+		 * Beim Betätigen des Pfeils zum Einklappen der Spalte, wird dieser Spalte und allen
 		 * darunterliegenden der Pfeil zum Aufklappen zur Verfügung gestellt, sowie
 		 * die Spalte reduziert auf ein Minimum.
 		 */
@@ -763,7 +763,7 @@ public class HeaderGrid {
 				}
 			}
 		}
-		
+
 		/**
 		 * Prüft, ob es sich bei dem Attribut um ein Array handelt, oder nicht.
 		 *
@@ -774,8 +774,8 @@ public class HeaderGrid {
 		private boolean isAttributeArray(Attribute attribute) {
 			return attribute.isArray();
 		}
-		
-		
+
+
 		/* ########### Get-Methoden ############ */
 		/**
 		 * Gibt das Objekt des HeaderElements zurück.
@@ -785,7 +785,7 @@ public class HeaderGrid {
 		public Object getObject() {
 			return _headerObject;
 		}
-		
+
 		/**
 		 * Gibt den Text des HeaderElements zurück, welcher dargestellt wird.
 		 *
@@ -794,7 +794,7 @@ public class HeaderGrid {
 		public String getText() {
 			return _text;
 		}
-		
+
 		/**
 		 * Gibt die Pid des HeaderElements zurück. Besitzt es keine Pid wird null zurückgegeben.
 		 *
@@ -809,22 +809,22 @@ public class HeaderGrid {
 			}
 		}
 	}
-	
+
 	/**
-	 * Erstellt einen Pfeil in einer angegebenen Richtung und Farbe der Größe 5 x 5 Pixel. 
+	 * Erstellt einen Pfeil in einer angegebenen Richtung und Farbe der Größe 5 x 5 Pixel.
 	 * Die Richtung wird mit den Swing-Konstanten angegeben:<p> SwingConstants.WEST<br> SwingConstants.EAST
 	 */
 	@SuppressWarnings("serial")
 	class Arrow extends JPanel implements SwingConstants {
-		
+
 		/* ############ Variablen ############# */
 		/** Richtung des Pfeils */
 		private final int _direction;
-		
+
 		/** Farbe des Pfeils */
 		private final Color _arrowColor;
-		
-		
+
+
 		/* ############## Konstruktoren ############### */
 		/**
 		 * Erstellt einen Pfeil mit der angegebenen Richtung in der Farbe grau.
@@ -834,7 +834,7 @@ public class HeaderGrid {
 		public Arrow(int direction) {
 			this(direction, Color.gray);
 		}
-		
+
 		/**
 		 * Erstellt einen Pfeil mit der angegebenen Richtung und der angegebenen Farbe.
 		 *
@@ -845,21 +845,21 @@ public class HeaderGrid {
 			_direction = direction;
 			_arrowColor = arrowColor;
 		}
-		
-		
+
+
 		/* ################### Public-Methoden ################# */
-		
+
 		@Override
 		public void paint(Graphics g) {
 			// Zeichnet ein Dreieck auf das Panel.
 			int w, h;
-			
+
 			w = getSize().width;
 			h = getSize().height;
-			
+
 			g.setColor(getBackground());
 			g.fillRect(0, 0, w, h);     // ohne Rand
-			
+
 			int mid = (h / 2);
 			// Dreieck zeichnen
 			g.setColor(_arrowColor);
@@ -874,16 +874,16 @@ public class HeaderGrid {
 					break;
 			}
 		}
-		
+
 		@Override
 		public Dimension getPreferredSize() {
 			return new Dimension(getSplitter().getWidth() + 1, 5);
 		}
 	}
-	
+
 	/**
 	 * Macht dieses HeaderGrid dem übergebenen ähnlich.
-	 * 
+	 *
 	 * @param otherHeaderGrid das andere HeaderGrid
 	 */
 	public void makeSimilar( final HeaderGrid otherHeaderGrid) {
@@ -896,10 +896,10 @@ public class HeaderGrid {
 		setPercentValues(otherHeaderGrid);
 		setArrowIcons(otherHeaderGrid);
 	}
-	
+
 	/**
 	 *	Setzt die Breiten aller Spalten auf die Werte des übergebenen HeaderGrids.
-	 * 
+	 *
 	 * @param otherHeaderGrid das andere HeaderGrid
 	 */
 	private void setColumnWidths( final HeaderGrid otherHeaderGrid) {
@@ -915,10 +915,10 @@ public class HeaderGrid {
 			ownSuccessor.setColumnWidths(otherSuccessor);
 		}
 	}
-	
+
 	/**
 	 *	Setzt die Offen/Geschlossen-Stati auf die Werte des übergebenen HeaderGrids.
-	 * 
+	 *
 	 * @param otherHeaderGrid das andere HeaderGrid
 	 */
 	private void setClosingStates( final HeaderGrid otherHeaderGrid) {
@@ -934,10 +934,10 @@ public class HeaderGrid {
 			ownSuccessor.setClosingStates(otherSuccessor);
 		}
 	}
-	
+
 	/**
 	 *	Setzt Arrows wie im übergebenen HeaderGrid.
-	 * 
+	 *
 	 * @param otherHeaderGrid das andere HeaderGrid
 	 */
 	private void setArrowIcons( final HeaderGrid otherHeaderGrid) {
@@ -961,10 +961,10 @@ public class HeaderGrid {
 			ownSuccessor.setArrowIcons(otherSuccessor);
 		}
 	}
-	
+
 	/**
 	 * Setzt die Anzahl der Spalten im Splitter
-	 * 
+	 *
 	 * @param otherHeaderGrid das andere HeaderGrid
 	 */
 	private void setNumberOfColumns( final HeaderGrid otherHeaderGrid) {
@@ -980,10 +980,10 @@ public class HeaderGrid {
 			ownSuccessor.setNumberOfColumns(otherSuccessor);
 		}
 	}
-	
+
 	/**
 	 * Setzt die Position des Mauszeigers im Splitter
-	 * 
+	 *
 	 * @param otherHeaderGrid das andere HeaderGrid
 	 */
 	private void setPositions( final HeaderGrid otherHeaderGrid) {
@@ -999,10 +999,10 @@ public class HeaderGrid {
 			ownSuccessor.setPositions(otherSuccessor);
 		}
 	}
-	
+
 	/**
 	 * Setzt die FromParent-Werte.
-	 * 
+	 *
 	 * @param otherHeaderGrid das andere HeaderGrid
 	 */
 	private void setFromParentValues( final HeaderGrid otherHeaderGrid) {
@@ -1018,10 +1018,10 @@ public class HeaderGrid {
 			ownSuccessor.setFromParentValues(otherSuccessor);
 		}
 	}
-	
+
 	/**
 	 * Setzt die Percent-Werte.
-	 * 
+	 *
 	 * @param otherHeaderGrid das andere HeaderGrid
 	 */
 	private void setPercentValues( final HeaderGrid otherHeaderGrid) {
@@ -1037,10 +1037,10 @@ public class HeaderGrid {
 			ownSuccessor.setPercentValues(otherSuccessor);
 		}
 	}
-	
+
 	/**
 	 * Setzt die Last-Column-Width-Werte.
-	 * 
+	 *
 	 * @param otherHeaderGrid das andere HeaderGrid
 	 */
 	private void setLastColumnWidths( final HeaderGrid otherHeaderGrid) {
@@ -1056,7 +1056,7 @@ public class HeaderGrid {
 			ownSuccessor.setLastColumnWidths(otherSuccessor);
 		}
 	}
-	
+
 	/**
 	 * Entfernt alle MouseListener, MouseMotianListener und MouseWheelListener der Komponenten.
 	 */
@@ -1076,7 +1076,7 @@ public class HeaderGrid {
 			removeAllMouseListeners(component);
 		}
 	}
-	
+
 	private void removeAllMouseListeners( final Component component) {
 		if ( component != null) {
 			final MouseListener[] mouseListeners = component.getMouseListeners();
