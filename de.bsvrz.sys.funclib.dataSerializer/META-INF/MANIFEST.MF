@@ -4,11 +4,12 @@ Created-By: Kappich Systemberatung
 Bundle-ManifestVersion: 2
 Bundle-Name: de.bsvrz.sys.funclib.dataSerializer
 Bundle-SymbolicName: de.bsvrz.sys.funclib.dataSerializer
-Bundle-Version: 3.6.2.qualifier
+Bundle-Version: 3.6.5.qualifier
 Bundle-Vendor: Kappich Systemberatung
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-BuddyPolicy: dependent
 Bundle-ClassPath: .
 Require-Bundle: de.bsvrz.dav.daf;bundle-version="[3.5.0,4.0.0)";visibility:=reexport
+Export-Package: de.bsvrz.sys.funclib.dataSerializer
 

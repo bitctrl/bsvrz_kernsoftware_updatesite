@@ -4,16 +4,19 @@ Created-By: Kappich Systemberatung
 Bundle-ManifestVersion: 2
 Bundle-Name: de.bsvrz.pat.sysprot
 Bundle-SymbolicName: de.bsvrz.pat.sysprot
-Bundle-Version: 3.6.2.qualifier
+Bundle-Version: 3.6.5.qualifier
 Bundle-Vendor: Kappich Systemberatung
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: de.bsvrz.pat.sysprot,
  de.bsvrz.pat.sysprot.main
-Require-Bundle: de.bsvrz.dav.daf, de.bsvrz.sys.funclib.dataSerializer,
-  de.bsvrz.sys.funclib.communicationStreams, de.bsvrz.sys.funclib.appl
- ication, de.bsvrz.pat.onlprot, de.bsvrz.sys.funclib.configObjectAcqui
- sition, de.bsvrz.sys.funclib.commandLineArgs
+Require-Bundle: de.bsvrz.dav.daf;bundle-version="[3.6.5,4.0.0)",
+ de.bsvrz.sys.funclib.dataSerializer;bundle-version="[3.6.5,4.0.0)",
+ de.bsvrz.sys.funclib.communicationStreams;bundle-version="[3.6.5,4.0.0)",
+ de.bsvrz.sys.funclib.application;bundle-version="[3.6.5,4.0.0)",
+ de.bsvrz.pat.onlprot;bundle-version="[3.6.5,4.0.0)",
+ de.bsvrz.sys.funclib.configObjectAcquisition;bundle-version="[3.6.5,4.0.0)",
+ de.bsvrz.sys.funclib.commandLineArgs;bundle-version="[3.6.5,4.0.0)"
 Eclipse-BuddyPolicy: dependent
 Bundle-ClassPath: .
 

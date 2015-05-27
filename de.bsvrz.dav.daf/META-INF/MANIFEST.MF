@@ -4,7 +4,7 @@ Created-By: Kappich Systemberatung
 Bundle-ManifestVersion: 2
 Bundle-Name: de.bsvrz.dav.daf
 Bundle-SymbolicName: de.bsvrz.dav.daf
-Bundle-Version: 3.6.2.qualifier
+Bundle-Version: 3.6.5.qualifier
 Bundle-Vendor: Kappich Systemberatung
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
@@ -36,14 +36,15 @@ Export-Package: de.bsvrz.dav.daf,
  de.bsvrz.dav.daf.main.impl.config.telegrams,
  de.bsvrz.dav.daf.main.impl.subscription,
  de.bsvrz.dav.daf.util,
+ de.bsvrz.dav.daf.util.cron,
  de.bsvrz.dav.daf.util.fileBackedQueue,
  de.bsvrz.sys.funclib.communicationStreams,
  de.bsvrz.sys.funclib.dataSerializer
-Require-Bundle: de.bsvrz.sys.funclib.debug;bundle-version="3.5.0";visibility:=reexport,
- de.bsvrz.sys.funclib.commandLineArgs;bundle-version="3.5.0";visibility:=reexport,
- de.bsvrz.sys.funclib.timeout;bundle-version="3.5.0";visibility:=reexport,
- de.bsvrz.sys.funclib.filelock;bundle-version="3.5.0";visibility:=reexport,
- de.bsvrz.sys.funclib.crypt;bundle-version="3.5.0";visibility:=reexport,
- de.bsvrz.sys.funclib.hexdump;bundle-version="3.5.0";visibility:=reexport,
- de.bsvrz.sys.funclib.concurrent;bundle-version="3.5.0";visibility:=reexport
+Require-Bundle: de.bsvrz.sys.funclib.debug;bundle-version="[3.6.5,4.0.0)";visibility:=reexport,
+ de.bsvrz.sys.funclib.commandLineArgs;bundle-version="[3.6.5,4.0.0)";visibility:=reexport,
+ de.bsvrz.sys.funclib.timeout;bundle-version="[3.6.5,4.0.0)";visibility:=reexport,
+ de.bsvrz.sys.funclib.filelock;bundle-version="[3.6.5,4.0.0)";visibility:=reexport,
+ de.bsvrz.sys.funclib.crypt;bundle-version="[3.6.5,4.0.0)";visibility:=reexport,
+ de.bsvrz.sys.funclib.hexdump;bundle-version="[3.6.5,4.0.0)";visibility:=reexport,
+ de.bsvrz.sys.funclib.concurrent;bundle-version="[3.6.5,4.0.0)";visibility:=reexport
 

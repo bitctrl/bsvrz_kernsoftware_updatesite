@@ -13,7 +13,7 @@
 	
 	<groupId>de.bsvrz.sys</groupId>
 	<artifactId>de.bsvrz.sys.funclib.application</artifactId>
-	<version>3.6.2-SNAPSHOT</version>
+	<version>3.6.5-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 	
 </project>

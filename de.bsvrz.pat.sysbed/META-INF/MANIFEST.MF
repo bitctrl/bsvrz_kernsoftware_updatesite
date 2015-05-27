@@ -4,10 +4,10 @@ Created-By: Kappich Systemberatung
 Bundle-ManifestVersion: 2
 Bundle-Name: de.bsvrz.pat.sysbed
 Bundle-SymbolicName: de.bsvrz.pat.sysbed
-Bundle-Version: 3.6.2.qualifier
+Bundle-Version: 3.6.5.qualifier
 Bundle-Vendor: Kappich Systemberatung
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .
 Export-Package: de.bsvrz.pat.sysbed,
  de.bsvrz.pat.sysbed.dataEditor,
@@ -31,11 +31,17 @@ Export-Package: de.bsvrz.pat.sysbed,
  de.bsvrz.pat.sysbed.preselection.treeFilter.plugins.api,
  de.bsvrz.pat.sysbed.preselection.treeFilter.standard,
  de.bsvrz.pat.sysbed.preselection.util
-Require-Bundle: de.bsvrz.sys.funclib.consoleProcessFrame, de.bsvrz.dav
- .daf, de.bsvrz.sys.funclib.dataSerializer, de.bsvrz.sys.funclib.commu
- nicationStreams, de.bsvrz.sys.funclib.application, de.bsvrz.sys.funcl
- ib.configObjectAcquisition, de.bsvrz.sys.funclib.debug, de.bsvrz.sys.
- funclib.commandLineArgs, de.bsvrz.sys.funclib.concurrent, de.bsvrz.pa
- t.onlprot, de.bsvrz.pat.datgen, de.bsvrz.pat.sysprot
+Require-Bundle: de.bsvrz.sys.funclib.consoleProcessFrame;bundle-version="[3.6.5,4.0.0)",
+ de.bsvrz.dav.daf;bundle-version="[3.6.5,4.0.0)",
+ de.bsvrz.sys.funclib.dataSerializer;bundle-version="[3.6.5,4.0.0)",
+ de.bsvrz.sys.funclib.communicationStreams;bundle-version="[3.6.5,4.0.0)",
+ de.bsvrz.sys.funclib.application;bundle-version="[3.6.5,4.0.0)",
+ de.bsvrz.sys.funclib.configObjectAcquisition;bundle-version="[3.6.5,4.0.0)",
+ de.bsvrz.sys.funclib.debug;bundle-version="[3.6.5,4.0.0)",
+ de.bsvrz.sys.funclib.commandLineArgs;bundle-version="[3.6.5,4.0.0)",
+ de.bsvrz.sys.funclib.concurrent;bundle-version="[3.6.5,4.0.0)",
+ de.bsvrz.pat.onlprot;bundle-version="[3.6.5,4.0.0)",
+ de.bsvrz.pat.datgen;bundle-version="[3.6.5,4.0.0)",
+ de.bsvrz.pat.sysprot;bundle-version="[3.6.5,4.0.0)"
 Eclipse-BuddyPolicy: dependent
 
