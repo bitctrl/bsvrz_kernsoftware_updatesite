@@ -32,7 +32,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Verwaltet die Listener für die Kommunikation mit der Komfiguration.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 6074 $
+ * @version $Revision: 13272 $
  */
 public class DafConfigurationCommunicationListenerSupport {
 
@@ -117,24 +117,27 @@ public class DafConfigurationCommunicationListenerSupport {
 		return _configurationCommunicationActive;
 	}
 
+	/**
+	 * Stellt sicher, dass die Anmeldung auf Änderungen des Kommunikationsstatus bei der lokalen Konfiguration erfolgt ist.
+	 */
 	private void ensureSubscribedState() {
 		try {
 			if(_subscriptionState == NOT_SUBSCRIBED) {
 				int communicationState = ((DafDataModel)_object.getDataModel()).getRequester().subscribeConfigurationCommunicationChanges(_object);
 				switch(communicationState) {
-					case -2:
+					case -2: // Objekt weder lokal noch remote gefunden
 						_subscriptionState = MANAGED_IN_UNKNOWN_CONFIGURATION;
 						_configurationCommunicationActive = false;
 						break;
-					case -1:
+					case -1: // Menge wird lokal verwaltet
 						_subscriptionState = MANAGED_IN_LOCAL_CONFIGURATION;
 						_configurationCommunicationActive = true;
 						break;
-					case 0:
+					case 0: // Menge wird remote verwaltet und Kommunikation zwischen lokaler und Remote-Konfiguration funktioniert nicht
 						_subscriptionState = SUBSCRIBED;
 						_configurationCommunicationActive = false;
 						break;
-					case 1:
+					case 1: // Menge wird remote verwaltet und Kommunikation zwischen lokaler und Remote-Konfiguration funktioniert
 						_subscriptionState = SUBSCRIBED;
 						_configurationCommunicationActive = true;
 						break;

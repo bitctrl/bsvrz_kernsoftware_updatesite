@@ -39,7 +39,7 @@ import static de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentificatio
  * Implementierung des Interfaces {@link de.bsvrz.dav.daf.main.config.NonMutableSet} für nicht veränderbare Mengen auf Seiten der Konfiguration.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 11583 $ / $Date: 2013-08-22 15:59:25 +0200 (Do, 22 Aug 2013) $ / ($Author: jh $)
+ * @version $Revision: 13068 $ / $Date: 2015-01-09 13:34:54 +0100 (Fri, 09 Jan 2015) $ / ($Author: jh $)
  */
 public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSet {
 
@@ -73,7 +73,9 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 				// (d.h. wird erst in einer nachfolgenden Version aus der Menge entfernt bzw. wurde noch nie entfernt und soll auch noch nicht entfernt werden.)
 				final long elementId = nonMutableElement.getElementId();
 				final SystemObject element = getDataModel().getObject(elementId);
-				elements.add(element);
+				if(element != null) {
+					elements.add(element);
+				}
 			}
 		}
 		// alle Elemente, die in der nächsten Version gültig sind werden zurückgegeben
@@ -87,7 +89,9 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 			if(nonMutableElement.getFromVersion() <= fromVersion && (nonMutableElement.getToVersion() > toVersion || nonMutableElement.getToVersion() == 0)) {
 				final long elementId = nonMutableElement.getElementId();
 				final SystemObject element = getDataModel().getObject(elementId);
-				elements.add(element);
+				if(element != null) {
+					elements.add(element);
+				}
 			}
 		}
 		return Collections.unmodifiableList(elements);
@@ -100,7 +104,9 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 			if(nonMutableElement.getFromVersion() <= toVersion && (nonMutableElement.getToVersion() > fromVersion || nonMutableElement.getToVersion() == 0)) {
 				final long elementId = nonMutableElement.getElementId();
 				final SystemObject element = getDataModel().getObject(elementId);
-				elements.add(element);
+				if(element != null) {
+					elements.add(element);
+				}
 			}
 		}
 		return Collections.unmodifiableList(elements);
@@ -113,21 +119,21 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 
 	public List<SystemObject> getElements(long time) {
 		// ermitteln, welche Version dieses Konfigurationsbereichs zum angegebenen Zeitpunkt gültig ist
-		short version = ((ConfigConfigurationArea)getConfigurationArea()).getVersionAtAssignedTime(time);
+		short version = getConfigurationArea().getVersionAtAssignedTime(time);
 		return Collections.unmodifiableList(getElementsInVersion(version));
 	}
 
 	public List<SystemObject> getElementsInPeriod(long startTime, long endTime) {
 		// Versionsnummern ermitteln
-		short fromVersion = ((ConfigConfigurationArea)getConfigurationArea()).getVersionAtAssignedTime(startTime);
-		short toVersion = ((ConfigConfigurationArea)getConfigurationArea()).getVersionAtAssignedTime(endTime);
+		short fromVersion = getConfigurationArea().getVersionAtAssignedTime(startTime);
+		short toVersion = getConfigurationArea().getVersionAtAssignedTime(endTime);
 		// Elemente ermitteln und zurückgeben
 		return Collections.unmodifiableList(getElementsInAnyVersions(fromVersion, toVersion));
 	}
 
 	public List<SystemObject> getElementsDuringPeriod(long startTime, long endTime) {
-		short fromVersion = ((ConfigConfigurationArea)getConfigurationArea()).getVersionAtAssignedTime(startTime);
-		short toVersion = ((ConfigConfigurationArea)getConfigurationArea()).getVersionAtAssignedTime(endTime);
+		short fromVersion = getConfigurationArea().getVersionAtAssignedTime(startTime);
+		short toVersion = getConfigurationArea().getVersionAtAssignedTime(endTime);
 		// Elemente ermitteln und zurückgeben
 		return Collections.unmodifiableList(getElementsInAllVersions(fromVersion, toVersion));
 	}
@@ -318,7 +324,7 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 				}
 			}
 			_systemObjectInfo.setConfigurationData(CONFIGURATION_ELEMENTS_IN_NON_MUTABLE_SET, out.toByteArray());
-			((ConfigConfigurationArea)getConfigurationArea()).setTimeOfLastChanges(ConfigConfigurationArea.KindOfLastChange.ConfigurationData);
+			getConfigurationArea().setTimeOfLastChanges(ConfigConfigurationArea.KindOfLastChange.ConfigurationData);
 			out.close();
 		}
 		catch(Exception ex) {
@@ -360,7 +366,7 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 				}
 			}
 			_systemObjectInfo.setConfigurationData(CONFIGURATION_ELEMENTS_IN_NON_MUTABLE_SET, out.toByteArray());
-			((ConfigConfigurationArea)getConfigurationArea()).setTimeOfLastChanges(ConfigConfigurationArea.KindOfLastChange.ConfigurationData);
+			getConfigurationArea().setTimeOfLastChanges(ConfigConfigurationArea.KindOfLastChange.ConfigurationData);
 			out.close();
 		}
 		catch(Exception ex) {

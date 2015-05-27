@@ -31,7 +31,7 @@ import java.io.IOException;
  * Diese Klasse stellt die Attribute und Funktionalitäten des Datentyps SendDataObject zur Verfügung.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5049 $
+ * @version $Revision: 13173 $
  */
 public class SendDataObject {
 
@@ -53,7 +53,7 @@ public class SendDataObject {
 	 */
 	private byte _errorFlag;
 
-	/** Der Indikator zu der Änderungen der einzelnen Attributen der Attributegruppe */
+	/** Der Indikator zu Änderungen der einzelnen Attribute der Attributgruppe */
 	private byte _attributesIndicator[] = null;
 
 	/** Der zu sendende Bytestrom */
@@ -138,7 +138,7 @@ public class SendDataObject {
 	}
 
 	/**
-	 * Gibt der Indikator zu den einzelnen Attributen der Attributegruppe zurück.
+	 * Gibt den Indikator zu den einzelnen Attributen der Attributgruppe zurück.
 	 *
 	 * @return Indikator der Attributgruppe
 	 */

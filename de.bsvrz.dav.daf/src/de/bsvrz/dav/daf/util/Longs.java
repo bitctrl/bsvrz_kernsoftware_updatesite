@@ -26,6 +26,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Hilfsklasse zur Unwandlong von Long-Arrays in Long-Collections und umgekehrt.
+ *
  * @author Kappich Systemberatung
  * @version $Revision: 0000 $
  */

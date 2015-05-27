@@ -2,20 +2,20 @@
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
  * 
- * This file is part of de.bsvrz.sys.funclib.dataSerializer.
+ * This file is part of de.bsvrz.dav.daf.
  * 
- * de.bsvrz.sys.funclib.dataSerializer is free software; you can redistribute it and/or modify
+ * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation; either version 2.1 of the License, or
  * (at your option) any later version.
  * 
- * de.bsvrz.sys.funclib.dataSerializer is distributed in the hope that it will be useful,
+ * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.dataSerializer; if not, write to the Free Software
+ * along with de.bsvrz.dav.daf; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
@@ -39,7 +39,7 @@ import java.io.InputStream;
  * zugänglich. Ein Objekt dieser Klasse kann mit der Methode {@link SerializingFactory#createDeserializer}
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11583 $
+ * @version $Revision: 13141 $
  */
 final class DeserializerImplementationA implements Deserializer {
 	/** DebugLogger für Debug-Ausgaben */
@@ -348,9 +348,10 @@ final class DeserializerImplementationA implements Deserializer {
 		} else {
 			length = readUnsignedByte();
 		}
+		if(length == 0) return "";
 		final byte[] bytes = new byte[length];
 		if (length > 0) {
-			if (_inputStream.read(bytes) < length) throw new EOFException("Ende des Streams mitten im erwarteten String");
+			readBytes(bytes, 0, length);
 		}
 		return new String(bytes, "ISO-8859-1");
 	}
@@ -444,9 +445,7 @@ final class DeserializerImplementationA implements Deserializer {
 	 */
 	public byte[] readBytes(int length) throws IOException {
 		byte[] bytes = new byte[length];
-		if (length > 0) {
-			if (_inputStream.read(bytes) < length) throw new EOFException("Ende des Streams mitten im erwarteten Byte-Array");
-		}
+		readBytes(bytes, 0, length);
 		return bytes;
 	}
 
@@ -461,7 +460,15 @@ final class DeserializerImplementationA implements Deserializer {
 	 * @throws java.io.IOException Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 */
 	public void readBytes(byte[] buffer, int offset, int length) throws IOException {
-		int numberOfBytesRead = _inputStream.read(buffer, offset, length);
-		if(numberOfBytesRead < length) throw new EOFException("Ende des Streams mitten im erwarteten Byte-Array");
+		if (length > 0) {
+			int read;
+			while(true) {
+				read = _inputStream.read(buffer, offset, length);
+				if(read == -1) throw new EOFException("Ende des Streams mitten im erwarteten Byte-Array");
+				length -= read;
+				offset += read;
+				if(length == 0) return;
+			}
+		}
 	}
 }

@@ -30,7 +30,7 @@ import de.bsvrz.dav.daf.main.Data;
  * zur Verfügung.
  *
  * @author Achim Wullenkord (AW), Kappich Systemberatung
- * @version $Revision: 5055 $ / $Date: 2007-09-01 11:31:09 +0200 (Sa, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 5055 $ / $Date: 2007-09-01 11:31:09 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
  */
 public interface UndefinedAttributeValueAccess {
 	/**

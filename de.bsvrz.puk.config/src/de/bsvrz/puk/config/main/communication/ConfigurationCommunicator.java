@@ -21,15 +21,14 @@
 
 package de.bsvrz.puk.config.main.communication;
 
-import de.bsvrz.dav.daf.main.ClientDavConnection;
-import de.bsvrz.dav.daf.main.ClientDavInterface;
-import de.bsvrz.dav.daf.main.ClientDavParameters;
-import de.bsvrz.dav.daf.main.CommunicationError;
-import de.bsvrz.dav.daf.main.ConnectionException;
-import de.bsvrz.dav.daf.main.InconsistentLoginException;
-import de.bsvrz.dav.daf.main.MissingParameterException;
-import de.bsvrz.dav.daf.main.config.ConfigurationAuthority;
-import de.bsvrz.dav.daf.main.config.DataModel;
+import de.bsvrz.dav.daf.main.*;
+import de.bsvrz.dav.daf.main.config.*;
+import de.bsvrz.dav.daf.util.cron.CronDefinition;
+import de.bsvrz.dav.daf.util.cron.CronScheduler;
+import de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel;
+import de.bsvrz.puk.config.configFile.datamodel.MaintenanceSpec;
+import de.bsvrz.puk.config.configFile.datamodel.TimeBasedMaintenanceSpec;
+import de.bsvrz.puk.config.configFile.fileaccess.ConfigurationAreaFile;
 import de.bsvrz.puk.config.main.authentication.Authentication;
 import de.bsvrz.puk.config.main.authentication.ConfigAuthentication;
 import de.bsvrz.puk.config.main.communication.query.ConfigurationQueryManager;
@@ -39,6 +38,9 @@ import de.bsvrz.sys.funclib.debug.Debug;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ScheduledFuture;
 
 /**
  * Diese Klasse übernimmt den gesamten Datenverkehr der Konfiguration. Dies beinhaltet den Empfang von Aufträgen an die Konfiguration bis hin zum versand der
@@ -55,7 +57,7 @@ public class ConfigurationCommunicator {
 	/** DebugLogger für Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
-	private final DataModel _dataModel;
+	private final ConfigDataModel _dataModel;
 
 	private final Authentication _authentication;
 
@@ -63,9 +65,14 @@ public class ConfigurationCommunicator {
 
 	private final ConfigurationQueryManager _configurationQueryManager;
 
+	private final CronScheduler _cronScheduler = new CronScheduler(1);
+
+	private ScheduledFuture<?> _restructureTask = null;
+	private ScheduledFuture<?> _maintenanceTask = null;
+
 	public ConfigurationCommunicator(
 			AsyncRequestQueue asyncRequestQueue,
-			DataModel dataModel,
+			ConfigDataModel dataModel,
 			File userManagementFile,
 			ClientDavParameters dafParameters,
 			final File foreignObjectCacheFile)
@@ -118,11 +125,77 @@ public class ConfigurationCommunicator {
 			_configurationQueryManager = new ConfigurationQueryManager(connection, _dataModel, null, _authentication, foreignObjectCacheFile);
 			_requesterCommunicator.setForeignObjectManager(_configurationQueryManager.getForeignObjectManager());
 			_configurationQueryManager.start();
+
+			_dataModel.setSimulationHandler(_configurationQueryManager);
+			_requesterCommunicator.setSimulationHandler(_configurationQueryManager);
+
+			startCronTasks(connection);
 		}
 		catch(RuntimeException e) {
 			// Im Fehlerfall wird die Lockdatei für die Benutzerverwaltungen wieder freigegeben
 			_authentication.close();
 			throw e;
+		}
+	}
+
+	private void startCronTasks(final ClientDavInterface connection) {
+		ConfigurationAuthority kv = _dataModel.getConfigurationAuthority();
+		AttributeGroup parameterAtg = _dataModel.getAttributeGroup("atg.parameterEndgültigesLöschen");
+		if(parameterAtg == null){
+			scheduleRestructure(new CronDefinition("0 2 * * Montag"));
+		}
+		else {
+			DataDescription dataDescription = new DataDescription(parameterAtg, _dataModel.getAspect("asp.parameterSoll"));
+			try {
+				connection.subscribeReceiver(new ParamReceiver(), kv, dataDescription, ReceiveOptions.normal(), ReceiverRole.receiver());
+			}
+			catch(Exception e){
+				_debug.warning("Kann Löschparameter nicht abrufen", e);
+			}
+		}
+	}
+
+	/** Plant einen periodischen Restrukturierungsauftrag */
+	private void scheduleRestructure(final CronDefinition cronDefinition) {
+		if(_restructureTask != null){
+			_restructureTask.cancel(false);
+			_restructureTask = null;
+		}
+
+		if(cronDefinition != null) {
+
+			_debug.info("Geplante Restrukturierung: " + cronDefinition);
+
+			_restructureTask = _cronScheduler.schedule(
+					new Runnable() {
+						@Override
+						public void run() {
+							_dataModel.restructure(ConfigurationAreaFile.RestructureMode.DynamicObjectRestructure);
+						}
+					}, cronDefinition
+			);
+		}
+	}
+
+	/** Plant einen periodischen Auftrag für das (Vormerken zum) Löschen von historischen dynamischen Objekten und Mengenreferenzen */
+	private void scheduleMaintenance(final CronDefinition cronDefinition, final MaintenanceSpec spec) {
+		if(_maintenanceTask != null){
+			_maintenanceTask.cancel(false);
+			_maintenanceTask = null;
+		}
+
+		if(cronDefinition != null) {
+
+			_debug.info("Geplantes Löschen: " + cronDefinition);
+
+			_maintenanceTask = _cronScheduler.schedule(
+					new Runnable() {
+						@Override
+						public void run() {
+							_dataModel.doMaintenance(spec);
+						}
+					}, cronDefinition
+			);
 		}
 	}
 
@@ -144,5 +217,67 @@ public class ConfigurationCommunicator {
 
 	public ForeignObjectManager getForeignObjectManager() {
 		return _configurationQueryManager.getForeignObjectManager();
+	}
+
+	private class ParamReceiver implements ClientReceiverInterface {
+
+		@Override
+		public void update(final ResultData[] results) {
+			TimeBasedMaintenanceSpec spec = null;
+			CronDefinition restructureTime = null;
+			CronDefinition deleteTime = null;
+			for(ResultData result : results) {
+				if(result.hasData()) {
+					Data data = result.getData();
+					try{
+						restructureTime = new CronDefinition(data.getTextValue("IntervallRestrukturierung").getValueText());
+					}
+					catch(IllegalArgumentException e){
+						_debug.warning("Ungültiger Parameter IntervallRestrukturierung", e);
+					}
+					try{
+						deleteTime = new CronDefinition(data.getTextValue("IntervallLöschen").getValueText());
+					}
+					catch(IllegalArgumentException e){
+						_debug.warning("Ungültiger Parameter IntervallLöschen", e);
+					}
+					final Map<DynamicObjectType, Long> objectKeepTimes = new HashMap<DynamicObjectType, Long>();
+					final Map<ObjectSetType, Long> setKeepTimes = new HashMap<ObjectSetType, Long>();
+					Long defaultSetKeepTime = null;
+					Data dynObj = data.getItem("DynamischeObjekte");
+					for(Data objData : dynObj) {
+						SystemObject type = objData.getReferenceValue("Objekttyp").getSystemObject();
+						long time = objData.getTimeValue("Vorhaltezeitraum").getMillis();
+						if(type instanceof DynamicObjectType && time >= 0) {
+							DynamicObjectType dynamicObjectType = (DynamicObjectType) type;
+							objectKeepTimes.put(dynamicObjectType, time);
+						}
+					}
+					Data sets = data.getItem("DynamischeMengen");
+					for(Data setData : sets) {
+						SystemObject type = setData.getReferenceValue("Mengentyp").getSystemObject();
+						long time = setData.getTimeValue("Vorhaltezeitraum").getMillis();
+						if(type instanceof ObjectSetType && time >= 0) {
+							ObjectSetType objectSetType = (ObjectSetType) type;
+							if(objectSetType.isMutable()) {
+								setKeepTimes.put(objectSetType, time);
+							}
+						}
+					}
+					Data setDefault = data.getItem("DynamischeMengenStandard");
+					for(Data setData : setDefault) {
+						defaultSetKeepTime = setData.asTimeValue().getMillis();
+					}
+					spec = new TimeBasedMaintenanceSpec(
+							_dataModel,
+					        objectKeepTimes,
+					        setKeepTimes,
+					        defaultSetKeepTime
+					);
+				}
+				scheduleRestructure(restructureTime);
+				scheduleMaintenance(deleteTime, spec);
+			}
+		}
 	}
 }

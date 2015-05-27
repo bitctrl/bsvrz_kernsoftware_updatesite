@@ -21,16 +21,17 @@
 
 package de.bsvrz.puk.config.configFile.datamodel;
 
-import de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformationInterface;
 import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.config.ConfigurationArea;
 import de.bsvrz.dav.daf.main.config.ConfigurationAuthority;
+import de.bsvrz.dav.daf.main.config.SystemObject;
+import de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformationInterface;
 
 /**
  * Implementierung des Interfaces {@link ConfigurationAuthority} auf Seiten der Konfiguration.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 5074 $ / $Date: 2007-09-02 14:19:12 +0200 (So, 02 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 13141 $ / $Date: 2015-02-04 10:06:20 +0100 (Wed, 04 Feb 2015) $ / ($Author: jh $)
  */
 public class ConfigConfigurationAuthority extends ConfigConfigurationObject implements ConfigurationAuthority {
 
@@ -52,5 +53,22 @@ public class ConfigConfigurationAuthority extends ConfigConfigurationObject impl
 		else {
 			throw new IllegalStateException("Die Kodierung des Konfigurationsbereichs " + getNameOrPidOrId() + " konnte nicht ermittelt werden.");
 		}
+	}
+
+	@Override
+	public ConfigurationArea getDefaultConfigurationArea(){
+		final Data data = getConfigurationData(getDataModel().getAttributeGroup("atg.konfigurationsVerantwortlicherEigenschaften"));
+		Data.TextArray defaultConfigAreaArray = data.getTextArray(
+				"defaultBereich"
+		);
+		if(defaultConfigAreaArray.getLength() != 1) {
+			return null;
+		}
+		final String defaultConfigAreaPid = defaultConfigAreaArray.getTextValue(0).getValueText();
+		SystemObject object = getDataModel().getObject(defaultConfigAreaPid);
+		if(object instanceof ConfigurationArea) {
+			return (ConfigurationArea) object;
+		}
+		return null;
 	}
 }

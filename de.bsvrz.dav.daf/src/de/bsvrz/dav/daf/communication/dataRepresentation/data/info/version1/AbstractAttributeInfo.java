@@ -32,7 +32,7 @@ import de.bsvrz.dav.daf.main.config.ConfigurationException;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 11527 $ / $Date: 2013-08-06 16:29:25 +0200 (Di, 06 Aug 2013) $ / ($Author: jh $)
+ * @version $Revision: 11527 $ / $Date: 2013-08-06 16:29:25 +0200 (Tue, 06 Aug 2013) $ / ($Author: jh $)
  */
 public abstract class AbstractAttributeInfo implements AttributeInfo {
 	private final Attribute _attribute;

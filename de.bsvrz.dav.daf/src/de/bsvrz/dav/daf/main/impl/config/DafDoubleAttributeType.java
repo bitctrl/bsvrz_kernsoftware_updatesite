@@ -23,6 +23,7 @@ package de.bsvrz.dav.daf.main.impl.config;
 
 import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.DataValue;
 import de.bsvrz.dav.daf.main.config.DoubleAttributeType;
+import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -32,7 +33,7 @@ import java.io.IOException;
  * Klasse, die den Zugriff auf Fließkomma-Attributtypen seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5054 $
+ * @version $Revision: 13141 $
  */
 public class DafDoubleAttributeType extends DafAttributeType implements DoubleAttributeType {
 
@@ -115,5 +116,12 @@ public class DafDoubleAttributeType extends DafAttributeType implements DoubleAt
 		super.read(in);
 		_dataValueType = in.readByte();
 		_unit = in.readUTF();
+	}
+
+	@Override
+	public void read(final Deserializer deserializer) throws IOException {
+		super.read(deserializer);
+		_dataValueType = deserializer.readByte();
+		_unit = deserializer.readString();
 	}
 }

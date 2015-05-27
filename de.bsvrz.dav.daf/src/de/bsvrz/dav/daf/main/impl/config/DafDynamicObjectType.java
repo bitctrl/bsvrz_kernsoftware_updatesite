@@ -24,18 +24,20 @@ package de.bsvrz.dav.daf.main.impl.config;
 
 import de.bsvrz.dav.daf.main.ClientDavConnection;
 import de.bsvrz.dav.daf.main.ClientDavInterface;
-import de.bsvrz.dav.daf.main.ClientDavParameters;
 import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.config.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
  * Klasse, die den Zugriff auf Typen von dynamischen Objekten seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11921 $
+ * @version $Revision: 13141 $
  */
 public class DafDynamicObjectType extends DafSystemObjectType implements DynamicObjectType {
 
@@ -58,6 +60,11 @@ public class DafDynamicObjectType extends DafSystemObjectType implements Dynamic
 	public DafDynamicObjectType(DafDataModel dataModel) {
 		super(dataModel);
 		_internType = DYNAMIC_OBJECT_TYPE;
+	}
+
+	@Override
+	public boolean isConfigurating() {
+		return false;
 	}
 
 	/** Erzeugt ein neues Objekt mit den angegebenen Eigenschaften */
@@ -87,7 +94,6 @@ public class DafDynamicObjectType extends DafSystemObjectType implements Dynamic
 				validToVersionNumber,
 				responsibleObjectId,
 				setIds,
-				false,
 				hasPermanentName
 		);
 		_internType = DYNAMIC_OBJECT_TYPE;
@@ -180,7 +186,9 @@ public class DafDynamicObjectType extends DafSystemObjectType implements Dynamic
 				// Es müssen Listener informiert werden. Das Objekt muss vollständig angefordert werden.
 				// Das Objekt anfordern
 				final DafDynamicObject newDynamicObject = (DafDynamicObject)_dataModel.getObject(objectId);
-				informCreateListener(newDynamicObject);
+				if(newDynamicObject != null) {
+					informCreateListener(newDynamicObject);
+				}
 			}
 		}
 	}
@@ -406,7 +414,7 @@ public class DafDynamicObjectType extends DafSystemObjectType implements Dynamic
 		_mutableCollectionSupport.collectionChanged(simVariant, addedElements, removedElements);
 	}
 
-	public List getElements() {
+	public List<SystemObject> getElements() {
 		DataModel dataModel = getDataModel();
 		if (dataModel instanceof DafDataModel) {
 			DafDataModel model = (DafDataModel) dataModel;
@@ -414,13 +422,21 @@ public class DafDynamicObjectType extends DafSystemObjectType implements Dynamic
 			if (connection instanceof ClientDavConnection) {
 				ClientDavConnection clientDavConnection = (ClientDavConnection) connection;
 				short simulationVariant = clientDavConnection.getClientDavParameters().getSimulationVariant();
-				return getElements(simulationVariant);
+				List<SystemObject> elements = getElements(simulationVariant);
+				for(SystemObject element : elements) {
+					// Systemobjekte cachen falls erforderlich
+					if(element instanceof DafSystemObject) {
+						DafSystemObject dafSystemObject = (DafSystemObject) element;
+						model.updateInternalDataStructure(dafSystemObject, true);
+					}
+				}
+				return elements;
 			}
 		}
 		return super.getElements();
 	}
 
-	public List getObjects() {
+	public List<SystemObject> getObjects() {
 		return getElements();
 	}
 

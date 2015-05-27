@@ -33,7 +33,7 @@ import java.util.Map;
  * Eine CellKeyColumn steht für eine Spalte eines CellKeys. 
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 8084 $
+ * @version $Revision: 13173 $
  * 
  */
 public class CellKeyColumn {
@@ -86,10 +86,10 @@ public class CellKeyColumn {
 	}
 	
 	/**
-	 * Gibt die Spaltenliste der Attributegruppe zurück, und zwar mit oder ohne die
+	 * Gibt die Spaltenliste der Attributgruppe zurück, und zwar mit oder ohne die
 	 * übergeordneten Spalten, die die Listen definieren.
 	 * 
-	 * @param attributeGroup die Attributegruppe
+	 * @param attributeGroup die Attributgruppe
 	 * @param withColumnsForArrayListDefinitions mit oder ohne übergeordneten Spalten
 	 * @return die Spaltenliste mit Namen
 	 */
@@ -118,7 +118,7 @@ public class CellKeyColumn {
 	 * der Wert in der entsprechenden Liste mit oder ohne Spalten für Listen-Definitione
 	 * ist. Wird kein Index gefunden, gibt die Methode <code>null</code> zurück.
 	 * 
-	 * @param attributeGroup die Attributegruppe
+	 * @param attributeGroup die Attributgruppe
 	 * @param withColumnsForArrayListDefinitions mit oder ohne übergeordneten Spalten
 	 * @return ein Index oder <code>null</code>
 	 */

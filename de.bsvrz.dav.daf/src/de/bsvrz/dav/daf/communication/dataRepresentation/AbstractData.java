@@ -23,25 +23,20 @@
 package de.bsvrz.dav.daf.communication.dataRepresentation;
 
 import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.IntegerValueState;
-import de.bsvrz.dav.daf.main.config.ObjectLookup;
-import de.bsvrz.dav.daf.main.config.SystemObject;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.sys.funclib.debug.Debug;
 
-import java.text.DateFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.text.*;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Diese abstrakte Klasse stellt eine Oberklasse von Datentypen dar. Es werden die Methoden des Interfaces <code>data</code> erstmalig implementiert. Je nach
  * Bedarf werden diese wieder in den Subklassen überschrieben.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8326 $
+ * @version $Revision: 13226 $
  */
 public abstract class AbstractData implements Data {
 
@@ -569,6 +564,23 @@ public abstract class AbstractData implements Data {
 			}
 			catch(Exception e) {
 				throw new RuntimeException(e);
+			}
+		}
+		
+		public void checkObject(SystemObject object, Attribute attribute){
+			if(object == null) return;
+			if(attribute == null) return;
+			AttributeType attributeType = attribute.getAttributeType();
+			if(attributeType instanceof ReferenceAttributeType) {
+				ReferenceAttributeType referenceAttributeType = (ReferenceAttributeType) attributeType;
+				SystemObjectType referencedObjectType = referenceAttributeType.getReferencedObjectType();
+				if(referencedObjectType == null) {
+					// Es können beliebige Objekte referenziert werden
+					return;
+				}
+				if(!object.isOfType(referencedObjectType)){
+					throw new IllegalArgumentException("Objekt " + object + " soll am Attribut " + attribute + " gespeichert werden, aber der Attributtyp erlaubt nur Objekte vom Typ " + referencedObjectType.getPidOrNameOrId());
+				}
 			}
 		}
 

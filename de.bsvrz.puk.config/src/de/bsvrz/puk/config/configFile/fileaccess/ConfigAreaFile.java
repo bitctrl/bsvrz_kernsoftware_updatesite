@@ -26,8 +26,8 @@ package de.bsvrz.puk.config.configFile.fileaccess;
 
 import de.bsvrz.dav.daf.main.config.DynamicObjectType;
 import de.bsvrz.dav.daf.main.config.TimeSpecificationType;
+import de.bsvrz.dav.daf.util.BufferedRandomAccessFile;
 import de.bsvrz.puk.config.main.managementfile.VersionInfo;
-import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 import de.bsvrz.sys.funclib.dataSerializer.NoSuchVersionException;
 import de.bsvrz.sys.funclib.dataSerializer.Serializer;
 import de.bsvrz.sys.funclib.dataSerializer.SerializingFactory;
@@ -45,19 +45,18 @@ import java.util.zip.InflaterOutputStream;
  * Diese Klasse stellt eine Konfigurationsbereichsdatei dar und speichert alle Objekte des Bereichs mit Historie.
  *
  * @author Achim Wullenkord (AW), Kappich Systemberatung
- * @version $Revision: 11501 $ / $Date: 2013-08-02 12:41:53 +0200 (Fr, 02 Aug 2013) $ / ($Author: jh $)
+ * @version $Revision: 13217 $ / $Date: 2015-03-03 11:11:03 +0100 (Tue, 03 Mar 2015) $ / ($Author: jh $)
  */
-public class ConfigAreaFile implements ConfigurationAreaFile {
+public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 	/** DebugLogger für Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
-
 
 	/** Wo befindet sich die Datei */
 	private final File _configAreaFile;
 
 	/** aktive Version, diese wird durch einen Neustart der Konfiguration gesetzt (durch den Konstruktor) */
-	private final short _activeVersion;
+	private short _activeVersion;
 
 	/** aktive Version, die aus der Datei gelesen wurde. */
 	private short _activeVersionFile = -1;  
@@ -181,7 +180,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 	 * <p/>
 	 * WARNUNG: Beim Zugriff mit .get() muss der Key auf long gecastet werden (.get((long) XXX)) !!!
 	 */
-	private final Map<Long, OldObjectIdReference> _oldObjectsId = new HashMap<Long, OldObjectIdReference>();
+	private final Map<Long, ObjectReference> _oldObjectsId = new HashMap<Long, ObjectReference>();
 
 	/**
 	 * Speichert zu einer Pid (Key = HashCode Integer), alle Dateipositionen der alten Objekte, die sich in der Mischmenge befinden. Bei einer Reorganisation
@@ -189,7 +188,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 	 * <p/>
 	 * WARNUNG: Beim Zugriff mit .get() muss der Key auf integer gecastet werden (.get((integer) XXX)) !!!
 	 */
-	private final Map<Integer, Set<Long>> _oldObjectsPid = new HashMap<Integer, Set<Long>>();
+	private final Map<Integer, Set<FilePointer>> _oldObjectsPid = new HashMap<Integer, Set<FilePointer>>();
 
 	/**
 	 * Alle Änderungen an einem dynamischen Objekt oder an einem Konfigurationsobjekt, die den Zustand von "gültig" auf "ungültig" setzen oder ein Objekt
@@ -237,13 +236,13 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 	private long _greatestId = 0;
 
 	/**
-	 * Speichert zu allen TypeId´s die aktuellen Objekte. Als Schlüssel dient die TypeId, als Value wird eine Liste mit allen Objekten zurückgegeben, die aktuell
+	 * Speichert zu allen TypeId's die aktuellen Objekte. Als Schlüssel dient die TypeId, als Value wird eine Liste mit allen Objekten zurückgegeben, die aktuell
 	 * sind und deren TypeId mit dem Schlüssel übereinstimmt.
 	 */
 	private final Map<Long, List<SystemObjectInformationInterface>> _actualObjectsTypeId = new HashMap<Long, List<SystemObjectInformationInterface>>();
 
 	/**
-	 * Speichert zu allen TypeId´s die alten Objekte. Als Schlüssel dient die TypeId, als Value wird eine Liste mit allen Objekten zurückgegeben. Die Objekte
+	 * Speichert zu allen TypeId's die alten Objekte. Als Schlüssel dient die TypeId, als Value wird eine Liste mit allen Objekten zurückgegeben. Die Objekte
 	 * beinhalten ob das Objekt dynamisch oder konfigurierend ist und die Version bzw. Zeitpunkt an dem das Objekt gültig geworden ist. Als letztes ein Objekte,
 	 * mit dem das Objekt wieder rekonstruiert werden kann.
 	 */
@@ -255,6 +254,21 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 	 * zugreifen, ihn auch benutzen.
 	 */
 	private final FileLock _areaFileLock;
+
+	/**
+	 * Objekte, die im ersten Durchlauf als löschbar markiert wurden. Weitere Referenzen auf diese Objekte sind nicht erlaubt.
+	 * Es ist allerdings möglich (wenn auch Unwahrscheinlich), dass Objekte zwischen ermittlung der nicht mehr
+	 * Referenzierbaren Objekte und dem Eintragen in dieses Set plötzlich wieder referenziert wurden.
+	 * Daher dürfen diese Objekte nicht endgültig gelöscht werden.
+	 * Ist das Objekt auch im zweiten Durchlauf als löschbar markiert, wird es in _objectsPendingDeletion kopiert.
+	 */
+	private final Set<Long> _objectsLockedForDeletion = new HashSet<Long>();
+
+	/**
+	 * Objekte, die zwei Durchläufe hintereinander als löschbar erkannt wurden. Alle Objekte in diesem Set
+	 * werden sicher nicht mehr referenziert und können endgültig gelöscht werden.
+	 */
+	private final Set<Long> _objectsPendingDeletion = new HashSet<Long>();
 
 	/**
 	 * Dieser Konstruktor wird benutzt, wenn eine Datei für einen Konfigurationsbereich bereits existiert.
@@ -274,45 +288,145 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		// Zugriff durch andere sperren
 		_areaFileLock.lock();
 
-		_debug.info("Laden der Konfigurationsdatei", configAreaFile);
+		try {
+			_debug.info("Laden der Konfigurationsdatei", configAreaFile);
 
-		for(Iterator<VersionInfo> iterator = localActivatedVersionTimes.iterator(); iterator.hasNext();) {
-			final VersionInfo versionInfo = iterator.next();
-			if(!_localVersionActivationTime.containsKey(versionInfo.getVersion())) {
-				_localVersionActivationTime.put(versionInfo.getVersion(), versionInfo.getActivationTime());
+			for(final VersionInfo versionInfo : localActivatedVersionTimes) {
+				if(!_localVersionActivationTime.containsKey(versionInfo.getVersion())) {
+					_localVersionActivationTime.put(versionInfo.getVersion(), versionInfo.getActivationTime());
+				}
+				else {
+					throw new IllegalStateException(
+							"Die übergebene Liste enthält zu einer Version zwei Zeitpunkte, zu denen die Version gültig wurde. Version: " + versionInfo
+									.getVersion()
+					);
+				}
 			}
-			else {
-				throw new IllegalStateException(
-						"Die übergebene Liste enthält zu einer Version zwei Zeitpunkte, zu denen die Version gültig wurde. Version: " + versionInfo.getVersion()
-				);
+			_localActivationTimes = getActivationTimeArray(_localVersionActivationTime);
+
+			// Header einlesen
+			synchronized(_configAreaFile) {
+				ConfigFileHeaderInfo configFileHeaderInfo = new ConfigFileHeaderInfo(_configAreaFile);
+
+				_activeVersionFile = configFileHeaderInfo.getActiveVersionFile();
+
+				if(_activeVersion == (short)-1){
+					_activeVersion = _activeVersionFile;
+				}
+
+				_oldObjectBlocks = configFileHeaderInfo.getOldObjectBlocks();
+				_configurationAuthorityVersionActivationTime = configFileHeaderInfo.getConfigurationAuthorityVersionActivationTime();
+				_globalActivationTimes = getActivationTimeArray(_configurationAuthorityVersionActivationTime);
+				_nextInvalidBlockVersion = configFileHeaderInfo.getNextInvalidBlockVersion();
+
+				_nextActiveVersionFile = configFileHeaderInfo.getNextActiveVersionFile();
+				_startOldDynamicObjects = configFileHeaderInfo.getStartOldDynamicObjects();
+				_startIdIndex = configFileHeaderInfo.getStartIdIndex();
+				_startPidHashCodeIndex = configFileHeaderInfo.getStartPidHashCodeIndex();
+				_startMixedSet = configFileHeaderInfo.getStartMixedSet();
+				_configurationAreaPid = configFileHeaderInfo.getConfigurationAreaPid();
+				_dynamicObjectChanged = configFileHeaderInfo.getDynamicObjectChanged();
+				_configurationObjectChanged = configFileHeaderInfo.getConfigurationObjectChanged();
+				_configurationDataChanged = configFileHeaderInfo.getConfigurationDataChanged();
+				_objectVersion = configFileHeaderInfo.getObjectVersion();
+				_serializerVersion = configFileHeaderInfo.getSerializerVersion();
+				_headerEnd = configFileHeaderInfo.getHeaderEnd();
 			}
 		}
-		_localActivationTimes = getActivationTimeArray(_localVersionActivationTime);
-
-		// Header einlesen
-		synchronized(_configAreaFile) {
-			ConfigFileHeaderInfo configFileHeaderInfo = new ConfigFileHeaderInfo(_configAreaFile);
-
-			_activeVersionFile = configFileHeaderInfo.getActiveVersionFile();
-
-			_oldObjectBlocks = configFileHeaderInfo.getOldObjectBlocks();
-			_configurationAuthorityVersionActivationTime = configFileHeaderInfo.getConfigurationAuthorityVersionActivationTime();
-			_globalActivationTimes = getActivationTimeArray(_configurationAuthorityVersionActivationTime);
-			_nextInvalidBlockVersion = configFileHeaderInfo.getNextInvalidBlockVersion();
-
-			_nextActiveVersionFile = configFileHeaderInfo.getNextActiveVersionFile();
-			_startOldDynamicObjects = configFileHeaderInfo.getStartOldDynamicObjects();
-			_startIdIndex = configFileHeaderInfo.getStartIdIndex();
-			_startPidHashCodeIndex = configFileHeaderInfo.getStartPidHashCodeIndex();
-			_startMixedSet = configFileHeaderInfo.getStartMixedSet();
-			_configurationAreaPid = configFileHeaderInfo.getConfigurationAreaPid();
-			_dynamicObjectChanged = configFileHeaderInfo.getDynamicObjectChanged();
-			_configurationObjectChanged = configFileHeaderInfo.getConfigurationObjectChanged();
-			_configurationDataChanged = configFileHeaderInfo.getConfigurationDataChanged();
-			_objectVersion = configFileHeaderInfo.getObjectVersion();
-			_serializerVersion = configFileHeaderInfo.getSerializerVersion();
-			_headerEnd = configFileHeaderInfo.getHeaderEnd();
+		catch(RuntimeException e) {
+			// Dateisperre wieder freigeben
+			_areaFileLock.unlock();
+			throw e;
 		}
+		catch(IOException e) {
+			// Dateisperre wieder freigeben
+			_areaFileLock.unlock();
+			throw e;
+		}
+
+		// Löschindex lesen und Objekte löschen, sofern vorhanden
+		_objectsLockedForDeletion.addAll(readIdIndex("0"));
+		_objectsPendingDeletion.addAll(readIdIndex("1"));
+	}
+
+	/**
+	 * Schreibt eine ID-Index-Datei, die die zum Löschen vorgemerkten IDs enthält.
+	 * Der Dateiaufbau ist wie folgt:
+	 * Int: Anzahl Einträge
+	 * Long[]: Einträge
+	 * Long: HashCode der Einträge zur Prüfung der Dateiintegrität
+	 * @param indexFileName Suffix oder Name des Index. Aktuell werden zwei Indizes verwendet, da Objekte im ersten Index
+	 *                      noch in ausnahmefällen Referenziert werden können
+	 * @return Liste mit gelesenen IDs
+	 * @throws IOException falls Dateinhalt nicht stimmt oder ein fehler beim Lesen auftrat
+	 */
+	private Collection<Long> readIdIndex(final String indexFileName) throws IOException {
+		File f = getIndexFileName(indexFileName);
+		if(!f.exists()){
+			// Wenn der Index fehlt ist das OK und kein Problem
+			return Collections.emptyList();
+		}
+		BufferedRandomAccessFile bufferedRandomAccessFile = new BufferedRandomAccessFile(f, "r");
+		try {
+			long hash = 17;
+			int count = bufferedRandomAccessFile.readInt();
+			ArrayList<Long> result = new ArrayList<Long>(count);
+			for(int i = 0; i < count; i++) {
+				long l = bufferedRandomAccessFile.readLong();
+				hash = hash * 31 + l;
+				result.add(l);
+			}
+			long expectedHash = bufferedRandomAccessFile.readLong();
+			if(expectedHash != hash) {
+				_debug.warning("Hashwert der Datei " + f + " stimmt nicht, Dateiinhalt wird verworfen");
+				return Collections.emptyList();
+			}
+			return result;
+		}
+		finally {
+			bufferedRandomAccessFile.close();
+		}
+	}
+
+	/**
+	 * Schreibt einen ID-Index analog zu {@link #readIdIndex(String)}.
+	 * @param indexFileName Indexname bzw. Suffix
+	 * @param values Zu Schreibende Long-Werte (IDs)
+	 * @throws IOException
+	 */
+	private void writeIdIndex(final String indexFileName, Collection<Long> values) throws IOException {
+		File f = getIndexFileName(indexFileName);
+		if(values.isEmpty()){
+			// Wenn keine Einträge zu schreiben sind, Datei einfach nicht anlegen/löschen
+			if(f.exists()){
+				if(!f.delete()){
+					_debug.error("Index kann nicht gelöscht werden", f);
+				}
+			}
+			return;
+		}
+		BufferedRandomAccessFile bufferedRandomAccessFile = new BufferedRandomAccessFile(f, "rw");
+		try {
+			long hash = 17;
+			bufferedRandomAccessFile.writeInt(values.size());
+			for(Long value : values) {
+				hash = hash * 31 + value;
+				bufferedRandomAccessFile.writeLong(value);
+			}
+			bufferedRandomAccessFile.writeLong(hash);
+		}
+		finally {
+			bufferedRandomAccessFile.close();
+		}
+	}
+
+	private File getIndexFileName(final String indexFileName) {
+		return new File(_configAreaFile.getParentFile(), "." + _configAreaFile.getName() + "." + indexFileName + ".index");
+	}
+
+	@Override
+	public String toString() {
+		return String.valueOf(_configAreaFile);
 	}
 
 	/**
@@ -333,8 +447,8 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		final long[] activationTimes = new long[maximumVersion + 1];
 		long time = 0;
 		for(int i = maximumVersion; i > 0; --i) {
-			final Long timeObject = activationTimeMap.get(new Short((short)i));
-			if(timeObject != null) time = timeObject.longValue();
+			final Long timeObject = activationTimeMap.get((short) i);
+			if(timeObject != null) time = timeObject;
 			activationTimes[i] = time;
 		}
 		activationTimes[0] = 0;
@@ -378,25 +492,39 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		// Zugriff durch andere sperren
 		_areaFileLock.lock();
 
-		// Es wird keine Zuordnung von aktiver Version und Zeitstempel, da bei diesem Konstruktor Version "0" aktiv ist.
+		try {
+			// Es wird keine Zuordnung von aktiver Version und Zeitstempel, da bei diesem Konstruktor Version "0" aktiv ist.
 
-		synchronized(_configAreaFile) {
-			final RandomAccessFile file = new RandomAccessFile(_configAreaFile, "rw");
+			synchronized(_configAreaFile) {
+				final BufferedRandomAccessFile file = new BufferedRandomAccessFile(_configAreaFile, "rw");
 
-			// finally mit close
-			try {
-				writeHeader(file);
+				// finally mit close
+				try {
+					writeHeader(this, file);
+				}
+				finally {
+					file.close();
+				}
 			}
-			finally {
-				file.close();
-			}
+		}
+		catch(RuntimeException e) {
+			// Dateisperre wieder freigeben
+			_areaFileLock.unlock();
+			throw e;
+		}
+		catch(IOException e) {
+			// Dateisperre wieder freigeben
+			_areaFileLock.unlock();
+			throw e;
 		}
 	}
 
+	@Override
 	public void setNextActiveVersion(short nextActiveVersion) {
 		_nextActiveVersion = nextActiveVersion;
 	}
 
+	@Override
 	public short getNextActiveVersion() {
 		return _nextActiveVersion;
 	}
@@ -406,16 +534,18 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 	 *
 	 * @return Objekt oder <code>null</code>, wenn der Bereich gerade erzeugt wurde.
 	 */
+	@Override
 	public ConfigurationObjectInfo getConfigurationAreaInfo() {
 		return _configAreaObject;
 	}
 
+	@Override
 	public void flush() throws IOException {
 		// Alle Zugriffe auf die Datei sperren
 
 		synchronized(_restructureLock) {
 			synchronized(_configAreaFile) {
-				final RandomAccessFile file = new RandomAccessFile(_configAreaFile, "rw");
+				final BufferedRandomAccessFile file = new BufferedRandomAccessFile(_configAreaFile, "rw");
 
 				// finally für close der Datei
 				try {
@@ -462,6 +592,12 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 				}
 			} // synch Restrukturierung
 		} // synch auf Datei
+
+		// Indexdateien fürs endgültoge Löschen schreiben
+		synchronized(_objectsPendingDeletion) {
+			writeIdIndex("0", _objectsLockedForDeletion);
+			writeIdIndex("1", _objectsPendingDeletion);
+		}
 	}
 
 	private volatile long _backupProgress;
@@ -515,6 +651,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		return _fileLength;
 	}
 
+	@Override
 	public void close() throws IOException {
 		try {
 			// Alle Puffer sichern
@@ -535,7 +672,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 	void writeDynamicObject(DynamicObjectInformation object) {
 		try {
 			synchronized(_configAreaFile) {
-				final RandomAccessFile file = new RandomAccessFile(_configAreaFile, "rw");
+				final BufferedRandomAccessFile file = new BufferedRandomAccessFile(_configAreaFile, "rw");
 				try {
 					writeDynamicObjectToFile(object, file, true, true);
 				}
@@ -551,6 +688,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		}
 	}
 
+	@Override
 	public DynamicObjectInfo createDynamicObject(
 			long objectID, long typeID, String pid, short simulationVariant, String name, DynamicObjectType.PersistenceMode persistenceMode
 	) {
@@ -564,7 +702,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		boolean savePersistence;
 
 		if(persistenceMode == DynamicObjectType.PersistenceMode.PERSISTENT_AND_INVALID_ON_RESTART
-		   || persistenceMode == DynamicObjectType.PersistenceMode.PERSISTENT_OBJECTS) {
+				|| persistenceMode == DynamicObjectType.PersistenceMode.PERSISTENT_OBJECTS) {
 			// Das dynamische Objekt muss persistent in einer Datei gespeichert werden
 			savePersistence = true;
 		}
@@ -584,11 +722,12 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		if(simulationVariant > 0) {
 			_fileManager.putSimulationObject(newDynamicObjectInformation);
 		}
-
-		_fileManager.newObjectCreated(newDynamicObjectInformation);
+		else {
+			_fileManager.newObjectCreated(newDynamicObjectInformation);
+		}
 
 		// Das Objekt konnte erzeugt werden, also gibt es vielleicht eine neue größte Id.
-		// (Wenn der Converter benutzt wird sind die Id´s nicht unbedingt streng monoton steigend, darum die Abfrage)
+		// (Wenn der Converter benutzt wird sind die Id's nicht unbedingt streng monoton steigend, darum die Abfrage)
 		if(getRunningNumber(objectID) > _greatestId) {
 			_greatestId = getRunningNumber(objectID);
 		}
@@ -596,6 +735,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		return newDynamicObjectInformation;
 	}
 
+	@Override
 	public ConfigurationObjectInfo createConfigurationObject(long objectID, long typeID, String pid, String name) {
 //		if (objectID < _greatestId) {
 //			throw new IllegalArgumentException("Die Id des Objekts ist kleiner als die größte Id des Konfigrationsbereichs, Id Konfigurationsbereich " + _greatestId + " Id des Objekts " + objectID + " Konfigurationsbereich " + _configAreaFile);
@@ -617,7 +757,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 			}
 
 			// Das Objekt konnte erzeugt werden, also gibt es vielleicht eine neue größte Id.
-			// (Wenn der Converter benutzt wird sind die Id´s nicht unbedingt streng monoton steigend, darum die Abfrage)
+			// (Wenn der Converter benutzt wird sind die Id's nicht unbedingt streng monoton steigend, darum die Abfrage)
 			if(getRunningNumber(objectID) > _greatestId) {
 				_greatestId = getRunningNumber(objectID);
 			}
@@ -639,13 +779,15 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		return (wholeNumber & 0xFFFFFFFFFFL);
 	}
 
+	@Override
 	public SystemObjectInformationInterface[] getCurrentObjects() {
 		synchronized(_actualObjects) {
 			Collection<SystemObjectInformationInterface> helper = _actualObjects.values();
-			return (SystemObjectInformationInterface[])helper.toArray(new SystemObjectInformationInterface[helper.size()]);
+			return helper.toArray(new SystemObjectInformationInterface[helper.size()]);
 		}
 	}
 
+	@Override
 	public SystemObjectInformationInterface[] getActualObjects(long typeId) {
 		synchronized(_actualObjectsTypeId) {
 			final List<SystemObjectInformationInterface> objectList = _actualObjectsTypeId.get(typeId);
@@ -659,6 +801,22 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		}
 	}
 
+	@Override
+	public SystemObjectInformationInterface[] getActualObjects(Collection<Long> typeIds) {
+		final Set<Long> typeIdsSet = new HashSet<Long>(typeIds); // Doppelte Typen entfernen
+		synchronized(_actualObjectsTypeId) {
+			final List<SystemObjectInformationInterface> result = new ArrayList<SystemObjectInformationInterface>();
+			for(Long typeId : typeIdsSet) {
+				final List<SystemObjectInformationInterface> objectList = _actualObjectsTypeId.get(typeId);
+				if(objectList != null){
+					result.addAll(objectList);
+				}
+			}
+			return result.toArray(new SystemObjectInformationInterface[result.size()]);
+		}
+	}
+
+	@Override
 	public SystemObjectInformationInterface[] getObjects(
 			long startTime, long endTime, ConfigurationAreaTime kindOfTime, TimeSpecificationType timeSpecificationType, Collection<Long> typeIds
 	) {
@@ -668,12 +826,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 			// Die Collection wird mit der "contains" Methode lineare Zeit O(n) benötigen.
 
 			// Speichert die geforderten TypeIds und ermöglicht den schnellen Zugriff mittels der TypeId
-			final Set<Long> typeIdsSet = new HashSet<Long>(typeIds.size());
-			// Set mit den Objekten der Collection laden
-			for(Iterator<Long> iterator = typeIds.iterator(); iterator.hasNext();) {
-				Long aLong = iterator.next();
-				typeIdsSet.add(aLong);
-			}
+			final Set<Long> typeIdsSet = new HashSet<Long>(typeIds);
 
 			// Speichert die Objekte, die zur Lösung gehören
 			final List<SystemObjectInformationInterface> results = new LinkedList<SystemObjectInformationInterface>();
@@ -694,18 +847,15 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 
 // *********************************************************************************************************************
 					// die aktuellen prüfen, ob diese vielleicht auch schon gültig waren
-					for(Iterator<Long> iterator = typeIdsSet.iterator(); iterator.hasNext();) {
-						final Long typeId = iterator.next();
-
+					for(final Long typeId : typeIdsSet) {
 						// Objekte anfordern, die die geforderte TypeId besitzen
 						final List<SystemObjectInformationInterface> objectsForTypeId = _actualObjectsTypeId.get(typeId);
 
 						if(objectsForTypeId != null) {
 
 							// Es gibt Objekte
-							for(Iterator<SystemObjectInformationInterface> iterator1 = objectsForTypeId.iterator(); iterator1.hasNext();) {
+							for(final SystemObjectInformationInterface systemObjectInfo : objectsForTypeId) {
 								// Objekt, das die gewünschte TypeId besitzt
-								final SystemObjectInformationInterface systemObjectInfo = iterator1.next();
 								//Prüfen, ob das Objekt zur Lösung gehört
 
 								if(objectValid(systemObjectInfo, startTime, endTime, kindOfTime, timeSpecificationType)) {
@@ -721,22 +871,20 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 // *********************************************************************************************************************
 					// Die alten Objekt der Mischmenge prüfen
 
-					// Map mit alten TypeId Objekten anfragen und alle Objekte nehmen, deren Version bzw. Zeit paßt (gültig ab)
-					for(Iterator<Long> iterator = typeIdsSet.iterator(); iterator.hasNext();) {
-						// betrachtete TypeId
-						final Long typeId = iterator.next();
+					BufferedRandomAccessFile file = new BufferedRandomAccessFile(_configAreaFile, "r");
 
+					// Map mit alten TypeId Objekten anfragen und alle Objekte nehmen, deren Version bzw. Zeit paßt (gültig ab)
+					for(final Long typeId : typeIdsSet) {
+						// betrachtete TypeId
 						final List<OldObjectTypeIdInfo> oldObjectsForTypeId = _oldObjectsTypeId.get(typeId);
 
 						if(oldObjectsForTypeId != null) {
-							for(Iterator<OldObjectTypeIdInfo> iterator1 = oldObjectsForTypeId.iterator(); iterator1.hasNext();) {
-								final OldObjectTypeIdInfo objectTypeIdInfo = iterator1.next();
-
+							for(final OldObjectTypeIdInfo objectTypeIdInfo : oldObjectsForTypeId) {
 								// if (wasObjectActive(objectTypeIdInfo, firstOldVersion, lastOldVersion, startTime, endTime)) {
 								if(objectValid(objectTypeIdInfo, startTime, endTime, kindOfTime, timeSpecificationType)) {
 									// Das Objekt befindet sich nur teilweise im Speicher und muss nun geladen werden. Transiente Objekte befinden sich
 									// ganz im Speicher.
-									results.add(objectTypeIdInfo.getOldObjectIdReference().getObject());
+									results.add(getSystemObjectInfo(objectTypeIdInfo.getObjectReference(), file));
 								}
 							}
 						}
@@ -748,125 +896,122 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 					// Es wird bei jedem Objekt nur die TypeId und Zeit/Version betrachtet. War das Objekt im
 					// geforderten Zeitraum gültig, dann wird es geladen.
 
-					// Die Datei wird für die nGa-Bereiche und den dyn. nGa Bereich benötigt
-					RandomAccessFile file = new RandomAccessFile(_configAreaFile, "r");
-
 					// try/finally für close der Datei
 					try {
 						// Gestartet wird beim dem ersten NGA-Block, in dem ungültige Objekte der ersten gewünschten Version enthalten sind (deshalb +1 )
 						// Version, in der ein ngaBlock gesucht wird
 						short ngaBlockVersion = (short)(firstOldVersion + 1);
 
-							// An dieser Stelle kann muss eins beachtet werden: in dem nGa-Block, der zu der Version gehört
-							// müssen sich nicht unbedingt Elemente befinden. Dies wird mit einer -1 gekennzeichnet.
-							// Ist dies der Fall, dann muss der nächste nGa-Block betrachtet werden (wenn die Version paßt).
-							// Der gerade beschriebene Fall tritt auf, wenn ein Bereich aktiviert wird, aber kein Objekt
-							// in der alten Version ungültig geworden ist.
+						// An dieser Stelle kann muss eins beachtet werden: in dem nGa-Block, der zu der Version gehört
+						// müssen sich nicht unbedingt Elemente befinden. Dies wird mit einer -1 gekennzeichnet.
+						// Ist dies der Fall, dann muss der nächste nGa-Block betrachtet werden (wenn die Version paßt).
+						// Der gerade beschriebene Fall tritt auf, wenn ein Bereich aktiviert wird, aber kein Objekt
+						// in der alten Version ungültig geworden ist.
 
-							// nGa Block, von dem Daten gelesen werden müssen (relative Position zum Header).
-							// Dieser Wert wird nur benutzt, wenn auch ein sinnvoller Wert gefunden wurde.
-							long relativeBlockOffset = Long.MIN_VALUE;
+						// nGa Block, von dem Daten gelesen werden müssen (relative Position zum Header).
+						// Dieser Wert wird nur benutzt, wenn auch ein sinnvoller Wert gefunden wurde.
+						long relativeBlockOffset = Long.MIN_VALUE;
 
-							// Wird true, wenn ein ngaBlock gefunden wurde, der adressiert werden konnte
-							boolean offsetFound = false;
+						// Wird true, wenn ein ngaBlock gefunden wurde, der adressiert werden konnte
+						boolean offsetFound = false;
 
-							while(_oldObjectBlocks.containsKey(ngaBlockVersion)) {
-								// Prüfen ob dieser nGaBlock benutzt werden kann.
-								// Es muss geprüft werden, ob die Objekte des Blocks in der geforderten Zeit gültig waren
-								final OldBlockInformations nGaBlockInformations = _oldObjectBlocks.get(ngaBlockVersion);
-								if(nGaBlockInformations.getFilePosition() >= 0) {
-									relativeBlockOffset = nGaBlockInformations.getFilePosition();
-									offsetFound = true;
-									break;
-								}
-								// Den nächsten Bereich betrachten
-								ngaBlockVersion++;
+						while(_oldObjectBlocks.containsKey(ngaBlockVersion)) {
+							// Prüfen ob dieser nGaBlock benutzt werden kann.
+							// Es muss geprüft werden, ob die Objekte des Blocks in der geforderten Zeit gültig waren
+							final OldBlockInformations nGaBlockInformations = _oldObjectBlocks.get(ngaBlockVersion);
+							if(nGaBlockInformations.getFilePosition() >= 0) {
+								relativeBlockOffset = nGaBlockInformations.getFilePosition();
+								offsetFound = true;
+								break;
 							}
+							// Den nächsten Bereich betrachten
+							ngaBlockVersion++;
+						}
 
-							if(offsetFound) {
-								// Auf den ersten nGa Block positionieren
-								file.seek((relativeBlockOffset + _headerEnd));
+						if(offsetFound) {
+							// Auf den ersten nGa Block positionieren
+							file.seek((relativeBlockOffset + _headerEnd));
 
-								// Es müssen solange Daten gelesen werden, bis der dynamische nGa-Bereich erreicht wird
-								final long oldConfigurationObjectsBlocks = (_startOldDynamicObjects + _headerEnd);
+							// Es müssen solange Daten gelesen werden, bis der dynamische nGa-Bereich erreicht wird
+							final long oldConfigurationObjectsBlocks = (_startOldDynamicObjects + _headerEnd);
 
-								// Solange Daten aus den nGa-Blöcken lesen, bis alle nGa geprüft wurden
-								while(file.getFilePointer() < oldConfigurationObjectsBlocks) {
+							// Solange Daten aus den nGa-Blöcken lesen, bis alle nGa geprüft wurden
+							while(file.getFilePointer() < oldConfigurationObjectsBlocks) {
 
-									// speichert die Dateiposition des Objekts. Diese Position wird später
-									// am Objekt gespeichert
-									final long startObjectFileDescriptor = file.getFilePointer();
+								// speichert die Dateiposition des Objekts. Diese Position wird später
+								// am Objekt gespeichert
+								final long startObjectFileDescriptor = file.getFilePointer();
 
-									// Länge des Blocks einlesen
-									final int sizeOfObject = file.readInt();
+								// Länge des Blocks einlesen
+								final int sizeOfObject = file.readInt();
 
-									// Id des Objekts einlesen
-									final long objectId = file.readLong();
+								// Id des Objekts einlesen
+								final long objectId = file.readLong();
 
-									if(objectId > 0) {
-										// Es ist ein Objekt und keine Lücke
+								if(objectId > 0) {
+									// Es ist ein Objekt und keine Lücke
 
-										final int pidHashCode = file.readInt();
+									final int pidHashCode = file.readInt();
 
-										final long typeId = file.readLong();
+									final long typeId = file.readLong();
 
-										// 0 = Konfobjekt, 1 = dyn Objekt
-										final byte objectType = file.readByte();
+									// 0 = Konfobjekt, 1 = dyn Objekt
+									final byte objectType = file.readByte();
 
-										// Es werden nur Konfigurationsobjekte eingelesen, darum ist es automatisch ein short
-										final short firstInvalidVersion;
-										final short firstValidVersion;
+									// Es werden nur Konfigurationsobjekte eingelesen, darum ist es automatisch ein short
+									final short firstInvalidVersion;
+									final short firstValidVersion;
 
-										firstInvalidVersion = file.readShort();
-										firstValidVersion = file.readShort();
-										// Wenn das Objekt im angegebenen Zeitraum gültig war und der Typ des Objekt paßt, dann wurde ein Element gefunden
-										final OldObjectTypeIdInfo oldObject = new OldObjectTypeIdInfo(
-												firstValidVersion, firstInvalidVersion, true, new OldObjectIdReference(startObjectFileDescriptor)
+									firstInvalidVersion = file.readShort();
+									firstValidVersion = file.readShort();
+									// Wenn das Objekt im angegebenen Zeitraum gültig war und der Typ des Objekt paßt, dann wurde ein Element gefunden
+									final OldObjectTypeIdInfo oldObject = new OldObjectTypeIdInfo(
+											firstValidVersion, firstInvalidVersion, true, FilePointer.fromAbsolutePosition(startObjectFileDescriptor, this)
+									);
+									if(objectValid(
+											oldObject, startTime, endTime, kindOfTime, timeSpecificationType
+									) && typeIdsSet.contains(new Long(typeId))) {
+										// Das Objekt ist im angegebenen Bereich gültig, also kann es geladen werden
+										results.add(
+												readObjectFromFile(
+														startObjectFileDescriptor,
+														sizeOfObject,
+														objectId,
+														typeId,
+														firstInvalidVersion,
+														firstValidVersion,
+														objectType,
+														file
+												)
 										);
-										if(objectValid(
-												oldObject, startTime, endTime, kindOfTime, timeSpecificationType
-										) && typeIdsSet.contains(new Long(typeId))) {
-											// Das Objekt ist im angegebenen Bereich gültig, also kann es geladen werden
-											results.add(
-													readObjectFromFile(
-															startObjectFileDescriptor,
-															sizeOfObject,
-															objectId,
-															typeId,
-															firstInvalidVersion,
-															firstValidVersion,
-															objectType,
-															file
-													)
-											);
-										}
-										else {
-											// Das Objekt gehört nicht zu den gesuchten TypeId´s, also muss das
-											// nächste Objekt betrachtet werden
-
-											// Die Länge bezieht sich auf das gesamte Objekt, ohne die Länge selber.
-											// Also ist die nächste Länge bei
-											// "aktuelle Position + Länge - 8 (Id) - 4 (pidHashCode) - 8 (typeId) - 1 (objectType) - 2(firstInvalid) - 2 (firstValid)
-
-											// Die anderen Werte müssen abgezogen werden, weil sie bereits eingelesen wurden
-											file.seek(file.getFilePointer() + sizeOfObject - 8 - 4 - 8 - 1 - 2 - 2);
-										}
 									}
 									else {
-										// Dieser Fall darf nicht auftreten, da es in einem nGa Block keine Lücke gibt
-										throw new IllegalStateException(
-												"Lücke im nGa-Bereich gefunden, Bereich: " + _configurationAreaPid + " Position: " + file.getFilePointer()
-												+ " falsche ObjektId: " + objectId
-										);
+										// Das Objekt gehört nicht zu den gesuchten TypeId's, also muss das
+										// nächste Objekt betrachtet werden
+
+										// Die Länge bezieht sich auf das gesamte Objekt, ohne die Länge selber.
+										// Also ist die nächste Länge bei
+										// "aktuelle Position + Länge - 8 (Id) - 4 (pidHashCode) - 8 (typeId) - 1 (objectType) - 2(firstInvalid) - 2 (firstValid)
+
+										// Die anderen Werte müssen abgezogen werden, weil sie bereits eingelesen wurden
+										file.seek(file.getFilePointer() + sizeOfObject - 8 - 4 - 8 - 1 - 2 - 2);
 									}
-								}// while
-							}
+								}
+								else {
+									// Dieser Fall darf nicht auftreten, da es in einem nGa Block keine Lücke gibt
+									throw new IllegalStateException(
+											"Lücke im nGa-Bereich gefunden, Bereich: " + _configurationAreaPid + " Position: " + file.getFilePointer()
+													+ " falsche ObjektId: " + objectId
+									);
+								}
+							}// while
+						}
 // *********************************************************************************************************************
 						// Den dyn nGa Bereich linear durchlaufen
 
 						
 
-						
+
 						// Auf den dyn nGa-Bereich positionieren
 						file.seek(_startOldDynamicObjects + _headerEnd);
 
@@ -904,7 +1049,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 
 								// Objekt war gültig und der Typ des Objekts passt
 								final OldObjectTypeIdInfo oldDynamicObject = new OldObjectTypeIdInfo(
-										firstValidTime, firstInvalidTime, false, new OldObjectIdReference(startObjectFileDescriptor)
+										firstValidTime, firstInvalidTime, false, FilePointer.fromAbsolutePosition(startObjectFileDescriptor, this)
 								);
 								if(objectValid(
 										oldDynamicObject, startTime, endTime, kindOfTime, timeSpecificationType
@@ -924,7 +1069,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 									);
 								}
 								else {
-									// Das Objekt gehört nicht zu den gesuchten TypeId´s, also muss das
+									// Das Objekt gehört nicht zu den gesuchten TypeId's, also muss das
 									// nächste Objekt betrachtet werden
 
 									// Die Länge bezieht sich auf das gesamte Objekt, ohne die Länge selber.
@@ -936,10 +1081,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 								}
 							}
 							else {
-								// Dieser Fall darf nicht auftreten, da es in einem nGa Block keine Lücke gibt
-								throw new IllegalStateException(
-										"Lücke im dynamischen nGa-Bereich gefunden, Position: " + file.getFilePointer() + " Lücken: " + objectId
-								);
+								file.seek(file.getFilePointer() + sizeOfObject - 8);
 							}
 						}// while
 
@@ -1057,15 +1199,118 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		return -1;
 	}
 
+	@Override
 	public SystemObjectInformationInterface[] getNewObjects() {
 		synchronized(_newObjects) {
 			Collection<SystemObjectInformationInterface> helper = _newObjects.values();
-			return (SystemObjectInformationInterface[])helper.toArray(new SystemObjectInformationInterface[helper.size()]);
+			return helper.toArray(new SystemObjectInformationInterface[helper.size()]);
 		}
 	}
 
+	@Override
+	@Deprecated
 	public Iterator<SystemObjectInformationInterface> iterator() {
 		return new FileIterator();
+	}
+
+	/**
+	 * Iteriert über alle Objekte in diesem Bereich.
+	 *
+	 * @param consumer Java-8-Style Consumer, an den jedes gefundene Objekt übergeben wird
+	 */
+	@Override
+	public void forEach(Consumer<? super SystemObjectInformationInterface> consumer) {
+		synchronized(_restructureLock) {
+			synchronized(_configAreaFile) {
+				forEachOldConfigurationObject(consumer);
+				forEachOldDynamicObject(consumer);
+				forEachMixedObject(consumer);
+			}
+		}
+	}
+
+	/**
+	 * Iteriert über alle Konfigurationsobjekte in den NGA-Blöcken in diesem Bereich.
+	 *
+	 * @param consumer Java-8-Style Consumer, an den jedes gefundene Objekt übergeben wird
+	 */
+	@Override
+	public void forEachOldConfigurationObject(final Consumer<? super ConfigurationObjectInfo> consumer) {
+		Consumer<SystemObjectInformationInterface> converter = new Consumer<SystemObjectInformationInterface>() {
+			@Override
+			public void accept(final SystemObjectInformationInterface obj) {
+				if(obj instanceof ConfigurationObjectInfo) {
+					ConfigurationObjectInfo objectInfo = (ConfigurationObjectInfo) obj;
+					consumer.accept(objectInfo);
+				}
+				else {
+					throw new IllegalStateException("NGA-Block enthält dynamische Objekte");
+				}
+			}
+		};
+		forEachObjects(_headerEnd, _startOldDynamicObjects + _headerEnd, converter);
+	}
+
+	/**
+	 * Iteriert über alle dynamischen Objekte im NGDyn-Block in diesem Bereich.
+	 *
+	 * @param consumer Java-8-Style Consumer, an den jedes gefundene Objekt übergeben wird
+	 */
+	@Override
+	public void forEachOldDynamicObject(final Consumer<? super DynamicObjectInfo> consumer) {
+		Consumer<SystemObjectInformationInterface> converter = new Consumer<SystemObjectInformationInterface>() {
+			@Override
+			public void accept(final SystemObjectInformationInterface obj) {
+				if(obj instanceof DynamicObjectInfo) {
+					DynamicObjectInfo objectInfo = (DynamicObjectInfo) obj;
+					consumer.accept(objectInfo);
+				}
+				else {
+					throw new IllegalStateException("NGDyn-Block enthält Konfigurationsobjekte");
+				}
+			}
+		};
+		forEachObjects(_startOldDynamicObjects + _headerEnd, _startIdIndex + _headerEnd, converter);
+	}
+
+	/**
+	 * Iteriert über alle Objekte in der Mischmenge in diesem Bereich.
+	 *
+	 * @param consumer Java-8-Style Consumer, an den jedes gefundene Objekt übergeben wird
+	 */
+	@Override
+	public void forEachMixedObject(Consumer<? super SystemObjectInformationInterface> consumer) {
+		forEachObjects(_startMixedSet + _headerEnd, _configAreaFile.length(), consumer);
+	}
+
+	private void forEachObjects(final long startOffset, final long endOffset, final Consumer<? super SystemObjectInformationInterface> consumer) {
+		try {
+			synchronized(_restructureLock) {
+				synchronized(_configAreaFile) {
+					BufferedRandomAccessFile file = new BufferedRandomAccessFile(_configAreaFile, "r");
+
+					// try/finally für close der Datei
+					try {
+						file.seek(startOffset);
+						while(file.getFilePointer() < endOffset) {
+
+							BinaryObject binaryObject = BinaryObject.fromDataInput(file);
+							SystemObjectInformationInterface systemObjectInfo = binaryObject.toSystemObjectInfo(this, file.getFilePointer());
+							if(systemObjectInfo != null){
+								// Falls keine Lücke
+								consumer.accept(systemObjectInfo);
+							}
+						}// while
+					}
+					finally {
+						file.close();
+					}
+				}
+			}
+		}
+		catch(Exception e){
+			throw new IllegalStateException(e);
+		}
 	}
 
 	/**
@@ -1075,7 +1320,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 	 *
 	 * @throws IOException
 	 */
-	private void writeHeader(RandomAccessFile file) throws IOException {
+	private void writeHeader(HeaderInfo positions, BufferedRandomAccessFile file) throws IOException {
 		synchronized(file) {
 			// Der Header wird an den Beginn der Datei geschrieben
 			file.seek(0);
@@ -1102,9 +1347,8 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 				final Short[] oldVersions = _oldObjectBlocks.keySet().toArray(new Short[_oldObjectBlocks.keySet().size()]);
 				Arrays.sort(oldVersions);
 
-				for(int nr = 0; nr < oldVersions.length; nr++) {
+				for(final Short version : oldVersions) {
 					// Die Objekte in aufsteigender Reihenfolge speichern
-					final short version = oldVersions[nr];
 					final OldBlockInformations blockInformations = _oldObjectBlocks.get(version);
 
 					// relative Dateiposition des Blocks schreiben
@@ -1128,25 +1372,25 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 			file.writeShort(3);
 			file.writeShort(8);
 			// relative Position des dyn nGa Bereichs
-			file.writeLong(_startOldDynamicObjects);
+			file.writeLong(positions.getStartOldDynamicObjects());
 
 			// Kennung 4, Index Id
 			file.writeShort(4);
 			file.writeShort(8);
 
-			file.writeLong(_startIdIndex);
+			file.writeLong(positions.getStartIdIndex());
 
 			// Kennung 5, Index Pid
 			file.writeShort(5);
 			file.writeShort(8);
 
-			file.writeLong(_startPidHashCodeIndex);
+			file.writeLong(positions.getStartPidHashCodeIndex());
 
 			// Kennung 6, Index Pid
 			file.writeShort(6);
 			file.writeShort(8);
 
-			file.writeLong(_startMixedSet);
+			file.writeLong(positions.getStartMixedSet());
 
 			// Kennung 7, Index Pid
 			file.writeShort(7);
@@ -1196,17 +1440,20 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 	 * Soll der Bereich in einer anderen als der aktuellen Version geladen werden, dann müssen ebenfalls die nGa-Bereiche betrachtet werden.
 	 *
 	 * @return Collecetion, die alle Objekte der Mischmenge enthält (entweder ganz, oder nur als ID-Pid-Dateiposition Kombination) und Objekte aus den
-	 *         entsprechende nGa-Bereichen
+	 *         entsprechende nGa-Bereichen (enthalten Sind Objekte der Typen
+	 *         {@link de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformationInterface}
+	 *         und
+	 *         {@link de.bsvrz.puk.config.configFile.fileaccess.ConfigAreaFile.OldObject}
 	 *
 	 * @throws IOException
 	 * @throws NoSuchVersionException
 	 */
-	public Collection getMixedObjectSetObjects() throws IOException, NoSuchVersionException {
+	public Collection<Object> getMixedObjectSetObjects() {
 
 		try {
 			// Es müssen alle Objekte der Mischobjektmenge zurückgegeben werden.
 
-			final List mixedObjects = new ArrayList();
+			final List<Object> mixedObjects = new ArrayList<Object>();
 
 			synchronized(_configAreaFile) {
 
@@ -1260,7 +1507,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 				}
 
 				// Datei öffnen
-				final RandomAccessFile file = new RandomAccessFile(_configAreaFile, "r");
+				final BufferedRandomAccessFile file = new BufferedRandomAccessFile(_configAreaFile, "r");
 
 				try {
 					// Als erstes muss der Index-Id geprüft werden, um die größte Id der alten Objekte
@@ -1334,12 +1581,12 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 									// Also ist das Objekt jetzt ungültig, dies gilt nur unter der Vorrausetzung, dass
 									// die Version größer 0 ist (0 bedeutet, der Wert wurde noch nicht gesetzt)
 
-									OldObject oldObject = new OldObject(objectId, pidHashCode, startObjectFileDescriptor, this);
+									OldObject oldObject = new OldObject(objectId, pidHashCode, FilePointer.fromAbsolutePosition(startObjectFileDescriptor, this), this);
 									mixedObjects.add(oldObject);
 									putOldObject(oldObject);
 
 									// Objekt in Map für typeId Suche aufnehmen, dies ist ein "ungültig" markiertes Objekts
-									putOldObjectTypeId(typeId, firstValid, firstInvalid, true, new OldObjectIdReference(startObjectFileDescriptor));
+									putOldObjectTypeId(typeId, firstValid, firstInvalid, true, FilePointer.fromAbsolutePosition(startObjectFileDescriptor, this));
 
 									final long newDestination = startObjectFileDescriptor + 4 + sizeOfObject;
 									file.seek(newDestination);
@@ -1426,12 +1673,12 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 								if((firstInvalid > 0)) {
 									// Der Invalid Wert ist gesetzt, also ist das Objekt ungültig (ein dyn Objekt wird sofort ungütlig, nicht in
 									// der Zukunft)
-									OldObject oldObject = new OldObject(objectId, pidHashCode, startObjectFileDescriptor, this);
+									OldObject oldObject = new OldObject(objectId, pidHashCode, ((DynamicObjectInformation) dynamicObject).getLastFilePosition(), this);
 									mixedObjects.add(oldObject);
 									putOldObject(oldObject);
 
-									// In die Liste für TypeId´s aufnehmen (false, da es sich um ein dynamisches Objekt handelt)
-									putOldObjectTypeId(typeId, firstValid, firstInvalid, false, new OldObjectIdReference(startObjectFileDescriptor));
+									// In die Liste für TypeId's aufnehmen (false, da es sich um ein dynamisches Objekt handelt)
+									putOldObjectTypeId(typeId, firstValid, firstInvalid, false, FilePointer.fromAbsolutePosition(startObjectFileDescriptor, this));
 
 									// Den fileDescriptor auf den nächsten Datensatz setzen.
 									
@@ -1469,12 +1716,12 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		catch(IOException e) {
 			e.printStackTrace();
 			_debug.error("Ein-/Ausgabe-Fehler beim Laden aller aktuellen und in Zukunft aktuellen Objekten mit passenden Typ (siehe exception)", e);
-			throw new IllegalStateException();
+			throw new IllegalStateException(e);
 		}
 		catch(NoSuchVersionException e) {
 			e.printStackTrace();
 			_debug.error("Versions-Fehler beim Laden aller aktuellen und in Zukunft aktuellen Objekten mit passenden Typ (siehe exception)", e);
-			throw new IllegalStateException();
+			throw new IllegalStateException(e);
 		}
 	}
 
@@ -1518,12 +1765,12 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 	 */
 	private void putOldObject(OldObject oldObject) {
 		synchronized(_oldObjectsId) {
-			final OldObjectIdReference oldObjectIdReference = new OldObjectIdReference(oldObject.getFilePosition());
-			_oldObjectsId.put(oldObject.getId(), oldObjectIdReference);
+			final ObjectReference objectReference = oldObject.getFilePosition();
+			_oldObjectsId.put(oldObject.getId(), objectReference);
 		}
 
 		synchronized(_oldObjectsPid) {
-			Set<Long> filePositions = _oldObjectsPid.get(oldObject.getPidHashCode());
+			Set<FilePointer> filePositions = _oldObjectsPid.get(oldObject.getPidHashCode());
 
 			if(filePositions != null) {
 				// Es gibt eine Liste, also Dateipostion einfügen
@@ -1531,7 +1778,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 			}
 			else {
 				// Es gibt noch keine Liste
-				filePositions = new HashSet<Long>();
+				filePositions = new HashSet<FilePointer>();
 				filePositions.add(oldObject.getFilePosition());
 
 				// Die neue Liste in die Map einfügen
@@ -1566,12 +1813,12 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 
 	/**
 	 * Entfernt ein dynamisches Objekt aus alle Datenstrukturen(auch ConfigFileManager). Es wird nicht aus der Datei gelöscht.
-	 * <p/>
-	 * Diese Methode darf nur auf Objekte mit einer Simulationsvariante größer 0 angewendet werden.
+	 * Dient zum Löschen der dynamischen Objekte beim Beenden einer Simulation und zum permanenten Löschen von nicht mehr
+	 * benötigten, historischen Objekten.
 	 *
 	 * @param dynamicObjectInfo Objekt, das entfernt werden soll
 	 */
-	void removeDynamicSimulationObject(DynamicObjectInformation dynamicObjectInfo) {
+	void deleteDynamicObject(DynamicObjectInformation dynamicObjectInfo) {
 
 		// Dynamische Objekte können aktuell oder alt sein. Aus diesen Datenstrukturen werden die Elemente entfernt.
 		if(_actualObjects.containsKey(dynamicObjectInfo.getID())) {
@@ -1580,20 +1827,28 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 			}
 		}
 		else {
-
 			synchronized(_oldObjectsId) {
 				_oldObjectsId.remove(dynamicObjectInfo.getID());
 			}
 		}
 
 		synchronized(_oldObjectsPid) {
-			final Set<Long> longs = _oldObjectsPid.get(dynamicObjectInfo.getPidHashCode());
-			if(longs != null) {
-				longs.remove(new Long(dynamicObjectInfo.getLastFilePosition()));
+			final Set<FilePointer> filePointers = _oldObjectsPid.get(dynamicObjectInfo.getPidHashCode());
+			if(filePointers != null) {
+				filePointers.remove(dynamicObjectInfo.getLastFilePosition());
 			}
 		}
 
-		// Beim Filemanager aufräumen
+		// TypeId Maps aktualisieren
+		synchronized(_actualObjectsTypeId) {
+			final List<SystemObjectInformationInterface> actualTypeList = _actualObjectsTypeId.get(dynamicObjectInfo.getTypeId());
+			if((actualTypeList == null) || (!actualTypeList.remove(dynamicObjectInfo))) {
+				// Das entfernen hat nicht geklappt
+				_debug.error("Das Objekt " + dynamicObjectInfo + " konnte nicht aus der TypeId Map entfernt werden");
+			}
+		}
+
+		// Beim Filemanager aufräumen, falls es sich um ein gültiges Simulationsabjekt handelt
 		_fileManager.removeDynamicSimulationObject(dynamicObjectInfo);
 	}
 
@@ -1608,6 +1863,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		}
 	}
 
+	@Override
 	public SystemObjectInformationInterface getOldObject(long id) {
 		final List<SystemObjectInformationInterface> result;
 		try {
@@ -1634,14 +1890,14 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 	 * @param firstInvalid         Zeitpunkt oder Version mit der das Objekt ungültig wurde
 	 * @param configurationObject  true = Es handelt sich um ein Konfigurationsobjekt (firstValid wird als Version interpretiert); false = Es handelt sich um ein
 	 *                             dynamisches Objekt (firstValid wird als Zeitpunkt interpertiert)
-	 * @param oldObjectIdReference Objekt zum anfordert des Objekts (Datei oder Speicher)
+	 * @param objectReference Objekt zum anfordert des Objekts (Datei oder Speicher)
 	 */
 	private void putOldObjectTypeId(
 			final long typeId,
 			final long firstValid,
 			final long firstInvalid,
 			final boolean configurationObject,
-			final OldObjectIdReference oldObjectIdReference
+			final ObjectReference objectReference
 	) {
 		synchronized(_oldObjectsTypeId) {
 //			System.out.println("Füge Ladeinformationen hinzu: typeId " + typeId + " confObjekt: " + configurationObject + " absoluteDateipoistion: " + absoluteFilePosition);
@@ -1657,7 +1913,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 			}
 
 			// Neues Objekt zum laden anlegen und speichern
-			typeIdInfoList.add(new OldObjectTypeIdInfo(firstValid, firstInvalid, configurationObject, oldObjectIdReference));
+			typeIdInfoList.add(new OldObjectTypeIdInfo(firstValid, firstInvalid, configurationObject, objectReference));
 		}
 	}
 
@@ -1684,11 +1940,12 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		}
 	}
 
-	public SystemObjectInformationInterface[] getObjects(String pid, long startTime, long endTime, ConfigurationAreaTime kindOfTime) {
+	@Override
+	public List<SystemObjectInformationInterface> getObjects(String pid, long startTime, long endTime, ConfigurationAreaTime kindOfTime, final short simulationVariant) {
 
 		try {
 			// Speichert alle Objekte, für die die Parameter übereinstimmen
-			final List<SystemObjectInformationInterface> results = new LinkedList<SystemObjectInformationInterface>();
+			final List<SystemObjectInformationInterface> results = new ArrayList<SystemObjectInformationInterface>();
 
 			// Können aktuelle Objekte betroffen sein ? Wenn nicht, wird null zurückgegeben.
 			// Achtung, das zurückgegebene Objekt kann in einem beliebigen Bereich sein, es muss
@@ -1706,22 +1963,37 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 				}
 			}
 
-			// als ungültig markierte Objekte prüfen
-			final List<SystemObjectInformationInterface> binarySearchResult;
-			binarySearchResult = binarySearch(pid.hashCode(), false);
-			
+			// Wenn Simulationen berücksichtigt werden sollen, diese durchsuchen
 
+			final SystemObjectInformationInterface simulationObjectInfo = _fileManager.getSimulationObject(pid, simulationVariant);
 
-			if(binarySearchResult != null) {
-				for(int nr = 0; nr < binarySearchResult.size(); nr++) {
-					final SystemObjectInformationInterface systemObjectInfo = binarySearchResult.get(nr);
-					// Paßt die Zeit
-					if(objectValid(systemObjectInfo, startTime, endTime, kindOfTime, TimeSpecificationType.VALID_IN_PERIOD)) {
-						results.add(systemObjectInfo);
+			if(simulationObjectInfo != null) {
+				// befindet sich das Objekt in diesem Bereich ?
+				if(_actualObjects.containsKey(simulationObjectInfo.getID())) {
+					// Das aktuelle Objekt ist Teil von diesem Bereich, also prüfen ob es im gefordeten Zeitbereich gültig ist.
+					if(objectValid(simulationObjectInfo, startTime, endTime, kindOfTime, TimeSpecificationType.VALID_IN_PERIOD)) {
+						// Das Objekt ist im Zeibereich gültig
+						results.add(simulationObjectInfo);
 					}
 				}
 			}
-			return results.toArray(new SystemObjectInformationInterface[results.size()]);
+
+			// als ungültig markierte Objekte prüfen
+			final List<SystemObjectInformationInterface> binarySearchResult;
+			binarySearchResult = binarySearch(pid.hashCode(), false);
+
+			if(binarySearchResult != null) {
+				for(final SystemObjectInformationInterface systemObjectInfo : binarySearchResult) {
+					// Pid muss noch einmal überprüft werden da bisher nur HashCode abgefragt wurde
+					if(pid.equals(systemObjectInfo.getPid())) {
+						// Paßt die Zeit
+						if(objectValid(systemObjectInfo, startTime, endTime, kindOfTime, TimeSpecificationType.VALID_IN_PERIOD)) {
+							results.add(systemObjectInfo);
+						}
+					}
+				}
+			}
+			return results;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -1800,6 +2072,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 	}
 
 
+	@Override
 	public int getSerializerVersion() {
 		return _serializerVersion;
 	}
@@ -1814,8 +2087,26 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 	 * @throws IOException
 	 * @throws de.bsvrz.sys.funclib.dataSerializer.NoSuchVersionException
 	 */
-	SystemObjectInformation loadObjectFromFile(long filePosition) throws IOException, NoSuchVersionException {
-		return loadObjectFromFile(filePosition, null);
+	SystemObjectInformation loadObjectFromFile(FilePointer filePosition) throws IOException, NoSuchVersionException {
+		synchronized(_configAreaFile) {
+			final BufferedRandomAccessFile file = new BufferedRandomAccessFile(_configAreaFile, "r");
+			// try für finally und close
+			try {
+				file.seek(filePosition.getAbsoluteFilePosition());
+
+				BinaryObject binaryObject = BinaryObject.fromDataInput(file);
+				SystemObjectInformationInterface systemObjectInfo = binaryObject.toSystemObjectInfo(this, file.getFilePointer());
+
+				if(systemObjectInfo != null) {
+					// Position speichern, an der das nächste Objekt geladen werden kann
+					return (SystemObjectInformation) systemObjectInfo;
+				}
+				return null;
+			}
+			finally {
+				file.close();
+			}
+		}
 	}
 
 	/**
@@ -1826,81 +2117,55 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 	 * @param fileIterator Objekt, an dem die Position des nächsten zu ladenden Objekts gespeichert wird. Wird <code>null</code> übergeben, so wird die Psoition
 	 *                     des nächsten Objekts nicht gesetzt. Wird eine -1 gesetzt,so gibt es kein nächstes Objekt mehr
 	 *
-	 * @return Objekt, das aus der Datei erzeugt wurde
+	 * @return Objekt, das aus der Datei erzeugt wurde oder null falls sich dort eine Lücke befindet
+	 *
+	 * @deprecated Diese Methode öffnet und schießt ein neues {@link BufferedRandomAccessFile}. Auf Performancegründen sollte für das Laden von mehreren Objekten
+	 * immer dasselbe BufferedFile-Objekt verwendet werden. Einzige benutzung ist aktuell der {@link de.bsvrz.puk.config.configFile.fileaccess.ConfigAreaFile.FileIterator},
+	 * der ebenfalls nicht mehr benutzt wird und deprecated ist.
 	 *
 	 * @throws IOException
 	 * @throws NoSuchVersionException
 	 */
-	private SystemObjectInformation loadObjectFromFile(long filePosition, FileIterator fileIterator) throws IOException, NoSuchVersionException {
+	@Deprecated
+	private SystemObjectInformation loadObjectFromFile(FilePointer filePosition, FileIterator fileIterator) throws IOException, NoSuchVersionException {
 		synchronized(_configAreaFile) {
 
-			final RandomAccessFile file = new RandomAccessFile(_configAreaFile, "r");
+			final BufferedRandomAccessFile file = new BufferedRandomAccessFile(_configAreaFile, "r");
 
-			file.seek(filePosition);
 
 			// try für finally und close
 			try {
-
-				// Länge des Blocks einlesen
-				final int sizeOfObject = file.readInt();
-
-				// Id des Objekts einlesen
-				final long objectId = file.readLong();
-
-//				System.out.println("altes Objekt in den Speicher laden: " + filePosition + " Id " + objectId);
-
-				if(objectId > 0) {
-					// Es ist ein Objekt und keine Lücke
-					final int pidHashCode = file.readInt();
-
-					final long typeId = file.readLong();
-
-					// 0 = Konfobjekt, 1 = dyn Objekt
-					final byte objectType = file.readByte();
-
-					// Das kann entweder ein Zeitpunkt oder eine Version sein
-					final long firstInvalid;
-					final long firstValid;
-
-					if(objectType == 0) {
-						// Konfigurationsobjekt, es wird die Version eingelesen
-						firstInvalid = file.readShort();
-						firstValid = file.readShort();
-					}
-					else {
-						firstInvalid = file.readLong();
-						firstValid = file.readLong();
-					}
-
-					final SystemObjectInformation loadedObject = readObjectFromFile(
-							filePosition, sizeOfObject, objectId, typeId, firstInvalid, firstValid, objectType, file
-					);
-					// Position speichern, an der das nächste Objekt geladen werden kann
-					if(fileIterator != null) {
-						// Sobald der Id-Index beginnt, wird eine -1 zurückgegeben
-						if(file.getFilePointer() < (_startIdIndex + _headerEnd)) {
-							// Es können noch Daten gelesen werden
-							fileIterator.setRelativePosition((file.getFilePointer() - _headerEnd));
-						}
-						else {
-							// Es gibt keinen nächsten Datensatz mehr
-							fileIterator.setRelativePosition(-1);
-						}
-					}
-
-					return loadedObject;
-				}
-				else {
-					// Es sollte eine Lücke eingelesen werden
-					final String errorText = "Lücke an Position: " + filePosition + " Datei: " + _configAreaFile + " ObjectId: " + objectId;
-					_debug.error(errorText);
-					throw new IllegalStateException(errorText);
-				}
+				return loadObjectFromFile(file, filePosition, fileIterator);
 			}
 			finally {
 				file.close();
 			}
 		}
+	}
+
+	@Deprecated
+	private SystemObjectInformation loadObjectFromFile(final BufferedRandomAccessFile file, final FilePointer filePosition, final FileIterator fileIterator) throws IOException, NoSuchVersionException {
+		file.seek(filePosition.getAbsoluteFilePosition());
+
+		BinaryObject binaryObject = BinaryObject.fromDataInput(file);
+		SystemObjectInformationInterface systemObjectInfo = binaryObject.toSystemObjectInfo(this, file.getFilePointer());
+
+		if(systemObjectInfo != null) {
+			// Position speichern, an der das nächste Objekt geladen werden kann
+			if(fileIterator != null) {
+				// Sobald der Id-Index beginnt, wird eine -1 zurückgegeben
+				if(file.getFilePointer() < (_startIdIndex + _headerEnd)) {
+					// Es können noch Daten gelesen werden
+					fileIterator.setRelativePosition((file.getFilePointer() - _headerEnd));
+				}
+				else {
+					// Es gibt keinen nächsten Datensatz mehr
+					fileIterator.setRelativePosition(-1);
+				}
+			}
+			return (SystemObjectInformation) systemObjectInfo;
+		}
+		return null;
 	}
 
 	/**
@@ -1931,7 +2196,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 			final long firstInvalid,
 			final long firstValid,
 			final byte objecttype,
-			RandomAccessFile file
+			BufferedRandomAccessFile file
 	) throws IOException, NoSuchVersionException {
 
 		// Das Objekt wird geladen, es wird dafür gesorgt, dass es sich nicht sofort wieder speichern will
@@ -1945,84 +2210,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 				final byte packedBytes[] = new byte[sizeOfPackedData];
 				file.readFully(packedBytes);
 
-				// Byte-Array, das die ungepackten Daten enthält
-				final byte[] unpackedBytes = unzip(packedBytes);
-
-				final InputStream in = new ByteArrayInputStream(unpackedBytes);
-
-				//deserialisieren
-				final Deserializer deserializer = SerializingFactory.createDeserializer(_serializerVersion, in);
-
-				// Das serialisierte SystemObjektInfo einlesen
-
-				final int pidSize = deserializer.readUnsignedByte();
-				final String pid;
-				if(pidSize > 0) {
-					pid = deserializer.readString(255);
-				}
-				else {
-					
-					pid = deserializer.readString(0);
-				}
-
-//				final String pid = readString(deserializer);
-
-				// Name einlesen
-				final int nameSize = deserializer.readUnsignedByte();
-				final String name;
-				if(nameSize > 0) {
-					name = deserializer.readString(255);
-				}
-				else {
-					
-					name = deserializer.readString(0);
-				}
-//				final String name = readString(deserializer);
-
-				// Es stehen nun alle Informationen zur Verfügung, um ein Objekt zu erzeugen.
-				// An dieses Objekt werden dann alle Mengen hinzugefügt.
-				final ConfigurationObjectInformation newConfObject = new ConfigurationObjectInformation(
-						id, pid, typeId, name, (short)firstValid, (short)firstInvalid, this, false
-				);
-				// Am Objekt speichern, wo es in der Datei zu finden ist
-				newConfObject.setLastFilePosition(filePosition);
-
-				// konfigurierende Datensätze einlesen und direkt an dem Objekt hinzufügen
-
-				// Menge der konfigurierenden Datensätze
-				final int numberOfConfigurationData = deserializer.readInt();
-				for(int nr = 0; nr < numberOfConfigurationData; nr++) {
-					// ATG-Verwendung einlesen
-					final long atgUseId = deserializer.readLong();
-					// Länge der Daten
-					final int sizeOfData = deserializer.readInt();
-					final byte[] data = deserializer.readBytes(sizeOfData);
-					newConfObject.setConfigurationData(atgUseId, data);
-				}
-
-				// alle Daten einlesen, die spezifisch für ein Konfigurationsobjekt sind und
-				// direkt am Objekt hinzufügen
-
-				// Anzahl Mengen am Objekt
-				final short numberOfSets = deserializer.readShort();
-
-				for(int nr = 0; nr < numberOfSets; nr++) {
-					final long setId = deserializer.readLong();
-					newConfObject.addObjectSetId(setId);
-					final int numberOfObjects = deserializer.readInt();
-
-					for(int i = 0; i < numberOfObjects; i++) {
-						// Alle Objekte der Menge einlesen
-
-						// Id des Objekts, das sich in Menge befinden
-						final long setObjectId = deserializer.readLong();
-						newConfObject.addObjectSetObject(setId, setObjectId);
-					}
-				}
-
-				// Das Objekt wurde geladen, also können ab jetzt alle Änderungen gespeichert werden
-				newConfObject.saveObjectModifications();
-				return newConfObject;
+				return ConfigurationObjectInformation.createSystemObjectInformation(this, filePosition, id, typeId, (short) firstInvalid, (short) firstValid, packedBytes);
 			}
 			else if(objecttype == 1) {
 				// Ein dynamisches Objekt einlesen, die Simulationsvariante wurde noch nicht eingelesen, aber der fileDesc.
@@ -2035,64 +2223,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 				final byte packedBytes[] = new byte[sizeOfPackedData];
 				file.readFully(packedBytes);
 
-				// Byte-Array, das die ungepackten Daten enthält
-				final byte[] unpackedBytes = unzip(packedBytes);
-
-				final InputStream in = new ByteArrayInputStream(unpackedBytes);
-
-				//deserialisieren
-				final Deserializer deserializer = SerializingFactory.createDeserializer(_serializerVersion, in);
-
-				// Das serialisierte SystemObjektInfo einlesen
-
-				// Pid einlesen
-				final int pidSize = deserializer.readUnsignedByte();
-				final String pid;
-				if(pidSize > 0) {
-					pid = deserializer.readString(255);
-				}
-				else {
-					
-					pid = deserializer.readString(0);
-				}
-//				final String pid = readString(deserializer);
-
-				// Name einlesen
-				final int nameSize = deserializer.readUnsignedByte();
-				final String name;
-				if(nameSize > 0) {
-					name = deserializer.readString(255);
-				}
-				else {
-					
-					name = deserializer.readString(0);
-				}
-//				final String name = readString(deserializer);
-
-				// Es stehen nun alle Informationen zur Verfügung, um ein Objekt zu erzeugen.
-				// An dieses Objekt werden dann alle Mengen hinzugefügt.
-				final DynamicObjectInformation newDynObject = new DynamicObjectInformation(
-						id, pid, typeId, name, simulationVariant, firstValid, firstInvalid, this, false
-				);
-				// Am Objekt speichern, wo es in der Datei zu finden ist
-				newDynObject.setLastFilePosition(filePosition);
-
-				// konfigurierende Datensätze einlesen und direkt an dem Objekt hinzufügen
-
-				// Menge der konfigurierenden Datensätze
-				final int numberOfConfigurationData = deserializer.readInt();
-				for(int nr = 0; nr < numberOfConfigurationData; nr++) {
-					// ATG-Verwendung einlesen
-					final long atgUseId = deserializer.readLong();
-					// Länge der Daten
-					final int sizeOfData = deserializer.readInt();
-					final byte[] data = deserializer.readBytes(sizeOfData);
-					newDynObject.setConfigurationData(atgUseId, data);
-				}
-
-				// Das Objekt wurde geladen, ab jetzt dürfen alle Änderungen gespeichert werden
-				newDynObject.saveObjectModifications();
-				return newDynObject;
+				return DynamicObjectInformation.getSystemObjectInformation(this, filePosition, id, typeId, firstInvalid, firstValid, simulationVariant, packedBytes);
 			}
 			else {
 				// Unbekannt, das darf nicht passieren.
@@ -2102,27 +2233,6 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 			}
 		}
 	}
-
-	/**
-	 * Ließt zuerst die Länge(byte) des folgenden String aus und anschließend den String.
-	 *
-	 * Ist die Länge des String negativ, so wird dieser negative Wert in einen positiven Wert umgerechnet. Allerdings darf dabei die untere Grenze von
-	 * -128 nicht unterschritten werden.
-	 *
-	 * @param deserializer Objekt, aus dem die Daten ausgelesen werden
-	 * @return String, der ausgelesen wurde
-	 * @throws IOException Fehler beim Zugriff auf den Deserialisierer.
-	 */
-//	private String readString(Deserializer deserializer) throws IOException {
-//		// Länge des Strings einlesen
-//		int sizeOfString = deserializer.readByte();
-//		if(sizeOfString < 0){
-//			sizeOfString = sizeOfString + 256;
-//			if(sizeOfString < 0) throw new IllegalArgumentException("Ein String kann nicht ausgelesen werden, da die Länge des Strings 255 überschreitet.");
-//		}
-//		final String string = deserializer.readString(sizeOfString);
-//		return string;
-//	}
 
 	/**
 	 * Speichert ein Objekt ans Ende der übergebenen Datei.
@@ -2146,7 +2256,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 	 * @throws IOException           Fehler beim schreiben in die Datei, Teile des Datensatzes wurden bereits geschrieben
 	 * @throws IllegalStateException Fehler beim sammeln der Daten, die Datei wurde noch nicht verändert
 	 */
-	private long writeDynamicObjectToFile(DynamicObjectInformation dynamicObject, final RandomAccessFile file, boolean declareGap, boolean setNewFilePosition)
+	private long writeDynamicObjectToFile(DynamicObjectInformation dynamicObject, final BufferedRandomAccessFile file, boolean declareGap, boolean setNewFilePosition)
 			throws IOException, IllegalStateException {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		Serializer serializer;
@@ -2227,15 +2337,21 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 			file.write(packedData);
 
 			// Soll eine Lücke erzeugt werden
-			if(declareGap) {
+			FilePointer filePosition = dynamicObject.getLastFilePosition();
+			if(declareGap && filePosition != null) {
 				// Die Vorgängerversion in der Datei als Lücke deklarieren (ID auf 0)
-				final long lastFilePosition = dynamicObject.getLastFilePosition();
-				declareObjectAsAGap(lastFilePosition, file);
+				declareObjectAsAGap(filePosition, file);
 			}
 			if(setNewFilePosition) {
 				// Das Objekt wurde gespeichert, also muss die neue Dateiposition am Objekt, das sich im Speicher befindet,
 				// neu gesetzt werden.
-				dynamicObject.setLastFilePosition(newObjectFilePosition);
+				if(filePosition != null) {
+					// Pointer weiterverwenden, damit bestehende Cache-Einträge (z.B. im ConfigFileManager) umgebogen werden
+					filePosition.setAbsoluteFilePosition(newObjectFilePosition);
+				}
+				else {
+					dynamicObject.setLastFilePosition(FilePointer.fromAbsolutePosition(newObjectFilePosition, this));
+				}
 			}
 
 			return newObjectFilePosition;
@@ -2264,7 +2380,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 	 * @throws IllegalStateException Fehler beim sammeln der Daten, die Datei wurde noch nicht verändert
 	 */
 	private long writeConfigurationObjectToFile(
-			ConfigurationObjectInformation configurationObject, final RandomAccessFile file, boolean declareGap, boolean setNewFilePosition
+			ConfigurationObjectInformation configurationObject, final BufferedRandomAccessFile file, boolean declareGap, boolean setNewFilePosition
 	) throws IOException, IllegalStateException {
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -2319,8 +2435,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 
 				// Id der Menge speichern und Objekte der Menge anfordern und speichern
 
-				for(int nr = 0; nr < objectSets.length; nr++) {
-					final long objectSetId = objectSets[nr];
+				for(final long objectSetId : objectSets) {
 					serializer.writeLong(objectSetId);
 
 					// Objekte der Menge anfordern
@@ -2329,9 +2444,9 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 					// Anzahl Elemente der Menge speichern
 					serializer.writeInt(objects.length);
 
-					for(int i = 0; i < objects.length; i++) {
+					for(final long object : objects) {
 						// Objekte der Menge speichern
-						serializer.writeLong(objects[i]);
+						serializer.writeLong(object);
 					}
 				}
 			} // synch
@@ -2385,14 +2500,14 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 			// Soll eine Lücke erzeugt werden
 			if(declareGap) {
 				// Die Vorgängerversion in der Datei als Lücke deklarieren (ID auf 0)
-				final long lastFilePosition = configurationObject.getLastFilePosition();
+				final FilePointer lastFilePosition = configurationObject.getLastFilePosition();
 				declareObjectAsAGap(lastFilePosition, file);
 			}
 			// Soll die neue Position am Objekt im Speicher gespeichert werden
 			if(setNewFilePosition) {
 				// Das Objekt wurde gespeichert, also muss die neue Dateiposition am Objekt, das sich im Speicher befindet,
 				// neu gesetzt werden.
-				configurationObject.setLastFilePosition(newObjectFilePosition);
+				configurationObject.setLastFilePosition(FilePointer.fromAbsolutePosition(newObjectFilePosition, this));
 			}
 			return newObjectFilePosition;
 		} // synch
@@ -2400,28 +2515,27 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 
 	/**
 	 * Setzt die Id eines Objekts auf 0 und erklärt es somit als Lücke. Es gibt keinen unterschied zwischen dynamischen Objekten und Konfigurationsobjekten
-	 *
-	 * @param filePosition Position des Objekts (Länge des Objekts). Der Wert -1 bedeutet, dass dieses Objekt noch nie gespeichert wurde. Es muss also kein altes
-	 *                     Objekt als Lücke definiert werden
+	 *  @param filePosition Position des Objekts (Länge des Objekts).
 	 * @param file         Dateiobjekt, mit dem auf die Platte zugegriffen werden kann
 	 */
-	private void declareObjectAsAGap(final long filePosition, RandomAccessFile file) throws IOException {
+	private void declareObjectAsAGap(final FilePointer filePosition, BufferedRandomAccessFile file) throws IOException {
 //		System.out.println("Lücke einfügen, Dateiposition: " + filePosition);
+		if(filePosition == null){
+			return;
+		}
 		synchronized(_configAreaFile) {
-			if(filePosition > 0) {
-				// Die Id des Datensatzes steht nach der Länge, die Länge ist ein Integer, also kann dieser Übersprungen werden
-				file.seek(filePosition + 4);
-				// Der Zeiger steht auf der Id des Datensatzes, diese wird nun mit einer 0 überschrieben und somit als
-				// Lücke deklariert
-				file.writeLong(0);
-			}
+			// Die Id des Datensatzes steht nach der Länge, die Länge ist ein Integer, also kann dieser Übersprungen werden
+			file.seek(filePosition.getAbsoluteFilePosition() + 4);
+			// Der Zeiger steht auf der Id des Datensatzes, diese wird nun mit einer 0 überschrieben und somit als
+			// Lücke deklariert
+			file.writeLong(0);
 		}
 	}
 
-	void declareObjectAsAGap(final long filePosition) {
+	void declareObjectAsAGap(final FilePointer filePosition) {
 		try {
 			synchronized(_configAreaFile) {
-				final RandomAccessFile configAreaFile = new RandomAccessFile(_configAreaFile, "rw");
+				final BufferedRandomAccessFile configAreaFile = new BufferedRandomAccessFile(_configAreaFile, "rw");
 				try {
 					declareObjectAsAGap(filePosition, configAreaFile);
 				}
@@ -2442,7 +2556,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 	 *
 	 * @return gepackte Daten
 	 */
-	private byte[] zip(byte[] data) throws IOException {
+	static byte[] zip(byte[] data) throws IOException {
 
 		ByteArrayOutputStream packedData = new ByteArrayOutputStream();
 		DeflaterOutputStream zipper = new DeflaterOutputStream(packedData);
@@ -2454,7 +2568,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		return packedData.toByteArray();
 	}
 
-	private byte[] unzip(byte[] zippedData) throws IOException {
+	static byte[] unzip(byte[] zippedData) throws IOException {
 
 		ByteArrayOutputStream unpackedData = new ByteArrayOutputStream();
 		InflaterOutputStream unzipper = new InflaterOutputStream(unpackedData);
@@ -2512,15 +2626,14 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		//		Länge des serialisierten Datensatzes, int
 		//		Datensatz als Byte-Array
 
-		// Id´s der konfigurierenden Datensätze anfordern
+		// Id's der konfigurierenden Datensätze anfordern
 		final long configDataSetIds[] = object.getConfigurationsDataAttributeGroupUsageIds();
 
 		// Anzahl Datensätze ist nun bekannt
 		serializer.writeInt(configDataSetIds.length);
 
 
-		for(int nr = 0; nr < configDataSetIds.length; nr++) {
-			final long atgUserId = configDataSetIds[nr];
+		for(final long atgUserId : configDataSetIds) {
 			final byte[] dataSet = object.getConfigurationData(atgUserId);
 
 			// Atg-Verwendung
@@ -2582,18 +2695,39 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 				_actualObjects.remove(invalidObject.getID());
 			}
 
+			final ObjectReference oldObjRef;
+
+			if(invalidObject.getPersPersistenceMode() != DynamicObjectType.PersistenceMode.TRANSIENT_OBJECTS) {
+				oldObjRef = invalidObject.getLastFilePosition();
+			}
+			else {
+				oldObjRef = new TransientObjectReference(invalidObject);
+			}
 			synchronized(_oldObjectsId) {
+				_oldObjectsId.put(invalidObject.getID(), oldObjRef);
+			}
 
-				final OldObjectIdReference oldObjectIdReference;
+			FilePointer lastFilePosition = invalidObject.getLastFilePosition();
+			if(lastFilePosition != null) {
+				// null bei transienten Objekten. In dem Fall kann hier nichts eingetragen werden.
+				// Man könnte in Zukunft in _oldObjectsPid ObjectReference-s eintragen statt FilePointer. 
+				
+				synchronized(_oldObjectsPid) {
+					Set<FilePointer> filePositions = _oldObjectsPid.get(invalidObject.getPidHashCode());
 
-				if(invalidObject.getPersPersistenceMode() == DynamicObjectType.PersistenceMode.TRANSIENT_OBJECTS) {
-					oldObjectIdReference = new OldObjectIdReference(invalidObject);
+					if(filePositions != null) {
+						// Es gibt eine Liste, also Dateipostion einfügen
+						filePositions.add(lastFilePosition);
+					}
+					else {
+						// Es gibt noch keine Liste
+						filePositions = new HashSet<FilePointer>();
+						filePositions.add(lastFilePosition);
+
+						// Die neue Liste in die Map einfügen
+						_oldObjectsPid.put(invalidObject.getPidHashCode(), filePositions);
+					}
 				}
-				else {
-					oldObjectIdReference = new OldObjectIdReference(invalidObject.getLastFilePosition());
-				}
-
-				_oldObjectsId.put(invalidObject.getID(), oldObjectIdReference);
 			}
 
 			// TypeId Maps aktualisieren
@@ -2606,18 +2740,10 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 			}
 
 			synchronized(_oldObjectsTypeId) {
-				final OldObjectIdReference helper;
-				// Wenn es ein transientes Objekt ist, dann bleibt es im Speicher und wird nicht in die Datei geschrieben -> Es kann auch nicht geladen werden
-				if(invalidObject.getPersPersistenceMode() != DynamicObjectType.PersistenceMode.TRANSIENT_OBJECTS) {
-					helper = new OldObjectIdReference(invalidObject.getLastFilePosition());
-				}
-				else {
-					helper = new OldObjectIdReference(invalidObject);
-				}
 
 				// In die Map mit alten Objekten eintragen
 				putOldObjectTypeId(
-						invalidObject.getTypeId(), invalidObject.getFirstValidTime(), invalidObject.getFirstInvalidTime(), false, helper
+						invalidObject.getTypeId(), invalidObject.getFirstValidTime(), invalidObject.getFirstInvalidTime(), false, oldObjRef
 				);
 			}
 
@@ -2634,6 +2760,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 	 *
 	 * @see #restructure
 	 */
+	@Override
 	public boolean initialVersionRestructure() {
 		// Die lokale Zuordnung von Version zu Zeitstempel ist bei diesem Aufruf auch gleichzeitig die Zuordnung
 		// des Konfigurationsverantwortlichen.
@@ -2644,8 +2771,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		synchronized(_restructureLock) {
 			boolean restructureNeeded = false;
 			final Set<Short> localKeys = _localVersionActivationTime.keySet();
-			for(Iterator<Short> iterator = localKeys.iterator(); iterator.hasNext();) {
-				final Short localKey = iterator.next();
+			for(final Short localKey : localKeys) {
 				// In der alten Liste prüfen, ob der Wert vorhanden ist
 				if(!_configurationAuthorityVersionActivationTime.containsKey(localKey)) {
 					// Neues Version/Zeitpunkt Paar einfügen
@@ -2666,844 +2792,792 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 						String newDateString = dateFormat.format(newValue);
 						_debug.info(
 								"Der gespeicherte Aktivierungszeitpunkt (" + oldDateString + ") des Bereichs " + _configAreaFile + " für die Version "
-								+ localKey + " stimmt nicht mit dem Aktivierungszeitpunkt in der Verwaltungsdatei (" + newDateString + ") überein."
+										+ localKey + " stimmt nicht mit dem Aktivierungszeitpunkt in der Verwaltungsdatei (" + newDateString + ") überein."
 						);
 					}
 				}
 			}
 			// Datei restrukturieren damit die neue Zuweisung von Version zu einem Zeitstempel im Header gespeichert wird.
 			if(restructureNeeded) {
-				return restructure();
+				try {
+					restructure(RestructureMode.FullRestructure);
+					return true;
+				}
+				catch(IOException e) {
+					_debug.error("Fehler bei der Restrukturierung des Bereichs " + _configAreaFile, e);
+					return false;
+				}
 			}
 			_debug.info("Eine erneute Restrukturierung des Bereichs " + _configAreaFile + " ist nicht erforderlich.");
 			return true;
 		}
 	}
 
+	@Override
 	public long getGreatestId() {
 		return _greatestId;
 	}
 
-	public boolean restructure() {
+	public void restructure(final RestructureMode mode) throws IOException {
+		try {
+			restructureMain(mode);
+		}
+		catch(NoSuchVersionException e) {
+			throw new IOException(e);
+		}
+		catch(RuntimeException e) {
+			// Unschön, aber es werden z.B. IllegalArgumentExceoptions geworfen, die hier besser abgefangen werden
+			throw new IOException(e);
+		}
+	}
 
+	private void restructureMain(RestructureMode mode) throws IOException, NoSuchVersionException {
 		// Alle Zugriffe auf alte Objekte, die sich im Speicher befinden, sperren
 		synchronized(_restructureLock) {
 			// Datei sperren, so werden mögliche Dateizugriffe solange blockiert, bis die neue Datei zur Verfügung steht.
 			// Die Dateizugriffe werden dann sofort auf der neuen(reorganisierten) Datei durchgeführt.
 			synchronized(_configAreaFile) {
+
+				if(_actualObjects.size() == 0) {
+					// falls Mischmenge noch nicht geladen, dies tun
+					getMixedObjectSetObjects();
+					assert _actualObjects.size() > 0;
+				}
+
+				// Alle Dateioperationen verändern nicht die Objekte, die sich im Speicher befinden.
+				// Erst wenn die Reorganisation erfolgreich beendet wurde, werden die Objekte im Speicher
+				// auf die neue Situation angepaßt und aus den HashMap's entfernt und die aktuellen/zukünftig aktuellen
+				// Objekte auf die neue Dateiposition gesetzt.
+				// Kommt es zu einem Fehler bei der Reorganisation, wird die neue fehlerhaft reorganisierte Datei umbenannt
+				// (damit sie analysiert werden kann) und es wird auf der alten Datei weitergearbeitet.
+				// Damit dieses Verfahren durchgeführt werden kann, müssen alle Schritte der Reorganisation "protokolliert"
+				// werden. Im RestructureInfo werden deswegen die Dateipositionen aller gültigen bzw. neuen Objekte der Mischmenge
+				// gemerkt, sodass diese bei Bedarf im laufenden Betrieb aktualisiert werden können.
+				RestructureInfo restructureInfo;
+
+				BufferedRandomAccessFile oldConfigAreaFile = new BufferedRandomAccessFile(_configAreaFile, "r");
+
+				// Alle Daten, die sich geändert haben, speichern
+				flush();
+
+				// Die neue Datei, in der der Konfigurationsbereich reorganisiert wird
+				File configAreaNewName = new File(_configAreaFile.getAbsolutePath() + "New");
+
+				BufferedRandomAccessFile newConfigAreaFile = new BufferedRandomAccessFile(configAreaNewName, "rw");
+
 				try {
-
-					// Alle Dateioperationen verändern nicht die Objekte, die sich im Speicher befinden.
-					// Erst wenn die Reorganisation erfolgreich beendet wurde, werden die Objekte im Speicher
-					// auf die neue Situation angepaßt und aus den HashMap´s entfernt und die aktuellen/zukünftig aktuellen
-					// Objekte auf die neue Dateiposition gesetzt.
-					// Kommt es zu einem Fehler bei der Reorganisation, wird die neue fehlerhaft reorganisierte Datei umbenannt
-					// (damit sie analysiert werden kann) und es wird auf der alten Datei weitergearbeitet.
-					// Damit dieses Verfahren durchgeführt werden kann, müssen alle Schritte der Reorganisation "protokolliert"
-					// werden. Dazu wird eine HashMap und eine Liste(newOldObjectsIdList) angelegt, diese speichern welches Objekt aus dem Speicher gelöscht werden
-					// kann und welche Objekte an einer anderen Dateiposition zu finden sind.
-
-					// HashMap, die für aktuelle und zukünftig aktuelle Objekte die position in der neuen Datei speichert.
-					// Dies ist nötig, damit nach einer erfolgreichen Reorganisation die Elemente im Speicher auf den
-					// neusten Stand gebracht werden können.
-					// Als Schlüssel dient die neue Dateiposition.
-					// Als value dient das Objekt, das geändert werden soll.
-					// Es wird kein "richtiger" Schlüssel gebraucht, da die Liste am Ende ganz durchlaufen wird und der Schluessel
-					// dem value zugewiesen wird.
-					final Map<Long, SystemObjectInformationInterface> memoryObjectsNewFilePositionMap = new HashMap<Long, SystemObjectInformationInterface>();
-
-					// Es ist derzeit nicht möglich ein dyn Objekt während der Reorganisation auf invalid zu setzen.
-
-					// Speichert(Id der Objekte), welche alten Objekte in einen nGa/dyn nGa Bereich verschoben wurden. Diese Liste ist nötig, da
-					// während der Reorganisation neue Elemente in die Map _oldObjectsId geschoben werden können (dynamische Objekte).
-					// Also darf die Map _oldObjectsId nicht generell gelöscht werden, sondern nur die Objekte, die sich in dieser Liste
-					// befinden.
-
-					// Ende des Header
-					final long newAbsoluteEndHeader;
-					// Bereich, in dem alle ungültigen Konfigurationsobjekte gespeichert sind
-					final long newRelativeOldObjectArea;
-					// relative Anfangsposition der Menge, die alle alten dynamischen Objekte enthält
-					final long newRelativeDynObjectArea;
-					// relative Anfangsposition des Id Indizes
-					final long newRelativeIdIndex;
-					// relative Anfangsposition des Pid Indizes
-					final long newRelativePidIndex;
-					// relative Anfangsposition der Mischobjektmenge
-					final long newRelativeMixedSet;
-
-
-					RandomAccessFile oldConfigAreaFile = new RandomAccessFile(_configAreaFile, "r");
-
-					// Alle Daten, die sich geändert haben, speichern
-					flush();
-
-					// Die neue Datei, in der der Konfigurationsbereich reorganisiert wird
-					File configAreaNewName = new File(_configAreaFile.getAbsolutePath() + "New");
-
-					RandomAccessFile newConfigAreaFile = new RandomAccessFile(configAreaNewName, "rw");
-
-					// Try/finally für beide Dateien
-					try {
-						// Einen Pre-Header erzeugen, die relative Dateiposition der neuen nGa Blöcke ist noch unbekannt, dadurch
-						// sind auch die anderen relativen Positionen noch unbekannt. Es wird lediglich Platz reserviert.
-						// Falls ein neuer nGa-Block keine Elemente besitzt, wird dieser als relative Dateipostion eine -1 bekommen.
-
-						// Der neue Header setzt sich aus dem alten Header und den neuen nGa Blöcken zusammen.
-						// Der Header wächst also wegen der neuen nGa Blöcken.
-						// Jeder neue nGa Block, wird mit zwei Longs und einem Short abgebildet.
-						// Es gibt soviele neue Blöcke, wie es Versionen zwischen dem letzten erzeugten nGa Block (Reorganisation)
-						// und der jetzigen Version gibt.
-						// Die Variable _nextInvalidBlockVersion speichert die erste Version des nGa Blocks, der bei der Reorganisation
-						// geschrieben werden muss.
-
-						// Anzahl nGa Blöcke, die eingefügt werden müssen
-						final int numberOfNewOldBlocks;
-						if(_nextInvalidBlockVersion > _activeVersion) {
-							// Das ist immer dann der Fall, wenn es keinen "neuen" alten Block gibt.
-							// zb. beim Neustart des Systems, oder wenn gerade eine Reorganisation stattgefunden hat, aber
-							// es gibt keine Konfigurationsobjekte für einen neuen alten Block.
-							numberOfNewOldBlocks = 0;
-						}
-						else {
-							// Wieviele nGa Blöcke müssen eingefügt werden ? Soviele, wie Versionen fehlen, bis zur aktuellen Version
-							// und zwar einschließlich der aktuellen Version (diese Objekte sind in der derzeit aktuellen Version
-							// ungültig geworden), darum +1
-							numberOfNewOldBlocks = (_activeVersion - _nextInvalidBlockVersion) + 1;
-						}
-
-//						System.out.println("Neue nGa Blöcke: " + numberOfNewOldBlocks + " aktive Version: " + _activeVersion + " _nextInvalidBlockVersion " + _nextInvalidBlockVersion);
-
-						// Speichert die Größe des neuen Headers
-						// Die größe des alten Headers setzt sich aus seiner (Endeposition in der Datei) - (Länge des Headers, Integer) zusammen
-						// Das Stück des neuen Headers ist um 2 Longs und einem Short pro nGa Bereich größer
-						final int headerSizeNewFileArea = (int)(_headerEnd - 4 + numberOfNewOldBlocks * (2 * 8 + 2));
-
-						// In die neue Konfigurationsbereichsdatei einen Pre-Header schreiben
-						newConfigAreaFile.writeInt(headerSizeNewFileArea * (-1));
-						// Platzhalter schreiben
-						final byte[] byteArray = new byte[headerSizeNewFileArea];
-						for(int nr = 0; nr < byteArray.length; nr++) {
-							byteArray[nr] = -100;
-						}
-						newConfigAreaFile.write(byteArray);
-
-						newAbsoluteEndHeader = newConfigAreaFile.getFilePointer();
-
-//*********************************************************************************************************
-						// Nach dem Pre-Header die alten nGa-Blöcke speichern
-
-						// Anfang der Daten suchen
-						final long startOldObjectBlocks;
-
-						if(_oldObjectBlocks.containsKey(2)) {
-
-							startOldObjectBlocks = _oldObjectBlocks.get(2).getFilePosition() + _headerEnd;
-						}
-						else {
-							startOldObjectBlocks = _headerEnd;
-						}
-
-						oldConfigAreaFile.seek(startOldObjectBlocks);
-
-						// Es muss zum bis zum Beginn der dynamischen nGa kopiert werden
-						while(oldConfigAreaFile.getFilePointer() < (_startOldDynamicObjects + _headerEnd)) {
-							newConfigAreaFile.writeByte(oldConfigAreaFile.readByte());
-						}
-
-//*********************************************************************************************************
-						// Hinter die alten nga-Blöcke, die neuen nGa-Blöcke speichern
-
-						newRelativeOldObjectArea = newConfigAreaFile.getFilePointer() - newAbsoluteEndHeader;
-
-						// Zu jeder abgelaufenen Version einzeln die alten Objekte laden und dann in den derzeit betrachteten
-						// nGa einfügen.
-
-						// Es existiert ein Index nach Id. In diesem Index sind alle Objekte nach Id einsortiert, zusätzlich
-						// ist die relative Dateiposition zum Header gespeichert.
-						// Damit dieser Index später aufgebaut werden
-						// kann, wird jedes Objekt, das umkopiert wird, in einer Liste gespeichert.
-						// Später werden auch die dynamischen Objekte in diese Liste eingetragen
-						final List<SortObject> newOldObjectsIdList = new ArrayList<SortObject>();
-
-						// Es existiert ein Index, in dem sich alle alten Objekte (aus ngA und dynamisch nGa) befinden.
-						// Es wird der HashCode der Pid benutzt, als Ergebnis wird eine Liste mit relativen Dateipotionen
-						// geliefert. Mit den Dateipositionen kann das "passende" Objekt zu der Pid geladen werden.
-						// In dieser Map werden alle Objekte eingetragen, die in die Menge nGa oder dyn nGa eingetragen werden sollen.
-						// Als Key dient der HashCode der Pid. Rückgabe ist eine Liste, in der Liste sind alle Dateipositionen (relativ) aller Objekte enthalten,
-						// die ebenfalls den HashCoder der Pid besitzen (wie der Schlüssel)
-						final Map<Integer, SortObjectPid> newOldObjectsPidMap = new HashMap<Integer, SortObjectPid>();
-
-						short consideredOldVersion = _nextInvalidBlockVersion;
-						// Es werden alle nGa Blöcke erzeugt, die es bis zur jetzigen Version gibt.
-						_nextInvalidBlockVersion = (short)(_activeVersion + 1);
-
-						synchronized(_oldObjectsId) {
-							// ungültige Objekte können auch in der aktiven Version sein, darum <=
-							while(consideredOldVersion <= _activeVersion) {
-
-								Long[] keysLong = _oldObjectsId.keySet().toArray(new Long[_oldObjectsId.keySet().size()]);
-								// Es wird ein neuer nGa Bereich erzeugt
-
-								// boolean ob ein Element zu dem Block hinzugefügt wurde. wenn ja, dann dateipostion in map
-								// speichern, wenn nein -1 als dateiposition
-								// Wenn in einen nGa Bereich keine ungültigen Objekte angelegt werden können, dann bleibt diese
-								// Variable false und als relative Startposition des Blocks wird eine -1 eingetragen
-								boolean blockHasElements = false;
-
-								// Speichert den relativen Beginn des potentiellen Blocks, der geschrieben werden soll
-								final long relativeBlockPosition = (newConfigAreaFile.getFilePointer() - newAbsoluteEndHeader);
-
-								// Speichert den Zeitpunkt, zu dem die Version gültig wurde
-								final long blockTimeStamp;
-								if(_configurationAuthorityVersionActivationTime.containsKey(consideredOldVersion)) {
-									blockTimeStamp = _configurationAuthorityVersionActivationTime.get(consideredOldVersion);
-								}
-								else {
-									// Dieser Fall sollte niemals auftreten
-									System.out.println(consideredOldVersion);
-									_debug.error(
-											"Es gibt zu einer alten Version keinen Zeitstempel: Version " + consideredOldVersion + " Konfigurationsbereich: "
-											+ _configAreaFile + " . Die Reorganisation wird abgebrochen"
-									);
-									throw new IllegalStateException(
-											"Es gibt zu einer alten Version keinen Zeitstempel: Version " + consideredOldVersion + " Konfigurationsbereich: "
-											+ _configAreaFile + " . Die Reorganisation wird abgebrochen"
-									);
-								}
-
-								for(int nr = 0; nr < keysLong.length; nr++) {
-									
-
-									final long idOldObject = keysLong[nr];
-
-									// Das Objekt anfordern, es werden nur Konfigurationsobjekte betrachtet.
-									final SystemObjectInformationInterface oldObject = _oldObjectsId.get(idOldObject).getObject();
-
-									// Es werden nur Konfigurationsobjekte betrachtet
-									if(oldObject instanceof ConfigurationObjectInfo) {
-										final ConfigurationObjectInformation oldConfigObject = (ConfigurationObjectInformation)oldObject;
-
-										if(oldConfigObject.getFirstInvalidVersion() == consideredOldVersion) {
-											// Da in der neuen Datei muss ebenfalls ein Id Index angelegt werden muss, muss
-											// die neue endgültige relative Position im nGa Bereich des Datensatzes gespeichert werden.
-											// Die relative Adresse wird als negativer Wert gespeichert, dies ermöglicht bei Indexzugriffen
-											// sofort zu erkennen, ob das Objekt ein Konfigurationsobjekt oder ein dynamisches Objekt
-											// gefunden wurde.
-											// Die negative relative Position bezieht sich auf das Headerende, da es sich
-											// um ein Konfigurationsobjekt handelt.
-											final long newRelativeObjectPosition = (-1) * ((newConfigAreaFile.getFilePointer() - 4) - headerSizeNewFileArea);
-											newOldObjectsIdList.add(new SortObject(newRelativeObjectPosition, oldConfigObject.getID()));
-
-											// Pid Index
-											if(newOldObjectsPidMap.containsKey(oldConfigObject.getPid().hashCode())) {
-												final SortObjectPid filePositions = newOldObjectsPidMap.get(oldConfigObject.getPid().hashCode());
-												filePositions.putFilePosition(newRelativeObjectPosition);
-											}
-											else {
-												// Es gibt noch kein Objekt, also einfügen
-												SortObjectPid filePositions = new SortObjectPid(oldConfigObject.getPid().hashCode());
-												filePositions.putFilePosition(newRelativeObjectPosition);
-												newOldObjectsPidMap.put(oldConfigObject.getPid().hashCode(), filePositions);
-											}
-
-											// Das Objekt muss in den Bereich eingefügt werden. Es muss keine Lücke deklariert werden
-											// auch die Dateiposition muss nicht gespeichert werden.
-											writeConfigurationObjectToFile(oldConfigObject, newConfigAreaFile, false, false);
-											// Da ein Objekt in den nGa Bereich geschrieben wurde, muss die relative Position
-											// im Header unter Kennung 2 gesetzt werden
-											blockHasElements = true;
-										}
-									}
-								} // for
-								if(blockHasElements) {
-									// Es wurden ungültige Objekte in den nGa-Bereich eingetragen
-									_oldObjectBlocks.put(consideredOldVersion, new OldBlockInformations(relativeBlockPosition, blockTimeStamp));
-								}
-								else {
-									// Es wurden keine Elemente in den nGa-Bereich eingetragen, also gibt es auch
-									// keine Startposition an der die Elemte zu finden sind.
-									_oldObjectBlocks.put(consideredOldVersion, new OldBlockInformations((long)-1, blockTimeStamp));
-								}
-
-								// Es wurden alle Objekte betrachtet, also die nächste veraltet Version prüfen
-								consideredOldVersion++;
-							} // while
-						} // synch
-
-//*********************************************************************************************************
-
-						// Den alten dyn Block schreiben und dann die neuen dyn Objekte nach Zeit an den alten Block "ansortieren"
-
-						newRelativeDynObjectArea = newConfigAreaFile.getFilePointer() - newAbsoluteEndHeader;
-						// In der Map _oldObjectsId stehen jetzt nur noch dynamische Objekte
-
-						// Die alten dynamischen Objekte aus der Datei umkopieren
-						oldConfigAreaFile.seek(_startOldDynamicObjects + _headerEnd);
-
-						// Diese Variable speichert die neue absolute Startposition des Bereichs, der aller ungütligen dynamischen Objekte
-						// in der neuen Konfigurationsbereichsdatei enthält
-						final long absoluteStartNewDynamicArea = newConfigAreaFile.getFilePointer();
-
-						
-						while(oldConfigAreaFile.getFilePointer() < (_startIdIndex + _headerEnd)) {
-							newConfigAreaFile.writeByte(oldConfigAreaFile.readByte());
-						}
-
-						// Die dynamischen Objekte der Mischmenge, die ungültig sind, speichern.
-						// Diese müssen aufsteigend nach Invalid-Time sortiert werden
-
-						// Alle dynamischen Objekte, die in Frage kommen, sind in der Map _oldObjectsId gespeichert
-
-						// Array, das zu allen dynamischen Objekten den Zeitstempel enthält, wann das Objekt ungültig geworden ist
-						// und die absolute Position in der Datei um das Objekt später zu laden.
-						final SortObject oldDynamicObjectsLight[];
-
-						synchronized(_oldObjectsId) {
-							final Long[] keysLong = _oldObjectsId.keySet().toArray(new Long[_oldObjectsId.keySet().size()]);
-
-							// Liste, in der die Objekte gespeichert werden, diese wird später in ein Array umgewandelt
-							final List<SortObject> dynamicObjects = new LinkedList<SortObject>();
-
-							for(int nr = 0; nr < keysLong.length; nr++) {
-								
-								long idOldObject = keysLong[nr];
-
-								final SystemObjectInformationInterface oldObject = _oldObjectsId.get(idOldObject).getObject();
-
-								if(oldObject instanceof DynamicObjectInformation) {
-									final DynamicObjectInformation dynObject = (DynamicObjectInformation)oldObject;
-
-									// Alle nicht transienten Objekte müssen gespeichert werden. Transiente Objekte sind nur im Speicher
-									// vorhanden.
-									if(dynObject.getPersPersistenceMode() != DynamicObjectType.PersistenceMode.TRANSIENT_OBJECTS) {
-										dynamicObjects.add(new SortObject(dynObject.getLastFilePosition(), dynObject.getFirstInvalidTime()));
-									}
-								}
-							}
-							// Array zuweisen
-							oldDynamicObjectsLight = dynamicObjects.toArray(new SortObject[dynamicObjects.size()]);
-						}
-
-						// In dem Array oldDynamicObjectsLight stehen nun alle dynamischen Objekte mit ihrem Zeitstempel und
-						// ihrer Dateiposition zur Verfügung.
-						// Das Array wird jetzt nach dem Zeitstempel sortiert.
-
-						Arrays.sort(
-								oldDynamicObjectsLight, new Comparator() {
-							public int compare(Object o1, Object o2) {
-								SortObject object1 = (SortObject)o1;
-								SortObject object2 = (SortObject)o2;
-								return object1.compareTo(object2);
-							}
-						}
-						);
-
-						// Array liegt sortiert vor, also können die dynamischen Objekte in den Bereich geschrieben werden
-
-						for(int nr = 0; nr < oldDynamicObjectsLight.length; nr++) {
-							final SortObject dynamicSortObject = oldDynamicObjectsLight[nr];
-							final SystemObjectInformation systemObject = loadObjectFromFile(dynamicSortObject.getFilePosition());
-							final DynamicObjectInformation oldDynObject = (DynamicObjectInformation)systemObject;
-
-							// Wie auch bei den alten Konfigurationsobjekten, müssen die dynamischen Objekte
-							// in den Id Index eingetragen werden
-
-							// Die relative Position der Objekte bezieht sich auf den Beginn des dynamischen Bereichs, nicht auf
-							// das Headerende. Der Wert wird als positive Zahl gespeichert (Konfigurationsobjekte als negativ, s.o.)
-							// Da die Konfigurationsobjekte mit den negativen Zahlen und die dynamischen Objekte
-							// mit den positven Zahlen, muss festgelegt werden, zu welchem Bereich die "0" gehört.
-							// Die "0" gehört zu den nGa Objekten gehört somit zu den negativen Werten.
-							// Also wird jeder relative Position um eins erhöht (aus 0, wird eine +1 und somit wird diese Zahl
-							// im Zusammenhang mit dynamischen Objekten niemals im Index vergeben), wenn das Objekt
-							// später geladen werden muss, kann an dem positiven Wert erkannt werden, dass es sich
-							// um ein dynamisches Objekt handelt und die +1 kann wieder abgezogen werden.
-							final long newRelativeObjectPosition = (newConfigAreaFile.getFilePointer() - absoluteStartNewDynamicArea) + 1;
-
-							// Id
-							newOldObjectsIdList.add(new SortObject(newRelativeObjectPosition, oldDynObject.getID()));
-
-							// Pid Index
-							if(newOldObjectsPidMap.containsKey(oldDynObject.getPid().hashCode())) {
-								SortObjectPid filePositions = newOldObjectsPidMap.get(oldDynObject.getPid().hashCode());
-
-								filePositions.putFilePosition(newRelativeObjectPosition);
-							}
-							else {
-								// Es gibt noch kein Objekt, also einfügen
-								final SortObjectPid filePositions = new SortObjectPid(oldDynObject.getPid().hashCode());
-								filePositions.putFilePosition(newRelativeObjectPosition);
-								newOldObjectsPidMap.put(oldDynObject.getPid().hashCode(), filePositions);
-							}
-
-							// Objekt in der neuen Datei schreiben. Es muss keine Lücke deklariert werden und die
-							// Dateiposition am Objekt ist egal
-							writeDynamicObjectToFile(oldDynObject, newConfigAreaFile, false, false);
-						}
-
-						// Der neue "ungültige" dynamische Block wurde erzeugt
-//*********************************************************************************************************
-
-						// Den alten Index (Id) einlesen und die neues Objekte aus den nGa Blöcken + neue dyn Objekte
-						// nach Id einsortieren (Id + relative Dateipostion zum Header)
-
-						newRelativeIdIndex = newConfigAreaFile.getFilePointer() - newAbsoluteEndHeader;
-
-						// Der alte Index liegt bereits sortiert in der Datei vor.
-						// Also wird die Liste, die die neuen Id´s enthält, sortiert (nun liegen beide sortiert vor).
-						// Jetzt wird der erste Wert aus der Datei eingelesen (dies ist der kleinste Wert) und mit
-						// dem ersten Wert der Liste verglichen. Der kleinere von beiden wird geschrieben. Dann wird
-						// der nächste Wert betrachtet, usw (wie Mergesort).
-
-						final SortObject[] newOldObjectSortedArray = newOldObjectsIdList.toArray(new SortObject[newOldObjectsIdList.size()]);
-						Arrays.sort(
-								newOldObjectSortedArray, new Comparator<SortObject>() {
-							public int compare(SortObject o1, SortObject o2) {
-								return o1.compareTo(o2);
-							}
-						}
-						);
-
-						// Filedescriptor auf den Id-Index legen
-						oldConfigAreaFile.seek(_startIdIndex + _headerEnd);
-
-						// Bis zu dieser Position müssen Daten gelesen werden
-						final long endIdIndexBlock = _startPidHashCodeIndex + _headerEnd;
-
-						// Gibt an, ob alle Ids gemischt wurden (die neuen alten unter die alten Id´s)
-						boolean allIdsMerged = false;
-
-						// Speichert die Id aus der alten Datei. Die Variable wird mit Max initialisiert, für den Falls
-						// das es keinen neuen Wert beim Start gibt
-						long idOldConfigFile = Long.MAX_VALUE;
-						// Speichert die relative Dateiposition aus der alten Datei.
-						// -1, damit ein Fehler, der wie auch immer beim Start des Algorithmus entstanden ist,
-						// nicht in die Datei geschrieben werden kann.
-						long relativeFilePositionOldConfigFile = -1;
-						// Wenn alle alten Objekte aus der alten Datei einsortiert sind
-						boolean oldIdsMerged = false;
-						// Speichert, ob die Werte idOldConfigFile, relativeFilePositionOldConfigFile benutzt wurden.
-						// Wenn ja, dann müssen die nächsten Werte geladen werden
-						boolean oldFileObjectUsed = true;
-
-						// Objekt, das gerade aus dem Array newOldObjectSortedArray betrachtet wird
-						int actualIdMergeObject = 0;
-						// Objekt aus dem Array newOldObjectSortedArray (Es ist ein altes Objekt, aber es befand sich noch nicht in der Datei).
-						// Die Startwerte sind wo gewählt, das ein Fehler in der Initialisierung nicht in die Datei
-						// geschrieben wird und das alle SortObjekte ignoriert werden würden.
-						// Die gerade gesetzten Werte werden  beim Start des Algorithmus sofort neu gesetzt.
-						SortObject newOldIdObject = new SortObject(-1, Long.MAX_VALUE);
-						// Wenn alle neuen alten Id´s einsortiert sind
-						boolean newOldIdsMerged = false;
-
-						// Falls true, dann muss das nächste Objekt geholt werden, da das letzte Objekt gespeichert wurde
-						boolean newOldObjectUsed = true;
-
-						while(allIdsMerged == false) {
-
-							// Soll ein neuer Wert aus der alten Datei ausgelesen werden.
-							if((oldConfigAreaFile.getFilePointer() < endIdIndexBlock) && oldFileObjectUsed) {
-								// Es gibt noch Daten, die eingelesen werden müssen und der alte Wert wurde
-								// einsortiert, also die nächsten Daten laden
-								idOldConfigFile = oldConfigAreaFile.readLong();
-								relativeFilePositionOldConfigFile = oldConfigAreaFile.readLong();
-
-								// Die Werte wurden geladen, also stehen neue Werte zur Verfügung
-								oldFileObjectUsed = false;
-							}
-							else if(oldFileObjectUsed) {
-								// Es gibt keine Werte mehr, die aus der alten Datei kommen.
-
-								// Durch diesen hohen Wert, werden immer die Werte aus dem Array benutzt und der Algorithmus
-								// kann normal terminieren.
-								idOldConfigFile = Long.MAX_VALUE;
-								relativeFilePositionOldConfigFile = -1;
-								oldFileObjectUsed = false;
-								// Die Id-Menge ist fertig
-								oldIdsMerged = true;
-							}
-
-							if(actualIdMergeObject < newOldObjectSortedArray.length && newOldObjectUsed) {
-								// Es gibt noch Daten und der alte Wert wurde einsortiert
-								newOldIdObject = newOldObjectSortedArray[actualIdMergeObject];
-								actualIdMergeObject++;
-								newOldObjectUsed = false;
-							}
-							else if(newOldObjectUsed) {
-								// Alle Objekte aus dem Array wurden gespeichert (eingemischt), jetzt kann der Rest aus der alten Datei
-								// kopiert werden.
-
-								newOldIdObject = new SortObject(-1, Long.MAX_VALUE);
-								newOldObjectUsed = false;
-								// Das Array wurde bearbeitet
-								newOldIdsMerged = true;
-							}
-
-							if((newOldIdsMerged == false || oldIdsMerged == false)) {
-								// An dieser Stelle stehen zwei Werte zur Verfügung, die eingemischt werden können
-								if(idOldConfigFile < newOldIdObject.getValue()) {
-									newConfigAreaFile.writeLong(idOldConfigFile);
-									newConfigAreaFile.writeLong(relativeFilePositionOldConfigFile);
-									// Dadurch wird ein neuer Wert angefordert
-									oldFileObjectUsed = true;
-								}
-								else {
-									// Id schreiben
-									newConfigAreaFile.writeLong(newOldIdObject.getValue());
-									// Relative Dateiposition
-									newConfigAreaFile.writeLong(newOldIdObject.getFilePosition());
-									// nächsten Wert anfordern
-									newOldObjectUsed = true;
-								}
-							}
-							else {
-								// Es gibt keine Werte mehr
-								allIdsMerged = true;
-							}
-						} // while(oldIdsMerged)
-
-						// Alle Id´s sind geschrieben
-//*********************************************************************************************************
-						// Pid Index, ebenfalls die nGa Blöcke und neue dyn Objekte einfügen
-						// (hashCode Pid und relatve Dateipostion, Achtung pro PidHash kann es mehrer Dateipositionen geben)
-
-						newRelativePidIndex = newConfigAreaFile.getFilePointer() - newAbsoluteEndHeader;
-
-						// Es steht eine Map zur Verfügung (newOldObjectsPidMap), die alle neuen Elemente enthält, die in die dynamische nGa Menge
-						// einsortiert werden sollen. Dafür wird ein Array erstellt, in dem alle Objekte nach ihrer
-						// Pid (HashCode) sortiert vorlieren. Dieses Array wird dann in die alten Daten eingemischt.
-
-						// Jeder Eintrag hat eine feste Länge und besteht aus Pid HashCode und der relativen Position
-						// in der Datei.
-						// Nachteil, gibt es zu einer Pid 10 Objekte, so wird die Pid 10 mal gespeichert
-
-						// sortiertes Array erstellen und sortieren
-						SortObjectPid[] newOldObjectsPidSortedArray = (SortObjectPid[])newOldObjectsPidMap.values().toArray(new SortObjectPid[newOldObjectsPidMap.size()]);
-						Arrays.sort(
-								newOldObjectsPidSortedArray, new Comparator<SortObjectPid>() {
-							public int compare(SortObjectPid o1, SortObjectPid o2) {
-								return o1.compareTo(o2);
-							}
-						}
-						);
-
-						// Auf den Beginn des Pid HashCode Bereichs positionieren
-						oldConfigAreaFile.seek(_startPidHashCodeIndex + _headerEnd);
-
-						// Die alten schon sortiereten Objekte aus der alten Datei betrachten
-						// und die gerade sortiereten neuen alten Objekte einmischen
-
-						// Bis zu dieser Position müssen Daten gelesen werden
-						final long endPidIndexBlock = _headerEnd + _startMixedSet;
-
-						// gibt an, ob alle Pids gemischt wurden
-						boolean allPidsMerged = false;
-
-						// Speichert die Pid aus der alten Datei. Der Wert wird gross gewählt, da es sein kann, das es keinen
-						// Wert aus der Datei gibt.
-						int pidOldConfigFile = Integer.MIN_VALUE;
-						// Speichert die relative Dateiposition aus der alten Datei
-						relativeFilePositionOldConfigFile = -1;
-						// Wenn alle alten Objekte aus der alten Datei einsortiert sind
-						boolean oldPidsMerged = false;
-						// Speichert, ob die Werte pidOldConfigFile, relativeFilePositionOldConfigFile benutzt wurden.
-						// Wenn ja, dann müssen die nächsten Werte geladen werden
-						oldFileObjectUsed = true;
-
-						// Objekt, das gerade aus dem Array newOldObjectsPidSortedArray betrachtet wird
-						int actualPidMergeObject = 0;
-						// Objekt aus dem Array newOldObjectsPidSortedArray (Es ist ein altes Objekt, aber es befand sich noch nicht in der Datei)
-						SortObjectPid newOldPidObject = new SortObjectPid(Integer.MAX_VALUE);
-						// Wenn alle neuen alten Id´s einsortiert sind
-						boolean newOldPidsMerged = false;
-
-						// Falls true, dann muss das nächste Objekt geholt werden, da das letzte Objekt gespeichert wurde
-						newOldObjectUsed = true;
-
-						while(allPidsMerged == false) {
-							// Soll ein neuer Wert aus der alten Datei ausgelesen werden.
-							if((oldConfigAreaFile.getFilePointer() < endPidIndexBlock) && oldFileObjectUsed) {
-								// Es gibt noch Daten, die eingelesen werden müssen und der alte Wert wurde
-								// einsortiert, also die nächsten Daten laden
-								pidOldConfigFile = oldConfigAreaFile.readInt();
-								relativeFilePositionOldConfigFile = oldConfigAreaFile.readLong();
-
-								// Die Werte wurden geladen, also stehen neue Werte zur Verfügung
-								oldFileObjectUsed = false;
-							}
-							else if(oldFileObjectUsed) {
-								// Es gibt keine Werte mehr, die aus der alten Datei kommen.
-
-								// Durch diesen hohen Wert, werden immer die Werte aus dem Array benutzt und der Algorithmus
-								// kann normal terminieren.
-								pidOldConfigFile = Integer.MAX_VALUE;
-								relativeFilePositionOldConfigFile = -1;
-								oldFileObjectUsed = false;
-								// Die Pid-Menge ist fertig
-								oldPidsMerged = true;
-							}
-
-							// if (actualPidMergeObject < newOldObjectSortedArray.length && newOldObjectUsed) {
-							if(actualPidMergeObject < newOldObjectsPidSortedArray.length && newOldObjectUsed) {
-								// Es gibt noch Daten und der alte Wert wurde einsortiert
-								newOldPidObject = newOldObjectsPidSortedArray[actualPidMergeObject];
-								actualPidMergeObject++;
-								newOldObjectUsed = false;
-							}
-							else if(newOldObjectUsed) {
-								// Alle Objekte aus dem Array wurden gespeichert (eingemischt), jetzt kann der Rest aus der alten Datei
-								// kopiert werden.
-
-								newOldPidObject = new SortObjectPid(Integer.MAX_VALUE);
-								newOldObjectUsed = false;
-								// Das Array wurde bearbeitet
-								newOldPidsMerged = true;
-							}
-
-							if((newOldPidsMerged == false || oldPidsMerged == false)) {
-								// An dieser Stelle stehen zwei Werte zur Verfügung, die eingemischt werden können
-								if(pidOldConfigFile < newOldPidObject.getPidHashCode()) {
-									newConfigAreaFile.writeInt(pidOldConfigFile);
-									newConfigAreaFile.writeLong(relativeFilePositionOldConfigFile);
-									// Dadurch wird ein neuer Wert angefordert
-									oldFileObjectUsed = true;
-								}
-								else {
-									// Alle Werte des Objekts schreiben
-									final List<Long> filePositions = newOldPidObject.getFilePositions();
-									for(int nr = 0; nr < filePositions.size(); nr++) {
-										newConfigAreaFile.writeInt(newOldPidObject.getPidHashCode());
-										// Relative Dateiposition, die Position bezieht sich auf die neue Datei
-										newConfigAreaFile.writeLong(filePositions.get(nr));
-									}
-									// nächstes Objekt anfordern
-									newOldObjectUsed = true;
-								}
-							}
-							else {
-								// Es gibt keine Werte mehr
-								allPidsMerged = true;
-							}
-						} // while(oldIdsMerged)
-
-//*********************************************************************************************************
-
-						// Die aktuellen und zukünftig aktuellen in die Mischmenge schreiben
-
-						newRelativeMixedSet = newConfigAreaFile.getFilePointer() - newAbsoluteEndHeader;
-
-						// Da die Objekte neu geschrieben werden, verändert sich auch die Position in der Datei.
-						// Das muss dem Objekt mitgeteilt werden (geschieht beim schreiben automatisch)
-
-						synchronized(_actualObjects) {
-							Collection<SystemObjectInformationInterface> allActualObjects = _actualObjects.values();
-							for(Iterator<SystemObjectInformationInterface> iterator = allActualObjects.iterator(); iterator.hasNext();) {
-								SystemObjectInformationInterface systemObjectInfo = iterator.next();
-
-								// In die neue Datei speichern
-								if(systemObjectInfo instanceof ConfigurationObjectInformation) {
-									ConfigurationObjectInformation configurationObjectInformation = (ConfigurationObjectInformation)systemObjectInfo;
-									// Da das Objekt neu in eine Datei geschrieben wird, muss keine Lücke eingefügt werden. Die
-									// neue Speicherposition darf nicht an dem Objekt gespeichert werden, sondern erst wenn
-									// die Reorganisation abgeschlossen ist.
-									// Den Speicherort merken, damit er nachträglich gesetzt werden kann.
-									final long objectFilePosition = writeConfigurationObjectToFile(
-											configurationObjectInformation, newConfigAreaFile, false, false
-									);
-									memoryObjectsNewFilePositionMap.put(objectFilePosition, configurationObjectInformation);
-								}
-								else if(systemObjectInfo instanceof DynamicObjectInformation) {
-									DynamicObjectInformation dynamicObjectInformation = (DynamicObjectInformation)systemObjectInfo;
-									// Da das Objekt neu in eine Datei geschrieben wird, muss keine Lücke eingefügt werden.
-									// Die neue Dateiposition darf nicht an dem Objekt gespeichert werden, sondern muss nachträglich gesetzt
-									// werden.
-									final long objectFilePosition = writeDynamicObjectToFile(dynamicObjectInformation, newConfigAreaFile, false, false);
-									memoryObjectsNewFilePositionMap.put(objectFilePosition, dynamicObjectInformation);
-								}
-								else {
-									_debug.error("Unbekanntes Objekt " + systemObjectInfo.getClass());
-								}
-							}
-						}
-
-						synchronized(_newObjects) {
-							Collection<SystemObjectInformationInterface> allActualObjects = _newObjects.values();
-							for(Iterator<SystemObjectInformationInterface> iterator = allActualObjects.iterator(); iterator.hasNext();) {
-								SystemObjectInformationInterface systemObjectInfo = iterator.next();
-
-								// In die neue Datei speichern
-								if(systemObjectInfo instanceof ConfigurationObjectInformation) {
-									ConfigurationObjectInformation configurationObjectInformation = (ConfigurationObjectInformation)systemObjectInfo;
-									// Da das Objekt neu in eine Datei geschrieben wird, muss keine Lücke eingefügt werden.
-									// Die neue Dateiposition darf nicht an dem Objekt gespeichert werden, sondern muss nachträglich gesetzt
-									// werden.
-									final long objectFilePosition = writeConfigurationObjectToFile(
-											configurationObjectInformation, newConfigAreaFile, false, false
-									);
-									memoryObjectsNewFilePositionMap.put(objectFilePosition, configurationObjectInformation);
-								}
-								else if(systemObjectInfo instanceof DynamicObjectInformation) {
-									DynamicObjectInformation dynamicObjectInformation = (DynamicObjectInformation)systemObjectInfo;
-									// Da das Objekt neu in eine Datei geschrieben wird, muss keine Lücke eingefügt werden.
-									// Die neue Dateiposition darf nicht an dem Objekt gespeichert werden, sondern muss nachträglich gesetzt
-									// werden.
-									final long objectFilePosition = writeDynamicObjectToFile(dynamicObjectInformation, newConfigAreaFile, false, false);
-									memoryObjectsNewFilePositionMap.put(objectFilePosition, dynamicObjectInformation);
-								}
-								else {
-									_debug.error("Unbekanntes Objekt " + systemObjectInfo.getClass());
-								}
-							}
-						}
-
-//*********************************************************************************************************
-						// Header mit den richtigen relativen Dateipostionen füllen
-
-						// Es stehen alle relativen Positionen in dem neuen Konfigurationsbereich zur Verfügung,
-						// also kann das Objekt, das die Datei verwaltet, auf die neue Datei umgestellt werden.
-						// Danach kann der Header in die neue Datei geschrieben werden.
-
-						
-
-
-
-						// Damit ist auch sofort bekannt, wo der Bereich beginnt, der alle ungültigen Konfigurationsobjekte
-						// enthält
-						_headerEnd = newAbsoluteEndHeader;
-
-						_startOldDynamicObjects = newRelativeDynObjectArea;
-
-						_startIdIndex = newRelativeIdIndex;
-
-						_startPidHashCodeIndex = newRelativePidIndex;
-
-						_startMixedSet = newRelativeMixedSet;
-
-						// Mit den neuen relativen Positionen den Header schreiben
-						writeHeader(newConfigAreaFile);
-//*********************************************************************************************************
-						// Datei umbennen und die alte Datei ersetzen
-
-						// Die bisherige Konfigurationsdatei wird in "alter Name".configold umbenannt.
-						// Die gerade erzeugte Konfigurationsbereichsdatei wird in den alten Namen umbenannt.
-
-						oldConfigAreaFile.close();
-						newConfigAreaFile.close();
-
-						// Die original Datei in Name.configold umbennen
-						final String originalFileName = _configAreaFile.getAbsolutePath();
-						final File oldConfigFile = new File(originalFileName);
-
-						// gibt es von einer vorherigen Reorganisation noch ein old-File, wenn ja, löschen
-						final File lastRestructureOldFile = new File(originalFileName + "Old");
-						if(lastRestructureOldFile.exists()) {
-							lastRestructureOldFile.delete();
-						}
-
-						if(oldConfigFile.renameTo(new File(originalFileName + "Old"))) {
-							// Die original Datei konnte umbennant werden
-
-							// Die neue Datei umbennen
-							if(configAreaNewName.renameTo(new File(originalFileName))) {
-
-								// Die Dateien konnten erfolgreich umbenannt werden, also können die Objekte, die sich
-								// im Speicher befinden, auf die neue Situation angepaßt werden werden.
-
-								// Alle Schlüssel der Maps, dies entspricht den neuen Dateipositionen in der neuen Datei.
-								// Diese Position muss den Objekten zugewiesen werden.
-								final Collection<Long> newFilePositions = memoryObjectsNewFilePositionMap.keySet();
-
-								for(Iterator<Long> iterator = newFilePositions.iterator(); iterator.hasNext();) {
-									Long newObjectFilePosition = iterator.next();
-									final SystemObjectInformationInterface object = memoryObjectsNewFilePositionMap.get(newObjectFilePosition);
-
-									if(object instanceof ConfigurationObjectInformation) {
-										final ConfigurationObjectInformation configObject = (ConfigurationObjectInformation)object;
-										configObject.setLastFilePosition(newObjectFilePosition);
-									}
-									else if(object instanceof DynamicObjectInformation) {
-										final DynamicObjectInformation dynObject = (DynamicObjectInformation)object;
-										dynObject.setLastFilePosition(newObjectFilePosition);
-									}
-									else {
-										_debug.error("Objekt unbekannten Typs: " + object.getClass());
-									}
-								}
-
-								// In der Map _oldObjectsId sind alle Objekte gespeichert, die als ungültig markiert sind
-								// und die sich in der Mischmenge befinden. Das gleiche gilt für die Map _oldObjectsPid
-								// Diese Maps müssen nun um die Objekte bereinigt werden, die in die nGa Bereiche oder in den
-								// dyn nGa Bereich gespeichert wurden.
-
-								// In dem Objekt, das alle ConfigFiles verwaltet wird ebenfalls eine Map mit Id´s
-								// für die alten Objekte geführt, diese muss ebenfalls entfernt werden
-
-								
-								for(int nr = 0; nr < newOldObjectsIdList.size(); nr++) {
-									// Objekt, das die Id eines Objekt speichert
-									final SortObject oldObject = newOldObjectsIdList.get(nr);
-									// entfernt das Objekt aus der Map
-									synchronized(_oldObjectsId) {
-										if(_oldObjectsId.remove(oldObject.getValue()) == null) {
-											_debug.warning(
-													"Ein altes Objekt, das sich in der Mischmenge befand und an die richtige Position gespeichert werden sollte, konnte nicht aus der Map der alten Objekte gelöscht werden, da es dort nicht mehr vorhanden war"
-											);
-										}
-									}
-									// Aus der übergeorndeten Datenstruktur entfernen
-									_fileManager.removeObject(oldObject.getValue());
-								}
-
-								synchronized(_oldObjectsPid) {
-									_oldObjectsPid.clear();
-								}
-
-								synchronized(_oldObjectsTypeId) {
-									_oldObjectsTypeId.clear();
-								}
-
-								_debug.info(
-										"Die Restrukturierung des Konfigurationsbereichs " + _configurationAreaPid + " in der Datei " + _configAreaFile
-										+ " wurde erfolgreich abgeschlossen"
-								);
-							}
-							else {
-								// Fehler, die neue Datei konnte nich umbenannt werden. Also wird die alte Datei weiter benutzt.
-								// Die Reorganisation ist fehlgeschlagen.
-								if(!oldConfigFile.renameTo(new File(originalFileName))) {
-									
-									_debug.error("Die alte Konfigurationsdatei kann nicht weiter benutzt werden");
-								}
-
-								throw new IllegalStateException(
-										"Reorganisation: Fehler beim umbennen der neuen Konfigurationsdatei " + newConfigAreaFile + "in " + originalFileName
-								);
-							}
-						}
-						else {
-							// Die Reorganisation ist fehlgeschlagen
-							throw new IllegalStateException("Reorganisation: Fehler beim umbennen der aktuellen Konfigurationsdatei: " + originalFileName);
-						}
-					}
-					finally {
-						oldConfigAreaFile.close();
-						newConfigAreaFile.close();
-					}
+					// Versuchen zu restrukturieren
+					restructureInfo = createRestructuredCopy(oldConfigAreaFile, newConfigAreaFile, mode);
 				}
-				catch(Exception e) {
-					// Fängt alle Fehler ab, kommt es zu einem Fehler, wird die Reorganisation unterbrochen und der
-					// Ursprungszustand bleibt erhalten
-					_debug.warning(
-							"Fehler bei der Reorganisation " + _configAreaFile + " Pid " + _configurationAreaPid
-							+ " . Die Reorganisation wurde abgebrochen, es wird ohne Änderung in der Ursprungsdate normal weitergearbeitet.", e
-					);
-					return false;
+				finally {
+					oldConfigAreaFile.close();
+					newConfigAreaFile.close();
 				}
+
+				// Wenn das Restrukturieren geklappt hat, die alte Datei durch die neue Datei ersetzen
+				// Vorher auf jeden Fall beide Dateien schließen (finally-Block oben)!
+				swapFiles(restructureInfo, configAreaNewName);
+
 			} // synch(datei)
 		} // synch(_restruct)
-		return true;
 	}
 
+	public void swapFiles(final RestructureInfo restructureInfo, final File configAreaNewName) throws IOException {
+		// Die original Datei in Name.configold umbennen
+		final String originalFileName = _configAreaFile.getAbsolutePath();
+		final File oldConfigFile = new File(originalFileName);
+
+		// gibt es von einer vorherigen Reorganisation noch ein old-File, wenn ja, löschen
+		final File lastRestructureOldFile = new File(originalFileName + "Old");
+		if(lastRestructureOldFile.exists()) {
+			lastRestructureOldFile.delete();
+		}
+
+		if(!oldConfigFile.renameTo(new File(originalFileName + "Old"))) {
+			// Die Reorganisation ist fehlgeschlagen
+			throw new IOException("Reorganisation: Fehler beim umbennen der aktuellen Konfigurationsdatei: " + originalFileName);
+		}
+		if(!configAreaNewName.renameTo(new File(originalFileName))) {
+			// Fehler, die neue Datei konnte nich umbenannt werden. Also wird die alte Datei weiter benutzt.
+			// Die Reorganisation ist fehlgeschlagen.
+			if(!oldConfigFile.renameTo(new File(originalFileName))) {
+				
+				_debug.error("Die alte Konfigurationsdatei kann nicht weiter benutzt werden");
+			}
+
+			throw new IOException(
+					"Reorganisation: Fehler beim umbennen der neuen Konfigurationsdatei " + configAreaNewName + "in " + originalFileName
+			);
+		}
+
+		// Dateiumbenennen hat geklappt, also neue Dateipositionen an den Objekten merken und neue
+		// Dateioffsets setzen
+		Map<Long, Long> newFilePositions = restructureInfo._newFilePositions;
+		for(SystemObjectInformationInterface obj : _actualObjects.values()) {
+			SystemObjectInformation objectInformation = (SystemObjectInformation) obj;
+			FilePointer lastFilePosition = objectInformation.getLastFilePosition();
+			if(lastFilePosition != null) {
+				Long newPos = newFilePositions.get(lastFilePosition.getAbsoluteFilePosition());
+				if(newPos != null) {
+					lastFilePosition.setAbsoluteFilePosition(newPos);
+				}
+			}
+		}
+		for(SystemObjectInformationInterface obj : _newObjects.values()) {
+			SystemObjectInformation objectInformation = (SystemObjectInformation) obj;
+			FilePointer lastFilePosition = objectInformation.getLastFilePosition();
+			if(lastFilePosition != null) {
+				Long newPos = newFilePositions.get(lastFilePosition.getAbsoluteFilePosition());
+				if(newPos != null) {
+					lastFilePosition.setAbsoluteFilePosition(newPos);
+				}
+			}
+		}
+		for(ObjectReference reference : _oldObjectsId.values()) {
+			if(reference instanceof FilePointer) {
+				FilePointer lastFilePosition = (FilePointer) reference;
+				Long newPos = newFilePositions.get(lastFilePosition.getAbsoluteFilePosition());
+				if(newPos != null) {
+					lastFilePosition.setAbsoluteFilePosition(newPos);
+				}
+			}
+		}
+		updateHeaderPositions(restructureInfo);
+
+		// In der Map _oldObjectsId sind alle Objekte gespeichert, die als ungültig markiert sind
+		// und die sich in der Mischmenge befinden. Das gleiche gilt für die Map _oldObjectsPid
+		// Diese Maps müssen nun um die Objekte bereinigt werden, die in die nGa Bereiche oder in den
+		// dyn nGa Bereich gespeichert wurden.
+
+		// In dem Objekt, das alle ConfigFiles verwaltet wird ebenfalls eine Map mit Id's
+		// für die alten Objekte geführt, diese muss ebenfalls entfernt werden
+		synchronized(_oldObjectsId) {
+			Iterator<Map.Entry<Long, ObjectReference>> iterator = _oldObjectsId.entrySet().iterator();
+			while(iterator.hasNext()) {
+				final Map.Entry<Long, ObjectReference> entry = iterator.next();
+				// Transiente, gelöschte Objekte beibehalten
+				if(entry.getValue() instanceof FilePointer) {
+					_fileManager.removeObject(entry.getKey());
+					iterator.remove();
+				}
+			}
+		}
+
+		synchronized(_oldObjectsPid) {
+			_oldObjectsPid.clear();
+		}
+
+		synchronized(_oldObjectsTypeId) {
+			_oldObjectsTypeId.clear();
+		}
+
+		_debug.info(
+				"Die Restrukturierung des Konfigurationsbereichs " + _configurationAreaPid + " in der Datei " + _configAreaFile
+						+ " wurde erfolgreich abgeschlossen"
+		);
+	}
+
+
+	/**
+	 * Führt eigentliche Restrukturierung aus
+	 * @param oldConfigAreaFile
+	 * @param newConfigAreaFile
+	 * @param mode
+	 * @throws IOException
+	 * @throws NoSuchVersionException
+	 */
+	private RestructureInfo createRestructuredCopy(final BufferedRandomAccessFile oldConfigAreaFile, final BufferedRandomAccessFile newConfigAreaFile, final RestructureMode mode) throws IOException, NoSuchVersionException {
+
+		final RestructureInfo restructureInfo = new RestructureInfo();
+
+		// Ende des Header
+		final long newAbsoluteEndHeader;
+		// relative Anfangsposition der Menge, die alle alten dynamischen Objekte enthält
+		final long newRelativeDynObjectArea;
+		// relative Anfangsposition des Id Indizes
+		final long newRelativeIdIndex;
+		// relative Anfangsposition des Pid Indizes
+		final long newRelativePidIndex;
+		// relative Anfangsposition der Mischobjektmenge
+		final long newRelativeMixedSet;
+
+		// Es existiert ein Index nach Id. In diesem Index sind alle Objekte nach Id einsortiert, zusätzlich
+		// ist die relative Dateiposition zum Header gespeichert.
+		// Damit dieser Index später aufgebaut werden
+		// kann, wird jedes Objekt, das umkopiert wird, in einer Liste gespeichert.
+		// Später werden auch die dynamischen Objekte in diese Liste eingetragen
+		final List<SortObject> newIdIndex = new ArrayList<SortObject>();
+
+		// Es existiert ein Index, in dem sich alle alten Objekte (aus ngA und dynamisch nGa) befinden.
+		// Es wird der HashCode der Pid benutzt, als Ergebnis wird eine Liste mit relativen Dateipotionen
+		// geliefert. Mit den Dateipositionen kann das "passende" Objekt zu der Pid geladen werden.
+		// In dieser Map werden alle Objekte eingetragen, die in die Menge nGa oder dyn nGa eingetragen werden sollen.
+		// Als Key dient der HashCode der Pid. Rückgabe ist eine Liste, in der Liste sind alle Dateipositionen (relativ) aller Objekte enthalten,
+		// die ebenfalls den HashCoder der Pid besitzen (wie der Schlüssel)
+		final Map<Integer, SortObjectPid> newPidIndex = new HashMap<Integer, SortObjectPid>();
+
+
+		// Einen Pre-Header erzeugen, die relative Dateiposition der neuen nGa Blöcke ist noch unbekannt, dadurch
+		// sind auch die anderen relativen Positionen noch unbekannt. Es wird lediglich Platz reserviert.
+		// Falls ein neuer nGa-Block keine Elemente besitzt, wird dieser als relative Dateipostion eine -1 bekommen.
+
+		// Der neue Header setzt sich aus dem alten Header und den neuen nGa Blöcken zusammen.
+		// Der Header wächst also wegen der neuen nGa Blöcken.
+		// Jeder neue nGa Block, wird mit zwei Longs und einem Short abgebildet.
+		// Es gibt soviele neue Blöcke, wie es Versionen zwischen dem letzten erzeugten nGa Block (Reorganisation)
+		// und der jetzigen Version gibt.
+		// Die Variable _nextInvalidBlockVersion speichert die erste Version des nGa Blocks, der bei der Reorganisation
+		// geschrieben werden muss.
+
+		// Anzahl nGa Blöcke, die eingefügt werden müssen
+		final int numberOfNewOldBlocks;
+		if(_nextInvalidBlockVersion > _activeVersion) {
+			// Das ist immer dann der Fall, wenn es keinen "neuen" alten Block gibt.
+			// zb. beim Neustart des Systems, oder wenn gerade eine Reorganisation stattgefunden hat, aber
+			// es gibt keine Konfigurationsobjekte für einen neuen alten Block.
+			numberOfNewOldBlocks = 0;
+		}
+		else {
+			// Wieviele nGa Blöcke müssen eingefügt werden ? Soviele, wie Versionen fehlen, bis zur aktuellen Version
+			// und zwar einschließlich der aktuellen Version (diese Objekte sind in der derzeit aktuellen Version
+			// ungültig geworden), darum +1
+			numberOfNewOldBlocks = (_activeVersion - _nextInvalidBlockVersion) + 1;
+		}
+
+		if(numberOfNewOldBlocks != 0 && mode == RestructureMode.DynamicObjectRestructure){
+			// Beim Restrukturieren der dynamischen Objekte im laufenden Betrieb dürfen keine neuen Blöcke angelegt werden
+			throw new IllegalArgumentException("Nach der Aktivierung muss eine vollständige Restrukturierung erfolgen");
+		}
+
+		// Speichert die Größe des neuen Headers
+		// Die größe des alten Headers setzt sich aus seiner (Endeposition in der Datei) - (Länge des Headers, Integer) zusammen
+		// Das Stück des neuen Headers ist um 2 Longs und einem Short pro nGa Bereich größer
+		final int headerSizeNewFileArea = (int)(_headerEnd - 4 + numberOfNewOldBlocks * (2 * 8 + 2));
+
+		// In die neue Konfigurationsbereichsdatei einen Pre-Header schreiben
+		newConfigAreaFile.writeInt(headerSizeNewFileArea * (-1));
+		// Platzhalter schreiben
+		final byte[] byteArray = new byte[headerSizeNewFileArea];
+		for(int nr = 0; nr < byteArray.length; nr++) {
+			byteArray[nr] = -100;
+		}
+		newConfigAreaFile.write(byteArray);
+
+		newAbsoluteEndHeader = newConfigAreaFile.getFilePointer();
+
+		//*********************************************************************************************************
+		// Nach dem Pre-Header die alten nGa-Blöcke speichern
+
+		// Anfang der Daten suchen
+		final long startOldObjectBlocks;
+
+		// es wird davon ausgegangen, dass die NGA-Blöcke (sofern vorhanden) direkt nach dem Header anfangen (vgl. writeHeader)
+		startOldObjectBlocks = _headerEnd;
+
+		oldConfigAreaFile.seek(startOldObjectBlocks);
+
+		assert headerSizeNewFileArea + 4 == newAbsoluteEndHeader;
+
+		// Objekte der bisherigen Nga-Blöcke (für Config-objekte) in neue Datei kopieren
+		switch(mode){
+			case DeleteObjectsPermanently:
+			case FullRestructure: // fallthrough
+				// Bei einer vollen Restrukturierung eventuelle Lücken füllen.
+				// Lücken ggf. füllen (es sollte keine Lücken geben, außer bei Konfigurationsdateien wo gelöschte Objekte wieder modifiziert wurden)
+				// (Fehler in frühen Konfigurationsversionen)
+				copyObjectsRemoveGaps(oldConfigAreaFile, newConfigAreaFile, (_startOldDynamicObjects + _headerEnd), newIdIndex, newPidIndex, 0, newAbsoluteEndHeader);
+				break;
+			case DynamicObjectRestructure:
+				// bei der Restrukturierung im laufenden Betrieb keine Lücken füllen, damit die Dateipositionen gleich bleibem
+				copyObjectsPreserveGaps(oldConfigAreaFile, newConfigAreaFile, (_startOldDynamicObjects + _headerEnd), newIdIndex, newPidIndex, 0, newAbsoluteEndHeader);
+				break;
+		}
+
+		//*********************************************************************************************************
+
+		short consideredOldVersion = _nextInvalidBlockVersion;
+		// Es werden alle nGa Blöcke erzeugt, die es bis zur jetzigen Version gibt.
+		_nextInvalidBlockVersion = (short)(_activeVersion + 1);
+
+		synchronized(_oldObjectsId) {
+			// ungültige Objekte können auch in der aktiven Version sein, darum <=
+			while(consideredOldVersion <= _activeVersion) {
+
+				Long[] keysLong = _oldObjectsId.keySet().toArray(new Long[_oldObjectsId.keySet().size()]);
+				// Es wird ein neuer nGa Bereich erzeugt
+
+				// boolean ob ein Element zu dem Block hinzugefügt wurde. wenn ja, dann dateipostion in map
+				// speichern, wenn nein -1 als dateiposition
+				// Wenn in einen nGa Bereich keine ungültigen Objekte angelegt werden können, dann bleibt diese
+				// Variable false und als relative Startposition des Blocks wird eine -1 eingetragen
+				boolean blockHasElements = false;
+
+				// Speichert den relativen Beginn des potentiellen Blocks, der geschrieben werden soll
+				final long relativeBlockPosition = (newConfigAreaFile.getFilePointer() - newAbsoluteEndHeader);
+
+				// Speichert den Zeitpunkt, zu dem die Version gültig wurde
+				final long blockTimeStamp;
+				if(_configurationAuthorityVersionActivationTime.containsKey(consideredOldVersion)) {
+					blockTimeStamp = _configurationAuthorityVersionActivationTime.get(consideredOldVersion);
+				}
+				else {
+					// Dieser Fall sollte niemals auftreten
+					_debug.error(
+							"Es gibt zu einer alten Version keinen Zeitstempel: Version " + consideredOldVersion + " Konfigurationsbereich: "
+									+ _configAreaFile + " . Die Reorganisation wird abgebrochen"
+					);
+					throw new IllegalStateException(
+							"Es gibt zu einer alten Version keinen Zeitstempel: Version " + consideredOldVersion + " Konfigurationsbereich: "
+									+ _configAreaFile + " . Die Reorganisation wird abgebrochen"
+					);
+				}
+
+				for(final Long idOldObject : keysLong) {
+					
+
+					// Das Objekt anfordern, es werden nur Konfigurationsobjekte betrachtet.
+					final SystemObjectInformationInterface oldObject = getSystemObjectInfo(_oldObjectsId.get(idOldObject), oldConfigAreaFile);
+
+					// Es werden nur Konfigurationsobjekte betrachtet
+					if(oldObject instanceof ConfigurationObjectInfo) {
+						final ConfigurationObjectInformation oldConfigObject = (ConfigurationObjectInformation) oldObject;
+
+						if(oldConfigObject.getFirstInvalidVersion() == consideredOldVersion) {
+							// Da in der neuen Datei muss ebenfalls ein Id Index angelegt werden muss, muss
+							// die neue endgültige relative Position im nGa Bereich des Datensatzes gespeichert werden.
+							// Die relative Adresse wird als negativer Wert gespeichert, dies ermöglicht bei Indexzugriffen
+							// sofort zu erkennen, ob das Objekt ein Konfigurationsobjekt oder ein dynamisches Objekt
+							// gefunden wurde.
+							// Die negative relative Position bezieht sich auf das Headerende, da es sich
+							// um ein Konfigurationsobjekt handelt.
+							// - 4 weil Header bei Byte 4 beginnt
+							// (Es muss sowohl die header-Länge, als auch der Offset des HEaders abgezogen werden)
+							final long newRelativeObjectPosition = getRelativeFilePositionForInvalidConfigObject(
+									(4 + headerSizeNewFileArea), newConfigAreaFile.getFilePointer()
+							);
+							addToIndizes(newIdIndex, newPidIndex, oldConfigObject, newRelativeObjectPosition);
+
+							// Das Objekt muss in den Bereich eingefügt werden. Es muss keine Lücke deklariert werden
+							// auch die Dateiposition muss nicht gespeichert werden.
+							writeConfigurationObjectToFile(oldConfigObject, newConfigAreaFile, false, false);
+							// Da ein Objekt in den nGa Bereich geschrieben wurde, muss die relative Position
+							// im Header unter Kennung 2 gesetzt werden
+							blockHasElements = true;
+						}
+					}
+				} // for
+				if(blockHasElements) {
+					// Es wurden ungültige Objekte in den nGa-Bereich eingetragen
+					_oldObjectBlocks.put(consideredOldVersion, new OldBlockInformations(relativeBlockPosition, blockTimeStamp));
+				}
+				else {
+					// Es wurden keine Elemente in den nGa-Bereich eingetragen, also gibt es auch
+					// keine Startposition an der die Elemte zu finden sind.
+					_oldObjectBlocks.put(consideredOldVersion, new OldBlockInformations((long)-1, blockTimeStamp));
+				}
+
+				// Es wurden alle Objekte betrachtet, also die nächste veraltet Version prüfen
+				consideredOldVersion++;
+			} // while
+		} // synch
+
+		//*********************************************************************************************************
+
+		// Den alten dyn Block schreiben und dann die neuen dyn Objekte nach Zeit an den alten Block "ansortieren"
+
+		newRelativeDynObjectArea = newConfigAreaFile.getFilePointer() - newAbsoluteEndHeader;
+		// In der Map _oldObjectsId stehen jetzt nur noch dynamische Objekte
+
+		// Die alten dynamischen Objekte aus der Datei umkopieren
+		oldConfigAreaFile.seek(_startOldDynamicObjects + _headerEnd);
+
+		// Diese Variable speichert die neue absolute Startposition des Bereichs, der aller ungütligen dynamischen Objekte
+		// in der neuen Konfigurationsbereichsdatei enthält
+		final long absoluteStartNewDynamicArea = newConfigAreaFile.getFilePointer();
+
+		// Durch das endgültige Löschen von historischen dynamischen Objekten können sich hier Lücken ergeben,
+		// daher hier diese Lücken weglassen
+
+		// Objekte des bisherigen DynNga-Blocks in neue Datei kopieren
+		switch(mode) {
+			case DynamicObjectRestructure:
+				// Keine Lücken füllen, damit Dateipositionen gleich bleiben
+				copyObjectsPreserveGaps(oldConfigAreaFile, newConfigAreaFile, (_startIdIndex + _headerEnd), newIdIndex, newPidIndex, absoluteStartNewDynamicArea, (4 + headerSizeNewFileArea));
+				break;
+			case FullRestructure:
+				// Lücken ggf. füllen (es sollte keine Lücken geben, außer bei Konfigurationsdateien wo gelöschte Objekte wieder modifiziert wurden)
+				// (Fehler in frühen Konfigurationsversionen)
+				copyObjectsRemoveGaps(oldConfigAreaFile, newConfigAreaFile, (_startIdIndex + _headerEnd), newIdIndex, newPidIndex, absoluteStartNewDynamicArea, (4 + headerSizeNewFileArea));
+				break;
+			case DeleteObjectsPermanently:
+				// hier werden die eigentlichen Löschungen vorgenommen
+				copyObjectsRemoveGapsAndDeleteObjects(oldConfigAreaFile, newConfigAreaFile, (_startIdIndex + _headerEnd), newIdIndex, newPidIndex, absoluteStartNewDynamicArea, (4 + headerSizeNewFileArea));
+				break;
+		}
+
+
+		// Die dynamischen Objekte der Mischmenge, die ungültig sind, speichern.
+		// Diese müssen aufsteigend nach Invalid-Time sortiert werden
+
+		// Alle dynamischen Objekte, die in Frage kommen, sind in der Map _oldObjectsId gespeichert
+
+		// Array, das zu allen dynamischen Objekten den Zeitstempel enthält, wann das Objekt ungültig geworden ist
+		// und die absolute Position in der Datei um das Objekt später zu laden.
+
+		final List<SortObject> dynamicObjects = new ArrayList<SortObject>();
+
+		synchronized(_oldObjectsId) {
+			final Long[] keysLong = _oldObjectsId.keySet().toArray(new Long[_oldObjectsId.keySet().size()]);
+
+			// Liste, in der die Objekte gespeichert werden, diese wird später in ein Array umgewandelt
+
+			for(Long idOldObject : keysLong) {
+				ObjectReference reference = _oldObjectsId.get(idOldObject);
+				if(reference instanceof FilePointer) {  // falls es sich um kein transientes Objekt handelt
+					long filePosition = ((FilePointer) reference).getAbsoluteFilePosition();
+					oldConfigAreaFile.seek(filePosition);
+					final BinaryObject oldObject = BinaryObject.fromDataInput(oldConfigAreaFile);
+
+					if(oldObject instanceof BinaryDynamicObject) {
+						final BinaryDynamicObject dynObject = (BinaryDynamicObject) oldObject;
+
+						if(dynObject.getObjectId() == 0){
+							// Das sollte nicht passieren!
+							throw new IOException("Ungültiges dynamisches Objekt an Dateiposition " + filePosition);
+						}
+
+						if(mode == RestructureMode.DeleteObjectsPermanently
+								&& dynObject.getFirstInvalid() != 0
+								&& _objectsPendingDeletion.contains(dynObject.getObjectId())){
+							// Dynamisches Objekt kann auch schon hier gelöscht werden
+							// (einfach nicht im NgDyn-Block speichern)
+							continue;
+						}
+
+						dynamicObjects.add(new SortObject(filePosition, dynObject.getFirstInvalid()));
+					}
+				}
+			}
+		}
+
+		// Das Array wird jetzt nach dem Zeitstempel sortiert.
+
+		Collections.sort(dynamicObjects);
+
+		// Array liegt sortiert vor, also können die dynamischen Objekte in den Bereich geschrieben werden
+
+		for(final SortObject dynamicSortObject : dynamicObjects) {
+			oldConfigAreaFile.seek(dynamicSortObject.getFilePosition());
+
+			// Hier werden die Objekte ein zweites mal gelesen, im Speicher halten (beim SortObject) wäre die Alternative.
+			// Hier müsste man zwischen Performance und Speicherverbrauch abwägen.
+			final BinaryDynamicObject oldDynObject = (BinaryDynamicObject) BinaryObject.fromDataInput(oldConfigAreaFile);
+
+			// Wie auch bei den alten Konfigurationsobjekten, müssen die dynamischen Objekte
+			// in den Id Index eingetragen werden
+
+			// Die relative Position der Objekte bezieht sich auf den Beginn des dynamischen Bereichs, nicht auf
+			// das Headerende. Der Wert wird als positive Zahl gespeichert (Konfigurationsobjekte als negativ, s.o.)
+			// Da die Konfigurationsobjekte mit den negativen Zahlen und die dynamischen Objekte
+			// mit den positven Zahlen, muss festgelegt werden, zu welchem Bereich die "0" gehört.
+			// Die "0" gehört zu den nGa Objekten gehört somit zu den negativen Werten.
+			// Also wird jeder relative Position um eins erhöht (aus 0, wird eine +1 und somit wird diese Zahl
+			// im Zusammenhang mit dynamischen Objekten niemals im Index vergeben), wenn das Objekt
+			// später geladen werden muss, kann an dem positiven Wert erkannt werden, dass es sich
+			// um ein dynamisches Objekt handelt und die +1 kann wieder abgezogen werden.
+			final long newRelativeObjectPosition = getRelativeFilePositionForInvalidDynamicObject(absoluteStartNewDynamicArea, newConfigAreaFile.getFilePointer());
+
+			addToIndizes(newIdIndex, newPidIndex, oldDynObject, newRelativeObjectPosition);
+			restructureInfo.rememberFilePosition(dynamicSortObject.getFilePosition(), newConfigAreaFile.getFilePointer());
+
+			// Objekt in der neuen Datei schreiben. Es muss keine Lücke deklariert werden und die
+			// Dateiposition am Objekt ist egal
+			oldDynObject.write(newConfigAreaFile);
+		}
+
+		// Der aktualisierte "ungültige" dynamische Block wurde erzeugt
+		//*********************************************************************************************************
+
+		// Den alten Index (Id) einlesen und die neues Objekte aus den nGa Blöcken + neue dyn Objekte
+		// nach Id einsortieren (Id + relative Dateipostion zum Header)
+
+		newRelativeIdIndex = newConfigAreaFile.getFilePointer() - newAbsoluteEndHeader;
+
+		// Der alte Index liegt bereits sortiert in der Datei vor.
+		// Also wird die Liste, die die neuen Id's enthält, sortiert (nun liegen beide sortiert vor).
+		// Jetzt wird der erste Wert aus der Datei eingelesen (dies ist der kleinste Wert) und mit
+		// dem ersten Wert der Liste verglichen. Der kleinere von beiden wird geschrieben. Dann wird
+		// der nächste Wert betrachtet, usw (wie Mergesort).
+
+		final SortObject[] newOldObjectSortedArray = newIdIndex.toArray(new SortObject[newIdIndex.size()]);
+		Arrays.sort(newOldObjectSortedArray);
+
+		// Filedescriptor auf den Id-Index legen
+		oldConfigAreaFile.seek(_startIdIndex + _headerEnd);
+
+		// Objekt, das gerade aus dem Array newOldObjectSortedArray betrachtet wird
+		int actualIdMergeObject = 0;
+
+		// Falls true, dann muss das nächste Objekt geholt werden, da das letzte Objekt gespeichert wurde
+
+		while(actualIdMergeObject < newOldObjectSortedArray.length) {
+			// Es gibt noch Daten und der alte Wert wurde einsortiert
+			SortObject newOldIdObject = newOldObjectSortedArray[actualIdMergeObject];
+			actualIdMergeObject++;
+
+			// Id schreiben
+			newConfigAreaFile.writeLong(newOldIdObject.getValue());
+			// Relative Dateiposition
+			newConfigAreaFile.writeLong(newOldIdObject.getFilePosition());
+			// nächsten Wert anfordern
+		}
+
+		// Alle Id's sind geschrieben
+		//*********************************************************************************************************
+		// Pid Index, ebenfalls die nGa Blöcke und neue dyn Objekte einfügen
+		// (hashCode Pid und relatve Dateipostion, Achtung pro PidHash kann es mehrer Dateipositionen geben)
+
+		newRelativePidIndex = newConfigAreaFile.getFilePointer() - newAbsoluteEndHeader;
+
+		// Es steht eine Map zur Verfügung (newPidIndex), die alle neuen Elemente enthält, die in die dynamische nGa Menge
+		// einsortiert werden sollen. Dafür wird ein Array erstellt, in dem alle Objekte nach ihrer
+		// Pid (HashCode) sortiert vorlieren. Dieses Array wird dann in die alten Daten eingemischt.
+
+		// Jeder Eintrag hat eine feste Länge und besteht aus Pid HashCode und der relativen Position
+		// in der Datei.
+		// Nachteil, gibt es zu einer Pid 10 Objekte, so wird die Pid 10 mal gespeichert
+
+		// sortiertes Array erstellen und sortieren
+		SortObjectPid[] newOldObjectsPidSortedArray = newPidIndex.values().toArray(new SortObjectPid[newPidIndex.size()]);
+		Arrays.sort(newOldObjectsPidSortedArray);
+
+		// Auf den Beginn des Pid HashCode Bereichs positionieren
+		oldConfigAreaFile.seek(_startPidHashCodeIndex + _headerEnd);
+
+		// Objekt, das gerade aus dem Array newOldObjectsPidSortedArray betrachtet wird
+		int actualPidMergeObject = 0;
+
+		// Falls true, dann muss das nächste Objekt geholt werden, da das letzte Objekt gespeichert wurde
+
+		while(actualPidMergeObject < newOldObjectsPidSortedArray.length) {
+			SortObjectPid newOldPidObject = newOldObjectsPidSortedArray[actualPidMergeObject];
+			actualPidMergeObject++;
+
+			// Alle Werte des Objekts schreiben
+			final List<Long> filePositions = newOldPidObject.getFilePositions();
+			for(Long filePosition : filePositions) {
+				newConfigAreaFile.writeInt(newOldPidObject.getPidHashCode());
+				// Relative Dateiposition, die Position bezieht sich auf die neue Datei
+				newConfigAreaFile.writeLong(filePosition);
+			}
+		}
+
+		//*********************************************************************************************************
+
+		// Die aktuellen und zukünftig aktuellen in die Mischmenge schreiben
+
+		newRelativeMixedSet = newConfigAreaFile.getFilePointer() - newAbsoluteEndHeader;
+
+		writeCurrentObjects(newConfigAreaFile, restructureInfo, _actualObjects);
+		writeCurrentObjects(newConfigAreaFile, restructureInfo, _newObjects);
+
+		//*********************************************************************************************************
+		// Neue Dateipositionen am RestructureInfo-Objekt merken. Die eigentlichen Fields am ConfigAreaFile werden aktualisiert,
+		//sobald die Dateiumbenennung erfolgreich war
+
+		restructureInfo._headerEnd = newAbsoluteEndHeader;
+
+		restructureInfo._startOldDynamicObjects = newRelativeDynObjectArea;
+
+		restructureInfo._startIdIndex = newRelativeIdIndex;
+
+		restructureInfo._startPidHashCodeIndex = newRelativePidIndex;
+
+		restructureInfo._startMixedSet = newRelativeMixedSet;
+
+		// Header mit diesen neuen Positionen schreiben
+		writeHeader(restructureInfo, newConfigAreaFile);
+		return restructureInfo;
+	}
+
+	private void writeCurrentObjects(final BufferedRandomAccessFile newConfigAreaFile, final RestructureInfo restructureInfo, final Map<Long, SystemObjectInformationInterface> objectMap) throws IOException {
+		// Diese Methode wird einmal für _allObjects und einmal für _newObjects aufgerufen. Die Synchronisation darauf ist OK.
+		//noinspection SynchronizationOnLocalVariableOrMethodParameter
+		synchronized(objectMap) {
+			for(SystemObjectInformationInterface systemObjectInfo : objectMap.values()) {
+
+				// Vorherige Dateiposition
+				final FilePointer filePosition = ((SystemObjectInformation) systemObjectInfo).getLastFilePosition();
+
+				// Nur Objekte speichern, die auch schon vorher in der Mischmenge gespeichert waren
+				if(filePosition != null && filePosition.getAbsoluteFilePosition() >= _headerEnd + _startMixedSet) {
+
+					if(systemObjectInfo instanceof ConfigurationObjectInformation) {
+						ConfigurationObjectInformation configurationObjectInformation = (ConfigurationObjectInformation) systemObjectInfo;
+						// Da das Objekt neu in eine Datei geschrieben wird, muss keine Lücke eingefügt werden. Die
+						// neue Speicherposition darf nicht an dem Objekt gespeichert werden, sondern erst wenn
+						// die Reorganisation abgeschlossen ist.
+						// Den Speicherort merken, damit er nachträglich gesetzt werden kann.
+						final long newPosition = writeConfigurationObjectToFile(configurationObjectInformation, newConfigAreaFile, false, false);
+						restructureInfo.rememberFilePosition(filePosition, newPosition);
+					}
+					else if(systemObjectInfo instanceof DynamicObjectInformation) {
+						DynamicObjectInformation dynamicObjectInformation = (DynamicObjectInformation) systemObjectInfo;
+						// Da das Objekt neu in eine Datei geschrieben wird, muss keine Lücke eingefügt werden.
+						// Die neue Dateiposition darf nicht an dem Objekt gespeichert werden, sondern muss nachträglich gesetzt
+						// werden.
+						final long newPosition = writeDynamicObjectToFile(dynamicObjectInformation, newConfigAreaFile, false, false);
+						restructureInfo.rememberFilePosition(filePosition, newPosition);
+					}
+					else {
+						_debug.error("Unbekanntes Objekt " + systemObjectInfo.getClass());
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Kopiert Objekte zwecks Restrukturierung von einer Datei in eine andere. Diese Methode kopiert alle Lücken mit
+	 * und schreibt daher die exakt gleiche Menge an Bytes, die sie auch liest.
+	 * @param fromFile von-Datei
+	 * @param toFile ziel-Datei
+	 * @param endPos bis zu welcher Position (exklusiv) aus on-datei gelesen werden soll
+	 * @param newIdIndex ID-index, der gebildet werden soll
+	 * @param newPidIndex PID-Index, der gebildet werden soll
+	 * @param absoluteDynamicAreaOffset Absoluter Offset des NgDyn-Bereichs (für Pointer der Indizes)
+	 * @param headerEnd  Absoluter Offset des Headerendes (für Pointer der Indizes)
+	 * @throws IOException
+	 */
+	private void copyObjectsPreserveGaps(final BufferedRandomAccessFile fromFile, final BufferedRandomAccessFile toFile, final long endPos, final List<SortObject> newIdIndex, final Map<Integer, SortObjectPid> newPidIndex, final long absoluteDynamicAreaOffset, final long headerEnd) throws IOException {
+		while(fromFile.getFilePointer() < endPos) {
+			BinaryObject binaryObject = BinaryObject.fromDataInput(fromFile);
+			if(binaryObject != null) {
+				if(binaryObject.getObjectId() != 0) {
+					addToIndizes(toFile, newIdIndex, newPidIndex, absoluteDynamicAreaOffset, binaryObject, headerEnd);
+				}
+				binaryObject.write(toFile);
+			}
+		}
+	}
+
+	/**
+	 * Kopiert Objekte zwecks Restrukturierung von einer Datei in eine andere. Diese Methode ignoriert alle Lücken und sorgt so dafür,
+	 * dass möglicherweise weniger Bytes geschreiben werden, als gelesen werden.
+	 * @param fromFile von-Datei
+	 * @param toFile ziel-Datei
+	 * @param endPos bis zu welcher Position (exklusiv) aus on-datei gelesen werden soll
+	 * @param newIdIndex ID-index, der gebildet werden soll
+	 * @param newPidIndex PID-Index, der gebildet werden soll
+	 * @param absoluteDynamicAreaOffset Absoluter Offset des NgDyn-Bereichs (für Pointer der Indizes)
+	 * @param headerEnd  Absoluter Offset des Headerendes (für Pointer der Indizes)
+	 * @throws IOException
+	 */
+	private void copyObjectsRemoveGaps(final BufferedRandomAccessFile fromFile, final BufferedRandomAccessFile toFile, final long endPos, final List<SortObject> newIdIndex, final Map<Integer, SortObjectPid> newPidIndex, final long absoluteDynamicAreaOffset, final long headerEnd) throws IOException {
+		while(fromFile.getFilePointer() < endPos) {
+			BinaryObject binaryObject = BinaryObject.fromDataInput(fromFile);
+			if(binaryObject != null && binaryObject.getObjectId() != 0) {
+				addToIndizes(toFile, newIdIndex, newPidIndex, absoluteDynamicAreaOffset, binaryObject, headerEnd);
+				binaryObject.write(toFile);
+			}
+		}
+	}
+
+	/**
+	 * Kopiert Objekte zwecks Restrukturierung von einer Datei in eine andere. Diese Methode ignoriert alle Lücken und alle zu löschenden
+	 * dynamischen Objekte
+	 * und sorgt so dafür, dass möglicherweise weniger Bytes geschreiben werden, als gelesen werden.
+	 * @param fromFile von-Datei
+	 * @param toFile ziel-Datei
+	 * @param endPos bis zu welcher Position (exklusiv) aus on-datei gelesen werden soll
+	 * @param newIdIndex ID-index, der gebildet werden soll
+	 * @param newPidIndex PID-Index, der gebildet werden soll
+	 * @param absoluteDynamicAreaOffset Absoluter Offset des NgDyn-Bereichs (für Pointer der Indizes)
+	 * @param headerEnd  Absoluter Offset des Headerendes (für Pointer der Indizes)
+	 * @throws IOException
+	 */
+	private void copyObjectsRemoveGapsAndDeleteObjects(final BufferedRandomAccessFile fromFile, final BufferedRandomAccessFile toFile, final long endPos, final List<SortObject> newIdIndex, final Map<Integer, SortObjectPid> newPidIndex, final long absoluteDynamicAreaOffset, final long headerEnd) throws IOException {
+		while(fromFile.getFilePointer() < endPos) {
+			BinaryObject binaryObject = BinaryObject.fromDataInput(fromFile);
+			if(binaryObject != null && binaryObject.getObjectId() != 0) {
+				if(_objectsPendingDeletion.contains(binaryObject.getObjectId())) {
+					// Dieses Objekt soll gelöscht werden
+					// Sicherheitshalber noch einmal überprüfen, dass das Objekt wirklich gelöscht werden darf
+					// Es könnte sein, dass jemand an den Indexdateien rumgespielt hat und jetzt Konfigurationobjekte löschen will...
+					if(!(binaryObject instanceof BinaryDynamicObject)){
+						throw new IOException("Es sollte ein Konfigurationsobjekt endgültig gelöscht werden");
+					}
+					if(((BinaryDynamicObject) binaryObject).getFirstInvalid() == 0){
+						throw new IOException("Es sollte ein gültiges Objekt endgültig gelöscht werden");
+					}
+					continue;
+				}
+				addToIndizes(toFile, newIdIndex, newPidIndex, absoluteDynamicAreaOffset, binaryObject, headerEnd);
+				binaryObject.write(toFile);
+			}
+		}
+	}
+
+	private void addToIndizes(final BufferedRandomAccessFile toFile, final List<SortObject> newIdIndex, final Map<Integer, SortObjectPid> newPidIndex, final long absoluteDynamicAreaOffset, final BinaryObject binaryObject, final long headerEnd) {
+		if(binaryObject instanceof BinaryDynamicObject) {
+			addToIndizes(newIdIndex, newPidIndex, binaryObject, getRelativeFilePositionForInvalidDynamicObject(
+					             absoluteDynamicAreaOffset, toFile.getFilePointer()
+			             ));
+		}
+		else {
+			addToIndizes(newIdIndex, newPidIndex, binaryObject, getRelativeFilePositionForInvalidConfigObject(headerEnd, toFile.getFilePointer()));
+		}
+	}
+
+
+	public static long getRelativeFilePositionForInvalidConfigObject(final long headerEnd, final long absoluteFilePosition) {
+		return (-1) * (absoluteFilePosition - headerEnd);
+	}
+
+	public static long getRelativeFilePositionForInvalidDynamicObject(final long dynamicAreaOffset, final long absoluteFilePosition) {
+		return absoluteFilePosition - dynamicAreaOffset + 1;
+	}
+
+	public void addToIndizes(
+			final List<SortObject> idIndex,
+			final Map<Integer, SortObjectPid> pidIndex,
+			final BinaryObject objectInformation,
+			final long filePosition) {
+		idIndex.add(new SortObject(filePosition, objectInformation.getObjectId()));
+
+		// Pid Index
+		if(pidIndex.containsKey(objectInformation.getPidHashCode())) {
+			final SortObjectPid filePositions = pidIndex.get(objectInformation.getPidHashCode());
+			filePositions.putFilePosition(filePosition);
+		}
+		else {
+			// Es gibt noch kein Objekt, also einfügen
+			SortObjectPid filePositions = new SortObjectPid(objectInformation.getPidHashCode());
+			filePositions.putFilePosition(filePosition);
+			pidIndex.put(objectInformation.getPidHashCode(), filePositions);
+		}
+	}
+
+	public void addToIndizes(
+			final List<SortObject> idIndex,
+			final Map<Integer, SortObjectPid> pidIndex,
+			final SystemObjectInformationInterface objectInformation,
+			final long filePosition) {
+		idIndex.add(new SortObject(filePosition, objectInformation.getID()));
+
+		// Pid Index
+		int hashCode = objectInformation.getPid().hashCode();
+		if(pidIndex.containsKey(hashCode)) {
+			final SortObjectPid filePositions = pidIndex.get(hashCode);
+			filePositions.putFilePosition(filePosition);
+		}
+		else {
+			// Es gibt noch kein Objekt, also einfügen
+			SortObjectPid filePositions = new SortObjectPid(hashCode);
+			filePositions.putFilePosition(filePosition);
+			pidIndex.put(hashCode, filePositions);
+		}
+	}
 
 	/**
 	 * Diese Methode sucht zu einem Value alle Objekte, die als ungültig markiert sind. Der Parameter value wird dabei unterschiedlich interpretiert und zwar in
@@ -3525,273 +3599,11 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		synchronized(_restructureLock) {
 			synchronized(_configAreaFile) {
 
-				RandomAccessFile file = new RandomAccessFile(_configAreaFile, "r");
+				BufferedRandomAccessFile file = new BufferedRandomAccessFile(_configAreaFile, "r");
 
 				// Try/finally für close der Datei
 				try {
-					// Liste, die alle Objekte speichert, die dem geforderten value entsprechen
-					final List<SystemObjectInformationInterface> searchResult = new ArrayList<SystemObjectInformationInterface>();
-
-					// Die gesuchten Objekte können sich in der Mischmenge oder in den nGa Bereichen oder im dyn. nGa Bereich befinden.
-
-					// mit Id suchen
-					if(searchId) {
-						final OldObjectIdReference oldObjectIdReference;
-						final boolean positionFound;
-						synchronized(_oldObjectsId) {
-							if(_oldObjectsId.containsKey(value)) {
-								oldObjectIdReference = _oldObjectsId.get(value);
-								positionFound = true;
-							}
-							else {
-								oldObjectIdReference = null;
-								positionFound = false;
-							}
-						}
-
-						if(positionFound) {
-							// Objekt befand sich in der Mischmenge.
-							// Im "else-Fall" muss das Objekt in den nGa-Bereichen, dem dyn nGa-Bereich gesucht werden
-							searchResult.add(oldObjectIdReference.getObject());
-							return searchResult;
-						}
-					}
-					else {
-						// Es soll nach einer Pid gesucht werden, diese kann sich im Mischbreich befinden
-						// und in den nGa-Bereichen, dem dyn nGa-Bereich
-
-						// Mischbreich prüfen
-
-						final Set<Long> filePositions;
-						final boolean positionFound;
-						synchronized(_oldObjectsPid) {
-							if(_oldObjectsPid.containsKey((int)value)) {
-								// Ein Wert ist vorhanden
-								filePositions = _oldObjectsPid.get((int)value);
-								positionFound = true;
-							}
-							else {
-								// Es gibt keine Objekte mit der Pid
-								positionFound = false;
-								filePositions = null;
-							}
-
-							if(positionFound) {
-								// Werte gefunden
-								for(Long filePosition : filePositions) {
-									// Objekt laden
-									searchResult.add(loadObjectFromFile(filePosition));
-								}
-							}
-						}
-					}
-
-					// An dieser Stelle wurde Mischobjektmenge abgearbeitet. Falls nach Id gesucht wurde, wurde diese nicht
-					// gefunden, sonst wäre die Methode bereits mit "return" verlassen worden. Falls nach der Pid gefragt wurde
-					// so kann in der Ergebnisliste bereits ein Wert vorhanden sein. Es kann aber sein, dass sich in den nGa-Bereichen
-					// dem nGa-Bereich weitere Objekte befinden.
-
-					// Nun muss entweder der Id oder der Pid Index benutzt werden
-
-					// Als erstes muss geprüft werden, ob es den benötigten Index überhaupt gibt. Dieser Fall kann
-					// auftreten, wenn es noch zu keiner Reorganisation gekommen ist und es somit keine
-					// nGa Bereiche bzw. den dyn. nGa Bereich noch nicht gibt.
-					// Falls es keine Reorganisation gegeben hat, dann stehen die Elemente im Speicher und wurden bereits
-					// gefunden, siehe oben.
-
-					// Wird true, falls der benötigte Index(Id oder Pid) nach einer Reorganisation angelegt wurde
-					boolean indexExist = false;
-
-					if(searchId) {
-						// Der Index nach Id muss vorhanden sein
-						if(_startIdIndex < _startPidHashCodeIndex) {
-							// Der start des Id-Index ist kleiner als der Start des Pid-Index, also müssen
-							// in diesem Zwischenraum Daten stehen.
-							indexExist = true;
-						}
-					}
-					else {
-						if(_startPidHashCodeIndex < _startMixedSet) {
-							// Nach dem Pid Index kommt die Mischmenge, im Zwischenraum müsen also
-							// Daten stehen
-							indexExist = true;
-						}
-					}
-
-					// Die Suche macht nur Sinn, wenn der Index auch besteht.
-					if(indexExist) {
-						// Erste Eintrag im Index (Id oder Pid)
-						long minimum;
-						// In dieser Variablen steht später die Dateipostion an der das Paar "Id, relative Dateipostion" (Id Anfrage) steht
-						long middle = -1;
-
-						// In dieser Variablen steht später die Dateipostion an der das Paar "Pid-HashCode, relative Dateipostion" (Pid Anfrage) steht.
-						long helperPid = -1;
-
-						// Letzter Eintrag im Index (Id oder Pid)
-						long maximum;
-
-						// wird true, wenn der Parameter value gefunden wurde
-						boolean resultFound = false;
-
-						if(searchId) {
-							// Id
-							minimum = _startIdIndex + _headerEnd;
-							// Ende des Id-Index
-							maximum = (_startPidHashCodeIndex + _headerEnd);
-						}
-						else {
-							// Pid Index als Start
-							minimum = _startPidHashCodeIndex + _headerEnd;
-							// Ende des Pid-Index
-							maximum = (_startMixedSet + _headerEnd);
-						}
-
-//						printIdIndex();
-
-						// Der Algorithmus sucht nach dem Parameter value. Sind mehrere Objekte vorhanden, die dem value entsprechen
-						// wird solange weitergesucht, bis das erste Objekt gefunden wurde, das dem value entspricht.
-						// Alle Objekte, die nach dem Objekt gespeichert wurden, entsprechem dem value oder sind größer.
-						// Dies ist für die Pid wichtig, da für jedes Objekt mit der gleichen Pid ein Eintrag gemacht wird.
-						while(minimum < maximum) {
-//							System.out.println("Start-while: min: " + minimum + " middle: " + middle + " max: " + maximum);
-
-							// Speichert den Wert, des aus dem Index (Id oder Pid) geladen wurden
-							final long valueFromIndex;
-							// Neue Mitte ausrechnen. Dies entspricht einer Dateiposition.
-							// Der nächste Wert setzt sich im Id Index anderes zusammen, als bei einem
-							// Pid Index. Nach dem die Mitte gefunden wurde, wird der Wert aus dem entsprechenden Index
-							// eingelesen.
-							if(searchId) {
-								// Wieviele Paare (Long,Long (Id,Relative Position) sind zwischem Min und Max.
-								final long numberOfPairs = (maximum - minimum) / 16;
-
-								// Die hälfte der Paare und dann pro paar 16 Byte (2 Longs) dazurechnen. Dieser Wert muss zum Min.
-								// gerechnet werden um die Mitte zu erhalten.
-								final long newMinOffset = (numberOfPairs / 2) * 16;
-								middle = minimum + newMinOffset;
-								// Wert aus dem Id Index einlesen
-								file.seek(middle);
-								valueFromIndex = file.readLong();
-							}
-							else {
-								// Wieviele Paare (int,Long (HashCode der Pid,Relative Position) sind zwischem Min und Max.
-								final long numberOfPairs = (maximum - minimum) / 12;
-
-								// Die hälfte der Paare und dann pro paar 12 Byte (ein Integer und ein Long) dazurechnen. Dieser Wert muss zum Min.
-								// gerechnet werden um die Mitte zu erhalten.
-								final long newMinOffset = (numberOfPairs / 2) * 12;
-								middle = minimum + newMinOffset;
-								// Wert aus dem Pid Index einlesen
-								file.seek(middle);
-								valueFromIndex = file.readInt();
-							}
-
-							// Die Id oder der HashCode der Pid steht nun zur Verfügung
-//							System.out.println("Binäre Suche: middle: " + valueFromIndex + " gesucht: " + value);
-							if(value <= valueFromIndex) {
-								maximum = middle;
-								if(value == valueFromIndex) {
-
-									// Der Wert wurde gefunden. wird nur die Id gesucht, dann endet die Suche.
-									// Bei der Suche nach der Pid muss weiter gesucht werden, da es mehrere
-									// Objekte zu einer Pid geben kann.
-									resultFound = true;
-//									System.out.println("*****Binäre suche findet das gesuchte Objekt*****");
-
-									if(searchId) {
-										// Id suche endet, die Position im Index steht in middle
-										break;
-									}
-									else {
-										// Bei Pid suchen kann es mehrer Pids geben, es wird die aktuelle
-										// Position im Index gespeichert, danach wird weitergesucht.
-										// Wird kein Objekt mehr gefunden, dann steht die Ergebnisposition
-										// in dieser Variablen.
-										helperPid = middle;
-									}
-								}
-							}
-							else {
-								// das nächste Element ist ein Paar, das entweder aus Long,Long oder aus Int,Long besteht.
-								if(searchId) {
-									minimum = middle + 8 + 8;
-								}
-								else {
-									minimum = middle + 4 + 8;
-								}
-							}
-//							System.out.println("End-while min: " + minimum + " middle: " + middle + " max: " + maximum);
-						} // while
-
-						if(resultFound) {
-
-							// Es wurde mindestens ein Objekt gefunden (bei der Id darf es nur ein Objekt sein, bei
-							// der Pid können es mehrere sein)
-							if(searchId) {
-
-								// Den filePointer auf die Stelle setzen, wo das erste Objekt steht
-								file.seek(middle);
-
-								// Id, es gibt nur einen Wert
-
-								// Id aus dem Index einlesen
-								final long checkId = file.readLong();
-								// relative Dateiposition des Objekts
-								final long position = file.readLong();
-								assert checkId == value : "geforderte Id: " + value + " gefundene Id: " + checkId;
-
-								final SystemObjectInformationInterface idObject = loadObjectFromFile(getAbsoluteFilePositionForInvalidObjects(position));
-								searchResult.add(idObject);
-								assert idObject.getID() == checkId : "Dateiposition: " + position + " Datei: " + _configAreaFile + " gesuchte Id: " + value
-								                                     + " gefundene Id: " + idObject.getID();
-								// Liste mit dem Objekt zurückgeben
-								return searchResult;
-							}
-							else {
-
-								// Auf den richtigen Index springen, dieser steht im Gegensatz zu Id-Suche in dieser Variablen
-								file.seek(helperPid);
-
-								// Es werden Objekte für die Pid benötigt. Für eine Pid kann es mehrer Objekte geben.
-								// Es müssen alle Objekte aus dem Pid-Index eingelesen werden, deren Pid-HashCode mit
-								// dem übergebenen Code übereinstimmen.
-
-								// wird true, wenn das letzte Objekt aus dem Pid-Index geladen wurden, dessen hashCode stimmt
-								boolean lastPidObjectRead = false;
-
-								// Solange noch die richtigen Pids gelesen werden
-								// und
-								// der filePointer sich noch im Pid-Index befindet
-								while((!lastPidObjectRead) && (file.getFilePointer() < (_startMixedSet + _headerEnd))) {
-									final int pidHashCode = file.readInt();
-									final long position = file.readLong();
-
-									if(pidHashCode == value) {
-										final SystemObjectInformationInterface pidObject = loadObjectFromFile(getAbsoluteFilePositionForInvalidObjects(position));
-										assert pidObject.getPid().hashCode() == value : "Dateiposition: " + position + " Datei: " + _configAreaFile
-										                                                + " gesuchter Pid-HashCode: " + value + " gefundener Pdi-HashCode: "
-										                                                + pidObject.getPid().hashCode() + " Pid des Objects: "
-										                                                + pidObject.getPid();
-										searchResult.add(pidObject);
-									}
-									else {
-										// Der hashCode der Pids unterscheidet sich, also wurden alle Pids
-										// gelesen.
-										lastPidObjectRead = true;
-									}
-								}
-							}
-						} // if(resultFound)
-					} // if(indexExist)
-
-					if(searchResult.size() > 0) {
-						return searchResult;
-					}
-					else {
-						// Es konnte kein Objekt gefunden werden
-						return null;
-					}
+					return binarySearch(file, value, searchId);
 				}
 				finally {
 					file.close();
@@ -3800,30 +3612,277 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		} // synch restructereLock
 	}
 
-	/**
-	 * Diese Methode berechnet die absolute Position eines Objekts in der Konfigurationsbereichsdatei. Das Objekt befindet sich dabei in einem nGa Bereich oder in
-	 * einem dyn. nGa Bereich.
-	 *
-	 * @param relativeFilePosition relative Position des Objekts. Ein negativer Wert (einschliesslich 0) wird als ungültiges Konfigurationsobjekt interpretiert.
-	 *                             Ein positiver Wert als ungültiges dynamisches Objekt. Beide Objekte befinden sich in den nGa Bereichen oder im dyn. nGa
-	 *                             Bereich.
-	 *
-	 * @return absolute Position, an der das Objekt zu finden ist
-	 */
-	private long getAbsoluteFilePositionForInvalidObjects(long relativeFilePosition) {
-		if(relativeFilePosition > 0) {
-			// Es handelt sich um dynamisches Objekt, das sich in der dyn. nGa Menge befindet.
-			// Die relative Positionsangabe bezieht sich auf den Beginn des dyn. nGa Bereichs.
-			// Die relative Position ist immer um +1 erhöht worden, damit wurde eine "doppelte 0" verhindert.
-			// Die "0" gehört zu den Konfigurationsobjekten.
-			return ((_startOldDynamicObjects + _headerEnd) + relativeFilePosition) - 1;
+	private List<SystemObjectInformationInterface> binarySearch(final BufferedRandomAccessFile file, final long value, final boolean searchId) throws NoSuchVersionException, IOException {
+		// Liste, die alle Objekte speichert, die dem geforderten value entsprechen
+		final List<SystemObjectInformationInterface> searchResult = new ArrayList<SystemObjectInformationInterface>();
+
+		// Die gesuchten Objekte können sich in der Mischmenge oder in den nGa Bereichen oder im dyn. nGa Bereich befinden.
+
+		// mit Id suchen
+		if(searchId) {
+			final ObjectReference objectReference;
+			final boolean positionFound;
+			synchronized(_oldObjectsId) {
+				if(_oldObjectsId.containsKey(value)) {
+					objectReference = _oldObjectsId.get(value);
+					positionFound = true;
+				}
+				else {
+					objectReference = null;
+					positionFound = false;
+				}
+			}
+
+			if(positionFound) {
+				// Objekt befand sich in der Mischmenge.
+				// Im "else-Fall" muss das Objekt in den nGa-Bereichen, dem dyn nGa-Bereich gesucht werden
+				searchResult.add(getSystemObjectInfo(objectReference, file));
+				return searchResult;
+			}
 		}
 		else {
-			// Es handelt sich um ein Konfigurationsobjekt. Die relative Position bezieht sich auf das
-			// Headerende.
-			return _headerEnd + (relativeFilePosition * (-1));
+			// Es soll nach einer Pid gesucht werden, diese kann sich im Mischbreich befinden
+			// und in den nGa-Bereichen, dem dyn nGa-Bereich
+
+			// Mischbreich prüfen
+
+			final Set<FilePointer> filePositions;
+			final boolean positionFound;
+			synchronized(_oldObjectsPid) {
+				if(_oldObjectsPid.containsKey((int)value)) {
+					// Ein Wert ist vorhanden
+					filePositions = _oldObjectsPid.get((int)value);
+					positionFound = true;
+				}
+				else {
+					// Es gibt keine Objekte mit der Pid
+					positionFound = false;
+					filePositions = null;
+				}
+
+				if(positionFound) {
+					// Werte gefunden
+					for(FilePointer filePosition : filePositions) {
+						// Objekt laden
+						searchResult.add(loadObjectFromFile(file, filePosition, null));
+					}
+				}
+			}
+		}
+
+		// An dieser Stelle wurde Mischobjektmenge abgearbeitet. Falls nach Id gesucht wurde, wurde diese nicht
+		// gefunden, sonst wäre die Methode bereits mit "return" verlassen worden. Falls nach der Pid gefragt wurde
+		// so kann in der Ergebnisliste bereits ein Wert vorhanden sein. Es kann aber sein, dass sich in den nGa-Bereichen
+		// dem nGa-Bereich weitere Objekte befinden.
+
+		// Nun muss entweder der Id oder der Pid Index benutzt werden
+
+		// Als erstes muss geprüft werden, ob es den benötigten Index überhaupt gibt. Dieser Fall kann
+		// auftreten, wenn es noch zu keiner Reorganisation gekommen ist und es somit keine
+		// nGa Bereiche bzw. den dyn. nGa Bereich noch nicht gibt.
+		// Falls es keine Reorganisation gegeben hat, dann stehen die Elemente im Speicher und wurden bereits
+		// gefunden, siehe oben.
+
+		// Wird true, falls der benötigte Index(Id oder Pid) nach einer Reorganisation angelegt wurde
+		boolean indexExist = false;
+
+		if(searchId) {
+			// Der Index nach Id muss vorhanden sein
+			if(_startIdIndex < _startPidHashCodeIndex) {
+				// Der start des Id-Index ist kleiner als der Start des Pid-Index, also müssen
+				// in diesem Zwischenraum Daten stehen.
+				indexExist = true;
+			}
+		}
+		else {
+			if(_startPidHashCodeIndex < _startMixedSet) {
+				// Nach dem Pid Index kommt die Mischmenge, im Zwischenraum müsen also
+				// Daten stehen
+				indexExist = true;
+			}
+		}
+
+		// Die Suche macht nur Sinn, wenn der Index auch besteht.
+		if(indexExist) {
+			// Erste Eintrag im Index (Id oder Pid)
+			long minimum;
+			// In dieser Variablen steht später die Dateipostion an der das Paar "Id, relative Dateipostion" (Id Anfrage) steht
+			long middle = -1;
+
+			// In dieser Variablen steht später die Dateipostion an der das Paar "Pid-HashCode, relative Dateipostion" (Pid Anfrage) steht.
+			long helperPid = -1;
+
+			// Letzter Eintrag im Index (Id oder Pid)
+			long maximum;
+
+			// wird true, wenn der Parameter value gefunden wurde
+			boolean resultFound = false;
+
+			if(searchId) {
+				// Id
+				minimum = _startIdIndex + _headerEnd;
+				// Ende des Id-Index
+				maximum = (_startPidHashCodeIndex + _headerEnd);
+			}
+			else {
+				// Pid Index als Start
+				minimum = _startPidHashCodeIndex + _headerEnd;
+				// Ende des Pid-Index
+				maximum = (_startMixedSet + _headerEnd);
+			}
+
+//						printIdIndex();
+
+			// Der Algorithmus sucht nach dem Parameter value. Sind mehrere Objekte vorhanden, die dem value entsprechen
+			// wird solange weitergesucht, bis das erste Objekt gefunden wurde, das dem value entspricht.
+			// Alle Objekte, die nach dem Objekt gespeichert wurden, entsprechem dem value oder sind größer.
+			// Dies ist für die Pid wichtig, da für jedes Objekt mit der gleichen Pid ein Eintrag gemacht wird.
+			while(minimum < maximum) {
+//							System.out.println("Start-while: min: " + minimum + " middle: " + middle + " max: " + maximum);
+
+				// Speichert den Wert, des aus dem Index (Id oder Pid) geladen wurden
+				final long valueFromIndex;
+				// Neue Mitte ausrechnen. Dies entspricht einer Dateiposition.
+				// Der nächste Wert setzt sich im Id Index anderes zusammen, als bei einem
+				// Pid Index. Nach dem die Mitte gefunden wurde, wird der Wert aus dem entsprechenden Index
+				// eingelesen.
+				if(searchId) {
+					// Wieviele Paare (Long,Long (Id,Relative Position) sind zwischem Min und Max.
+					final long numberOfPairs = (maximum - minimum) / 16;
+
+					// Die hälfte der Paare und dann pro paar 16 Byte (2 Longs) dazurechnen. Dieser Wert muss zum Min.
+					// gerechnet werden um die Mitte zu erhalten.
+					final long newMinOffset = (numberOfPairs / 2) * 16;
+					middle = minimum + newMinOffset;
+					// Wert aus dem Id Index einlesen
+					file.seek(middle);
+					valueFromIndex = file.readLong();
+				}
+				else {
+					// Wieviele Paare (int,Long (HashCode der Pid,Relative Position) sind zwischem Min und Max.
+					final long numberOfPairs = (maximum - minimum) / 12;
+
+					// Die hälfte der Paare und dann pro paar 12 Byte (ein Integer und ein Long) dazurechnen. Dieser Wert muss zum Min.
+					// gerechnet werden um die Mitte zu erhalten.
+					final long newMinOffset = (numberOfPairs / 2) * 12;
+					middle = minimum + newMinOffset;
+					// Wert aus dem Pid Index einlesen
+					file.seek(middle);
+					valueFromIndex = file.readInt();
+				}
+
+				// Die Id oder der HashCode der Pid steht nun zur Verfügung
+//							System.out.println("Binäre Suche: middle: " + valueFromIndex + " gesucht: " + value);
+				if(value <= valueFromIndex) {
+					maximum = middle;
+					if(value == valueFromIndex) {
+
+						// Der Wert wurde gefunden. wird nur die Id gesucht, dann endet die Suche.
+						// Bei der Suche nach der Pid muss weiter gesucht werden, da es mehrere
+						// Objekte zu einer Pid geben kann.
+						resultFound = true;
+//									System.out.println("*****Binäre suche findet das gesuchte Objekt*****");
+
+						if(searchId) {
+							// Id suche endet, die Position im Index steht in middle
+							break;
+						}
+						else {
+							// Bei Pid suchen kann es mehrer Pids geben, es wird die aktuelle
+							// Position im Index gespeichert, danach wird weitergesucht.
+							// Wird kein Objekt mehr gefunden, dann steht die Ergebnisposition
+							// in dieser Variablen.
+							helperPid = middle;
+						}
+					}
+				}
+				else {
+					// das nächste Element ist ein Paar, das entweder aus Long,Long oder aus Int,Long besteht.
+					if(searchId) {
+						minimum = middle + 8 + 8;
+					}
+					else {
+						minimum = middle + 4 + 8;
+					}
+				}
+//							System.out.println("End-while min: " + minimum + " middle: " + middle + " max: " + maximum);
+			} // while
+
+			if(resultFound) {
+
+				// Es wurde mindestens ein Objekt gefunden (bei der Id darf es nur ein Objekt sein, bei
+				// der Pid können es mehrere sein)
+				if(searchId) {
+
+					// Den filePointer auf die Stelle setzen, wo das erste Objekt steht
+					file.seek(middle);
+
+					// Id, es gibt nur einen Wert
+
+					// Id aus dem Index einlesen
+					final long checkId = file.readLong();
+					// relative Dateiposition des Objekts
+					final long position = file.readLong();
+					assert checkId == value : "geforderte Id: " + value + " gefundene Id: " + checkId;
+
+					SystemObjectInformationInterface idObject = loadObjectFromFile(file, FilePointer.fromRelativePosition(position, this), null);
+					searchResult.add(idObject);
+					assert idObject.getID() == checkId : "Dateiposition: " + position + " Datei: " + _configAreaFile + " gesuchte Id: " + value
+							+ " gefundene Id: " + idObject.getID();
+					// Liste mit dem Objekt zurückgeben
+					return searchResult;
+				}
+				else {
+
+					// Auf den richtigen Index springen, dieser steht im Gegensatz zu Id-Suche in dieser Variablen
+					file.seek(helperPid);
+
+					// Es werden Objekte für die Pid benötigt. Für eine Pid kann es mehrer Objekte geben.
+					// Es müssen alle Objekte aus dem Pid-Index eingelesen werden, deren Pid-HashCode mit
+					// dem übergebenen Code übereinstimmen.
+
+					// wird true, wenn das letzte Objekt aus dem Pid-Index geladen wurden, dessen hashCode stimmt
+					boolean lastPidObjectRead = false;
+
+					// Solange noch die richtigen Pids gelesen werden
+					// und
+					// der filePointer sich noch im Pid-Index befindet
+					while((!lastPidObjectRead) && (file.getFilePointer() < (_startMixedSet + _headerEnd))) {
+						final int pidHashCode = file.readInt();
+						final long position = file.readLong();
+
+						long oldPos = file.position();
+
+						if(pidHashCode == value) {
+							final SystemObjectInformationInterface pidObject = loadObjectFromFile(file, FilePointer.fromRelativePosition(position, this), null);
+
+							file.position(oldPos);
+
+							assert pidObject.getPid().hashCode() == value : "Dateiposition: " + position + " Datei: " + _configAreaFile
+									+ " gesuchter Pid-HashCode: " + value + " gefundener Pdi-HashCode: "
+									+ pidObject.getPid().hashCode() + " Pid des Objects: "
+									+ pidObject.getPid();
+							searchResult.add(pidObject);
+						}
+						else {
+							// Der hashCode der Pids unterscheidet sich, also wurden alle Pids
+							// gelesen.
+							lastPidObjectRead = true;
+						}
+					}
+				}
+			} // if(resultFound)
+		} // if(indexExist)
+
+		if(searchResult.size() > 0) {
+			return searchResult;
+		}
+		else {
+			// Es konnte kein Objekt gefunden werden
+			return null;
 		}
 	}
+
 
 	/**
 	 * Gibt die Pid des Konfigurationsbereichs zurück.
@@ -3839,50 +3898,119 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		}
 	}
 
-	/** Gibt die Indizes am Bildschirm aus, diese Methode ist nur für Debug-Zwecke geeignet. */
-	void printIdIndex() {
+	@Override
+	public void markObjectsForDeletion(final List<Long> objectsToDelete) {
+		synchronized(_objectsPendingDeletion) {
+			for(final Long dynamicObjectInfo : objectsToDelete) {
+				if(_objectsLockedForDeletion.contains(dynamicObjectInfo)) {
+					// Objekt kann endgültig gelöscht werden
+					_objectsPendingDeletion.add(dynamicObjectInfo);
+				}
+			}
+			_objectsLockedForDeletion.clear();
+			for(Long dynamicObjectInfo : objectsToDelete) {
+				_objectsLockedForDeletion.add(dynamicObjectInfo);
+			}
+		}
+	}
+
+
+	/**
+	 * Löscht die für das Löschen vorgemerkten dynamischen Objekte vollständig und permanent. Die übergebenen Objekte sollten bereits einige Zeit
+	 * gelöscht sein und sich im NgaDyn-Block befinden. Es sollte keine Referenzen auf diese Objekte geben.
+	 *
+	 * Da sich dadurch die Positionen von nicht-Gültigen Objekten in der Datei ändern können,
+	 * können Objekte im Speicher durch diesen Vorgang unbrauchbar werden. Daher muss nach dem Aufruf dieser Methode
+	 * das Datenmodell neu initialisiert werden oder alternativ die Methode zu einem Zeitpunkt aufgerufen werden, wenn noch keine
+	 * alten Objekte im Speicher sind.
+	 */
+	public void deleteDynamicObjectsPermanently(){
+		// _restructureLock jetzt schon belegen, damit Datenmodell konsistent bleibt
+		synchronized(_restructureLock) {
+			synchronized(_configAreaFile) {
+				synchronized(_objectsPendingDeletion) {
+					if (_objectsPendingDeletion.size() > 0) {
+						_debug.info("Lösche " + _objectsPendingDeletion.size() + " alte dynamische Objekte aus Konfigurationsbereich", getConfigAreaPid());
+						try {
+							restructure(RestructureMode.DeleteObjectsPermanently);
+							_objectsPendingDeletion.clear();
+						}
+						catch(IOException e) {
+							_debug.error("Fehler beim endgültigen Löschen im Bereich " + _configAreaFile, e);
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	@Override
+	public boolean referenceAllowed(final SystemObjectInformationInterface systemObjectInfo) {
+		synchronized(_objectsPendingDeletion) {
+			long id = systemObjectInfo.getID();
+			if(_objectsPendingDeletion.contains(id) || _objectsLockedForDeletion.contains(id)) {
+				return false;
+			}
+			return true;
+		}
+	}
+
+	@Override
+	public long getHeaderEnd() {
+		return _headerEnd;
+	}
+
+	@Override
+	public long getStartOldDynamicObjects() {
+		return _startOldDynamicObjects;
+	}
+
+	@Override
+	public long getStartIdIndex() {
+		return _startIdIndex;
+	}
+
+	@Override
+	public long getStartPidHashCodeIndex() {
+		return _startPidHashCodeIndex;
+	}
+
+	@Override
+	public long getStartMixedSet() {
+		return _startMixedSet;
+	}
+
+	public void updateHeaderPositions(final HeaderInfo headerInfo) {
+		_headerEnd = headerInfo.getHeaderEnd();
+		_startOldDynamicObjects = headerInfo.getStartOldDynamicObjects();
+		_startIdIndex = headerInfo.getStartIdIndex();
+		_startPidHashCodeIndex = headerInfo.getStartPidHashCodeIndex();
+		_startMixedSet = headerInfo.getStartMixedSet();
+	}
+
+//	public void rememberFilePointer(final FilePointer pointer) {
+//		_filePointers.add(pointer);
+//	}
+
+	/**
+	 * Wird aufgerufen, wenn ein dynamisches Objekt ungültig wird.
+	 * Falls das Objekt bereits
+	 * @param object
+	 */
+	public void writeInvalidTime(final DynamicObjectInformation object) {
+		FilePointer filePosition = object.getLastFilePosition();
 		try {
-			synchronized(_restructureLock) {
-				synchronized(_configAreaFile) {
-					StringBuffer out = new StringBuffer();
-					RandomAccessFile file = new RandomAccessFile(_configAreaFile, "r");
+			synchronized(_configAreaFile) {
+				if(filePosition == null){
+					writeDynamicObject(object);
+				}
+				else {
+					final BufferedRandomAccessFile file = new BufferedRandomAccessFile(_configAreaFile, "rw");
 					try {
-						file.seek(_startIdIndex + _headerEnd);
-						out.append("Id und Pid Index: \n");
-						int numberOfIds = 0;
-						while(file.getFilePointer() < (_startPidHashCodeIndex + _headerEnd)) {
-							numberOfIds++;
-							final long absoluteIndexPosition = file.getFilePointer();
-							final long id = file.readLong();
-							final long relative = file.readLong();
-							final long absolute = getAbsoluteFilePositionForInvalidObjects(relative);
-
-							out.append(
-									"Indexposition: " + absoluteIndexPosition + " Id: " + id + " relative Dateiposition: " + relative + " absolut: " + absolute
-									+ "\n"
-							);
-						}
-						out.append("Anzahl Einträge: " + numberOfIds + " relative Position: " + _startIdIndex + "\n");
-
-						// Pid Index einlesen
-						file.seek(_startPidHashCodeIndex + _headerEnd);
-
-						int numberOfPids = 0;
-						while(file.getFilePointer() < (_startMixedSet + _headerEnd)) {
-							numberOfPids++;
-
-							final long absoluteIndexPosition = file.getFilePointer();
-							final long pid = file.readInt();
-							final long relative = file.readLong();
-							final long absolute = getAbsoluteFilePositionForInvalidObjects(relative);
-
-							out.append(
-									"Indexposition: " + absoluteIndexPosition + " Pid: " + pid + " relative Dateiposition: " + relative + " absolut: "
-									+ absolute + "\n"
-							);
-						}
-						out.append("Anzahl Einträge: " + numberOfPids + " relative Position: " + _startPidHashCodeIndex + "\n");
-						System.out.println(out);
+						// Größe(4) + ID(8) + Hashcode(4) + Typ(8) + Kennung(1)
+						file.seek(filePosition.getAbsoluteFilePosition() + 4 + 8 + 4 + 8 + 1);
+						file.writeLong(object.getFirstInvalidTime());
 					}
 					finally {
 						file.close();
@@ -3891,8 +4019,31 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 			}
 		}
 		catch(IOException e) {
-			e.printStackTrace();
-			_debug.error("", e);
+			_debug.error(
+					"Das Objekt mit der Id " + object.getID() + " Pid " + object.getPid() + " konnte nicht in Datei " + _configAreaFile + " gespeichert werden"
+			);
+		}
+	}
+
+	/**
+	 * Führt eine volle Restrukturierugn aus
+	 * @return true falls erfolgreich sonst false
+	 * @deprecated Bitte Mode-Parameter übergeben um die Art der Restrukturierung anzugeben.
+	 */
+	@Deprecated
+	public boolean restructure() {
+		try {
+			restructure(RestructureMode.FullRestructure);
+			return true;
+		}
+		catch(IOException e) {
+			// Fängt alle Fehler ab, kommt es zu einem Fehler, wird die Reorganisation unterbrochen und der
+			// Ursprungszustand bleibt erhalten
+			_debug.error(
+					"Fehler bei der Reorganisation " + _configAreaFile + " Pid " + _configurationAreaPid
+							+ " . Die Reorganisation wurde abgebrochen, es wird ohne Änderung in der Ursprungsdate normal weitergearbeitet.", e
+			);
+			return false;
 		}
 	}
 
@@ -3902,7 +4053,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 	 * ungültig geworden ist und die Position an dem das Objekt in der Datei gespeichert wurde. <br> Diese Klasse speichert die Id und die Dateiposition von
 	 * beliebigen Objekten.
 	 */
-	private final static class SortObject implements Comparable {
+	private final static class SortObject implements Comparable<SortObject> {
 
 		// Positionsangabe (kann relativ aber auch absolut sein)
 		private final long _filePosition;
@@ -3926,9 +4077,8 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 			return _value;
 		}
 
-		public int compareTo(Object o) {
-			final SortObject sortObject = (SortObject)o;
-
+		@Override
+		public int compareTo(SortObject sortObject) {
 			if(_value < sortObject.getValue()) {
 				return -1;
 			}
@@ -3939,9 +4089,29 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 				return 0;
 			}
 		}
+
+		@Override
+		public boolean equals(final Object o) {
+			if(this == o) return true;
+			if(o == null || getClass() != o.getClass()) return false;
+
+			final SortObject that = (SortObject) o;
+
+			if(_filePosition != that._filePosition) return false;
+			if(_value != that._value) return false;
+
+			return true;
+		}
+
+		@Override
+		public int hashCode() {
+			int result = (int) (_filePosition ^ (_filePosition >>> 32));
+			result = 31 * result + (int) (_value ^ (_value >>> 32));
+			return result;
+		}
 	}
 
-	private final static class SortObjectPid implements Comparable {
+	private final static class SortObjectPid implements Comparable<SortObjectPid> {
 
 		/** relative Dateipositionen der Objekte, deren Pid auf _pidHashCode abgebildet werden konnten */
 		private final List<Long> _filePositions = new ArrayList<Long>();
@@ -3975,13 +4145,13 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 			return _pidHashCode;
 		}
 
-		public int compareTo(Object o) {
-			final SortObjectPid sortObject = (SortObjectPid)o;
+		@Override
+		public int compareTo(SortObjectPid o) {
 
-			if(_pidHashCode < sortObject.getPidHashCode()) {
+			if(_pidHashCode < o.getPidHashCode()) {
 				return -1;
 			}
-			else if(_pidHashCode > sortObject.getPidHashCode()) {
+			else if(_pidHashCode > o.getPidHashCode()) {
 				return 1;
 			}
 			else {
@@ -4002,7 +4172,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		private final int _pidHashCode;
 
 		/** Wo in der Datei befindet sich das Objekt */
-		private final long _filePosition;
+		private final FilePointer _filePosition;
 
 		/** Objekt zum laden des Objekts */
 		private final ConfigAreaFile _configAreaFile;
@@ -4013,7 +4183,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		 * @param filePosition   Position in der Datei, an der das Objekt gespeichert wurde
 		 * @param configAreaFile Objekt, über das das als "ungültig" markierte Objekt geladen werden kann
 		 */
-		public OldObject(long id, int pidHashCode, long filePosition, ConfigAreaFile configAreaFile) {
+		public OldObject(long id, int pidHashCode, FilePointer filePosition, ConfigAreaFile configAreaFile) {
 			_id = id;
 			_pidHashCode = pidHashCode;
 			_filePosition = filePosition;
@@ -4028,7 +4198,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 			return _pidHashCode;
 		}
 
-		public long getFilePosition() {
+		public FilePointer getFilePosition() {
 			return _filePosition;
 		}
 
@@ -4037,14 +4207,14 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		}
 
 		public String toString() {
-			final StringBuffer out = new StringBuffer();
+			final StringBuilder out = new StringBuilder();
 			out.append("Ungültig markiertes Objekt:" + "\n");
-			out.append("Id : " + getId() + "\n");
-			out.append("Pid, hashCode: " + getPidHashCode() + "\n");
+			out.append("Id : ").append(getId()).append("\n");
+			out.append("Pid, hashCode: ").append(getPidHashCode()).append("\n");
 			// out.append("Datei: " + getConfigAreaFile() + "\n");
-			out.append("Position in der Datei: " + getFilePosition() + "\n");
+			out.append("Position in der Datei: ").append(getFilePosition()).append("\n");
 			if(_configAreaFile != null) {
-				out.append("Objekt, ConfigAreaFile: " + _configAreaFile + "\n");
+				out.append("Objekt, ConfigAreaFile: ").append(_configAreaFile).append("\n");
 			}
 			else {
 				out.append("Objekt, ConfigAreaFile: null" + "\n");
@@ -4109,7 +4279,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		/** true = es handelt sich um ein Konfigurationsobjekt; false = das Objekt ist ein dynamisches Objekt */
 		private final boolean _configurationObject;
 
-		private final OldObjectIdReference _oldObjectIdReference;
+		private final ObjectReference _objectReference;
 
 		/**
 		 * @param firstValid           Bei Konfigurationsobjekten die Version, mit der das Objekt gültig wurde. Bei einem dynamischen Objekt, der Zeitpunkt an dem das
@@ -4119,22 +4289,22 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		 *                             unbekannt ist.
 		 * @param configurationObject  Variable wird benötigt um den Paramter firstValid auszuwerten. true = Es ist ein Konfigurationsobjekt; false = es ist ein
 		 *                             dynamisches Objekt
-		 * @param oldObjectIdReference Objekt, mit dem das Objekt aus der Datei rekonstruiert werden kann, bzw direkt aus dem Speicher geholt wird.
+		 * @param objectReference Objekt, mit dem das Objekt aus der Datei rekonstruiert werden kann, bzw direkt aus dem Speicher geholt wird.
 		 */
-		public OldObjectTypeIdInfo(long firstValid, long firstInvalidVersion, boolean configurationObject, OldObjectIdReference oldObjectIdReference) {
+		public OldObjectTypeIdInfo(long firstValid, long firstInvalidVersion, boolean configurationObject, ObjectReference objectReference) {
 			if(firstValid > 0) {
 				_firstValid = firstValid;
 			}
 			else {
 				throw new IllegalArgumentException(
 						"OldObjectTypeIdInfo, FirstValidVersion: " + firstValid + " FirstInvalidVersion " + firstInvalidVersion + " Konfiguriernend "
-						+ configurationObject + " betroffenes Objekt: " + oldObjectIdReference
+								+ configurationObject + " betroffenes Objekt: " + objectReference
 				);
 			}
 
 			_firstInvalid = firstInvalidVersion;
 			_configurationObject = configurationObject;
-			_oldObjectIdReference = oldObjectIdReference;
+			_objectReference = objectReference;
 		}
 
 		public long getFirstValid() {
@@ -4149,51 +4319,37 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 			return _configurationObject;
 		}
 
-		public OldObjectIdReference getOldObjectIdReference() {
-			return _oldObjectIdReference;
+		public ObjectReference getObjectReference() {
+			return _objectReference;
 		}
 	}
 
 	/**
-	 * Diese Klasse stellt ein Objekt dar, das ungültig ist und eine Methode um dieses Objekte anzufordern.
-	 * <p/>
-	 * Bei vielen Objekten muss das ungültige Objekt aus einer Datei geladen werden. Bei machen Objekten (transiente, als Beispiel) befindet sich das Objekt die
-	 * ganze Zeit im Hauptspeicher.
+	 * Lädt das Objekt aus der Datei oder holt es aus dem Speicher (transiente Objekte).
+	 *
+	 * @return s.o.
+	 *
+	 * @throws NoSuchVersionException
+	 * @throws IOException
+	 * @param file BufferedFile, das die Konfigurationsdatei enthält. Falls null wird eine neue Datei geöffnet.
+	 *                   (Performanceproblem beim wiederholten Laden von vielen Objekten!)
+	 *
 	 */
-	private final class OldObjectIdReference {
-
-		final DynamicObjectInfo _dynamicObjectInfo;
-
-		final long _absoluteFilePosition;
-
-
-		public OldObjectIdReference(final long absoluteFilePosition) {
-			_absoluteFilePosition = absoluteFilePosition;
-			_dynamicObjectInfo = null;
+	private SystemObjectInformationInterface getSystemObjectInfo(final ObjectReference ref, final BufferedRandomAccessFile file) throws NoSuchVersionException, IOException {
+		if(ref instanceof TransientObjectReference) {
+			TransientObjectReference transientObjectReference = (TransientObjectReference) ref;
+			return transientObjectReference._dynamicObjectInfo;
 		}
-
-		public OldObjectIdReference(final DynamicObjectInfo dynamicObjectInfo) {
-			_dynamicObjectInfo = dynamicObjectInfo;
-			_absoluteFilePosition = -1;
-		}
-
-		/**
-		 * Lädt das Objekt aus der Datei oder holt es aus dem Speicher (transiente Objekte).
-		 *
-		 * @return s.o.
-		 *
-		 * @throws NoSuchVersionException
-		 * @throws IOException
-		 */
-		SystemObjectInformationInterface getObject() throws NoSuchVersionException, IOException {
-			if(_dynamicObjectInfo != null) {
-				return _dynamicObjectInfo;
+		if(ref instanceof FilePointer) {
+			FilePointer filePointer = (FilePointer) ref;
+			if(file == null){
+				return loadObjectFromFile(filePointer);
 			}
-			else {
-				return loadObjectFromFile(_absoluteFilePosition);
-			}
+			return loadObjectFromFile(file, filePointer, null);
 		}
+		throw new IllegalArgumentException();
 	}
+
 
 	/** Diese Klasse stellt einen Iterator zur Verfügung, der alle Objekte eines Konfigurationsbereichs zur Verfügung stellt. */
 	private final class FileIterator implements Iterator<SystemObjectInformationInterface> {
@@ -4205,7 +4361,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 		private long _relativePosition = -1;
 
 		/** absolute Position eines als "ungültig" markierten Objekts, das sich in der Mischmenge befindet. */
-		private final Iterator<OldObjectIdReference> _oldObjectsIterator = _oldObjectsId.values().iterator();
+		private final Iterator<ObjectReference> _oldObjectsIterator = _oldObjectsId.values().iterator();
 
 		/** Iterator über alle aktuellen Objekte, die sich im Speicher befinden */
 		private final Iterator<SystemObjectInformationInterface> _actualObjectsIterator = _actualObjects.values().iterator();
@@ -4221,6 +4377,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 			}
 		}
 
+		@Override
 		synchronized public boolean hasNext() {
 			// Gibt es noch Elemente, die aus der Datei geladen werden können
 			if(_relativePosition > 0) return true;
@@ -4235,6 +4392,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 			return false;
 		}
 
+		@Override
 		synchronized public SystemObjectInformationInterface next() {
 			synchronized(_restructureLock) {
 				synchronized(_configAreaFile) {
@@ -4244,7 +4402,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 						// Wenn das Objekt geladen wird, wird auch _relativePosition durch den setter gesetzt.
 
 						try {
-							return loadObjectFromFile((_relativePosition + _headerEnd), this);
+							return loadObjectFromFile(FilePointer.fromAbsolutePosition(_relativePosition + _headerEnd, ConfigAreaFile.this), this);
 						}
 						catch(Exception e) {
 							throw new RuntimeException(e);
@@ -4253,7 +4411,8 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 					// Aus der Datei wurden alle Objekte geladen, jetzt die Objekte aus dem Speicher.
 					if(_oldObjectsIterator.hasNext()) {
 						try {
-							return _oldObjectsIterator.next().getObject();
+							ObjectReference idReference = _oldObjectsIterator.next();
+							return getSystemObjectInfo(idReference, null);
 						}
 						catch(Exception e) {
 							throw new RuntimeException(e);
@@ -4274,6 +4433,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 			}
 		}
 
+		@Override
 		synchronized public void remove() {
 			throw new UnsupportedOperationException();
 		}
@@ -4282,4 +4442,5 @@ public class ConfigAreaFile implements ConfigurationAreaFile {
 			_relativePosition = relativePosition;
 		}
 	}
+
 }

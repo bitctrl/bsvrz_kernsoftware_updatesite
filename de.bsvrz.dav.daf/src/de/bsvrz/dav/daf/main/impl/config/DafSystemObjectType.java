@@ -21,11 +21,8 @@
 
 package de.bsvrz.dav.daf.main.impl.config;
 
-import de.bsvrz.dav.daf.main.config.ObjectSet;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
-import de.bsvrz.dav.daf.main.config.ObjectSetUse;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.SystemObject;
+import de.bsvrz.dav.daf.main.config.*;
+import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -38,12 +35,9 @@ import java.util.List;
  * Klasse, die den Zugriff auf Objekttypen seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 6095 $
+ * @version $Revision: 13141 $
  */
 public class DafSystemObjectType extends DafConfigurationObject implements SystemObjectType {
-
-	/** Kennung, die <code>true</code> ist, wenn der Typ konfigurierend ist. */
-	private boolean _isConfigurating;
 
 	/** Kennung, die <code>true</code> ist, wenn die Namen von Objekten des Typs permanent sind? */
 	private boolean _isNameOfObjectsPermanent;
@@ -89,6 +83,29 @@ public class DafSystemObjectType extends DafConfigurationObject implements Syste
 			short validToVersionNumber,
 			long responsibleObjectId,
 			long setIds[],
+			boolean hasPermanentName
+	) {
+		super(
+				id, pid, name, typId, state, error, dataModel, validFromVersionNumber, validToVersionNumber, responsibleObjectId, setIds
+		);
+		_internType = SYSTEM_OBJECT_TYPE;
+		_isNameOfObjectsPermanent = hasPermanentName;
+	}
+
+	/** Erzeugt ein neues Objekt mit den angegebenen Eigenschaften */
+	@Deprecated
+	protected DafSystemObjectType(
+			long id,
+			String pid,
+			String name,
+			long typId,
+			byte state,
+			String error,
+			DafDataModel dataModel,
+			short validFromVersionNumber,
+			short validToVersionNumber,
+			long responsibleObjectId,
+			long setIds[],
 			boolean isConfigurator,
 			boolean hasPermanentName
 	) {
@@ -96,7 +113,6 @@ public class DafSystemObjectType extends DafConfigurationObject implements Syste
 				id, pid, name, typId, state, error, dataModel, validFromVersionNumber, validToVersionNumber, responsibleObjectId, setIds
 		);
 		_internType = SYSTEM_OBJECT_TYPE;
-		_isConfigurating = isConfigurator;
 		_isNameOfObjectsPermanent = hasPermanentName;
 	}
 
@@ -104,7 +120,7 @@ public class DafSystemObjectType extends DafConfigurationObject implements Syste
 		String str;
 		str = "Objekt Typ: \n";
 		str = str + super.parseToString();
-		str += "Konfigurierend: " + _isConfigurating + "\n";
+		str += "Konfigurierend: " + isConfigurating() + "\n";
 		str += "Name ist permanent: " + _isNameOfObjectsPermanent + "\n";
 		final List attributeGroups = getAttributeGroups();
 		for(Object attributeGroup : attributeGroups) {
@@ -115,18 +131,24 @@ public class DafSystemObjectType extends DafConfigurationObject implements Syste
 
 	public void write(DataOutputStream out) throws IOException {
 		super.write(out);
-		out.writeBoolean(_isConfigurating);
+		out.writeBoolean(isConfigurating());
 		out.writeBoolean(_isNameOfObjectsPermanent);
 	}
 
 	public void read(DataInputStream in) throws IOException {
 		super.read(in);
-		_isConfigurating = in.readBoolean();
+		in.readBoolean(); // Configurating, wird nicht benötigt, da bereits über Klasse definiert.
 		_isNameOfObjectsPermanent = in.readBoolean();
 	}
 
-	public final boolean isConfigurating() {
-		return _isConfigurating;
+	@Override
+	public void read(final Deserializer deserializer) throws IOException {
+		super.read(deserializer);
+		_isNameOfObjectsPermanent = deserializer.readBoolean();
+	}
+
+	public boolean isConfigurating(){
+		return true;
 	}
 
 	public boolean isNameOfObjectsPermanent() {

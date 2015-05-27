@@ -31,7 +31,7 @@ import java.util.*;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 8432 $ / $Date: 2010-12-13 11:31:48 +0100 (Mo, 13 Dez 2010) $ / ($Author: jh $)
+ * @version $Revision: 8432 $ / $Date: 2010-12-13 11:31:48 +0100 (Mon, 13 Dec 2010) $ / ($Author: jh $)
  */
 public class AtlMeta implements Serializable {
 

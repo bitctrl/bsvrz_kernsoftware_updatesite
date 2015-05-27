@@ -23,24 +23,14 @@
 
 package de.bsvrz.puk.config.main;
 
-import de.bsvrz.dav.daf.main.ClientDavParameters;
-import de.bsvrz.dav.daf.main.CommunicationError;
-import de.bsvrz.dav.daf.main.ConnectionException;
-import de.bsvrz.dav.daf.main.InconsistentLoginException;
-import de.bsvrz.dav.daf.main.MissingParameterException;
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.ConfigurationAuthority;
-import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.DynamicObjectType;
-import de.bsvrz.dav.daf.main.config.ObjectTimeSpecification;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
+import de.bsvrz.dav.daf.main.*;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.dav.daf.main.config.management.ConfigAreaAndVersion;
 import de.bsvrz.dav.daf.main.config.management.ConfigurationControl;
 import de.bsvrz.dav.daf.main.config.management.consistenycheck.ConsistencyCheckResultInterface;
 import de.bsvrz.puk.config.configFile.datamodel.ConfigConfigurationArea;
 import de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel;
+import de.bsvrz.puk.config.configFile.fileaccess.ConfigurationAreaFile;
 import de.bsvrz.puk.config.main.authentication.ConfigAuthentication;
 import de.bsvrz.puk.config.main.communication.ConfigurationCommunicator;
 import de.bsvrz.puk.config.main.communication.query.ForeignObjectManager;
@@ -96,14 +86,14 @@ public class ConfigurationApp {
 	/** DebugLogger für Debug-Ausgaben */
 	private static Debug _debug;
 
-	/** Thread, der beim beenden oder nach einer festen Zeitspanne, die Konfiguration auffordert zu speichern. */
-	private AutoSaver _autoSaver = null;
-
 	/** Thread, der beim Herunterfahren des Systems die Daten sichert. */
 	private AutoCloser _autoCloser = null;
 
 	/** Zeitspanne, die gewartet wird bis die Konfiguration die gepufferten Daten persistent speichert. */
 	public static final long _bufferTime = 10 * 60 * 1000;
+
+	/** 7 Tage in Millisekunden, die Zeit, die zwischen periodischen Restrukturierungen gewartet wird */
+	public static final long _restructureTime = 604800000;
 
 	private ForeignObjectManager _foreignObjectManager;
 
@@ -242,6 +232,11 @@ public class ConfigurationApp {
 					startReleaseForActivationWithoutCAActivation(managementFile, trimPids(pids), allowDoublePids, ignoreDependencyErrorsInConsistencyCheck);
 				}
 			}
+			else if(argumentList.hasArgument("-restrukturierung") && argumentList.hasArgument("-verwaltung")) {
+				final File managementFile = argumentList.fetchArgument("-verwaltung").asExistingFile();
+				correctUsage = true;
+				startRestructure(managementFile);
+			}
 			else if(argumentList.hasArgument("-verwaltung") && argumentList.hasArgument("-benutzer") && argumentList.hasArgument("-authentifizierung")) {
 
 				final File managementFile = argumentList.fetchArgument("-verwaltung").asExistingFile();
@@ -278,7 +273,7 @@ public class ConfigurationApp {
 				argumentList.ensureAllArgumentsUsed();
 				correctUsage = true;
 
-				final DataModel dataModel = startConfiguration(managementFile, userManagementFile, clientDavParameters, backupDirectory);
+				final ConfigDataModel dataModel = startConfiguration(managementFile, userManagementFile, clientDavParameters, backupDirectory);
 
 				dealWithInvalidOnRestartObjects(dataModel);
 
@@ -323,7 +318,7 @@ public class ConfigurationApp {
 	 *
 	 * @param dataModel Datenmodell
 	 */
-	private void dealWithInvalidOnRestartObjects(DataModel dataModel) throws ConfigurationChangeException {
+	private void dealWithInvalidOnRestartObjects(ConfigDataModel dataModel) throws ConfigurationChangeException {
 
 		// Alle Objekte/Elemente des Typs typ.dynamischerTyp. Die entspricht allen Typen, die dynamisch sind.
 		final List<SystemObject> allDynamicTypes = dataModel.getType("typ.dynamischerTyp").getElements();
@@ -339,7 +334,7 @@ public class ConfigurationApp {
 		// Alle aktuellen dynamischen Objekte, für die der Konfigurationsverantwortliche der Konfiguration
 		// verantwortlich ist. Achtung, diese Methode benutzt die Vererbung, eine Einschränkung der Tyen macht also
 		// keinen Sinn !!
-		final Collection<SystemObject> allDynamicObjects = dataModel.getObjects(examineAreas, systemObjectTypes, ObjectTimeSpecification.valid());
+		final Collection<SystemObject> allDynamicObjects = dataModel.getAllObjects(examineAreas, systemObjectTypes, ObjectTimeSpecification.valid());
 
 		// Alle Objekte auf ungültig setzen, die transient sind.
 		for(SystemObject systemObject : allDynamicObjects) {
@@ -399,7 +394,7 @@ public class ConfigurationApp {
 	}
 
 	/** Startet die Konfiguration */
-	private DataModel startConfiguration(File managementFile, File userManagementFile, ClientDavParameters dafParameters, final File backupDirectory)
+	private ConfigDataModel startConfiguration(File managementFile, File userManagementFile, ClientDavParameters dafParameters, final File backupDirectory)
 			throws Exception, CommunicationError, ConnectionException, ParserConfigurationException, MissingParameterException, InterruptedException, InconsistentLoginException {
 		_debug.info("Konfiguration wird gestartet: " + managementFile.getName());
 		// Datenmodell starten
@@ -422,8 +417,8 @@ public class ConfigurationApp {
 			throw e;
 		}
 
-		((ConfigDataModel)dataModel).setBackupBaseDirectory(backupDirectory);
-		((ConfigDataModel)dataModel).setUserManagement(configurationCommunicator.getAuthentication());
+		dataModel.setBackupBaseDirectory(backupDirectory);
+		dataModel.setUserManagement(configurationCommunicator.getAuthentication());
 
 		_foreignObjectManager = configurationCommunicator.getForeignObjectManager();
 
@@ -435,7 +430,6 @@ public class ConfigurationApp {
 		_debug.info("Konfiguration", dataModel);
 		return dataModel;
 	}
-
 	private void startImport(File managementFile, File importPath, List<String> pids) {
 		_debug.fine("Import wird gestartet: " + managementFile.getAbsolutePath() + "\t" + importPath.getAbsolutePath() + "\t" + pids.size());
 		// Datamodell
@@ -519,7 +513,7 @@ public class ConfigurationApp {
 		}
 
 		try {
-			final ConsistencyCheckResultInterface consistencyCheckResult = ((ConfigurationControl)dataModel).checkConsistency(configAreasAndVersions);
+			final ConsistencyCheckResultInterface consistencyCheckResult = dataModel.checkConsistency(configAreasAndVersions);
 			_debug.info(consistencyCheckResult.toString());
 		}
 		catch(Exception ex) {
@@ -557,7 +551,7 @@ public class ConfigurationApp {
 		}
 
 		try {
-			((ConfigurationControl)dataModel).activateConfigurationAreas(configAreasAndVersions);
+			dataModel.activateConfigurationAreas(configAreasAndVersions);
 		}
 		catch(Exception ex) {
 			_debug.error("Die Aktivierung konnte nicht ordnungsgemäß durchgeführt werden", ex);
@@ -642,7 +636,7 @@ public class ConfigurationApp {
 		}
 
 		try {
-			((ConfigurationControl)dataModel).releaseConfigurationAreasForTransfer(configAreasAndVersions);
+			dataModel.releaseConfigurationAreasForTransfer(configAreasAndVersions);
 		}
 		catch(Exception ex) {
 			_debug.error("Die Freigabe zur Übernahme konnte nicht ordnungsgemäß durchgeführt werden", ex);
@@ -686,7 +680,7 @@ public class ConfigurationApp {
 		}
 
 		try {
-			final ConsistencyCheckResultInterface consistencyCheckResult = ((ConfigurationControl)dataModel).releaseConfigurationAreasForActivationWithoutCAActivation(
+			final ConsistencyCheckResultInterface consistencyCheckResult = dataModel.releaseConfigurationAreasForActivationWithoutCAActivation(
 					configAreasAndVersions
 			);
 
@@ -701,6 +695,28 @@ public class ConfigurationApp {
 		catch(Exception ex) {
 			_debug.error("Die Freigabe zur Aktivierung ohne Aktivierung durch den KV konnte nicht ordnungsgemäß durchgeführt werden", ex);
 			throw new RuntimeException("Die Freigabe zur Aktivierung ohne Aktivierung durch den KV konnte nicht ordnungsgemäß durchgeführt werden", ex);
+		}
+	}
+
+	/**
+	 * Startet die manuelle Restrukturierung von allen Konfigurationsbereichen des aktuellen KV
+	 * @param managementFile   Verwaltungsdaten
+	 */
+	private void startRestructure(final File managementFile) {
+
+		_debug.info("Freigabe zur Übernahme wird gestartet: " + managementFile.toString());
+		final ConfigDataModel dataModel = new ConfigDataModel(managementFile);
+
+		// Alle Dateien sind für andere gesperrt worden (lock-Dateien). Diese müssen wieder freigegeben werden, sobald
+		// die Aktion beendet wurde.
+		startAutoCloser(dataModel, null);
+
+		try {
+			dataModel.restructure(ConfigurationAreaFile.RestructureMode.FullRestructure);
+		}
+		catch(Exception ex) {
+			_debug.error("Die Restrukturierung konnte nicht ordnungsgemäß durchgeführt werden", ex);
+			throw new RuntimeException("Die Restrukturierung konnte nicht ordnungsgemäß durchgeführt werden", ex);
 		}
 	}
 
@@ -721,6 +737,7 @@ public class ConfigurationApp {
 		System.out.println("\t-editor                     für den Konfigurationseditor");
 		System.out.println("\t-konsistenzprüfung          für die Konsistenzprüfung");
 		System.out.println("\t-aktivierung                für die Aktivierung von Konfigurationsbereichen");
+		System.out.println("\t-restrukturierung           für die manuelle Restrukturierung von Konfigurationsbereichen");
 		System.out.println("\t-doppeltePidsZulassen       wenn doppelte PIDs zugelassen sein sollen");
 		System.out.println("\t-ignoriereFehlerDerAbhängigkeitenBeiKonsistenzprüfung");
 		System.out.println("\t                            wenn Fehler, die auf nicht erfüllte Abhängigkeiten zwischen Konfigurationsbereichen zurückzuführen");
@@ -737,19 +754,19 @@ public class ConfigurationApp {
 		System.out.println("\t-Konfigurationseditor benötigt den Parameter '-editor' und für den Offline-Modus zusätzlich '-verwaltung'");
 		System.out.println("\t-Konsistenzprüfung benötigt die Parameter '-konsistenzprüfung' und '-verwaltung'");
 		System.out.println("\t-Aktivierung von Konfigurationsbereichen benötigt die Parameter '-aktivierung' und '-verwaltung'");
+		System.out.println("\t-Restrukturierung benötigt die Parameter '-restrukturierung' und '-verwaltung'");
 		System.out.println("\t-Freigabe aller Konfigurationsbereiche zur Aktivierung benötigt die Parameter '-freigabeaktivierung' und '-verwaltung'");
 		System.out.println("\t-Freigabe aller Konfigurationsbereiche zur Übernahme benötigt die Parameter '-freigabeübernahme' und '-verwaltung'");
 	}
 
-	/** Startet den Thread, der zyklisch die Daten sichert */
-	public void startAutoSaver(DataModel dataModel) {
+	/**
+	 * Startet den Timer, der zyklisch die Daten sichert
+	 */
+	public void startAutoSaver(ConfigDataModel dataModel) {
 
-		if(_autoSaver == null) {
-			_autoSaver = new AutoSaver(dataModel);
-			final Timer configTimer = new Timer("ConfigTimer", true);
-			// _autoSaver Alle 10 Minuten speichern
-			configTimer.schedule(_autoSaver, _bufferTime, _bufferTime);
-		}
+		final Timer configTimer = new Timer("ConfigTimer", true);
+		// autoSaver Alle 10 Minuten speichern
+		configTimer.schedule(new AutoSaver(dataModel), _bufferTime, _bufferTime);
 	}
 
 	/** Legt einen Thread an, der ausgeführt wird, wenn das System beendet wird. Dieser Thread wird alle Daten der Konfiguration sichern. */
@@ -761,11 +778,11 @@ public class ConfigurationApp {
 	}
 
 	/** Runnable Implementierung, die beim Beenden und zyklisch dafür sorgt, dass ungesicherte Konfigurationsänderungen gespeichert werden. */
-	private class AutoSaver extends TimerTask implements Runnable {
+	private class AutoSaver extends TimerTask {
 
-		private final DataModel _dataModel;
+		private final ConfigDataModel _dataModel;
 
-		public AutoSaver(DataModel dataModel) {
+		public AutoSaver(ConfigDataModel dataModel) {
 			_dataModel = dataModel;
 		}
 
@@ -779,7 +796,7 @@ public class ConfigurationApp {
 				_debug.warning("Zwischenspeicher für Fremdobjekte konnte nicht gespeichert werden", ex);
 			}
 			try {
-				((ConfigDataModel)_dataModel).save();
+				_dataModel.save();
 			}
 			catch(IOException ex) {
 				// falls das Speichern nicht gelingt wird nur eine Warnung ausgegeben, evtl. gelingt es beim nächsten Mal

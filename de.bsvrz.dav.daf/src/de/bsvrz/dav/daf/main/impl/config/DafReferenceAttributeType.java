@@ -22,12 +22,13 @@
 
 package de.bsvrz.dav.daf.main.impl.config;
 
-import de.bsvrz.dav.daf.main.config.ReferenceType;
-import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.communication.dataRepresentation.UndefinedValueHandler;
 import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.DataValue;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
+import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.config.ReferenceAttributeType;
+import de.bsvrz.dav.daf.main.config.ReferenceType;
+import de.bsvrz.dav.daf.main.config.SystemObjectType;
+import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -38,7 +39,7 @@ import java.io.IOException;
  * referenzierten Objekte wird durch den Attributtyp festgelegt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5055 $
+ * @version $Revision: 13141 $
  */
 public class DafReferenceAttributeType extends DafAttributeType implements ReferenceAttributeType {
 
@@ -123,8 +124,29 @@ public class DafReferenceAttributeType extends DafAttributeType implements Refer
 		super.write(out);
 		out.writeLong(_referencedTypeId);
 		out.writeBoolean(_isUndefinedAllowed);
-		final int referenceTypeCode;
-		switch(_referenceType) {
+		out.writeByte(getReferenceTypeCode(_referenceType));
+	}
+
+	public final void read(DataInputStream in) throws IOException {
+		super.read(in);
+		_referencedTypeId = in.readLong();
+		_isUndefinedAllowed = in.readBoolean();
+		final byte referenceTypeCode = in.readByte();
+		_referenceType = getReferenceTypeFromCode(referenceTypeCode);
+	}
+
+	@Override
+	public void read(final Deserializer deserializer) throws IOException {
+		super.read(deserializer);
+		_referencedTypeId = deserializer.readLong();
+		_isUndefinedAllowed = deserializer.readBoolean();
+		final byte referenceTypeCode = deserializer.readByte();
+		_referenceType = getReferenceTypeFromCode(referenceTypeCode);
+	}
+
+	static byte getReferenceTypeCode(final ReferenceType referenceType) {
+		final byte referenceTypeCode;
+		switch(referenceType) {
 			case ASSOCIATION:
 				referenceTypeCode = 0;
 				break;
@@ -135,29 +157,27 @@ public class DafReferenceAttributeType extends DafAttributeType implements Refer
 				referenceTypeCode = 2;
 				break;
 			default:
-				throw new IllegalStateException("Unbekannte Referenzierungsart beim Attributtyp " + this + ": " + _referenceType);
+				throw new IllegalStateException("Unbekannte Referenzierungsart beim Attributtyp: " + referenceType);
 		}
-		out.writeByte(referenceTypeCode);
+		return referenceTypeCode;
 	}
 
-	public final void read(DataInputStream in) throws IOException {
-		super.read(in);
-		_referencedTypeId = in.readLong();
-		_isUndefinedAllowed = in.readBoolean();
-		final int referenceTypeCode = in.readByte();
+	static ReferenceType getReferenceTypeFromCode(final byte referenceTypeCode) {
+		ReferenceType result;
 		switch(referenceTypeCode) {
 			case 0:
-				_referenceType = ReferenceType.ASSOCIATION;
+				result = ReferenceType.ASSOCIATION;
 				break;
 			case 1:
-				_referenceType = ReferenceType.AGGREGATION;
+				result = ReferenceType.AGGREGATION;
 				break;
 			case 2:
-				_referenceType = ReferenceType.COMPOSITION;
+				result = ReferenceType.COMPOSITION;
 				break;
 			default:
-				throw new IllegalStateException("Unbekannte Referenzierungsart beim lesen des Attributtyps " + getPid() + ": " + referenceTypeCode);
+				throw new IllegalStateException("Unbekannte Referenzierungsart beim lesen des Attributtyps: " + referenceTypeCode);
 		}
+		return result;
 	}
 
 	public void setToUndefined(Data data) {

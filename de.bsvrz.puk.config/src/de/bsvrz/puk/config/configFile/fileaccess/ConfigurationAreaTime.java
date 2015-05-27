@@ -29,7 +29,7 @@ package de.bsvrz.puk.config.configFile.fileaccess;
  *
  * @author Kappich+Kniß Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 5074 $ / $Date: 2007-09-02 14:19:12 +0200 (So, 02 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 5074 $ / $Date: 2007-09-02 14:19:12 +0200 (Sun, 02 Sep 2007) $ / ($Author: rs $)
  */
 public enum ConfigurationAreaTime {
 	LOCAL_ACTIVATION_TIME("lokale Zeit für aktivierte Versionen"), GLOBAL_ACTIVATION_TIME("Zeit des Konfigurationsverantwortlichen für aktivierte Versionen");

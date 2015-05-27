@@ -28,19 +28,21 @@ import de.bsvrz.dav.daf.main.config.Aspect;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.dav.daf.main.config.MutableCollectionChangeListener;
 import de.bsvrz.dav.daf.main.config.SystemObject;
+import de.bsvrz.dav.daf.main.impl.CommunicationConstant;
 import de.bsvrz.dav.daf.main.impl.NonQueueingReceiver;
 import de.bsvrz.dav.daf.main.impl.config.request.RequestException;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Bietet eine Kommunikation mit einem Sender und einer Senke. Der Sender verschickt Aufträge, die Antworten auf diese Aufträge werden dann durch die Quelle
  * empfangen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11922 $
+ * @version $Revision: 13310 $
  */
 public abstract class AbstractSenderReceiverCommunication implements SenderReceiverCommunication {
 
@@ -104,6 +106,8 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 	 *                      hat.
 	 */
 	protected AbstractSenderReceiverCommunication(ClientDavInterface connection, SystemObject senderObject, SystemObject ordererObject) {
+		if(senderObject == null) throw new IllegalArgumentException("senderObject ist null");
+		if(ordererObject == null) throw new IllegalArgumentException("receiverObject ist null");
 		_connection = connection;
 		_senderObject = senderObject;
 		_receiverObject = ordererObject;
@@ -156,6 +160,17 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 			DataListener dataListener
 	) throws OneSubscriptionPerSendData {
 
+		DavConnectionListener listener = new DavConnectionListener() {
+			@Override
+			public void connectionClosed(final ClientDavInterface connection) {
+				synchronized(_monitor) {
+					_connectionState = ConnectionState.DavConnectionLost;
+					_monitor.notifyAll();
+				}
+			}
+		};
+		_connection.addConnectionListener(listener);
+		
 		// Sender von Aufträgen
 		_requestDescription = new DataDescription(requestAtg, requestAspect, simulationVariant);
 		_dataListener = dataListener;
@@ -259,22 +274,31 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 		}
 	}
 
-	public Data waitForReply(int reqestIndex) throws RequestException {
+	public Data waitForReply(int requestIndex) throws RequestException {
 		if(_subscribeReceiver) {
 			Data reply = null;
 			synchronized(_replyList) {
+				long waitTime = CommunicationConstant.MAX_WAITING_TIME_FOR_SYNC_RESPONCE;
 				try {
 					while(reply == null) {
 						if(_closed) throw new RequestException("Verbindung zum Datenverteiler wurde terminiert");
 						for(Iterator iterator = _replyList.iterator(); iterator.hasNext();) {
 							Data data = (Data)iterator.next();
-							if(data.getScaledValue("anfrageIndex").intValue() == reqestIndex) {
+							if(data.getScaledValue("anfrageIndex").intValue() == requestIndex) {
 								reply = data;
 								break;
 							}
 						}
 						if(reply == null) {
-							_replyList.wait();
+							if(waitTime < 0){
+								throw new RuntimeException("Die Konfiguration antwortet nicht");
+							}
+							long startTime = System.nanoTime();
+							_replyList.wait(waitTime);
+							long waitedTime = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime);
+							if(waitedTime > 0){
+								waitTime -= waitedTime;
+							}
 						}
 					}
 					_replyList.remove(reply);
@@ -408,8 +432,12 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 		 * @see #STOP_SENDING_NOT_A_VALID_SUBSCRIPTION
 		 */
 		public void dataRequest(SystemObject object, DataDescription dataDescription, byte state) {
-			_debug.finer("RequestSender Sendesteuerung " + state);
+			_debug.finer("RequestSender Sendesteuerung" , state);
 			synchronized(_monitor) {
+				if(_connectionState == ConnectionState.DavConnectionLost){
+					_debug.finer("Ignoriere Sendesteuerung, Datenverteilerverbindung verloren");
+					return;
+				}
 				switch(state) {
 					case START_SENDING:
 						_connectionState = ConnectionState.Connected;

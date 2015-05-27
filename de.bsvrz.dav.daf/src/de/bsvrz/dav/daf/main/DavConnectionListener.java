@@ -22,7 +22,7 @@ package de.bsvrz.dav.daf.main;
 /**
  * Definiert die Schnittstelle für Beobachter, die sich für Zustandsänderungen der Datenverteilerverbindung interessieren.
  * @author Roland Schmitz (rs), Kappich Systemberatung
- * @version $Revision: 5084 $ / $Date: 2007-09-03 10:42:50 +0200 (Mo, 03 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 5084 $ / $Date: 2007-09-03 10:42:50 +0200 (Mon, 03 Sep 2007) $ / ($Author: rs $)
  */
 public interface DavConnectionListener {
 	public void connectionClosed(ClientDavInterface connection);

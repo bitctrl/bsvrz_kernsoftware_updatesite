@@ -51,7 +51,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 11945 $ / $Date: 2014-01-20 11:00:04 +0100 (Mo, 20 Jan 2014) $ / ($Author: jh $)
+ * @version $Revision: 11945 $ / $Date: 2014-01-20 11:00:04 +0100 (Mon, 20 Jan 2014) $ / ($Author: jh $)
  */
 public class ConnectionManager {
 

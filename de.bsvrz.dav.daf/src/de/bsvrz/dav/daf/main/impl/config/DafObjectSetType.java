@@ -24,20 +24,15 @@
 package de.bsvrz.dav.daf.main.impl.config;
 
 import de.bsvrz.dav.daf.main.Data;
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
+import de.bsvrz.dav.daf.main.config.*;
+import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
-import de.bsvrz.dav.daf.main.config.ReferenceType;
-import de.bsvrz.dav.daf.main.config.ObjectSetType;
-import de.bsvrz.dav.daf.main.config.ObjectSet;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
-import de.bsvrz.dav.daf.main.config.SystemObject;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Klasse zum Zugriff auf die beschreibenden Informationen und Einschränkungen von Mengen-Typen. Zu jedem Mengen-Typ wird konfiguriert welcher Name eine Menge
@@ -45,7 +40,7 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
  * Menge an den entsprechenden Objekten vorhanden sein muss oder darf und ob eine Menge dieses Typs konfigurierend oder dynamisch ist.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 6096 $
+ * @version $Revision: 13141 $
  */
 public class DafObjectSetType extends DafConfigurationObjectType implements ObjectSetType {
 
@@ -123,6 +118,14 @@ public class DafObjectSetType extends DafConfigurationObjectType implements Obje
 		_minimumElementCount = in.readInt();
 		_maximumElementCount = in.readInt();
 		_mutable = in.readBoolean();
+	}
+
+	@Override
+	public void read(final Deserializer deserializer) throws IOException {
+		super.read(deserializer);
+		_minimumElementCount = deserializer.readInt();
+		_maximumElementCount = deserializer.readInt();
+		_mutable = deserializer.readBoolean();
 	}
 
 	public final int getMinimumElementCount() {

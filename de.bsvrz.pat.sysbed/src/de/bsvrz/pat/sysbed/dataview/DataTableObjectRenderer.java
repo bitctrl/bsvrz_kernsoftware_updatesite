@@ -49,7 +49,7 @@ import java.util.List;
  * Alle abrufbaren Informationen werden erst beim ersten Abruf gebildet.
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 11925 $
+ * @version $Revision: 12602 $
  */
 public class DataTableObjectRenderer {
 	

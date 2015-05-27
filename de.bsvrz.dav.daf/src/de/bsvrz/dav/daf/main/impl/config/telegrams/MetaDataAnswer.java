@@ -21,8 +21,8 @@
 
 package de.bsvrz.dav.daf.main.impl.config.telegrams;
 
-import de.bsvrz.dav.daf.main.impl.config.DafSystemObject;
 import de.bsvrz.dav.daf.main.impl.config.DafDataModel;
+import de.bsvrz.dav.daf.main.impl.config.DafSystemObject;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -32,13 +32,13 @@ import java.io.IOException;
  * Diese Klasse stellt ein Metadaten-Antworttelegramm dar. Es werden die Metadaten gespeichert.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5054 $
+ * @version $Revision: 13141 $
  * 
  */
 public class MetaDataAnswer extends ConfigTelegram {
 
-	/** Die Konfigurationszeit */
-	private long _configTime;
+	/** Version des Kommunikationsprotokolls, das von der Konfiguration unterstützt wird */
+	private long _protocolVersion;
 
 	/** Die Meta-Objekte */
 	private DafSystemObject _objects[];
@@ -51,18 +51,17 @@ public class MetaDataAnswer extends ConfigTelegram {
 		_dataModel = dataModel;
 	}
 
-
 	/**
 	 * Erzeugt ein neues Objekt mit den gegebenen Parametern.
 	 *
-	 * @param configTime    Konfigurationszeit
+	 * @param protocolVersion    Konfigurationszeit
 	 * @param objects       Konfigurationsobjekte
 	 * @param dataModel     Datenmodel
 	 */
-	public MetaDataAnswer(long configTime, DafSystemObject objects[], DafDataModel dataModel
+	public MetaDataAnswer(long protocolVersion, DafSystemObject objects[], DafDataModel dataModel
 	) {
 		_type = META_DATA_ANSWER_TYPE;
-		_configTime = configTime;
+		_protocolVersion = protocolVersion;
 		_objects = objects;
 		_dataModel = dataModel;
 	}
@@ -72,8 +71,8 @@ public class MetaDataAnswer extends ConfigTelegram {
 	 *
 	 * @return Die Konfigurationszeit
 	 */
-	public final long getConfigTime() {
-		return _configTime;
+	public final long getProtocolVersion() {
+		return _protocolVersion;
 	}
 
 	/**
@@ -87,7 +86,7 @@ public class MetaDataAnswer extends ConfigTelegram {
 
 	public final String parseToString() {
 		String str = "Metakonfigurationsantwort: \n";
-		str += "Lokale Konfigurationszeit: " + _configTime + "\n";
+		str += "Protokollversion: " + _protocolVersion + "\n";
 		str += "Meta-Objekte: \n";
 		if(_objects != null) {
 			for(int i = 0; i < _objects.length; ++i) {
@@ -103,7 +102,7 @@ public class MetaDataAnswer extends ConfigTelegram {
 	}
 
 	public final void write(DataOutputStream out) throws IOException {
-		out.writeLong(_configTime);
+		out.writeLong(_protocolVersion);
 		if(_objects == null) {
 			out.writeInt(0);
 		}
@@ -122,7 +121,10 @@ public class MetaDataAnswer extends ConfigTelegram {
 	}
 
 	public final void read(DataInputStream in) throws IOException {
-		_configTime = in.readLong();
+		_protocolVersion = in.readLong();
+		if(_protocolVersion > Integer.MAX_VALUE || _protocolVersion < 0){
+			_protocolVersion = 0;
+		}
 		int size = in.readInt();
 		if(size > 0) {
 			_objects = new DafSystemObject[size];

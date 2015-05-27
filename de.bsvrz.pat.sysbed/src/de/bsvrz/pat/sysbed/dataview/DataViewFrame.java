@@ -3,19 +3,19 @@
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2005 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
- *
+ * 
  * This file is part of de.bsvrz.pat.sysbed.
- *
+ * 
  * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
  * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -46,7 +46,7 @@ import javax.swing.*;
  * Ein Dialog, welcher die gelieferten Online- oder Archivdaten in Tabellenform dargestellt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8369 $
+ * @version $Revision: 13173 $
  * @see DataViewPanel
  */
 public class DataViewFrame implements PrintFrame {
@@ -60,7 +60,7 @@ public class DataViewFrame implements PrintFrame {
 	/** stellt nur den neuesten Datensatz dar */
 	public static final int ONLY_LATEST = 2;
 
-	private final static Debug _debug = Debug.getLogger();
+	private final Debug _debug = Debug.getLogger();
 
 	private final UnsubscribingJFrame _frame;
 
@@ -223,7 +223,7 @@ public class DataViewFrame implements PrintFrame {
 	 * @param configuringData die konfigurierenden Daten
 	 */
 	public void showConfigurationData(final List<DataTableObject> configuringData) {
-		_frame.setTitle("Konfigurierende Daten (Attributegruppe: " + _attributeGroup.getNameOrPidOrId() + ", Aspekt: " + _aspect.getNameOrPidOrId() + ")");
+		_frame.setTitle("Konfigurierende Daten (Attributgruppe: " + _attributeGroup.getNameOrPidOrId() + ", Aspekt: " + _aspect.getNameOrPidOrId() + ")");
 		_frame.setVisible(true);
 		_dataViewModel.setDatasets(configuringData);
 	}
@@ -235,7 +235,7 @@ public class DataViewFrame implements PrintFrame {
 	 * @param displayOptions gibt an, wie neue Daten dargestellt werden sollen
 	 */
 	public void showOnlineData(int displayOptions) {
-		_frame.setTitle("Onlinetabelle (Attributegruppe: " + _attributeGroup.getNameOrPidOrId() + ", Aspekt: " + _aspect.getNameOrPidOrId() + ")");
+		_frame.setTitle("Onlinetabelle (Attributgruppe: " + _attributeGroup.getNameOrPidOrId() + ", Aspekt: " + _aspect.getNameOrPidOrId() + ")");
 		_frame.setVisible(true);
 		ClientReceiverInterface receiver = new DataViewReceiver(displayOptions);
 		try {
@@ -278,7 +278,7 @@ public class DataViewFrame implements PrintFrame {
 					_dataViewModel.addDatasetAbove(new DataTableObject(results[i]));
 				}
 			}
-			else if(_displayOptions == ONLY_LATEST) {
+			else if(_displayOptions == ONLY_LATEST) { 
 				List<DataTableObject> dataTableObjects = new LinkedList<DataTableObject>();
 				for(int i = 0; i < results.length; i++) {
 					dataTableObjects.add(new DataTableObject(results[i]));

@@ -37,7 +37,7 @@ import java.util.prefs.Preferences;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 6373 $ / $Date: 2009-02-20 15:36:56 +0100 (Fr, 20 Feb 2009) $ / ($Author: sw $)
+ * @version $Revision: 6373 $ / $Date: 2009-02-20 15:36:56 +0100 (Fri, 20 Feb 2009) $ / ($Author: sw $)
  */
 public class ConfigAreaBrowser {
 	private static Debug _debug;

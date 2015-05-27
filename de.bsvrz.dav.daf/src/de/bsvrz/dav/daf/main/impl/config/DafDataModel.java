@@ -26,10 +26,7 @@ package de.bsvrz.dav.daf.main.impl.config;
 
 import de.bsvrz.dav.daf.communication.dataRepresentation.AttributeBaseValueDataFactory;
 import de.bsvrz.dav.daf.communication.lowLevel.telegrams.BaseSubscriptionInfo;
-import de.bsvrz.dav.daf.main.ClientDavConnection;
-import de.bsvrz.dav.daf.main.ClientDavInterface;
-import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.DavConnectionListener;
+import de.bsvrz.dav.daf.main.*;
 import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.dav.daf.main.config.management.UserAdministration;
 import de.bsvrz.dav.daf.main.impl.CommunicationConstant;
@@ -38,7 +35,10 @@ import de.bsvrz.dav.daf.main.impl.config.request.ConfigurationRequester;
 import de.bsvrz.dav.daf.main.impl.config.request.RemoteRequestManager;
 import de.bsvrz.dav.daf.main.impl.config.request.RequestException;
 import de.bsvrz.dav.daf.main.impl.config.request.telegramManager.ConfigurationUserAdministration;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.*;
+import de.bsvrz.dav.daf.main.impl.config.telegrams.ConfigTelegram;
+import de.bsvrz.dav.daf.main.impl.config.telegrams.MetaDataAnswer;
+import de.bsvrz.dav.daf.main.impl.config.telegrams.MetaDataRequest;
+import de.bsvrz.dav.daf.util.Longs;
 import de.bsvrz.sys.funclib.concurrent.UnboundedQueue;
 import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 import de.bsvrz.sys.funclib.dataSerializer.Serializer;
@@ -48,28 +48,32 @@ import de.bsvrz.sys.funclib.filelock.FileLock;
 
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Applikationsseitige Implementierung der DataModel Schnittstelle, die Zugriffe auf die Datenmodelle und Versorgungsdaten ermöglicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11937 $
+ * @version $Revision: 13460 $
  */
 public class DafDataModel implements DataModel, UpdateDynamicObjects {
 
 	/** DebugLogger für Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
-	/** Verbindung zum Datenverteiler. */
+	/** Maximale Protokollversion (beginnend bei 0) */
+	public static final int MAX_PROTOCOL_VERSION = 1;
+
+	/** Von der Konfiguration unterstützte Protokollversion <= MAX_PROTOCOL_VERSION */
+	private long _protocolVersion = 1;
+
+	/** Verbindung zum Datenverteiler. Wenn 2 Datenverteilerverbindungen verwendet werden die interne Verbindung. */
 	private ClientDavInterface _connection;
 
-	/** Zeit der Konfiguration, beim Verbindungsaufbau */
-	private long _configurationTime = 0;
+	/** Verbindung zum Datenverteiler. Wenn 2 Datenverteilerverbindungen verwendet werden die öffentliche Verbindung. */
+	private ClientDavInterface _publicConnection = null;
 
 	/** Map der zwischengespeicherten konfigurierenden oder dynamischen Systemobjekte, als Key dient die ID des Objekts */
-	private HashMap<Long, DafSystemObject> _systemObjectsById;
+	private final AutoExpireMap<Long, DafSystemObject> _systemObjectsById;
 
 	/** Map der zwischengespeicherten Objekte mit PID, als Key dient die PID des Objekts */
 	private HashMap<String, DafSystemObject> _systemObjectsByPid;
@@ -94,6 +98,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	private int _acceptedCachedConfigData = 0;
 
 	private int _ignoredCachedConfigData = 0;
+
 
 	/**
 	 * @return Liefert die Anzahl von Konfigurationsbereichen, die aus dem lokal gespeicherten Cache der Konfigurationsobjekte übernommen wurden.
@@ -159,8 +164,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	/** Objekt zur Verwaltung der Kommunikation mit der Konfiguration */
 	private ConfigurationManager _configurationManager;
 
-	/** Liste mit den noch nicht bearbeiteten Antworten auf Konfigurationsanfragen */
-	private LinkedList _pendingResponces;
+	private LinkedList<ConfigTelegram> _pendingResponses;
 
 	/** Die Objekt-Id des Konfigurationsverantwortlichen */
 	private long _configurationAuthorityId;
@@ -204,15 +208,15 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	 */
 	public DafDataModel(ClientDavInterface connection) {
 		_connection = connection;
-		_systemObjectsById = new HashMap<Long, DafSystemObject>();
+		_systemObjectsById = new AutoExpireMap<Long, DafSystemObject>();
 		_systemObjectsByPid = new HashMap<String, DafSystemObject>();
 		_configDataValuesTable = new Hashtable<ConfigDataKey, Object>();
-		_pendingResponces = new LinkedList();
+		_pendingResponses = new LinkedList<ConfigTelegram>();
 		_davConnectionListener = new DavConnectionListener() {
 			public void connectionClosed(ClientDavInterface connection) {
-				synchronized(_pendingResponces) {
+				synchronized(_pendingResponses) {
 					_connectionClosed = true;
-					_pendingResponces.notifyAll();
+					_pendingResponses.notifyAll();
 				}
 			}
 		};
@@ -232,7 +236,6 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 			_readBaseSubscriptionInfo = new BaseSubscriptionInfo(
 					_configurationAuthorityId, AttributeGroupUsageIdentifications.CONFIGURATION_READ_REQUEST, (short)0
 			);
-			_configurationTime = 0;
 			_configAreas = getMetaDataFromConfiguration();
 			_configurationAuthority = (DafConfigurationAuthority)getObject(_configurationAuthorityId);
 			_defaultConfigurationDataAspect = getAspect("asp.eigenschaften");
@@ -243,6 +246,31 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 		}
 	}
 
+	/**
+	 * Wird bei der Initialisierung aufgerufen um die öffentliche ClientDavConnection zu setzen.
+	 * @param publicConnection ClientDavConnection
+	 */
+	public void setPublicConnection(final ClientDavConnection publicConnection) {
+		if(_configurationManager != null){
+			// Methode nicht beliebig aufrufen lassen, nur für interne Zwecke der ClientDavConnection
+			throw new IllegalStateException("Bereits initialisiert");
+		}
+		_publicConnection = publicConnection;
+	}
+
+	/** Liste mit den noch nicht bearbeiteten Antworten auf Konfigurationsanfragen */
+	public LinkedList<ConfigTelegram> getPendingResponses() {
+		return _pendingResponses;
+	}
+
+	public long getProtocolVersion() {
+		return _protocolVersion;
+	}
+
+	public boolean isConnectionClosed() {
+		return _connectionClosed;
+	}
+	
 	/** Hilfsklasse zum Speichern von Informationen zu Konfigurationsbereichen. */
 	private class ConfigurationAreaInfo {
 
@@ -402,6 +430,9 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 					final long configurationDataChangeTime = in.readLong();
 
 					final DafDataModel.ConfigurationAreaInfo info = _areaInfos.get(areaId);
+
+					if(info == null) continue;
+
 					if(info._activeVersion == activeVersion && info._dynamicObjectChangeTime == dynamicObjectChangeTime
 					   && info._configurationObjectChangeTime == configurationObjectChangeTime
 					   && info._configurationDataChangeTime == configurationDataChangeTime) {
@@ -446,7 +477,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 						if(acceptableAreas.contains(object.getConfigurationAreaId())) {
 							_acceptedCachedSystemObjects++;
 							// Objekt in interne Tabellen eintragen
-							updateInternalDataStructure(object);
+							updateInternalDataStructure(object, false);
 						}
 						else {
 							_ignoredCachedSystemObjects++;
@@ -697,9 +728,9 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	 * einer Datei im lokalen Dateisystem.
 	 */
 	public final void close() {
-		synchronized(_pendingResponces) {
+		synchronized(_pendingResponses) {
 			_connectionClosed = true;
-			_pendingResponces.notifyAll();
+			_pendingResponses.notifyAll();
 		}
 		_connection.removeConnectionListener(_davConnectionListener);
 
@@ -718,23 +749,28 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	 */
 	public ConfigurationRequester getRequester() {
 		if(_remoteRequester == null) {
-			final RemoteRequestManager remoteRequestManager;
-
-			if(_connection instanceof ClientDavConnection) {
-				// Dieser Schritt ist notwendig, da sich der Datenverteiler ebenfalls anmeldet. Das Objekt des Datenverteilers kann aber nur über die Id
-				// identifiziert werden. Die Methode _connection.getLocalApplicationObject() kann nicht benutzt werden, da das Datenverteilerobjekt kein
-				// <code>ClientApplication</code> ist. Es würde zu einer ClassCastException kommen.
-				remoteRequestManager = RemoteRequestManager.getInstance(_connection, this, ((ClientDavConnection)_connection).getLocalApplicationObjectId());
-			}
-			else {
-				remoteRequestManager = RemoteRequestManager.getInstance(_connection, this, _connection.getLocalApplicationObject());
-			}
-
-			_remoteRequester = remoteRequestManager.getRequester(_configurationAuthority);
-			_notifyingMutableCollectionChangeListener = new NotifyingMutableCollectionChangeListener();
-			_remoteRequester.setMutableCollectionChangeListener(_notifyingMutableCollectionChangeListener);
-			_notifyingMutableCollectionChangeListener.start();
+			throw new IllegalStateException("Nicht initialisiert");
 		}
+		return _remoteRequester;
+	}
+
+	public ConfigurationRequester createRequester() throws CommunicationError {
+		final RemoteRequestManager remoteRequestManager = RemoteRequestManager.getInstance(_connection);
+
+		_remoteRequester = remoteRequestManager.getRequester(_configurationAuthority, this);
+
+		if(_connection instanceof ClientDavConnection) {
+			ClientDavConnection connection = (ClientDavConnection) _connection;
+			_remoteRequester.init(connection.getLocalApplicationObjectId());
+		}
+		else {
+			_remoteRequester.init(_connection.getLocalApplicationObject().getId());
+		}
+
+		_notifyingMutableCollectionChangeListener = new NotifyingMutableCollectionChangeListener();
+		_remoteRequester.setMutableCollectionChangeListener(_notifyingMutableCollectionChangeListener);
+		_notifyingMutableCollectionChangeListener.start();
+
 		return _remoteRequester;
 	}
 
@@ -744,19 +780,29 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	 * @return Die Verbindung zum Datenverteiler
 	 */
 	public ClientDavInterface getConnection() {
-		return _connection;
+		return _publicConnection == null ? _connection : _publicConnection;
 	}
 
 	/**
 	 * Aktualisiert die Tabellen mit zwischengespeicherten Objekten, wenn Objekte gültig bzw. ungültig geworden sind.
 	 *
 	 * @param systemObject Objekt das möglicherweise gültig bzw. ungültig geworden ist.
+	 * @param cachePidWhenDynamic Da Pids in verschiedenen Simulationsvarianten unterschiedliche Objekte referenzieren,
+	 *                            dürfen dynamische Objekte nicht in _systemObjectsByPid gespeichert werden,
+	 *                            wenn nicht sicher ist, dass das dynamische Objekt zu der aktuell verwendeten Simulation gehört.
+	 *                            Die Pid darf nur gecacht werden, wenn das Objekt als Ergebnis von
+	 *                            {@link #getObject(String)},
+	 *                            {@link #createDynamicObject(de.bsvrz.dav.daf.main.config.SystemObjectType, String, String)},
+	 *                            oder
+	 *                            beim Abruf von getElements()/getObjects() einer dynamischen Menge zurückgegeben wurde.
+	 *                            In dem Fall ist der Parameter true. Konfigurationsobjekte werden immer gecacht,
+	 *                            hier ist der Parameter egal.
 	 *
 	 * @return Bereits vorher zwischengespeichertes Objekt mit der angegebenen Id oder übergebenes Objekt
 	 */
-	private DafSystemObject updateInternalDataStructure(DafSystemObject systemObject) {
+	DafSystemObject updateInternalDataStructure(DafSystemObject systemObject, boolean cachePidWhenDynamic) {
 
-		Long id = new Long(systemObject.getId());
+		Long id = systemObject.getId();
 		synchronized(_systemObjectsById) {
 			final byte objectState = systemObject.getState();
 			if(objectState == DafSystemObject.OBJECT_EXISTS || objectState == DafSystemObject.OBJECT_INVALID) {
@@ -768,39 +814,34 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 						_systemObjectsById.put(id, systemObject);
 					}
 				}
-				else {
-					if(objectState == DafSystemObject.OBJECT_EXISTS) {
-						String pid = systemObject.getPid();
-						if(pid != null && !pid.equals("")) {
-							_systemObjectsByPid.put(pid, systemObject);
-						}
+				if(objectState == DafSystemObject.OBJECT_EXISTS
+						&& (systemObject instanceof DafConfigurationObject || cachePidWhenDynamic)) {
+					String pid = systemObject.getPid();
+					if(pid != null && !pid.equals("")) {
+						_systemObjectsByPid.put(pid, systemObject);
 					}
 				}
 			}
-			else {
-				// Objekt wurde ungültig
+			else if(objectState == DafSystemObject.OBJECT_DELETED) {
+				// Dynamisches Objekt wurde gelöscht
+
+				// assert systemObject instanceof DafDynamicObject;
+
 				final DafSystemObject oldObject = _systemObjectsById.get(id);
 				if(oldObject != null) {
 					systemObject = oldObject;
 					String pid = systemObject.getPid();
 					if(pid != null && !pid.equals("")) {
 						_systemObjectsByPid.remove(pid);
+
+						// Das gespeicherte Objekt wird nach 5 Minuten durch eine WeakReference ersetzt.
+						// Das Objekt darf nicht sofort auf der Map entfernt werden, weil es kurz nach
+						// dem Löschen noch in verschiedenen Benachrichtigungen vorkommen kann und eine
+						// erneute Abfrage des Objekts evtl. fehlschlagen würde (da ja bereits aus der
+						// Konfiguration gelöscht).
+						_systemObjectsById.expire(id, oldObject, 5 * 60000);
 					}
 				}
-				
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 			}
 		}
@@ -868,7 +909,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	public final List getBaseTypes() {
-		ArrayList list = new ArrayList();
+		ArrayList<SystemObjectType> list = new ArrayList<SystemObjectType>();
 		SystemObjectType primType = null;
 		primType = getType(Pid.Type.CONFIGURATION_OBJECT);
 		if(primType != null) {
@@ -885,11 +926,96 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 		if(id == 0) {
 			return null;
 		}
-		DafSystemObject systemObject = getObjectFromCache(id);
+		SystemObject systemObject = getObjectFromCache(id);
 		if(systemObject == null) {
-			systemObject = getSystemObjectFromConfiguration(id);
+			systemObject = getSystemObjectsFromConfiguration(id).get(0);
 		}
 		return systemObject;
+	}
+
+	public SystemObject getObject(String pid) {
+		if(pid == null) {
+			throw new IllegalArgumentException("Übergabeparameter ist null");
+		}
+		SystemObject systemObject;
+		synchronized(_systemObjectsById) {
+			systemObject = _systemObjectsByPid.get(pid);
+		}
+		if(systemObject == null) {
+			systemObject = getSystemObjectsFromConfiguration(pid).get(0);
+		}
+		return systemObject;
+	}
+
+	@Override
+	public List<SystemObject> getObjects(final long... ids) {
+		final List<Long> objectsToRequest = new ArrayList<Long>(ids.length);
+		final List<Integer> origPositions = new ArrayList<Integer>(ids.length);
+		final List<SystemObject> result = new ArrayList<SystemObject>(ids.length);
+		for(int i = 0; i < ids.length; i++) {
+			final Long id = ids[i];
+			final SystemObject systemObject;
+			if(id == 0) {
+				systemObject = null;
+			}
+			else {
+				systemObject = getObjectFromCache(id);
+				if(systemObject == null) {
+					objectsToRequest.add(id);
+					origPositions.add(i);
+				}
+			}
+			result.add(systemObject);
+		}
+		if(!objectsToRequest.isEmpty()){
+			List<SystemObject> objects = getSystemObjectsFromConfiguration(Longs.asArray(objectsToRequest));
+			for(int i = 0; i < result.size(); i++) {
+				result.set(origPositions.get(i), objects.get(i));
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public List<SystemObject> getObjects(final String... pids) {
+		final List<String> objectsToRequest = new ArrayList<String>(pids.length);
+		final List<Integer> origPositions = new ArrayList<Integer>(pids.length);
+		final List<SystemObject> result = new ArrayList<SystemObject>(pids.length);
+		for(int i = 0; i < pids.length; i++) {
+			final String pid = pids[i];
+			final SystemObject systemObject;
+			if(pid == null) {
+				throw new IllegalArgumentException("Element ist null: " + Arrays.toString(pids));
+			}
+			else if(pid.length() == 0){
+				systemObject = null;
+			}
+			else {
+				systemObject = _systemObjectsByPid.get(pid);
+				if(systemObject == null) {
+					objectsToRequest.add(pid);
+					origPositions.add(i);
+				}
+			}
+			result.add(systemObject);
+		}
+		if(!objectsToRequest.isEmpty()){
+			List<SystemObject> objects = getSystemObjectsFromConfiguration(objectsToRequest.toArray(new String[objectsToRequest.size()]));
+			for(int i = 0; i < objectsToRequest.size(); i++) {
+				result.set(origPositions.get(i), objects.get(i));
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public List<SystemObject> getObjectsById(final Collection<Long> ids) {
+		return getObjects(Longs.asArray(ids));
+	}
+
+	@Override
+	public List<SystemObject> getObjectsByPid(final Collection<String> pids) {
+		return getObjects(pids.toArray(new String[pids.size()]));
 	}
 
 	/**
@@ -897,40 +1023,43 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	 *
 	 * @return Array mit den Konfigurationsbereichen
 	 */
-	private final DafSystemObject[] getMetaDataFromConfiguration() {
-		ConfigTelegram telegram = new MetaDataRequest(0);
+	private DafSystemObject[] getMetaDataFromConfiguration() {
+		ConfigTelegram telegram = new MetaDataRequest(MAX_PROTOCOL_VERSION);
 		String info = Integer.toString(telegram.hashCode());
 		telegram.setInfo(info);
 		_configurationManager.sendConfigData(_readBaseSubscriptionInfo, telegram);
 		// Waiting for Answer
-		ConfigTelegram responce = null;
+		ConfigTelegram response = null;
 		long waitingTime = 0, startTime = System.currentTimeMillis();
 		long sleepTime = 10;
 		while(waitingTime < CommunicationConstant.MAX_WAITING_TIME_FOR_SYNC_RESPONCE) {
 			try {
-				synchronized(_pendingResponces) {
+				synchronized(_pendingResponses) {
 					if(_connectionClosed) {
 						throw new RuntimeException("Verbindung zum Datenverteiler wurde geschlossen");
 					}
-					_pendingResponces.wait(sleepTime);
+					_pendingResponses.wait(sleepTime);
 					if(sleepTime < 1000) {
 						sleepTime *= 2;
 					}
 
-					ListIterator _iterator = _pendingResponces.listIterator(_pendingResponces.size());
+					ListIterator<ConfigTelegram> _iterator = _pendingResponses.listIterator(_pendingResponses.size());
 					while(_iterator.hasPrevious()) {
-						responce = (ConfigTelegram)_iterator.previous();
-						if((responce != null) && (responce.getType() == ConfigTelegram.META_DATA_ANSWER_TYPE) && (info.equals(responce.getInfo()))) {
+						response = _iterator.previous();
+						if((response != null) && (response.getType() == ConfigTelegram.META_DATA_ANSWER_TYPE) && (info.equals(response.getInfo()))) {
 							_iterator.remove();
-							DafSystemObject objects[] = ((MetaDataAnswer)responce).getObjects();
+							MetaDataAnswer answer = (MetaDataAnswer) response;
+							_protocolVersion = answer.getProtocolVersion();
+							_debug.info("Protokollversion für Konfigurationsanfragen", _protocolVersion);
+							DafSystemObject objects[] = answer.getObjects();
 							ArrayList<DafSystemObject> configurationAreas = new ArrayList<DafSystemObject>();
 							if(objects != null) {
 								for(int j = 0; j < objects.length; ++j) {
 									DafSystemObject object = objects[j];
 									if(object != null) {
-										object = updateInternalDataStructure(object);
+										object = updateInternalDataStructure(object, false);
 										if(object instanceof DafConfigurationArea) {
-											configurationAreas.add((DafConfigurationArea)object);
+											configurationAreas.add(object);
 										}
 									}
 								}
@@ -949,331 +1078,118 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 		throw new RuntimeException("Die Konfiguration antwortet nicht");
 	}
 
-	public SystemObject getObject(String pid) {
-		if(pid == null) {
-			throw new IllegalArgumentException("Übergabeparameter ist null");
+	private List<SystemObject> getSystemObjectsFromConfiguration(long... ids) {
+		List<SystemObject> result;
+		try {
+			result = getRequester().getObjects(ids);
 		}
-		DafSystemObject systemObject;
-		synchronized(_systemObjectsById) {
-			systemObject = (DafSystemObject)_systemObjectsByPid.get(pid);
+		catch(RequestException e) {
+			_debug.error("Fehler bei der Abfrage eines Objektes nach der ID", e);
+			throw new RuntimeException("Fehler bei der Abfrage eines Objektes nach der ID", e);
 		}
-		if(systemObject != null) {
-			return systemObject;
-		}
-		else {
-			String[] pids = {pid};
-			SystemObjectRequestInfo systemObjectRequestInfo = new PidsToObjectsRequest(pids);
-			ConfigTelegram telegram = new SystemObjectsRequest(_configurationTime, systemObjectRequestInfo);
-			String info = Integer.toString(telegram.hashCode());
-			telegram.setInfo(info);
-			_configurationManager.sendConfigData(_readBaseSubscriptionInfo, telegram);
-
-			// Waiting for Answer
-			ConfigTelegram responce = null;
-			long waitingTime = 0, startTime = System.currentTimeMillis();
-			long sleepTime = 10;
-			while(waitingTime < CommunicationConstant.MAX_WAITING_TIME_FOR_SYNC_RESPONCE) {
-				try {
-					synchronized(_pendingResponces) {
-						if(_connectionClosed) {
-							throw new RuntimeException("Verbindung zum Datenverteiler wurde geschlossen");
-						}
-						_pendingResponces.wait(sleepTime);
-						if(sleepTime < 1000) {
-							sleepTime *= 2;
-						}
-
-						ListIterator _iterator = _pendingResponces.listIterator(_pendingResponces.size());
-						while(_iterator.hasPrevious()) {
-							responce = (ConfigTelegram)_iterator.previous();
-							if((responce != null) && (responce.getType() == ConfigTelegram.OBJECT_ANSWER_TYPE) && (info.equals(responce.getInfo()))) {
-								_iterator.remove();
-								PidsToObjectsAnswer pidsToObjectsAnswer = null;
-								try {
-									pidsToObjectsAnswer = (PidsToObjectsAnswer)((SystemObjectAnswer)responce).getSystemObjectAnswerInfo();
-								}
-								catch(ClassCastException ex) {
-									ex.printStackTrace();
-								}
-								if(pidsToObjectsAnswer != null) {
-									DafSystemObject objects[] = pidsToObjectsAnswer.getObjects();
-									if(objects != null) {
-										systemObject = objects[0];
-										if(systemObject == null) {
-											return null;
-										}
-										else {
-											if(pid.equals(systemObject.getPid())) {
-												return updateInternalDataStructure(systemObject);
-											}
-										}
-									}
-								}
-								return null;
-							}
-						}
-					}
-					waitingTime = System.currentTimeMillis() - startTime;
-				}
-				catch(InterruptedException ex) {
-					ex.printStackTrace();
-					break;
-				}
+		for(int i = 0; i < result.size(); i++) {
+			final SystemObject systemObject = result.get(i);
+			if(systemObject instanceof DafSystemObject) {
+				DafSystemObject object = (DafSystemObject) systemObject;
+				result.set(i, updateInternalDataStructure(object, false));
 			}
 		}
-		throw new RuntimeException("Die Konfiguration antwortet nicht");
+		return result;
 	}
 
-	/**
-	 * Lädt ein Systemobjekt durch entsprechende Konfigurationsanfragen aus der Konfiguration.
-	 *
-	 * @param id ID des gewünschen Objekts.
-	 *
-	 * @return Gewünschtes Systemobjekt
-	 */
-	private final DafSystemObject getSystemObjectFromConfiguration(long id) {
-		DafSystemObject systemObject = null;
-		long[] ids = {id};
-		SystemObjectRequestInfo systemObjectRequestInfo = new IdsToObjectsRequest(ids);
-		ConfigTelegram telegram = new SystemObjectsRequest(_configurationTime, systemObjectRequestInfo);
-		String info = Integer.toString(telegram.hashCode());
-		telegram.setInfo(info);
-		_configurationManager.sendConfigData(_readBaseSubscriptionInfo, telegram);
-
-		// Waiting for Answer
-		ConfigTelegram responce = null;
-		long waitingTime = 0, startTime = System.currentTimeMillis();
-		long sleepTime = 10;
-		while(waitingTime < CommunicationConstant.MAX_WAITING_TIME_FOR_SYNC_RESPONCE) {
-			try {
-				synchronized(_pendingResponces) {
-					if(_connectionClosed) {
-						throw new RuntimeException("Verbindung zum Datenverteiler wurde geschlossen");
-					}
-					_pendingResponces.wait(sleepTime);
-					if(sleepTime < 1000) {
-						sleepTime *= 2;
-					}
-					ListIterator _iterator = _pendingResponces.listIterator(_pendingResponces.size());
-					while(_iterator.hasPrevious()) {
-						responce = (ConfigTelegram)_iterator.previous();
-						if((responce != null) && (responce.getType() == ConfigTelegram.OBJECT_ANSWER_TYPE) && (info.equals(responce.getInfo()))) {
-							_iterator.remove();
-							IdsToObjectsAnswer idsToObjectsAnswer = null;
-							try {
-								idsToObjectsAnswer = (IdsToObjectsAnswer)((SystemObjectAnswer)responce).getSystemObjectAnswerInfo();
-							}
-							catch(ClassCastException ex) {
-								ex.printStackTrace();
-							}
-							if(idsToObjectsAnswer != null) {
-								DafSystemObject objects[] = idsToObjectsAnswer.getObjects();
-								if(objects != null) {
-									systemObject = objects[0];
-									if(systemObject == null) {
-										return null;
-									}
-									else {
-										if(id == systemObject.getId()) {
-											return updateInternalDataStructure(systemObject);
-										}
-									}
-								}
-							}
-							return null;
-						}
-					}
-					waitingTime = System.currentTimeMillis() - startTime;
-				}
-			}
-			catch(InterruptedException ex) {
-				ex.printStackTrace();
-				break;
+	private List<SystemObject> getSystemObjectsFromConfiguration(String... pids) {
+		List<SystemObject> result;
+		try {
+			result = getRequester().getObjects(pids);
+		}
+		catch(RequestException e) {
+			_debug.error("Fehler bei der Abfrage eines Objektes nach der PID", e);
+			throw new RuntimeException("Fehler bei der Abfrage eines Objektes nach der PID", e);
+		}
+		for(int i = 0; i < result.size(); i++) {
+			final SystemObject systemObject = result.get(i);
+			if(systemObject instanceof DafSystemObject) {
+				DafSystemObject object = (DafSystemObject) systemObject;
+				result.set(i, updateInternalDataStructure(object, true));
 			}
 		}
-		throw new RuntimeException("Die Konfiguration antwortet nicht");
+		return result;
 	}
 
-	/**
-	 * Liefert eine Liste mit allen Systemobjekten eines Typs zurück. Zu beachten ist, das auch Objekte eines Typs, der diesen Typ erweitert, zurückgegeben
-	 * werden.
-	 *
-	 * @param type Typ der gewünschten Systemobjekte
-	 *
-	 * @return Liste von {@link DafSystemObject System-Objekten}
-	 */
-	final List<SystemObject> getObjectsOfType(DafSystemObjectType type) {
-		long[] ids = {type.getId()};
-		SystemObjectRequestInfo systemObjectRequestInfo = new TypeIdsToObjectsRequest(ids);
-		ConfigTelegram telegram = new SystemObjectsRequest(_configurationTime, systemObjectRequestInfo);
-		String info = Integer.toString(telegram.hashCode());
-		telegram.setInfo(info);
-		_configurationManager.sendConfigData(_readBaseSubscriptionInfo, telegram);
-
-		// Waiting for Answer
-		ConfigTelegram responce = null;
-		long waitingTime = 0, startTime = System.currentTimeMillis();
-		long sleepTime = 10;
-		while(waitingTime < CommunicationConstant.MAX_WAITING_TIME_FOR_SYNC_RESPONCE) {
-			try {
-				synchronized(_pendingResponces) {
-					if(_connectionClosed) {
-						throw new RuntimeException("Verbindung zum Datenverteiler wurde geschlossen");
-					}
-					_pendingResponces.wait(sleepTime);
-					if(sleepTime < 1000) {
-						sleepTime *= 2;
-					}
-
-					ListIterator _iterator = _pendingResponces.listIterator(_pendingResponces.size());
-					while(_iterator.hasPrevious()) {
-						responce = (ConfigTelegram)_iterator.previous();
-						if((responce != null) && (responce.getType() == ConfigTelegram.OBJECT_ANSWER_TYPE) && (info.equals(responce.getInfo()))) {
-							_iterator.remove();
-							TypeIdsToObjectsAnswer typIdsToObjectsAnswer = null;
-							try {
-								typIdsToObjectsAnswer = (TypeIdsToObjectsAnswer)((SystemObjectAnswer)responce).getSystemObjectAnswerInfo();
-							}
-							catch(ClassCastException ex) {
-								ex.printStackTrace();
-							}
-							ArrayList<SystemObject> list = new ArrayList<SystemObject>();
-							if(typIdsToObjectsAnswer != null) {
-								ObjectsList[] objectLists = typIdsToObjectsAnswer.getObjectsOfTypes();
-								if(objectLists != null) {
-									if(objectLists[0] != null) {
-										if(objectLists[0].getBaseObjectId() == ids[0]) {
-											DafSystemObject systemObjects[] = objectLists[0].getObjects();
-											if(systemObjects != null) {
-												for(int j = 0; j < systemObjects.length; ++j) {
-													DafSystemObject systemObject = systemObjects[j];
-													if(systemObject != null) {
-														list.add(updateInternalDataStructure(systemObject));
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-							return list;
-						}
-					}
-				}
-				waitingTime = System.currentTimeMillis() - startTime;
-			}
-			catch(InterruptedException ex) {
-				ex.printStackTrace();
-				break;
-			}
+	@Override
+	public DynamicObject createDynamicObject(final SystemObjectType type, final String pid, final String name) throws ConfigurationChangeException {
+		if(!(type instanceof DynamicObjectType)){
+			throw new ConfigurationChangeException("Kein gültiger dynamischer Typ angegeben");
 		}
-		throw new RuntimeException("Die Konfiguration antwortet nicht");
+		try {
+			return getRequester().createDynamicObject((DynamicObjectType) type, pid, name);
+		}
+		catch(RequestException e) {
+			throw new RuntimeException("Fehler beim Anlegen eines dynamischen Objekts", e);
+		}
 	}
 
-	public final ConfigurationObject createConfigurationObject(ConfigurationObjectType type, String pid, String name, List sets)
-			throws ConfigurationChangeException {
-		if(!type.isConfigurating()) {
-			throw new IllegalArgumentException("createConfigurationObject wurde mit einem Typ aufgerufen, der nicht konfigurierend ist: " + type);
+	@Override
+	public ConfigurationObject createConfigurationObject(final ConfigurationObjectType type, final String pid, final String name, final List<? extends ObjectSet> sets) throws ConfigurationChangeException {
+		try {
+			return getRequester().createConfigurationObject(type, pid, name, sets);
 		}
-		long setIds[] = null;
-		if(sets.size() > 0) {
-			setIds = new long[sets.size()];
-			for(int i = 0; i < sets.size(); ++i) {
-				setIds[i] = ((DafObjectSet)sets.get(i)).getId();
-			}
+		catch(RequestException e) {
+			throw new RuntimeException("Fehler beim Anlegen eines konfigurierenden Objekts", e);
 		}
-		ConfigTelegram telegram = new NewObjectRequest(_configurationTime, -1, pid, name, type.getId(), setIds);
-		String info = Integer.toString(telegram.hashCode());
-		telegram.setInfo(info);
-		_configurationManager.sendConfigData(_readBaseSubscriptionInfo, telegram);
-
-		// Waiting for Answer
-		ConfigTelegram responce = null;
-		long waitingTime = 0, startTime = System.currentTimeMillis();
-		long sleepTime = 10;
-		while(waitingTime < CommunicationConstant.MAX_WAITING_TIME_FOR_SYNC_RESPONCE) {
-			try {
-				synchronized(_pendingResponces) {
-					if(_connectionClosed) {
-						throw new RuntimeException("Verbindung zum Datenverteiler wurde geschlossen");
-					}
-					_pendingResponces.wait(sleepTime);
-					if(sleepTime < 1000) {
-						sleepTime *= 2;
-					}
-
-					ListIterator _iterator = _pendingResponces.listIterator(_pendingResponces.size());
-					while(_iterator.hasPrevious()) {
-						responce = (ConfigTelegram)_iterator.previous();
-						if((responce != null) && (responce.getType() == ConfigTelegram.NEW_OBJECT_ANSWER_TYPE) && (info.equals(responce.getInfo()))) {
-							_iterator.remove();
-							DafSystemObject object = ((NewObjectAnswer)responce).getObject();
-							if(object == null) {
-								throw new ConfigurationChangeException("Objekt konnte nicht in der Konfiguration angelegt werden.");
-							}
-							else {
-								return (ConfigurationObject)updateInternalDataStructure(object);
-							}
-						}
-					}
-					waitingTime = System.currentTimeMillis() - startTime;
-				}
-			}
-			catch(InterruptedException ex) {
-				ex.printStackTrace();
-				break;
-			}
-		}
-		throw new RuntimeException("Die Konfiguration antwortet nicht");
 	}
 
-	public final DynamicObject createDynamicObject(SystemObjectType type, String pid, String name) throws ConfigurationChangeException {
-		if(type.isConfigurating()) {
-			throw new IllegalArgumentException("createDynamicObject wurde mit einem Typ aufgerufen, der nicht dynamisch ist: " + type);
+	public void setName(final DafSystemObject object, final String name) throws ConfigurationChangeException {
+		try {
+			getRequester().setName(object, name);
 		}
-		ConfigTelegram telegram = new NewObjectRequest(_configurationTime, -1, pid, name, type.getId(), null);
-		String info = Integer.toString(telegram.hashCode());
-		telegram.setInfo(info);
-		_configurationManager.sendConfigData(_readBaseSubscriptionInfo, telegram);
-
-		// Waiting for Answer
-		ConfigTelegram responce = null;
-		long waitingTime = 0, startTime = System.currentTimeMillis();
-		long sleepTime = 10;
-		while(waitingTime < CommunicationConstant.MAX_WAITING_TIME_FOR_SYNC_RESPONCE) {
-			try {
-				synchronized(_pendingResponces) {
-					if(_connectionClosed) {
-						throw new RuntimeException("Verbindung zum Datenverteiler wurde geschlossen");
-					}
-					_pendingResponces.wait(sleepTime);
-					if(sleepTime < 1000) {
-						sleepTime *= 2;
-					}
-
-					ListIterator _iterator = _pendingResponces.listIterator(_pendingResponces.size());
-					while(_iterator.hasPrevious()) {
-						responce = (ConfigTelegram)_iterator.previous();
-						if((responce != null) && (responce.getType() == ConfigTelegram.NEW_OBJECT_ANSWER_TYPE) && (info.equals(responce.getInfo()))) {
-							_iterator.remove();
-							DafSystemObject object = ((NewObjectAnswer)responce).getObject();
-							if(object == null) {
-								throw new ConfigurationChangeException("Objekt konnte nicht in der Konfiguration angelegt werden.");
-							}
-							else {
-								return (DynamicObject)updateInternalDataStructure(object);
-							}
-						}
-					}
-					waitingTime = System.currentTimeMillis() - startTime;
-				}
-			}
-			catch(InterruptedException ex) {
-				ex.printStackTrace();
-				break;
-			}
+		catch(RequestException e) {
+			throw new RuntimeException("Fehler beim Setzen des Namens eines Objekts", e);
 		}
-		throw new RuntimeException("Die Konfiguration antwortet nicht");
+	}
+
+	public void invalidate(final DafSystemObject dafSystemObject) throws ConfigurationChangeException {
+		try {
+			getRequester().invalidate(dafSystemObject);
+		}
+		catch(RequestException e) {
+			throw new RuntimeException("Fehler beim Löschen eines Objekts", e);
+		}
+	}
+
+	public void objectInvalidated(final DafSystemObject object, final long notValidSince) {
+		if(!(object instanceof DynamicObject)) return;
+		object.setState(DafSystemObject.OBJECT_DELETED);
+		DafDynamicObject dynamicObject = (DafDynamicObject)object;
+		dynamicObject.setNotValidSince(notValidSince);
+		if(updateInternalDataStructure(object, false) != object) {
+			_debug
+					.error("Es wurde ein Systemobjekt auf ungültig gesetzt, zu dessen Id ein anderes Objekt im Cache gewesen ist");
+			Thread.dumpStack();
+		}
+	}
+
+	public void revalidate(final DafSystemObject dafSystemObject) throws ConfigurationChangeException {
+		try {
+			getRequester().revalidate(dafSystemObject);
+		}
+		catch(RequestException e) {
+			throw new RuntimeException("Fehler beim Wiederherstellen eines Objekts", e);
+		}
+	}
+
+	public List<SystemObject> getObjectsOfType(final DafSystemObjectType dafSystemObject) {
+		try {
+			List<SystemObject> result = getRequester().getObjectsOfType(dafSystemObject);
+			for(int i = 0; i < result.size(); i++) {
+				result.set(i, updateInternalDataStructure((DafSystemObject) result.get(i), true));
+			}
+			return result;
+		}
+		catch(RequestException e) {
+			_debug.error("Fehler bei der Abfrage der Objekte eines Typs", e);
+			throw new RuntimeException(e);
+		}
 	}
 
 	public DafConfigurationArea getConfigurationArea(String pid) {
@@ -1354,7 +1270,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	 *             de.bsvrz.dav.daf.main.config.SystemObject#getConfigurationData} verwendet werden.
 	 */
 	@Deprecated
-	public final List getObjectDataValues(SystemObject object, AttributeGroup attributeGroup) {
+	public final List<? extends Object> getObjectDataValues(SystemObject object, AttributeGroup attributeGroup) {
 		Data data = getConfigurationData(object, attributeGroup);
 		if(data != null) {
 			data = data.createModifiableCopy();
@@ -1375,266 +1291,20 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	 */
 	public final void update(final ConfigTelegram telegram) {
 		if(telegram != null) {
-			synchronized(_pendingResponces) {
-				_pendingResponces.add(telegram);
-				_pendingResponces.notifyAll();
+			synchronized(_pendingResponses) {
+				_pendingResponses.add(telegram);
+				_pendingResponses.notifyAll();
 			}
 		}
 	}
 
-	/**
-	 * Löscht das Objekt, indem es ungültig gemacht wird. Dynamische System-Objekte werden sofort ungültig. Bereits gültige konfigurierende System-Objekte werden
-	 * mit Aktivierung der nächsten Konfigurationsversion ungültig. Für historische Anfragen bleiben ungültige Objekte nach wie vor existent. Konfigurierende
-	 * System-Objekte, die noch nie gültig waren werden durch diese Methode gelöscht und sind nicht mehr zugreifbar.
-	 *
-	 * @param object Objekt, dass gelöscht bzw. ungültig gesetzt werden soll.
-	 *
-	 * @return <code>true</code>, falls das Objekt gelöscht bzw. ungültig gesetzt wurde; <code>false</code> wenn die Operation nicht durchgeführt werden konnte.
-	 */
-	final boolean invalidate(DafSystemObject object) {
-		ObjectInvalidationWaiter objectInvalidationWaiter = new ObjectInvalidationWaiter(object);
-		try {
-			objectInvalidationWaiter.start();
-			ObjectInvalidateRequest telegram = new ObjectInvalidateRequest(_configurationTime, object.getId());
-			String info = Integer.toString(telegram.hashCode());
-			telegram.setInfo(info);
-			_configurationManager.sendConfigData(_readBaseSubscriptionInfo, telegram);
-
-			// Waiting for Answer
-			ConfigTelegram responce = null;
-			long waitingTime = 0, startTime = System.currentTimeMillis();
-			long sleepTime = 10;
-			while(waitingTime < CommunicationConstant.MAX_WAITING_TIME_FOR_SYNC_RESPONCE) {
-				try {
-					synchronized(_pendingResponces) {
-						if(_connectionClosed) {
-							throw new RuntimeException("Verbindung zum Datenverteiler wurde geschlossen");
-						}
-						_pendingResponces.wait(sleepTime);
-						if(sleepTime < 1000) {
-							sleepTime *= 2;
-						}
-
-						ListIterator _iterator = _pendingResponces.listIterator(_pendingResponces.size());
-						while(_iterator.hasPrevious()) {
-							responce = (ConfigTelegram)_iterator.previous();
-							if((responce != null) && (responce.getType() == ConfigTelegram.OBJECT_INVALIDATE_ANSWER_TYPE) && (info.equals(responce.getInfo()))) {
-								_iterator.remove();
-								try {
-									ObjectInvalidateAnswer objectInvalidateAnswer = (ObjectInvalidateAnswer)responce;
-									if(telegram.getObjectId() == objectInvalidateAnswer.getObjectId()) {
-										if(objectInvalidateAnswer.isInvalidated()) {
-											if(object instanceof DafDynamicObject) {
-												object.setState(DafSystemObject.OBJECT_DELETED);
-												DafDynamicObject dynamicObject = (DafDynamicObject)object;
-												dynamicObject.setNotValidSince(objectInvalidateAnswer.getConfigTime());
-												if(updateInternalDataStructure(object) != object) {
-													_debug
-															.error("Es wurde ein Systemobjekt auf ungültig gesetzt, zu dessen Id ein anderes Objekt im Cache gewesen ist");
-													Thread.dumpStack();
-												}
-											}
-											objectInvalidationWaiter.await();
-											return true;
-										}
-										else {
-											return false;
-										}
-									}
-								}
-								catch(ClassCastException ex) {
-									ex.printStackTrace();
-								}
-								return false;
-							}
-						}
-					}
-					waitingTime = System.currentTimeMillis() - startTime;
-				}
-				catch(InterruptedException ex) {
-					ex.printStackTrace();
-					break;
-				}
-			}
-			throw new RuntimeException("Die Konfiguration antwortet nicht");
-		} finally {
-			objectInvalidationWaiter.stop();
-		}
-	}
-
-	static private class ObjectInvalidationWaiter {
-
-		private final SystemObject _object;
-		private final CountDownLatch _invalidationCountDown;
-		private InvalidationListener _invalidationListener;
-
-		public ObjectInvalidationWaiter(SystemObject object) {
-			if(isDynamic(object)) {
-				_object = object;
-				_invalidationCountDown = new CountDownLatch(1);
-				_invalidationListener = new InvalidationListener() {
-					@Override
-					public void invalidObject(final DynamicObject dynamicObject) {
-						if(_object.equals(dynamicObject)) _invalidationCountDown.countDown();
-					}
-				};
-			}
-			else {
-				_object = null;
-				_invalidationCountDown = null;
-				_invalidationListener = null;
-			}
-		}
-
-		static boolean isDynamic(SystemObject object) {
-			return object instanceof DynamicObject;
-		}
-
-		DynamicObjectType getType() {
-			return (DynamicObjectType)_object.getType();
-		}
-
-		public void start() {
-			if(isDynamic(_object)) getType().addInvalidationListener(_invalidationListener);
-		}
-
-		public void await() {
-			try {
-				if(isDynamic(_object)) _invalidationCountDown.await(500, TimeUnit.MILLISECONDS);
-			} catch (InterruptedException e) {
-				// InterruptedException führt zum sofortigen Ende der Methode
-			}
-		}
-
-		public void stop() {
-			if(isDynamic(_object)) getType().removeInvalidationListener(_invalidationListener);
-		}
-	}
-
-	/**
-	 * Macht ein bereits als ungültig markiertes Objekt wieder gültig. Wenn ein Konfigurationsobjekt mit der Methode {@link DafSystemObject#invalidate} für eine
-	 * zukünftige Konfigurationsversion als ungültig markiert wurde und diese Konfigurationsversion noch nicht aktiviert wurde, dann kann das Objekt durch Aufruf
-	 * dieser Methode wieder gültig gemacht werden.
-	 *
-	 * @param object Objekt, dass wieder gültig gemacht werden soll.
-	 *
-	 * @return <code>true</code>, falls das Objekt wieder gültig gemacht werden konnte; <code>false</code> wenn die Operation nicht durchgeführt werden konnte.
-	 */
-	final boolean revalidate(DafSystemObject object) {
-		ObjectRevalidateRequest telegram = new ObjectRevalidateRequest(_configurationTime, object.getId());
-		String info = Integer.toString(telegram.hashCode());
-		telegram.setInfo(info);
-		_configurationManager.sendConfigData(_readBaseSubscriptionInfo, telegram);
-
-		// Waiting for Answer
-		ConfigTelegram responce = null;
-		long waitingTime = 0, startTime = System.currentTimeMillis();
-		long sleepTime = 10;
-		while(waitingTime < CommunicationConstant.MAX_WAITING_TIME_FOR_SYNC_RESPONCE) {
-			try {
-				synchronized(_pendingResponces) {
-					if(_connectionClosed) {
-						throw new RuntimeException("Verbindung zum Datenverteiler wurde geschlossen");
-					}
-					_pendingResponces.wait(sleepTime);
-					if(sleepTime < 1000) {
-						sleepTime *= 2;
-					}
-
-					ListIterator _iterator = _pendingResponces.listIterator(_pendingResponces.size());
-					while(_iterator.hasPrevious()) {
-						responce = (ConfigTelegram)_iterator.previous();
-						if((responce != null) && (responce.getType() == ConfigTelegram.OBJECT_REVALIDATE_ANSWER_TYPE) && (info.equals(responce.getInfo()))) {
-							_iterator.remove();
-							try {
-								ObjectRevalidateAnswer objectRevalidateAnswer = (ObjectRevalidateAnswer)responce;
-								if(telegram.getObjectId() == objectRevalidateAnswer.getObjectId()) {
-									return objectRevalidateAnswer.isRevalidated();
-								}
-							}
-							catch(ClassCastException ex) {
-								ex.printStackTrace();
-							}
-							return false;
-						}
-					}
-				}
-				waitingTime = System.currentTimeMillis() - startTime;
-			}
-			catch(InterruptedException ex) {
-				ex.printStackTrace();
-				break;
-			}
-		}
-		throw new RuntimeException("Die Konfiguration antwortet nicht");
-	}
-
-	/**
-	 * Setzt den Namen eines Systemobjekts.
-	 *
-	 * @param object Systemobjekt, das umbenannt werden soll.
-	 * @param name   Neuer Name des Objekts. Der leere String ("") wird als "kein Name" interpretiert.
-	 *
-	 * @return <code>true</code>, falls der Name geändert werden konnte; <code>false</code> wenn die Operation nicht durchgeführt werden konnte.
-	 *
-	 * @see DafSystemObjectType#isNameOfObjectsPermanent
-	 */
-	final boolean setName(DafSystemObject object, String name) {
-		ObjectSetNameRequest telegram = new ObjectSetNameRequest(_configurationTime, object.getId(), name);
-		String info = Integer.toString(telegram.hashCode());
-		telegram.setInfo(info);
-		_configurationManager.sendConfigData(_readBaseSubscriptionInfo, telegram);
-
-		// Waiting for Answer
-		ConfigTelegram responce = null;
-		long waitingTime = 0, startTime = System.currentTimeMillis();
-		long sleepTime = 10;
-		while(waitingTime < CommunicationConstant.MAX_WAITING_TIME_FOR_SYNC_RESPONCE) {
-			try {
-				synchronized(_pendingResponces) {
-					if(_connectionClosed) {
-						throw new RuntimeException("Verbindung zum Datenverteiler wurde geschlossen");
-					}
-					_pendingResponces.wait(sleepTime);
-					if(sleepTime < 1000) {
-						sleepTime *= 2;
-					}
-
-					ListIterator _iterator = _pendingResponces.listIterator(_pendingResponces.size());
-					while(_iterator.hasPrevious()) {
-						responce = (ConfigTelegram)_iterator.previous();
-						if((responce != null) && (responce.getType() == ConfigTelegram.OBJECT_SET_NAME_ANSWER_TYPE) && (info.equals(responce.getInfo()))) {
-							_iterator.remove();
-							try {
-								ObjectSetNameAnswer objectSetNameAnswer = (ObjectSetNameAnswer)responce;
-								if(telegram.getObjectId() == objectSetNameAnswer.getObjectId()) {
-									return objectSetNameAnswer.isNameSet();
-								}
-							}
-							catch(ClassCastException ex) {
-								ex.printStackTrace();
-							}
-							return false;
-						}
-					}
-				}
-				waitingTime = System.currentTimeMillis() - startTime;
-			}
-			catch(InterruptedException ex) {
-				ex.printStackTrace();
-				break;
-			}
-		}
-		throw new RuntimeException("Die Konfiguration antwortet nicht");
-	}
 
 	public Data[] getConfigurationData(Collection<SystemObject> objects, AttributeGroup atg) {
 		return getConfigurationData(objects.toArray(new SystemObject[objects.size()]), atg, _defaultConfigurationDataAspect);
 	}
 
 	public void updateName(final long objectId, final long typeId, final String newName) {
-		// Typen sind immer konfigurationsobjekt.
-		final DafDynamicObjectType dynamicType = (DafDynamicObjectType)getObjectFromCache(new Long(typeId));
+		final DafDynamicObjectType dynamicType = (DafDynamicObjectType)getObject(typeId);
 
 		// Ist der Typ in diesem Datenmodell vorhanden ? Wenn nicht, dann gibt es auch keine Objekte und die Anfrage kann verworfen werden.
 		if(dynamicType != null) {
@@ -1643,7 +1313,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	public void updateNotValidSince(final long objectId, final long typeId, final long invalidTime) {
-		final DafDynamicObjectType dynamicType = (DafDynamicObjectType)getObjectFromCache(new Long(typeId));
+		final DafDynamicObjectType dynamicType = (DafDynamicObjectType)getObject(typeId);
 
 		// Ist der Typ in diesem Datenmodell vorhanden ? Wenn nicht, dann gibt es auch keine Objekte und die Anfrage kann verworfen werden.
 		if(dynamicType != null) {
@@ -1652,7 +1322,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	public void newDynamicObjectCreated(final long objectId, final long typeId) {
-		final DafDynamicObjectType dynamicType = (DafDynamicObjectType)getObjectFromCache(new Long(typeId));
+		final DafDynamicObjectType dynamicType = (DafDynamicObjectType)getObject(typeId);
 
 		// Ist der Typ in diesem Datenmodell vorhanden ? Wenn nicht, dann gibt es auch keine Objekte und die Anfrage kann verworfen werden.
 		if(dynamicType != null) {
@@ -1669,7 +1339,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	 */
 	DafSystemObject getObjectFromCache(final long objectId) {
 		synchronized(_systemObjectsById) {
-			return _systemObjectsById.get(new Long(objectId));
+			return _systemObjectsById.get(objectId);
 		}
 	}
 
@@ -2057,7 +1727,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	 *
 	 * @return Liste mit den zu mindestens einem Zeitpunkt des Zeitbereichs zur Mengenzusammenstellung gehörenden System-Objekten.
 	 */
-	final List getSetElementsInPeriod(DafObjectSet set, long startTime, long endTime) {
+	final List<SystemObject> getSetElementsInPeriod(DafObjectSet set, long startTime, long endTime) {
 		final ObjectTimeSpecification timeSpec = ObjectTimeSpecification.validInPeriod(startTime, endTime);
 
 		try {
@@ -2079,7 +1749,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	 *
 	 * @return Liste mit den während des gesamten Zeitbereichs zur Mengenzusammenstellung gehörenden System-Objekten.
 	 */
-	final List getSetElementsDuringPeriod(DafObjectSet set, long startTime, long endTime) {
+	final List<SystemObject> getSetElementsDuringPeriod(DafObjectSet set, long startTime, long endTime) {
 		final ObjectTimeSpecification timeSpec = ObjectTimeSpecification.validDuringPeriod(startTime, endTime);
 
 		try {
@@ -2099,7 +1769,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	 *
 	 * @return Liste mit den in der nächsten Konfigurationsversion zur Zusammenstellung gehörenden System-Objekten.
 	 */
-	final List getSetElementsInNextVersion(DafObjectSet set) {
+	final List<SystemObject> getSetElementsInNextVersion(DafObjectSet set) {
 		try {
 			return castInterfaceToClass(getRequester().getSetElementsInNextVersion(set));
 		}
@@ -2116,7 +1786,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	 *
 	 * @return Liste mit den in der angegebenen Version zur Zusammenstellung gehörenden System-Objekten.
 	 */
-	final List getSetElementsInVersion(DafObjectSet set, short version) {
+	final List<SystemObject> getSetElementsInVersion(DafObjectSet set, short version) {
 		try {
 			return castInterfaceToClass(getRequester().getSetElementsInVersion(set, version));
 		}
@@ -2134,7 +1804,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	 *
 	 * @return Liste mit den in allen Version des Bereichs zur Mengenzusammenstellung gehörenden System-Objekten.
 	 */
-	final List getSetElementsInAllVersions(DafObjectSet set, short fromVersion, short toVersion) {
+	final List<SystemObject> getSetElementsInAllVersions(DafObjectSet set, short fromVersion, short toVersion) {
 		try {
 			return castInterfaceToClass(getRequester().getSetElementsInAllVersions(set, fromVersion, toVersion));
 		}
@@ -2152,7 +1822,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	 *
 	 * @return Liste mit den in mindestens einer Version des Bereichs zur Zusammenstellung gehörenden System-Objekten.
 	 */
-	final List getSetElementsInAnyVersions(DafObjectSet set, short fromVersion, short toVersion) {
+	final List<SystemObject> getSetElementsInAnyVersions(DafObjectSet set, short fromVersion, short toVersion) {
 		try {
 			return castInterfaceToClass(getRequester().getSetElementsInAnyVersions(set, fromVersion, toVersion));
 		}

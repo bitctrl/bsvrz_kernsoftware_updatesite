@@ -29,7 +29,7 @@ package de.bsvrz.dav.daf.main.config;
  * @author Kappich+Kniß Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
  * @author Stephan Homeyer (sth)
- * @version $Revision: 5762 $ / $Date: 2008-01-05 03:25:57 +0100 (Sa, 05 Jan 2008) $ / ($Author: rs $)
+ * @version $Revision: 5762 $ / $Date: 2008-01-05 03:25:57 +0100 (Sat, 05 Jan 2008) $ / ($Author: rs $)
  * @deprecated Dieses Interface wird mit einem der nächsten Releases gelöscht 
  */
 @Deprecated

@@ -24,29 +24,20 @@ package de.bsvrz.dav.daf.main.impl.config;
 
 import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.DataAndATGUsageInformation;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.ConfigurationAuthority;
-import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
-import de.bsvrz.dav.daf.main.config.ConfigurationObject;
-import de.bsvrz.dav.daf.main.config.ConfigurationObjectType;
-import de.bsvrz.dav.daf.main.config.DynamicObject;
-import de.bsvrz.dav.daf.main.config.DynamicObjectType;
-import de.bsvrz.dav.daf.main.config.ObjectSet;
-import de.bsvrz.dav.daf.main.config.ObjectTimeSpecification;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.dav.daf.main.impl.config.request.ConfigurationRequester;
 import de.bsvrz.dav.daf.main.impl.config.request.RequestException;
 import de.bsvrz.sys.funclib.debug.Debug;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * Applikationsseitige Implementierung der Schnittstelle zum Zugriff auf die Eigenschaften eines Bereichs.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8005 $
+ * @version $Revision: 13141 $
  */
 public class DafConfigurationArea extends DafConfigurationObject implements ConfigurationArea {
 
@@ -247,7 +238,7 @@ public class DafConfigurationArea extends DafConfigurationObject implements Conf
 		}
 	}
 
-	public ConfigurationObject createConfigurationObject(ConfigurationObjectType type, String pid, String name, List<ObjectSet> sets)
+	public ConfigurationObject createConfigurationObject(ConfigurationObjectType type, String pid, String name, Collection<? extends ObjectSet> sets)
 			throws ConfigurationChangeException {
 		try {
 			checkNameLength(name);

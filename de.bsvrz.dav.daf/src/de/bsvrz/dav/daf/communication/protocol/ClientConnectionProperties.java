@@ -22,20 +22,16 @@
 
 package de.bsvrz.dav.daf.communication.protocol;
 
-import de.bsvrz.dav.daf.communication.lowLevel.AuthentificationProcess;
-import de.bsvrz.dav.daf.communication.lowLevel.CommunicationParameters;
+import de.bsvrz.dav.daf.communication.lowLevel.*;
+import de.bsvrz.dav.daf.main.ClientDavParameters;
 import de.bsvrz.dav.daf.main.ConnectionException;
 import de.bsvrz.dav.daf.main.InitialisationNotCompleteException;
-import de.bsvrz.dav.daf.main.ClientDavParameters;
-import de.bsvrz.dav.daf.communication.lowLevel.ConnectionInterface;
-import de.bsvrz.dav.daf.communication.lowLevel.ConnectionProperties;
-import de.bsvrz.dav.daf.communication.lowLevel.LowLevelCommunication;
 
 /**
  * Diese Klasse enthält die Eigenschaften, die benötigt werden, um eine Verbindung zum Datenverteiler aufzubauen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11285 $
+ * @version $Revision: 12968 $
  */
 public class ClientConnectionProperties extends ConnectionProperties {
 
@@ -68,8 +64,8 @@ public class ClientConnectionProperties extends ConnectionProperties {
 				clientDavParameters.getUserPassword(),
 				clientDavParameters.getCommunicationParameters().getSendKeepAliveTimeout(),
 				clientDavParameters.getCommunicationParameters().getReceiveKeepAliveTimeout(),
-				clientDavParameters.getCommunicationOutputBufferSize(),
-				clientDavParameters.getCommunicationInputBufferSize()
+				clientDavParameters.getAdjustedOutputBufferSize(),
+				clientDavParameters.getAdjustedInputBufferSize()
 		);
 		try {
 			String comProtocol = clientDavParameters.getLowLevelCommunicationName();
@@ -84,8 +80,8 @@ public class ClientConnectionProperties extends ConnectionProperties {
 			setLowLevelCommunication(
 					new LowLevelCommunication(
 							connection,
-							clientDavParameters.getCommunicationOutputBufferSize(),
-							clientDavParameters.getCommunicationInputBufferSize(),
+							clientDavParameters.getAdjustedOutputBufferSize(),
+							clientDavParameters.getAdjustedInputBufferSize(),
 							clientDavParameters.getCommunicationParameters().getSendKeepAliveTimeout(),
 							clientDavParameters.getCommunicationParameters().getReceiveKeepAliveTimeout(),
 							LowLevelCommunication.HANDLE_CONFIG_RESPONCES_MODE,

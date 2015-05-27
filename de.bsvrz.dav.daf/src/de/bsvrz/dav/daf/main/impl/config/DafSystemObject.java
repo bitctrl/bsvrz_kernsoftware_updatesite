@@ -23,15 +23,8 @@
 package de.bsvrz.dav.daf.main.impl.config;
 
 import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.config.Aspect;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.SystemObjectInfo;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
+import de.bsvrz.dav.daf.main.config.*;
+import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 import java.io.DataInputStream;
@@ -51,7 +44,7 @@ import java.util.List;
  * sollte aus diesem Grund nicht zur Referenzierung von Objekten eingesetzt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 9234 $ / $Date: 2011-05-13 11:48:55 +0200 (Fr, 13 Mai 2011) $ / ($Author: jh $)
+ * @version $Revision: 13145 $ / $Date: 2015-02-04 16:45:41 +0100 (Wed, 04 Feb 2015) $ / ($Author: jh $)
  */
 public abstract class DafSystemObject implements SystemObject {
 
@@ -178,7 +171,7 @@ public abstract class DafSystemObject implements SystemObject {
 	protected DafDataModel _dataModel;
 
 	/** Id des Konfigurationsbereichs zu dem dieses Objekt gehört. */
-	private long _configurationAreaId;
+	protected long _configurationAreaId;
 
 	/** DebugLogger für Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
@@ -312,7 +305,7 @@ public abstract class DafSystemObject implements SystemObject {
 	}
 
 	/**
-	 * Deserialisiert dieses Objekt.
+	 * Deserialisiert dieses Objekt über die alte Methode.
 	 *
 	 * @param in Stream von dem das Objekt gelesen werden soll.
 	 *
@@ -338,12 +331,40 @@ public abstract class DafSystemObject implements SystemObject {
 	}
 
 	/**
+	 * Deserialisiert dieses Objekt
+	 * @param deserializer Deserialisierer als Datenquelle
+	 */
+	public void read(final Deserializer deserializer) throws IOException {
+		_id = deserializer.readLong();
+		_typeId = deserializer.readLong();
+		byte flag = deserializer.readByte();
+		if((flag & 1) != 0){
+			// Objekt ist gültig
+			_state = OBJECT_EXISTS;
+		}
+		else if(this instanceof DynamicObjectType){
+			_state = OBJECT_DELETED;
+		}
+		else {
+			_state = OBJECT_INVALID;
+		}
+		if((flag & 2) != 0){
+			_pid = deserializer.readString();
+		}
+		if((flag & 4) != 0){
+			_name = deserializer.readString();
+		}
+	}
+
+	/**
 	 * Bestimmt den Status dieses Objektes
 	 *
-	 * @return Liefert den Wert <code>OBJECT_DELETED</code> für ungültige oder <code>OBJECT_EXISTS</code> für gültige Objekte zurück.
+	 * @return Liefert den Wert <code>OBJECT_INVALID</code>, <code>OBJECT_DELETED</code> für ungültige
+	 * oder <code>OBJECT_EXISTS</code> für gültige Objekte zurück.
 	 *
-	 * @see #OBJECT_DELETED
-	 * @see #OBJECT_EXISTS
+	 * @see #OBJECT_EXISTS Objekt ist gültig.
+	 * @see #OBJECT_INVALID Ungültiges Konfigurationsobjekt
+	 * @see #OBJECT_DELETED Dynamisches Objekt wurde auf ungültig gesetzt
 	 */
 	public final byte getState() {
 		return _state;
@@ -353,10 +374,12 @@ public abstract class DafSystemObject implements SystemObject {
 	/**
 	 * Setzt den Status dieses Objektes.
 	 *
-	 * @param state <code>OBJECT_DELETED</code> für ungültige oder <code>OBJECT_EXISTS</code> für gültige Objekte.
+	 * @param state <code>OBJECT_INVALID</code>, <code>OBJECT_DELETED</code> für ungültige
+	 * oder <code>OBJECT_EXISTS</code> für gültige Objekte.
 	 *
-	 * @see #OBJECT_DELETED
-	 * @see #OBJECT_EXISTS
+	 * @see #OBJECT_EXISTS Objekt ist gültig.
+	 * @see #OBJECT_INVALID Ungültiges Konfigurationsobjekt
+	 * @see #OBJECT_DELETED Dynamisches Objekt wurde auf ungültig gesetzt
 	 */
 	void setState(byte state) {
 		_state = state;
@@ -413,19 +436,15 @@ public abstract class DafSystemObject implements SystemObject {
 	public final void setName(String _name) throws ConfigurationChangeException {
 		final String name = _name != null ? _name : "";
 
-		if(_name.length() > 255) {
+		if(name.length() > 255) {
 			throw new ConfigurationChangeException(
 					"Der Name des Objekts ist zu lang, es sind nur 255 Zeichen erlaubt. Name, der gesetzt werden sollte: " + _name + " Länge des Strings: "
-					+ _name.length()
+					+ name.length()
 			);
 		}
 
-		if(_dataModel.setName(this, name)) {
-			this._name = name;
-		}
-		else {
-			throw new ConfigurationChangeException("Der Name konnte nicht gesetzt werden");
-		}
+		_dataModel.setName(this, name); // Hier kann eine ConfigurationChangeException auftreten...
+		this._name = name; // ...dann wird das hier nicht mehr ausgeführt
 	}
 
 	/**
@@ -449,9 +468,7 @@ public abstract class DafSystemObject implements SystemObject {
 	}
 
 	public final void invalidate() throws ConfigurationChangeException {
-		if(!_dataModel.invalidate(this)) {
-			throw new ConfigurationChangeException("Das Objekt konnte nicht ungültig gemacht werden.");
-		}
+		_dataModel.invalidate(this);
 	}
 
 	public final boolean isOfType(String typePid) {
@@ -672,4 +689,5 @@ public abstract class DafSystemObject implements SystemObject {
 		}
 		return new SystemObjectInfo(infoData.getTextValue("kurzinfo").getValueText(), infoData.getTextValue("beschreibung").getValueText());
 	}
+
 }

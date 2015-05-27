@@ -22,6 +22,7 @@
 package de.bsvrz.dav.daf.main.impl.config;
 
 import de.bsvrz.dav.daf.main.config.IntegerValueState;
+import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -31,7 +32,7 @@ import java.io.IOException;
  * Klasse, die den Zugriff auf Werte-Zustände von Ganzzahl-Attributtypen seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5054 $
+ * @version $Revision: 13141 $
  */
 public class DafIntegerValueState extends DafConfigurationObject implements IntegerValueState {
 
@@ -89,5 +90,11 @@ public class DafIntegerValueState extends DafConfigurationObject implements Inte
 	public final void read(DataInputStream in) throws IOException {
 		super.read(in);
 		_stateValue = in.readLong();
+	}
+
+	@Override
+	public void read(final Deserializer deserializer) throws IOException {
+		super.read(deserializer);
+		_stateValue = deserializer.readLong();
 	}
 }

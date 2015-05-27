@@ -31,6 +31,7 @@ import de.bsvrz.sys.funclib.commandLineArgs.ArgumentList;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 import java.io.BufferedInputStream;
+import java.io.Console;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
@@ -41,10 +42,10 @@ import java.util.*;
  * Default-Werte gesetzt. Einzelne Parameter können mit den entsprechenden Zugriffsmethoden gesetzt und abgefragt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 10092 $
+ * @version $Revision: 13225 $
  * @verweis sst.DatenverteilerApplikationsfunktionen-Starter Schnittstellenbeschreibung
  */
-public class ClientDavParameters {
+public class ClientDavParameters implements Cloneable{
 
 	/** Der Debug-Logger der Klasse */
 	static private final Debug _debug = Debug.getLogger();
@@ -191,7 +192,7 @@ public class ClientDavParameters {
 	private boolean _connectionForTests = false;
 
 	/** Enthält die Parameter für die Kommunikation zwischen Applikation und Datenverteiler. */
-	private final CommunicationParameters _communicationParameters;
+	private CommunicationParameters _communicationParameters;
 
 	/** Enthält den via Aufrufparameter von Start/Stopp vorgegebenen Inkarnationsnamen oder <code>""</code>, falls das Aufrufargument nicht angegeben wurde. */
 	private final String _incarnationName;
@@ -202,6 +203,29 @@ public class ClientDavParameters {
 	 * wurde, dann enthält dieses Field den Wert <code>null</code>.
 	 */
 	private String _applicationNameForLocalConfigurationCache = null;
+
+	/**
+	 * Bestimmt, ob eine zusätzliche Datenverteilerverbindung für Konfigurationsanfragen benutzt werden soll
+	 * (false, wenn _isSecondConnection == true)
+	 */
+	private boolean _useSecondConnection = false;
+
+	/**
+	 * Bestimmt, ob dies die Parameter für die zweite Datenverteilerverbindung für Konfigurationsanfragen darstellt
+	 */
+	private boolean _isSecondConnection = false;
+
+	/**
+	 * Falls eine zweite Verbindung für Konfigurationsanfragen verwendet wird: Anteil der zweiten Verbindung
+	 * an der Gesamtpuffergröße
+	 */
+	private double _secondaryConnectionBufferRatio = 0.01;
+
+	/**
+	 * True falls das Objekt schreibgeschützt ist. Die ClientDavConnection erstellt eine schreibgeschütze Kopie
+	 * dieses Objekts damit Parameter wie Simulationsvariante nicht im laufenden Betrieb geändert werden können
+	 */
+	private boolean _readonly = false;
 
 	/**
 	 * Erzeugt einen neuen Parametersatz mit Defaultwerten für die einzelnen Parameter.
@@ -341,6 +365,7 @@ public class ClientDavParameters {
 	 * @see #isConnectionForTests()
 	 */
 	public void setConnectionForTests(final boolean connectionForTests) {
+		checkReadonly();
 		_connectionForTests = connectionForTests;
 	}
 
@@ -483,6 +508,22 @@ public class ClientDavParameters {
 							throw new MissingParameterException(
 									"Authentifizierungsdatei-Parameter muss folgende Formatierung besitzen: -authentifizierung=Zeichenkette"
 							);
+						}
+						else if(tmp.equals("STDIN")) {
+							Console console = null;
+							try {
+								console = System.console();
+							}
+							catch(Exception ignored) {
+							}
+							if(console != null) {
+								_userPassword = new String(console.readPassword("Passwort: "));
+							}
+							else {
+								throw new MissingParameterException(
+										"Das Einlesen von der Konsole ist nicht möglich"
+								);
+							}
 						}
 						else {
 							Properties properties = new Properties();
@@ -679,6 +720,10 @@ public class ClientDavParameters {
 			}
 
 			_incarnationName = argumentList.fetchArgument(INCARNATION_KEY).asString();
+
+			_useSecondConnection = argumentList.fetchArgument("-zweiteVerbindung=nein").booleanValue();
+
+			_secondaryConnectionBufferRatio = argumentList.fetchArgument("-zweiteVerbindungPufferAnteil=0.01").doubleValueBetween(0, 1);
 
 			//Durchsatzprüfung
 			float throughputControlSendBufferFactor;
@@ -1036,6 +1081,7 @@ public class ClientDavParameters {
 	 */
 	@Deprecated
 	public final void setThroughputControlSendBufferFactor(float sendBufferFactor) {
+		checkReadonly();
 		_communicationParameters.setThroughputControlSendBufferFactor(sendBufferFactor);
 	}
 
@@ -1048,6 +1094,7 @@ public class ClientDavParameters {
 	 */
 	@Deprecated
 	public final void setCacheThresholdPercentage(float cacheThresholdPercentage) {
+		checkReadonly();
 		_communicationParameters.setThroughputControlSendBufferFactor(cacheThresholdPercentage);
 	}
 
@@ -1086,6 +1133,7 @@ public class ClientDavParameters {
 	 */
 	@Deprecated
 	public final void setThroughputControlInterval(long interval) {
+		checkReadonly();
 		_communicationParameters.setThroughputControlInterval(interval);
 	}
 
@@ -1098,6 +1146,7 @@ public class ClientDavParameters {
 	 */
 	@Deprecated
 	public final void setFlowControlThresholdTime(long flowControlThresholdTime) {
+		checkReadonly();
 		_communicationParameters.setThroughputControlInterval(flowControlThresholdTime);
 	}
 
@@ -1136,6 +1185,7 @@ public class ClientDavParameters {
 	 */
 	@Deprecated
 	public final void setMinimumThroughput(int throughput) {
+		checkReadonly();
 		_communicationParameters.setMinimumThroughput(throughput);
 	}
 
@@ -1148,6 +1198,7 @@ public class ClientDavParameters {
 	 */
 	@Deprecated
 	public final void setMinConnectionSpeed(int minConnectionSpeed) {
+		checkReadonly();
 		_communicationParameters.setMinimumThroughput(minConnectionSpeed);
 	}
 
@@ -1183,6 +1234,7 @@ public class ClientDavParameters {
 	 * @see #setApplicationTypePid
 	 */
 	public final void setApplicationName(String applicationName) {
+		checkReadonly();
 		if(applicationName != null) {
 			_applicationName = applicationName;
 		}
@@ -1208,6 +1260,7 @@ public class ClientDavParameters {
 	 * @see #setApplicationName
 	 */
 	public final void setApplicationTypePid(String applicationTypePid) {
+		checkReadonly();
 		if(applicationTypePid != null) {
 			_applicationTypePid = applicationTypePid;
 		}
@@ -1228,6 +1281,7 @@ public class ClientDavParameters {
 	 * @param authentificationProcessName Klassenname des Verfahrens
 	 */
 	public final void setAuthentificationProcessName(String authentificationProcessName) {
+		checkReadonly();
 		if(authentificationProcessName != null) {
 			_authentificationProcessName = authentificationProcessName;
 		}
@@ -1248,6 +1302,7 @@ public class ClientDavParameters {
 	 * @param lowLevelCommunicationName Klassenname des Kommunikationsverfahrens.
 	 */
 	public final void setLowLevelCommunicationName(String lowLevelCommunicationName) {
+		checkReadonly();
 		if(lowLevelCommunicationName != null) {
 			_lowLevelCommunicationName = lowLevelCommunicationName;
 		}
@@ -1272,6 +1327,7 @@ public class ClientDavParameters {
 	 * @param address Kommunikationsadresse des Datenverteilers (IP-Addresse oder Rechnername bei TCP).
 	 */
 	public final void setDavCommunicationAddress(String address) {
+		checkReadonly();
 		if(address != null) {
 			_address = address;
 		}
@@ -1295,6 +1351,7 @@ public class ClientDavParameters {
 	 * @param subAddress Kommunikationssubadresse des Datenverteilers.
 	 */
 	public final void setDavCommunicationSubAddress(int subAddress) {
+		checkReadonly();
 		if(subAddress > 0) {
 			_subAddress = subAddress;
 		}
@@ -1315,6 +1372,7 @@ public class ClientDavParameters {
 	 * @param configurationPid PID der zu verwendenden Konfiguration.
 	 */
 	public final void setConfigurationPid(String configurationPid) {
+		checkReadonly();
 		if(configurationPid != null) {
 			_configurationPid = configurationPid;
 			if("null".equals(_configurationPid)) {
@@ -1340,6 +1398,7 @@ public class ClientDavParameters {
 	 *                          Konfigurationsdaten nicht lokal zwischengespeichert werden sollen.
 	 */
 	public final void setConfigurationPath(String configurationPath) {
+		checkReadonly();
 		_configurationPath = configurationPath;
 	}
 
@@ -1358,6 +1417,7 @@ public class ClientDavParameters {
 	 * @param userName Name des Benutzers.
 	 */
 	public final void setUserName(String userName) {
+		checkReadonly();
 		if(userName != null) {
 			_userName = userName;
 		}
@@ -1378,6 +1438,7 @@ public class ClientDavParameters {
 	 * @param userPassword Passwort des Benutzers.
 	 */
 	public final void setUserPassword(String userPassword) {
+		checkReadonly();
 		if(userPassword != null) {
 			_userPassword = userPassword;
 		}
@@ -1408,6 +1469,7 @@ public class ClientDavParameters {
 	 */
 	@Deprecated
 	public final void setSendKeepAliveTimeout(long timeout) {
+		checkReadonly();
 		if(timeout > 0) {
 			_communicationParameters.setSendKeepAliveTimeout(timeout);
 		}
@@ -1438,6 +1500,7 @@ public class ClientDavParameters {
 	 */
 	@Deprecated
 	public final void setReceiveKeepAliveTimeout(long timeout) {
+		checkReadonly();
 		if(timeout > 0) {
 			_communicationParameters.setReceiveKeepAliveTimeout(timeout);
 		}
@@ -1463,6 +1526,7 @@ public class ClientDavParameters {
 	 * @see DataDescription
 	 */
 	public final void setSimulationVariant(short variant) {
+		checkReadonly();
 		if(variant > 0) {
 			_simulationVariant = variant;
 		}
@@ -1486,6 +1550,7 @@ public class ClientDavParameters {
 	 * @param delay Sende-Verzögerungszeit in Millisekunden.
 	 */
 	public final void setCommunicationSendFlushDelay(long delay) {
+		checkReadonly();
 		if(delay > 0) {
 			_communicationSendFlushDelay = delay;
 		}
@@ -1506,6 +1571,7 @@ public class ClientDavParameters {
 	 * @param bufferSize Größe des Sendepuffers in Bytes.
 	 */
 	public final void setCommunicationOutputBufferSize(int bufferSize) {
+		checkReadonly();
 		if(bufferSize > 0) {
 			_outputBufferSize = bufferSize;
 		}
@@ -1526,9 +1592,65 @@ public class ClientDavParameters {
 	 * @param bufferSize Größe des Empfangspuffers in Bytes.
 	 */
 	public final void setCommunicationInputBufferSize(int bufferSize) {
+		checkReadonly();
 		if(bufferSize > 0) {
 			_inputBufferSize = bufferSize;
 		}
+	}
+
+	/**
+	 * Gibt die Größe der anteiligen Empfangs-Puffergröße zurück, den diese Verbindung benutzt.
+	 * @return Buffergröße in Bytes
+	 */
+	public final int getAdjustedInputBufferSize() {
+		int bufferSize;
+		int configBufferSize = (int) (_inputBufferSize * _secondaryConnectionBufferRatio);
+		if(isSecondConnection()){
+			bufferSize = configBufferSize + 100000;
+		}
+		else if(_useSecondConnection){
+			bufferSize = _inputBufferSize - configBufferSize;
+		}
+		else {
+			bufferSize = _inputBufferSize;
+		}
+		return bufferSize;
+	}
+
+	/**
+	 * Gibt die Größe der anteiligen Empfangs-Puffergröße zurück, den diese Verbindung benutzt.
+	 * @return Buffergröße in Bytes
+	 */
+	public final int getAdjustedOutputBufferSize() {
+		int bufferSize;
+		int configBufferSize = (int) (_outputBufferSize * _secondaryConnectionBufferRatio);
+		if(isSecondConnection()){
+			bufferSize = configBufferSize + 100000;
+		}
+		else if(_useSecondConnection){
+			bufferSize = _outputBufferSize - configBufferSize;
+		}
+		else {
+			bufferSize = _outputBufferSize;
+		}
+		return bufferSize;
+	}
+
+	/**
+	 * Gibt den Anteil von den Puffergrößen der zweiten für Konfigurationsanfragen (falls verwendet) zurück
+	 * @return den Anteil  von den Puffergrößen der zweiten für Konfigurationsanfragen (falls verwendet)
+	 */
+	public double getSecondaryConnectionBufferRatio() {
+		return _secondaryConnectionBufferRatio;
+	}
+
+	/**
+	 * Setzt den Anteil an den Puffergrößen, den die zweite Verbindung für Konfigurationsanfragen verwendet (falls vorhanden)
+	 * @param secondaryConnectionBufferRatio Anteil zwischen 0.0 und 1.0, der angibt wie groß der Puffer der zweiten Verbidnung im
+	 *                                       Verhältnis zur Gesamtpuffergröße sein soll.
+	 */
+	public void setSecondaryConnectionBufferRatio(final double secondaryConnectionBufferRatio) {
+		_secondaryConnectionBufferRatio = secondaryConnectionBufferRatio;
 	}
 
 	/**
@@ -1546,6 +1668,7 @@ public class ClientDavParameters {
 	 * @param maxTelegramSize Maximale Größe von versendeten Datentelegrammen als Anzahl von Bytes.
 	 */
 	public final void setMaxDataTelegramSize(int maxTelegramSize) {
+		checkReadonly();
 		if(maxTelegramSize > 0) {
 			_maxTelegramSize = maxTelegramSize;
 		}
@@ -1557,6 +1680,7 @@ public class ClientDavParameters {
 	 * @return die Parameter für die Kommunikation zwischen Applikation und Datenverteiler
 	 */
 	public CommunicationParameters getCommunicationParameters() {
+		
 		return _communicationParameters;
 	}
 
@@ -1574,6 +1698,7 @@ public class ClientDavParameters {
 		if((attributeGroupPid == null) || (aspectPid == null) || (substituteAspectPid == null)) {
 			throw new IllegalArgumentException("Argument ist null");
 		}
+		checkReadonly();
 		AttributeGroupAspectObject attributeGroupAspect = new AttributeGroupAspectObject(attributeGroupPid, aspectPid);
 		AttributeGroupAspectObject attributeGroupAspectSubstitute = new AttributeGroupAspectObject(
 				attributeGroupPid, substituteAspectPid
@@ -1652,6 +1777,7 @@ public class ClientDavParameters {
 	 * @param deliveryBufferSize Größe des Auslieferungspuffers in Bytes.
 	 */
 	public void setDeliveryBufferSize(final int deliveryBufferSize) {
+		checkReadonly();
 		_deliveryBufferSize = deliveryBufferSize;
 	}
 
@@ -1662,6 +1788,37 @@ public class ClientDavParameters {
 	public String getIncarnationName() {
 		return _incarnationName;
 	}
+
+	/**
+	 * Gibt <tt>true</tt> zurück, wenn eine zweite ClientDavConnection für Konfigurationsanfragen benutzt werden soll
+	 * @return <tt>true</tt>, wenn eine zweite ClientDavConnection für Konfigurationsanfragen benutzt werden soll, sonst <tt>false</tt>
+	 */
+	public boolean getUseSecondConnection() {
+		return _useSecondConnection;
+	}
+
+	/**
+	 * Setzt, ob eine zweite ClientDavConnection für Konfigurationsanfragen benutzt werden soll, sonst false
+	 * @param useSecondConnection ob eine zweite ClientDavConnection für Konfigurationsanfragen benutzt werden
+	 */
+	public void setUseSecondConnection(final boolean useSecondConnection) {
+		checkReadonly();
+		_useSecondConnection = useSecondConnection;
+	}
+
+	public boolean isSecondConnection() {
+		return _isSecondConnection;
+	}
+
+	public ClientDavParameters getSecondConnectionParameters() {
+		if(!_useSecondConnection) return null;
+		ClientDavParameters result = clone(false);
+		result.setApplicationName(result.getApplicationName() + "#");
+		result._isSecondConnection = true;
+		result._useSecondConnection = false;
+		return result;
+	}
+
 
 	class AttributeGroupAspectObject {
 
@@ -1699,6 +1856,59 @@ public class ClientDavParameters {
 		}
 	}
 
+	@Override
+	public final ClientDavParameters clone() {
+		try {
+			ClientDavParameters clone = (ClientDavParameters) super.clone();
+			// Deep Copy erstellen
+			clone._substituteToAspectTable = new Hashtable<AttributeGroupAspectObject, AttributeGroupAspectObject>(_substituteToAspectTable);
+			clone._aspectToSubstituteTable = new Hashtable<AttributeGroupAspectObject, AttributeGroupAspectObject>(_aspectToSubstituteTable);
+			clone._communicationParameters = _communicationParameters.clone();
+			return clone;
+		} catch(CloneNotSupportedException e){
+			throw new IllegalStateException(e);
+		}
+	}
+
+	/**
+	 * Erstellt eine Kopie dieses Objekts
+	 * @param readonly Soll die Kopie schreibgeschützt sein? Erlaubt sowohl das Entfernen als auch das Hinzufügen eines Schreibschutzes.
+	 * @return Kopie
+	 */
+	public final ClientDavParameters clone(final boolean readonly) {
+		ClientDavParameters clone = clone();
+		clone._readonly = readonly;
+		return clone;
+	}
+
+	/**
+	 * Wirft eine Exception wenn das Objekt schreibgeschützt ist.
+	 *
+	 * @see #clone(boolean)
+	 */
+	private void checkReadonly() {
+		if(_readonly) {
+			if(_useSecondConnection) {
+				throw new IllegalStateException("Es wurde versucht, einen Parameter nach dem Erstellen der ClientDavConnection zu verändern." +
+						                                "Das ist nicht erlaubt, wenn eine zweite Verbindung für Konfigurationsanfragen verwendet wird.");
+			}
+			else {
+				_debug.warning("Ein Parameter wurde nach dem Erstellen einer ClientDavConnection verändert. Dies kann zu undefiniertem " +
+						               "Verhalten führen und wird in Zukunft möglicherweise verhindert.", new Exception()); // new Exception = Stacktrace ausgeben
+			}
+		}
+	}
+
+	/**
+	 * Setzt das Objekt auf "nur lesen". Wird nur für die Übergangszeit benutzt, wenn in der ClientDavConnection keine Kopie erzeugt wird
+	 * um vor eventuellen Änderungen zu warnen.
+	 * @param readonly Neuer readonly-Wert
+	 * @see #checkReadonly()
+	 */
+	void setReadonly(final boolean readonly) {
+		_readonly = readonly;
+	}
+
 	/** Gibt die eingestellten Parameter auf die Standardausgabe aus. */
 	public static void printArgumentsList() {
 		System.out.println();
@@ -1713,5 +1923,6 @@ public class ClientDavParameters {
 		System.out.println("-timeoutEmpfangeKeepAlive=time(Zahl in Sekunden)");
 		System.out.println("-aspekt=Attributesgruppepid(Zeichenkette):Aspektspid(Zeichenkette):Ersatzaspektpid(Zeichenkette)");
 		System.out.println("-simVariante=Ersatzsimulationsvariante(Zahl)");
+		System.out.println("-zweiteVerbindung=ja/nein");
 	}
 }

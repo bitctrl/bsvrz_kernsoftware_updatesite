@@ -40,7 +40,7 @@ import java.util.*;
  * Diese Klasse stellt Methoden zur Verfügung, um die Interfaces der Konfiguration zu entschlacken.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
+ * @version $Revision: 13173 $
  */
 public class AttributeHelper {
 	/**
@@ -96,7 +96,7 @@ public class AttributeHelper {
 	 * zurück. Die Reihenfolge der Attribute in der Liste entspricht der durch die {@link Attribute#getPosition
 	 * Position} der Attribute definierte Reihenfolge innerhalb der Attributgruppe bzw. Attributliste
 	 *
-	 * @return Liste von {@link Attribute Attributen} und {@link de.bsvrz.dav.daf.main.config.AttributeListDefinition AttributeListen}
+	 * @return Liste von {@link Attribute Attributen} und {@link de.bsvrz.dav.daf.main.config.AttributeListDefinition AttributListen}
 	 */
 	public static List<AttributeBaseValue> getAttributesValues(final AttributeSet attributeSet) {
 		List<Attribute> attributes = attributeSet.getAttributes();

@@ -34,7 +34,7 @@ import java.io.IOException;
  * des Datensatzes mit den anderen Stücken zu verbinden um den gesamten Datensatz wieder zusammen zu bauen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11481 $
+ * @version $Revision: 13173 $
  */
 
 public class ApplicationDataTelegram extends DataTelegram implements DataTelegramInterface {
@@ -219,7 +219,7 @@ public class ApplicationDataTelegram extends DataTelegram implements DataTelegra
 	}
 
 	/**
-	 * Gibt den Indikator zu den einzelnen Attributen der Attributegruppe zurück.
+	 * Gibt den Indikator zu den einzelnen Attributen der Attributgruppe zurück.
 	 *
 	 * @return Indikator
 	 */

@@ -25,7 +25,7 @@ package de.bsvrz.dav.daf.main.impl.config;
  *
  * @author Roland Schmitz (rs), Kappich Systemberatung
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 5060 $, $Date: 2007-09-01 15:04:35 +0200 (Sa, 01 Sep 2007) $, $Author: rs $
+ * @version $Revision: 5060 $, $Date: 2007-09-01 15:04:35 +0200 (Sat, 01 Sep 2007) $, $Author: rs $
  */
 public class AttributeGroupUsageIdentifications {
 

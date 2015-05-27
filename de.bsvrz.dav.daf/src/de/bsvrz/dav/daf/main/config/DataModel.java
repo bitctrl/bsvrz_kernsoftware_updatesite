@@ -25,7 +25,8 @@ import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.config.management.UserAdministration;
 import de.bsvrz.dav.daf.main.impl.config.request.RequestException;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Schnittstelle zum Zugriff auf Objekte und Eigenschaften eines Datenmodells. Der Zugriff auf die Objekte des Datenmodells wird in der Schnittstelle über
@@ -50,7 +51,7 @@ import java.util.*;
  *
  * @author Roland Schmitz (rs), Kappich Systemberatung
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 11499 $ / $Date: 2013-08-02 11:34:13 +0200 (Fr, 02 Aug 2013) $ / ($Author: jh $)
+ * @version $Revision: 13194 $ / $Date: 2015-02-24 10:36:34 +0100 (Tue, 24 Feb 2015) $ / ($Author: jh $)
  */
 
 
@@ -133,6 +134,8 @@ public interface DataModel extends ObjectLookup {
 	 * @return Das gewünschte System-Objekt oder <code>null</code>, wenn es kein Objekt mit der angegebenen PID gibt.
 	 *
 	 * @see DataModel
+	 *
+	 * @throws java.lang.IllegalArgumentException wenn der Parameter null ist
 	 */
 	public SystemObject getObject(String pid);
 
@@ -146,6 +149,57 @@ public interface DataModel extends ObjectLookup {
 	 * @see DataModel
 	 */
 	public SystemObject getObject(long id);
+
+	/**
+	 * Liefert eine Liste zurück, die zu den angegebenen IDs die zugehörigen System-Objekte enthält.
+	 * Die Reihenfolge der Objekte der Liste entspricht der Reihenfolge der übergebenen IDs.
+	 * Wurde ein Objekt nicht gefunden, enthält die Liste an der entsprechenden Position <code>null</code>.
+	 * <p/>
+	 * Diese Methode kann bei der Anfrage nach mehreren IDs schneller sein, als mehrmals {@link #getObject(long)} aufzurufen.
+	 * @param ids Array mit IDs
+	 * @return zugehörige System-Objekte
+	 * @see #getObject(long)
+	 */
+	List<SystemObject> getObjects(long... ids);
+
+	/**
+	 * Liefert eine Liste zurück, die zu den angegebenen PIDs die zugehörigen System-Objekte enthält.
+	 * Die Reihenfolge der Objekte der Liste entspricht der Reihenfolge der übergebenen PIDs.
+	 * Wurde ein Objekt nicht gefunden, enthält die Liste an der entsprechenden Position <code>null</code>.
+	 * <p/>
+	 * Diese Methode kann bei der Anfrage nach mehreren PIDs schneller sein, als mehrmals {@link #getObject(java.lang.String)} aufzurufen.
+	 * @param pids Array mit PIDs
+	 * @return zugehörige System-Objekte
+	 * @see #getObject(java.lang.String)
+	 * @throws java.lang.IllegalArgumentException wenn ein Element des Parameters <code>null</code> ist
+	 */
+	List<SystemObject> getObjects(String... pids);
+
+	/**
+	 * Liefert eine Liste zurück, die zu den angegebenen IDs die zugehörigen System-Objekte enthält.
+	 * Die Reihenfolge der Objekte der Liste entspricht der Reihenfolge der übergebenen IDs.
+	 * Wurde ein Objekt nicht gefunden, enthält die Liste an der entsprechenden Position <code>null</code>.
+	 * <p/>
+	 * Diese Methode kann bei der Anfrage nach mehreren IDs schneller sein, als mehrmals {@link #getObject(long)} aufzurufen.
+	 * @param ids Liste mit IDs
+	 * @return zugehörige System-Objekte
+	 * @see #getObject(long)
+	 * @throws java.lang.IllegalArgumentException wenn ein Element des Parameters <code>null</code> ist
+	 */
+	List<SystemObject> getObjectsById(Collection<Long> ids);
+
+	/**
+	 * Liefert eine Liste zurück, die zu den angegebenen PIDs die zugehörigen System-Objekte enthält.
+	 * Die Reihenfolge der Objekte der Liste entspricht der Reihenfolge der übergebenen PIDs.
+	 * Wurde ein Objekt nicht gefunden, enthält die Liste an der entsprechenden Position <code>null</code>.
+	 * <p/>
+	 * Diese Methode kann bei der Anfrage nach mehreren PIDs schneller sein, als mehrmals {@link #getObject(java.lang.String)} aufzurufen.
+	 * @param pids Liste mit PIDs
+	 * @return zugehörige System-Objekte
+	 * @see #getObject(java.lang.String)
+	 * @throws java.lang.IllegalArgumentException wenn ein Element des Parameters <code>null</code> ist
+	 */
+	List<SystemObject> getObjectsByPid(Collection<String> pids);
 
 	/**
 	 * Liefert das Systemobjekt, das den Typ von Typobjekten darstellt.
@@ -225,7 +279,8 @@ public interface DataModel extends ObjectLookup {
 	/**
 	 * Erzeugt ein neues Konfigurationsobjekt eines vorgegebenen Typs. Optional können auch Name und PID des neuen Objekts vorgegeben werden. Die verantwortliche
 	 * Instanz des neuen Objektes kann nicht spezifiziert werden, da sie von der jeweiligen Konfiguration vergeben wird. Das neue Objekt wird erst mit Aktivierung
-	 * der nächsten Konfigurationsversion gültig.
+	 * der nächsten Konfigurationsversion gültig und im {@link ConfigurationAuthority#getDefaultConfigurationArea() Standard-Konfigurationsbereich} des
+	 * {@link #getConfigurationAuthority() aktuellen KV} erstellt.
 	 *
 	 * @param type Typ des neuen Objekts.
 	 * @param pid  PID des neuen Objekts.
@@ -237,13 +292,15 @@ public interface DataModel extends ObjectLookup {
 	 * @throws ConfigurationChangeException Wenn das Objekt nicht erzeugt werden konnte.
 	 * @see ConfigurationObject
 	 * @see SystemObject#isValid
+	 * @see ConfigurationAuthority#getDefaultConfigurationArea()
 	 * @deprecated Objekte werden innerhalb eines Bereichs {@link ConfigurationArea#createConfigurationObject erstellt}.
 	 */
-	ConfigurationObject createConfigurationObject(ConfigurationObjectType type, String pid, String name, List sets) throws ConfigurationChangeException;
+	@Deprecated
+	ConfigurationObject createConfigurationObject(ConfigurationObjectType type, String pid, String name, List<? extends ObjectSet> sets) throws ConfigurationChangeException;
 
 	/**
 	 * Erzeugt ein neues dynamisches System-Objekt eines vorgegebenen Typs. Optional können auch Name und PID des neuen Objekts vorgegeben werden. Das neue Objekt
-	 * wird sofort gültig.
+	 * wird sofort gültig und im {@link ConfigurationAuthority#getDefaultConfigurationArea() Standard-Konfigurationsbereich} des {@link #getConfigurationAuthority() aktuellen KV} erstellt.
 	 *
 	 * @param type Typ des neuen Objekts
 	 * @param pid  PID des neuen Objekts.
@@ -256,6 +313,7 @@ public interface DataModel extends ObjectLookup {
 	 * @see SystemObject#isValid
 	 * @deprecated Objekte werden innerhalb eines Bereichs {@link ConfigurationArea#createDynamicObject erzeugt}.
 	 */
+	@Deprecated
 	DynamicObject createDynamicObject(SystemObjectType type, String pid, String name) throws ConfigurationChangeException;
 
 	/**

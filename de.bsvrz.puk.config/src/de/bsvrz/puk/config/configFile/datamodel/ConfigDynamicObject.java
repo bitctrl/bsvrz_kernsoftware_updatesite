@@ -23,21 +23,18 @@
 
 package de.bsvrz.puk.config.configFile.datamodel;
 
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
-import de.bsvrz.dav.daf.main.config.ConfigurationCommunicationChangeListener;
-import de.bsvrz.dav.daf.main.config.DynamicObject;
-import de.bsvrz.dav.daf.main.config.InvalidationListener;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.puk.config.configFile.fileaccess.DynamicObjectInfo;
 import de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformationInterface;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Implementierung des Interfaces {@link DynamicObject} auf Seiten der Konfiguration.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 10094 $
+ * @version $Revision: 13103 $
  */
 public class ConfigDynamicObject extends ConfigSystemObject implements DynamicObject {
 
@@ -118,6 +115,23 @@ public class ConfigDynamicObject extends ConfigSystemObject implements DynamicOb
 		return ((DynamicObjectInfo)_systemObjectInfo).getSimulationVariant();
 	}
 
+	/**
+	 * Gibt ein ObjectLookup zurück, das für die Auflösung von Referenzen in Konfigurationsdaten benutzt wird,
+	 * Dies ist üblicherweise einfach das ConfigDataModel (siehe {@link #getDataModel()}), für Simulationen muss
+	 * aber die Simulationsvariante dieses Objekts zur Auflösung der Referenzen verwendet werden, deswegen wird diese Methode von
+	 * dynamischen Objekten überschrieben.
+	 * @return ObjectLookup
+	 */
+	@Override
+	protected ObjectLookup getObjectLookupForData() {
+		final short simulationVariant = getSimulationVariant();
+		final ConfigDataModel dataModel = getDataModel();
+		if(simulationVariant > 0){
+			return new SimulationLookup(dataModel, simulationVariant);
+		}
+		return dataModel;
+	}
+
 	public void invalidate() throws ConfigurationChangeException {
 		super.invalidate(); // prüfen, ob gelöscht werden darf
 
@@ -125,7 +139,7 @@ public class ConfigDynamicObject extends ConfigSystemObject implements DynamicOb
 		((DynamicObjectInfo)_systemObjectInfo).setInvalid();
 		long newNotValidSince = getNotValidSince();
 		if(oldNotValidSince != newNotValidSince) {
-			((ConfigConfigurationArea)getConfigurationArea()).setTimeOfLastChanges(ConfigConfigurationArea.KindOfLastChange.DynamicObject);
+			getConfigurationArea().setTimeOfLastChanges(ConfigConfigurationArea.KindOfLastChange.DynamicObject);
 		}
 		informListeners(); // alle InvalidationListener des Objekts werden benachrichtigt
 		// Alle Listener des Typs informieren, dass ein Objekt ungültig geworden ist

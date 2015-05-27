@@ -33,7 +33,7 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
  * Die Klasse meldet sich nur als Sender an.
  *
  * @author Achim Wullenkord (AW), Kappich Systemberatung
- * @version $Revision: 5079 $ / $Date: 2007-09-02 14:59:08 +0200 (So, 02 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 5079 $ / $Date: 2007-09-02 14:59:08 +0200 (Sun, 02 Sep 2007) $ / ($Author: rs $)
  */
 public class ConfigurationAnswerWriteTasks extends AbstractSenderReceiverCommunication implements SenderReceiverCommunication {
 	private final ClientDavInterface _connection;

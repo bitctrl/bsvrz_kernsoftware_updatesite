@@ -38,7 +38,7 @@ import java.io.ByteArrayInputStream;
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
  * @author Roland Schmitz (rs), Kappich Systemberatung
- * @version $Revision: 8550 $ / $Date: 2011-01-06 10:48:12 +0100 (Do, 06 Jan 2011) $ / ($Author: jh $)
+ * @version $Revision: 8550 $ / $Date: 2011-01-06 10:48:12 +0100 (Thu, 06 Jan 2011) $ / ($Author: jh $)
  */
 public class ConfigAttributeType extends ConfigConfigurationObject implements AttributeType {
 	/**

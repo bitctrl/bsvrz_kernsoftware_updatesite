@@ -22,6 +22,7 @@
 package de.bsvrz.dav.daf.main.impl.config;
 
 import de.bsvrz.dav.daf.main.config.IntegerValueRange;
+import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -31,7 +32,7 @@ import java.io.IOException;
  * Klasse, die den Zugriff auf Wertebereiche von Ganzzahl-Attributtypen seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5054 $
+ * @version $Revision: 13141 $
  */
 public class DafIntegerValueRange extends DafConfigurationObject implements IntegerValueRange {
 
@@ -125,5 +126,14 @@ public class DafIntegerValueRange extends DafConfigurationObject implements Inte
 		_minimum = in.readLong();
 		_maximum = in.readLong();
 		_unit = in.readUTF();
+	}
+
+	@Override
+	public void read(final Deserializer deserializer) throws IOException {
+		super.read(deserializer);
+		_conversionFactor = deserializer.readDouble();
+		_minimum = deserializer.readLong();
+		_maximum = deserializer.readLong();
+		_unit = deserializer.readString();
 	}
 }

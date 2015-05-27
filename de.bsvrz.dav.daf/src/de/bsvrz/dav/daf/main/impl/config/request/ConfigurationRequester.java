@@ -21,43 +21,53 @@
 
 package de.bsvrz.dav.daf.main.impl.config.request;
 
+import de.bsvrz.dav.daf.main.CommunicationError;
 import de.bsvrz.dav.daf.main.DataAndATGUsageInformation;
 import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.dav.daf.main.config.management.ConfigAreaAndVersion;
 import de.bsvrz.dav.daf.main.config.management.consistenycheck.ConsistencyCheckResultInterface;
 
 import java.io.File;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Mit Hilfe dieses Interfaces können Anfragen an die Konfiguration gestellt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11499 $
+ * @version $Revision: 13228 $
  */
 public interface ConfigurationRequester {
 
 	/**
-	 * Liefert das System-Objekt mit der angegebenen PID zurück.
-	 *
-	 * @param pid Die permanente ID des System-Objekts
-	 *
-	 * @return Das gewünschte System-Objekt oder <code>null</code>, wenn es kein Objekt mit der angegebenen PID gibt.
-	 *
-	 * @throws RequestException Wenn bei der Kommunikation mit der Konfiguration Fehler aufgetreten sind.
+	 * Initialisiert den Requester
+	 * @param localApplicationId Eigene Applikations-ID
+	 * @throws CommunicationError
 	 */
-	public SystemObject getObject(String pid) throws RequestException;
+	void init(long localApplicationId) throws CommunicationError;
 
 	/**
-	 * Liefert das System-Objekt mit der angegebenen Objekt-ID zurück.
+	 * Liefert die System-Objekte mit den angegebenen PIDs zurück.
 	 *
-	 * @param id Die Objekt-ID des System-Objekts
+	 * @param pid Die permanente ID des System-Objekts (oder mehrere Pids)
 	 *
-	 * @return Das gewünschte System-Objekt oder <code>null</code>, wenn es kein Objekt mit der angegebenen ID gibt.
+	 * @return Liste mit den gewüschten Systemobjekten in der Reihenfolge der übergebenen PIDs. Objekte, die nicht gefunden wurden, werden als null-Werte zurückgegeben. 
 	 *
 	 * @throws RequestException Wenn bei der Kommunikation mit der Konfiguration Fehler aufgetreten sind.
 	 */
-	public SystemObject getObject(long id) throws RequestException;
+	public List<SystemObject> getObjects(String... pid) throws RequestException;
+
+	/**
+	 * Liefert die System-Objekte mit den angegebenen Objekt-IDs zurück.
+	 *
+	 * @param id Die Objekt-ID des System-Objekts (oder mehrere IDs für mehrere Objekte)
+	 *
+	 * @return Liste mit den gewüschten Systemobjekten in der Reihenfolge der übergebenen IDs. Objekte, die nicht gefunden wurden, werden als null-Werte zurückgegeben.
+	 *
+	 * @throws RequestException Wenn bei der Kommunikation mit der Konfiguration Fehler aufgetreten sind.
+	 */
+	public List<SystemObject> getObjects(long... id) throws RequestException;
 
 	/**
 	 * Liefert alle Elemente einer Dynamischen Menge. Durch Angabe der Start- und Endzeitpunkte kann eine Periode angegeben werden, in der die Elemente gültig
@@ -621,7 +631,7 @@ public interface ConfigurationRequester {
 	 * @throws RequestException             Technisches Problem bei der Übertragung Anfrage
 	 */
 	ConfigurationObject createConfigurationObject(
-			ConfigurationArea configurationArea, ConfigurationObjectType type, String pid, String name, List<ObjectSet> sets
+			ConfigurationArea configurationArea, ConfigurationObjectType type, String pid, String name, Collection<? extends ObjectSet> sets
 	) throws ConfigurationChangeException, RequestException;
 
 	/**
@@ -789,4 +799,68 @@ public interface ConfigurationRequester {
 	int subscribeConfigurationCommunicationChanges(final SystemObject object) throws RequestException;
 
 	void unsubscribeConfigurationCommunicationChanges(final SystemObject object) throws RequestException;
+
+	/**
+	 * Gibt alle Objekte des angegebenen Typs zurück
+	 * @param type Systemobjekt-Typ
+	 * @return Alle Objekte dieses Typs oder beliebiger Subtypen
+	 * @throws RequestException Fehler bei Verarbeitung des Telegramms
+	 */
+	List<SystemObject> getObjectsOfType(SystemObjectType type) throws RequestException;
+
+	/**
+	 * Verschickt an eine entfernte Konfiguration einen Auftrag ein Konfigurationsobjekt anzulegen. Die Parameter sind unter {@link
+	 * de.bsvrz.dav.daf.main.config.ConfigurationArea#createConfigurationObject} beschrieben. Das Objekt wird im Default-Bereich angelegt.
+	 *
+	 * @param type Typ des neuen Objekts.
+	 * @param pid Pid des neuen Objekts.
+	 * @param name Name des neuen Objekts.
+	 * @param sets Mengen des neuen Objekts.
+	 *
+	 * @return Objekt, das durch die Konfiguration neu erzeugt wurden
+	 *
+	 * @throws ConfigurationChangeException Die Konfiguration kann das Objekt nicht anlegen
+	 * @throws RequestException             Technisches Problem bei der Übertragung Anfrage
+	 */
+	ConfigurationObject createConfigurationObject(ConfigurationObjectType type, String pid, String name, Collection<? extends ObjectSet> sets)
+			throws ConfigurationChangeException, RequestException;
+
+	/**
+	 * Verschickt an eine entfernte Konfiguration einen Auftrag ein dynamisches Objekt anzulegen. Die Parameter sind unter {@link
+	 * de.bsvrz.dav.daf.main.config.ConfigurationArea#createDynamicObject(de.bsvrz.dav.daf.main.config.DynamicObjectType,String,String,java.util.Collection)}
+	 *  beschrieben. Das Objekt wird im Default-Bereich angelegt.
+	 *
+	 * @param type Typ des neuen Objekts.
+	 * @param pid Pid des neuen Objekts.
+	 * @param name Name des neuen Objekts.
+	 * @return Objekt, das durch die Konfiguration neu erzeugt wurde
+	 * @throws ConfigurationChangeException Die Konfiguration kann das Objekt nicht anlegen
+	 * @throws RequestException Technisches Problem bei der Übertragung Anfrage
+	 */
+	DynamicObject createDynamicObject(DynamicObjectType type, String pid, String name) throws ConfigurationChangeException, RequestException;
+
+	/**
+	 * Verschickt einen Auftrag, ein Objekt zu löschen
+	 * @param object Objekt
+	 * @throws ConfigurationChangeException Die Konfiguration kann das Objekt nicht löschen
+	 * @throws RequestException Technisches Problem bei der Übertragung Anfrage
+	 */
+	void invalidate(SystemObject object) throws ConfigurationChangeException, RequestException;
+
+	/**
+	 * Verschickt einen Auftrag, ein Objekt wiederherzustellen
+	 * @param object Objekt
+	 * @throws ConfigurationChangeException Die Konfiguration kann das Objekt nicht wiederherstellen
+	 * @throws RequestException Technisches Problem bei der Übertragung Anfrage
+	 */
+	void revalidate(SystemObject object) throws ConfigurationChangeException, RequestException;
+
+	/**
+	 * Verschickt einen Auftrag, ein Objekt umzubenennen
+	 * @param object Objekt
+	 * @param name neuer Name
+	 * @throws ConfigurationChangeException Die Konfiguration kann das Objekt nicht umbenennen
+	 * @throws RequestException Technisches Problem bei der Übertragung Anfrage
+	 */
+	void setName(SystemObject object, String name) throws ConfigurationChangeException, RequestException;
 }

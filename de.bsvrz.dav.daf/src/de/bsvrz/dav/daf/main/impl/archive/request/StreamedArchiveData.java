@@ -32,7 +32,7 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 8023 $ / $Date: 2010-07-22 22:52:29 +0200 (Do, 22 Jul 2010) $ / ($Author: rs $)
+ * @version $Revision: 8023 $ / $Date: 2010-07-22 22:52:29 +0200 (Thu, 22 Jul 2010) $ / ($Author: rs $)
  */
 public class StreamedArchiveData implements ArchiveData {
 

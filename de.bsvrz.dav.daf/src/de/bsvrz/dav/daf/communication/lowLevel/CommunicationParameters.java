@@ -25,9 +25,9 @@ package de.bsvrz.dav.daf.communication.lowLevel;
  * KeepAlive-Telegrammen, der Füllgrad des Sendepuffers, die Zeit zwischen zwei Durchsatzprüfungen und der minimale Verbindungsdurchsatz.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5047 $
+ * @version $Revision: 12968 $
  */
-public class CommunicationParameters {
+public class CommunicationParameters implements Cloneable {
 
 	/** Das KeepAlive-Timeout beim Empfang von Telegrammen. */
 	private long _sendKeepAliveTimeout;
@@ -150,5 +150,15 @@ public class CommunicationParameters {
 	 */
 	public void setMinimumThroughput(int throughput) {
 		_minimumThroughput = throughput;
+	}
+
+	@Override
+	public final CommunicationParameters clone() {
+		try {
+			return (CommunicationParameters) super.clone();
+		}
+		catch(CloneNotSupportedException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 }

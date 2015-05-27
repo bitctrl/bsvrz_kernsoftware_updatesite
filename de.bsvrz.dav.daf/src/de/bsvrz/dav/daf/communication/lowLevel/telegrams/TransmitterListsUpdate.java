@@ -34,7 +34,7 @@ import java.io.IOException;
  * Aspekte verwendet werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
+ * @version $Revision: 13173 $
  */
 public class TransmitterListsUpdate extends DataTelegram {
 
@@ -53,10 +53,10 @@ public class TransmitterListsUpdate extends DataTelegram {
 	/** Die zu entfernenden Objekte */
 	private long objectsToRemove[];
 
-	/** Die hinzugekommenden Kombinationen aus Attributegruppen und Aspekten */
+	/** Die hinzugekommenden Kombinationen aus Attributgruppen und Aspekten */
 	private AttributeGroupAspectCombination attributeGroupAspectsToAdd[];
 
-	/** Die zu entfernenden Kombinationen aus Attributegruppen und Aspekten */
+	/** Die zu entfernenden Kombinationen aus Attributgruppen und Aspekten */
 	private AttributeGroupAspectCombination attributeGroupAspectsToRemove[];
 
 	private static Debug _debug = Debug.getLogger();

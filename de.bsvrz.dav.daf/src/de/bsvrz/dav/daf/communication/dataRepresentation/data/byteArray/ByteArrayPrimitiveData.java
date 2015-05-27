@@ -32,7 +32,7 @@ import java.util.*;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 8326 $ / $Date: 2010-11-16 12:00:46 +0100 (Di, 16 Nov 2010) $ / ($Author: jh $)
+ * @version $Revision: 8326 $ / $Date: 2010-11-16 12:00:46 +0100 (Tue, 16 Nov 2010) $ / ($Author: jh $)
  */
 public class ByteArrayPrimitiveData extends ByteArrayData implements Data.TextValue, Data.TimeValue, Data.ReferenceValue, Data.NumberValue {
 	public ByteArrayPrimitiveData(byte[] bytes, int offset, AttributeInfo attributeInfo) {

@@ -53,7 +53,7 @@ import java.util.*;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 11918 $ / $Date: 2013-12-19 13:46:47 +0100 (Do, 19 Dez 2013) $ / ($Author: jh $)
+ * @version $Revision: 11918 $ / $Date: 2013-12-19 13:46:47 +0100 (Thu, 19 Dec 2013) $ / ($Author: jh $)
  */
 class Query implements ArchiveDataQueryResult {
 

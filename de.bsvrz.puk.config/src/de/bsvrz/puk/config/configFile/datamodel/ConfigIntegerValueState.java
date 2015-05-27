@@ -34,7 +34,7 @@ import java.io.ByteArrayInputStream;
  * Implementierung des Interfaces {@link IntegerValueState} auf Seiten der Konfiguration.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 11583 $ / $Date: 2013-08-22 15:59:25 +0200 (Do, 22 Aug 2013) $ / ($Author: jh $)
+ * @version $Revision: 11583 $ / $Date: 2013-08-22 15:59:25 +0200 (Thu, 22 Aug 2013) $ / ($Author: jh $)
  */
 public class ConfigIntegerValueState extends ConfigConfigurationObject implements IntegerValueState {
 	/**

@@ -30,7 +30,7 @@ import java.io.IOException;
  * Diese Klasse stellt die Attribute und Funktionalitäten des Datentyps List zur Verfügung.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
+ * @version $Revision: 13173 $
  */
 public class AttributeListAttribute extends DataValue {
 
@@ -79,7 +79,7 @@ public class AttributeListAttribute extends DataValue {
 
 
 	public final String parseToString() {
-		String str = "Attributeliste: [ \n";
+		String str = "Attributliste: [ \n";
 		if(_values != null) {
 			for(int i = 0; i < _values.length; ++i) {
 				if(_values[i] != null) {

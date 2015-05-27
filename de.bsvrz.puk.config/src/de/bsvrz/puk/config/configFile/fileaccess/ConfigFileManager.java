@@ -21,9 +21,9 @@
 package de.bsvrz.puk.config.configFile.fileaccess;
 
 
-import de.bsvrz.sys.funclib.dataSerializer.NoSuchVersionException;
-import de.bsvrz.puk.config.main.managementfile.VersionInfo;
 import de.bsvrz.dav.daf.main.config.DynamicObjectType;
+import de.bsvrz.puk.config.main.managementfile.VersionInfo;
+import de.bsvrz.sys.funclib.dataSerializer.NoSuchVersionException;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 import java.io.File;
@@ -36,7 +36,7 @@ import java.util.*;
  *
  * @author Kappich+Kniß Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 6914 $ / $Date: 2009-11-05 15:41:41 +0100 (Do, 05 Nov 2009) $ / ($Author: rs $)
+ * @version $Revision: 13127 $ / $Date: 2015-01-27 12:44:12 +0100 (Tue, 27 Jan 2015) $ / ($Author: jh $)
  */
 public class ConfigFileManager implements ConfigurationFileManager {
 
@@ -55,22 +55,22 @@ public class ConfigFileManager implements ConfigurationFileManager {
 	/**
 	 * Speichert alle aktiven Objekte, aller Konfigurationsbereiche. Als Schlüssel dient die Pid (String). Das Rückgabeobjekt ist das Objekt, das zu der Pid
 	 * gehört. Dieser Mechanismus garantiert, dass es zu jeder Pid nur ein aktuelles Objekte gibt, werden mehrer Objekte mit der gleichen Pid eingetragen, so wird
-	 * nur das letzte Objekt eingefügt.
+	 * nur das letzte Objekt eingefügt. Objekte aus Simulationen werden hier nicht eingefügt und stattdessen in der Map _pidMapSimulation gespeichert.
 	 */
 	private final Map<String, SystemObjectInformationInterface> _pidMapActive = new HashMap<String, SystemObjectInformationInterface>();
+
+	/**
+	 * Speichert alle dynamischen Objekte aus Simulationen anhand von Pid und Simulationsvariente. Objekte aus Simulationen werden hier statt
+	 * in {@link #_pidMapActive} gespeichert, da Pids nur je Simulationsvariante eindeutig sein müssen und es sonst zu Kollisionen bei Verwendung
+	 * der gleichen Pid in unterschieldichen Simulationen kommen könnte.
+	 */
+	private final Map<PidAndSimvar, SystemObjectInformationInterface> _pidMapSimulation = new HashMap<PidAndSimvar, SystemObjectInformationInterface>();
 
 	/**
 	 * Speichert alle noch nicht aktiven Objekte, aller Konfigurationsbereiche. Als Schlüssel dient der HashCode der Pid. Es wird eine Menge zurückgegeben, die
 	 * alle Objekte enthält deren Pid mit dem HashCode abgebildet wurden. Die Menge muss dann untersucht werden.
 	 */
 	private final Map<String, Set<SystemObjectInformationInterface>> _pidMapNew = new HashMap<String, Set<SystemObjectInformationInterface>>();
-
-	/**
-	 * Speichert zu dem HashCode einer Pid eine Menge von Objekten. Die Objekte enthalten alle Informationen , um das Objekt (ungültig markiert) aus der Datei zu
-	 * laden. <br> Es muss die gesamte Menge durchsucht werden, da der HashCode nicht eindeutig ist, um die Pid genau zu identifizieren. Ausserdem kann es mehrer
-	 * Pid´s zu einem Objekt geben.
-	 */
-	private final Map<Integer, Set<LoadInformations>> _pidMapOld = new HashMap<Integer, Set<LoadInformations>>();
 
 	/**
 	 * HashMap, die alle Dateien und somit Konfigurationsbereiche verwaltet. Als Schlüssel dient die Pid des Konfigurationsbereichs. Das zurückgegebene Objekt
@@ -100,6 +100,7 @@ public class ConfigFileManager implements ConfigurationFileManager {
 	 * @throws IllegalArgumentException Falls die Argumente ungültig sind.
 	 * @throws IOException              Falls Fehler im Zusammenhang mit der Datei des Konfigurationsbereichs auftreten.
 	 */
+	@Override
 	public ConfigurationAreaFile createAreaFile(String configurationAreaPid, File configurationAreaDir)
 			throws IllegalArgumentException, IOException, NoSuchVersionException {
 		// Prüfen, ob es schon einen Konfigurationsbereich mit der angegebenen Pid gibt
@@ -141,6 +142,7 @@ public class ConfigFileManager implements ConfigurationFileManager {
 	 * @throws IllegalArgumentException Falls der Konfigurationsbereich mit der Pid bereits zur Konfiguration hinzugefügt wurde.
 	 * @throws IllegalStateException    Datei existiert nicht
 	 */
+	@Override
 	public ConfigurationAreaFile addAreaFile(String configurationAreaPid, File configurationAreaDir, short activeVersion, List<VersionInfo> localVersionTimes)
 			throws IllegalArgumentException, IOException, NoSuchVersionException {
 		// Datei laden
@@ -165,25 +167,23 @@ public class ConfigFileManager implements ConfigurationFileManager {
 		}
 
 		// Alle Objekte, die sich in der Mischobjektmenge befinden anfragen
-		final Collection allMixedObjects = configurationAreaFile.getMixedObjectSetObjects();
+		final Collection<Object> allMixedObjects = configurationAreaFile.getMixedObjectSetObjects();
 
 //		System.out.println("größe Mixed: " + allMixedObjects.size());
 //		System.out.println("");
 
-		for(Iterator iterator = allMixedObjects.iterator(); iterator.hasNext();) {
+		for(Iterator<Object> iterator = allMixedObjects.iterator(); iterator.hasNext();) {
 			final Object unknownObject = iterator.next();
 
 			// Das Objekt kann ein dynamisches Objekt, ein Konfigurationsobjekt oder ein "OldObject" sein
 
 			if((unknownObject instanceof ConfigurationObjectInfo)) {
 				ConfigurationObjectInfo confObject = (ConfigurationObjectInfo)unknownObject;
-				putObjectId(confObject);
-//				synchronized (_idMap) {
-//					// Die Id des Objekts einfügen
-//					_idMap.put(confObject.getID(), confObject);
-//				}
-				// Pid eintragen
 
+				// In die Id Map eintragen
+				putObjectId(confObject);
+
+				// Pid eintragen
 				// Ist das Objekt jetzt oder erst in der Zukunft gültig ?
 				if(confObject.getFirstValidVersion() <= configurationAreaFile.getActiveVersion()) {
 					// Das Objekt ist jetzt gültig
@@ -202,9 +202,6 @@ public class ConfigFileManager implements ConfigurationFileManager {
 
 				// In die Id Map eintragen
 				putObjectId(dynObject);
-//				synchronized (_idMap) {
-//					_idMap.put(dynObject.getID(), dynObject);
-//				}
 
 				// Pid eintragen
 				// dyn Objekte sind sofort bei ihrer Erschaffung gültig und werden sofort (nicht in der Zukunft ungültig)
@@ -223,7 +220,6 @@ public class ConfigFileManager implements ConfigurationFileManager {
 //					_idMap.put(oldObject.getId(), loadInformations);
 //				}
 				// Pid eintragen
-				putOldObjectPidHashMap(oldObject.getPidHashCode(), loadInformations);
 			}
 			else {
 				// Das Objekt ist völlig unbekannt, das sollte nicht passieren
@@ -238,14 +234,16 @@ public class ConfigFileManager implements ConfigurationFileManager {
 	}
 
 	/**
-	 * Legt ein Objekt in der Map ab, die alle Pids, aller aktiven Objekte verwaltet. Es gibt zu einer Pid immer nur ein altives Objekt, wurde bereits ein aktives
+	 * Legt ein Objekt in der Map ab, die alle Pids, aller aktiven Objekte verwaltet. Es gibt zu einer Pid immer nur ein aktives Objekt, wurde bereits ein aktives
 	 * Objekt gespeichert, so wird dieses durch das neue Objekt überschrieben.
 	 *
 	 * @param object Objekt, das in die Map aufgenommen werden soll
 	 */
 	private void putActiveObjectPidHashMap(SystemObjectInformationInterface object) {
+		String pid = object.getPid();
+		if(pid.length() == 0) return;
 		synchronized(_pidMapActive) {
-			_pidMapActive.put(object.getPid(), object);
+			_pidMapActive.put(pid, object);
 		}
 	}
 
@@ -257,8 +255,21 @@ public class ConfigFileManager implements ConfigurationFileManager {
 	 * @param dynamicObjectInfo Objekt, das aus der Map entfernt werden soll
 	 */
 	private void removeActiveObjectPidHashMap(DynamicObjectInfo dynamicObjectInfo) {
+		String pid = dynamicObjectInfo.getPid();
+		if(pid.length() == 0) return;
 		synchronized(_pidMapActive) {
-			_pidMapActive.remove(dynamicObjectInfo.getPid());
+			_pidMapActive.remove(pid);
+		}
+	}
+
+	/**
+	 * Dasselbe wie {@linkplain #removeActiveObjectPidHashMap(DynamicObjectInfo)}, nur für Simulationsobjekte
+	 */
+	private void removeSimulationObjectPidHashMap(final DynamicObjectInfo dynamicObjectInfo, final short simulationVariant) {
+		String pid = dynamicObjectInfo.getPid();
+		if(pid.length() == 0) return;
+		synchronized(_pidMapSimulation) {
+			_pidMapSimulation.remove(new ConfigFileManager.PidAndSimvar(pid, simulationVariant));
 		}
 	}
 
@@ -276,20 +287,7 @@ public class ConfigFileManager implements ConfigurationFileManager {
 		}
 	}
 
-	private void putOldObjectPidHashMap(int pidHashCode, LoadInformations loadInformations) {
-
-		synchronized(_pidMapOld) {
-			Set<LoadInformations> pids = _pidMapOld.get(pidHashCode);
-			// Es gibt die Menge noch nicht
-			if(pids == null) {
-				// Menge anlegen
-				pids = new HashSet<LoadInformations>();
-				_pidMapOld.put(pidHashCode, pids);
-			}
-			pids.add(loadInformations);
-		}
-	}
-
+	@Override
 	public ConfigurationAreaFile getAreaFile(String configurationAreaPid) {
 		synchronized(_configurationFiles) {
 			if(_configurationFiles.containsKey(configurationAreaPid)) {
@@ -302,6 +300,7 @@ public class ConfigFileManager implements ConfigurationFileManager {
 		}
 	}
 
+	@Override
 	public SystemObjectInformationInterface getObject(long id) {
 		Object unknownObject;
 		synchronized(_idMap) {
@@ -341,41 +340,9 @@ public class ConfigFileManager implements ConfigurationFileManager {
 	void removeDynamicSimulationObject(DynamicObjectInformation dynamicObjectInformation) {
 		// Aus der Id-Map entfernen
 		removeObject(dynamicObjectInformation.getID());
-		// Aus der Map mit aktuellen Objekten (nach Pid) enfernen. Das Objekt muss aber gar nicht aktiv sein.
-		if(_pidMapActive.containsKey(dynamicObjectInformation.getPid())) {
-			removeActiveObjectPidHashMap(dynamicObjectInformation);
-		}
-		else {
-			// Wenn das Objekt nicht aktiv ist, dann muss es alt sein.
-			removeObjectPidMapOld(dynamicObjectInformation);
-		}
-		// Aus den Simulationen entfernen
+		// aus den alten Objekten entfernen
+		// Aus den Datenstruturen für Simulationen entfernen
 		removeSimulationObjectFromMap(dynamicObjectInformation);
-	}
-
-	/**
-	 * Entfernt die Ladeinformtionen eines dynamischen Objekts, aus der Map, die alle alten dynamsichen Objekte der Mischmenge enthält.
-	 * <p/>
-	 * Sind zu einer Pid keine Ladeinformationen mehr enthalten, wird die Menge aus der Map gelöscht.
-	 *
-	 * @param dynamicObjectInformation Objekt, das entfernt werden soll
-	 */
-	private void removeObjectPidMapOld(DynamicObjectInformation dynamicObjectInformation) {
-		synchronized(_pidMapOld) {
-			// Alle Objekte einer Simulationsvariante
-			final Set<LoadInformations> loadInformations = _pidMapOld.get(dynamicObjectInformation.getPidHashCode());
-			if(loadInformations != null) {
-				// Mit diesem Objekte, kann im Set schnell(O(1)) das richtige Objekt gefunden werden.
-				final LoadInformations neededInformation = new LoadInformations(
-						dynamicObjectInformation.getLastFilePosition(), dynamicObjectInformation.getConfigAreaFile()
-				);
-				loadInformations.remove(neededInformation);
-
-				if(loadInformations.size() == 0) {
-					_pidMapOld.remove(dynamicObjectInformation.getPidHashCode());
-				}
-			}
-		}
 	}
 
 	public SystemObjectInformationInterface getActiveObject(long id) {
@@ -404,9 +371,17 @@ public class ConfigFileManager implements ConfigurationFileManager {
 		}
 	}
 
+	@Override
 	public SystemObjectInformationInterface getActiveObject(String pid) {
 		synchronized(_pidMapActive) {
 			return _pidMapActive.get(pid);
+		}
+	}
+
+	@Override
+	public SystemObjectInformationInterface getSimulationObject(String pid, short simulationVariant) {
+		synchronized(_pidMapSimulation) {
+			return _pidMapSimulation.get(new PidAndSimvar(pid, simulationVariant));
 		}
 	}
 
@@ -434,6 +409,7 @@ public class ConfigFileManager implements ConfigurationFileManager {
 //		}
 //	}
 
+	@Override
 	public SystemObjectInformationInterface[] getNewObjects(String pid) {
 		synchronized(_pidMapNew) {
 			List<SystemObjectInformationInterface> result = new LinkedList<SystemObjectInformationInterface>();
@@ -442,9 +418,9 @@ public class ConfigFileManager implements ConfigurationFileManager {
 				// Es gibt zu der Pid ein aktives Objekt
 
 				// Alle Objekte, die unter dem Hashcode der Pid zu finden sind
-				final Set pidObjects = _pidMapNew.get(pid);
-				for(Iterator iterator = pidObjects.iterator(); iterator.hasNext();) {
-					SystemObjectInformationInterface systemObjectInfo = (SystemObjectInformationInterface)iterator.next();
+				final Set<SystemObjectInformationInterface> pidObjects = _pidMapNew.get(pid);
+				for(Iterator<SystemObjectInformationInterface> iterator = pidObjects.iterator(); iterator.hasNext();) {
+					SystemObjectInformationInterface systemObjectInfo = iterator.next();
 					if(pid.equals(systemObjectInfo.getPid())) {
 						// Die beiden Pids sind gleich, also zurückgeben
 						result.add(systemObjectInfo);
@@ -496,17 +472,13 @@ public class ConfigFileManager implements ConfigurationFileManager {
 			
 
 
-			final ConfigurationAreaFile[] allConfigurationFiles = getConfigurationAreas();
-
-			for(int nr = 0; nr < allConfigurationFiles.length; nr++) {
-				final SystemObjectInformationInterface searchedObject = allConfigurationFiles[nr].getOldObject(id);
+			for(final ConfigurationAreaFile allConfigurationFile : getConfigurationAreas()) {
+				final SystemObjectInformationInterface searchedObject = allConfigurationFile.getOldObject(id);
 				if(searchedObject != null) {
 					// Es wurde ein Objekt mit der geforderten Id gefunden
 					return searchedObject;
 				}
-				// In diesem Konfigurationsbereich wurde kein Objekt mit der gewünschten Id gefunden, also wird
-				// der nächste Bereich angefragt
-			}// for
+			}
 
 			// Es wurden alle Bereiche angefragt, kein Bereich hatte ein Objekt mit der Id
 			return null;
@@ -531,19 +503,7 @@ public class ConfigFileManager implements ConfigurationFileManager {
 		}
 	}
 
-	
-	public SystemObjectInformationInterface[] getOldObjects(String pid, long startTime, long endTime) {
-		// Alle Bereiche anfragen
-		throw new UnsupportedOperationException("Implementieren falls nötig");
-//		final ConfigurationAreaFile[] areaFiles = getConfigurationAreas();
-//
-//		// Jeden Bereich nach Objekten mit der Pid anfragen
-//		for(int nr = 0; nr < areaFiles.length; nr++) {
-//
-//		}
-//		return null;
-	}
-
+	@Override
 	public ConfigurationAreaFile[] getConfigurationAreas() {
 		synchronized(_configurationFiles) {
 			Collection<ConfigurationAreaFile> files = _configurationFiles.values();
@@ -558,15 +518,25 @@ public class ConfigFileManager implements ConfigurationFileManager {
 	 * @param dynamicObjectInformation Objekt, das eingetragen werden soll
 	 */
 	void putSimulationObject(DynamicObjectInformation dynamicObjectInformation) {
-		if(dynamicObjectInformation.getSimulationVariant() > 0) {
+		short simulationVariant = dynamicObjectInformation.getSimulationVariant();
+		if(simulationVariant > 0) {
+			putObjectId(dynamicObjectInformation);
+			
 			synchronized(_simulationObjects) {
-				Set<DynamicObjectInformation> dynamicObjectInformations = _simulationObjects.get(dynamicObjectInformation.getSimulationVariant());
+				Set<DynamicObjectInformation> dynamicObjectInformations = _simulationObjects.get(simulationVariant);
 
 				if(dynamicObjectInformations == null) {
 					dynamicObjectInformations = new HashSet<DynamicObjectInformation>();
-					_simulationObjects.put(dynamicObjectInformation.getSimulationVariant(), dynamicObjectInformations);
+					_simulationObjects.put(simulationVariant, dynamicObjectInformations);
 				}
 				dynamicObjectInformations.add(dynamicObjectInformation);
+			}
+			if(dynamicObjectInformation.getFirstInvalidTime() == 0) {  // Gültig
+				String pid = dynamicObjectInformation.getPid();
+				if(pid.length() == 0) return;
+				synchronized(_pidMapSimulation) {
+					_pidMapSimulation.put(new PidAndSimvar(pid, simulationVariant), dynamicObjectInformation);
+				}
 			}
 		}
 	}
@@ -579,18 +549,22 @@ public class ConfigFileManager implements ConfigurationFileManager {
 	 * @param dynamicObjectInformation Objekt, das entfernt werden soll
 	 */
 	private void removeSimulationObjectFromMap(DynamicObjectInformation dynamicObjectInformation) {
+		short simulationVariant = dynamicObjectInformation.getSimulationVariant();
 		synchronized(_simulationObjects) {
-			final Set<DynamicObjectInformation> dynamicObjectInformations = _simulationObjects.get(dynamicObjectInformation.getSimulationVariant());
+			final Set<DynamicObjectInformation> dynamicObjectInformations = _simulationObjects.get(simulationVariant);
 			if(dynamicObjectInformations != null) {
 				dynamicObjectInformations.remove(dynamicObjectInformation);
 				if(dynamicObjectInformations.size() == 0) {
 					// Es gibt keine Objekte mehr, die zu einer Simulationsvariante gehören
-					_simulationObjects.remove(dynamicObjectInformation.getSimulationVariant());
+					_simulationObjects.remove(simulationVariant);
 				}
 			}
 		}
+		removeSimulationObjectPidHashMap(dynamicObjectInformation, simulationVariant);
 	}
 
+
+	@Override
 	public List<DynamicObjectInfo> getObjects(short simulationVariant) throws IllegalArgumentException {
 		// Die Elemente des Sets müssen noch gecastet werden
 		final Set<DynamicObjectInformation> dynamicObjectInformations;
@@ -651,10 +625,13 @@ public class ConfigFileManager implements ConfigurationFileManager {
 		putObjectId(oldDynamicObject.getID(), loadInfo);
 
 		// Das Objekt aus der Map mit den Pids aller aktuellen Objekte entfernen.
-		removeActiveObjectPidHashMap(oldDynamicObject);
-
-		// Pid in die Map der "alten" Objekte einfügen
-		putOldObjectPidHashMap(oldDynamicObject.getPid().hashCode(), loadInfo);
+		short simulationVariant = oldDynamicObject.getSimulationVariant();
+		if(simulationVariant == (short)0) {
+			removeActiveObjectPidHashMap(oldDynamicObject);
+		}
+		else {
+			removeSimulationObjectPidHashMap(oldDynamicObject, simulationVariant);
+		}
 	}
 
 	/**
@@ -697,6 +674,7 @@ public class ConfigFileManager implements ConfigurationFileManager {
 	 * Methode, die alle Konfigurationsbreiche speichert. Der Aufruf der Methode ist blockierend und kehrt erst dann zurück, wenn alle Konfigurationsbereiche
 	 * gespeichert sind.
 	 */
+	@Override
 	public void saveConfigurationAreaFiles() throws IOException {
 		final ConfigurationAreaFile[] files = getConfigurationAreas();
 
@@ -726,6 +704,7 @@ public class ConfigFileManager implements ConfigurationFileManager {
 		}
 	}
 
+	@Override
 	public void close() {
 		final ConfigurationAreaFile[] files = getConfigurationAreas();
 
@@ -752,7 +731,7 @@ public class ConfigFileManager implements ConfigurationFileManager {
 	private final static class LoadInformations {
 
 		/** Position in der Datei, an der das Objekt gespeichert ist */
-		private final long _filePosition;
+		private final FilePointer _filePosition;
 
 		/** Dateiobjekt, mit dem das Objekt geladen werden kann */
 		private final ConfigAreaFile _configAreaFile;
@@ -762,11 +741,10 @@ public class ConfigFileManager implements ConfigurationFileManager {
 
 		/**
 		 * Dieser Konstruktor wird benutzt, wenn das Objekt in einer Konfigurationsbereichsadtei gespeichert wurde und auch aus dieser geladen werden kann.
-		 *
-		 * @param filePosition   abselute Position an der das Objekt gespeichert wurde.
+		 *  @param filePosition   abselute Position an der das Objekt gespeichert wurde.
 		 * @param configAreaFile Bereich, in dem das Objekt gespeichert wurde.
 		 */
-		public LoadInformations(long filePosition, ConfigAreaFile configAreaFile) {
+		public LoadInformations(FilePointer filePosition, ConfigAreaFile configAreaFile) {
 			_filePosition = filePosition;
 			_configAreaFile = configAreaFile;
 			_transientDynamicObject = null;
@@ -780,7 +758,7 @@ public class ConfigFileManager implements ConfigurationFileManager {
 		 */
 		public LoadInformations(final DynamicObjectInformation transientDynamicObject) {
 			_transientDynamicObject = transientDynamicObject;
-			_filePosition = -1;
+			_filePosition = null;
 			_configAreaFile = null;
 		}
 
@@ -801,6 +779,57 @@ public class ConfigFileManager implements ConfigurationFileManager {
 			else {
 				return "LoadInformations{" + "TransientesObjekt: " + _transientDynamicObject;
 			}
+		}
+	}
+
+	/**
+	 * Speichert eine Pid zusammen mit einer Simulationsvariante für die Verwaltung der Simulationsspezifischen Pids
+	 */
+	private static final class PidAndSimvar {
+		/** Pid */
+		private final String _pid;
+		/** Simulationsvariante */
+		private final short _simvar;
+
+		public PidAndSimvar(final String pid, final short simvar) {
+			_pid = pid;
+			_simvar = simvar;
+		}
+
+		/**
+		 * Gibt die Pid zurück
+		 * @return die Pid
+		 */
+		public String getPid() {
+			return _pid;
+		}
+
+		/**
+		 * Gibt die Simulationsvariante zurück
+		 * @return die Simulationsvariante
+		 */
+		public short getSimvar() {
+			return _simvar;
+		}
+
+		@Override
+		public boolean equals(final Object o) {
+			if(this == o) return true;
+			if(o == null || getClass() != o.getClass()) return false;
+
+			final PidAndSimvar that = (PidAndSimvar) o;
+
+			if(_simvar != that._simvar) return false;
+			if(!_pid.equals(that._pid)) return false;
+
+			return true;
+		}
+
+		@Override
+		public int hashCode() {
+			int result = _pid.hashCode();
+			result = 31 * result + (int) _simvar;
+			return result;
 		}
 	}
 }

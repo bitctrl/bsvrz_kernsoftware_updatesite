@@ -36,7 +36,7 @@ import java.io.Serializable;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 11423 $ / $Date: 2013-07-22 12:02:01 +0200 (Mo, 22 Jul 2013) $ / ($Author: jh $)
+ * @version $Revision: 11423 $ / $Date: 2013-07-22 12:02:01 +0200 (Mon, 22 Jul 2013) $ / ($Author: jh $)
  */
 public class AtgProtocolRequest {
 

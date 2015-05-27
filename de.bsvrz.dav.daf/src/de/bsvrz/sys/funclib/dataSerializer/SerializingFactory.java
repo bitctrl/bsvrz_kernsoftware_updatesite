@@ -2,20 +2,20 @@
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2004 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * 
- * This file is part of de.bsvrz.sys.funclib.dataSerializer.
+ * This file is part of de.bsvrz.dav.daf.
  * 
- * de.bsvrz.sys.funclib.dataSerializer is free software; you can redistribute it and/or modify
+ * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation; either version 2.1 of the License, or
  * (at your option) any later version.
  * 
- * de.bsvrz.sys.funclib.dataSerializer is distributed in the hope that it will be useful,
+ * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.dataSerializer; if not, write to the Free Software
+ * along with de.bsvrz.dav.daf; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 

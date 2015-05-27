@@ -71,7 +71,7 @@ import java.io.OutputStream;
  * TCP-Kommunikationskanal (Klasse TCP_IP_Communication)
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11481 $
+ * @version $Revision: 13424 $
  */
 public class LowLevelCommunication implements LowLevelCommunicationInterface {
 
@@ -386,7 +386,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 			_waitingForSendingChannel = true;
 			while(_sendQueue.getSize() > 0 && _connection.isConnected() && _sendingChannel != null && _sendingChannel.isAlive()) {
 				_debug.fine("Warte auf den Versand von gepufferten Telegrammen");
-				Thread.sleep(1000);
+				Thread.sleep(200);
 			}
 			_waitingForSendingChannel = false;
 		}
@@ -420,7 +420,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 		try {
 			while(_receiveQueue.getSize() > 0 && _connection.isConnected()) {
 				_debug.fine("Warte auf die Verarbeitung von gepufferten empfangenen Telegrammen");
-				Thread.sleep(1000);
+				Thread.sleep(200);
 			}
 		}
 		catch(InterruptedException e) {
@@ -849,7 +849,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 					text.append(", Puffer voll");
 					break;
 				case CHECKING_THROUGHPUT:
-					text.append(", Druchsatzprüfung");
+					text.append(", Durchsatzprüfung");
 					if(_lastCheckedThroughput >= 0) text.append(" ").append(_lastCheckedThroughput).append("Byte/s"); 
 					break;
 			}
@@ -965,20 +965,20 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 
 							if(receivingRemainingTime <= 0) {
 								final long now = System.currentTimeMillis();
+								final long deltaSinceLastReceive = now - _lastReceivingTime;
+								final long deltaSinceLastStartReceive = now - _lastStartReceivingTime;
 								_lastReceivingTime = now;
 								receivingRemainingTime = _keepAliveReceiveTimeOut;
 								--_souls;
 								if(_waitingForData) {
-									final long delta = now - _lastReceivingTime;
 									_debug.fine(
-											getRemotePrefix() + "Seit " + delta + "ms wurden keine Telegramme mehr empfangen, verbleibende Versuche: " + _souls
+											getRemotePrefix() + "Seit " + deltaSinceLastReceive + " ms wurden keine Telegramme mehr empfangen, verbleibende Versuche: " + _souls
 									);
 								}
 								else {
-									final long delta = now - _lastStartReceivingTime;
 									_debug.fine(
-											getRemotePrefix() + "Seit " + delta
-											+ "ms konnten keine Telegramme mehr empfangen werden, weil die Empfangswarteschlange voll ist, verbleibende Versuche: "
+											getRemotePrefix() + "Seit " + deltaSinceLastStartReceive
+											+ " ms konnten keine Telegramme mehr empfangen werden, weil die Empfangswarteschlange voll ist, verbleibende Versuche: "
 											+ _souls
 									);
 								}

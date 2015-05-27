@@ -25,15 +25,7 @@
 package de.bsvrz.puk.config.configFile.datamodel;
 
 import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
-import de.bsvrz.dav.daf.main.config.DynamicObject;
-import de.bsvrz.dav.daf.main.config.DynamicObjectType;
-import de.bsvrz.dav.daf.main.config.InvalidationListener;
-import de.bsvrz.dav.daf.main.config.MutableCollectionChangeListener;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformationInterface;
 
 import java.util.*;
@@ -42,7 +34,7 @@ import java.util.*;
  * Implementierung des Interfaces für den Typ von dynamischen Objekten.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8800 $
+ * @version $Revision: 13033 $
  */
 public class ConfigDynamicObjectType extends ConfigSystemObjectType implements DynamicObjectType {
 
@@ -208,11 +200,16 @@ public class ConfigDynamicObjectType extends ConfigSystemObjectType implements D
 	 * @param simulationVariant Simulationsvariante unter der das Objekt erzeugt wurde.
 	 */
 	private void handleAddedElement(final DynamicObject createdObject, final short simulationVariant) {
-		getAllElements().add(createdObject);
-		final List<SystemObject> addedElements = new ArrayList<SystemObject>(1);
-		addedElements.add(createdObject);
-		final List<SystemObject> removedElements = new ArrayList<SystemObject>();
-		((ConfigDataModel)getDataModel()).sendCollectionChangedNotification(_mutableCollectionSupport, simulationVariant, addedElements, removedElements);
+		// Element-Cache aktualisieren
+		addElementToCache(createdObject);
+
+		// Benachrichtigungen
+		getDataModel().sendCollectionChangedNotification(
+				_mutableCollectionSupport,
+				simulationVariant,
+				Collections.<SystemObject>singletonList(createdObject),
+				Collections.<SystemObject>emptyList()
+		);
 	}
 
 	/**
@@ -221,12 +218,16 @@ public class ConfigDynamicObjectType extends ConfigSystemObjectType implements D
 	 * @param invalidatedObject gelöschtes Objekt
 	 */
 	public void handleDeletedElement(final DynamicObject invalidatedObject) {
-		getAllElements().remove(invalidatedObject);
-		final List<SystemObject> addedElements = new ArrayList<SystemObject>(0);
-		final List<SystemObject> removedElements = new ArrayList<SystemObject>(1);
-		removedElements.add(invalidatedObject);
-		((ConfigDataModel)getDataModel()).sendCollectionChangedNotification(
-				_mutableCollectionSupport, ((ConfigDynamicObject)invalidatedObject).getSimulationVariant(), addedElements, removedElements
+		// Element-Cache aktualisieren
+		removeElementFromCache(invalidatedObject);
+
+		// Benachrichtigungen
+		short simulationVariant = ((ConfigDynamicObject) invalidatedObject).getSimulationVariant();
+		getDataModel().sendCollectionChangedNotification(
+				_mutableCollectionSupport,
+				simulationVariant,
+				Collections.<SystemObject>emptyList(),
+				Collections.<SystemObject>singletonList(invalidatedObject)
 		);
 	}
 
@@ -240,8 +241,8 @@ public class ConfigDynamicObjectType extends ConfigSystemObjectType implements D
 	}
 
 	public List<SystemObject> getElements(short simulationVariant) {
-		final List<SystemObject> allElements = getAllElements();
-		final List<SystemObject> elements = new ArrayList<SystemObject>();
+		Collection<SystemObject> allElements = getAllElements();
+		final List<SystemObject> elements = new ArrayList<SystemObject>(allElements.size());
 		for(SystemObject element : allElements) {
 			if(element instanceof ConfigDynamicObject) {
 				ConfigDynamicObject configDynamicObject = (ConfigDynamicObject)element;

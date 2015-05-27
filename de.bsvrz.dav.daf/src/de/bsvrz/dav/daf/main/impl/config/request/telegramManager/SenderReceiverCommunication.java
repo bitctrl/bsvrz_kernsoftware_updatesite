@@ -31,7 +31,7 @@ import de.bsvrz.dav.daf.main.impl.config.request.RequestException;
  * Aufträge.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5982 $
+ * @version $Revision: 13310 $
  */
 public interface SenderReceiverCommunication {
 
@@ -66,12 +66,12 @@ public interface SenderReceiverCommunication {
 	/**
 	 * Stellt die Antwort auf eine Anfrage zur Verfügung
 	 *
-	 * @param reqestIndex Index, der bei der Methode {@link #sendData} als Rückgabeparameter zurückgegeben wurde
+	 * @param requestIndex Index, der bei der Methode {@link #sendData} als Rückgabeparameter zurückgegeben wurde
 	 *
 	 * @return Antwort auf eine Anfrage
 	 * @throws de.bsvrz.dav.daf.main.impl.config.request.RequestException Wenn die Kommunikation zum Datenverteiler unterbrochen wurde.
 	 */
-	public Data waitForReply(int reqestIndex) throws RequestException;
+	public Data waitForReply(int requestIndex) throws RequestException;
 
 	/** Schließt alle geöffneten Verbindungen und beendet mögliche Threads */
 	public void close();
@@ -100,6 +100,8 @@ public interface SenderReceiverCommunication {
 		public final static ConnectionState Disconnected = new ConnectionState("Nicht mehr verbunden");
 
 		public final static ConnectionState Error = new ConnectionState("Fehler");
+		
+		public final static ConnectionState DavConnectionLost = new ConnectionState("Datenverteilerverbindung getrennt");
 
 		public String toString() {
 			return _name;

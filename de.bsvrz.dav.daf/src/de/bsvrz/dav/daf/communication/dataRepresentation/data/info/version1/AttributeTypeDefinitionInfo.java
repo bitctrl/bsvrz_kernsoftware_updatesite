@@ -30,7 +30,7 @@ import java.util.Locale;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 9268 $ / $Date: 2011-05-16 11:12:28 +0200 (Mo, 16 Mai 2011) $ / ($Author: jh $)
+ * @version $Revision: 9268 $ / $Date: 2011-05-16 11:12:28 +0200 (Mon, 16 May 2011) $ / ($Author: jh $)
  */
 public abstract class AttributeTypeDefinitionInfo extends AbstractAttributeDefinitionInfo {
 	protected static final NumberFormat _doubleNumberFormat;

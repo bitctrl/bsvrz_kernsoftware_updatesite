@@ -21,10 +21,11 @@
 
 package de.bsvrz.dav.daf.main.impl.config;
 
-import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.communication.dataRepresentation.UndefinedValueHandler;
 import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.DataValue;
+import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.config.TimeAttributeType;
+import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -34,7 +35,7 @@ import java.io.IOException;
  * Klasse, die den Zugriff auf Zeitstempel-Attributtypen seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5055 $
+ * @version $Revision: 13141 $
  */
 public class DafTimeAttributeType extends DafAttributeType implements TimeAttributeType {
 
@@ -120,6 +121,14 @@ public class DafTimeAttributeType extends DafAttributeType implements TimeAttrib
 		super.read(in);
 		_mode = in.readByte();
 		_isRelative = in.readBoolean();
+		_dataValueType = _mode == 0 ? DataValue.INTEGER_TYPE : DataValue.LONG_TYPE;
+	}
+
+	@Override
+	public void read(final Deserializer deserializer) throws IOException {
+		super.read(deserializer);
+		_mode = deserializer.readByte();
+		_isRelative = deserializer.readBoolean();
 		_dataValueType = _mode == 0 ? DataValue.INTEGER_TYPE : DataValue.LONG_TYPE;
 	}
 

@@ -2,19 +2,19 @@
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
- *
+ * 
  * This file is part of de.bsvrz.pat.sysbed.
- *
+ * 
  * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
  * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -33,10 +33,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -54,7 +51,7 @@ import java.util.List;
  * der Einschränkungen des Datenmodells editierbar. Bei Bedarf kann auch eine nicht editierbar Form gewählt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11780 $
+ * @version $Revision: 13226 $
  * @see #DataEditorPanel(de.bsvrz.dav.daf.main.ClientDavInterface)
  * @see #setData(de.bsvrz.dav.daf.main.Data)
  * @see #setResultData(de.bsvrz.dav.daf.main.ResultData)
@@ -110,7 +107,7 @@ public class DataEditorPanel extends JPanel {
 
 
 	/** der Debug-Logger */
-	private static final Debug _debug = Debug.getLogger();
+	private final Debug _debug = Debug.getLogger();
 
 	/** die Verbindung zum Datenverteiler */
 	private final ClientDavInterface _connection;
@@ -123,6 +120,8 @@ public class DataEditorPanel extends JPanel {
 
 	/** gibt an, ob die dargestellten Felder editierbar sein sollen */
 	private boolean _editable = true;
+
+	private boolean _overrideComplexityWarning = false;
 
 	/* #################### public Methoden #################### */
 
@@ -148,16 +147,14 @@ public class DataEditorPanel extends JPanel {
 	 * @param data darzustellende Daten
 	 */
 	public void setData(final Data data) {
-		_debug.finer("data = " + data);
+		_debug.finer("data" , data);
 		_data = data;
 		_dataPane.removeAll();
-		if(data == null) {
+		if(_data == null) {
 			_dataPane.add(new JLabel("keine Daten"));
 		}
 		else {
-			Box box = createBox(_data);
-			box.setMaximumSize(new Dimension(box.getMaximumSize().width, box.getPreferredSize().height));
-			_dataPane.add(box);
+			showData();
 		}
 		_dataPane.add(Box.createVerticalGlue());
 		_dataPane.revalidate();
@@ -172,20 +169,60 @@ public class DataEditorPanel extends JPanel {
 	public void setResultData(final ResultData resultData) {
 		final Data data = resultData.getData();
 		_data = (data == null ? null : data.createModifiableCopy());
-		_debug.finer("data = " + _data);
+		_debug.finer("data" , _data);
 		_dataPane.removeAll();
 		if(_data == null) {
 			String label = resultData.getDataState().toString();
 			_dataPane.add(new JLabel(label));
 		}
 		else {
-			Box box = createBox(_data);
-			box.setMaximumSize(new Dimension(box.getMaximumSize().width, box.getPreferredSize().height));
-			_dataPane.add(box);
+			showData();
 		}
 		_dataPane.add(Box.createVerticalGlue());
 		_dataPane.revalidate();
 		_dataPane.repaint();
+	}
+
+	public void showData() {
+		int dataComplexity = getDataComplexity(_data);
+		_debug.info("DataComplex", dataComplexity);
+		if(!_overrideComplexityWarning && dataComplexity > 1000){
+			_dataPane.add(createComplexityWarningPanel());
+			return;
+		}
+		Box box = createBox(_data);
+		box.setMaximumSize(new Dimension(box.getMaximumSize().width, box.getPreferredSize().height));
+		_dataPane.add(box);
+	}
+
+	private Component createComplexityWarningPanel() {
+		JPanel jPanel = new JPanel();
+		jPanel.add(new JLabel("Der Datensatz ist sehr komplex und kann zu Problemen bei der Darstellung führen."));
+		JButton button = new JButton("Trotzdem anzeigen");
+		jPanel.add(button);
+		jPanel.setPreferredSize(new Dimension(400, 400));
+		button.addActionListener(new ActionListener() {
+			                         @Override
+			                         public void actionPerformed(final ActionEvent e) {
+				                         _overrideComplexityWarning = true;
+				                         _dataPane.removeAll();
+				                         showData();
+				                         _dataPane.revalidate();
+				                         _dataPane.repaint();
+			                         }
+		                         });
+		return jPanel;
+	}
+
+	private static int getDataComplexity(final Data data) {
+		if(data.isPlain()){
+			return 1;
+		}
+		int num = 1;
+		for(Data subData : data) {
+			num += getDataComplexity(subData);
+		}
+		return num;
 	}
 
 	/**
@@ -249,7 +286,18 @@ public class DataEditorPanel extends JPanel {
 					textBox.setBackground(_backgroundUndefinedValue);
 				}
 
-				textBox.setEditable(false);
+				textBox.addActionListener(
+						new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								setReferenceText(data, textBox, suffixBox);
+							}
+						});
+				textBox.addFocusListener(new FocusAdapter() {
+					                         @Override
+					                         public void focusLost(final FocusEvent e) {
+						                         setReferenceText(data, textBox, suffixBox);
+					                         }
+				                         });
 				valueBox = textBox;
 				if(_editable) {
 					final JButton changeButton = new JButton(_iconFolder);
@@ -525,6 +573,17 @@ public class DataEditorPanel extends JPanel {
 		return box;
 	}
 
+	protected void setReferenceText(final Data data, final JTextField textBox, final JLabel suffixBox) {
+		Data.ReferenceValue referenceValue = data.asReferenceValue();
+		try {
+			referenceValue.setText(textBox.getText());
+		}
+		catch(Exception ignored){
+			referenceValue.setSystemObject(null);
+		}
+		refreshReferenceValue(data, textBox, suffixBox);
+	}
+
 	private void refreshReferenceValue(final Data data, final JTextField textBox, final JLabel suffixBox) {
 		if(data.isDefined()) {
 			textBox.setText(data.asTextValue().getValueText());
@@ -677,7 +736,7 @@ public class DataEditorPanel extends JPanel {
 			if(array.getMaxCount() < newLength || newLength < 0){
 				JOptionPane.showMessageDialog(this, "Array-Länge " + newLength + " außerhalb des gültigen Bereichs: 0 - " + array.getMaxCount());
 
-
+				
 			}
 		}
 		array.setLength(newLength);
@@ -732,7 +791,7 @@ public class DataEditorPanel extends JPanel {
 	}
 
 	private String getScaledValueText(final long unscaledValue, double conversionFactor) {
-
+		
 		if(conversionFactor == 1) {
 			return String.valueOf(unscaledValue);
 		}

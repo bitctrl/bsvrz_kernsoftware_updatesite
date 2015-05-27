@@ -23,6 +23,7 @@ package de.bsvrz.dav.daf.main.impl.config;
 
 import de.bsvrz.dav.daf.main.config.ObjectSetType;
 import de.bsvrz.dav.daf.main.config.ObjectSetUse;
+import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -32,7 +33,7 @@ import java.io.IOException;
  * Klasse, die den Zugriff auf Mengenverwendungen seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5054 $
+ * @version $Revision: 13141 $
  */
 public class DafObjectSetUse extends DafConfigurationObject implements ObjectSetUse {
 
@@ -105,6 +106,14 @@ public class DafObjectSetUse extends DafConfigurationObject implements ObjectSet
 		_objectSetName = in.readUTF();
 		_objectSetTypeId = in.readLong();
 		_required = in.readBoolean();
+	}
+
+	@Override
+	public void read(final Deserializer deserializer) throws IOException {
+		super.read(deserializer);
+		_objectSetName = deserializer.readString();
+		_objectSetTypeId = deserializer.readLong();
+		_required = deserializer.readBoolean();
 	}
 
 	public final String getObjectSetName() {

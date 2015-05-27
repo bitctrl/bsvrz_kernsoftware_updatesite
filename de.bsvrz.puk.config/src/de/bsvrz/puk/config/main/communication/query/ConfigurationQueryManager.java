@@ -23,57 +23,25 @@
 
 package de.bsvrz.puk.config.main.communication.query;
 
-import de.bsvrz.dav.daf.main.ClientDavInterface;
-import de.bsvrz.dav.daf.main.ClientReceiverInterface;
-import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.DataAndATGUsageInformation;
-import de.bsvrz.dav.daf.main.DataDescription;
-import de.bsvrz.dav.daf.main.OneSubscriptionPerSendData;
-import de.bsvrz.dav.daf.main.ReceiveOptions;
-import de.bsvrz.dav.daf.main.ReceiverRole;
-import de.bsvrz.dav.daf.main.ResultData;
-import de.bsvrz.dav.daf.main.SendSubscriptionNotConfirmed;
-import de.bsvrz.dav.daf.main.config.Aspect;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
-import de.bsvrz.dav.daf.main.config.ClientApplication;
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.ConfigurationAuthority;
-import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
-import de.bsvrz.dav.daf.main.config.ConfigurationException;
-import de.bsvrz.dav.daf.main.config.ConfigurationObject;
-import de.bsvrz.dav.daf.main.config.ConfigurationObjectType;
-import de.bsvrz.dav.daf.main.config.ConfigurationTaskException;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.DynamicObject;
-import de.bsvrz.dav.daf.main.config.DynamicObjectType;
-import de.bsvrz.dav.daf.main.config.InvalidationListener;
-import de.bsvrz.dav.daf.main.config.MutableCollection;
-import de.bsvrz.dav.daf.main.config.MutableSet;
-import de.bsvrz.dav.daf.main.config.MutableSetChangeListener;
-import de.bsvrz.dav.daf.main.config.NonMutableSet;
-import de.bsvrz.dav.daf.main.config.ObjectSet;
-import de.bsvrz.dav.daf.main.config.ObjectSetType;
-import de.bsvrz.dav.daf.main.config.ObjectTimeSpecification;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
-import de.bsvrz.dav.daf.main.config.TimeSpecificationType;
+import de.bsvrz.dav.daf.main.*;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.dav.daf.main.config.management.ConfigAreaAndVersion;
 import de.bsvrz.dav.daf.main.config.management.consistenycheck.ConsistencyCheckResultEntry;
 import de.bsvrz.dav.daf.main.config.management.consistenycheck.ConsistencyCheckResultInterface;
+import de.bsvrz.dav.daf.main.impl.config.DafSerializerUtil;
 import de.bsvrz.dav.daf.main.impl.config.request.KindOfUpdateTelegramm;
 import de.bsvrz.dav.daf.main.impl.config.request.KindOfVersion;
 import de.bsvrz.dav.daf.main.impl.config.request.telegramManager.SenderReceiverCommunication;
-import de.bsvrz.puk.config.configFile.datamodel.ConfigConfigurationArea;
-import de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel;
-import de.bsvrz.puk.config.configFile.datamodel.ConfigDynamicObject;
-import de.bsvrz.puk.config.configFile.datamodel.ConfigMutableSet;
-import de.bsvrz.puk.config.configFile.datamodel.ConfigNonMutableSet;
+import de.bsvrz.puk.config.configFile.datamodel.*;
 import de.bsvrz.puk.config.configFile.fileaccess.ConfigFileBackupTask;
 import de.bsvrz.puk.config.main.authentication.Authentication;
 import de.bsvrz.puk.config.main.authentication.ConfigAuthentication;
 import de.bsvrz.puk.config.main.communication.UnknownObject;
+import de.bsvrz.puk.config.main.communication.async.AsyncIdsToObjectsRequest;
 import de.bsvrz.puk.config.main.simulation.ConfigSimulationObject;
+import de.bsvrz.puk.config.main.simulation.SimulationHandler;
+import de.bsvrz.puk.config.util.async.AsyncRequest;
+import de.bsvrz.puk.config.util.async.AsyncRequestCompletion;
 import de.bsvrz.sys.funclib.concurrent.UnboundedQueue;
 import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 import de.bsvrz.sys.funclib.dataSerializer.Serializer;
@@ -91,15 +59,15 @@ import java.util.*;
  * Anfrage verschicken, wird dies ebenfalls durch dieses Objekt realisiert.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11772 $
+ * @version $Revision: 13267 $
  */
-public class ConfigurationQueryManager {
+public class ConfigurationQueryManager implements SimulationHandler {
 
 	private static final Debug _debug = Debug.getLogger();
 
 	private ClientDavInterface _connection;
 
-	private final DataModel _localConfiguration;
+	private final ConfigDataModel _localConfiguration;
 
 	private final ConfigurationAuthority _localAuthority;
 
@@ -170,7 +138,7 @@ public class ConfigurationQueryManager {
 
 	public ConfigurationQueryManager(
 			ClientDavInterface connection,
-			DataModel localConfiguration,
+			ConfigDataModel localConfiguration,
 			ConfigurationAuthority localAuthority,
 			Authentication authentication,
 			final File foreignObjectCacheFile) {
@@ -331,6 +299,22 @@ public class ConfigurationQueryManager {
 		}
 	}
 
+	@Override
+	public ConfigSimulationObject getSimulationByVariant(final short simulationVariant) {
+		synchronized(_simulationObjects) {
+			return _simulations.get(simulationVariant);
+		}
+	}
+
+	@Override
+	public ConfigSimulationObject getSimulationByApplication(final SystemObject systemObject) {
+		synchronized(_querySender2queryHandlerMap) {
+			QueryHandler queryHandler = _querySender2queryHandlerMap.get(systemObject);
+			if(queryHandler == null) return null;
+			return queryHandler._simulationObject;
+		}
+	}
+
 	private final static class ReceiverSubscriptionSimulation {
 
 		private final DataDescription _dataDescription;
@@ -462,7 +446,7 @@ public class ConfigurationQueryManager {
 						_debug.finer("Konfigurationsanfrage erhalten von", querySender);
 						QueryHandler handler;
 						synchronized(_querySender2queryHandlerMap) {
-							handler = (QueryHandler)_querySender2queryHandlerMap.get(querySender);
+							handler = _querySender2queryHandlerMap.get(querySender);
 							if(handler == null) {
 								handler = new QueryHandler(querySender, result.getDataDescription().getSimulationVariant(), _configSimulationObject);
 //								System.out.println("neuen QueryHandler angelegt für " + querySender);
@@ -783,7 +767,7 @@ public class ConfigurationQueryManager {
 					
 
 
-					int queryIndex = query.getScaledValue("anfrageIndex").intValue();
+					final int queryIndex = query.getScaledValue("anfrageIndex").intValue();
 					String queryType = query.getScaledValue("nachrichtenTyp").getValueText();
 					final byte[] queryMessage = query.getUnscaledArray("daten").getByteArray();
 					_debug.finer("queryIndex = " + queryIndex);
@@ -808,16 +792,100 @@ public class ConfigurationQueryManager {
 						boolean sendData = true;
 						try {
 							if(queryType.equals("ObjektAnfrageMitId")) {
+								// Diese Anfrage wird aktuell nur für den ForeinRequestmanager verwendet und ist veraltet.
+								// Applikationen verwenden ObjektAnfrageMitIdNeu
 								long id = deserializer.readLong();
 								SystemObject object = _localConfiguration.getObject(id);
 								writeSystemObject(serializer, object, id, "");
 								messageType = "ObjektAntwort";
 							}
 							else if(queryType.equals("ObjektAnfrageMitPid")) {
+								// Diese Anfrage wird aktuell vermutlich gar nicht verwendet und ist veraltet.
 								String pid = deserializer.readString();
-								SystemObject object = _localConfiguration.getObject(pid);
+								SystemObject object = _localConfiguration.getObject(pid, _simulationVariant);
 								writeSystemObject(serializer, object, 0, pid);
 								messageType = "ObjektAntwort";
+							}
+							else if(queryType.equals("ObjekteAnfragenMitIds")) {
+								int num = deserializer.readInt();
+								long[] ids = new long[num];
+								for(int i = 0; i < num; i++){
+									ids[i] = deserializer.readLong();
+								}
+								final List<SystemObject> objects = _localConfiguration.getObjects(ids);
+								boolean needsRemoteRequest = false;
+								for(SystemObject systemObject : objects) {
+									if(systemObject == null){
+										needsRemoteRequest = true;
+										break;
+									}
+								}
+								if(needsRemoteRequest){
+									final AsyncIdsToObjectsRequest asyncIdsToObjectsRequest = new AsyncIdsToObjectsRequest(
+											_localConfiguration, _foreignObjectManager, ids
+									);
+									asyncIdsToObjectsRequest.setCompletion(new AsyncRequestCompletion() {
+										                                       @Override
+										                                       public void requestCompleted(final AsyncRequest asyncRequest) {
+											                                       try {
+												                                       final ByteArrayOutputStream stream = new ByteArrayOutputStream();
+												                                       Serializer serializer = SerializingFactory.createSerializer(2, stream);
+												                                       SystemObject[] objects = ((AsyncIdsToObjectsRequest) asyncRequest)
+														                                       .getObjects();
+												                                       serializer.writeInt(objects.length);
+												                                       for(SystemObject systemObject : objects) {
+													                                       DafSerializerUtil.writeObject(serializer, systemObject);
+												                                       }
+												                                       _senderReplyReadTasks.sendData(
+														                                       "AntwortObjekte", stream.toByteArray(), queryIndex);
+											                                       }
+											                                       catch(Exception e) {
+												                                       e.printStackTrace(System.out);
+												                                       _debug.error("Fehler beim asynchronen Versand einer Konfigurationsantwort: ", e);
+											                                       }
+										                                       }
+									                                       });
+									asyncIdsToObjectsRequest.startProcessing();
+									continue; // Antwort asynchron senden
+								}
+								serializer.writeInt(objects.size());
+								for(SystemObject systemObject : objects) {
+									DafSerializerUtil.writeObject(serializer, systemObject);
+								}
+								messageType = "AntwortObjekte";
+							}
+							else if(queryType.equals("ObjekteAnfragenMitPids")) {
+								int num = deserializer.readInt();
+								String[] pids = new String[num];
+								for(int i = 0; i < num; i++){
+									pids[i] = deserializer.readString();
+								}
+								final List<SystemObject> objects = _localConfiguration.getObjects(pids, _simulationVariant);
+								serializer.writeInt(objects.size());
+								for(SystemObject systemObject : objects) {
+									DafSerializerUtil.writeObject(serializer, systemObject);
+								}
+								messageType = "AntwortObjekte";
+							}
+							else if(queryType.equals("ObjekteAnfragenMitTyp")) {
+								long id = deserializer.readLong();
+								SystemObject object = _localConfiguration.getObject(id);
+								if(object instanceof SystemObjectType) {
+									SystemObjectType type = (SystemObjectType) object;
+									List<SystemObject> elements;
+									if(type instanceof DynamicObjectType) {
+										DynamicObjectType dynamicObjectType = (DynamicObjectType) type;
+										elements = dynamicObjectType.getElements(_simulationVariant);
+									}
+									else {
+										elements = type.getElements();
+									}
+									serializer.writeInt(elements.size());
+									for(SystemObject element : elements) {
+										DafSerializerUtil.writeObject(serializer, element);
+									}
+									messageType = "AntwortObjekte";
+								}
 							}
 							else if(queryType.equals("DynamischeMengeAlleElementeAnfrage")) {
 								final MutableSet set = (MutableSet)deserializer.readObjectReference(_localConfiguration);
@@ -1024,7 +1092,7 @@ public class ConfigurationQueryManager {
 								if(object != null) {
 									PublishingCommunicationStateListener listener = new PublishingCommunicationStateListener(_querySender, object, null);
 									synchronized(_communicationChangedHandlers) {
-										listener = (PublishingCommunicationStateListener)_communicationChangedHandlers.remove(listener);
+										listener = _communicationChangedHandlers.remove(listener);
 										if(listener != null) listener.getForeignConfigRequester().removeCommunicationStateListener(listener);
 									}
 								}
@@ -1090,7 +1158,7 @@ public class ConfigurationQueryManager {
 								final long startTime = deserializer.readLong();
 								final long endTime = deserializer.readLong();
 
-								final Collection<SystemObject> result = _localConfiguration.getObjects(pid, startTime, endTime);
+								final Collection<SystemObject> result = _localConfiguration.getObjects(pid, startTime, endTime, _simulationVariant);
 
 								// Antwort serialisieren
 
@@ -1162,7 +1230,7 @@ public class ConfigurationQueryManager {
 								final ObjectTimeSpecification objectTimeSpecification = deserializeObjectTimeSpecification(deserializer);
 
 								final Collection<SystemObject> result = _localConfiguration.getObjects(
-										configurationAreas, systemObjectTypes, objectTimeSpecification
+										configurationAreas, systemObjectTypes, objectTimeSpecification, _simulationVariant
 								);
 
 								// Die Antwort wird wie folgt kodiert:
@@ -1452,9 +1520,12 @@ public class ConfigurationQueryManager {
 
 								final List<DataAndATGUsageInformation> dataSets = new ArrayList<DataAndATGUsageInformation>();
 
+								// Simulationsvariantenspezifische deserialisierung
+								SimulationLookup simulationLookup = new SimulationLookup(_localConfiguration, _simulationVariant);
+
 								for(int nr = 0; nr < numberOfDataSets; nr++) {
 									final AttributeGroupUsage usage = (AttributeGroupUsage)deserializer.readObjectReference(_localConfiguration);
-									final Data data = deserializer.readData(usage.getAttributeGroup());
+									final Data data = deserializer.readData(usage.getAttributeGroup(), simulationLookup);
 									final DataAndATGUsageInformation dataSet = new DataAndATGUsageInformation(usage, data);
 									dataSets.add(dataSet);
 								}
@@ -1527,6 +1598,33 @@ public class ConfigurationQueryManager {
 								// Die Antwort signalisiert, dass die Änderungen vorgenommen wurden. Kommt es zu einem Fehler, so
 								// wird die Exception in einem anderen Telegramm übertragen.
 								messageType = "AntwortObjektMengenBearbeiten";
+							}
+							else if(queryType.equals("ObjektLöschen")){
+								SystemObject systemObject = deserializer.readObjectReference(_localConfiguration);
+								systemObject.invalidate();
+								messageType = "AntwortObjektLöschen";
+								if(systemObject instanceof DynamicObject) {
+									serializer.writeLong(((DynamicObject) systemObject).getNotValidSince());
+								}
+								else {
+									serializer.writeLong(0);
+								}
+							}
+							else if(queryType.equals("ObjektWiederherstellen")){
+								SystemObject systemObject = deserializer.readObjectReference(_localConfiguration);
+								if(systemObject instanceof ConfigurationObject) {
+									ConfigurationObject configurationObject = (ConfigurationObject) systemObject;
+									configurationObject.revalidate();
+									messageType = "AntwortObjektWiederherstellen";
+								}
+								else {
+									throw new ConfigurationChangeException("Nur konfigurierende Objekte können wiederhergestellt werden.");
+								}
+							}
+							else if(queryType.equals("ObjektNamenÄndern")){
+								SystemObject systemObject = deserializer.readObjectReference(_localConfiguration);
+								systemObject.setName(deserializer.readString());
+								messageType = "AntwortObjektNamenÄndern";
 							}
 							else if(queryType.equals("KonfigurationsänderungVerweigert")) {
 								final String errorMessage = "Konfigurationsänderung wurde wegen fehlender Rechte nicht ausgeführt: " + deserializer.readString();;
@@ -1636,7 +1734,7 @@ public class ConfigurationQueryManager {
 
 						try {
 							if("BereichePrüfen".equals(queryType)) {
-								ConsistencyCheckResultInterface consistencyCheckResultInterface = ((ConfigDataModel)_localConfiguration).checkConsistency(
+								ConsistencyCheckResultInterface consistencyCheckResultInterface = _localConfiguration.checkConsistency(
 										createAreaAndVersion(deserializer)
 								);
 								// Die Antwort zusammenfassen
@@ -1644,21 +1742,21 @@ public class ConfigurationQueryManager {
 								messageType = "BereichePrüfenAntwort";
 							}
 							else if("BereicheAktivieren".equals(queryType)) {
-								ConsistencyCheckResultInterface consistencyCheckResultInterface = ((ConfigDataModel)_localConfiguration).activateConfigurationAreas(
+								ConsistencyCheckResultInterface consistencyCheckResultInterface = _localConfiguration.activateConfigurationAreas(
 										createAreaAndVersion(deserializer)
 								);
 								transferConsistencyCheckResult(consistencyCheckResultInterface, serializer);
 								messageType = "BereicheAktivierenAntwort";
 							}
 							else if("BereicheFreigabeZurÜbernahme".equals(queryType)) {
-								ConsistencyCheckResultInterface consistencyCheckResultInterface = ((ConfigDataModel)_localConfiguration).releaseConfigurationAreasForTransfer(
+								ConsistencyCheckResultInterface consistencyCheckResultInterface = _localConfiguration.releaseConfigurationAreasForTransfer(
 										createAreaAndVersion(deserializer)
 								);
 								transferConsistencyCheckResult(consistencyCheckResultInterface, serializer);
 								messageType = "BereicheFreigabeZurÜbernahmeAntwort";
 							}
 							else if("BereicheFreigabeZurAktivierung".equals(queryType)) {
-								((ConfigDataModel)_localConfiguration).releaseConfigurationAreasForActivation(createAreaAndVersion(deserializer));
+								_localConfiguration.releaseConfigurationAreasForActivation(createAreaAndVersion(deserializer));
 								// Irgendwas zurückgeben. Die positive Antwort wird nicht ausgewertet, der Fehlerfall (Fehlemeldung) ist von intresse.
 								serializer.writeBoolean(true);
 								messageType = "BereicheFreigabeZurAktivierungAntwort";
@@ -1671,7 +1769,7 @@ public class ConfigurationQueryManager {
 
 								// Die Bereiche anfordern. Es werden nur die Id´s gebraucht. Über diese kann sich
 								// der Empfänger die Map selbst zusammenbauen (Objekt mit Id anfordern, dann steht das Objekt und die Pid zur Verfügung).
-								final Collection<ConfigurationArea> allConfigurationAreas = ((ConfigDataModel)_localConfiguration).getAllConfigurationAreas().values();
+								final Collection<ConfigurationArea> allConfigurationAreas = _localConfiguration.getAllConfigurationAreas().values();
 
 								// Aufbau der Daten:
 								// Anzahl Id´s (int)
@@ -1697,7 +1795,7 @@ public class ConfigurationQueryManager {
 
 								// Den Bereich anlegen, wird eine Exception geworfen, wird diese gefangen und
 								// als Antwort verschickt. Kann der Bereich angelegt werden, wird die Id verschickt.
-								final ConfigurationArea newConfigurationArea = ((ConfigDataModel)_localConfiguration).createConfigurationArea(
+								final ConfigurationArea newConfigurationArea = _localConfiguration.createConfigurationArea(
 										name, pid, authorityPid
 								);
 								// Id des neuen Bereichs. Damit kann der Empfänger das Objekt anfordern, auch wenn es noch nicht
@@ -1724,11 +1822,11 @@ public class ConfigurationQueryManager {
 
 								// Was soll gemacht werden, import oder export
 								if("BereicheImportieren".equals(queryType)) {
-									((ConfigDataModel)_localConfiguration).importConfigurationAreas(maintenanceFile, configurationAreaPids);
+									_localConfiguration.importConfigurationAreas(maintenanceFile, configurationAreaPids);
 									messageType = "BereicheImportierenAntwort";
 								}
 								else {
-									((ConfigDataModel)_localConfiguration).exportConfigurationAreas(maintenanceFile, configurationAreaPids);
+									_localConfiguration.exportConfigurationAreas(maintenanceFile, configurationAreaPids);
 									messageType = "BereicheExportierenAntwort";
 								}
 
@@ -1741,7 +1839,7 @@ public class ConfigurationQueryManager {
 								// Bereiche und Versionen auslesen
 								final Collection<ConfigAreaAndVersion> configAreaAndVersions = createAreaAndVersion(deserializer);
 
-								final ConsistencyCheckResultInterface consistencyCheckResult = ((ConfigDataModel)_localConfiguration).releaseConfigurationAreasForActivationWithoutCAActivation(
+								final ConsistencyCheckResultInterface consistencyCheckResult = _localConfiguration.releaseConfigurationAreasForActivationWithoutCAActivation(
 										configAreaAndVersions
 								);
 
@@ -1759,7 +1857,7 @@ public class ConfigurationQueryManager {
 								}
 								final ConfigFileBackupTask fileBackupTask = new ConfigFileBackupTask(
 										(ConfigAuthentication) _authentication,
-										(ConfigDataModel) _localConfiguration,
+										_localConfiguration,
 										targetDir,
 										configurationAuthority,
 										_senderReplyAreaTasks,
@@ -1848,6 +1946,38 @@ public class ConfigurationQueryManager {
 					_debug.error("Fehler beim Versenden einer Antwort", e);
 				}
 			}// while(true)
+		}
+
+		@Deprecated
+		private void writeSystemObject(Serializer serializer, SystemObject systemObject, long queryId, String queryPid) throws IOException, ConfigurationException {
+			if(systemObject instanceof DynamicObject) {
+				DynamicObject object = (DynamicObject)systemObject;
+				serializer.writeByte(1);	// dynamisches Objekt
+				serializer.writeLong(systemObject.getId());
+				serializer.writeLong(systemObject.getType().getId());
+				final String pid = object.getPid();
+				final String name = object.getName();
+				byte flag = 0;
+				if(object.isValid()) flag |= 1;
+				if(pid != null) flag |= 2;
+				if(name != null) flag |= 4;
+				serializer.writeByte(flag);
+				if(pid != null) serializer.writeString(pid);
+				if(name != null) serializer.writeString(name);
+				serializer.writeLong(object.getValidSince());
+				serializer.writeLong(object.getNotValidSince());
+				serializer.writeLong(object.getConfigurationArea().getId());
+			}
+			else if(systemObject instanceof ConfigurationObject) {
+				serializer.writeByte(2);
+				serializer.writeLong(systemObject.getId());
+				serializer.writeLong(systemObject.getType().getId());
+			}
+			else {
+				serializer.writeByte(0);
+				serializer.writeLong(queryId);
+				serializer.writeString(queryPid);
+			}
 		}
 
 		private String generateErrorReply(final Serializer serializer, final Exception exception) throws IOException {
@@ -2145,37 +2275,6 @@ public class ConfigurationQueryManager {
 			}
 		}
 
-		private void writeSystemObject(Serializer serializer, SystemObject systemObject, long queryId, String queryPid) throws IOException, ConfigurationException {
-			if(systemObject instanceof DynamicObject) {
-				DynamicObject object = (DynamicObject)systemObject;
-				serializer.writeByte(1);	// dynamisches Objekt
-				serializer.writeLong(systemObject.getId());
-				serializer.writeLong(systemObject.getType().getId());
-				final String pid = object.getPid();
-				final String name = object.getName();
-				byte flag = 0;
-				if(object.isValid()) flag |= 1;
-				if(pid != null) flag |= 2;
-				if(name != null) flag |= 4;
-				serializer.writeByte(flag);
-				if(pid != null) serializer.writeString(pid);
-				if(name != null) serializer.writeString(name);
-				serializer.writeLong(object.getValidSince());
-				serializer.writeLong(object.getNotValidSince());
-				serializer.writeLong(object.getConfigurationArea().getId());
-			}
-			else if(systemObject instanceof ConfigurationObject) {
-				serializer.writeByte(2);
-				serializer.writeLong(systemObject.getId());
-				serializer.writeLong(systemObject.getType().getId());
-			}
-			else {
-				serializer.writeByte(0);
-				serializer.writeLong(queryId);
-				serializer.writeString(queryPid);
-			}
-		}
-
 		/**
 		 * Diese Methode erzeugt ein dynamisches Objekt. Dabei wird berücksichtigt, ob es sich um eine Simulation handelt, ist dies der Fall, wird geprüft, ob die
 		 * Simulation das überhaupt darf.
@@ -2216,24 +2315,24 @@ public class ConfigurationQueryManager {
 			if(_simulationVariant <= 0) {
 				// Es ist keine Simulation
 				if(useOldCreateMethod == false) {
-					newObject = ((ConfigConfigurationArea)configurationArea).createDynamicObject(type, pid, name, data);
+					newObject = configurationArea.createDynamicObject(type, pid, name, data);
 				}
 				else {
 					// Dieser Weg wird nur gegangen, wenn die alte Methode benutzt werden soll (diese prüft nicht, ob die Datensätze alle
 					// vorhanden sind).
-					newObject = ((ConfigConfigurationArea)configurationArea).createDynamicObject(type, pid, name);
+					newObject = configurationArea.createDynamicObject(type, pid, name);
 				}
 			}
 			else {
 				// Darf die Simulation ein Objekt von diesem Typ anlegen?
 				if(_simulationObject.isSpecialTreatedDynamicObjectType(type)) {
 					if(useOldCreateMethod == false) {
-						newObject = ((ConfigConfigurationArea)configurationArea).createDynamicObject(type, pid, name, data, _simulationVariant);
+						newObject = configurationArea.createDynamicObject(type, pid, name, data, _simulationVariant);
 					}
 					else {
 						// Dieser Weg wird nur gegangen, wenn die alte Methode benutzt werden soll (diese prüft nicht, ob die Datensätze alle
 						// vorhanden sind).
-						newObject = ((ConfigConfigurationArea)configurationArea).createDynamicObject(type, pid, name, _simulationVariant);
+						newObject = configurationArea.createDynamicObject(type, pid, name, _simulationVariant);
 					}
 				}
 				else {
@@ -2331,7 +2430,7 @@ public class ConfigurationQueryManager {
 					ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
 					final Serializer serializer = SerializingFactory.createSerializer(2, byteArrayStream);
 
-					serializer.writeObjectReference((SystemObject)mutableCollection);
+					serializer.writeObjectReference(mutableCollection);
 					serializer.writeShort(_externalSimVariant);
 					serializer.writeInt(addedElements.size());
 					for(SystemObject addedElement : addedElements) {

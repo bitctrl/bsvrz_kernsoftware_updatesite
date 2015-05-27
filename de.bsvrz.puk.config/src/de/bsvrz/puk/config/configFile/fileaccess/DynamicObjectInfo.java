@@ -28,7 +28,7 @@ import de.bsvrz.dav.daf.main.config.DynamicObjectType;
  *
  * @author Kappich+Kniß Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 5074 $ / $Date: 2007-09-02 14:19:12 +0200 (So, 02 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 13057 $ / $Date: 2015-01-07 19:05:41 +0100 (Wed, 07 Jan 2015) $ / ($Author: jh $)
  */
 public interface DynamicObjectInfo extends SystemObjectInformationInterface {
 
@@ -65,9 +65,6 @@ public interface DynamicObjectInfo extends SystemObjectInformationInterface {
 	 * <p/>
 	 * Eventuelle Informationen in Dateien und/oder in Datenstrukturen müssen entfernt werden und dürfen auch nach Neustart des Systems nicht mehr zur Verfügung
 	 * stehen.
-	 *
-	 * Diese Methode kann nur auf Objekte angewendet werden, die eine Simulationsvariante größer/gleich 1 besitzen. Ist die Simulationsvariante < 1, so wird
-	 * nichts gemacht.
 	 *
 	 * @throws IllegalStateException 
 	 */

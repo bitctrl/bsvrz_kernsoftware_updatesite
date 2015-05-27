@@ -29,7 +29,7 @@ import java.lang.reflect.Method;
  *
  * @author beck et al. projects GmbH
  * @author Phil Schrettenbrunner
- * @version $Revision: 6420 $ / $Date: 2009-03-10 23:19:01 +0100 (Di, 10 Mrz 2009) $ / ($Author: rs $)
+ * @version $Revision: 6420 $ / $Date: 2009-03-10 23:19:01 +0100 (Tue, 10 Mar 2009) $ / ($Author: rs $)
  */
 public class JavaSpy {
 

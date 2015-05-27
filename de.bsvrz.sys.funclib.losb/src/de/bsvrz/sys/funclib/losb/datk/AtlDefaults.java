@@ -37,7 +37,7 @@ import java.util.*;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 8878 $ / $Date: 2011-03-09 15:36:58 +0100 (Mi, 09 Mrz 2011) $ / ($Author: rs $)
+ * @version $Revision: 12841 $ / $Date: 2014-10-02 13:50:44 +0200 (Thu, 02 Oct 2014) $ / ($Author: jh $)
  */
 public class AtlDefaults implements Serializable {
 
@@ -46,6 +46,12 @@ public class AtlDefaults implements Serializable {
 	private static final String MESSAGE_OLD_DATAMODEL =
 			"Die im Skript verwendeten Aliase und ungebundenen Aspekte konnten nicht übertragen werden, dazu wird kb.tmVewProtokolleGlobal in Version 4 "
 			               + "benötigt";
+
+	public static final String MESSAGE_NO_EVENT_PROTOCOL_ITEM =
+			"Die verwendete Version von kb.tmVewProtokolleGlobal unterstützt das Eintragen der Protokollart 'Ereignisprotokoll' nicht und muss aktualisiert werden.";
+
+	public static final String MESSAGE_NO_CELL_NO_CHANGE_MARKER =
+			"Die verwendete Version von kb.tmVewProtokolleGlobal unterstützt das Eintragen der NoChange-Kennzeichung 'pro Zelle' nicht und muss aktualisiert werden.";
 
 	private Map<SystemObjectType, SystemObject> _objects;
 
@@ -59,12 +65,36 @@ public class AtlDefaults implements Serializable {
 
 	private List<Tuple<Long, Long>> _periods;
 
-	private boolean _deltaProtocol;
+	private ProtocolType _protocolType;
+
+	private NoChangeMarker _noChangeMarker;
 
 	private static final Debug _debug = Debug.getLogger();
 
+	/**
+	 * Gibt die Protokollart zurück
+	 * @return Protokollart
+	 */
+	public ProtocolType getProtocolType() {
+		return _protocolType;
+	}
+
+	/**
+	 * Gibt die Art der Markierung von "Keine Änderung"-Datensätzen zurück. Bei statusprotokollen können
+	 * Keine-Änderung-Informationen entweder pro Zeiel übertragen werden, oder pro Datensatz.
+	 * @return die Art der Markierung von "Keine Änderung"-Datensätzen
+	 */
+	public NoChangeMarker getNoChangeMarker() {
+		return _noChangeMarker;
+	}
+
+	/**
+	 * Gibt zurück ob es sich um ein Änderungsprotokoll handelt
+	 * @deprecated {@link #getProtocolType()} unterstützt die Abfrage nach allen Protokollarten
+	 */
+	@Deprecated
 	public boolean isDeltaProtocol() {
-		return _deltaProtocol;
+		return _protocolType == ProtocolType.DeltaProtocol;
 	}
 
 	/**
@@ -131,7 +161,8 @@ public class AtlDefaults implements Serializable {
 			final List<String> aspects,
 			final Map<String, Aspect> aspectBindings,
 			final List<Tuple<Long, Long>> periods,
-			final boolean isDeltaProtocol) {
+			final ProtocolType protocolType,
+			final NoChangeMarker noChangeMarker) {
 
 		_objects = objects;
 		_aliases = aliases;
@@ -139,7 +170,8 @@ public class AtlDefaults implements Serializable {
 		_aspects = aspects;
 		_aspectBindings = aspectBindings;
 		_periods = periods;
-		_deltaProtocol = isDeltaProtocol;
+		_protocolType = protocolType;
+		_noChangeMarker = noChangeMarker;
 	}
 
 	public static AtlDefaults createRaw(
@@ -147,10 +179,11 @@ public class AtlDefaults implements Serializable {
 			final Map<String, String[]> pseudoObjects,
 			final Map<String, String> aspectBindings,
 			final List<Tuple<Long, Long>> periods,
-			final boolean deltaProtocol,
+			final ProtocolType protocolType,
 			final Map<String, String> aliases,
 			final List<String> aspects,
-			final ObjectLookup model) {
+			final ObjectLookup model,
+			final NoChangeMarker noChangeMarker) {
 
 		final Map<String, SystemObject[]> newPseudoObjects = new HashMap<String, SystemObject[]>(pseudoObjects.size());
 		final Map<String, Aspect> newAspectBindings = new HashMap<String, Aspect>(aspectBindings.size());
@@ -168,7 +201,7 @@ public class AtlDefaults implements Serializable {
 			newAliases.put(entry.getKey(), (SystemObjectType)model.getObject(entry.getValue()));
 		}
 
-		return new AtlDefaults(objects, newAliases, newPseudoObjects, aspects, newAspectBindings, periods, deltaProtocol);
+		return new AtlDefaults(objects, newAliases, newPseudoObjects, aspects, newAspectBindings, periods, protocolType, noChangeMarker);
 	}
 
 	private static SystemObject[] stringsToSystemObjects(final ObjectLookup model, final String[] value) {
@@ -189,14 +222,14 @@ public class AtlDefaults implements Serializable {
 	 */
 	public void build(final Data data) {
 		final SystemObject[] systemObjects = _objects.values().toArray(new SystemObject[_objects.size()]);
-		fillArray(systemObjects, data.getReferenceArray(PidScript.objects));
+		data.getReferenceArray(PidScript.objects).set(systemObjects);
 		int i = 0;
 		Data.Array array = data.getArray(PidScript.pseudoObjects);
 		array.setLength(_pseudoObjects.size());
 		for(final Map.Entry<String, SystemObject[]> entry : _pseudoObjects.entrySet()) {
 			final Data item = array.getItem(i);
 			item.getTextValue("Alias").setText(entry.getKey());
-			fillArray(entry.getValue(), item.getReferenceArray("Objekte"));
+			item.getReferenceArray("Objekte").set(entry.getValue());
 			i++;
 		}
 		i = 0;
@@ -240,14 +273,42 @@ public class AtlDefaults implements Serializable {
 		catch(NoSuchElementException ignored){
 			_debug.warning(MESSAGE_OLD_DATAMODEL);
 		}
-		data.getScaledValue(PidScript.protocolType).setText(_deltaProtocol ? "Änderungsprotokoll" : "Zustandsprotokoll");
-	}
-
-	private void fillArray(final SystemObject[] systemObjects, final Data.ReferenceArray array) {
-		final int length = systemObjects.length;
-		array.setLength(length);
-		for(int i = 0; i < length; i++) {
-			array.getReferenceValue(i).setSystemObject(systemObjects[i]);
+		String typeText = "Zustandsprotokoll";
+		switch(_protocolType){
+			case StatusProtocol:
+				typeText = "Zustandsprotokoll";
+				break;
+			case DeltaProtocol:
+				typeText = "Änderungsprotokoll";
+				break;
+			case EventProtocol:
+				typeText = "Ereignisprotokoll";
+				break;
+		}
+		String markerText = "pro Zeile";
+		switch(_noChangeMarker){
+			case Row:
+				markerText = "pro Zeile";
+				break;
+			case Cell:
+				markerText = "pro Zelle";
+				break;
+		}
+		try {
+			data.getScaledValue(PidScript.protocolType).setText(typeText);
+		}
+		catch(Exception e){
+			if(_protocolType == ProtocolType.EventProtocol) {
+				throw new UnsupportedOperationException(MESSAGE_NO_EVENT_PROTOCOL_ITEM, e);
+			}
+		}
+		try {
+			data.getScaledValue(PidScript.noChangeMarker).setText(markerText);
+		}
+		catch(Exception e){
+			if(_noChangeMarker == NoChangeMarker.Cell) {
+				throw new UnsupportedOperationException(MESSAGE_NO_CELL_NO_CHANGE_MARKER, e);
+			}
 		}
 	}
 
@@ -309,25 +370,56 @@ public class AtlDefaults implements Serializable {
 			_debug.warning(MESSAGE_OLD_DATAMODEL);
 		}
 
+		ProtocolType protocolType = ProtocolType.Undefined;
+		String text = data.getScaledValue(PidScript.protocolType).getText();
+		if("Zustandsprotokoll".equals(text)){
+			protocolType = ProtocolType.StatusProtocol;
+		}
+		else if("Änderungsprotokoll".equals(text)){
+			protocolType = ProtocolType.DeltaProtocol;
+		}
+		else if("Ereignisprotokoll".equals(text)){
+			protocolType = ProtocolType.EventProtocol;
+		}
+
+
+		NoChangeMarker noChangeMarker = NoChangeMarker.Row;
+		try {
+			if(data.getItem(PidScript.noChangeMarker).asTextValue().getValueText().equals("pro Zelle")) {
+				noChangeMarker = NoChangeMarker.Cell;
+			}
+		}
+		catch(IllegalArgumentException ignored){
+			_debug.warning(MESSAGE_NO_CELL_NO_CHANGE_MARKER);
+		}
+
 		return new AtlDefaults(
-				objects, aliases, pseudoObjects, aspects, aspectBindings, periods, "Änderungsprotokoll".equals(data.getScaledValue(PidScript.protocolType)
-						                                                                                              .getText())
+				objects, aliases, pseudoObjects, aspects, aspectBindings, periods, protocolType, noChangeMarker
 		);
 	}
 
 	public void set(final AtlDefaults defaults) {
 		_aspectBindings = defaults.getAspectBindings();
-		_deltaProtocol = defaults.isDeltaProtocol();
+		_protocolType = defaults.getProtocolType();
 		_objects = defaults.getObjects();
 		_periods = defaults.getPeriods();
 		_pseudoObjects = defaults.getPseudoObjects();
 		_aliases = defaults.getAliases();
 		_aspects = defaults.getAspects();
+		_noChangeMarker = defaults.getNoChangeMarker();
 	}
 
 	@Override
 	public String toString() {
-		return "AtlDefaults{" + "_objects=" + _objects + ", _aliases=" + _aliases + ", _pseudoObjects=" + _pseudoObjects + ", _aspects=" + _aspects
-		       + ", _aspectBindings=" + _aspectBindings + ", _periods=" + _periods + ", _deltaProtocol=" + _deltaProtocol + '}';
+		return "AtlDefaults{" +
+				"_objects=" + _objects +
+				", _aliases=" + _aliases +
+				", _pseudoObjects=" + _pseudoObjects +
+				", _aspects=" + _aspects +
+				", _aspectBindings=" + _aspectBindings +
+				", _periods=" + _periods +
+				", _protocolType=" + _protocolType +
+				", _noChangeMarker=" + _noChangeMarker +
+				'}';
 	}
 }

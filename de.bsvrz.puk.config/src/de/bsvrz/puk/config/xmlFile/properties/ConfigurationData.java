@@ -26,13 +26,13 @@ package de.bsvrz.puk.config.xmlFile.properties;
  * Stellt ein Objekt zur Verfügung, das ein "datum" abbildet, wie es in der K2S.DTD definiert ist.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5091 $
+ * @version $Revision: 12949 $
  */
 public class ConfigurationData implements DatasetElement {
 
 	private final String _name;
 
-	private final String _value;
+	private String _value;
 
 	public ConfigurationData(String name, String value) {
 		_name = name;
@@ -55,5 +55,14 @@ public class ConfigurationData implements DatasetElement {
 	 */
 	public String getValue() {
 		return _value;
+	}
+
+	/**
+	 * Attribut "wert"
+	 *
+	 * @param value neues Datum
+	 */
+	public void setValue(final String value) {
+		_value = value;
 	}
 }

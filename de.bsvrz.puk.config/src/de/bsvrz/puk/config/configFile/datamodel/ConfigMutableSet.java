@@ -26,21 +26,16 @@ import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.dav.daf.main.impl.config.ConfigurationCommunicationListenerSupport;
 import de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformationInterface;
-import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
-import de.bsvrz.sys.funclib.dataSerializer.Serializer;
-import de.bsvrz.sys.funclib.dataSerializer.SerializingFactory;
 import de.bsvrz.sys.funclib.debug.Debug;
 
-import java.io.*;
+import java.io.File;
 import java.util.*;
-
-import static de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentifications.CONFIGURATION_ELEMENTS_IN_MUTABLE_SET;
 
 /**
  * Implementierung des Interfaces {@link MutableSet} für dynamische Mengen auf Seiten der Konfiguration.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11495 $
+ * @version $Revision: 13131 $
  */
 public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	
@@ -70,23 +65,14 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	
 	/** Dürfen Änderungen an der Elementzugehörigkeit durch diese Konfiguration durchgeführt werden? */
 	private boolean _elementChangesAllowed;
-	
-	/**
-	 * Datei in der die Elementzugehörigkeit dieser Menge gespeichert werden soll, oder <code>null</code>, falls die Elementzugehörigkeit als Datensatz der
-	 * Menge gespeichert werden soll
-	 */
-	private File _elementsFile;
-	
-	/** Byte Array mit dem aus der Datei _elementsFile gelesenen oder noch zu schreibenden Datensatz mit der Elementzugehörigkeit der Menge */
-	private byte[] _elementsDataBytes = null;
-	
-	/** Muss der in _elementsDataBytes enthaltene Datensatz noch in der Datei gespeichert werden? */
-	private boolean _elementsDataBytesChanged = false;
+
 	
 	/** Delegations-Klasse für das Interface {@link ConfigurationCommunicationInterface} */
 	ConfigurationCommunicationListenerSupport _configComHelper;
 
 	private String _elementsManagementPid = "";
+
+	private MutableSetStorage _mutableSetStorage;
 
 	/**
 	 * Konstruktor einer dynamischen Menge.
@@ -153,7 +139,7 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	void informListeners(SystemObject[] addedObjects, SystemObject[] removedObjects, short simulationVariant) {
 		final List<SystemObject> addedElements = Arrays.asList(addedObjects);
 		final List<SystemObject> removedElements = Arrays.asList(removedObjects);
-		((ConfigDataModel)getDataModel()).sendCollectionChangedNotification(_mutableCollectionSupport, simulationVariant, addedElements, removedElements);
+		getDataModel().sendCollectionChangedNotification(_mutableCollectionSupport, simulationVariant, addedElements, removedElements);
 		synchronized(_lockListeners) {
 			// falls kein Listener angemeldet wurde, muss auch niemandem Bescheid gegeben werden
 			if(_changeListeners == null) {
@@ -169,13 +155,13 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 			}
 		}
 	}
-	
+
 	/**
 	 * Löscht alle Elemente permanent aus dieser dynamischen Menge.
-	 * 
+	 *
 	 * @param simulationVariant
 	 *            die Simulationsvariante
-	 * 
+	 *
 	 * @throws ConfigurationChangeException
 	 *             Falls die Elemente zur Simulationsvariante nicht gelöscht werden konnten oder nicht gelöscht werden dürfen (bei Simulationsvariante 0).
 	 */
@@ -183,30 +169,30 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 		if(simulationVariant == 0) {
 			throw new ConfigurationChangeException("Elemente mit Simulationsvariante '0' dürfen nicht aus einer dynamischen Menge gelöscht werden.");
 		}
-		
+		loadElementAccessProperties();
 		synchronized(_lockElements) {
 			// Datensatz auslesen
-			final List<MutableElement> mutableElements = getMutableElements();
-			final List<SystemObject> removedObjects = new ArrayList<SystemObject>();
-			final long time = System.currentTimeMillis();
-			
-			// Elemente mit angegebener Simulationsvariante rausfiltern
-			final List<MutableElement> filteredMutableElements = new ArrayList<MutableElement>();
-			for(MutableElement mutableElement : mutableElements) {
-				if(mutableElement.getSimulationVariant() != simulationVariant) {
-					filteredMutableElements.add(mutableElement);
-				}
-				else if(mutableElement.getStartTime() <= time && (mutableElement.getEndTime() > time || mutableElement.getEndTime() == 0)) {
-					removedObjects.add(mutableElement.getElement());
-				}
-			}
-			
-			// neue Liste abspeichern
-			saveMutableSets(filteredMutableElements);
+			final List<SystemObject> removedObjects = _mutableSetStorage.deleteElements(simulationVariant);
 			informListeners(new SystemObject[0], removedObjects.toArray(new SystemObject[removedObjects.size()]), simulationVariant);
 		}
 	}
-	
+
+
+	/**
+	 * Entfernt alle historischen Elemente, die vor dem angegebenen Zeitstempel auf ungültig gesetzt wurden
+	 * @param deletionTime Zeitstempel analog zu System.currentTimeMillis()
+	 * @return Alle aus den Referenzen bereinigten Systemobjekte
+	 */
+	public List<SystemObject> deleteElementsOlderThan(final long deletionTime) throws ConfigurationChangeException {
+		loadElementAccessProperties();
+		synchronized(_lockElements) {
+			// Datensatz auslesen
+			final List<SystemObject> removedObjects = _mutableSetStorage.deleteElementsOlderThan(deletionTime);
+			informListeners(new SystemObject[0], removedObjects.toArray(new SystemObject[removedObjects.size()]), (short)0);
+			return removedObjects;
+		}
+	}
+
 	public List<SystemObject> getElements() {
 		synchronized(_lockElements) {
 			if(_elements == null) {
@@ -217,20 +203,23 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	}
 	
 	public List<SystemObject> getElementsWithSimulationVariant(short simulationVariant) {
-		return Collections.unmodifiableList(getElementsWithSimulationVariant(System.currentTimeMillis(), simulationVariant));
+		return getElementsWithSimulationVariant(System.currentTimeMillis(), simulationVariant);
 	}
 	
 	public List<SystemObject> getElements(long time) {
-		return Collections.unmodifiableList(getElementsWithSimulationVariant(time, (short)0));
+		return getElementsWithSimulationVariant(time, (short) 0);
 	}
 	
 	public List<SystemObject> getElementsWithSimulationVariant(long time, short simulationVariant) {
 		synchronized(_lockElements) {
 			final List<SystemObject> elements = new ArrayList<SystemObject>();
-			for(MutableElement mutableElement : getMutableElements()) {
+			for(MutableSetStorage.MutableElement mutableElement : getMutableElements()) {
 				if(mutableElement.getSimulationVariant() == simulationVariant && mutableElement.getStartTime() <= time
 				        && (mutableElement.getEndTime() > time || mutableElement.getEndTime() == 0)) {
-					elements.add(mutableElement.getElement());
+					SystemObject object = mutableElement.getObject();
+					if(object != null) {
+						elements.add(object);
+					}
 				}
 			}
 			// gibt alle Elemente zurück, die zu dieser Zeit mit dieser Simulationsvariante gültig sind
@@ -239,7 +228,7 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	}
 	
 	public List<SystemObject> getElementsInPeriod(long startTime, long endTime) {
-		return Collections.unmodifiableList(getElementsInPeriod(startTime, endTime, (short)0));
+		return getElementsInPeriod(startTime, endTime, (short) 0);
 	}
 	
 	/**
@@ -257,19 +246,20 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	 */
 	public List<SystemObject> getElementsInPeriod(long startTime, long endTime, short simulationVariant) {
 		synchronized(_lockElements) {
-			final List<SystemObject> elements = new ArrayList<SystemObject>();
-			for(MutableElement mutableElement : getMutableElements()) {
+			// Set, damit doppelte Elemente eliminiert werden (Ein Element kann im Zeitbereich mehrmals eingefügt und wieder gelöscht werden)
+			final Set<SystemObject> elements = new LinkedHashSet<SystemObject>();
+			for(MutableSetStorage.MutableElement mutableElement : getMutableElements()) {
 				if(mutableElement.getSimulationVariant() == simulationVariant && mutableElement.getStartTime() <= endTime
 				        && (mutableElement.getEndTime() > startTime || mutableElement.getEndTime() == 0)) {
-					elements.add(mutableElement.getElement());
+					elements.add(mutableElement.getObject());
 				}
 			}
-			return Collections.unmodifiableList(elements);
+			return new ArrayList<SystemObject>(elements);
 		}
 	}
 	
 	public List<SystemObject> getElementsDuringPeriod(long startTime, long endTime) {
-		return Collections.unmodifiableList(getElementsDuringPeriod(startTime, endTime, (short)0));
+		return getElementsDuringPeriod(startTime, endTime, (short) 0);
 	}
 	
 	/**
@@ -287,16 +277,16 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	public List<SystemObject> getElementsDuringPeriod(long startTime, long endTime, short simulationVariant) {
 		synchronized(_lockElements) {
 			final List<SystemObject> elements = new ArrayList<SystemObject>();
-			for(MutableElement mutableElement : getMutableElements()) {
+			for(MutableSetStorage.MutableElement mutableElement : getMutableElements()) {
 				if(mutableElement.getSimulationVariant() == simulationVariant && mutableElement.getStartTime() <= startTime
 				        && (mutableElement.getEndTime() > endTime || mutableElement.getEndTime() == 0)) {
-					elements.add(mutableElement.getElement());
+					elements.add(mutableElement.getObject());
 				}
 			}
 			return Collections.unmodifiableList(elements);
 		}
 	}
-	
+
 	/**
 	 * Fügt ein Element zur dynamischen Menge in Abhängigkeit der Simulationsvariante.
 	 * 
@@ -329,6 +319,8 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	 * @see #add(de.bsvrz.dav.daf.main.config.SystemObject[])
 	 */
 	public void add(SystemObject[] objects, short simulationVariant) throws ConfigurationChangeException {
+		loadElementAccessProperties();
+
 		if(checkChangeElementsPermit()) {
 			// Typ der Elemente prüfen
 			checkObjectTypeOfElements(objects);
@@ -358,6 +350,12 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 					        "Elemente können nicht der dynamischen Menge hinzugefügt werden, da sonst die maximale Elementanzahl (" + maximumElements
 					                + ") überschritten wird.");
 				}
+
+				for(SystemObject systemObject : elementsToAdd) {
+					if(!getDataModel().referenceAllowed(systemObject)) {
+						throw new ConfigurationChangeException("Das referenzierte Objekt \"" + systemObject + "\" ist nicht mehr gültig");
+					}
+				}
 				
 				// Elemente der Menge hinzufügen, wenn welche hinzuzufügen sind
 				if(!elementsToAdd.isEmpty()) {
@@ -365,7 +363,7 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 						final SystemObject[] systemObjectsToAdd = elementsToAdd.toArray(new SystemObject[elementsToAdd.size()]);
 						
 						// den konfigurierenden Datensatz speichern
-						setConfigurationData(systemObjectsToAdd, null, simulationVariant);
+						_mutableSetStorage.add(elementsToAdd, simulationVariant);
 						
 						// aktuelle Menge auf den neuesten Stand bringen
 						if(_elements != null && simulationVariant == 0) {
@@ -404,7 +402,7 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 		synchronized(_lockElementAccessProperties) {
 			if(!_elementAccessFieldsInitialized) {
 				_elementChangesAllowed = getDataModel().getConfigurationAuthorityPid().equals(getConfigurationArea().getConfigurationAuthority().getPid());
-				_elementsFile = null;
+				File elementsFile = null;
 				
 				final DataModel configuration = getDataModel();
 				final AttributeGroup atg = configuration.getAttributeGroup("atg.dynamischeMenge");
@@ -415,11 +413,20 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 						if(!_elementsManagementPid.equals("")) {
 							_elementChangesAllowed = getDataModel().getConfigurationAuthorityPid().equals(_elementsManagementPid);
 							if(_elementChangesAllowed) {
-								_elementsFile = new File(((ConfigDataModel)getDataModel()).getManagementFile().getObjectSetDirectory(), String.valueOf(getId())
-								                                                                                                        + ".menge");
+								elementsFile = new File(
+										getDataModel().getManagementFile().getObjectSetDirectory(),
+										String.valueOf(getId())	+ ".menge"
+								);
 							}
 						}
 					}
+				}
+
+				if(elementsFile == null){
+					_mutableSetStorage = new MutableSetConfigDataStorage(this);
+				}
+				else {
+					_mutableSetStorage = new MutableSetExtFileStorage(elementsFile, this);
 				}
 				
 				_elementAccessFieldsInitialized = true;
@@ -506,6 +513,8 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	 *             Falls die Elemente nicht entfernt werden können.
 	 */
 	public void remove(SystemObject[] objects, short simulationVariant) throws ConfigurationChangeException {
+		loadElementAccessProperties();
+
 		if(checkChangeElementsPermit()) {
 			synchronized(_lockElements) {
 				// aktuelle Elemente dieser Menge ermitteln
@@ -539,7 +548,7 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 						final SystemObject[] systemObjectsToRemove = elementsToRemove.toArray(new SystemObject[elementsToRemove.size()]);
 						
 						// den konfigurierenden Datensatz speichern
-						setConfigurationData(null, systemObjectsToRemove, simulationVariant);
+						_mutableSetStorage.invalidate(elementsToRemove, simulationVariant);
 						
 						// aktuelle Menge auf den neuesten Stand bringen
 						if(_elements != null && simulationVariant == 0) {
@@ -562,215 +571,24 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 			        + "' zuständig.");
 		}
 	}
-	
-	/**
-	 * Speichert einen konfigurierenden Datensatz mit den übergebenen Änderungen der Elemente an der Menge.
-	 * 
-	 * @param addedElements
-	 *            hinzugefügte Elemente
-	 * @param removedElements
-	 *            entfernte Elemente
-	 * @param simulationVariant
-	 *            Simulationsvariante
-	 * 
-	 * @throws ConfigurationChangeException
-	 *             Wenn der konfigurierende Datensatz nicht geschrieben werden konnte.
-	 */
-	private void setConfigurationData(SystemObject[] addedElements, SystemObject[] removedElements, short simulationVariant)
-	        throws ConfigurationChangeException {
-		// alle Elemente aus der Menge holen einschließlich der nicht aktuellen (versionierten)
-		final List<MutableElement> mutableElements = getMutableElements();
-		// Liste anpassen
-		long time = System.currentTimeMillis(); // benötigter Zeitstempel
-		if(addedElements != null) {
-			// neue Elemente hinzufügen
-			for(SystemObject systemObject : addedElements) {
-				mutableElements.add(new MutableElement(systemObject, time, 0, simulationVariant));
-			}
-		}
-		if(removedElements != null) {
-			// Elemente löschen
-			for(SystemObject systemObject : removedElements) {
-				for(MutableElement mutableElement : mutableElements) {
-					// da Elemente mehrfach in die Menge eingefügt und entfernt werden können, muss auf EndTime == 0 abgefragt werden
-					if(mutableElement.getElement().equals(systemObject) && mutableElement.getSimulationVariant() == simulationVariant
-					        && mutableElement.getEndTime() == 0) {
-						mutableElement.setEndTime(time);
-					}
-				}
-			}
-		}
-		saveMutableSets(mutableElements);
-	}
-	
-	/**
-	 * Speichert die Elemente dieser Menge (auch historische) in einem konfigurierenden Datensatz ab.
-	 * 
-	 * @param mutableElements
-	 *            Elemente dieser Menge
-	 * 
-	 * @throws ConfigurationChangeException
-	 *             Falls die Elemente nicht in einem konfigurierenden Datensatz abgespeichert werden können.
-	 */
-	private void saveMutableSets(final List<MutableElement> mutableElements) throws ConfigurationChangeException {
-		// Liste in ein Byte-Array packen und abspeichern
-		try {
-			final ByteArrayOutputStream out = new ByteArrayOutputStream();
-			final Serializer serializer = SerializingFactory.createSerializer(getSerializerVersion(), out);
-			for(MutableElement mutableElement : mutableElements) {
-				serializer.writeLong(mutableElement.getElement().getId());
-				serializer.writeLong(mutableElement.getStartTime());
-				serializer.writeLong(mutableElement.getEndTime());
-				serializer.writeShort(mutableElement.getSimulationVariant());
-			}
-			final byte[] bytes = out.toByteArray();
-			if(_elementsFile != null) {
-				_elementsDataBytes = bytes;
-				if(!_elementsDataBytesChanged) {
-					_elementsDataBytesChanged = true;
-					((ConfigDataModel)getDataModel()).saveSetElementsFileLater(this);
-				}
-			}
-			else {
-				_systemObjectInfo.setConfigurationData(CONFIGURATION_ELEMENTS_IN_MUTABLE_SET, bytes);
-				// ein Datensatz hat sich geändert -> dem Konfigurationsbereich Bescheid sagen
-				((ConfigConfigurationArea)getConfigurationArea()).setTimeOfLastChanges(ConfigConfigurationArea.KindOfLastChange.ConfigurationData);
-			}
-			out.close();
-		}
-		catch(Exception ex) {
-			final String errorMessage = "Der konfigurierende Datensatz mit den Elementen der Menge " + getNameOrPidOrId() + " konnte nicht geschrieben werden";
-			_debug.error(errorMessage, ex);
-			throw new ConfigurationChangeException(errorMessage, ex);
-		}
-	}
-	
+
+
 	/**
 	 * Diese Methode liest den konfigurierenden Datensatz für die Elemente dieser Menge ein und gibt sie in einer Liste zurück.
-	 * 
+	 *
 	 * @return eine Liste von Elementen mit Zeitstempeln, die die Zugehörigkeitszeiträume repräsentieren
 	 */
-	private List<MutableElement> getMutableElements() {
-		// die eingelesenen Elemente werden nicht alle vorgehalten, da dies auf Dauer zu viele werden können
-		final List<MutableElement> mutableElements = new ArrayList<MutableElement>();
-		try {
-			byte[] bytes;
-			loadElementAccessProperties();
-			if(_elementsFile == null) {
-				// feste ID für die ATG-Verwendung um die Elemente einer Menge zu erhalten
-				bytes = _systemObjectInfo.getConfigurationData(CONFIGURATION_ELEMENTS_IN_MUTABLE_SET);
-			}
-			else {
-				if(_elementsDataBytes == null) {
-					if(_elementsFile.isFile() && _elementsFile.canRead()) {
-						final FileInputStream in = new FileInputStream(_elementsFile);
-						final DataInputStream din = new DataInputStream(in);
-						try {
-							final byte version = din.readByte();
-							if(version == 1) {
-								final int size = din.readInt();
-								final byte[] readBytes = new byte[size];
-								din.readFully(readBytes);
-								_elementsDataBytes = readBytes;
-							}
-						}
-						finally {
-							din.close();
-							in.close();
-						}
-					}
-					else {
-						if(_elementsFile.exists()) {
-							_debug.warning("Datei mit der Elementzugehörigkeit einer dynamischen Menge kann nicht gelesen werden", _elementsFile.getPath());
-						}
-						_elementsDataBytes = new byte[0];
-					}
-				}
-				bytes = _elementsDataBytes;
-			}
-			final ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-			final Deserializer deserializer = SerializingFactory.createDeserializer(getSerializerVersion(), in);
-			assert bytes.length % 26 == 0 : "Format des Byte-Arrays für die Elemente einer Menge " + getNameOrPidOrId()
-			        + " hat sich geändert. Länge muss durch 26 teilbar sein.";
-			int numberOfElements = bytes.length / 26;
-			for(int i = 0; i < numberOfElements; i++) {
-				long id = deserializer.readLong();
-				long startTime = deserializer.readLong(); // Zeit, ab der das Element zur Menge gehört
-				long endTime = deserializer.readLong(); // Zeit, ab der das Element nicht mehr zur Menge gehört
-				short simulationVariant = deserializer.readShort(); // Simulationsvariante dieses Objekt, in der es zur Menge hinzugefügt oder aus der Menge entfernt wurde
-				final SystemObject object = getDataModel().getObject(id);
-				
-				if(object != null) {
-					mutableElements.add(new MutableElement(object, startTime, endTime, simulationVariant));
-				}
-				else {
-					_debug.warning("Element mit Id '" + id + "' kann nicht der Menge '" + getPidOrNameOrId()
-					        + "' hinzugefügt werden, da es kein System-Objekt hierzu gibt.");
-				}
-			}
-			in.close();
-			return mutableElements;
-		}
-		catch(IllegalArgumentException ex) {
-			final String errorMessage = "Elemente der dynamischen Menge '" + getNameOrPidOrId()
-			        + "' konnten nicht ermittelt werden (evtl. wurde die Menge neu angelegt)";
-			_debug.finest(errorMessage, ex.getMessage());
-		}
-		catch(Exception ex) {
-			final String errorMessage = "Elemente der dynamischen Menge " + getNameOrPidOrId() + " konnten nicht ermittelt werden";
-			_debug.error(errorMessage, ex);
-			throw new RuntimeException(errorMessage, ex);
-		}
-		return mutableElements;
+	private List<MutableSetStorage.MutableElement> getMutableElements() {
+		// Muss synchronisiert auf _lockElements ausgeführt werden
+		assert Thread.holdsLock(_lockElements);
+
+		loadElementAccessProperties();
+		return _mutableSetStorage.getMutableElements();
 	}
-	
-	void saveElementsData() {
-		synchronized(_lockElements) {
-			if(!_elementsDataBytesChanged) {
-				return;
-			}
-			_elementsDataBytesChanged = false;
-			if(_elementsFile.isFile()) {
-				final File backupFile = new File(_elementsFile.getParentFile(), _elementsFile.getName() + ".old");
-				if(backupFile.exists()) {
-					backupFile.delete();
-				}
-				_elementsFile.renameTo(backupFile);
-			}
-			final FileOutputStream out;
-			try {
-				out = new FileOutputStream(_elementsFile);
-			}
-			catch(FileNotFoundException e) {
-				_debug.error("Fehler beim Erzeugen der Datei mit der Elementzugehörigkeit einer dynamischen Menge", _elementsFile);
-				return;
-			}
-			final DataOutputStream dout = new DataOutputStream(out);
-			try {
-				// Version
-				dout.writeByte(1);
-				// Size
-				dout.writeInt(_elementsDataBytes.length);
-				// Bytes
-				dout.write(_elementsDataBytes);
-			}
-			catch(Exception e) {
-				_debug.error("Fehler beim Schreiben der Datei mit der Elementzugehörigkeit einer dynamischen Menge", _elementsFile);
-			}
-			finally {
-				try {
-					dout.close();
-				}
-				catch(IOException e) {
-					_debug.error("Fehler beim Schließen der Datei mit der Elementzugehörigkeit einer dynamischen Menge", _elementsFile);
-				}
-				try {
-					out.close();
-				}
-				catch(IOException e) {
-					_debug.error("Fehler beim Schließen der Datei mit der Elementzugehörigkeit einer dynamischen Menge", _elementsFile);
-				}
-			}
+
+	public Collection<? extends MutableElementInterface> getAllElements(){
+		synchronized(_lockElements){
+			return Collections.unmodifiableList(getMutableElements());
 		}
 	}
 
@@ -803,91 +621,6 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 		}
 	}
 
-	/**
-	 * Repräsentiert ein Element der Menge mit dem Zeitstempel, ab dem das Element zur Menge gehört und dem Zeitstempel, ab dem das Element nicht mehr zur Menge
-	 * gehört.
-	 */
-	private class MutableElement {
-		
-		/** ein Element der Menge */
-		private SystemObject _element;
-		
-		/** Zeitstempel, seit dem das Element zur Menge gehört */
-		private long _startTime;
-		
-		/** Zeitstempel, seit dem das Element nicht mehr zur Menge gehört */
-		private long _endTime;
-		
-		/** Simulationsvariante, in welcher das Objekt zur Menge hinzugefügt wurde */
-		private short _simulationVariant;
-		
-		/**
-		 * Erzeugt ein Objekt für die dynamische Menge.
-		 * 
-		 * @param element
-		 *            das System-Objekt
-		 * @param startTime
-		 *            Zeitstempel, seit dem das Element zur Menge gehört
-		 * @param endTime
-		 *            Zeitstempel, seit dem das Element nicht mehr zur Menge gehört
-		 * @param simulationVariant
-		 *            Simulationsvariante, in welcher das Objekt zur Menge hinzugefügt wurde
-		 */
-		public MutableElement(SystemObject element, long startTime, long endTime, short simulationVariant) {
-			_element = element;
-			_startTime = startTime;
-			_endTime = endTime;
-			_simulationVariant = simulationVariant;
-		}
-		
-		/**
-		 * Gibt das System-Objekt zurück.
-		 * 
-		 * @return das System-Objekt
-		 */
-		public SystemObject getElement() {
-			return _element;
-		}
-		
-		/**
-		 * Gibt den Zeitstempel zurück, der angibt, seit wann das Element zur Menge gehört.
-		 * 
-		 * @return Zeitstempel, seit dem das Element zur Menge gehört
-		 */
-		public long getStartTime() {
-			return _startTime;
-		}
-		
-		/**
-		 * Gibt den Zeitstempel zurück, der angibt, seit wann das Element nicht mehr zur Menge gehört.
-		 * 
-		 * @return Zeitstempel, seit dem das Element nicht mehr zur Menge gehört
-		 */
-		public long getEndTime() {
-			return _endTime;
-		}
-		
-		/**
-		 * Gibt die Simulationsvariante dieses Elements zurück, in der das Objekt dieser dynamischen Menge hinzugefügt wurde.
-		 * 
-		 * @return die Simulationsvariante, in welcher das Objekt der Menge hinzugefügt wurde.
-		 */
-		public short getSimulationVariant() {
-			return _simulationVariant;
-		}
-		
-		/**
-		 * Setzt den Zeitstempel, der angibt, seit wann das Element nicht mehr zur Menge gehört.
-		 * 
-		 * @param endTime
-		 *            Zeitstempel, seit dem das Element nicht mehr zur Menge gehört
-		 */
-		public void setEndTime(long endTime) {
-			_endTime = endTime;
-		}
-		
-	}
-	
 	public void addConfigurationCommunicationChangeListener(ConfigurationCommunicationChangeListener listener) {
 		
 		_configComHelper.addConfigurationCommunicationChangeListener(listener);
@@ -905,5 +638,5 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	public boolean isConfigurationCommunicationActive() {
 		throw new UnsupportedOperationException("Nicht implementiert!");
 	}
-	
+
 }

@@ -26,7 +26,7 @@ package de.bsvrz.dav.daf.main;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 11248 $ / $Date: 2013-04-30 18:18:30 +0200 (Di, 30 Apr 2013) $ / ($Author: rs $)
+ * @version $Revision: 11248 $ / $Date: 2013-04-30 18:18:30 +0200 (Tue, 30 Apr 2013) $ / ($Author: rs $)
  */
 public final class DataState {
 

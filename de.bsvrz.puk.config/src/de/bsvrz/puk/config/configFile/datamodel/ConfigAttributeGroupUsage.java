@@ -21,20 +21,16 @@
 
 package de.bsvrz.puk.config.configFile.datamodel;
 
-import de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformationInterface;
 import de.bsvrz.dav.daf.main.Data;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentifications;
-import de.bsvrz.dav.daf.main.config.Aspect;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.AttributeGroupUsageIdentifier;
+import de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformationInterface;
 
 /**
  * Implementierung der Attributgruppenverwendung auf Seiten der Konfiguration.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 5074 $ / $Date: 2007-09-02 14:19:12 +0200 (So, 02 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 13136 $ / $Date: 2015-01-29 16:38:49 +0100 (Thu, 29 Jan 2015) $ / ($Author: jh $)
  */
 public class ConfigAttributeGroupUsage extends ConfigConfigurationObject implements AttributeGroupUsage, AttributeGroupUsageIdentifier {
 
@@ -45,6 +41,9 @@ public class ConfigAttributeGroupUsage extends ConfigConfigurationObject impleme
 	 * @see #getIdentificationForDav
 	 */
 	private long _identificationForDav = 0;
+
+	/** Cache für Usage */
+	private Usage _usage;
 
 	/**
 	 * Konstruktor einer Attributgruppenverwendung.
@@ -101,28 +100,44 @@ public class ConfigAttributeGroupUsage extends ConfigConfigurationObject impleme
 		}
 	}
 
-	public Usage getUsage() {
-		Data data = getConfigurationData(getDataModel().getAttributeGroup("atg.attributgruppenVerwendung"), getDataModel().getAspect("asp.eigenschaften"));
-		if(data != null) {
-			int usage = data.getUnscaledValue("DatensatzVerwendung").intValue();
-			switch(usage) {
-				case 1:
-					return Usage.RequiredConfigurationData;
-				case 2:
-					return Usage.ChangeableRequiredConfigurationData;
-				case 3:
-					return Usage.OptionalConfigurationData;
-				case 4:
-					return Usage.ChangeableOptionalConfigurationData;
-				case 5:
-					return Usage.OnlineDataAsSourceReceiver;
-				case 6:
-					return Usage.OnlineDataAsSenderDrain;
-				case 7:
-					return Usage.OnlineDataAsSourceReceiverOrSenderDrain;
+	public synchronized Usage getUsage() {
+		Usage result = _usage;
+		if(result == null) {
+			Data data = getConfigurationData(getDataModel().getAttributeGroup("atg.attributgruppenVerwendung"), getDataModel().getAspect("asp.eigenschaften"));
+			if(data != null) {
+				int usage = data.getUnscaledValue("DatensatzVerwendung").intValue();
+				switch(usage) {
+					case 1:
+						result = Usage.RequiredConfigurationData;
+						break;
+					case 2:
+						result = Usage.ChangeableRequiredConfigurationData;
+						break;
+					case 3:
+						result = Usage.OptionalConfigurationData;
+						break;
+					case 4:
+						result = Usage.ChangeableOptionalConfigurationData;
+						break;
+					case 5:
+						result = Usage.OnlineDataAsSourceReceiver;
+						break;
+					case 6:
+						result = Usage.OnlineDataAsSenderDrain;
+						break;
+					case 7:
+						result = Usage.OnlineDataAsSourceReceiverOrSenderDrain;
+						break;
+				}
 			}
 		}
-		throw new IllegalStateException("Verwendungsmöglichkeit der Attributgruppenverwendung " + getNameOrPidOrId() + " konnte nicht ermittelt werden.");
+		if(result == null) {
+			throw new IllegalStateException("Verwendungsmöglichkeit der Attributgruppenverwendung " + getNameOrPidOrId() + " konnte nicht ermittelt werden.");
+		}
+		else {
+			_usage = result;
+		}
+		return result;
 	}
 
 	/**
@@ -170,5 +185,11 @@ public class ConfigAttributeGroupUsage extends ConfigConfigurationObject impleme
 			}
 		}
 		return getId();
+	}
+
+	@Override
+	void invalidateCache() {
+		_usage = null;
+		super.invalidateCache();
 	}
 }

@@ -33,7 +33,7 @@ import java.util.Iterator;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 11528 $ / $Date: 2013-08-06 17:08:05 +0200 (Di, 06 Aug 2013) $ / ($Author: jh $)
+ * @version $Revision: 11528 $ / $Date: 2013-08-06 17:08:05 +0200 (Tue, 06 Aug 2013) $ / ($Author: jh $)
  */
 public abstract class ByteArrayData implements Data {
 	protected final byte[] _bytes;

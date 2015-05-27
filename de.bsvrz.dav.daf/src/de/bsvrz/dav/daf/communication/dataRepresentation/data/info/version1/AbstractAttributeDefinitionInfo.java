@@ -39,7 +39,7 @@ import java.util.*;
  * Klasse, die noch zu dokumentieren ist.
  *
  * @author Roland Schmitz (rs), Kappich Systemberatung
- * @version $Revision: 5084 $ / $Date: 2007-09-03 10:42:50 +0200 (Mo, 03 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 5084 $ / $Date: 2007-09-03 10:42:50 +0200 (Mon, 03 Sep 2007) $ / ($Author: rs $)
  */
 public abstract class AbstractAttributeDefinitionInfo implements AttributeDefinitionInfo {
 	private static final Map<AttributeSet, AttributeDefinitionInfo> _AttributSet2InfoMap = new IdentityHashMap<AttributeSet, AttributeDefinitionInfo>();

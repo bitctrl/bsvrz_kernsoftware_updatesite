@@ -21,18 +21,8 @@
 
 package de.bsvrz.sys.funclib.losb.kernsoftware;
 
-import de.bsvrz.dav.daf.main.ClientDavInterface;
-import de.bsvrz.dav.daf.main.ClientSenderInterface;
-import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.DataDescription;
-import de.bsvrz.dav.daf.main.OneSubscriptionPerSendData;
-import de.bsvrz.dav.daf.main.ResultData;
-import de.bsvrz.dav.daf.main.SenderRole;
-import de.bsvrz.dav.daf.main.config.Aspect;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.ConfigurationException;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.SystemObject;
+import de.bsvrz.dav.daf.main.*;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.sys.funclib.debug.Debug;
 import de.bsvrz.sys.funclib.losb.exceptions.FailureException;
 import de.bsvrz.sys.funclib.losb.exceptions.LoggerException;
@@ -45,7 +35,7 @@ import de.bsvrz.sys.funclib.losb.util.Util;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 6420 $ / $Date: 2009-03-10 23:19:01 +0100 (Di, 10 Mrz 2009) $ / ($Author: rs $)
+ * @version $Revision: 12870 $ / $Date: 2014-10-08 10:57:06 +0200 (Wed, 08 Oct 2014) $ / ($Author: jh $)
  * @see SubscriptionManager
  */
 public class Sender implements ClientSenderInterface {
@@ -238,8 +228,8 @@ public class Sender implements ClientSenderInterface {
 	 *
 	 * @throws FailureException
 	 */
-	public void sendIfPosSendCtrl(Data data) throws FailureException {
-		sendData(data, System.currentTimeMillis(), NOT_DELAYED, WAIT_FOR_SEND_CTRL);
+	public boolean sendIfPosSendCtrl(Data data) throws FailureException {
+		return sendData(data, System.currentTimeMillis(), NOT_DELAYED, WAIT_FOR_SEND_CTRL);
 	}
 
 	/**
@@ -286,6 +276,11 @@ public class Sender implements ClientSenderInterface {
 				// Vollstaendig im sync-Block, damit die Variable canSend zwischen if... und return.. nicht
 				// durch eine erneute Sendesteuerung veraendert werden kann.
 				while(lastState == NO_SENDCTRL_YET || (waitForPosSendCtrl && !canSend)) wait();
+
+				// Workaround: Bei Dav-Dav-Koppung besteht das Problem, dass zuerst eine negative Sendesteuerung kommt
+				// und kurze Zeit später eine positive. Hier darf nach der ersten negativen Sendesteuerung nicht aufgehört werden
+				// zu warten, sonst kommt keine Kommunikation zustande!
+				if(!canSend) wait(5000);
 				if(canSend) dav.sendData(new ResultData(receiver, dataDescription, dataTime, data, delayed));
 				return canSend;
 			}

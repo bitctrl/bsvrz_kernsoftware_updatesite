@@ -21,8 +21,9 @@
 
 package de.bsvrz.dav.daf.main.impl.config;
 
-import de.bsvrz.dav.daf.main.config.AttributeType;
 import de.bsvrz.dav.daf.main.config.Attribute;
+import de.bsvrz.dav.daf.main.config.AttributeType;
+import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -32,11 +33,11 @@ import java.io.IOException;
  * Klasse, die den Zugriff auf Attribute seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5054 $
+ * @version $Revision: 13173 $
  */
 public class DafAttribute extends DafConfigurationObject implements Attribute {
 
-	/** Die Position dieses Attributs in der Attributegruppe oder Attributeliste */
+	/** Die Position dieses Attributs in der Attributgruppe oder Attributliste */
 	private short _attributePosition;
 
 	/** Anzahl von Elementen in einem Feld, falls diese Attribut ein Feld ist */
@@ -132,6 +133,21 @@ public class DafAttribute extends DafConfigurationObject implements Attribute {
 		_attributeTypeId = in.readLong();
 		if(in.readBoolean()) {
 			_defaultAttributeValue = in.readUTF();
+		}
+		else {
+			_defaultAttributeValue = null;
+		}
+	}
+
+	@Override
+	public void read(final Deserializer deserializer) throws IOException {
+		super.read(deserializer);
+		_attributePosition = deserializer.readShort();
+		_arraySize = deserializer.readInt();
+		_isDynamicArray = deserializer.readBoolean();
+		_attributeTypeId = deserializer.readLong();
+		if(deserializer.readBoolean()) {
+			_defaultAttributeValue = deserializer.readString();
 		}
 		else {
 			_defaultAttributeValue = null;

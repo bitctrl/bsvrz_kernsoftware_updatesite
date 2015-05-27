@@ -36,7 +36,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * repräsentiert werden.
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 8084 $
+ * @version $Revision: 12603 $
  * 
  */
 public class SelectionManager {

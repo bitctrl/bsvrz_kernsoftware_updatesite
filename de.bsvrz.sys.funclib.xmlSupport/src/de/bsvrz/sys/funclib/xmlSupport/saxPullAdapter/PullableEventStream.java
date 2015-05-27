@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
  * Klasse, zum Zugriff auf die vom SaxPullAdapter beim Parsen einer XML-Datei erzeugten Ereignisse.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5009 $
+ * @version $Revision: 13181 $
  */
 public class PullableEventStream {
 	private final BufferedQueue<Event> _queue;
@@ -100,6 +100,7 @@ public class PullableEventStream {
 
 	private void ignoreIgnorableCharacters() throws InterruptedException {
 		while(_currentEvent.getType() == EventType.IGNORABLE_CHARACTERS) pullAnyEvent();
+		while(_currentEvent.getType() == EventType.CHARACTERS && ((CharactersEvent)_currentEvent).getText().trim().isEmpty()) pullAnyEvent();
 	}
 
 	public boolean matchStartElement() throws InterruptedException {

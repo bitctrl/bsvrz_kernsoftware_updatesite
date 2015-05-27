@@ -29,7 +29,7 @@ import java.util.List;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Stephan Homeyer (sth)
- * @version $Revision: 5052 $ / $Date: 2007-08-31 20:02:55 +0200 (Fr, 31 Aug 2007) $ / ($Author: rs $)
+ * @version $Revision: 5052 $ / $Date: 2007-08-31 20:02:55 +0200 (Fri, 31 Aug 2007) $ / ($Author: rs $)
  */
 public interface IntegerAttributeType extends AttributeType, UndefinedAttributeValueAccess {
 	/**

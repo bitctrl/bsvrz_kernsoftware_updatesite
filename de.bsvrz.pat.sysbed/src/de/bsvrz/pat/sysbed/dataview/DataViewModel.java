@@ -2,19 +2,19 @@
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
- *
+ * 
  * This file is part of de.bsvrz.pat.sysbed.
- *
+ * 
  * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
  * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -33,7 +33,7 @@ import java.util.*;
  * DataViewPanels} - mitgeteilt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8128 $
+ * @version $Revision: 12604 $
  */
 public class DataViewModel implements CellKeyServer {
 
@@ -51,7 +51,7 @@ public class DataViewModel implements CellKeyServer {
 
 	/** der Debug-Logger */
 	@SuppressWarnings("unused")
-	private final static Debug _debug = Debug.getLogger();
+	private final Debug _debug = Debug.getLogger();
 
 	/* ################ Konstruktor ############## */
 
@@ -179,7 +179,7 @@ public class DataViewModel implements CellKeyServer {
 		}
 	}
 	/*
-     * Gehört zur Implementation des CellKeyServers.
+     * Gehört zur Implementation des CellKeyServers. 
      */
 
 	public List<CellKey> getCellKeys(final RowKey rowKey) {
@@ -188,7 +188,7 @@ public class DataViewModel implements CellKeyServer {
 		return dataTableObject.getAllCellKeys();
 	}
 	/*
-     * Gehört zur Implementation des CellKeyServers.
+     * Gehört zur Implementation des CellKeyServers. 
      */
 
 	public List<CellKey> getCellKeysBetween(final RowKey rowKey1, final RowKey rowKey2) {
@@ -207,7 +207,7 @@ public class DataViewModel implements CellKeyServer {
 		return theCellKeys;
 	}
 	/*
-     * Gehört zur Implementation des CellKeyServers.
+     * Gehört zur Implementation des CellKeyServers. 
      */
 
 	public List<CellKey> getAllCellKeys() {
@@ -219,7 +219,7 @@ public class DataViewModel implements CellKeyServer {
 		return theCellKeys;
 	}
 	/*
-     * Gehört zur Implementation des CellKeyServers.
+     * Gehört zur Implementation des CellKeyServers. 
      */
 
 	public List<RowKey> getRowKeysBetween(final RowKey rowKey1, final RowKey rowKey2) {

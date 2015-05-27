@@ -23,20 +23,20 @@ package de.bsvrz.dav.daf.main.impl.config;
 
 import de.bsvrz.dav.daf.main.config.ConfigurationCommunicationChangeListener;
 import de.bsvrz.dav.daf.main.config.ConfigurationCommunicationInterface;
+import de.bsvrz.dav.daf.main.config.DynamicObject;
 import de.bsvrz.dav.daf.main.config.InvalidationListener;
+import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.*;
 
-import de.bsvrz.dav.daf.main.config.DynamicObject;
-
 /**
  * Klasse, die den Zugriff auf dynamische Objekte seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 6072 $
+ * @version $Revision: 13141 $
  */
 public class DafDynamicObject extends DafSystemObject implements DynamicObject {
 
@@ -103,6 +103,14 @@ public class DafDynamicObject extends DafSystemObject implements DynamicObject {
 		super.read(in);
 		_validSince = in.readLong();
 		_notValidSince = in.readLong();
+	}
+
+	@Override
+	public void read(final Deserializer deserializer) throws IOException {
+		super.read(deserializer);
+		_validSince = deserializer.readLong();
+		_notValidSince = deserializer.readLong();
+		_configurationAreaId = deserializer.readLong(); // muss hier gelesen werden, da nach Gültigkeit serialisiert
 	}
 
 	public final long getValidSince() {

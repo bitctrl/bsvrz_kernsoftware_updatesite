@@ -26,7 +26,7 @@ package de.bsvrz.puk.config.configFile.fileaccess;
  *
  * @author Kappich+Kniß Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 5074 $ / $Date: 2007-09-02 14:19:12 +0200 (So, 02 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 13128 $ / $Date: 2015-01-27 16:08:07 +0100 (Tue, 27 Jan 2015) $ / ($Author: jh $)
  */
 public interface SystemObjectInformationInterface {
 
@@ -87,14 +87,31 @@ public interface SystemObjectInformationInterface {
 	byte[] getConfigurationData(long attributeGroupUsageId) throws IllegalArgumentException;
 
 	/**
-	 * Diese Methode speichert einen konfigurierenden Datensatz am Objekt. Ist bereits ein Datensatz unter der
-	 * attributeGroupUsageId gespeichert wird dieser überschrieben.
+	 * Diese Methode gibt einen konfigurierenden Datensatz zurück, der am Objekt gespeichert ist. Der Datensatz wird über
+	 * die ID seiner Attributgruppenverwendung identifiziert.
+	 *
+	 * @param attributeGroupUsageId ID der Attributgruppenverwendung des gewünschten konfigurierenden Datensatzes
+	 * @return konfigurierender Datensatz, der am Objekt gespeichert ist oder null falls kein Datensatz vorhanden
+	 */
+	byte[] getConfigurationDataOptional(long attributeGroupUsageId);
+
+	/**
+	 * Diese Methode speichert einen konfigurierenden Datensatz am Objekt. Ist bereits ein Datensatz unter der attributeGroupUsageId
+	 * gespeichert wird dieser überschrieben.
 	 *
 	 * @param attributeGroupUsageId ID der Attributgruppenverwendung zu dem der konfigurierende Datensatz gehört
-	 * @param data                 serialisierter Datensatz, siehe auch {@link ConfigurationAreaFile#getSerializerVersion}.
-	 *                             Das byte-Array kann die Länge 0 habe, das Objekt <code>null</code> ist verboten.
+	 * @param data                  serialisierter Datensatz, siehe auch {@link ConfigurationAreaFile#getSerializerVersion}. Wenn das
+	 *                              byte-Array die Länge 0 hat oder null ist wird der Datensatz gelöscht.
+	 * @throws java.lang.IllegalStateException Falls objekt {@link #isDeleted() bereits gelöscht}.
 	 */
 	void setConfigurationData(long attributeGroupUsageId, byte[] data) throws IllegalStateException;
+
+	/**
+	 * Gibt zurück, ob das Objekt bereits gelöscht wurde. Danach sind beispielsweise Änderungen an den Konfigurationsdaten verboten,
+	 * da das Objekt dann unerlaubterweise aus den NGA-Blöcken (oder dem NgDyn-Block) in die Mischmenge wandern würde.
+	 * @return true: wurde schon gelöscht, false: Objekt ist gültig oder wird in Zukunft gültig (Objekt befindet sich sicher in der Mischmenge)
+	 */
+	boolean isDeleted();
 
 	/**
 	 * Diese Methode entfernt einen konfigurierenden Datensatz, der mit {@link #setConfigurationData} hinzugefügt wurde.
@@ -103,4 +120,10 @@ public interface SystemObjectInformationInterface {
 	 *                             soll
 	 */
 	void removeConfigurationData(long attributeGroupUsageId) throws IllegalStateException;
+
+	/**
+	 * Gibt die zugehörige Konfigurationsdatei zurück
+	 * @return die zugehörige Konfigurationsdatei
+	 */
+	ConfigAreaFile getConfigAreaFile();
 }

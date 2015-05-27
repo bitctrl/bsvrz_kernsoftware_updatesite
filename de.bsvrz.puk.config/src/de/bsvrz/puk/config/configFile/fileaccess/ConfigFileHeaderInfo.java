@@ -28,14 +28,15 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
  * Diese Klasse repräsentiert den Header einer Konfigurationsdatei ("blaue Datei"). Klasse, die noch zu dokumentieren ist.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8859 $
+ * @version $Revision: 13138 $
  */
 public class ConfigFileHeaderInfo implements ConfigurationAreaFileInformationReader {
 
@@ -71,7 +72,7 @@ public class ConfigFileHeaderInfo implements ConfigurationAreaFileInformationRea
 	 * <p/>
 	 * Findet kein Versionswechsel statt, sind die Version/Zeitstempel Paare in _oldObjectBlocks und _configurationAuthorityVersionActivationTime identisch.
 	 */
-	private Map _oldObjectBlocks = new HashMap<Short, ConfigAreaFile.OldBlockInformations>();
+	private Map<Short, ConfigAreaFile.OldBlockInformations> _oldObjectBlocks = new HashMap<Short, ConfigAreaFile.OldBlockInformations>();
 
 	/**
 	 * Speichert die nächste ungültige Version. Es ist die größte Version aus _oldObjectBlocks plus 1. Ist noch kein Block vorhanden, so ist die "nächste"
@@ -203,7 +204,7 @@ public class ConfigFileHeaderInfo implements ConfigurationAreaFileInformationRea
 			final short activeVersionFile,
 			final short nextActiveVersionFile,
 			final File configAreaFile,
-			final Map oldObjectBlocks,
+			final Map<Short, ConfigAreaFile.OldBlockInformations> oldObjectBlocks,
 			final short nextInvalidBlockVersion,
 			final Map<Short, Long> configurationAuthorityVersionActivationTime,
 			final long startOldDynamicObjects,

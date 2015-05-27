@@ -37,7 +37,7 @@ import de.bsvrz.sys.funclib.operatingMessage.MessageSender;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 8553 $ / $Date: 2011-01-06 18:19:32 +0100 (Do, 06 Jan 2011) $ / ($Author: rs $)
+ * @version $Revision: 12988 $ / $Date: 2014-11-20 17:09:29 +0100 (Thu, 20 Nov 2014) $ / ($Author: rs $)
  */
 public class StandardApplicationRunner {
 
@@ -254,7 +254,7 @@ public class StandardApplicationRunner {
 				System.err.println("Laufzeitfehler: Ein Thread hat sich wegen einer Exception beendet:");
 				System.err.println(t);
 				e.printStackTrace(System.err);
-				_debug.warning("Laufzeitfehler: " + t + " hat sich wegen einer Exception beendet", e);
+				_debug.error("Laufzeitfehler: " + t + " hat sich wegen einer Exception beendet", e);
 			}
 		}
 	}

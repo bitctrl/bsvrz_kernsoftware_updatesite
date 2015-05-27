@@ -25,15 +25,11 @@ package de.bsvrz.puk.config.main.managementfile;
 import de.bsvrz.sys.funclib.debug.Debug;
 import de.bsvrz.sys.funclib.filelock.FileLock;
 import de.bsvrz.sys.funclib.xmlSupport.CountingErrorHandler;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.DocumentType;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -42,12 +38,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -74,8 +65,8 @@ public class ManagementFile implements ConfigurationManagementFile {
 	/** Datei, wo die Verwaltungsdaten abgespeichert werden sollen. */
 	private final File _xmlFile;
 
-	/** Speichert die Einträge zu den Verwaltungsdaten in dieser Liste. */
-	private final List<ConfigurationAreaManagementInfo> _areaManagementInfos;
+	/** Speichert die Einträge zu den Verwaltungsdaten. Key ist die Pid des KB */
+	private final Map<String, ConfigurationAreaManagementInfo> _areaManagementInfos;
 
 	/** Das Format des Zeitstempels für die Versionsaktivierung. */
 	private DateFormat _dateFormat;
@@ -188,8 +179,8 @@ public class ManagementFile implements ConfigurationManagementFile {
 	 *
 	 * @return eine Liste mit den Verwaltungseinträgen der Konfigurationsbereiche
 	 */
-	private List<ConfigurationAreaManagementInfo> getAllManagementInfos() {
-		List<ConfigurationAreaManagementInfo> resultList = new LinkedList<ConfigurationAreaManagementInfo>();
+	private Map<String, ConfigurationAreaManagementInfo> getAllManagementInfos() {
+		Map<String, ConfigurationAreaManagementInfo> resultList = new LinkedHashMap<String, ConfigurationAreaManagementInfo>();
 		synchronized(_xmlDocument) {
 			Element xmlRoot = _xmlDocument.getDocumentElement();
 			NodeList entryList = xmlRoot.getElementsByTagName("konfigurationsbereich");
@@ -216,7 +207,7 @@ public class ManagementFile implements ConfigurationManagementFile {
 					if(j == versionList.getLength() - 1) info.setActiveVersion(versionInformation);
 					info.addVersionInfo(versionInformation);
 				}
-				resultList.add(info);
+				resultList.put(info.getPid(), info);
 			}
 		}
 		return resultList;
@@ -270,7 +261,7 @@ public class ManagementFile implements ConfigurationManagementFile {
 	 * @return alle Konfigurationsbereiche der Konfiguration in der zu verwendenden Reihenfolge
 	 */
 	public List<ConfigurationAreaManagementInfo> getAllConfigurationAreaManagementInfos() {
-		return _areaManagementInfos;
+		return new ArrayList<ConfigurationAreaManagementInfo>(_areaManagementInfos.values());
 	}
 
 	/**
@@ -283,13 +274,8 @@ public class ManagementFile implements ConfigurationManagementFile {
 	 */
 	public ConfigurationAreaManagementInfo getConfigurationAreaManagementInfo(String configurationAreaPid) {
 		synchronized(_areaManagementInfos) {
-			for(ConfigurationAreaManagementInfo configurationAreaManagementInfo : _areaManagementInfos) {
-				if(configurationAreaManagementInfo.getPid().equals(configurationAreaPid)) {
-					return configurationAreaManagementInfo;
-				}
-			}
+			return _areaManagementInfos.get(configurationAreaPid);
 		}
-		return null;	// kein Eintrag vorhanden
 	}
 
 	/**
@@ -302,16 +288,13 @@ public class ManagementFile implements ConfigurationManagementFile {
 	public ConfigurationAreaManagementInfo addConfigurationAreaManagementInfo(String pid) {
 		// Objekt erzeugen, in XML einfügen und in die Liste eintragen
 		// erst prüfen, ob zu dieser Pid bereits ein Eintrag vorhanden ist
-		synchronized(_areaManagementInfos) {
-			for(ConfigurationAreaManagementInfo configurationAreaManagementInfo : _areaManagementInfos) {
-				if(configurationAreaManagementInfo.getPid().equals(pid)) {
-					throw new IllegalArgumentException("Zu dieser Pid '" + pid + "' gibt es bereits einen Eintrag in den Verwaltungsdaten.");
-				}
-			}
+		if(getConfigurationAreaManagementInfo(pid) != null){
+			throw new IllegalArgumentException("Zu dieser Pid '" + pid + "' gibt es bereits einen Eintrag in den Verwaltungsdaten.");
 		}
+
 		final ConfigurationAreaManagementInfo info = new ConfigAreaManagementInfo(pid, true);
 		synchronized(_areaManagementInfos) {
-			_areaManagementInfos.add(info);
+			_areaManagementInfos.put(pid, info);
 		}
 		return info;
 	}

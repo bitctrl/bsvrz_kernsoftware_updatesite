@@ -33,7 +33,7 @@ import de.bsvrz.dav.daf.communication.dataRepresentation.data.info.AttributeDefi
  * Klasse, die noch zu dokumentieren ist.
  *
  * @author Roland Schmitz (rs), Kappich Systemberatung
- * @version $Revision: 5055 $ / $Date: 2007-09-01 11:31:09 +0200 (Sa, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 5055 $ / $Date: 2007-09-01 11:31:09 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
  */
 public class AttributeGroupInfo implements AttributeInfo {
 

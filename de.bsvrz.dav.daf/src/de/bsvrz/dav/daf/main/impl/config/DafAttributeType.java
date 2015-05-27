@@ -22,17 +22,18 @@
 package de.bsvrz.dav.daf.main.impl.config;
 
 import de.bsvrz.dav.daf.main.config.AttributeType;
+import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.DataInputStream;
 
 
 /**
  * Klasse, die den Zugriff auf Attributtypen seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5054 $
+ * @version $Revision: 13141 $
  */
 public class DafAttributeType extends DafConfigurationObject implements AttributeType {
 
@@ -96,6 +97,17 @@ public class DafAttributeType extends DafConfigurationObject implements Attribut
 		super.read(in);
 		if(in.readBoolean()) {
 			_defaultAttributeValue = in.readUTF();
+		}
+		else {
+			_defaultAttributeValue = null;
+		}
+	}
+
+	@Override
+	public void read(final Deserializer deserializer) throws IOException {
+		super.read(deserializer);
+		if(deserializer.readBoolean()) {
+			_defaultAttributeValue = deserializer.readString();
 		}
 		else {
 			_defaultAttributeValue = null;

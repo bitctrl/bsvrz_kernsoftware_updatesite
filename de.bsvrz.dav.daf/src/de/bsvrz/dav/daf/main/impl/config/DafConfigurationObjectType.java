@@ -23,13 +23,13 @@ package de.bsvrz.dav.daf.main.impl.config;
 
 import de.bsvrz.dav.daf.main.config.ConfigurationObjectType;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * Klasse, die den Zugriff auf Typen von Konfigurationsobjekten seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5054 $
+ * @version $Revision: 13141 $
  */
 public class DafConfigurationObjectType extends DafSystemObjectType implements ConfigurationObjectType {
 
@@ -62,7 +62,7 @@ public class DafConfigurationObjectType extends DafSystemObjectType implements C
 			boolean hasPermanentName
 	) {
 		super(
-				id, pid, name, typId, state, error, dataModel, validFromVersionNumber, validToVersionNumber, responsibleObjectId, setIds, true, hasPermanentName
+				id, pid, name, typId, state, error, dataModel, validFromVersionNumber, validToVersionNumber, responsibleObjectId, setIds, hasPermanentName
 		);
 		_internType = CONFIGURATION_OBJECT_TYPE;
 	}

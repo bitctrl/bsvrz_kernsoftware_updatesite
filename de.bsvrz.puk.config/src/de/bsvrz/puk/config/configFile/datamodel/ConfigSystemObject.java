@@ -23,17 +23,7 @@
 package de.bsvrz.puk.config.configFile.datamodel;
 
 import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.config.Aspect;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
-import de.bsvrz.dav.daf.main.config.ConfigurationObject;
-import de.bsvrz.dav.daf.main.config.DynamicObject;
-import de.bsvrz.dav.daf.main.config.ObjectLookup;
-import de.bsvrz.dav.daf.main.config.ReferenceAttributeType;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.puk.config.configFile.fileaccess.ConfigurationObjectInfo;
 import de.bsvrz.puk.config.configFile.fileaccess.DynamicObjectInfo;
 import de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformation;
@@ -46,11 +36,11 @@ import de.bsvrz.sys.funclib.debug.Debug;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 
-import static de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentifications.CONFIGURATION_ELEMENTS_IN_MUTABLE_SET;
-import static de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentifications.CONFIGURATION_ELEMENTS_IN_NON_MUTABLE_SET;
-import static de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentifications.CONFIGURATION_SETS;
+import static de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentifications.*;
 
 
 /**
@@ -59,7 +49,7 @@ import static de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentificatio
  * implementiert.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11583 $
+ * @version $Revision: 13128 $
  */
 public abstract class ConfigSystemObject extends AbstractConfigSystemObject implements SystemObject {
 
@@ -151,7 +141,7 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 	}
 
 	public Data getConfigurationData(final AttributeGroup atg, Aspect asp) {
-		return getConfigurationData(atg, asp, getDataModel());
+		return getConfigurationData(atg, asp, getObjectLookupForData());
 	}
 
 	/**
@@ -214,7 +204,7 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 	}
 
 	public Data getConfigurationData(AttributeGroupUsage atgUsage) {
-		return getConfigurationData(atgUsage, getDataModel());
+		return getConfigurationData(atgUsage, getObjectLookupForData());
 	}
 
 	/**
@@ -263,6 +253,16 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 	}
 
 	/**
+	 * Gibt ein ObjectLookup zurück, das für die Auflösung von Referenzen in Konfigurationsdaten benutzt wird,
+	 * Dies ist üblicherweise einfach das ConfigDataModel (siehe {@link #getDataModel()}), für dynamische Objekte muss
+	 * aber die Simulationsvariante dieses Objekts zur Auflösung der Referenzen verwendet werden.
+	 * @return ObjectLookup
+	 */
+	protected ObjectLookup getObjectLookupForData() {
+		return getDataModel();
+	}
+
+	/**
 	 * Gibt den konfigurierenden Datensatz als Byte-Array zurück, der am Objekt gespeichert ist. Der Datensatz wird über die ID der Attributgruppenverwendung
 	 * identifiziert.
 	 *
@@ -272,18 +272,7 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 	 *         gibt
 	 */
 	public byte[] getConfigurationDataBytes(AttributeGroupUsage attributeGroupUsage) {
-		byte[] bytes = null;
-		try {
-			bytes = _systemObjectInfo.getConfigurationData(attributeGroupUsage.getId());
-		}
-		catch(IllegalArgumentException ex) {
-			// Da dies kein Sonderfall ist, sondern eher der Regelfall, wird die Exception ignoriert und nur eine Debug-Ausgabe geworfen.
-			_debug.finest(
-					"Konfigurierender Datensatz für das Objekt " + getPidOrNameOrId() + " mit ID " + getId() + " und der " + "Attributgruppenverwendung "
-					+ attributeGroupUsage.getPidOrNameOrId() + " mit ID " + attributeGroupUsage.getId() + " konnte nicht ermittelt werden."
-			);
-		}
-		return bytes;
+		return _systemObjectInfo.getConfigurationDataOptional(attributeGroupUsage.getId());
 	}
 
 	/**
@@ -293,8 +282,7 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 	 */
 	int getSerializerVersion() {
 		// Serializer-Version aus der Konfigurationsbereichsdatei auslesen
-		final ConfigDataModel configDataModel = (ConfigDataModel)getDataModel();
-		return configDataModel.getConfigurationFileManager().getAreaFile(getConfigurationArea().getPid()).getSerializerVersion();
+		return getDataModel().getConfigurationFileManager().getAreaFile(getConfigurationArea().getPid()).getSerializerVersion();
 	}
 
 	/**
@@ -341,6 +329,21 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 		if(atgUsage == null) throw new IllegalArgumentException("Es wurde keine Attributgruppenverwendung angegeben: " + atgUsage);
 
 		if(checkChangePermit()) {
+
+			if(_systemObjectInfo.isDeleted()){
+				// der Datensatz darf nicht geändert werden
+				// Diese Prüfung erfolgt ersatzweise noch einmal später beim Setzen in SystemObjectInformationInterface,
+				// aber hier ist es einfacher eine gute Fehlermeldung zu erzeugen.
+				final String errorMessage = "Der konfigurierende Datensatz an der AttributgruppenVerwendung " + atgUsage.getPid()
+						+ " darf nicht geändert oder erstellt werden, da das Objekt " + getPidOrNameOrId() + " nicht mehr gültig ist.";
+				_debug.error(errorMessage);
+				throw new ConfigurationChangeException(errorMessage);
+			}
+
+			// Prüfen, ob die Attributgruppe am Typ definiert ist.
+			ConfigSystemObjectType type = getType();
+			type.validateAttributeGroup(atgUsage.getAttributeGroup());
+
 			// TPuK1-113 (TPuK1-83) Änderung von konfigurierenden Datensätzen
 			// der Datensatz darf geändert werden, wenn die Attributgruppenverwendung "Changeable..." ist.
 			// der Datensatz darf nicht gelöscht werden, wenn die Attributgruppenverwendung "...Required..." ist
@@ -369,6 +372,12 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 				_debug.error(errorMessage);
 				throw new ConfigurationChangeException(errorMessage);
 			}
+
+			// Referenzen auf ungültige Objekte müssen verhindert werden
+			if(data != null) {
+				getDataModel().verifyDataReferences(this, data);
+			}
+
 			// der Datensatz darf also geändert oder neu angelegt werden!
 			createConfigurationData(atgUsage, data);
 		}
@@ -424,7 +433,7 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 				bytes = out.toByteArray();
 			}
 			_systemObjectInfo.setConfigurationData(atgUsage.getId(), bytes);
-			((ConfigConfigurationArea)getConfigurationArea()).setTimeOfLastChanges(ConfigConfigurationArea.KindOfLastChange.ConfigurationData);
+			getConfigurationArea().setTimeOfLastChanges(ConfigConfigurationArea.KindOfLastChange.ConfigurationData);
 			invalidateCache();
 		}
 		catch(Exception ex) {
@@ -476,7 +485,7 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 			else if(_systemObjectInfo instanceof DynamicObjectInfo) {
 				try {
 					((DynamicObjectInfo)_systemObjectInfo).setInvalid();
-					final ConfigDynamicObject dynamicObject = (ConfigDynamicObject)((ConfigDataModel)getDataModel()).createSystemObject(_systemObjectInfo);
+					final ConfigDynamicObject dynamicObject = (ConfigDynamicObject) getDataModel().createSystemObject(_systemObjectInfo);
 					dynamicObject.informListeners();	// alle InvalidationListener des Objekts werden benachrichtigt
 					// Alle Listener des Typs informieren, dass ein Objekt ungültig geworden ist
 					((ConfigDynamicObjectType)dynamicObject.getType()).informInvalidationListener(dynamicObject);
@@ -498,9 +507,9 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 		}
 	}
 
-	public SystemObjectType getType() {
+	public ConfigSystemObjectType getType() {
 		SystemObject object = getDataModel().getObject(_systemObjectInfo.getTypeId());
-		if(object instanceof SystemObjectType) return (SystemObjectType)object;
+		if(object instanceof ConfigSystemObjectType) return (ConfigSystemObjectType)object;
 		_debug.warning("getType(): Objekt hat einen falschen Typ", object);
 		return null;
 	}

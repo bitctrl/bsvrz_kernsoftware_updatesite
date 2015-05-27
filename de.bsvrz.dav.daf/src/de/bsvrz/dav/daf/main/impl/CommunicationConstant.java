@@ -25,7 +25,7 @@ package de.bsvrz.dav.daf.main.impl;
  * Enthält Konstanten, die für die Kommunikation mit dem Datenverteiler benötigt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5059 $
+ * @version $Revision: 13144 $
  */
 public class CommunicationConstant {
 

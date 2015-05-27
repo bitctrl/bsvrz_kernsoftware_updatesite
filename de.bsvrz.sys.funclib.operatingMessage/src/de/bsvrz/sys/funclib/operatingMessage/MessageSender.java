@@ -35,7 +35,7 @@ import java.util.Deque;
  * keine Verbindung zum Datenverteiler beim Senden einer Betriebsmeldung, so wird eine <i>Warnung</i> zurückgegeben.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11565 $
+ * @version $Revision: 12989 $
  * @see #init
  * @see #sendMessage
  */
@@ -214,7 +214,9 @@ public class MessageSender {
 	 * @param grade            die MeldungsKlasse
 	 * @param referenceObject  Referenz auf ein beliebiges Konfigurationsobjekt, auf das sich die Meldung bezieht.
 	 * @param causer           Urlasserinformation (Referenz auf den Benutzer, der die Meldung erzeugt hat, Angabe einer
-	 *                         Ursache für die Meldung und der Veranlasser für die Meldung)
+	 *                         Ursache für die Meldung und der Veranlasser für die Meldung).
+	 *                         Wenn <code>causer==null</code>, dann wird als Urlasser der angemeldete Benutzer mit
+	 *                         leerer Ursache und Veranlasser verschickt.
 	 * @param message          Text der Meldung
 	 */
 	public void sendMessage(MessageType type, String messageTypeAddOn, MessageGrade grade, SystemObject referenceObject, MessageCauser causer, String message) {
@@ -233,7 +235,9 @@ public class MessageSender {
 	 * @param referenceObject  Referenz auf ein beliebiges Konfigurationsobjekt, auf das sich die Meldung bezieht.
 	 * @param state            Gibt den Zustand einer Meldung an.
 	 * @param causer           Urlasserinformation (Referenz auf den Benutzer, der die Meldung erzeugt hat, Angabe einer
-	 *                         Ursache für die Meldung und der Veranlasser für die Meldung)
+	 *                         Ursache für die Meldung und der Veranlasser für die Meldung).
+	 *                         Wenn <code>causer==null</code>, dann wird als Urlasser der angemeldete Benutzer mit
+	 *                         leerer Ursache und Veranlasser verschickt.
 	 * @param message          Text der Meldung
 	 */
 	public void sendMessage(String id, MessageType type, String messageTypeAddOn, MessageGrade grade, SystemObject referenceObject, MessageState state, MessageCauser causer, String message) {
@@ -265,6 +269,9 @@ public class MessageSender {
 		}
 //		data.getTextValue("GutMeldung").setText((goodNews ? "Ja" : "Nein"));
 		data.getTextValue("Status").setText(state.getState());
+		if( causer == null ) {
+			causer = _causer;
+		}
 		// der Urlasser benötigt eine Extrabehandlung
 		final Data causerData = data.getItem("Urlasser");
 		causerData.getReferenceValue("BenutzerReferenz").setSystemObject(causer.getUser());

@@ -26,7 +26,7 @@ package de.bsvrz.dav.daf.main.config;
  *
  * @author Roland Schmitz (rs), Kappich Systemberatung
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 5052 $ / $Date: 2007-08-31 20:02:55 +0200 (Fr, 31 Aug 2007) $ / ($Author: rs $)
+ * @version $Revision: 13141 $ / $Date: 2015-02-04 10:06:20 +0100 (Wed, 04 Feb 2015) $ / ($Author: jh $)
  * @see ConfigurationObject
  */
 public interface ConfigurationAuthority extends ConfigurationObject {
@@ -37,5 +37,12 @@ public interface ConfigurationAuthority extends ConfigurationObject {
 	 * @return Kodierung des Konfigurationsverantwortlichen
 	 */
 	public short getCoding();
+
+	/**
+	 * Gibt den Default-Bereich des Konfigurationsverantwortlichen zurück oder null falls kein Bereich doer kein gültiger Bereich definiert
+	 * ist.
+	 * @return Default-Bereich doer null
+	 */
+	ConfigurationArea getDefaultConfigurationArea();
 }
 

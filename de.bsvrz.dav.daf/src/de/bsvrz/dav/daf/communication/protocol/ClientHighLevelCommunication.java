@@ -27,34 +27,8 @@ import de.bsvrz.dav.daf.communication.lowLevel.HighLevelCommunicationCallbackInt
 import de.bsvrz.dav.daf.communication.lowLevel.LowLevelCommunicationInterface;
 import de.bsvrz.dav.daf.communication.lowLevel.SplittedApplicationTelegramsTable;
 import de.bsvrz.dav.daf.communication.lowLevel.TelegramUtility;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.ApplicationDataTelegram;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.AuthentificationAnswer;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.AuthentificationRequest;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.AuthentificationTextAnswer;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.AuthentificationTextRequest;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.BaseSubscriptionInfo;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.ClosingTelegram;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.ComParametersAnswer;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.ComParametersRequest;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.DataTelegram;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.ProtocolVersionAnswer;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.ProtocolVersionRequest;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.ReceiveSubscriptionInfo;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.ReceiveSubscriptionTelegram;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.ReceiveUnsubscriptionTelegram;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.RequestSenderDataTelegram;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.SendSubscriptionInfo;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.SendSubscriptionTelegram;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.SendUnsubscriptionTelegram;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.TelegramTimeAnswer;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.TelegramTimeRequest;
-import de.bsvrz.dav.daf.communication.lowLevel.telegrams.TerminateOrderTelegram;
-import de.bsvrz.dav.daf.main.ApplicationCloseActionHandler;
-import de.bsvrz.dav.daf.main.ClientDavParameters;
-import de.bsvrz.dav.daf.main.CommunicationError;
-import de.bsvrz.dav.daf.main.ConnectionException;
-import de.bsvrz.dav.daf.main.DavConnectionListener;
-import de.bsvrz.dav.daf.main.InconsistentLoginException;
+import de.bsvrz.dav.daf.communication.lowLevel.telegrams.*;
+import de.bsvrz.dav.daf.main.*;
 import de.bsvrz.dav.daf.main.impl.CacheManager;
 import de.bsvrz.dav.daf.main.impl.CommunicationConstant;
 import de.bsvrz.dav.daf.main.impl.ConfigurationManager;
@@ -63,7 +37,9 @@ import de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentifications;
 import de.bsvrz.sys.funclib.concurrent.UnboundedQueue;
 import de.bsvrz.sys.funclib.debug.Debug;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Das Modul Protokollsteuerung ist das Bindeglied der Komponente Kommunikation zwischen den Modulen Telegrammverwaltung und Verwaltung. Es stellt für die
@@ -100,7 +76,7 @@ import java.util.*;
  * Telegrammverwaltung gemeldet werden, führen zu einem Abbruch der Verbindung und zu einer Benachrichtigung des Moduls Verwaltung.</ul>
  *
  * @author Kappich Systemberatung
- * @version $Revision: 12107 $
+ * @version $Revision: 13514 $
  */
 public class ClientHighLevelCommunication implements HighLevelCommunicationCallbackInterface {
 
@@ -157,6 +133,9 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 
 	/** Asynchrone Verarbeitung von empfangenen Sendsteuerungstelegrammen */
 	private ClientHighLevelCommunication.SendControlNotifier _sendControlNotifier;
+	
+	// Für Tests
+	private static boolean DO_NOT_SEND_AUTH_REQUEST_FOR_TESTS = false;
 
 	/**
 	 * Dieser Konstruktor erzeugt eine Instanz dieser Klasse mit den übergebenen Parametern. {@link de.bsvrz.dav.daf.main.ClientDavParameters} enthält die Adresse
@@ -185,6 +164,7 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 		_syncSystemTelegramList = new LinkedList<DataTelegram>();
 		splittedTelegramsTable = new SplittedApplicationTelegramsTable();
 		_readyForConfigDependantData = false;
+		_sendControlNotifier = new SendControlNotifier();
 
 		lowLevelCommunication = properties.getLowLevelCommunication();
 		String ip = properties.getCommunicationAddress();
@@ -209,7 +189,7 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 			throw new CommunicationError(errorMessage);
 		}
 
-		_sendControlNotifier = new SendControlNotifier();
+		_sendControlNotifier.start();
 	}
 
 	/**
@@ -220,9 +200,13 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 
 		private UnboundedQueue<RequestSenderDataTelegram> _telegrams;
 
-		/** Der Konstruktor erzeugt die interne Queue und den Thread zur Verarbeitung der Telegramme. */
+		/** Der Konstruktor erzeugt die interne Queue. Der Thread zur Verarbeitung der Telegramme wird erst später bei Aufruf der start()-Methode angelegt und gestartet. */
 		public SendControlNotifier() {
 			_telegrams = new UnboundedQueue<RequestSenderDataTelegram>();
+		}
+
+		/** Erzeugt und startet einen separaten Thread zur Verarbeitung der Telegramme. */
+		private void start() {
 			final Thread thread = new Thread(this, "SendControlNotifier");
 			thread.setDaemon(true);
 			thread.start();
@@ -510,10 +494,12 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 						_closer = null;
 					}
 				}
-				myCloser.close(message);
+				if(myCloser != null) {
+					myCloser.close(message);
+				}
 			}
 			catch(Exception ex) {
-				return;
+				_debug.fine("Fehler beim Aufruf des CloseHandlers", ex);
 			}
 		}
 	}
@@ -742,7 +728,9 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 				applicationIncarnationName, applicationTypePid, configurationPid
 		);
 		LowLevelCommunicationInterface lowLevelCommunication = properties.getLowLevelCommunication();
-		lowLevelCommunication.send(authentificationTextRequest);
+		if(!DO_NOT_SEND_AUTH_REQUEST_FOR_TESTS) {
+			lowLevelCommunication.send(authentificationTextRequest);
+		}
 
 		return (AuthentificationTextAnswer)getDataTelegram(
 				CommunicationConstant.MAX_WAITING_TIME_FOR_CONNECTION, DataTelegram.AUTHENTIFICATION_TEXT_ANSWER_TYPE

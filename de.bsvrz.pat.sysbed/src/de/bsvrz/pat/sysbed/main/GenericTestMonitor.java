@@ -1,4 +1,5 @@
 /*
+ * Copyright 2014 by Kappich Systemberatung, Aachen
  * Copyright 2010 by Kappich Systemberatung, Aachen
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
@@ -42,6 +43,7 @@ import de.bsvrz.pat.sysbed.preselection.tree.TreeNodeObject;
 import de.bsvrz.sys.funclib.application.AbstractGUIApplication;
 import de.bsvrz.sys.funclib.application.StandardApplicationRunner;
 import de.bsvrz.sys.funclib.commandLineArgs.ArgumentList;
+import de.bsvrz.sys.funclib.configObjectAcquisition.ConfigurationHelper;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 import javax.swing.*;
@@ -189,13 +191,27 @@ public class GenericTestMonitor extends AbstractGUIApplication {
 		final Collection<Object> treeNodes = new LinkedList<Object>();
 		treeNodes.add(treeNodeObject01);
 //		treeNodes.add(treeNodeObject02);
-		
+
+		Set<SystemObject> allMenuObjects = new TreeSet<SystemObject>();
 		// Objekte des Aufrufparameters einfügen
 		for(int i = 0; i < _objects.length; i++) {
 			String object = _objects[i].trim();
-			SystemObject systemObject = dataModel.getObject(object);
-			if(systemObject != null) {
-				treeNodes.add(systemObject);
+			List<SystemObject> objects = null;
+			try {
+				objects = ConfigurationHelper.getObjects(object, dataModel);
+				allMenuObjects.addAll(objects);
+			} catch (IllegalArgumentException e) {
+				if(!object.equals("datenAuswahl.TestMenü01")) {
+					_debug.warning("Objekt wird nicht ins Auswahlmenü aufgenommen, da '" + object + "' nicht aufgelöst werden konnte");
+				}
+			}
+		}
+		for (SystemObject menuObject : allMenuObjects) {
+			if(menuObject.isOfType("typ.datenAuswahl")) {
+				treeNodes.add(menuObject);
+			}
+			else {
+				_debug.warning("Objekt wird nicht ins Auswahlmenü aufgenommen, da es nicht vom Typ 'typ.datenAuswahl' ist", menuObject);
 			}
 		}
 		return treeNodes;

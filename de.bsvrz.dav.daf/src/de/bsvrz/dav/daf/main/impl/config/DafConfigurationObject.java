@@ -22,13 +22,9 @@
 
 package de.bsvrz.dav.daf.main.impl.config;
 
-import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
-import de.bsvrz.dav.daf.main.config.ConfigurationObject;
-import de.bsvrz.dav.daf.main.config.MutableSet;
-import de.bsvrz.dav.daf.main.config.NonMutableSet;
-import de.bsvrz.dav.daf.main.config.ObjectSet;
-import de.bsvrz.dav.daf.main.config.SystemObject;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.dav.daf.main.impl.config.request.RequestException;
+import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 import java.io.DataInputStream;
@@ -40,7 +36,7 @@ import java.util.*;
  * Applikationsseitige Implementierung der Schnittstelle zum Zugriff auf die Eigenschaften eines Konfigurationsobjekts.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 7092 $
+ * @version $Revision: 13141 $
  */
 public class DafConfigurationObject extends DafSystemObject implements ConfigurationObject {
 
@@ -136,6 +132,22 @@ public class DafConfigurationObject extends DafSystemObject implements Configura
 		}
 	}
 
+	@Override
+	public void read(final Deserializer deserializer) throws IOException {
+		super.read(deserializer);
+		_validSince = deserializer.readShort();
+		_notValidSince = deserializer.readShort();
+		_configurationAreaId = deserializer.readLong();  // muss hier gelesen werden, da nach Gültigkeit serialisiert
+		int size = deserializer.readInt();
+		if(size > 0) {
+			_setIds = new long[size];
+			for(int i = 0; i < size; ++i) {
+				_setIds[i] = deserializer.readLong();
+			}
+		}
+	}
+
+
 	public final boolean isValid() {
 		short activeVersion = getConfigurationArea().getActiveVersion();
 		if(activeVersion < getValidSince()) {
@@ -159,9 +171,7 @@ public class DafConfigurationObject extends DafSystemObject implements Configura
 	}
 
 	public final void revalidate() throws ConfigurationChangeException {
-		if(!_dataModel.revalidate(this)) {
-			throw new ConfigurationChangeException("Das Objekt konnte nicht wieder gültig gemacht werden.");
-		}
+		_dataModel.revalidate(this);
 	}
 
 	public SystemObject duplicate() throws ConfigurationChangeException {

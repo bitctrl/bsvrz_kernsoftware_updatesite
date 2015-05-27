@@ -29,7 +29,7 @@ import java.io.IOException;
  * Diese Klasse stellt die Attribute und Funktionalitäten des Datentyps ListArray zur Verfügung.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5049 $
+ * @version $Revision: 13173 $
  */
 public class AttributeListArrayAttribute extends DataValue {
 
@@ -92,7 +92,7 @@ public class AttributeListArrayAttribute extends DataValue {
 
 
 	public final String parseToString() {
-		String str = "Attributeliste Array: [\n";
+		String str = "Attributliste Array: [\n";
 		if(_values != null) {
 			for(int i = 0; i < _values.length; ++i) {
 				if(_values[i] != null) {

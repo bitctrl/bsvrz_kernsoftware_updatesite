@@ -33,7 +33,7 @@ package de.bsvrz.sys.funclib.losb.ringbuffer;
  *
  * @author beck et al. projects GmbH
  * @author Alexander Schmidt
- * @version $Revision: 6438 $ / $Date: 2009-03-26 16:39:12 +0100 (Do, 26 Mrz 2009) $ / ($Author: rs $)
+ * @version $Revision: 6438 $ / $Date: 2009-03-26 16:39:12 +0100 (Thu, 26 Mar 2009) $ / ($Author: rs $)
  * @param <E> Typ der Elemente im Ringpuffer.
  */
 public class RingBuffer<E> {

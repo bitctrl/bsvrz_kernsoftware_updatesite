@@ -24,14 +24,14 @@ package de.bsvrz.dav.daf.main.config;
 
 import de.bsvrz.dav.daf.main.DataAndATGUsageInformation;
 
-import java.util.*;
+import java.util.Collection;
 
 /**
  * Schnittstelle zum Zugriff auf die Eigenschaften eines Konfigurationsbereichs. Jedes Konfigurationsobjekt ist genau einem Konfigurationsbereich zugeordnet.
  * Jedem Konfigurationsbereich ist ein Konfigurationsverantwortlicher zugeordnet.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
+ * @version $Revision: 13141 $
  */
 public interface ConfigurationArea extends ConfigurationObject {
 
@@ -153,7 +153,7 @@ public interface ConfigurationArea extends ConfigurationObject {
 	 * @see ConfigurationObject
 	 * @see SystemObject#isValid
 	 */
-	public ConfigurationObject createConfigurationObject(ConfigurationObjectType type, String pid, String name, List<ObjectSet> sets)
+	public ConfigurationObject createConfigurationObject(ConfigurationObjectType type, String pid, String name, Collection<? extends ObjectSet> sets)
 			throws ConfigurationChangeException;
 
 	/**

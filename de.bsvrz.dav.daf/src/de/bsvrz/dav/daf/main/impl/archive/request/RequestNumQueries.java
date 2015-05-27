@@ -39,7 +39,7 @@ import java.io.InputStream;
  * Diese Klasse wird von der Klasse {@link de.bsvrz.dav.daf.main.impl.archive.request.StreamedArchiveRequester} benutzt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11357 $ / $Date: 2013-06-26 13:29:33 +0200 (Mi, 26 Jun 2013) $ / ($Author: jh $)
+ * @version $Revision: 12626 $ / $Date: 2014-07-25 17:26:33 +0200 (Fri, 25 Jul 2014) $ / ($Author: jh $)
  */
 public class RequestNumQueries implements ArchiveNumQueriesResult {
 
@@ -138,7 +138,7 @@ public class RequestNumQueries implements ArchiveNumQueriesResult {
 					_errorMessage = "Keine Antwort vom Archivsystem. Archivsystem unterstützt möglicherweise die Anfrage nicht (ist veraltet).";
 				}
 				try {
-					this.wait();
+					this.wait(10000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

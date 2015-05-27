@@ -32,7 +32,7 @@ import java.util.Collection;
  * @author Kappich Systemberatung
  * @version : 0000 $
  */
-public class UnknownObject extends AbstractConfigSystemObject{
+public class UnknownObject extends AbstractConfigSystemObject implements ClientApplication{
 
 	private final long _id;
 
@@ -67,7 +67,7 @@ public class UnknownObject extends AbstractConfigSystemObject{
 	}
 
 	public boolean isValid() {
-		throw new UnsupportedOperationException("Nicht implementiert");
+		return false;
 	}
 
 	public void invalidate() throws ConfigurationChangeException {
@@ -92,5 +92,53 @@ public class UnknownObject extends AbstractConfigSystemObject{
 
 	public Collection<AttributeGroupUsage> getUsedAttributeGroupUsages() {
 		throw new UnsupportedOperationException("Nicht implementiert");
+	}
+
+	@Override
+	public long getValidSince() {
+		return 1;
+	}
+
+	@Override
+	public long getNotValidSince() {
+		return 1;
+	}
+
+	@Override
+	public void addListenerForInvalidation(final InvalidationListener listener) {
+	}
+
+	@Override
+	public void removeListenerForInvalidation(final InvalidationListener listener) {
+	}
+
+	@Override
+	public void addConfigurationCommunicationChangeListener(final ConfigurationCommunicationChangeListener listener) {
+	}
+
+	@Override
+	public void removeConfigurationCommunicationChangeListener(final ConfigurationCommunicationChangeListener listener) {
+	}
+
+	@Override
+	public boolean isConfigurationCommunicationActive() {
+		return false;
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+
+		final UnknownObject that = (UnknownObject) o;
+
+		if(_id != that._id) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		return (int) (_id ^ (_id >>> 32));
 	}
 }

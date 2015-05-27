@@ -20,6 +20,7 @@
 
 package de.bsvrz.puk.config.configFile.util;
 
+import de.bsvrz.dav.daf.util.HashBagMap;
 import de.bsvrz.puk.config.configFile.fileaccess.ConfigAreaFile;
 import de.bsvrz.puk.config.configFile.fileaccess.ConfigFileHeaderInfo;
 import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
@@ -27,41 +28,27 @@ import de.bsvrz.sys.funclib.dataSerializer.NoSuchVersionException;
 import de.bsvrz.sys.funclib.dataSerializer.SerializingFactory;
 import de.bsvrz.sys.funclib.hexdump.HexDumper;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.zip.InflaterInputStream;
 
 /**
  * @author Kappich Systemberatung
- * @version $Revision: 11530 $
+ * @version $Revision: 13138 $
  */
 @SuppressWarnings({"UseOfSystemOutOrSystemErr"})
 public class ConfigFileReader {
 
 	private static final boolean SHOW_GAP_INFO = false;
 	private static final boolean SHOW_DATA_BYTES = false;
-
-	private ConfigFileHeaderInfo _configFileHeaderInfo;
-
-	private File _configAreaFile;
-
-	private int _serializerVersion;
-
 	final Map<Long, Long> _idMap = new HashMap<Long, Long>();
-
 	final Map<Long, Integer> _pidMap = new HashMap<Long, Integer>();
-
+	final HashBagMap<Long, Long> _positionsPerId = new HashBagMap<Long, Long>();
 	final List<String> _errorList = new ArrayList<String>();
+	private ConfigFileHeaderInfo _configFileHeaderInfo;
+	private File _configAreaFile;
+	private int _serializerVersion;
 
 	public ConfigFileReader(final File configAreaFile) throws IOException, NoSuchVersionException {
 		System.out.println("==== Datei-Informationen ====");
@@ -93,12 +80,22 @@ public class ConfigFileReader {
 
 		assertEquals(_configFileHeaderInfo.getHeaderEnd(), _configFileHeaderInfo.getHeaderSize() + 4, "Falsche Header-Länge");
 
-		assertEquals(_configFileHeaderInfo.getActiveVersionFile(), (_configFileHeaderInfo.getNextInvalidBlockVersion() - 1), "Falsche aktive Version");
-
 		readOldConfigBlocks();
 		readOldDynamicBlock();
 		readIndex();
 		readMixedObjectSetObjects();
+
+		if(_configFileHeaderInfo.getActiveVersionFile() != _configFileHeaderInfo.getNextInvalidBlockVersion() - 1){
+			System.out.println("Warnung: Falsche aktive Version" + ": " + (long) _configFileHeaderInfo.getActiveVersionFile() + " != " + (long) (_configFileHeaderInfo.getNextInvalidBlockVersion() - 1));
+			System.out.println();
+		}
+
+		for(Map.Entry<Long, Collection<Long>> entry : _positionsPerId.entrySet()) {
+			if(entry.getValue().size() > 1){
+				appendError("Objekt mit ID " + entry.getKey() + " befindet sich mehrfach in der Datei an folgenden Positionen: " + entry.getValue());
+			}
+		}
+
 		System.out.println("==== Gefundene Fehler ====");
 		System.out.println("Anzahl: " + _errorList.size());
 		for(final String s : _errorList) {
@@ -106,11 +103,19 @@ public class ConfigFileReader {
 		}
 	}
 
+	public List<String> getErrorList() {
+		return _errorList;
+	}
+
+	public static void main(String[] args) throws Exception {
+		new ConfigFileReader(new File(args[0]));
+	}
+
 	private void readOldDynamicBlock() throws IOException, NoSuchVersionException {
 		System.out.println("==== Block mit alten dynamischen Objekten ====");
 		readOldObjectBlock(
 				_configFileHeaderInfo.getStartOldDynamicObjects() + _configFileHeaderInfo.getHeaderEnd(),
-				Integer.MAX_VALUE,
+				Long.MAX_VALUE,
 				(_configFileHeaderInfo.getStartIdIndex() + _configFileHeaderInfo.getHeaderEnd())
 		);
 		System.out.println();
@@ -120,7 +125,7 @@ public class ConfigFileReader {
 	private void readOldConfigBlocks() throws IOException, NoSuchVersionException {
 		System.out.println("==== Blöcke mit alten Konfigurationsobjekten ====");
 		for(int i = 2; i < _configFileHeaderInfo.getNextInvalidBlockVersion(); i++) {
-			ConfigAreaFile.OldBlockInformations block = _configFileHeaderInfo.getOldObjectBlocks().get((short)i);
+			ConfigAreaFile.OldBlockInformations block = _configFileHeaderInfo.getOldObjectBlocks().get((short) i);
 			System.out.println("  == Objekte ungültig in Version " + i);
 			if(block != null) {
 				System.out.println(
@@ -138,7 +143,7 @@ public class ConfigFileReader {
 					);
 				}
 				else {
-					System.out.println("  Lücke");
+					System.out.println("Keine Objekte");
 				}
 			}
 			else {
@@ -150,56 +155,116 @@ public class ConfigFileReader {
 		System.out.println();
 	}
 
-	private void readOldObjectBlock(final long filePosition, final int version, final long readEnd) throws IOException, NoSuchVersionException {
-		final RandomAccessFile input = new RandomAccessFile(_configAreaFile, "r");
+	private void readOldObjectBlock(final long filePosition, final long version, final long readEnd) throws IOException, NoSuchVersionException {
+		final RandomAccessFile file = new RandomAccessFile(_configAreaFile, "r");
 		try {
-			input.seek(filePosition);
+			file.seek(filePosition);
 			// Es müssen solange Daten gelesen werden, bis der dynamische nGa-Bereich erreicht wird
 
 			// Solange Daten aus den nGa-Blöcken lesen, bis alle nGa geprüft wurden
-			while(input.getFilePointer() < readEnd) {
+			while(file.getFilePointer() < readEnd) {
 
-				long pos = input.getFilePointer();
-				final int len = input.readInt();
-				final long id = input.readLong();
-				final int pidHashCode = input.readInt();
+				long pos = file.getFilePointer();
+				final int len = file.readInt();
+				final long objectId = file.readLong();
+				if(objectId > 0) {
+					// Es ist ein Objekt und keine Lücke
 
-				final long typeId = input.readLong();
+					final int pidHashCode = file.readInt();
 
-				// 0 = Konfobjekt, 1 = dyn Objekt
-				final byte objectType = input.readByte();
+					final long typeId = file.readLong();
 
-				final long firstInvalidVersion;
-				final long firstValidVersion;
+					// 0 = Konfobjekt, 1 = dyn Objekt
+					final byte objectType = file.readByte();
 
-				if(objectType == 0) {
-					firstInvalidVersion = input.readShort();
-					firstValidVersion = input.readShort();
+					// Das kann entweder ein Zeitpunkt oder eine Version sein
+					final long firstInvalid;
+					final long firstValid;
+
+					if(objectType == 0) {
+						firstInvalid = file.readShort();
+						firstValid = file.readShort();
+					}
+					else {
+						firstInvalid = file.readLong();
+						firstValid = file.readLong();
+					}
+
+					_idMap.put(pos, objectId);
+					_pidMap.put(pos, pidHashCode);
+					_positionsPerId.add(objectId, pos);
+
+					if(firstInvalid > version) {
+						System.out.println("Gültig:              Ja");
+					}
+
+					System.out.println("Position:            " + pos);
+					System.out.println("Länge:               " + len);
+					System.out.println("Id:                  " + objectId);
+					System.out.println("PidHashCode:         " + pidHashCode);
+					System.out.println("Objekttyp-Id:        " + typeId);
+					System.out.println(
+							"Objekttyp:           " + (objectType == 0
+									? "Konfigurationsobjekt"
+									: objectType == 1 ? "Dynamisches Objekt" : "Unbekannter Objekttyp: " + objectType)
+					);
+					System.out.println("Gültige Version:     " + firstValid);
+					System.out.println("Ungültige Version:   " + firstInvalid);
+					readObjectFromFile(
+							len, objectType, file
+					);
+					System.out.println();
 				}
 				else {
-					firstInvalidVersion = input.readLong();
-					firstValidVersion = input.readLong();
+					System.out.println("Gelöschtes Objekt:   " + len + " bytes");
+					if(!SHOW_GAP_INFO) {
+						// Eine Lücke, der filePointer muss verschoben werden.
+						// Die Länge bezieht sich auf das gesamte Objekt, ohne die Länge selber.
+						// Also ist die nächste Länge bei "aktuelle Position + Länge - 8.
+						// - 8, weil die Id bereits gelesen wurde und das ist ein Long.
+						file.seek(file.getFilePointer() + len - 8);
+					}
+					else {
+						final int pidHashCode = file.readInt();
+
+						final long typeId = file.readLong();
+
+						// 0 = Konfobjekt, 1 = dyn Objekt
+						final byte objectType = file.readByte();
+
+						// Das kann entweder ein Zeitpunkt oder eine Version sein
+						final long firstInvalid;
+						final long firstValid;
+
+						if(objectType == 0) {
+							firstInvalid = file.readShort();
+							firstValid = file.readShort();
+						}
+						else {
+							firstInvalid = file.readLong();
+							firstValid = file.readLong();
+						}
+
+						System.out.println("PidHashCode:         " + pidHashCode);
+						System.out.println("Objekttyp-Id:        " + typeId);
+						System.out.println(
+								"Objekttyp:           " + (objectType == 0
+										? "Konfigurationsobjekt"
+										: objectType == 1 ? "Dynamisches Objekt" : "Unbekannter Objekttyp: " + objectType)
+						);
+						System.out.println("Gültige Version:     " + firstValid);
+						System.out.println("Ungültige Version:   " + firstInvalid);
+						readObjectFromFile(
+								len, objectType, file
+						);
+					}
 				}
-
-				if(firstInvalidVersion > version) return;
-
-				_idMap.put(pos, id);
-				_pidMap.put(pos, pidHashCode);
-
-				System.out.println("Länge:               " + len);
-				System.out.println("Id:                  " + id);
-				System.out.println("PidHashCode:         " + pidHashCode);
-				System.out.println("Objekttyp-Id:        " + typeId);
-				System.out.println("Objekttyp:           " + objectType + " (0 = Konfigurationsobjekt, 1 = Dynamisches Objekt)");
-				System.out.println("Gültige Version:     " + firstValidVersion);
-				System.out.println("Ungültige Version:   " + firstInvalidVersion);
-				readObjectFromFile(len, objectType, input);
 				System.out.println();
 			}
-			assertEquals(input.getFilePointer(), readEnd, "Ende des Blocks stimmt nicht");
+			assertEquals(file.getFilePointer(), readEnd, "Ende des Blocks stimmt nicht");
 		}
 		finally {
-			input.close();
+			file.close();
 		}
 	}
 
@@ -363,10 +428,10 @@ public class ConfigFileReader {
 		}
 		catch(IOException e) {
 			e.printStackTrace();
+			_errorList.add(e.getMessage());
 		}
 		return unzippedData.toByteArray();
 	}
-
 
 	private void readIndex() throws IOException {
 		System.out.println("==== Id-Index ====");
@@ -379,8 +444,8 @@ public class ConfigFileReader {
 
 				System.out.println("Id:       " + id);
 				System.out.println("Position: " + pos);
-				if(id != _idMap.get(pos)) {
-					appendError("Id-Index verweise auf falsches Objekt. Erwartet: " + id + ". Ist: " + _idMap.get(pos));
+				if(!Long.valueOf(id).equals(_idMap.get(pos))) {
+					appendError("Id-Index verweist auf falsches Objekt. Erwartet: " + id + ". Ist: " + _idMap.get(pos));
 				}
 
 				System.out.println();
@@ -394,13 +459,13 @@ public class ConfigFileReader {
 			file.seek(_configFileHeaderInfo.getStartPidHashCodeIndex() + _configFileHeaderInfo.getHeaderEnd());
 
 			while(file.getFilePointer() < (_configFileHeaderInfo.getStartMixedSet() + _configFileHeaderInfo.getHeaderEnd())) {
-				final long pid = file.readInt();
+				final int pid = file.readInt();
 				final long pos = getAbsoluteFilePositionForInvalidObjects(file.readLong());
 
 				System.out.println("Pid:      " + pid);
 				System.out.println("Position: " + pos);
-				if(pid != _pidMap.get(pos)) {
-					appendError("Pid-Index verweise auf falsches Objekt. Erwartet: " + pid + ". Ist: " + _pidMap.get(pos));
+				if(!Integer.valueOf(pid).equals(_pidMap.get(pos))) {
+					appendError("Pid-Index verweist auf falsches Objekt. Erwartet: " + pid + ". Ist: " + _pidMap.get(pos));
 				}
 				System.out.println();
 			}
@@ -460,7 +525,7 @@ public class ConfigFileReader {
 
 				// speichert die Dateiposition des Objekts. Diese Position wird später
 				// am Objekt gespeichert
-				final long startObjectFileDescriptor = file.getFilePointer();
+				final long pos = file.getFilePointer();
 
 				// Länge des Blocks einlesen
 				final int sizeOfObject = file.readInt();
@@ -470,6 +535,8 @@ public class ConfigFileReader {
 
 				if(objectId > 0) {
 					// Es ist ein Objekt und keine Lücke
+
+					_positionsPerId.add(objectId, pos);
 
 					final int pidHashCode = file.readInt();
 
@@ -491,15 +558,16 @@ public class ConfigFileReader {
 						firstValid = file.readLong();
 					}
 
+					System.out.println("Position:            " + pos);
 					System.out.println("Länge:               " + sizeOfObject);
 					System.out.println("Id:                  " + objectId);
 					System.out.println("PidHashCode:         " + pidHashCode);
 					System.out.println("Objekttyp-Id:        " + typeId);
-						System.out.println(
-								"Objekttyp:           " + (objectType == 0
-								                           ? "Konfigurationsobjekt"
-								                           : objectType == 1 ? "Dynamisches Objekt" : "Unbekannter Objekttyp: " + objectType)
-						);
+					System.out.println(
+							"Objekttyp:           " + (objectType == 0
+									? "Konfigurationsobjekt"
+									: objectType == 1 ? "Dynamisches Objekt" : "Unbekannter Objekttyp: " + objectType)
+					);
 					System.out.println("Gültige Version:     " + firstValid);
 					System.out.println("Ungültige Version:   " + firstInvalid);
 					readObjectFromFile(
@@ -540,8 +608,8 @@ public class ConfigFileReader {
 						System.out.println("Objekttyp-Id:        " + typeId);
 						System.out.println(
 								"Objekttyp:           " + (objectType == 0
-								                           ? "Konfigurationsobjekt"
-								                           : objectType == 1 ? "Dynamisches Objekt" : "Unbekannter Objekttyp: " + objectType)
+										? "Konfigurationsobjekt"
+										: objectType == 1 ? "Dynamisches Objekt" : "Unbekannter Objekttyp: " + objectType)
 						);
 						System.out.println("Gültige Version:     " + firstValid);
 						System.out.println("Ungültige Version:   " + firstInvalid);
@@ -556,9 +624,5 @@ public class ConfigFileReader {
 		finally {
 			file.close();
 		}
-	}
-
-	public static void main(String[] args) throws Exception {
-		new ConfigFileReader(new File(args[0]));
 	}
 }

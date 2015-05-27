@@ -26,6 +26,7 @@ import de.bsvrz.dav.daf.main.config.Aspect;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dav.daf.main.config.SystemObjectType;
+import de.bsvrz.pat.sysbed.preselection.lists.SystemObjectList;
 import de.bsvrz.pat.sysbed.preselection.panel.PreselectionDialog;
 import de.bsvrz.pat.sysbed.preselection.lists.PreselectionListsFilter;
 
@@ -41,7 +42,7 @@ import java.util.List;
  * Objekte angezeigt werden. Außerdem gibt es einen "Ändern" - Button, welches einen Dialog öffnet, um seine Auswahl zu ändern.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 7443 $
+ * @version $Revision: 12610 $
  */
 public class DataIdentificationChoice extends JPanel {
 
@@ -68,7 +69,7 @@ public class DataIdentificationChoice extends JPanel {
 	private JTextField _simTextField = new JTextField();
 
 	/** zeigt die ausgewählten Objekte an */
-	private final JList _objList = new JList();
+	private final JList _objList = new SystemObjectList();
 
 	/** speichert den "Ändern..." - Button */
 	private final JButton _changeButton = new JButton("Ändern...");

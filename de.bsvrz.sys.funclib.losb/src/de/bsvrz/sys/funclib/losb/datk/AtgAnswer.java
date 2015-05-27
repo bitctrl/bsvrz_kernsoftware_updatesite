@@ -32,7 +32,7 @@ import java.io.Serializable;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 8861 $ / $Date: 2011-02-25 14:19:03 +0100 (Fr, 25 Feb 2011) $ / ($Author: jh $)
+ * @version $Revision: 12759 $ / $Date: 2014-09-22 17:37:18 +0200 (Mon, 22 Sep 2014) $ / ($Author: jh $)
  */
 public class AtgAnswer implements Serializable {
 
@@ -58,10 +58,9 @@ public class AtgAnswer implements Serializable {
 	 * @param meta    Attributliste {@link PidScript#atlMetaInformation}
 	 * @param message {@link PidScript#message}
 	 *
-	 * @throws ConfigurationException Falls das Data-Objekt nicht erzeugt werden konnte, weil sie nicht im Datenkatalog eingetragen wurde.
 	 * @return Mit den Parameterwerten belegtes Data Objekt
 	 */
-	public static Data build(ClientDavInterface dav, AtlExtra extra, AtlMeta meta, String message) throws ConfigurationException {
+	public static Data build(ClientDavInterface dav, AtlExtra extra, AtlMeta meta, String message){
 		if(dav == null) throw new IllegalArgumentException("dav ist null");
 		if(extra == null) throw new IllegalArgumentException("extra ist null");
 		if(meta == null) throw new IllegalArgumentException("meta ist null");

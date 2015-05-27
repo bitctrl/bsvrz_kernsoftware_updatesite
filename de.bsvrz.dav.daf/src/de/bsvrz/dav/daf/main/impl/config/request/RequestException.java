@@ -24,7 +24,7 @@ package de.bsvrz.dav.daf.main.impl.config.request;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 5060 $ / $Date: 2007-09-01 15:04:35 +0200 (Sa, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 5060 $ / $Date: 2007-09-01 15:04:35 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
  */
 public class RequestException extends Exception {
 	/**

@@ -21,10 +21,11 @@
 
 package de.bsvrz.dav.daf.main.impl.config;
 
-import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.communication.dataRepresentation.UndefinedValueHandler;
 import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.DataValue;
+import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.config.StringAttributeType;
+import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -34,7 +35,7 @@ import java.io.IOException;
  * Klasse, die den Zugriff auf Zeichenketten-Attributtypen seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5055 $
+ * @version $Revision: 13141 $
  */
 public class DafStringAttributeType extends DafAttributeType implements StringAttributeType {
 
@@ -133,6 +134,14 @@ public class DafStringAttributeType extends DafAttributeType implements StringAt
 		_maxLength = in.readInt();
 		_encodingName = in.readUTF();
 		_lengthLimited = in.readBoolean();
+	}
+
+	@Override
+	public void read(final Deserializer deserializer) throws IOException {
+		super.read(deserializer);
+		_maxLength = deserializer.readInt();
+		_encodingName = deserializer.readString();
+		_lengthLimited = deserializer.readBoolean();
 	}
 
 	public void setToUndefined(Data data) {

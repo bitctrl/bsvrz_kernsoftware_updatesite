@@ -2,20 +2,20 @@
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
  * 
- * This file is part of de.bsvrz.sys.funclib.dataSerializer.
+ * This file is part of de.bsvrz.dav.daf.
  * 
- * de.bsvrz.sys.funclib.dataSerializer is free software; you can redistribute it and/or modify
+ * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation; either version 2.1 of the License, or
  * (at your option) any later version.
  * 
- * de.bsvrz.sys.funclib.dataSerializer is distributed in the hope that it will be useful,
+ * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.dataSerializer; if not, write to the Free Software
+ * along with de.bsvrz.dav.daf; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
@@ -42,7 +42,7 @@ import java.util.*;
  * Ein Objekt dieser Klasse kann mit der Methode {@link SerializingFactory#createSerializer} erzeugt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5515 $
+ * @version $Revision: 13421 $
  */
 final class SerializerImplementationA implements Serializer {
 	private final int _version;
@@ -58,7 +58,9 @@ final class SerializerImplementationA implements Serializer {
 	SerializerImplementationA(final int version, final OutputStream outputStream) throws RuntimeException {
 		_version = version;
 		_outputStream = outputStream;
-		if (version < 2 || version > 3) throw new RuntimeException("SerializerImplementationA implementiert nicht Version " + version);
+		if(version < 2 || version > 3) {
+			throw new RuntimeException("SerializerImplementationA implementiert nicht Version " + version);
+		}
 	}
 
 	/**
@@ -98,13 +100,13 @@ final class SerializerImplementationA implements Serializer {
 	 * @throws IOException Wenn ein I/O Fehler bei Schreiben auf den Ausgabe-Stream auftritt.
 	 */
 	public void writeData(final Data data) throws IOException {
-		if (data.isPlain()) {
+		if(data.isPlain()) {
 			try {
 				final AttributeType att = data.getAttributeType();
-				if (att instanceof IntegerAttributeType) {
+				if(att instanceof IntegerAttributeType) {
 					final IntegerAttributeType integerAtt = (IntegerAttributeType) att;
 					final Data.NumberValue unscaledValue = data.asUnscaledValue();
-					switch (integerAtt.getByteCount()) {
+					switch(integerAtt.getByteCount()) {
 						case 1:
 							writeByte(unscaledValue.byteValue());
 							break;
@@ -120,8 +122,9 @@ final class SerializerImplementationA implements Serializer {
 						default:
 							throw new RuntimeException("Ganzzahlattribut mit ungültiger Byte-Anzahl: " + integerAtt.getNameOrPidOrId());
 					}
-				} else if (att instanceof ReferenceAttributeType) {
-					final ReferenceAttributeType referenceAttributeType = (ReferenceAttributeType)att;
+				}
+				else if(att instanceof ReferenceAttributeType) {
+					final ReferenceAttributeType referenceAttributeType = (ReferenceAttributeType) att;
 					if(_version >= 3 && referenceAttributeType.getReferenceType() == ReferenceType.ASSOCIATION) {
 						final String pid;
 						final SystemObject systemObject = data.asReferenceValue().getSystemObject();
@@ -130,7 +133,7 @@ final class SerializerImplementationA implements Serializer {
 							if(pid.length() == 0) {
 								throw new IllegalArgumentException(
 										"Serialisierung des Attributs " + data.getName() + " kann nicht durchgeführt werden, weil"
-										+ "das referenzierte Objekt keine Pid hat und als Referenzierungsart Assoziation festgelegt ist"
+												+ "das referenzierte Objekt keine Pid hat und als Referenzierungsart Assoziation festgelegt ist"
 								);
 							}
 						}
@@ -141,55 +144,68 @@ final class SerializerImplementationA implements Serializer {
 						writeString(pid, 255);
 					}
 					else {
-						writeObjectReference(data.asReferenceValue().getSystemObject());
+						//writeObjectReference(data.asReferenceValue().getSystemObject());
+						long objectId = data.asReferenceValue().getId();
+						writeLong(objectId);
 					}
-				} else if (att instanceof TimeAttributeType) {
+				}
+				else if(att instanceof TimeAttributeType) {
 					final TimeAttributeType timeAtt = (TimeAttributeType) att;
-					if (timeAtt.getAccuracy() == TimeAttributeType.MILLISECONDS) {
+					if(timeAtt.getAccuracy() == TimeAttributeType.MILLISECONDS) {
 						writeLong(data.asTimeValue().getMillis());
-					} else {
+					}
+					else {
 						writeInt((int) data.asTimeValue().getSeconds());
 					}
-				} else if (att instanceof StringAttributeType) {
+				}
+				else if(att instanceof StringAttributeType) {
 					final StringAttributeType stringAtt = (StringAttributeType) att;
 					writeString(data.asTextValue().getValueText(), stringAtt.getMaxLength());
-				} else if (att instanceof DoubleAttributeType) {
+				}
+				else if(att instanceof DoubleAttributeType) {
 					final DoubleAttributeType doubleAtt = (DoubleAttributeType) att;
-					if (doubleAtt.getAccuracy() == DoubleAttributeType.DOUBLE) {
+					if(doubleAtt.getAccuracy() == DoubleAttributeType.DOUBLE) {
 						writeDouble(data.asUnscaledValue().doubleValue());
-					} else {
+					}
+					else {
 						writeFloat(data.asUnscaledValue().floatValue());
 					}
-				} else {
+				}
+				else {
 					throw new RuntimeException("Serialisierung einer unbekannten Attributart nicht möglich");
 				}
-			} catch (ConfigurationException e) {
+			}
+			catch(ConfigurationException e) {
 				throw new RuntimeException(e);
 			}
-		} else {
-			if (data.isArray()) {
+		}
+		else {
+			if(data.isArray()) {
 				final Data.Array array = data.asArray();
 				final int arrayLength = array.getLength();
 				final int maxCount = array.getMaxCount();
-				if (array.isCountVariable()) {
-					if (maxCount <= 0 || maxCount > 65535) {
+				if(array.isCountVariable()) {
+					if(maxCount <= 0 || maxCount > 65535) {
 						writeInt(arrayLength);
-					} else if (maxCount > 255) {
+					}
+					else if(maxCount > 255) {
 						writeShort(arrayLength);
-					} else {
+					}
+					else {
 						writeByte(arrayLength);
 					}
-				} else {
+				}
+				else {
 					if(arrayLength != maxCount) {
 						throw new RuntimeException(
 								"Länge des Arrays im Attribut " + data.getName() + " ist " + arrayLength + ", " +
-								"aber es sollte die Länge " + maxCount + " haben"
+										"aber es sollte die Länge " + maxCount + " haben"
 						);
 					}
 				}
 			}
 			final Iterator iterator = data.iterator();
-			while (iterator.hasNext()) {
+			while(iterator.hasNext()) {
 				final Data subData = (Data) iterator.next();
 				writeData(subData);
 			}
@@ -203,9 +219,10 @@ final class SerializerImplementationA implements Serializer {
 	 * @throws IOException Wenn ein I/O Fehler bei Schreiben auf den Ausgabe-Stream auftritt.
 	 */
 	public void writeObjectReference(final SystemObject object) throws IOException {
-		if (object == null) {
+		if(object == null) {
 			writeLong(0);
-		} else {
+		}
+		else {
 			writeLong(object.getId());
 		}
 	}
@@ -304,7 +321,6 @@ final class SerializerImplementationA implements Serializer {
 	 *
 	 * @param value     Der zu serialisierende Wert.
 	 * @param maxLength Maximale Länge des zu serialisierenden Strings oder <code>0</code> wenn keine Begrenzung vorgegeben werden kann.
-	 *
 	 * @throws IOException              Wenn ein I/O Fehler bei Schreiben auf den Ausgabe-Stream auftritt.
 	 * @throws IllegalArgumentException Wenn die Länge des Strings größer als die angegebene Maximallänge ist.
 	 */
@@ -365,9 +381,9 @@ final class SerializerImplementationA implements Serializer {
 	 */
 	public String toString() {
 		return "SerializerImplementationA{" +
-		       "_version=" + _version +
-		       ", _outputStream=" + _outputStream +
-		       '}';
+				"_version=" + _version +
+				", _outputStream=" + _outputStream +
+				'}';
 	}
 
 }

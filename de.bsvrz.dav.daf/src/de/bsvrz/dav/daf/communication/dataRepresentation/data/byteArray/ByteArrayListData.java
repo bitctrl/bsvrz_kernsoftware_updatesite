@@ -29,7 +29,7 @@ import java.util.*;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 8326 $ / $Date: 2010-11-16 12:00:46 +0100 (Di, 16 Nov 2010) $ / ($Author: jh $)
+ * @version $Revision: 8326 $ / $Date: 2010-11-16 12:00:46 +0100 (Tue, 16 Nov 2010) $ / ($Author: jh $)
  */
 public class ByteArrayListData extends ByteArrayStructuredData {
 	public ByteArrayListData(byte[] bytes, int offset, AttributeInfo attributeInfo) {

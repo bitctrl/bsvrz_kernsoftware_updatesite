@@ -20,9 +20,16 @@
 
 package de.bsvrz.puk.config.configFile.fileaccess;
 
+import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
+import de.bsvrz.sys.funclib.dataSerializer.NoSuchVersionException;
+import de.bsvrz.sys.funclib.dataSerializer.SerializingFactory;
 import de.bsvrz.sys.funclib.debug.Debug;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
+import java.util.zip.InflaterInputStream;
 
 /**
  * Dieses Objekt stellt alle Informationen zur Verfügung, die für ein Konfigurationsobjekt relevant sind. Die Methoden sind Thread-sicher. <br>
@@ -32,7 +39,7 @@ import java.util.*;
  *
  * @author Kappich+Kniß Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 5501 $ / $Date: 2007-11-17 04:22:14 +0100 (Sa, 17 Nov 2007) $ / ($Author: rs $)
+ * @version $Revision: 13170 $ / $Date: 2015-02-10 19:36:53 +0100 (Tue, 10 Feb 2015) $ / ($Author: jh $)
  */
 public class ConfigurationObjectInformation extends SystemObjectInformation implements ConfigurationObjectInfo {
 
@@ -49,13 +56,10 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 	private final ConfigAreaFile _configAreaFile;
 
 	/** Speichert die letzte abselute Position ab, an der das Objekt gespeichert wurde. */
-	private long _lastFilePosition = -1;
-
-	private boolean _saveModifications;
+	private FilePointer _lastFilePosition = null;
 
 	/** DebugLogger für Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
-
 
 	/**
 	 * Der Zeitpunkt, wann das Objekt ungültig wird, wird automatisch auf 0 gesetzt
@@ -74,7 +78,7 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 	public ConfigurationObjectInformation(
 			ConfigAreaFile configAreaFile, long id, String pid, long typeId, String name, short firstValidVersion, boolean saveModifications
 	) {
-		this(id, pid, typeId, name, firstValidVersion, (short)0, configAreaFile, saveModifications);
+		this(id, pid, typeId, name, firstValidVersion, (short) 0, configAreaFile, saveModifications);
 	}
 
 	/**
@@ -119,14 +123,89 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 		}
 	}
 
-	/**
-	 * Diese Methode wird aufgerufen, wenn ein Objekt aus der Datei eingeladen wurde und im Konstruktor saveModifications == true übergeben wurde. Nach Aufruf
-	 * dieser Methode, werden alle Änderungen wieder gespeichert. Wurde also saveModifications == true gesetzt, so muss diese MEthode aufgerufen werden, damit neue
-	 * Änderungen gespeichert werden.
-	 */
-	public void saveObjectModifications() {
-		_saveModifications = true;
-		super.saveObjectModificationsSystemObject();
+	static ConfigurationObjectInformation fromBinaryObject(final ConfigAreaFile configAreaFile, final long filePosition, BinaryConfigObject binaryConfigObject) throws IOException, NoSuchVersionException {
+		return createSystemObjectInformation(configAreaFile, filePosition, binaryConfigObject.getObjectId(), binaryConfigObject.getTypeId(), binaryConfigObject.getFirstInvalid(), binaryConfigObject.getFirstValid(), binaryConfigObject.getPackedBytes());
+	}
+	static ConfigurationObjectInformation createSystemObjectInformation(final ConfigAreaFile configAreaFile, final long filePosition, final long id, final long typeId, final short firstInvalid, final short firstValid, final byte[] packedBytes) throws IOException, NoSuchVersionException {
+		final InputStream in = new InflaterInputStream(new ByteArrayInputStream(packedBytes));
+		try {
+			//deserialisieren
+			final Deserializer deserializer = SerializingFactory.createDeserializer(configAreaFile.getSerializerVersion(), in);
+
+			// Das serialisierte SystemObjektInfo einlesen
+
+			final int pidSize = deserializer.readUnsignedByte();
+			final String pid;
+			if(pidSize > 0) {
+				pid = deserializer.readString(255);
+			}
+			else {
+				
+				pid = deserializer.readString(0);
+			}
+
+//				final String pid = readString(deserializer);
+
+			// Name einlesen
+			final int nameSize = deserializer.readUnsignedByte();
+			final String name;
+			if(nameSize > 0) {
+				name = deserializer.readString(255);
+			}
+			else {
+				
+				name = deserializer.readString(0);
+			}
+//				final String name = readString(deserializer);
+
+			// Es stehen nun alle Informationen zur Verfügung, um ein Objekt zu erzeugen.
+			// An dieses Objekt werden dann alle Mengen hinzugefügt.
+			final ConfigurationObjectInformation newConfObject = new ConfigurationObjectInformation(
+					id, pid, typeId, name, firstValid, firstInvalid, configAreaFile, false
+			);
+			// Am Objekt speichern, wo es in der Datei zu finden ist
+			newConfObject.setLastFilePosition(FilePointer.fromAbsolutePosition(filePosition, configAreaFile));
+
+			// konfigurierende Datensätze einlesen und direkt an dem Objekt hinzufügen
+
+			// Menge der konfigurierenden Datensätze
+			final int numberOfConfigurationData = deserializer.readInt();
+			for(int nr = 0; nr < numberOfConfigurationData; nr++) {
+				// ATG-Verwendung einlesen
+				final long atgUseId = deserializer.readLong();
+				// Länge der Daten
+				final int sizeOfData = deserializer.readInt();
+				final byte[] data = deserializer.readBytes(sizeOfData);
+				newConfObject.setConfigurationData(atgUseId, data);
+			}
+
+			// alle Daten einlesen, die spezifisch für ein Konfigurationsobjekt sind und
+			// direkt am Objekt hinzufügen
+
+			// Anzahl Mengen am Objekt
+			final short numberOfSets = deserializer.readShort();
+
+			for(int nr = 0; nr < numberOfSets; nr++) {
+				final long setId = deserializer.readLong();
+				newConfObject.addObjectSetId(setId);
+				final int numberOfObjects = deserializer.readInt();
+
+				for(int i = 0; i < numberOfObjects; i++) {
+					// Alle Objekte der Menge einlesen
+
+					// Id des Objekts, das sich in Menge befinden
+					final long setObjectId = deserializer.readLong();
+					newConfObject.addObjectSetObject(setId, setObjectId);
+				}
+			}
+
+			// Das Objekt wurde geladen, also können ab jetzt alle Änderungen gespeichert werden
+			newConfObject.saveObjectModifications();
+			return newConfObject;
+		}
+		finally {
+			in.close();
+		}
 	}
 
 	public short getFirstValidVersion() {
@@ -139,7 +218,7 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 	 *
 	 * @return Version, mit der das Objekt ungültig wird
 	 */
-	synchronized public short getFirstInvalidVersion() {
+	public synchronized short getFirstInvalidVersion() {
 		return _firstInvalidVersion;
 	}
 
@@ -151,7 +230,7 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 	 *
 	 * @see #revalidate
 	 */
-	synchronized public void invalidate() {
+	public synchronized void invalidate() {
 
 		// Nur wenn das Objekt noch gültig ist, kann es auf ungültig gesetzt werden. Ohne diese Abfrage werden auch Objekte im nGa-Bereich
 		// fälschlicherweise als Lücke deklariert.
@@ -187,7 +266,7 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 	 *
 	 * @see #invalidate
 	 */
-	synchronized public void revalidate() {
+	public synchronized void revalidate() {
 		// Diese Methode darf nur dann aufgerufen werden, wenn sich das Objekt nicht in einem nGa-Bereich befindet. Dies kann aber hier nicht geprüft werden
 		// und muss von der Klasse erledigt werden, die diese Methode aufruft.
 		// if (_firstInvalidVersion > 0 && _configAreaFile.getActiveVersion() >= _firstInvalidVersion) throw new IllegalStateException("Objekt kann nicht wieder auf gültig gesetzt werden, da der Konfigurationsbereich bereits in einer neuen Version läuft.");
@@ -213,7 +292,7 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 		}
 	}
 
-	synchronized public void addObjectSetId(long setId) throws IllegalStateException {
+	public synchronized void addObjectSetId(long setId) throws IllegalStateException {
 		// Die Methode wird zum einlesen der Sets aus der Datei benötigt. Aus diesem Grund muss nicht geprüft werden, ob das Objekt noch gültig ist.
 		synchronized(_sets) {
 			if(!_sets.containsKey(setId)) {
@@ -256,7 +335,7 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 		}
 	}
 
-	synchronized public void addObjectSetObject(long setId, long objectId) throws IllegalArgumentException, IllegalStateException {
+	public synchronized void addObjectSetObject(long setId, long objectId) throws IllegalArgumentException, IllegalStateException {
 		// Die Methode wird zum einlesen der Sets aus der Datei benötigt. Aus diesem Grund muss nicht geprüft werden, ob das Objekt noch gültig ist.
 		final Set setObjects;
 		synchronized(_sets) {
@@ -288,11 +367,16 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 		}
 	}
 
-	synchronized public long getLastFilePosition() {
+	@Override
+	public synchronized boolean isDeleted() {
+		return _firstInvalidVersion != (short)0;
+	}
+
+	public synchronized FilePointer getLastFilePosition() {
 		return _lastFilePosition;
 	}
 
-	synchronized public void setLastFilePosition(long lastFilePosition) {
+	public synchronized void setLastFilePosition(FilePointer lastFilePosition) {
 		_lastFilePosition = lastFilePosition;
 	}
 
@@ -312,8 +396,12 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 				out.append("		Objekte Id: " + setObjects[i] + "\n");
 			}
 		}
-		out.append("Dateiposition: " + _lastFilePosition + "\n");
 		out.append("Modifikationen speichern: " + _saveModifications + "\n");
 		return out.toString();
+	}
+
+	@Override
+	public ConfigAreaFile getConfigAreaFile() {
+		return _configAreaFile;
 	}
 }

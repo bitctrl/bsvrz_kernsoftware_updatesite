@@ -29,7 +29,7 @@ import java.util.Date;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 5064 $ / $Date: 2007-09-01 22:25:35 +0200 (Sa, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 5064 $ / $Date: 2007-09-01 22:25:35 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
  */
 public final class DataTiming {
 	private final long _dataTime;

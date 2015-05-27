@@ -29,12 +29,12 @@ import java.io.IOException;
  * Diese Klasse stellt ein Metadaten-Anfragetelegramm dar. Es werden die Metadaten angefragt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5054 $
+ * @version $Revision: 13141 $
  */
 public class MetaDataRequest extends ConfigTelegram {
 
-	/** Die Konfigurationszeit */
-	private long _configTime;
+	/** Version des Kommunikationsprotokolls, das von der Konfiguration unterstützt wird */
+	private long _protocolVersion;
 
 	/** Erzeugt ein neues Objekt ohne Parameter. Die Parameter werden zu einem Späteren Zeitpunkt über die read-Methode eingelesen. */
 
@@ -45,33 +45,36 @@ public class MetaDataRequest extends ConfigTelegram {
 	/**
 	 * Erzeugt ein neues Objekt mit den gegebenen Parametern.
 	 *
-	 * @param configTime    Konfigurationszeit
+	 * @param protocolVersion    Protokollversion des Clients
 	 */
-	public MetaDataRequest(long configTime) {
+	public MetaDataRequest(long protocolVersion) {
 		_type = META_DATA_REQUEST_TYPE;
-		_configTime = configTime;
+		_protocolVersion = protocolVersion;
 	}
 
 	/**
-	 * Gibt die Konfigurationszeit zurück
+	 * Gibt die Protokollversion des Clients zurück. Sehr alte Clients haben hier die Protokollzeit verschickt.
 	 *
-	 * @return Die Konfigurationszeit
+	 * @return Die Protokollversion des Clients
 	 */
-	public final long getConfigTime() {
-		return _configTime;
+	public final long getProtocolVersion() {
+		return _protocolVersion;
 	}
 
 	public final String parseToString() {
 		String str = "Metakonfigurationsanfrage: \n";
-		str += "Lokale Konfigurationszeit: " + _configTime + "\n";
+		str += "Protokollversion: " + _protocolVersion + "\n";
 		return str;
 	}
 
 	public final void write(DataOutputStream out) throws IOException {
-		out.writeLong(_configTime);
+		out.writeLong(_protocolVersion);
 	}
 
 	public final void read(DataInputStream in) throws IOException {
-		_configTime = in.readLong();
+		_protocolVersion = in.readLong();
+		if(_protocolVersion > Integer.MAX_VALUE || _protocolVersion < 0){
+			_protocolVersion = 0;
+		}
 	}
 }

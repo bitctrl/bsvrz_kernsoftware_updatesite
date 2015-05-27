@@ -29,115 +29,23 @@ import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.ByteArrayAttr
 import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.ByteAttribute;
 import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.LongAttribute;
 import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.StringAttribute;
-import de.bsvrz.dav.daf.main.ClientDavInterface;
-import de.bsvrz.dav.daf.main.ClientReceiverInterface;
-import de.bsvrz.dav.daf.main.ClientSenderInterface;
-import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.DataDescription;
-import de.bsvrz.dav.daf.main.DataNotSubscribedException;
-import de.bsvrz.dav.daf.main.OneSubscriptionPerSendData;
-import de.bsvrz.dav.daf.main.ReceiveOptions;
-import de.bsvrz.dav.daf.main.ReceiverRole;
-import de.bsvrz.dav.daf.main.ResultData;
-import de.bsvrz.dav.daf.main.SendSubscriptionNotConfirmed;
-import de.bsvrz.dav.daf.main.SenderRole;
-import de.bsvrz.dav.daf.main.config.Aspect;
-import de.bsvrz.dav.daf.main.config.Attribute;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
-import de.bsvrz.dav.daf.main.config.AttributeListDefinition;
-import de.bsvrz.dav.daf.main.config.AttributeType;
-import de.bsvrz.dav.daf.main.config.ClientApplication;
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.ConfigurationAuthority;
-import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
-import de.bsvrz.dav.daf.main.config.ConfigurationException;
-import de.bsvrz.dav.daf.main.config.ConfigurationObject;
-import de.bsvrz.dav.daf.main.config.ConfigurationObjectType;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.DavApplication;
-import de.bsvrz.dav.daf.main.config.DoubleAttributeType;
-import de.bsvrz.dav.daf.main.config.DynamicObject;
-import de.bsvrz.dav.daf.main.config.DynamicObjectType;
-import de.bsvrz.dav.daf.main.config.IntegerAttributeType;
-import de.bsvrz.dav.daf.main.config.IntegerValueRange;
-import de.bsvrz.dav.daf.main.config.IntegerValueState;
-import de.bsvrz.dav.daf.main.config.MutableSet;
-import de.bsvrz.dav.daf.main.config.NonMutableSet;
-import de.bsvrz.dav.daf.main.config.ObjectSet;
-import de.bsvrz.dav.daf.main.config.ObjectSetType;
-import de.bsvrz.dav.daf.main.config.ObjectSetUse;
-import de.bsvrz.dav.daf.main.config.ReferenceAttributeType;
-import de.bsvrz.dav.daf.main.config.StringAttributeType;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
-import de.bsvrz.dav.daf.main.config.TimeAttributeType;
-import de.bsvrz.dav.daf.main.impl.config.DafAspect;
-import de.bsvrz.dav.daf.main.impl.config.DafAttribute;
-import de.bsvrz.dav.daf.main.impl.config.DafAttributeGroup;
-import de.bsvrz.dav.daf.main.impl.config.DafAttributeGroupUsage;
-import de.bsvrz.dav.daf.main.impl.config.DafAttributeListDefinition;
-import de.bsvrz.dav.daf.main.impl.config.DafClientApplication;
-import de.bsvrz.dav.daf.main.impl.config.DafConfigurationArea;
-import de.bsvrz.dav.daf.main.impl.config.DafConfigurationAuthority;
-import de.bsvrz.dav.daf.main.impl.config.DafConfigurationObject;
-import de.bsvrz.dav.daf.main.impl.config.DafConfigurationObjectType;
-import de.bsvrz.dav.daf.main.impl.config.DafDavApplication;
-import de.bsvrz.dav.daf.main.impl.config.DafDoubleAttributeType;
-import de.bsvrz.dav.daf.main.impl.config.DafDynamicObject;
-import de.bsvrz.dav.daf.main.impl.config.DafDynamicObjectType;
-import de.bsvrz.dav.daf.main.impl.config.DafIntegerAttributeType;
-import de.bsvrz.dav.daf.main.impl.config.DafIntegerValueRange;
-import de.bsvrz.dav.daf.main.impl.config.DafIntegerValueState;
-import de.bsvrz.dav.daf.main.impl.config.DafMutableSet;
-import de.bsvrz.dav.daf.main.impl.config.DafNonMutableSet;
-import de.bsvrz.dav.daf.main.impl.config.DafObjectSetType;
-import de.bsvrz.dav.daf.main.impl.config.DafObjectSetUse;
-import de.bsvrz.dav.daf.main.impl.config.DafReferenceAttributeType;
-import de.bsvrz.dav.daf.main.impl.config.DafStringAttributeType;
-import de.bsvrz.dav.daf.main.impl.config.DafSystemObject;
-import de.bsvrz.dav.daf.main.impl.config.DafTimeAttributeType;
+import de.bsvrz.dav.daf.main.*;
+import de.bsvrz.dav.daf.main.config.*;
+import de.bsvrz.dav.daf.main.impl.config.*;
 import de.bsvrz.dav.daf.main.impl.config.request.RemoteRequestManager;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.AuthentificationAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.AuthentificationRequest;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.ConfigTelegram;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.IdsToObjectsAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.IdsToObjectsRequest;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.MetaDataAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.NewObjectAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.NewObjectRequest;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.ObjectInvalidateAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.ObjectInvalidateRequest;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.ObjectRevalidateAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.ObjectRevalidateRequest;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.ObjectSetNameAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.ObjectSetNameRequest;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.ObjectsList;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.PidsToObjectsAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.PidsToObjectsRequest;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.SystemObjectAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.SystemObjectAnswerInfo;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.SystemObjectRequestInfo;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.SystemObjectsRequest;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.TransmitterConnectionInfo;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.TransmitterConnectionInfoAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.TransmitterConnectionInfoRequest;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.TransmitterInfo;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.TypeIdsToObjectsAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.TypeIdsToObjectsRequest;
+import de.bsvrz.dav.daf.main.impl.config.telegrams.*;
+import de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel;
 import de.bsvrz.puk.config.main.authentication.Authentication;
 import de.bsvrz.puk.config.main.communication.async.AsyncIdsToObjectsRequest;
 import de.bsvrz.puk.config.main.communication.query.ForeignObjectManager;
+import de.bsvrz.puk.config.main.simulation.ConfigSimulationObject;
+import de.bsvrz.puk.config.main.simulation.SimulationHandler;
 import de.bsvrz.puk.config.util.async.AsyncRequest;
 import de.bsvrz.puk.config.util.async.AsyncRequestCompletion;
 import de.bsvrz.puk.config.util.async.AsyncRequestQueue;
 import de.bsvrz.sys.funclib.debug.Debug;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -158,7 +66,7 @@ class ConfigurationRequesterCommunicator {
 
 	private final AsyncRequestQueue _asyncRequestQueue;
 
-	private final DataModel _dataModel;
+	private final ConfigDataModel _dataModel;
 
 	private final ClientDavInterface _connection;
 
@@ -190,15 +98,87 @@ class ConfigurationRequesterCommunicator {
 	 * Attributgruppen, Attributgruppenverwendungen, Attributtypen, Konfigurationsbereiche, Konfigurationsverantwortlichem, Mengenverwendungen, Typen,
 	 * Wertebereiche und Werteustände.
 	 */
-	private ConfigurationObject[] _metaDataObjects;
+	private SystemObject[] _metaDataObjects;
+
+	/**
+	 * Enthält die minimalen Objekte zum Stellen von neuartigen Konfigurationsanfragen
+	 */
+	private SystemObject[] _metaDataObjectsMinimal;
 
 	private ForeignObjectManager _foreignObjectManager = null;
 
-	ConfigurationRequesterCommunicator(DataModel dataModel, Authentication authentication, ClientDavInterface connection) {
+	/**
+	 * Klasse mit Informationen über Simulationen (kann initial null sein)
+	 */
+	private SimulationHandler _simulationHandler;
+	public static final String[] META_TYPES = new String[]{
+			"typ.aspekt",
+			"typ.attribut",
+			"typ.attributgruppe",
+			"typ.attributgruppenVerwendung",
+			"typ.attributTyp",
+			"typ.konfigurationsBereich",
+			"typ.konfigurationsVerantwortlicher",
+			"typ.mengenVerwendung",
+			"typ.typ",
+			"typ.werteBereich",
+			"typ.werteZustand",
+			"menge.aspekte",
+			"menge.attribute",
+			"menge.attributgruppen",
+			"menge.attributgruppenVerwendungen",
+			"menge.mengenVerwendungen",
+			"menge.objektTypen",
+			"menge.werteZustaende"
+	};
+
+	public static final String[] META_TYPES_MINIMAL = new String[]{
+			"typ.konfigurationsBereich",
+			"typ.konfigurationsVerantwortlicher",
+			"typ.aspekt",
+			"typ.attribut",
+			"typ.attributgruppe",
+			"typ.attributgruppenVerwendung",
+			"typ.attributTyp",
+			"typ.mengenVerwendung",
+			"typ.werteBereich",
+			"typ.werteZustand",
+			"menge.aspekte",
+			"menge.attribute",
+			"menge.attributgruppen",
+			"menge.attributgruppenVerwendungen",
+			"menge.mengenVerwendungen",
+			"menge.objektTypen",
+			"menge.werteZustaende"
+	};
+
+	public static final String[] META_OBJECTS_MINIMAL = new String[]{
+			"asp.eigenschaften",
+			"atgv.atg.konfigurationsAnfrage.asp.anfrage",
+			"atgv.atg.konfigurationsAntwort.asp.antwort",
+			"atgv.atg.konfigurationsSchreibAnfrage.asp.anfrage",
+			"atgv.atg.konfigurationsSchreibAntwort.asp.antwort",
+			"asp.antwort",
+			"asp.anfrage",
+			"atg.konfigurationsAnfrageSchnittstelleLesend",
+			"atgv.atg.konfigurationsAnfrageSchnittstelleLesend.asp.anfrage",
+			"atgv.atg.konfigurationsAnfrageSchnittstelleLesend.asp.antwort",
+			"atg.konfigurationsAnfrageSchnittstelleSchreibend",
+			"atgv.atg.konfigurationsAnfrageSchnittstelleSchreibend.asp.anfrage",
+			"atgv.atg.konfigurationsAnfrageSchnittstelleSchreibend.asp.antwort",
+			"atg.konfigurationsBenutzerverwaltungsAnfrageSchnittstelle",
+			"atgv.atg.konfigurationsBenutzerverwaltungsAnfrageSchnittstelle.asp.anfrage",
+			"atgv.atg.konfigurationsBenutzerverwaltungsAnfrageSchnittstelle.asp.antwort",
+			"atg.konfigurationsBereichsverwaltungsAnfrageSchnittstelle",
+			"atgv.atg.konfigurationsBereichsverwaltungsAnfrageSchnittstelle.asp.anfrage",
+			"atgv.atg.konfigurationsBereichsverwaltungsAnfrageSchnittstelle.asp.antwort"
+	};
+
+	ConfigurationRequesterCommunicator(ConfigDataModel dataModel, Authentication authentication, ClientDavInterface connection) {
 		this(null, dataModel, authentication, connection);
 	}
 
-	ConfigurationRequesterCommunicator(AsyncRequestQueue asyncRequestQueue, DataModel dataModel, Authentication authentication, ClientDavInterface connection) {
+	ConfigurationRequesterCommunicator(AsyncRequestQueue asyncRequestQueue, ConfigDataModel dataModel, Authentication authentication, ClientDavInterface connection) {
 		_asyncRequestQueue = asyncRequestQueue;
 		_dataModel = dataModel;
 		_configAuthority = _dataModel.getConfigurationAuthority();
@@ -234,9 +214,10 @@ class ConfigurationRequesterCommunicator {
 					+ "' nicht gefunden"
 			);
 		}
-		_remoteRequestManager = RemoteRequestManager.getInstance(_connection, _dataModel, _configAuthority);
+		_remoteRequestManager = RemoteRequestManager.getInstance(_connection);
 
 		_metaDataObjects = getMetaDataObjects();
+		_metaDataObjectsMinimal = getMetaDataObjectsMinimal();
 
 		// Wird zum versenden von Konfigurationsantworten gebraucht
 		Aspect answerAspect = _dataModel.getAspect("asp.antwort");
@@ -277,19 +258,13 @@ class ConfigurationRequesterCommunicator {
 	 */
 	private ConfigurationObject[] getMetaDataObjects() {
 		_debug.finer("getMetaDataObjects");
-		String[] metaTypes = {
-				"typ.aspekt", "typ.attribut", "typ.attributgruppe", "typ.attributgruppenVerwendung", "typ.attributTyp", "typ.konfigurationsBereich",
-				"typ.konfigurationsVerantwortlicher", "typ.mengenVerwendung", "typ.typ", "typ.werteBereich", "typ.werteZustand", "menge.aspekte",
-				"menge.attribute", "menge.attributgruppen", "menge.attributgruppenVerwendungen", "menge.mengenVerwendungen", "menge.objektTypen",
-				"menge.werteZustaende"
-		};
 		Set<ConfigurationObject> relevantObjects = new HashSet<ConfigurationObject>();
-		for(int i = 0; i < metaTypes.length; i++) {
-			SystemObjectType metaType = _dataModel.getType(metaTypes[i]);
+		for(final String type : META_TYPES) {
+			SystemObjectType metaType = _dataModel.getType(type);
 			final List<SystemObject> objectsOfType = metaType.getObjects();
 			for(SystemObject object : objectsOfType) {
 				if(object instanceof ConfigurationObject) {
-					ConfigurationObject configurationObject = (ConfigurationObject)object;
+					ConfigurationObject configurationObject = (ConfigurationObject) object;
 					relevantObjects.add(configurationObject);
 				}
 			}
@@ -297,29 +272,65 @@ class ConfigurationRequesterCommunicator {
 		return relevantObjects.toArray(new ConfigurationObject[relevantObjects.size()]);
 	}
 
+	private ConfigurationObject[] getMetaDataObjectsMinimal() {
+		_debug.finer("getMetaDataObjectsMinimal");
+		Set<ConfigurationObject> relevantObjects = new HashSet<ConfigurationObject>();
+		for(final String type : META_TYPES_MINIMAL) {
+			SystemObjectType metaType = _dataModel.getType(type);
+			final List<SystemObject> objectsOfType = metaType.getObjects();
+			for(SystemObject object : objectsOfType) {
+				if(object instanceof ConfigurationObject) {
+					ConfigurationObject configurationObject = (ConfigurationObject) object;
+					relevantObjects.add(configurationObject);
+				}
+			}
+		}
+		for(String pid : META_OBJECTS_MINIMAL) {
+			SystemObject object = _dataModel.getObject(pid);
+			addObject(relevantObjects, object);
+		}
+		return relevantObjects.toArray(new ConfigurationObject[relevantObjects.size()]);
+	}
+
+	static void addObject(final Set<ConfigurationObject> relevantObjects, final SystemObject object) {
+		if(object instanceof ConfigurationObject) {
+			ConfigurationObject configurationObject = (ConfigurationObject) object;
+			relevantObjects.add(configurationObject);
+			List<ObjectSet> objectSets = configurationObject.getObjectSets();
+			relevantObjects.addAll(objectSets);
+			for(ObjectSet objectSet : objectSets) {
+				for(SystemObject systemObject : objectSet.getElements()) {
+					addObject(relevantObjects, systemObject);
+				}
+			}
+		}
+	}
+
 	/**
-	 * Ermittelt die Antwort auf die von Applikationen initial gestellte Anfrage nach Meta-Objekten. Die Antwort enthält alle gültigen Aspekte, Attribute,
-	 * Attributgruppen, Attributgruppenverwendungen, Attributtypen, Konfigurationsbereiche, Konfigurationsverantwortlichem, Mengenverwendungen, Typen,
-	 * Wertebereiche und Werteustände.
+	 * Ermittelt die Antwort auf die von Applikationen initial gestellte Anfrage nach Meta-Objekten.
 	 *
 	 * @param objects Array mit den Konfigurationsobjekten, die in der Antwort enthalten sein sollen.
 	 *
+	 * @param protocolVersion
 	 * @return Antwortobjekt mit allen relevanten Meta-Objekten
 	 */
-	private MetaDataAnswer getMetaDataAnswer(ConfigurationObject[] objects) {
+	private MetaDataAnswer getMetaDataAnswer(Collection<SystemObject> objects, final long protocolVersion) {
 		_debug.finer("determineMetaDataAnswer");
-		final DafSystemObject[] metaObjectsArray = new DafSystemObject[objects.length];
+		final DafSystemObject[] metaObjectsArray = new DafSystemObject[objects.size()];
 		_debug.finer("metaObjectsArray.length", metaObjectsArray.length);
-		for(int i = 0; i < objects.length; i++) {
-			ConfigurationObject object = objects[i];
-			DafSystemObject metaObject = getMetaObject(object);
-			metaObjectsArray[i] = metaObject;
+		int f = 0;
+		for(SystemObject object : objects) {
+			metaObjectsArray[f++] = getMetaObject(object);
 		}
-		return new MetaDataAnswer(System.currentTimeMillis(), metaObjectsArray, null);
+		return new MetaDataAnswer(protocolVersion, metaObjectsArray, null);
 	}
 
 	public void setForeignObjectManager(final ForeignObjectManager foreignObjectManager) {
 		_foreignObjectManager = foreignObjectManager;
+	}
+
+	public void setSimulationHandler(final SimulationHandler simulationHandler) {
+		_simulationHandler = simulationHandler;
 	}
 
 	/** Nimmt Konfigurationsanfragen entgegen und leitet sie an eine Methode zum verarbeiten weiter. */
@@ -555,7 +566,18 @@ class ConfigurationRequesterCommunicator {
 		switch(requestType) {
 			case ConfigTelegram.META_DATA_REQUEST_TYPE: {
 				_debug.fine("META_DATA_REQUEST_TYPE");
-				answer = getMetaDataAnswer(_metaDataObjects);
+				MetaDataRequest metaDataRequest = (MetaDataRequest) request;
+				if(metaDataRequest.getProtocolVersion() == 0 || oldDataModel()){
+					answer = getMetaDataAnswer(Arrays.asList(_metaDataObjects), 0);
+				}
+				else {
+					ArrayList<SystemObject> list = new ArrayList<SystemObject>(_metaDataObjectsMinimal.length + 1);
+					Collections.addAll(list, _metaDataObjectsMinimal);
+					// Die Applikation braucht auf jeden Fall noch ihr eigenes Objekt und den KV
+					list.add(sender);
+					list.add(_configAuthority);
+					answer = getMetaDataAnswer(list, ConfigDataModel.PROTOCOL_VERSION);
+				}
 				break;
 			}
 			case ConfigTelegram.OBJECT_REQUEST_TYPE: {
@@ -596,7 +618,14 @@ class ConfigurationRequesterCommunicator {
 						String[] pids = ir.getPids();
 						DafSystemObject[] objects = new DafSystemObject[pids.length];
 						for(int i = 0; i < pids.length; ++i) {
-							SystemObject object = (SystemObject)_dataModel.getObject(pids[i]);
+							short simulationvariant = 0;
+							if(_simulationHandler != null){
+								ConfigSimulationObject simulation = _simulationHandler.getSimulationByApplication(sender);
+								if(simulation != null){
+									simulationvariant = simulation.getSimulationVariant();
+								}
+							}
+							SystemObject object = _dataModel.getObject(pids[i], simulationvariant);
 							if(object != null) {
 								_debug.finer(" pid " + pids[i] + ": " + object.getNameOrPidOrId());
 							}
@@ -976,6 +1005,22 @@ class ConfigurationRequesterCommunicator {
 				_debug.warning("Zur Konfigurationsanfrage konnte keine Antwort erzeugt werden: " + request.parseToString());
 			}
 		}
+	}
+
+	/**
+	 * Gibt true zurück, wenn die neuen Konfigurationsanfragen nicht verfügbar sind, sonst false.
+	 * @return true wenn die alten Konfigurationsanfragen aufgrund eines veralteten Datenmodells benutzt werden müssen.
+	 */
+	private boolean oldDataModel() {
+		IntegerAttributeType att;
+		att = (IntegerAttributeType) _dataModel.getAttributeType("att.konfigurationsAnfrageNachrichtenTypLesend");
+		for(IntegerValueState state : att.getStates()) {
+			if(state.getName().equals("ObjekteAnfragenMitTyp")){
+				// Neues Datenmodell ist verfügbar
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private SystemObjectAnswerInfo buildIdsToObjectsAnswerInfo(final long[] ids, final SystemObject[] objects) {
@@ -1471,6 +1516,7 @@ class ConfigurationRequesterCommunicator {
 
 		}
 		else {
+			Thread.dumpStack();
 			_debug.warning("Keine Objekt-Konvertierung möglich: " + object);
 			return null;
 		}

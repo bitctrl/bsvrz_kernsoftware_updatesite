@@ -26,88 +26,18 @@ import de.bsvrz.dav.daf.communication.dataRepresentation.AttributeBaseValueDataF
 import de.bsvrz.dav.daf.communication.dataRepresentation.AttributeHelper;
 import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.DataAndATGUsageInformation;
-import de.bsvrz.dav.daf.main.config.Aspect;
-import de.bsvrz.dav.daf.main.config.Attribute;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
-import de.bsvrz.dav.daf.main.config.AttributeListDefinition;
-import de.bsvrz.dav.daf.main.config.AttributeType;
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.ConfigurationAuthority;
-import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
-import de.bsvrz.dav.daf.main.config.ConfigurationObject;
-import de.bsvrz.dav.daf.main.config.ConfigurationObjectType;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.DoubleAttributeType;
-import de.bsvrz.dav.daf.main.config.DynamicObject;
-import de.bsvrz.dav.daf.main.config.DynamicObjectType;
-import de.bsvrz.dav.daf.main.config.IntegerAttributeType;
-import de.bsvrz.dav.daf.main.config.IntegerValueRange;
-import de.bsvrz.dav.daf.main.config.IntegerValueState;
-import de.bsvrz.dav.daf.main.config.MutableSet;
-import de.bsvrz.dav.daf.main.config.NonMutableSet;
-import de.bsvrz.dav.daf.main.config.ObjectLookup;
-import de.bsvrz.dav.daf.main.config.ObjectSet;
-import de.bsvrz.dav.daf.main.config.ObjectSetType;
-import de.bsvrz.dav.daf.main.config.ObjectSetUse;
-import de.bsvrz.dav.daf.main.config.Pid;
-import de.bsvrz.dav.daf.main.config.ReferenceAttributeType;
-import de.bsvrz.dav.daf.main.config.ReferenceType;
-import de.bsvrz.dav.daf.main.config.StringAttributeType;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.SystemObjectInfo;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
-import de.bsvrz.dav.daf.main.config.TimeAttributeType;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.dav.daf.main.config.management.ConfigAreaAndVersion;
 import de.bsvrz.dav.daf.main.config.management.ConfigurationControl;
-import de.bsvrz.puk.config.configFile.datamodel.ConfigAttribute;
-import de.bsvrz.puk.config.configFile.datamodel.ConfigAttributeType;
-import de.bsvrz.puk.config.configFile.datamodel.ConfigConfigurationArea;
-import de.bsvrz.puk.config.configFile.datamodel.ConfigConfigurationObject;
-import de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel;
-import de.bsvrz.puk.config.configFile.datamodel.ConfigSystemObject;
+import de.bsvrz.puk.config.configFile.datamodel.*;
 import de.bsvrz.puk.config.xmlFile.parser.ConfigAreaParser;
-import de.bsvrz.puk.config.xmlFile.properties.AspectProperties;
-import de.bsvrz.puk.config.xmlFile.properties.AttributeGroupProperties;
-import de.bsvrz.puk.config.xmlFile.properties.AttributeListProperties;
-import de.bsvrz.puk.config.xmlFile.properties.AttributeProperties;
-import de.bsvrz.puk.config.xmlFile.properties.AttributeTypeProperties;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationAreaChangeInformation;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationAreaProperties;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationAspect;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationAttributeType;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationConfigurationObject;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationData;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationDataField;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationDataList;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationDataset;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationDefaultParameter;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationDoubleDef;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationIntegerDef;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationIntegerValueRange;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationObjectElements;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationObjectReference;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationObjectSet;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationSet;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationState;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationString;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationTimeStamp;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationValueRange;
-import de.bsvrz.puk.config.xmlFile.properties.DatasetElement;
-import de.bsvrz.puk.config.xmlFile.properties.ListAttributeProperties;
-import de.bsvrz.puk.config.xmlFile.properties.ObjectSetTypeProperties;
-import de.bsvrz.puk.config.xmlFile.properties.PlainAttributeProperties;
-import de.bsvrz.puk.config.xmlFile.properties.SystemObjectProperties;
-import de.bsvrz.puk.config.xmlFile.properties.SystemObjectTypeProperties;
-import de.bsvrz.puk.config.xmlFile.properties.TargetValue;
-import de.bsvrz.puk.config.xmlFile.properties.TransactionProperties;
-import de.bsvrz.puk.config.xmlFile.properties.UndefinedReferenceOptions;
+import de.bsvrz.puk.config.xmlFile.properties.*;
 import de.bsvrz.sys.funclib.dataSerializer.NoSuchVersionException;
 import de.bsvrz.sys.funclib.dataSerializer.Serializer;
 import de.bsvrz.sys.funclib.dataSerializer.SerializingFactory;
 import de.bsvrz.sys.funclib.debug.Debug;
-
 import org.xml.sax.SAXException;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -3170,6 +3100,7 @@ public class ConfigurationImport implements ObjectLookup {
 //							if(atgUsage.getUsage() == AttributeGroupUsage.Usage.ChangeableRequiredConfigurationData
 //							   || atgUsage.getUsage() == AttributeGroupUsage.Usage.RequiredConfigurationData) {
 								final Data data = AttributeBaseValueDataFactory.createAdapter(atg, AttributeHelper.getAttributesValues(atg));
+								data.setToDefault();
 								fillData(data, configurationDataset.getDataAnddataListAndDataField());
 								dataAndATGUsageInformation.add(new DataAndATGUsageInformation(atgUsage, data));
 							}
@@ -3280,6 +3211,7 @@ public class ConfigurationImport implements ObjectLookup {
 //						}
 						if(datasetDifferent) {
 							Data data = AttributeBaseValueDataFactory.createAdapter(atg, AttributeHelper.getAttributesValues(atg));
+							data.setToDefault();
 //						printData(data);
 							fillData(data, dataset.getDataAnddataListAndDataField());
 //						printData(data);

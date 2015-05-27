@@ -22,21 +22,22 @@
 
 package de.bsvrz.dav.daf.main.impl.config;
 
+import de.bsvrz.dav.daf.main.config.Aspect;
+import de.bsvrz.dav.daf.main.config.AttributeGroup;
+import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
+import de.bsvrz.dav.daf.main.config.AttributeGroupUsageIdentifier;
+import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
+import de.bsvrz.sys.funclib.debug.Debug;
+
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.DataInputStream;
-
-import de.bsvrz.sys.funclib.debug.Debug;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.AttributeGroupUsageIdentifier;
-import de.bsvrz.dav.daf.main.config.Aspect;
-import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
 
 /**
  * Klasse, die den Zugriff auf Attributgruppenverwendungen seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5054 $
+ * @version $Revision: 13141 $
  */
 public class DafAttributeGroupUsage extends DafConfigurationObject implements AttributeGroupUsage, AttributeGroupUsageIdentifier {
 
@@ -152,5 +153,13 @@ public class DafAttributeGroupUsage extends DafConfigurationObject implements At
 		_aspectId = in.readLong();
 		_explicitDefined = in.readBoolean();
 		_usage = Usage.getInstanceWithId(in.readByte());
+	}
+
+	public void read(Deserializer deserializer) throws IOException {
+		super.read(deserializer);
+		_attributeGroupId = deserializer.readLong();
+		_aspectId = deserializer.readLong();
+		_explicitDefined = deserializer.readBoolean();
+		_usage = Usage.getInstanceWithId(deserializer.readByte());
 	}
 }

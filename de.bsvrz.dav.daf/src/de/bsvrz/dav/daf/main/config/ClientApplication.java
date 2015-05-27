@@ -28,7 +28,7 @@ package de.bsvrz.dav.daf.main.config;
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
  * @author Stephan Homeyer (sth)
- * @version $Revision: 5055 $ / $Date: 2007-09-01 11:31:09 +0200 (Sa, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 5055 $ / $Date: 2007-09-01 11:31:09 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
  * @see de.bsvrz.dav.daf.main.ClientDavInterface#login
  */
 public interface ClientApplication extends DynamicObject {

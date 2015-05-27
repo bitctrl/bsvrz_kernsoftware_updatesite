@@ -21,11 +21,18 @@
 package de.bsvrz.puk.config.configFile.fileaccess;
 
 import de.bsvrz.dav.daf.main.config.DynamicObjectType;
+import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
+import de.bsvrz.sys.funclib.dataSerializer.NoSuchVersionException;
+import de.bsvrz.sys.funclib.dataSerializer.SerializingFactory;
 import de.bsvrz.sys.funclib.debug.Debug;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.zip.InflaterInputStream;
 
 
 /**
@@ -36,7 +43,7 @@ import java.util.*;
  *
  * @author Kappich+Kniß Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 6914 $ / $Date: 2009-11-05 15:41:41 +0100 (Do, 05 Nov 2009) $ / ($Author: rs $)
+ * @version $Revision: 13170 $ / $Date: 2015-02-10 19:36:53 +0100 (Tue, 10 Feb 2015) $ / ($Author: jh $)
  */
 public class DynamicObjectInformation extends SystemObjectInformation implements DynamicObjectInfo {
 
@@ -47,24 +54,20 @@ public class DynamicObjectInformation extends SystemObjectInformation implements
 
 	private long _firstInvalidTime = 0;
 
-
 	private short _simulationVariant = -1;
 
 	/** Speichert die letzte abselute Position ab, an der das Objekt gespeichert wurde */
-	private long _lastFilePosition = -1;
+	private FilePointer _lastFilePosition = null;
 
 	/** Dieses Objekt übernimmt die persistente Speicherung des Objekts und kann es gleichzeitig aus der Datei wieder entfernen. */
 	private final ConfigAreaFile _modifiedManager;
-
-	/** Speicher ob Modifikationen gespeichert werden sollen. Beim laden darf das Objekt nicht automatisch gespeichert werden. */
-	private boolean _saveModifications;
 
 	private final DynamicObjectType.PersistenceMode _persistenceMode;
 
 	/**
 	 * Für automatisierte Tests wird bei <code>true</code> innerhalb der setInvalid-Methode ein sleep von 10ms ausgeführt, das einen potentiellen Deadlock aufdecken würde.
 	 */
-	static private boolean _testWithSynchronizedSleep = false;
+	private static boolean _testWithSynchronizedSleep = false;
 
 	/**
 	 * @param testWithSynchronizedSleep  Wenn <code>true</code> übergeben wird, dann wird in nachfolgenden Aufrufen der Methode setInvalid() ein sleep von 10ms
@@ -102,7 +105,6 @@ public class DynamicObjectInformation extends SystemObjectInformation implements
 		_simulationVariant = simulationVariant;
 		_firstValidTime = firstValidTime;
 		_modifiedManager = configAreaFile;
-		_saveModifications = saveModifications;
 		_persistenceMode = persistenceMode;
 
 		// Das Objekt soll gespeichert werden
@@ -151,16 +153,81 @@ public class DynamicObjectInformation extends SystemObjectInformation implements
 		}
 	}
 
-	public void saveObjectModifications() {
-		_saveModifications = true;
-		super.saveObjectModificationsSystemObject();
+
+	static DynamicObjectInformation fromBinaryObject(final ConfigAreaFile configAreaFile, final long filePosition, BinaryDynamicObject binaryDynamicObject) throws IOException, NoSuchVersionException {
+		return getSystemObjectInformation(
+				configAreaFile, filePosition, binaryDynamicObject.getObjectId(), binaryDynamicObject.getTypeId(), binaryDynamicObject.getFirstInvalid(), binaryDynamicObject
+						.getFirstValid(), binaryDynamicObject.getSimulationVariant(), binaryDynamicObject.getPackedBytes()
+		);
+	}
+
+	static DynamicObjectInformation getSystemObjectInformation(final ConfigAreaFile configAreaFile, final long filePosition, final long id, final long typeId, final long firstInvalid, final long firstValid, final short simulationVariant, final byte[] packedBytes) throws IOException, NoSuchVersionException {
+		final InputStream in = new InflaterInputStream(new ByteArrayInputStream(packedBytes));
+		try {
+			//deserialisieren
+			final Deserializer deserializer = SerializingFactory.createDeserializer(configAreaFile.getSerializerVersion(), in);
+
+			// Das serialisierte SystemObjektInfo einlesen
+
+			// Pid einlesen
+			final int pidSize = deserializer.readUnsignedByte();
+			final String pid;
+			if(pidSize > 0) {
+				pid = deserializer.readString(255);
+			}
+			else {
+				
+				pid = deserializer.readString(0);
+			}
+//				final String pid = readString(deserializer);
+
+			// Name einlesen
+			final int nameSize = deserializer.readUnsignedByte();
+			final String name;
+			if(nameSize > 0) {
+				name = deserializer.readString(255);
+			}
+			else {
+				
+				name = deserializer.readString(0);
+			}
+//				final String name = readString(deserializer);
+
+			// Es stehen nun alle Informationen zur Verfügung, um ein Objekt zu erzeugen.
+			// An dieses Objekt werden dann alle Mengen hinzugefügt.
+			final DynamicObjectInformation newDynObject = new DynamicObjectInformation(
+					id, pid, typeId, name, simulationVariant, firstValid, firstInvalid, configAreaFile, false
+			);
+			// Am Objekt speichern, wo es in der Datei zu finden ist
+			newDynObject.setLastFilePosition(FilePointer.fromAbsolutePosition(filePosition, configAreaFile));
+
+			// konfigurierende Datensätze einlesen und direkt an dem Objekt hinzufügen
+
+			// Menge der konfigurierenden Datensätze
+			final int numberOfConfigurationData = deserializer.readInt();
+			for(int nr = 0; nr < numberOfConfigurationData; nr++) {
+				// ATG-Verwendung einlesen
+				final long atgUseId = deserializer.readLong();
+				// Länge der Daten
+				final int sizeOfData = deserializer.readInt();
+				final byte[] data = deserializer.readBytes(sizeOfData);
+				newDynObject.setConfigurationData(atgUseId, data);
+			}
+
+			// Das Objekt wurde geladen, ab jetzt dürfen alle Änderungen gespeichert werden
+			newDynObject.saveObjectModifications();
+			return newDynObject;
+		}
+		finally {
+			in.close();
+		}
 	}
 
 	public long getFirstValidTime() {
 		return _firstValidTime;
 	}
 
-	synchronized public long getFirstInvalidTime() {
+	public synchronized long getFirstInvalidTime() {
 		// Der Zugriff ist synchronisiert, da zur selben Zeit der Wert gesetzt werden kann und ein
 		// Long nicht "atomar" gesetzt werden kann
 		return _firstInvalidTime;
@@ -202,7 +269,7 @@ public class DynamicObjectInformation extends SystemObjectInformation implements
 			}
 		}
 		// Speichern, damit ein Zugriff auf das Objekt, auch wenn es aus der Datei geladen wird, immer zu den selben Informationen führt
-		if(doWrite) _modifiedManager.writeDynamicObject(this);
+		if(doWrite) _modifiedManager.writeInvalidTime(this);
 		// Das Objekt ist jetzt ungültig, also darf es bei einer Anfrage auf "aktuelle" Objekte nicht mehr auftauchen
 		if(doUpdateCache) _modifiedManager.setDynamicObjectInvalid(this);
 	}
@@ -211,7 +278,7 @@ public class DynamicObjectInformation extends SystemObjectInformation implements
 		return _simulationVariant;
 	}
 
-	synchronized public void remove() {
+	public synchronized void remove() {
 		if(_simulationVariant > 0) {
 
 			if(_persistenceMode != DynamicObjectType.PersistenceMode.TRANSIENT_OBJECTS) {
@@ -221,7 +288,7 @@ public class DynamicObjectInformation extends SystemObjectInformation implements
 				// Das Objekt als gelöscht markieren
 				_modifiedManager.declareObjectAsAGap(_lastFilePosition);
 			}
-			_modifiedManager.removeDynamicSimulationObject(this);
+			_modifiedManager.deleteDynamicObject(this);
 		}
 		else {
 			throw new IllegalStateException(
@@ -235,18 +302,23 @@ public class DynamicObjectInformation extends SystemObjectInformation implements
 		return _persistenceMode;
 	}
 
-	synchronized public long getLastFilePosition() {
+	@Override
+	public synchronized boolean isDeleted() {
+		return _firstInvalidTime != 0;
+	}
+
+	public synchronized FilePointer getLastFilePosition() {
 		return _lastFilePosition;
 	}
 
-	synchronized public void setLastFilePosition(long lastFilePosition) {
+	public synchronized void setLastFilePosition(FilePointer lastFilePosition) {
 		_lastFilePosition = lastFilePosition;
 	}
 
+	@Override
 	public ConfigAreaFile getConfigAreaFile() {
 		return _modifiedManager;
 	}
-
 
 	public String toString() {
 		final StringBuffer out = new StringBuffer();
@@ -257,7 +329,6 @@ public class DynamicObjectInformation extends SystemObjectInformation implements
 		out.append("nicht mehr gültig ab dem Zeitpunkt: " + timeFormat.format(new Date(getFirstInvalidTime())) + "\n");
 		out.append("gültig ab dem Zeitpunkt: " + timeFormat.format(new Date(getFirstValidTime())) + "\n");
 		out.append("Simulationsvariante: " + getSimulationVariant() + "\n");
-		out.append("Dateiposition: " + _lastFilePosition + "\n");
 		return out.toString();
 	}
 }

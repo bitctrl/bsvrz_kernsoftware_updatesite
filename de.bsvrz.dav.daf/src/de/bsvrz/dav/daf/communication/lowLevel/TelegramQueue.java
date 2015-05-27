@@ -20,7 +20,7 @@
 
 package de.bsvrz.dav.daf.communication.lowLevel;
 
-import java.util.*;
+import java.util.LinkedList;
 
 /**
  * Klasse, die zum gepufferten Austausch von Telegrammen zwischen verschiedenen Threads verwendet werden kann. Die Gesamtgröße der gepufferten Telegramme ist
@@ -31,7 +31,7 @@ import java.util.*;
  * Schließen der Queue. blockiert keine der beiden Methoden mehr.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5047 $
+ * @version $Revision: 12968 $
  */
 public class TelegramQueue<Telegram extends QueueableTelegram> {
 
@@ -111,8 +111,16 @@ public class TelegramQueue<Telegram extends QueueableTelegram> {
 		if(length <= 0) throw new IllegalArgumentException("Telegrammlänge muss größer 0 sein, ist aber " + length + ": " + telegram);
 		final byte priority = telegram.getPriority();
 		synchronized(this) {
-			while(!_closed && _size + length > _capacity) {
-				wait();
+			if(length > _capacity){
+				// Telegramm passt nicht in Queue, solange warten bis _size == 0 und dann senden
+				while(!_closed && _size > 0) {
+					wait();
+				}
+			}
+			else {
+				while(!_closed && _size + length > _capacity) {
+					wait();
+				}
 			}
 			if(_closed) return;
 			_priorityLists[priority].add(telegram);

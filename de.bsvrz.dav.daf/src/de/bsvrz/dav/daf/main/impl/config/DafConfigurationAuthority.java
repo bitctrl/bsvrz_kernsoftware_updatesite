@@ -23,7 +23,9 @@
 package de.bsvrz.dav.daf.main.impl.config;
 
 import de.bsvrz.dav.daf.main.Data;
+import de.bsvrz.dav.daf.main.config.ConfigurationArea;
 import de.bsvrz.dav.daf.main.config.ConfigurationAuthority;
+import de.bsvrz.dav.daf.main.config.SystemObject;
 
 /** @author fouad */
 
@@ -31,7 +33,7 @@ import de.bsvrz.dav.daf.main.config.ConfigurationAuthority;
  * Klasse, die den Zugriff auf Konfigurationsverantwortliche seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5055 $
+ * @version $Revision: 13141 $
  */
 public class DafConfigurationAuthority extends DafConfigurationObject implements ConfigurationAuthority {
 
@@ -77,6 +79,23 @@ public class DafConfigurationAuthority extends DafConfigurationObject implements
 		else {
 			throw new IllegalStateException("Die Kodierung des Konfigurationsbereichs " + getNameOrPidOrId() + " konnte nicht ermittelt werden.");
 		}
+	}
+
+	@Override
+	public ConfigurationArea getDefaultConfigurationArea() {
+		final Data data = getConfigurationData(getDataModel().getAttributeGroup("atg.konfigurationsVerantwortlicherEigenschaften"));
+		Data.TextArray defaultConfigAreaArray = data.getTextArray(
+				"defaultBereich"
+		);
+		if(defaultConfigAreaArray.getLength() != 1) {
+			return null;
+		}
+		final String defaultConfigAreaPid = defaultConfigAreaArray.getTextValue(0).getValueText();
+		SystemObject object = getDataModel().getObject(defaultConfigAreaPid);
+		if(object instanceof ConfigurationArea) {
+			return (ConfigurationArea) object;
+		}
+		return null;
 	}
 }
 

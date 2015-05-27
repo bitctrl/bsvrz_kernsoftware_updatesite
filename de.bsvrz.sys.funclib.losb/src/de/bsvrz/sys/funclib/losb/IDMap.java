@@ -29,7 +29,7 @@ import java.util.*;
  *
  * @author beck et al. projects GmbH
  * @author Thomas Schaefer
- * @version $Revision: 8179 $ / $Date: 2010-09-20 13:07:40 +0200 (Mo, 20 Sep 2010) $ / ($Author: rs $)
+ * @version $Revision: 8179 $ / $Date: 2010-09-20 13:07:40 +0200 (Mon, 20 Sep 2010) $ / ($Author: rs $)
  */
 public class IDMap<K, V> implements Map<K, V> {
 

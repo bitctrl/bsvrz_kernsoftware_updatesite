@@ -33,7 +33,7 @@ import java.util.Collection;
  * auf spezielle System-Objekte ermöglicht.
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 9135 $
+ * @version $Revision: 13003 $
  */
 public interface ClientDavInterface {
 	
@@ -580,7 +580,7 @@ public interface ClientDavInterface {
 	 * die Applikation terminiert.
 	 * 
 	 * @param closer
-	 *            Objekt für die Behandlung von Kommunikationsfehlern.
+	 *            Objekt für die Behandlung von Kommunikationsfehlern oder null, falls bei einem Verbindungsfehler nichts passieren soll.
 	 */
 	public void setCloseHandler(ApplicationCloseActionHandler closer);
 	
@@ -642,8 +642,11 @@ public interface ClientDavInterface {
 	
 	/**
 	 * Bestimmt die Verbindungsparameter der Datenverteiler-Applikationsfunktionen.
+	 * Es wird eine schreibgeschützte Kopie zurückgegeben.
 	 * 
 	 * @return Verbindungsparameter der Datenverteiler-Applikationsfunktionen
+	 *
+	 * @see de.bsvrz.dav.daf.main.ClientDavParameters#clone(boolean)
 	 */
 	public ClientDavParameters getClientDavParameters();
 	

@@ -27,7 +27,7 @@ package de.bsvrz.sys.funclib.losb.datk;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 8785 $ / $Date: 2011-02-15 14:57:22 +0100 (Di, 15 Feb 2011) $ / ($Author: jh $)
+ * @version $Revision: 12841 $ / $Date: 2014-10-02 13:50:44 +0200 (Thu, 02 Oct 2014) $ / ($Author: jh $)
  */
 public class PidScript {
 
@@ -105,6 +105,8 @@ public class PidScript {
 	public static final String periods = "Zeitbereiche";
 
 	public static final String protocolType = "Protokollart";
+
+	public static final String noChangeMarker = "Unverändertkennzeichnung";
 
 	public static final String aliases = "Aliase";
 

@@ -23,14 +23,10 @@
 package de.bsvrz.dav.daf.main.impl;
 
 import de.bsvrz.dav.daf.communication.dataRepresentation.data.DataFactory;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
-import de.bsvrz.dav.daf.main.config.ConfigurationException;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.SendDataObject;
 import de.bsvrz.dav.daf.communication.lowLevel.telegrams.BaseSubscriptionInfo;
+import de.bsvrz.dav.daf.main.Data;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 import java.util.*;
@@ -41,7 +37,7 @@ import java.util.*;
  * ihrer beim Anmelden angegebenen Verweilzeit, aus dem Cache gelöscht werden. Diese Subkomponente wird von ClientDavConnection erzeugt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11437 $
+ * @version $Revision: 13457 $
  */
 public class CacheManager {
 
@@ -235,6 +231,17 @@ public class CacheManager {
 								cachedObject.update(attributesIndicator, data, delayedDataFlag);
 							}
 							cachedObject.setActionTime(System.currentTimeMillis());
+
+							// Wenn der Vorhaltezeitraum der Daten 0 ist und der Datensatz nicht nachgeliefert ist, dann
+							// wird der bisher aktuelle  Datensatz im Cache durch den gerade empfangenen ersetzt.
+							if(!delayedDataFlag && (subscriptionManager.getTimeInCache(baseSubscriptionInfo) == 0)) {
+								_iterator.set(cachedObject);
+							}
+							else {
+								_iterator.next();
+								_iterator.add(cachedObject);
+							}
+							break;
 						}
 						break;
 					}

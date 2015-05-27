@@ -26,7 +26,7 @@ import de.bsvrz.dav.daf.main.config.DoubleAttributeType;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 5052 $ / $Date: 2007-08-31 20:02:55 +0200 (Fr, 31 Aug 2007) $ / ($Author: rs $)
+ * @version $Revision: 5052 $ / $Date: 2007-08-31 20:02:55 +0200 (Fri, 31 Aug 2007) $ / ($Author: rs $)
  */
 public final class FloatDefinitionInfo extends DoubleDefinitionInfo {
 	public FloatDefinitionInfo(DoubleAttributeType att) {

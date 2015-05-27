@@ -21,17 +21,19 @@
 
 package de.bsvrz.puk.config.configFile.fileaccess;
 
-import de.bsvrz.dav.daf.main.config.TimeSpecificationType;
 import de.bsvrz.dav.daf.main.config.DynamicObjectType;
+import de.bsvrz.dav.daf.main.config.TimeSpecificationType;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
  * @author Achim Wullenkord (AW), Kappich Systemberatung
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 5074 $ / $Date: 2007-09-02 14:19:12 +0200 (So, 02 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 13169 $ / $Date: 2015-02-10 19:32:21 +0100 (Tue, 10 Feb 2015) $ / ($Author: jh $)
  */
 public interface ConfigurationAreaFile {
 
@@ -105,21 +107,18 @@ public interface ConfigurationAreaFile {
 	 *
 	 * @param typeId TypeId, die ein Objekt besitzen muss, damit es zurückgegeben wird
 	 *
-	 * @return Objekte, deren TypeId gleich der übergebenen TypeId sind. Ist kein Objekt vorhanden, so wird eine leere Liste zurückgegeben.
+	 * @return Objekte, deren TypeId gleich der übergebenen TypeId sind. Ist kein Objekt vorhanden, so wird ein leeres Array zurückgegeben.
 	 */
 	SystemObjectInformationInterface[] getActualObjects(long typeId);
 
 	/**
-	 * TBD vielleicht (raus, weil das mit dynamischen Objekten nicht funktioniert)
-	 * Diese Methode gibt alle dynamischen Objekte und Konfigurationsobjekte zurück, die innerhalb des angegebenen
-	 * Versionsbereichs gültig waren. Wurde ein Objekt in diesem Zeitraum als "ungültig" markiert, wird es ebenfalls
-	 * zurückgegeben. Wird ein Objekt in diesem Bereich als aktuell markiert, wird es ebenfalls zurückgegeben.
+	 * Gibt alle aktuellen Objekte zurück, die als TypeId einen der übergebenen TypeIds besitzen.
 	 *
-	 * @param startVersion Version, ab der ein Objekt gültig sein muss, um zurückgegeben zu werden
-	 * @param endVersion   Version, bis zu der Objekte zurückgegeben werden
-	 * @return Objekte, die in dem angegebene Bereich zu einem Zeitpunkt gültig waren
+	 * @param typeIds TypeIds, die ein Objekt besitzen muss, damit es zurückgegeben wird
+	 *
+	 * @return Objekte, deren TypeId gleich einem der übergebenen TypeIds sind. Ist kein Objekt vorhanden, so wird ein leeres Array zurückgegeben.
 	 */
-//	SystemObjectInfo[] getObjects(short startVersion, short endVersion, List<Long> typeIds);
+	SystemObjectInformationInterface[] getActualObjects(Collection<Long> typeIds);
 
 	/**
 	 * Diese Methode gibt alle dynamischen Objekte und Konfigurationsobjekte zurück, die innerhalb des angegebenen Zeitbereichs gültig waren und deren TypeId
@@ -150,30 +149,38 @@ public interface ConfigurationAreaFile {
 	SystemObjectInformationInterface[] getNewObjects();
 
 	/**
-	 * Diese Methode gibt alle dynamischen Objekte und Konfigurationsobjekte zurück, die innerhalb des angegebenen
-	 * Versionsbereichs als "ungültig" markiert wurden. Damit ein Objekt zurückgegeben wird, muss es in dem angegebenen
-	 * Bereich aktuell gewesen/geworden sein und anschließen als "ungültig" markiert worden sein.
-	 *
-	 * @param startVersion Version, ab der ein Objekt als "ungültig" markiert werden muss, um zurückgegeben zu werden
-	 * @param endVersion   Version, bis zu der Objekte zurückgegeben werden
-	 * @return Objekte, die in dem angegebene Bereich zu einem Zeitpunkt als "ungültig" markiert wurden
-	 */
-	
-
-
-
-
-
-
-
-
-
-	/**
 	 * Stellt alle dynamischen Objekte und Konfigurationsobjekte zur Verfügung.
 	 *
 	 * @return s.o.
+	 *
+	 * @deprecated Wird aktuell nicht mehr benutzt, aktuelle Implementierung ist sehr ineffizient. Stattdessen forEach() benutzen.
 	 */
+	@Deprecated
 	Iterator<SystemObjectInformationInterface> iterator();
+
+	/**
+	 * Iteriert über alle Objekte in diesem Bereich.
+	 * @param consumer Java-8-Style Consumer, an den jedes gefundene Objekt übergeben wird
+	 */
+	void forEach(Consumer<? super SystemObjectInformationInterface> consumer);
+
+	/**
+	 * Iteriert über alle Konfigurationsobjekte in den NGA-Blöcken in diesem Bereich.
+	 * @param consumer Java-8-Style Consumer, an den jedes gefundene Objekt übergeben wird
+	 */
+	void forEachOldConfigurationObject(Consumer<? super ConfigurationObjectInfo> consumer);
+
+	/**
+	 * Iteriert über alle dynamischen Objekte im NGDyn-Block in diesem Bereich.
+	 * @param consumer Java-8-Style Consumer, an den jedes gefundene Objekt übergeben wird
+	 */
+	void forEachOldDynamicObject(Consumer<? super DynamicObjectInfo> consumer);
+
+	/**
+	 * Iteriert über alle Objekte in der Mischmenge in diesem Bereich.
+	 * @param consumer Java-8-Style Consumer, an den jedes gefundene Objekt übergeben wird
+	 */
+	void forEachMixedObject(Consumer<? super SystemObjectInformationInterface> consumer);
 
 	/**
 	 * Diese Methode gibt ein Objekt zurück, das als ungültig markiert wurde. Ist in diesem Konfigurationsbereich kein Objekt mit der Id vorhanden, wird
@@ -196,12 +203,16 @@ public interface ConfigurationAreaFile {
 	 *                   ist die aktuelle Zeit.
 	 * @param kindOfTime Legt fest, welcher Zeitpunkt bei einer aktivierten Version benutzt wird. Der Zeitpunkt der lokalen Aktivierung einer Version oder aber der
 	 *                   Zeitpunkt der Aktivierung durch den Konfigurationsverantwortlichen.
+	 * @param simulationVariant Zusätzlich zu berücksichtigende Simulationsvariante (außer 0). Es wird nicht nach dieser Simulationsvariante gefilert,
+	 *                          d. h. wenn der Aufrufer nur Objekte benötigt, die innerhalb einer speziellen Simulation gültig sind,
+	 *                          dann muss er selbst die zurückgegebenen Objekte noch einmal selbst filtern und dabei auch die in der
+	 *                          Simulationsstrecke definierten Typen beachten.
 	 *
 	 * @return Alle Objekte, die über die Pid identifiziert werden und im gewünschten Zeitbereich gültig waren. Sind keine Objekte vorhanden, wird ein leeres Array
-	 *         zurückgegeben (Größe 0).
+	 *         zurückgegeben (Größe 0). Wenn eine Simulationsvariante außer 0 angegeben wurde, werden sowohl Objekte dieser Variante als auch
+	 *         nicht simulierte Objekte (SimVar = 0) zurückgegeben.
 	 */
-	SystemObjectInformationInterface[] getObjects(String pid, long startTime, long endTime, ConfigurationAreaTime kindOfTime);
-
+	List<SystemObjectInformationInterface> getObjects(String pid, long startTime, long endTime, ConfigurationAreaTime kindOfTime, final short simulationVariant);
 
 	/**
 	 * Alle Daten, die als Byte-Array gespeichert werden müssen, werden mit einem Serializer {@link de.bsvrz.sys.funclib.dataSerializer.Serializer} erstellt. Die benutzte Version ist in der
@@ -236,8 +247,24 @@ public interface ConfigurationAreaFile {
 	 *
 	 * @return true = Die Restrukturierung der Daten war erfolgreich; false = Die Restrukturierung der Daten hat nicht geklappt, es wird auf der alten Datei
 	 *         weitergearbeitet, es sind keine Daten verloren gegangen
+	 *
+	 * @deprecated Bitte Restrukturierungsart angeben
 	 */
+	@Deprecated
 	public boolean restructure();
+
+	/**
+	 * Diese Methode reorganisiert eine Konfigurationsbereichsdatei. Die Mischmenge wird dabei, falls möglich, verkleinert und die als ungültig markierten Objekte
+	 * werden in die entsprechenden Blöcke kopiert. Kommt es bei der Reorganisation zu einem Fehler, so wird der Zustand vor der Reorganisation wiederhergestellt.
+	 * Alle Methoden, die einen Dateizugriff benötigen (flush, Objekt auf Invalid setzen, usw.) und während der Reorganisation aufgerufen werden, sind
+	 * blockierend.
+	 * <p/>
+	 * Diese Methode darf nur durch den Konfigrationsverantwortlichen aufgerufen werden.
+	 *
+	 * @param mode Restrukturierungsart (siehe {@link de.bsvrz.puk.config.configFile.fileaccess.ConfigurationAreaFile.RestructureMode RestructureMode}
+	 * @throws java.io.IOException Falls ein Fehler bei der Restrukturierung auftrat. In diesem Fall bleibt der vorherige Zustand erhalten.
+	 */
+	public void restructure(RestructureMode mode) throws IOException;
 
 	/**
 	 * Diese Methode wird aufgerufen, wenn der Konfigurationsverantwortliche eine neue Version aktiviert. Der Aufruf bewirkt, dass die Datei restrukturiert wird.
@@ -257,4 +284,45 @@ public interface ConfigurationAreaFile {
 	 *         zurückgegeben, wenn der Konfigurationsbereich neu angelegt wurde und noch keine größte Id bekannt ist
 	 */
 	public long getGreatestId();
+
+	/**
+	 * Markiert eine Menge von dynamischen Objekten als ausreichend als und nicht mehr Referenziert, sodass diese ggf. beim nächsten Neustart
+	 * endgültig gelöscht werden können. Jedes dynamische Objekt muss mindestens zweimal durch diese Methode markiert werden (auch über einen
+	 * Neustart hinweg) bevor es gelöscht wird, da das Objekt mit dem ersten Aufruf zuerst als nicht mehr referenzierbar markiert wird
+	 * und dann beim zweiten Aufruf sichergestellt ist, dass das Objekt in Zukunft nicht mehr referenziert werden kann.
+	 *
+	 * @param objectsToDelete Menge mit zu löschenden dynamischen Objekten dieses Bereichs (Objekt-IDs)
+	 */
+	void markObjectsForDeletion(final List<Long> objectsToDelete);
+
+	/**
+	 * Prüft, ob ein angegebenenes Objekt von anderen Objekten referenzert werden darf
+	 * @param systemObjectInfo Objekt-Info (Objekt sollte zum aktuellen Bereich gehören)
+	 * @return true, falls es referenziert werden darf (es bisher nicht als {@link #markObjectsForDeletion(java.util.List) zu Löschen markiert} wurde,
+	 * sonst false
+	 */
+	boolean referenceAllowed(SystemObjectInformationInterface systemObjectInfo);
+
+	/**
+	 * Definiert die Art einer Restrukturierung
+	 */
+	public enum RestructureMode {
+		/**
+		 * Volle Restrukturierung der Konfigurationsobjekte und dynamischen Dbjekte. Lücken (Gaps) werden gefüllt.
+		 * Alle Dateipositionen können sich ändern, daher darf diese Restrukturierung nur Offline ausgeführt werden,
+		 * oder bevor Dateipositionen gecacht werden (also direkt beim Start).
+		 */
+		FullRestructure,
+		/**
+		 * Restrukturierung der dynamischen Objekte im laufenden Betrieb. Die Objekte, die sich vorher in der Mischmenge befanden,
+		 * erhalten (sehr wahrscheinlich) eine neue Dateipostion. Ungültige dynamische Objekte werden in den NgDyn-Block verschoben,
+		 * Gültige und zukünftige Objekte bleiben in der Mischmenge, wandern dort aber ggf. an eine andere Position.
+		 */
+		DynamicObjectRestructure,
+		/**
+		 * Volle Restrukturierung, bei der zusätzlich Objekte in
+		 * {@link ConfigAreaFile#_objectsPendingDeletion} gelöscht (d. h. nicht mitkopiert) werden.
+		 */
+		DeleteObjectsPermanently
+	}
 }

@@ -27,43 +27,9 @@ import de.bsvrz.dav.daf.main.config.ReferenceType;
 import de.bsvrz.dav.daf.main.config.SystemObjectInfo;
 import de.bsvrz.puk.config.configFile.datamodel.ConfigurationAreaDependency;
 import de.bsvrz.puk.config.configFile.datamodel.ConfigurationAreaUnversionedChange;
-import de.bsvrz.puk.config.xmlFile.properties.AspectProperties;
-import de.bsvrz.puk.config.xmlFile.properties.AttributeGroupProperties;
-import de.bsvrz.puk.config.xmlFile.properties.AttributeListProperties;
-import de.bsvrz.puk.config.xmlFile.properties.AttributeTypeProperties;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationAreaChangeInformation;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationAreaProperties;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationAspect;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationConfigurationObject;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationData;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationDataField;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationDataList;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationDataset;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationDefaultParameter;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationDoubleDef;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationIntegerDef;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationObjectReference;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationObjectSet;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationSet;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationState;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationString;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationTimeStamp;
-import de.bsvrz.puk.config.xmlFile.properties.ConfigurationValueRange;
-import de.bsvrz.puk.config.xmlFile.properties.DatasetElement;
-import de.bsvrz.puk.config.xmlFile.properties.ListAttributeProperties;
-import de.bsvrz.puk.config.xmlFile.properties.ObjectSetTypeProperties;
-import de.bsvrz.puk.config.xmlFile.properties.PersistenceMode;
-import de.bsvrz.puk.config.xmlFile.properties.PlainAttributeProperties;
-import de.bsvrz.puk.config.xmlFile.properties.SystemObjectProperties;
-import de.bsvrz.puk.config.xmlFile.properties.SystemObjectTypeProperties;
-import de.bsvrz.puk.config.xmlFile.properties.TransactionProperties;
+import de.bsvrz.puk.config.xmlFile.properties.*;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.text.Collator;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -73,7 +39,7 @@ import java.util.*;
  * Diese Klasse schreibt einen Konfigurationsbereich in eine XML-Datei, dabei wird die K2S.DTD berücksichtigt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11583 $
+ * @version $Revision: 13364 $
  */
 public class ConfigAreaWriter {
 
@@ -155,7 +121,7 @@ public class ConfigAreaWriter {
 			final String modelEmptyString = createEmptyString(numberOfTabs);
 
 			// Liste der Objekte nach deren Pid sortieren
-			final List<SystemObjectProperties> objectProperties = _area.getObjectProperties();
+			final List<SystemObjectProperties> objectProperties = new ArrayList<SystemObjectProperties>(_area.getObjectProperties());
 			Collections.sort(
 					objectProperties, new Comparator<SystemObjectProperties>() {
 				public int compare(final SystemObjectProperties o1, final SystemObjectProperties o2) {
@@ -897,8 +863,30 @@ public class ConfigAreaWriter {
 		}
 	}
 
+	/**
+	 * StringBuilder aus Performancegründen wiederverwnden
+	 */
+	private StringBuilder _builder = new StringBuilder();
+
 	private String xmlText(final String text) {
-		return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&apos;");
+		// alter Code (ineffizient):
+		// return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&apos;");
+
+		int length = text.length();
+		for(int i = 0; i < length; i++){
+			char c = text.charAt(i);
+			switch(c){
+				case '&': _builder.append("&amp;"); break;
+				case '<': _builder.append("&lt;"); break;
+				case '>': _builder.append("&gt;"); break;
+				case '"': _builder.append("&quot;"); break;
+				case '\'': _builder.append("&apos;"); break;
+				default: _builder.append(c);
+			}
+		}
+		String result = _builder.toString();
+		_builder.setLength(0);
+		return result;
 	}
 
 

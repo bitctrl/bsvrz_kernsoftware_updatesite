@@ -36,14 +36,14 @@ import java.util.*;
  * Klasse, die den Zugriff auf Attributgruppen seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5054 $
+ * @version $Revision: 13173 $
  */
 public class DafAttributeGroup extends DafAttributeSet implements AttributeGroup {
 
 	/** DebugLogger für Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
-	/** Die Aspekte dieser Attributegruppe */
+	/** Die Aspekte dieser Attributgruppe */
 	private ArrayList<Aspect> aspects;
 
 	/** Sperrt die Map _atgUsageMap */

@@ -27,7 +27,7 @@ package de.bsvrz.sys.funclib.losb.messages;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 8878 $ / $Date: 2011-03-09 15:36:58 +0100 (Mi, 09 Mrz 2011) $ / ($Author: rs $)
+ * @version $Revision: 12795 $ / $Date: 2014-09-25 10:25:21 +0200 (Thu, 25 Sep 2014) $ / ($Author: jh $)
  */
 public class ErrorMessage {
 
@@ -45,7 +45,9 @@ public class ErrorMessage {
 
 	public static final String CAN_NOT_GET_PROTOCOL_ID = "Kann Protokoll-Id nicht lesen: ";
 
-	public static final String CAN_NOT_GET_SCRIPT_ID = "Kann Script-Id nicht lesen: ";
+	public static final String CAN_NOT_GET_JOB_ID = "Kann Auftrags-Id nicht lesen: ";
+
+	public static final String CAN_NOT_GET_JOB_LIST = "Kann Auftragsliste nicht abrufen: ";
 
 	public static final String CAN_NOT_SERIALIZE = "Kann Daten nicht serialisieren: ";
 
@@ -67,8 +69,6 @@ public class ErrorMessage {
 
 	public static final String IS_NULL_OR_EMPTY = "Parameter ist null oder leer. ";
 
-	public static final String INVALID_ID = "Ungültige Id. ";
-
 	public static final String CAN_NOT_CREATE_SCRIPT_OBJECT = "Kann Skript nicht erstellen";
 
 	public static final String TIMEOUT = "Timeout der Operation.";
@@ -77,13 +77,11 @@ public class ErrorMessage {
 
 	public static final String INVALID_PARAM_VALUE = "Ungültiger Parameterwert: ";
 
-	public static final String MULTIPLE_RECEIVER_SUBSCRIPTIONS = "Mehrfachanmeldung von ";
-
 	public static final String INCOMPATIBLE_TYPES = "Typen stimmen nicht überein: ";
 
 	public static final String NO_PERIODS = "Es wurde kein Zeitbereich angegeben.";
 
-	public static final String OLD_DATAMODEL = "Der Auftrag konnte aufgrund eines veralteten Datenmodells nicht ausgeführt werden. Benötigt wird kb.tmVewProtokolleGlobal in mindestens Version 4.";
+	public static final String OLD_DATAMODEL = "Der Auftrag konnte aufgrund eines veralteten Datenmodells nicht ausgeführt werden. Benötigt wird kb.tmVewProtokolleGlobal in mindestens Version 5.";
 
 	public static final String NULL = "Es wurde ein null-Wert verwendet!";
 

@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
  * die ATG entfernen oder eines Tages noch den Aspekt hinzufügen.
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 11925 $
+ * @version $Revision: 13326 $
  * 
  */
 public class CellKey {
@@ -147,11 +147,12 @@ public class CellKey {
 					_attributeNamePartArrayValues = new Integer[arraySize];
 					for ( int index = 0; index < arraySize; index++) {
 						final String part = parts[index+1];
-						_attributeNamePartIds[index] = _partToInternalIdMap. get( CellKey.removeArrays( part));
+						String partWithoutArray = CellKey.removeArrays(part);
+						_attributeNamePartIds[index] = _partToInternalIdMap. get(partWithoutArray);
 						if ( _attributeNamePartIds[index] == null) {
 							_attributeNamePartIds[index] = _nextInternalIdForPart++;
-							_partToInternalIdMap.put( part, _attributeNamePartIds[index]);
-							_internalIdToPartMap.put( _attributeNamePartIds[index], part);
+							_partToInternalIdMap.put( partWithoutArray, _attributeNamePartIds[index]);
+							_internalIdToPartMap.put( _attributeNamePartIds[index], partWithoutArray);
 						}
 						_attributeNamePartArrayValues[index] = CellKey.getArrayValue( part);
 					}

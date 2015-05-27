@@ -29,25 +29,8 @@ import de.bsvrz.dav.daf.communication.lowLevel.telegrams.ReceiveSubscriptionInfo
 import de.bsvrz.dav.daf.communication.lowLevel.telegrams.RequestSenderDataTelegram;
 import de.bsvrz.dav.daf.communication.lowLevel.telegrams.SendSubscriptionInfo;
 import de.bsvrz.dav.daf.communication.protocol.ClientHighLevelCommunication;
-import de.bsvrz.dav.daf.main.ClientDavParameters;
-import de.bsvrz.dav.daf.main.ClientReceiverInterface;
-import de.bsvrz.dav.daf.main.ClientSenderInterface;
-import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.DataDescription;
-import de.bsvrz.dav.daf.main.DataNotSubscribedException;
-import de.bsvrz.dav.daf.main.InitialisationNotCompleteException;
-import de.bsvrz.dav.daf.main.OneSubscriptionPerSendData;
-import de.bsvrz.dav.daf.main.ReceiveOptions;
-import de.bsvrz.dav.daf.main.ReceiverRole;
-import de.bsvrz.dav.daf.main.ResultData;
-import de.bsvrz.dav.daf.main.SendSubscriptionNotConfirmed;
-import de.bsvrz.dav.daf.main.SenderRole;
-import de.bsvrz.dav.daf.main.config.Aspect;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
-import de.bsvrz.dav.daf.main.config.ConfigurationTaskException;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.SystemObject;
+import de.bsvrz.dav.daf.main.*;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentifications;
 import de.bsvrz.dav.daf.main.impl.subscription.CollectingReceiver;
 import de.bsvrz.dav.daf.main.impl.subscription.CollectingReceiverManager;
@@ -74,7 +57,7 @@ import java.util.*;
  * angemeldeten Empfänger weiter.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11359 $
+ * @version $Revision: 12984 $
  */
 public class SubscriptionManager {
 
@@ -164,8 +147,9 @@ public class SubscriptionManager {
 	 * Für alle Applikationen außer der Konfiguration sorgt diese Methode für die Anmeldung als Sender von Lese- und Schreibkonfigurationsanfragen und als Senke
 	 * für Lese- und Schreibkonfigurationsantworten, um eine gerichtete Kommunikation mit der Konfiguration zu gewährleisten. Diese Methode wird von
 	 * ClientDavConnection aufgerufen.
+	 * @param skipConfiguration Anmeldung von Konfigurationsanfragen unterdrücken
 	 */
-	public final void completeInitialisation() {
+	public final void completeInitialisation(final boolean skipConfiguration) {
 		if(_highLevelCommunication == null) {
 			throw new InitialisationNotCompleteException(
 					"Die Datenverteiler-Applikationsfunktionen sind noch nicht initialisiert."
@@ -174,7 +158,12 @@ public class SubscriptionManager {
 		final ReceiveOptions _receiveOptions = ReceiveOptions.normal();
 		final String applicationTypePid = _dafParameters.getApplicationTypePid();
 
-		if(!applicationTypePid.equals(CommunicationConstant.CONFIGURATION_TYPE_PID)) {
+		if(skipConfiguration || applicationTypePid.equals(CommunicationConstant.CONFIGURATION_TYPE_PID)) {
+			// Anmeldung von Konfigurationsdaten nicht nötig, weil entweder selbst Konfiguration
+			// oder weil es eine 2. Verbindung gibt, die die Konfigurationsanfragen durchführt.
+			_initialisationComplete = true;
+		}
+		else {
 			_configurationRequestStatus.put(_localConfigurationId, new ConfigurationRequestStatus("Lokale Konfiguration"));
 
 			// Sender Of Configuration Read Request
@@ -207,9 +196,6 @@ public class SubscriptionManager {
 			receiveSubscriptionInfo = new ReceiveSubscriptionInfo(_baseSubscriptionInfo, _receiveOptions, ReceiverRole.drain());
 			_highLevelCommunication.sendReceiveSubscription(receiveSubscriptionInfo);
 		}
-		else {
-			_initialisationComplete = true;
-		}
 	}
 
 	/**
@@ -238,7 +224,7 @@ public class SubscriptionManager {
 	 *
 	 * @param configurationManager Referenz auf den zu setzenden Konfigurationsmanager
 	 */
-	final void setConfigurationManager(ConfigurationManager configurationManager) {
+	public final void setConfigurationManager(ConfigurationManager configurationManager) {
 		_configurationManager = configurationManager;
 		if(_highLevelCommunication != null) {
 			_highLevelCommunication.setReadyForConfigDependantData();
@@ -1101,6 +1087,11 @@ public class SubscriptionManager {
 					_receiverManager.deliverOnce();
 				}
 				catch(InterruptedException ex) {
+					return;
+				}
+				catch(Exception e){
+					_debug.error("Fehler im Updater-Thread, Datenverteilerverbindung wird terminiert", e);
+					_highLevelCommunication.terminate(true, "Fehler im Updater-Thread: " + e.toString());
 					return;
 				}
 			}

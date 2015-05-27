@@ -28,26 +28,18 @@ import de.bsvrz.dav.daf.main.config.ConfigurationException;
 import de.bsvrz.dav.daf.main.config.DataModel;
 import de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentifications;
 import de.bsvrz.dav.daf.main.impl.config.DafDataModel;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.AuthentificationAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.AuthentificationRequest;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.ConfigTelegram;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.TransmitterConnectionInfo;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.TransmitterConnectionInfoAnswer;
-import de.bsvrz.dav.daf.main.impl.config.telegrams.TransmitterConnectionInfoRequest;
+import de.bsvrz.dav.daf.main.impl.config.telegrams.*;
 import de.bsvrz.sys.funclib.debug.Debug;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.*;
+import java.io.*;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  * TBD Beschreibung
  *
  * @author Kappich Systemberatung
- * @version $Revision: 9135 $
+ * @version $Revision: 13141 $
  */
 public class ConfigurationManager {
 
@@ -110,9 +102,6 @@ public class ConfigurationManager {
 			((DafDataModel)_dataModel).init(this, _configurationId);
 		}
 		_subscriptionManager.setConfigurationManager(this);
-		if(_dataModel instanceof DafDataModel) {
-			((DafDataModel)_dataModel).loadLocalConfigurationCache();
-		}
 	}
 
 	/**

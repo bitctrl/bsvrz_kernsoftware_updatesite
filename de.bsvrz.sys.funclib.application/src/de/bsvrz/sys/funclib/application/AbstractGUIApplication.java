@@ -27,15 +27,8 @@ import de.bsvrz.dav.daf.main.ClientDavInterface;
 import de.bsvrz.dav.daf.main.ClientDavParameters;
 import de.bsvrz.sys.funclib.debug.Debug;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -47,26 +40,13 @@ import java.util.prefs.NodeChangeEvent;
 import java.util.prefs.NodeChangeListener;
 import java.util.prefs.Preferences;
 
-import javax.swing.AbstractListModel;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.ComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-
 /**
  * Diese abstrakte Klasse ist eine Beispielimplementierung des Interfaces {@link GUIApplication}. Durch Aufruf der Methode {@link #connect} wird ein
  * Login-Dialog dargestellt, wo die TCP/IP-Adresse zum Datenverteiler, Benutzername und Passwort eingegeben werden müssen. Die letzten 20 erfolgreichen
  * Login-Versuche werden lokal auf dem Rechner gespeichert.
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 8142 $
+ * @version $Revision: 13225 $
  */
 public abstract class AbstractGUIApplication implements GUIApplication {
 	
@@ -217,7 +197,17 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 							//						System.out.println("Passwort: " + password);
 						}
 						
-						connection = new ClientDavConnection(_parameters);
+						ClientDavParameters parameters;
+						try{
+							// Kopie erstellen, damit das der ClientDavConnection übergebene Objekt nicht später geändert wird (verursacht Warnung)
+							parameters = _parameters.clone();
+						}
+						catch(Throwable ignored) {
+							// NoSuchMethodError oder CloneNotSupported (bei Verwendung einer alten DAF-Bibliothek)
+							parameters = _parameters;
+						}
+						
+						connection = new ClientDavConnection(parameters);
 						// Fertigmeldung für SWE Start/Stop wird explizit übernommen
 						connection.enableExplicitApplicationReadyMessage();
 						
@@ -242,6 +232,7 @@ public abstract class AbstractGUIApplication implements GUIApplication {
                         catch(RuntimeException e1) {
 	                        // Wird ignoriert
                         }
+						_debug.warning("Fehler beim Verbindungsaufbau: " + message, ex);
 						JOptionPane.showMessageDialog(_dialog, message, "Fehler beim Verbindungsaufbau", JOptionPane.ERROR_MESSAGE);
 						connection = null;
 					}

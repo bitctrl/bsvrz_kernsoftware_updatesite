@@ -20,12 +20,12 @@
 
 package de.bsvrz.puk.config.configFile.fileaccess;
 
-import de.bsvrz.sys.funclib.dataSerializer.NoSuchVersionException;
 import de.bsvrz.puk.config.main.managementfile.VersionInfo;
+import de.bsvrz.sys.funclib.dataSerializer.NoSuchVersionException;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
 
 /**
  * Dieses Interface stellt eine Verwaltung für alle Konfigurationsdateien dar und ermöglicht den Zugriff auf diese. Die beschriebenen get-Methoden beziehen sich
@@ -35,7 +35,7 @@ import java.util.*;
  * @author Kappich+Kniß Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
  * @author Stephan Homeyer (sth)
- * @version $Revision: 5079 $ / $Date: 2007-09-02 14:59:08 +0200 (So, 02 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 12887 $ / $Date: 2014-10-10 13:15:15 +0200 (Fri, 10 Oct 2014) $ / ($Author: jh $)
  */
 public interface ConfigurationFileManager {
 
@@ -93,22 +93,11 @@ public interface ConfigurationFileManager {
 	 * @return Objekt, das angefordert wurde oder <code>null</code> falls kein Objekt gefunden werden konnte
 	 */
 	SystemObjectInformationInterface getObject(long id);
-	/**
-	 * TBD Diese Methode wurde entfernt, da die übergeordnete vielleicht selber gar nicht weiss, ob das Objekt
-	 * aktiv, ungültig oder in Zukunft aktuell ist/wird.
-	 *
-	 * Diese Methode gibt ein Objekt zurück, das derzeit in einem Konfigurationsbereich aktiv ist. Es werden alle
-	 * Konfigurationsbreiche geprüft, die mit {@link #addAreaFile} hinzugefügt wurden.
-	 *
-	 * @param id Id des Objekts, das gesucht werden soll
-	 * @return Objekt, dessen Id übergeben wurde
-	 * @throws IllegalArgumentException Zur angegebenen Id konnte kein Objekt gefunden werden
-	 */
-	// SystemObjectInfo getActiveObject(long id) throws IllegalArgumentException;
 
 	/**
 	 * Diese Methode gibt ein Objekt zurück, das derzeit in einem Konfigurationsbereich aktiv ist. Es werden alle Konfigurationsbreiche geprüft, die mit {@link
-	 * #addAreaFile} hinzugefügt wurden.
+	 * #addAreaFile} hinzugefügt wurden. Objekte, die nur in Simulationen gültig sind werden hier nicht zurückgegeben,
+	 * stattdessen ist {@link #getSimulationObject(String, short)} zu benutzen.
 	 *
 	 * @param pid Pid des Objekts, das gesucht werden soll
 	 *
@@ -117,14 +106,13 @@ public interface ConfigurationFileManager {
 	SystemObjectInformationInterface getActiveObject(String pid);
 
 	/**
-	 * Diese Methode gibt ein Objekt zurück, das derzeit in einem Konfigurationsbereich weder aktiv noch als ungültig
-	 * markiert ist. Es werden alle Konfigurationsbreiche geprüft, die mit {@link #addAreaFile} hinzugefügt wurden.
-	 *
-	 * @param id Id des gesuchten Objekts
-	 * @return das gesuchte Objekt
-	 * @throws IllegalArgumentException Zur angegebenen Id konnte kein Objekt gefunden werden
+	 * Gibt ein simulationsspezifisches Objekt anhand der Pid zurück. Es werden nur Objekte zurückgegeben, die in einer Simulation erzeugt
+	 * wurden und damit auch nur in dieser Simulation gültig sind.
+	 * @param pid Pid
+	 * @param simulationVariant Simulationsvariante
+	 * @return Objekt, dessen Pid übergeben wurde oder <code>null</code> falls kein Objekt existiert
 	 */
-	// SystemObjectInfo getNewObjects(long id) throws IllegalArgumentException;
+	SystemObjectInformationInterface getSimulationObject(String pid, short simulationVariant);
 
 	/**
 	 * Diese Methode gibt alle Objekte zurück, die derzeit in einem Konfigurationsbereich weder aktiv noch als ungültig markiert sind. Es werden alle
@@ -135,31 +123,6 @@ public interface ConfigurationFileManager {
 	 * @return Alle Objekte, deren Pid mit der übergebenen Pid übereinstimmt. Konnte kein Objekt gefunden werden, wird eine leeres Array zurückgegeben
 	 */
 	SystemObjectInformationInterface[] getNewObjects(String pid) throws IllegalArgumentException;
-
-	/**
-	 * Diese Methode gibt ein Objekt zurück, das in einem Konfigurationsbereich als ungültig markiert ist. Es werden alle
-	 * Konfigurationsbreiche geprüft, die mit {@link #addAreaFile} hinzugefügt wurden.
-	 *
-	 * @param id id des gesuchten Objekts
-	 * @return das gesuchte Objekt
-	 * @throws IllegalArgumentException Zur angegebenen Id konnte kein Objekt gefunden werden
-	 * @throws IllegalStateException Das Objekt zu der angegebenen Id kann nicht wiederhergestellt werden
-	 */
-	// SystemObjectInfo getObjects(long id) throws IllegalArgumentException;
-
-	/**
-	 * Diese Methode gibt alle Objekte zurück, die in einem Konfigurationsbereich als ungültig markiert sind und die im angegebnen Zeitbereich ungültig geworden
-	 * sind. Es werden alle Konfigurationsbreiche geprüft, die mit {@link #addAreaFile} hinzugefügt wurden.
-	 *
-	 * @param pid       pid des gesuchten Objekts
-	 * @param startTime Startzeitpunkt des Bereichs
-	 * @param endTime   Endzeitpunkt des Bereichs
-	 *
-	 * @return die gesuchten Objekte
-	 *
-	 * @throws IllegalArgumentException Zur angegebenen Pid konnte kein Objekt gefunden werden
-	 */
-	SystemObjectInformationInterface[] getOldObjects(String pid, long startTime, long endTime) throws IllegalArgumentException;
 
 	/**
 	 * Diese Methode gibt alle Konfigurationsbereiche zurück, die mit {@link #addAreaFile} eingefügt wurden.

@@ -29,7 +29,7 @@ import de.bsvrz.dav.daf.communication.dataRepresentation.data.info.AttributeDefi
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 5055 $ / $Date: 2007-09-01 11:31:09 +0200 (Sa, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 5055 $ / $Date: 2007-09-01 11:31:09 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
  */
 public class ArrayElementAttributeInfo implements AttributeInfo {
 	private final boolean _sizeFixed;

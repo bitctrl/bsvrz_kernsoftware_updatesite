@@ -22,25 +22,24 @@
 
 package de.bsvrz.dav.daf.main.impl.config;
 
-import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.communication.dataRepresentation.UndefinedValueHandler;
 import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.DataValue;
-import de.bsvrz.dav.daf.main.config.ObjectSet;
-import de.bsvrz.dav.daf.main.config.IntegerValueRange;
-import de.bsvrz.dav.daf.main.config.IntegerAttributeType;
-import de.bsvrz.dav.daf.main.config.IntegerValueState;
-import de.bsvrz.dav.daf.main.config.SystemObject;
+import de.bsvrz.dav.daf.main.Data;
+import de.bsvrz.dav.daf.main.config.*;
+import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Klasse, die den Zugriff auf Ganzzahl-Attributtypen seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 6096 $
+ * @version $Revision: 13141 $
  */
 public class DafIntegerAttributeType extends DafAttributeType implements IntegerAttributeType {
 
@@ -200,6 +199,13 @@ public class DafIntegerAttributeType extends DafAttributeType implements Integer
 		super.read(in);
 		_dataValueType = in.readByte();
 		_rangeId = in.readLong();
+	}
+
+	@Override
+	public void read(final Deserializer deserializer) throws IOException {
+		super.read(deserializer);
+		_dataValueType = deserializer.readByte();
+		_rangeId = deserializer.readLong();
 	}
 
 	/**

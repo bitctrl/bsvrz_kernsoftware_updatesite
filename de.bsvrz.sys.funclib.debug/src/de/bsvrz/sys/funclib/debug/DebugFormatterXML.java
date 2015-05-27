@@ -39,7 +39,7 @@ import java.text.*;
  * </code></pre>
  *
  * @author Hans Christian Kniﬂ (HCK)
- * @version $Revision: 5003 $ / $Date: 2007-08-27 21:41:46 +0200 (Mo, 27 Aug 2007) $
+ * @version $Revision: 5003 $ / $Date: 2007-08-27 21:41:46 +0200 (Mon, 27 Aug 2007) $
  */
 public class DebugFormatterXML extends java.util.logging.Formatter {
 

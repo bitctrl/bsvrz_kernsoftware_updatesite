@@ -22,27 +22,30 @@
 
 package de.bsvrz.dav.daf.main.impl.config;
 
+import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
+import de.bsvrz.dav.daf.main.config.ObjectSet;
+import de.bsvrz.dav.daf.main.config.ObjectSetType;
+import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dav.daf.main.impl.config.request.ConfigurationRequester;
 import de.bsvrz.dav.daf.main.impl.config.request.RequestException;
+import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
 import de.bsvrz.sys.funclib.debug.Debug;
-import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.ObjectSetType;
-import de.bsvrz.dav.daf.main.config.ObjectSet;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Kappich Systemberatung
- * @version $Revision: 6349 $
+ * @version $Revision: 13141 $
  */
 public abstract class DafObjectSet extends DafConfigurationObject implements ObjectSet {
 
 	/** Die Ids der Elemente dieser Menge */
-	protected ArrayList _setElementIds;
+	protected ArrayList<Long> _setElementIds;
 
 	/** Die Elemente dieser Menge */
 	protected List<SystemObject> _setElements;
@@ -123,12 +126,22 @@ public abstract class DafObjectSet extends DafConfigurationObject implements Obj
 
 	public void read(DataInputStream in) throws IOException {
 		super.read(in);
-		_setElementIds = new ArrayList();
+		_setElementIds = new ArrayList<Long>();
 		int size = in.readInt();
 		if(size > 0) {
 			for(int i = 0; i < size; ++i) {
 				_setElementIds.add(new Long(in.readLong()));
 			}
+		}
+	}
+
+	@Override
+	public void read(final Deserializer deserializer) throws IOException {
+		super.read(deserializer);
+		_setElementIds = new ArrayList<Long>();
+		int size = deserializer.readInt();
+		for(int i = 0; i < size; ++i) {
+			_setElementIds.add(deserializer.readLong());
 		}
 	}
 

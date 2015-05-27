@@ -32,7 +32,7 @@ import java.io.Serializable;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 8433 $ / $Date: 2010-12-13 11:40:26 +0100 (Mo, 13 Dez 2010) $ / ($Author: jh $)
+ * @version $Revision: 8433 $ / $Date: 2010-12-13 11:40:26 +0100 (Mon, 13 Dec 2010) $ / ($Author: jh $)
  */
 public class AtlExtra implements Serializable {
 

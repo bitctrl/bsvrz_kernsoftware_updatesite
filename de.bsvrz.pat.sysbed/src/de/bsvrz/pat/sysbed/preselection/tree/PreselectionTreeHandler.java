@@ -1,19 +1,19 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2004 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
- *
+ * 
  * This file is part of de.bsvrz.pat.sysbed.
- *
+ * 
  * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
  * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -21,23 +21,16 @@
 
 package de.bsvrz.pat.sysbed.preselection.tree;
 
-import de.bsvrz.dav.daf.main.ClientDavInterface;
-import de.bsvrz.dav.daf.main.ClientReceiverInterface;
-import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.DataDescription;
-import de.bsvrz.dav.daf.main.DataNotSubscribedException;
-import de.bsvrz.dav.daf.main.ReceiveOptions;
-import de.bsvrz.dav.daf.main.ReceiverRole;
-import de.bsvrz.dav.daf.main.ResultData;
+import de.bsvrz.dav.daf.main.*;
 import de.bsvrz.dav.daf.main.config.Aspect;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.dav.daf.main.config.DataModel;
 import de.bsvrz.dav.daf.main.config.SystemObject;
+import de.bsvrz.pat.sysbed.preselection.treeFilter.standard.Filter;
 import de.bsvrz.pat.sysbed.preselection.util.SortUtil;
 import de.bsvrz.sys.funclib.debug.Debug;
-import de.bsvrz.pat.sysbed.preselection.treeFilter.standard.Filter;
 
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
@@ -53,12 +46,12 @@ import java.util.*;
  * de.bsvrz.pat.sysbed.preselection.lists.PreselectionLists}-Panel weitergereicht, wo weiter eingeschr‰nkt werden kann.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8155 $
+ * @version $Revision: 13003 $
  */
 class PreselectionTreeHandler {
 
 	/** Der Debug-Logger der Klasse */
-	private static final Debug _debug = Debug.getLogger();
+	private static Debug _debug = Debug.getLogger();
 
 	/** speichert ein Objekt der Klasse <code>PreselectionTree</code> */
 	private PreselectionTree _preselectionTree;
@@ -155,19 +148,14 @@ class PreselectionTreeHandler {
 	 * {@link #getAllObjects} geholt werden.
 	 */
 	void initDataLists() {
-		Set<SystemObject> set = new HashSet<SystemObject>();
-		List confObjs = _configuration.getType("typ.konfigurationsObjekt").getObjects();
-		for(Iterator iterator = confObjs.iterator(); iterator.hasNext();) {
-			SystemObject systemObject = (SystemObject)iterator.next();
-			set.add(systemObject);
-		}
-		List dynObjs = _configuration.getType("typ.dynamischesObjekt").getObjects();
-		for(Iterator iterator = dynObjs.iterator(); iterator.hasNext();) {
-			SystemObject systemObject = (SystemObject)iterator.next();
-			set.add(systemObject);
-		}
+		List<SystemObject> confObjs = _configuration.getType("typ.konfigurationsObjekt").getObjects();
+		List<SystemObject> dynObjs = _configuration.getType("typ.dynamischesObjekt").getObjects();
 
-		_allObjects.addAll(SortUtil.sortCollection(set));
+		final List<SystemObject> list = new ArrayList<SystemObject>(confObjs.size() + dynObjs.size());
+		list.addAll(confObjs);
+		list.addAll(dynObjs);
+
+		_allObjects.addAll(SortUtil.sortCollection(list));
 	}
 
 	/**
@@ -253,8 +241,7 @@ class PreselectionTreeHandler {
 				}
 				position++;
 			}
-			for(Iterator iterator = _tree.iterator(); iterator.hasNext();) {   // DataTreeModel erzeugen
-				TreeNodeObject treeNodeObject = (TreeNodeObject)iterator.next();
+			for(TreeNodeObject treeNodeObject : _tree) {   // DataTreeModel erzeugen
 				rootNode.addChild(treeNodeObject);
 			}
 			return new DataTreeModel(rootNode);

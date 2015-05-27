@@ -21,27 +21,21 @@
 
 package de.bsvrz.puk.config.configFile.datamodel;
 
-import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.SystemObjectInfo;
 import de.bsvrz.dav.daf.main.Data;
+import de.bsvrz.dav.daf.main.config.*;
 
 /**
  * Diese abstrakte Klasse implementiert die Methoden des {@link SystemObject}-Interfaces, welche für die verschiedenen Implementierungen eines SystemObjekts
  * immer gleich bleiben.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 9020 $ / $Date: 2011-04-06 15:45:28 +0200 (Mi, 06 Apr 2011) $ / ($Author: jh $)
+ * @version $Revision: 12887 $ / $Date: 2014-10-10 13:15:15 +0200 (Fri, 10 Oct 2014) $ / ($Author: jh $)
  */
 public abstract class AbstractConfigSystemObject implements SystemObject {
 	/**
 	 * Der Konfigurationsbereich dieses SystemObjekts.
 	 */
-	private final ConfigurationArea _configurationArea;
+	private final ConfigConfigurationArea _configurationArea;
 
 	/**
 	 * Standardkonstruktor. Speichert den Konfigurationsbereich, zu dem dieses System-Objekt gehört.
@@ -49,7 +43,7 @@ public abstract class AbstractConfigSystemObject implements SystemObject {
 	 * @param configurationArea der Konfigurationsbereich dieses System-Objekts
 	 */
 	public AbstractConfigSystemObject(ConfigurationArea configurationArea) {
-		_configurationArea = configurationArea;
+		_configurationArea = (ConfigConfigurationArea)configurationArea;
 	}
 
 	public String getNameOrPidOrId() {
@@ -72,11 +66,11 @@ public abstract class AbstractConfigSystemObject implements SystemObject {
 		return result;
 	}
 
-	public ConfigurationArea getConfigurationArea() {
+	public ConfigConfigurationArea getConfigurationArea() {
 		return _configurationArea;
 	}
 
-	public DataModel getDataModel() {
+	public ConfigDataModel getDataModel() {
 		return _configurationArea.getDataModel();
 	}
 

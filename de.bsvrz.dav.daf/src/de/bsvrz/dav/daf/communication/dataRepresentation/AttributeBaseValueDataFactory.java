@@ -22,41 +22,9 @@
 package de.bsvrz.dav.daf.communication.dataRepresentation;
 
 import de.bsvrz.dav.daf.communication.dataRepresentation.data.DataFactory;
-import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.ByteArrayAttribute;
-import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.ByteAttribute;
-import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.DataValue;
-import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.DoubleArrayAttribute;
-import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.DoubleAttribute;
-import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.FloatArrayAttribute;
-import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.FloatAttribute;
-import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.IntegerArrayAttribute;
-import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.IntegerAttribute;
-import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.LongAndStringAttribute;
-import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.LongArrayAttribute;
-import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.LongAttribute;
-import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.ShortArrayAttribute;
-import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.ShortAttribute;
-import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.StringArrayAttribute;
-import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.StringAttribute;
+import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.*;
 import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.config.Attribute;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.AttributeListDefinition;
-import de.bsvrz.dav.daf.main.config.AttributeSet;
-import de.bsvrz.dav.daf.main.config.AttributeType;
-import de.bsvrz.dav.daf.main.config.ConfigurationException;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.DoubleAttributeType;
-import de.bsvrz.dav.daf.main.config.IntegerAttributeType;
-import de.bsvrz.dav.daf.main.config.IntegerValueRange;
-import de.bsvrz.dav.daf.main.config.IntegerValueState;
-import de.bsvrz.dav.daf.main.config.ObjectLookup;
-import de.bsvrz.dav.daf.main.config.ReferenceAttributeType;
-import de.bsvrz.dav.daf.main.config.ReferenceType;
-import de.bsvrz.dav.daf.main.config.StringAttributeType;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.TimeAttributeType;
-import de.bsvrz.dav.daf.main.config.UndefinedAttributeValueAccess;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 import java.io.ByteArrayOutputStream;
@@ -72,7 +40,7 @@ import java.util.regex.Pattern;
  * Diese abstarkte Klasse stellt eine Oberklasse zur Erstellung der Basisattributwerte dar. Hier werden weiter Subklassen definiert, die zur
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11583 $
+ * @version $Revision: 13226 $
  */
 public abstract class AttributeBaseValueDataFactory {
 
@@ -1173,7 +1141,7 @@ public abstract class AttributeBaseValueDataFactory {
 
 			boolean tryToStorePid(final String objectPid) {
 				final ReferenceAttributeType att = ((ReferenceAttributeType)getAttributeType());
-				if(att.getReferenceType() == ReferenceType.ASSOCIATION && att.isUndefinedAllowed()) {
+				if(att.getReferenceType() == ReferenceType.ASSOCIATION) {
 					_attributeValue.setValue(new LongAndStringAttribute(0, objectPid));
 					return true;
 				}
@@ -1201,6 +1169,7 @@ public abstract class AttributeBaseValueDataFactory {
 					id = 0;
 				}
 				else {
+					checkObject(object, _attributeValue.getAttribute());
 					id = object.getId();
 				}
 				_attributeValue.setValue(new LongAttribute(id));
@@ -1754,7 +1723,7 @@ public abstract class AttributeBaseValueDataFactory {
 
 				boolean tryToStorePid(final String objectPid) {
 					final ReferenceAttributeType att = ((ReferenceAttributeType)getAttributeType());
-					if(att.getReferenceType() == ReferenceType.ASSOCIATION && att.isUndefinedAllowed()) {
+					if(att.getReferenceType() == ReferenceType.ASSOCIATION) {
 						if(_pids == null) _pids = new HashMap<Integer, String>();
 						_pids.put(_itemIndex, objectPid);
 						return true;
@@ -1778,6 +1747,7 @@ public abstract class AttributeBaseValueDataFactory {
 						id = 0;
 					}
 					else {
+						checkObject(object, _attributeValue.getAttribute());
 						id = object.getId();
 					}
 					_ids[_itemIndex] = id;

@@ -41,7 +41,7 @@ import java.util.List;
  * Erstellt ein Fenster mit der {@link DataViewPanel OnlineTabelle}. Übergebene Daten werden angezeigt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 9303 $
+ * @version $Revision: 13173 $
  * @see #addDataset(DataTableObject)
  */
 public class ArchiveDataTableView implements PrintFrame {
@@ -77,7 +77,7 @@ public class ArchiveDataTableView implements PrintFrame {
 		System.getProperties().put("apple.laf.useScreenMenuBar", "true");
 
 		_unsubscribingJFrame = new UnsubscribingJFrame(connection, settingsData.getObjects(), dataDescription);
-		final JFrame frame = new JFrame("Streambasierte Archivanfrage (Attributegruppe: " + _attributeGroup.getNameOrPidOrId() + ")");
+		final JFrame frame = new JFrame("Streambasierte Archivanfrage (Attributgruppe: " + _attributeGroup.getNameOrPidOrId() + ")");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		Container pane = frame.getContentPane();
 		pane.setLayout(new BorderLayout());

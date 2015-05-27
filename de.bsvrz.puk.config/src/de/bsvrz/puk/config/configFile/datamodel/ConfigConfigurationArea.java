@@ -27,29 +27,8 @@ import de.bsvrz.dav.daf.communication.dataRepresentation.AttributeBaseValueDataF
 import de.bsvrz.dav.daf.communication.dataRepresentation.AttributeHelper;
 import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.DataAndATGUsageInformation;
-import de.bsvrz.dav.daf.main.config.Aspect;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.ConfigurationAuthority;
-import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
-import de.bsvrz.dav.daf.main.config.ConfigurationObject;
-import de.bsvrz.dav.daf.main.config.ConfigurationObjectType;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.DynamicObject;
-import de.bsvrz.dav.daf.main.config.DynamicObjectType;
-import de.bsvrz.dav.daf.main.config.ObjectSet;
-import de.bsvrz.dav.daf.main.config.ObjectTimeSpecification;
-import de.bsvrz.dav.daf.main.config.ReferenceType;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
-import de.bsvrz.dav.daf.main.config.TimeSpecificationType;
-import de.bsvrz.puk.config.configFile.fileaccess.ConfigurationAreaFile;
-import de.bsvrz.puk.config.configFile.fileaccess.ConfigurationAreaTime;
-import de.bsvrz.puk.config.configFile.fileaccess.ConfigurationFileManager;
-import de.bsvrz.puk.config.configFile.fileaccess.ConfigurationObjectInfo;
-import de.bsvrz.puk.config.configFile.fileaccess.DynamicObjectInfo;
-import de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformationInterface;
+import de.bsvrz.dav.daf.main.config.*;
+import de.bsvrz.puk.config.configFile.fileaccess.*;
 import de.bsvrz.puk.config.main.managementfile.VersionInfo;
 import de.bsvrz.puk.config.xmlFile.properties.ConfigurationAreaChangeInformation;
 import de.bsvrz.sys.funclib.dataSerializer.Deserializer;
@@ -59,21 +38,13 @@ import de.bsvrz.sys.funclib.debug.Debug;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Implementierung des Konfigurationsbereichs auf Seiten der Konfiguration.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11583 $
+ * @version $Revision: 13141 $
  */
 public class ConfigConfigurationArea extends ConfigConfigurationObject implements ConfigurationArea, ConfigConfigurationAreaInterface {
 
@@ -81,7 +52,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	private static final Debug _debug = Debug.getLogger();
 
 	/** Eine Referenz auf das Datenmodell. */
-	private final DataModel _dataModel;
+	private final ConfigDataModel _dataModel;
 
 	/** Konfigurationsverantwortlicher dieses Konfigurationsbereichs. */
 	private ConfigurationAuthority _configurationAuthority = null;
@@ -112,7 +83,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	 * @param dataModel        das Datenmodell, welches alle Konfigurationsbereiche enthält
 	 * @param systemObjectInfo das korrespondierende Objekt aus den Konfigurationsdateien
 	 */
-	public ConfigConfigurationArea(DataModel dataModel, SystemObjectInformationInterface systemObjectInfo) {
+	public ConfigConfigurationArea(ConfigDataModel dataModel, SystemObjectInformationInterface systemObjectInfo) {
 		super(null, systemObjectInfo);
 		_dataModel = dataModel;
 
@@ -131,11 +102,11 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 		}
 	}
 
-	public DataModel getDataModel() {
+	public ConfigDataModel getDataModel() {
 		return _dataModel;
 	}
 
-	public ConfigurationArea getConfigurationArea() {
+	public ConfigConfigurationArea getConfigurationArea() {
 		return this;
 	}
 
@@ -221,7 +192,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 		Data data = getConfigurationData(atg);
 		// Datensatz muss vorhanden sein, da ein neuer Bereich immer mit diesem Datensatz erzeugt wird.
 		if(data != null) {
-			data.getUnscaledValue("aktivierbareVersion").set((short)activatableVersion);
+			data.getUnscaledValue("aktivierbareVersion").set(activatableVersion);
 			setConfigurationData(atg, data);
 		}
 		else {
@@ -255,7 +226,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 		Data data = getConfigurationData(atg);
 		// Datensatz muss vorhanden sein, da ein neuer Bereich immer mit diesem Datensatz erzeugt wird.
 		if(data != null) {
-			data.getUnscaledValue("übernehmbareVersion").set((short)transferableVersion);
+			data.getUnscaledValue("übernehmbareVersion").set(transferableVersion);
 			setConfigurationData(atg, data);
 		}
 		else {
@@ -271,7 +242,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 
 	public short getModifiableVersion() {
 		// veränderbare Version
-		final ConfigurationAreaFile areaFile = ((ConfigDataModel)getDataModel()).getConfigurationFileManager().getAreaFile(getPid());
+		final ConfigurationAreaFile areaFile = getDataModel().getConfigurationFileManager().getAreaFile(getPid());
 		return areaFile.getNextActiveVersion();
 	}
 
@@ -398,7 +369,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 			// die Typen eines Typ-Objekts werden über die Sub-Types ermittelt.
 			for(SystemObjectType objectType : systemObjectTypes) {
 				relevantObjectTypes.add(objectType);
-				relevantObjectTypes.addAll(((ConfigDataModel)getDataModel()).getAllSubTypes(objectType));
+				relevantObjectTypes.addAll(getDataModel().getAllSubTypes(objectType));
 			}
 		}
 		return getDirectObjects(relevantObjectTypes, timeSpecification);
@@ -417,48 +388,51 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 			typeIds.add(objectType.getId());
 		}
 
+		// Konfigurationsbereichsdatei ermitteln
+		ConfigurationAreaFile areaFile = getDataModel().getConfigurationFileManager().getAreaFile(getConfigurationArea().getPid());
+
+		SystemObjectInformationInterface[] systemObjectInfos;
+
 		// Anfangs- und Endzeit ermitteln
 		long startTime;
 		long endTime;
 		if(timeSpecification.getType() == TimeSpecificationType.VALID) {
-			startTime = System.currentTimeMillis();
-			endTime = startTime;
-		}
-		else if(timeSpecification.getType() == TimeSpecificationType.VALID_AT_TIME) {
-			startTime = timeSpecification.getTime();
-			endTime = timeSpecification.getTime();
+			systemObjectInfos = areaFile.getActualObjects(typeIds);
 		}
 		else {
-			startTime = timeSpecification.getStartTime();
-			endTime = timeSpecification.getEndTime();
+			if(timeSpecification.getType() == TimeSpecificationType.VALID_AT_TIME) {
+				startTime = timeSpecification.getTime();
+				endTime = timeSpecification.getTime();
+			}
+			else {
+				startTime = timeSpecification.getStartTime();
+				endTime = timeSpecification.getEndTime();
+			}
+
+			// lokale Zeit für aktivierte Versionen (LOCAL_ACTIVATION_TIME)
+			systemObjectInfos = areaFile.getObjects(
+					startTime, endTime, ConfigurationAreaTime.LOCAL_ACTIVATION_TIME, timeSpecification.getType(), typeIds
+			);
 		}
-
-		// Konfigurationsbereichsdatei ermitteln
-		ConfigurationAreaFile areaFile = ((ConfigDataModel)getDataModel()).getConfigurationFileManager().getAreaFile(getConfigurationArea().getPid());
-
-		// lokale Zeit für aktivierte Versionen (LOCAL_ACTIVATION_TIME)
-		SystemObjectInformationInterface[] systemObjectInfos = areaFile.getObjects(
-				startTime, endTime, ConfigurationAreaTime.LOCAL_ACTIVATION_TIME, timeSpecification.getType(), typeIds
-		);
 
 		// SystemObjekte holen
 		final Collection<SystemObject> objects = new ArrayList<SystemObject>();
 		for(SystemObjectInformationInterface systemObjectInfo : systemObjectInfos) {
-			SystemObject systemObject = ((ConfigDataModel)getDataModel()).createSystemObject(systemObjectInfo);
+			SystemObject systemObject = getDataModel().createSystemObject(systemObjectInfo);
 			objects.add(systemObject);
 		}
 		return Collections.unmodifiableCollection(objects);
 	}
 
 	public Collection<SystemObject> getCurrentObjects() {
-		return ((ConfigDataModel)getDataModel()).getCurrentObjects(getConfigurationArea());
+		return getDataModel().getCurrentObjects(getConfigurationArea());
 	}
 
 	public Collection<SystemObject> getNewObjects() {
-		return ((ConfigDataModel)getDataModel()).getNewObjects(getConfigurationArea());
+		return getDataModel().getNewObjects(getConfigurationArea());
 	}
 
-	public ConfigurationObject createConfigurationObject(ConfigurationObjectType type, String pid, String name, List<ObjectSet> sets)
+	public ConfigurationObject createConfigurationObject(ConfigurationObjectType type, String pid, String name, Collection<? extends ObjectSet> sets)
 			throws ConfigurationChangeException {
 		// wenn bei der pid oder dem namen "null" übergeben wird, wird der Leerstring ("") verwendet.
 		if(pid == null) pid = "";
@@ -473,7 +447,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 
 				// gibt es bereits ein Objekt mit der angegebenen Pid in diesem Bereich, so wird kein neues Objekt angelegt, sondern der Vorgang mit einer
 				// ConfigurationChangeException abgebrochen
-				final ConfigDataModel configDataModel = (ConfigDataModel)getDataModel();
+				final ConfigDataModel configDataModel = getDataModel();
 				final ConfigurationFileManager fileManager = configDataModel.getConfigurationFileManager();
 
 				try {
@@ -1033,7 +1007,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 
 			// gibt es bereits ein aktives Objekt mit der angegebenen Pid, so wird kein neues Objekt angelegt, sondern der Vorgang mit einer
 			// ConfigurationChangeException abgebrochen
-			SystemObject anotherObject = getDataModel().getObject(pid);
+			SystemObject anotherObject = getDataModel().getObject(pid, simulationVariant);
 			if(anotherObject != null && anotherObject.isValid()) {
 				throw new ConfigurationChangeException(
 						"Es konnte kein neues dynamisches Objekt angelegt werden, da zu der angegebenen Pid '" + pid
@@ -1041,13 +1015,22 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 				);
 			}
 
+			// Alle am Typ definierten Attributgruppen
+
 			final Set<AttributeGroupUsage> requiredAtgUsages = new HashSet<AttributeGroupUsage>();
 			if(data != null && !data.isEmpty()) {
 				for(DataAndATGUsageInformation dataAndATGUsageInformation : data) {
 					final AttributeGroupUsage atgUsage = dataAndATGUsageInformation.getAttributeGroupUsage();
 					if(atgUsage.getUsage() == AttributeGroupUsage.Usage.ChangeableRequiredConfigurationData
 					   || atgUsage.getUsage() == AttributeGroupUsage.Usage.RequiredConfigurationData) {
+						// Erforderluche ATGU merken
 						requiredAtgUsages.add(atgUsage);
+					}
+
+					// Prüfen, ob die Attributgruppe am Typ definiert ist
+					if(type instanceof ConfigDynamicObjectType) {
+						ConfigDynamicObjectType objectType = (ConfigDynamicObjectType) type;
+						objectType.validateAttributeGroup(atgUsage.getAttributeGroup());
 					}
 				}
 			}
@@ -1071,7 +1054,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 			}
 
 			// neues Objekt wird angelegt
-			final ConfigDataModel configDataModel = (ConfigDataModel)getDataModel();
+			final ConfigDataModel configDataModel = getDataModel();
 			long nextObjectId = configDataModel.getNextObjectId();
 			final ConfigurationAreaFile areaFile = configDataModel.getConfigurationFileManager().getAreaFile(getPid());
 
@@ -1089,6 +1072,8 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 						final Data configurationData = dataAndATGUsageInformation.getData();
 						byte[] bytes = new byte[0];
 						if(configurationData != null) {
+							_dataModel.verifyDataReferences(simulationVariant, configurationData);
+
 							final ByteArrayOutputStream out = new ByteArrayOutputStream();
 							Serializer serializer = SerializingFactory.createSerializer(getSerializerVersion(), out);
 							serializer.writeData(configurationData);
@@ -1111,7 +1096,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 			// dass ein neues Objekt angelegt wurde
 			final DynamicObject dynamicObject = (DynamicObject)configDataModel.createSystemObject(objectInfo);
 			_debug.fine("Neues dynamisches Objekt angelegt: " + dynamicObject.getPidOrNameOrId() + " Id: " + dynamicObject.getId());
-			((ConfigDynamicObjectType)type).informCreateListener((DynamicObject)dynamicObject, simulationVariant);
+			((ConfigDynamicObjectType)type).informCreateListener(dynamicObject, simulationVariant);
 			return dynamicObject;
 		}
 		else {
@@ -1130,7 +1115,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	 * @param sets              die Mengen
 	 * @param serializerVersion die Version des Serialisierers
 	 */
-	private void createConfigurationDataForSets(ConfigurationObjectInfo objectInfo, List<ObjectSet> sets, int serializerVersion) {
+	private void createConfigurationDataForSets(ConfigurationObjectInfo objectInfo, Collection<? extends ObjectSet> sets, int serializerVersion) {
 		try {
 			final ByteArrayOutputStream out = new ByteArrayOutputStream();
 			final Serializer serializer = SerializingFactory.createSerializer(serializerVersion, out);
@@ -1156,7 +1141,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	 * @return die Versionsnummer dieses Konfigurationsbereichs zur angegebenen Zeit oder <code>0</code>, falls der Konfigurationsbereich noch nie aktiviert wurde
 	 */
 	short getVersionAtAssignedTime(long time) {
-		final List<VersionInfo> versionInfos = ((ConfigDataModel)getDataModel()).getVersionInfoOfConfigurationArea(getConfigurationArea());
+		final List<VersionInfo> versionInfos = getDataModel().getVersionInfoOfConfigurationArea(getConfigurationArea());
 		for(int i = versionInfos.size() - 1; i >= 0; i--) {	// Schleife durchläuft die Liste rückwärts
 			VersionInfo versionInfo = versionInfos.get(i);
 			if(versionInfo.getActivationTime() <= time) return versionInfo.getVersion();
@@ -1172,7 +1157,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	 * @return die Aktivierungszeit der angegebenen Version dieses Konfigurationsbereichs oder <code>0</code>, falls zur Version kein Eintrag vorliegt
 	 */
 	long getTimeAtAssignedVersion(short version) {
-		final List<VersionInfo> versionInfos = ((ConfigDataModel)getDataModel()).getVersionInfoOfConfigurationArea(getConfigurationArea());
+		final List<VersionInfo> versionInfos = getDataModel().getVersionInfoOfConfigurationArea(getConfigurationArea());
 		for(VersionInfo versionInfo : versionInfos) {
 			if(versionInfo.getVersion() == version) return versionInfo.getActivationTime();
 		}

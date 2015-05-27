@@ -52,7 +52,7 @@ import java.util.prefs.BackingStoreException;
  * Damit die Module auch mit der Applikation kommunizieren können, implementiert diese Klasse das {@link ApplicationInterface}.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 7962 $
+ * @version $Revision: 12436 $
  */
 public class GenericTestMonitorApplication implements ApplicationInterface {
 

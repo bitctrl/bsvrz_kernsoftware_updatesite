@@ -20,15 +20,17 @@
 
 package de.bsvrz.puk.config.configFile.fileaccess;
 
-import de.bsvrz.puk.config.configFile.datamodel.ConfigConfigurationObject;
 import de.bsvrz.sys.funclib.debug.Debug;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author Kappich+Kniß Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 8550 $ / $Date: 2011-01-06 10:48:12 +0100 (Do, 06 Jan 2011) $ / ($Author: jh $)
+ * @version $Revision: 13136 $ / $Date: 2015-01-29 16:38:49 +0100 (Thu, 29 Jan 2015) $ / ($Author: jh $)
  */
 public abstract class SystemObjectInformation implements SystemObjectInformationInterface {
 
@@ -46,11 +48,11 @@ public abstract class SystemObjectInformation implements SystemObjectInformation
 	/** Sobald sich an dem Objekt etwas ändert (Konfigurierender Datensatz hinzufügen oder löschen) wird dieses Objekt benachrichtigt. */
 	private final ConfigAreaFile _modifiedManger;
 
-	/** Speichert die konfigurierenden Datensätze des Objekts, als Schlüssel dient die ID der ATG */
+	/** Speichert die konfigurierenden Datensätze des Objekts, als Schlüssel dient die ID der ATGU (Attributgruppenverwendung) */
 	private final Map<Long, byte[]> _dataSets = new HashMap<Long, byte[]>();
 
 	/** Speicher ob Modifikationen gespeichert werden sollen. Beim laden darf das Objekt nicht automatisch gespeichert werden. */
-	private boolean _saveModifications;
+	protected boolean _saveModifications;
 
 	/** Eine Referenz auf ein beliebiges Objekt */
 	private Object _reference = null;
@@ -64,7 +66,7 @@ public abstract class SystemObjectInformation implements SystemObjectInformation
 	 * @param saveModifications true = Das Objekt wird angelegt und in die Datei des Konfigurationsbereichs später gespeichert, werden Änderungen vorgenommen
 	 *                          (Datensätze geändert, usw), so werden die Änderungen gespeichert; false = Das Objekt wird angelegt und nicht gespeichert (beim
 	 *                          laden des Objekts aus der Datei wäre dies sinnvoll), auch Modifikationen am Objekt werden nicht gespeichert, damit gespeichert wird
-	 *                          muss {@link #saveObjectModificationsSystemObject} aufgerufen werden
+	 *                          muss {@link #saveObjectModifications} aufgerufen werden
 	 *
 	 * @throws IllegalArgumentException Die Pid ist nicht ISO-8859-1 konform
 	 */
@@ -105,7 +107,7 @@ public abstract class SystemObjectInformation implements SystemObjectInformation
 	 * dieser Methode, werden alle Änderungen wieder gespeichert. Wurde also saveModifications == false gesetzt, so muss diese Methode aufgerufen werden, damit
 	 * neue Änderungen gespeichert werden.
 	 */
-	public void saveObjectModificationsSystemObject() {
+	public void saveObjectModifications() {
 		_saveModifications = true;
 	}
 
@@ -157,9 +159,10 @@ public abstract class SystemObjectInformation implements SystemObjectInformation
 
 	public byte[] getConfigurationData(long attributeGroupUsageId) {
 		synchronized(_dataSets) {
-			if(_dataSets.containsKey(attributeGroupUsageId)) {
+			byte[] bytes = _dataSets.get(attributeGroupUsageId);
+			if(bytes != null) {
 				// Es gibt einen Datensatz
-				return _dataSets.get(attributeGroupUsageId);
+				return bytes;
 			}
 			else {
 				// Es gibt keinen Datensatz (das kann durchaus passieren, der Fall wird mit der Exception erkannt)
@@ -175,9 +178,24 @@ public abstract class SystemObjectInformation implements SystemObjectInformation
 		}
 	}
 
-	public void setConfigurationData(long attributeGroupUsageId, byte[] data) {
+	@Override
+	public byte[] getConfigurationDataOptional(long attributeGroupUsageId) {
 		synchronized(_dataSets) {
-			_dataSets.put(attributeGroupUsageId, data);
+			return  _dataSets.get(attributeGroupUsageId);
+		}
+	}
+
+	public void setConfigurationData(long attributeGroupUsageId, byte[] data) throws IllegalStateException {
+		if(_saveModifications && isDeleted()){
+			throw new IllegalStateException("Die konfigurierenden Datensätze eines gelöschten Objekts können nicht geändert werden");
+		}
+		synchronized(_dataSets) {
+			if(data != null && data.length > 0) {
+				_dataSets.put(attributeGroupUsageId, data);
+			}
+			else {
+				if(_dataSets.remove(attributeGroupUsageId) == null) return;
+			}
 		}
 		if(_saveModifications) {
 			_modifiedManger.objectModified(this);
@@ -259,6 +277,9 @@ public abstract class SystemObjectInformation implements SystemObjectInformation
 		return (int)(_id ^ (_id >>> 32));
 	}
 
+	abstract public FilePointer getLastFilePosition();
+
+	abstract public void setLastFilePosition(FilePointer lastFilePosition);
 
 	public String toString() {
 		final StringBuffer out = new StringBuffer();

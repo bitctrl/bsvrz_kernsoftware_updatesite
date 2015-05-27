@@ -26,7 +26,7 @@ package de.bsvrz.sys.funclib.losb.datk;
  *
  * @author beck et al. projects GmbH
  * @author Thomas Schaefer
- * @version $Revision: 11353 $ / $Date: 2013-06-25 16:12:23 +0200 (Di, 25 Jun 2013) $ / ($Author: jh $)
+ * @version $Revision: 11353 $ / $Date: 2013-06-25 16:12:23 +0200 (Tue, 25 Jun 2013) $ / ($Author: jh $)
  */
 public class MessageType {
 

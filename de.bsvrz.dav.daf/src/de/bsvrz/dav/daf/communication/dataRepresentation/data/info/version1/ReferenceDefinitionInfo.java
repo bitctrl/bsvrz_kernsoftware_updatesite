@@ -27,7 +27,7 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 5084 $ / $Date: 2007-09-03 10:42:50 +0200 (Mo, 03 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision: 13508 $ / $Date: 2015-05-20 17:09:30 +0200 (Wed, 20 May 2015) $ / ($Author: rs $)
  */
 public class ReferenceDefinitionInfo extends AttributeTypeDefinitionInfo {
 	public ReferenceDefinitionInfo(ReferenceAttributeType referenceAttributeType) {

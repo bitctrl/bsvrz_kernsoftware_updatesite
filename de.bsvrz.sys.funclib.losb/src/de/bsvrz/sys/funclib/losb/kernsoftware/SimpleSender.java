@@ -21,14 +21,7 @@
 
 package de.bsvrz.sys.funclib.losb.kernsoftware;
 
-import de.bsvrz.dav.daf.main.ClientDavInterface;
-import de.bsvrz.dav.daf.main.ClientSenderInterface;
-import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.DataDescription;
-import de.bsvrz.dav.daf.main.OneSubscriptionPerSendData;
-import de.bsvrz.dav.daf.main.ResultData;
-import de.bsvrz.dav.daf.main.SendSubscriptionNotConfirmed;
-import de.bsvrz.dav.daf.main.SenderRole;
+import de.bsvrz.dav.daf.main.*;
 import de.bsvrz.dav.daf.main.config.ConfigurationException;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.sys.funclib.debug.Debug;
@@ -46,8 +39,7 @@ import de.bsvrz.sys.funclib.losb.util.Util;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 6420 $ / $Date: 2009-03-10 23:19:01 +0100 (Di, 10 Mrz 2009) $ / ($Author: rs $)
- * @see SubscriptionManager
+ * @version $Revision: 12871 $ / $Date: 2014-10-08 10:59:12 +0200 (Wed, 08 Oct 2014) $ / ($Author: jh $)
  */
 public class SimpleSender implements ClientSenderInterface {
 
@@ -166,7 +158,7 @@ public class SimpleSender implements ClientSenderInterface {
 	 *
 	 * @throws SenderException Falls es bei der Sendeanmeldung zu einem Fehler kommt.
 	 */
-	public SimpleSender(ClientDavInterface dav, SystemObject receiver, DataDescription dataDescription, Data data, boolean source) throws SenderException {
+	private SimpleSender(ClientDavInterface dav, SystemObject receiver, DataDescription dataDescription, Data data, boolean source) throws SenderException {
 		this();
 		init(dav, receiver, dataDescription, data, source);
 	}
@@ -231,7 +223,15 @@ public class SimpleSender implements ClientSenderInterface {
 		try {
 			sender.init(dav, receiver, dataDescription, data, source);
 			synchronized(sender.lock) {
-				while(!sender.dataRequestCalled) sender.lock.wait(timeout);		//warten, bis gesendet oder timeout
+				while(!sender.dataRequestCalled) {
+					sender.lock.wait(timeout);
+				}
+
+				// Falls negative Sendesteuerung auf positive Sendesteuerung warten
+				// (bei Dav-Dav-Kopplung wichtig, da dort während noch nach Empfängern gesucht wurd u.U. eine kurze negative Sendesteuerugn eintrifft)
+				if(!sender.sent) sender.lock.wait(5000);
+
+				//warten, bis gesendet oder timeout
 			}
 			return sender.sent;
 		}
@@ -244,6 +244,8 @@ public class SimpleSender implements ClientSenderInterface {
 			return false;
 		}
 		finally {
+			// Sender abmelden
+			ConnectionManager.unsubscribeSender(dav, sender, receiver, dataDescription);
 			//ggf. Fehlermeldung ausgeben (auch nicht-kritische)
 			if(sender.errorMsg != null) {
 				debug.fine(sender.errorMsg);
@@ -292,13 +294,6 @@ public class SimpleSender implements ClientSenderInterface {
 			errorMsg = ErrorMessage.COMMUNICATION + e.getMessage();
 		}
 		finally {
-			//	Sender abmelden
-			try {
-				ConnectionManager.unsubscribeSender(dav, this, object, dataDescription);
-			}
-			catch(ConfigurationException e) {
-				errorMsg = ErrorMessage.COMMUNICATION + e.getMessage();
-			}
 			synchronized(lock) {
 				dataRequestCalled = true;
 				lock.notifyAll();

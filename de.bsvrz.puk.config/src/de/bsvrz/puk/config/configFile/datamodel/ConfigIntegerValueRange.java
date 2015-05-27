@@ -37,7 +37,7 @@ import java.io.ByteArrayInputStream;
  * Implementierung des Interfaces von Eigenschaften von Wertebereichen.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 8550 $ / $Date: 2011-01-06 10:48:12 +0100 (Do, 06 Jan 2011) $ / ($Author: jh $)
+ * @version $Revision: 8550 $ / $Date: 2011-01-06 10:48:12 +0100 (Thu, 06 Jan 2011) $ / ($Author: jh $)
  */
 public class ConfigIntegerValueRange extends ConfigConfigurationObject implements IntegerValueRange {
 	/**

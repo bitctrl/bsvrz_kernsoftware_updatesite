@@ -29,7 +29,7 @@ import java.util.*;
  * wodurch dann eine Liste verwendet wird.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11131 $
+ * @version $Revision: 12328 $
  */
 @SuppressWarnings({"unchecked"})
 public class HashBagMap<K, V> implements Serializable {
@@ -496,6 +496,11 @@ public class HashBagMap<K, V> implements Serializable {
 
 					public Collection<V> setValue(final Collection<V> value) {
 						throw new UnsupportedOperationException("Nicht implementiert");
+					}
+
+					@Override
+					public String toString() {
+						return "{" + getKey() + ", " + getValue() + "}";
 					}
 				};
 			}

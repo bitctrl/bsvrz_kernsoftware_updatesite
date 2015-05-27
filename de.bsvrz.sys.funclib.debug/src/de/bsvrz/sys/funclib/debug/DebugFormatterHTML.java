@@ -27,7 +27,7 @@ import java.text.*;
 /** Formattiert die Ausgabe für HTML-Dateiausgabe.
  * <b>WIRD ZUR ZEIT NOCH NICHT UNTERSTÜTZT: AUSGABE ERFOLGT WIE BEI TEXTAUSGABE.</b>
  * @author Hans Christian Kniß (HCK)
- * @version $Revision: 5003 $ / $Date: 2007-08-27 21:41:46 +0200 (Mo, 27 Aug 2007) $
+ * @version $Revision: 5003 $ / $Date: 2007-08-27 21:41:46 +0200 (Mon, 27 Aug 2007) $
  */
 public class DebugFormatterHTML extends java.util.logging.Formatter {
 

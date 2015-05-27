@@ -25,44 +25,13 @@ package de.bsvrz.puk.config.configFile.datamodel;
 import de.bsvrz.dav.daf.communication.dataRepresentation.AttributeBaseValueDataFactory;
 import de.bsvrz.dav.daf.communication.dataRepresentation.AttributeHelper;
 import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.config.Aspect;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
-import de.bsvrz.dav.daf.main.config.AttributeType;
-import de.bsvrz.dav.daf.main.config.BackupProgressCallback;
-import de.bsvrz.dav.daf.main.config.BackupResult;
-import de.bsvrz.dav.daf.main.config.ConfigurationArea;
-import de.bsvrz.dav.daf.main.config.ConfigurationAuthority;
-import de.bsvrz.dav.daf.main.config.ConfigurationChangeException;
-import de.bsvrz.dav.daf.main.config.ConfigurationObject;
-import de.bsvrz.dav.daf.main.config.ConfigurationObjectType;
-import de.bsvrz.dav.daf.main.config.ConfigurationTaskException;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.DynamicObject;
-import de.bsvrz.dav.daf.main.config.ObjectSetType;
-import de.bsvrz.dav.daf.main.config.ObjectTimeSpecification;
-import de.bsvrz.dav.daf.main.config.Pid;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
+import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.dav.daf.main.config.management.ConfigAreaAndVersion;
 import de.bsvrz.dav.daf.main.config.management.ConfigurationControl;
 import de.bsvrz.dav.daf.main.config.management.UserAdministration;
-import de.bsvrz.dav.daf.main.config.management.consistenycheck.ConsistencyCheckResult;
-import de.bsvrz.dav.daf.main.config.management.consistenycheck.ConsistencyCheckResultEntry;
-import de.bsvrz.dav.daf.main.config.management.consistenycheck.ConsistencyCheckResultEntryType;
-import de.bsvrz.dav.daf.main.config.management.consistenycheck.ConsistencyCheckResultInterface;
-import de.bsvrz.dav.daf.main.config.management.consistenycheck.FixableConsistencyCheckResultEntry;
+import de.bsvrz.dav.daf.main.config.management.consistenycheck.*;
 import de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentifications;
-import de.bsvrz.puk.config.configFile.fileaccess.ConfigAreaFile;
-import de.bsvrz.puk.config.configFile.fileaccess.ConfigFileBackupTask;
-import de.bsvrz.puk.config.configFile.fileaccess.ConfigFileManager;
-import de.bsvrz.puk.config.configFile.fileaccess.ConfigurationAreaFile;
-import de.bsvrz.puk.config.configFile.fileaccess.ConfigurationAreaTime;
-import de.bsvrz.puk.config.configFile.fileaccess.ConfigurationFileManager;
-import de.bsvrz.puk.config.configFile.fileaccess.ConfigurationObjectInfo;
-import de.bsvrz.puk.config.configFile.fileaccess.DynamicObjectInfo;
-import de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformation;
-import de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformationInterface;
+import de.bsvrz.puk.config.configFile.fileaccess.*;
 import de.bsvrz.puk.config.main.authentication.ConfigAuthentication;
 import de.bsvrz.puk.config.main.consistencycheck.ConsistencyCheck;
 import de.bsvrz.puk.config.main.consistencycheck.KindOfConsistencyCheck;
@@ -72,6 +41,9 @@ import de.bsvrz.puk.config.main.managementfile.ConfigurationAreaManagementInfo;
 import de.bsvrz.puk.config.main.managementfile.ConfigurationManagementFile;
 import de.bsvrz.puk.config.main.managementfile.ManagementFile;
 import de.bsvrz.puk.config.main.managementfile.VersionInfo;
+import de.bsvrz.puk.config.main.simulation.ConfigSimulationObject;
+import de.bsvrz.puk.config.main.simulation.SimulationHandler;
+import de.bsvrz.puk.config.util.ref.ReferenceHelper;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 import java.io.File;
@@ -84,13 +56,14 @@ import java.util.*;
  * hier zusammengeführt und entsprechend des {@link DataModel Datenmodells} zur Verfügung gestellt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11641 $
+ * @version $Revision: 13267 $
  * @see DataModel
  */
 public class ConfigDataModel implements DataModel, ConfigurationControl {
 
 	/** DebugLogger für Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
+	public static final int PROTOCOL_VERSION = 1;
 
 	/** Zugriff auf die Verwaltungsdaten der Konfiguration. */
 	private final ConfigurationManagementFile _managementFile;
@@ -128,7 +101,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	/** Flag, mit dem die Konsistenzprüfung entscheiden soll, ob doppelte Pids in verschiedenen Konfigurationsbereichen erlaubt sind. */
 	private boolean _allowDoublePids = false;
 
-	private Set<ConfigMutableSet> _dirtyMutableSets = Collections.synchronizedSet(new HashSet<ConfigMutableSet>());
+	private final Set<MutableSetExtFileStorage> _dirtyMutableSets = Collections.synchronizedSet(new HashSet<MutableSetExtFileStorage>());
 
 	private boolean _ignoreDependencyErrorsInConsistencyCheck = false;
 
@@ -137,6 +110,12 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	private ConfigAuthentication _userManagement = null;
 
 	private final DynamicObjectTypePublisher _dynamicObjectTypePublisher = new DynamicObjectTypePublisher();
+
+	private SimulationHandler _simulationHandler;
+
+	private ReferenceHelper _referenceHelper;
+
+	private final Object _referenceHelperLock = new Object();
 
 	/**
 	 * Erzeugt das Datenmodell der Konfiguration.
@@ -219,7 +198,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 				_debug.finest("KV Bereich: " + configurationAuthority.getPid() + " KV Konfiguration: " + _managementFile.getConfigurationAuthority());
 				if(configurationAuthority.getPid().equals(_managementFile.getConfigurationAuthority())) {
 					_debug.finest("Restrukturierung in folgendem Bereich erforderlich", configurationArea.getPidOrNameOrId());
-					((ConfigAreaFile)_configurationFileManager.getAreaFile(pid)).initialVersionRestructure();
+					_configurationFileManager.getAreaFile(pid).initialVersionRestructure();
 					manualGc();
 				}
 			}
@@ -316,6 +295,8 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			for(SystemObject dynamicType : dynamicTypes) {
 				((SystemObjectType)dynamicType).getElements();
 			}
+
+			deleteDynamicObjectsPermanently();
 
 			_debug.info("Das Datenmodell wurde geladen. Dauer in Sekunden", ((System.currentTimeMillis() - startTime) / 1000));
 		}
@@ -918,6 +899,29 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 		return resultEntries;
 	}
 
+	public void restructure(final ConfigurationAreaFile.RestructureMode mode){
+		
+		_debug.info("Restrukturiere Konfigurationsbereiche");
+		for(ConfigurationArea configurationArea : getAllConfigurationAreas().values()) {
+			ConfigurationAuthority configurationAuthority = configurationArea.getConfigurationAuthority();
+			_debug.finer("KV Bereich: " + configurationAuthority.getPid() + " KV Konfiguration: " + _managementFile.getConfigurationAuthority());
+			if(configurationAuthority.getPid().equals(_managementFile.getConfigurationAuthority())) {
+				_debug.fine("Restrukturierung in folgendem Bereich", configurationArea.getPidOrNameOrId());
+				try {
+					_configurationFileManager.getAreaFile(configurationArea.getPid()).restructure(mode);
+				}
+				catch(IOException e) {
+					// Fängt alle Fehler ab, kommt es zu einem Fehler, wird die Reorganisation unterbrochen und der
+					// Ursprungszustand bleibt erhalten
+					_debug.error(
+							"Fehler bei der Reorganisation in " + configurationArea
+									+ ". Die Reorganisation wurde abgebrochen, es wird ohne Änderung in der Ursprungsdate normal weitergearbeitet.", e
+					);
+				}
+			}
+		}
+	}
+
 	public ConsistencyCheckResultInterface releaseConfigurationAreasForTransfer(Collection<ConfigAreaAndVersion> configurationAreas)
 			throws ConfigurationChangeException {
 
@@ -1115,7 +1119,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 							+ " zur Übernahme und Aktivierung freigegeben"
 					);
 					// Abfrage damit die übernehmbare Version nicht verkleinert wird.
-					if(((ConfigConfigurationArea)configurationArea).getTransferableVersion() < newActivatableVersion) {
+					if(configurationArea.getTransferableVersion() < newActivatableVersion) {
 						// Bei Veränderung der aktivierbaren Version wird die übernehmbare Version mit vergrößert.
 						((ConfigConfigurationArea)configurationArea).setTransferableVersion(newActivatableVersion);
 					}
@@ -1312,14 +1316,72 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 		return consistencyCheckResult;
 	}
 
+	public final void deleteDynamicObjectsPermanently(){
+		// Alle Bereiche mit aktuellem KV raussuchen
+		for(ConfigurationArea configurationArea : getAllConfigurationAreas().values()) {
+			ConfigurationAuthority configurationAuthority = configurationArea.getConfigurationAuthority();
+
+			if(!configurationAuthority.getPid().equals(_managementFile.getConfigurationAuthority())) {
+				// KB nicht änderbar, da falscher KV
+				continue;
+			}
+
+			ConfigAreaFile areaFile = (ConfigAreaFile) _configurationFileManager.getAreaFile(configurationArea.getPid());
+
+			areaFile.deleteDynamicObjectsPermanently();
+		}
+	}
+
 	public SystemObject getObject(String pid) {
+		return getObject(pid, (short)0);
+	}
+
+	/**
+	 * Gibt das Objekt mit der angegebenen Pid aus Sicht der angegebenen Simulation zurück. Das heißt im Detail:
+	 * <ul>
+	 *     <li>Bei Anfragen mit Simulationsvariante 0 werden nur "normale" aktive Objekte zurückgegeben.</li>
+	 *     <li>Bei Anfragen aus Simulationen wird entweder ein Objekt derselben Simulation zurückgegeben,
+	 *     oder ein "normales" aktives Objekt. "normale" Objekte werden aber nur zurückgegeben, wenn der Typ
+	 *     des Objektes nicht speziell in der Simulation behandelt wird. Wird der Typ speziell behandelt
+	 *     ist das Objekt in der Simulation nicht gültig und es wird stattdessen null zurückgegeben.</li>
+	 * </ul>
+	 * @param pid                  Pid
+	 * @param simulationVariant    Simulation
+	 * @return Ein Objekt falls vorhanden oder null.
+	 */
+	public SystemObject getObject(final String pid, final short simulationVariant) {
 		if(pid == null || pid.equals("") || pid.equals("null")) return null;
-		final SystemObjectInformation systemObjectInformation;
+		SystemObjectInformationInterface systemObjectInformation;
+
+		boolean checkSimulationObject = false;
+
 		synchronized(_configurationFileManager) {
-			systemObjectInformation = (SystemObjectInformation)_configurationFileManager.getActiveObject(pid);
+			if(simulationVariant > 0){
+				// Aktive Simulation, zuerst Objekt der spezifischen Simulation suchen
+				systemObjectInformation = _configurationFileManager.getSimulationObject(pid, simulationVariant);
+				if(systemObjectInformation == null) {
+					// Falls kein simulationsspezifisches Objekt gefunden wurde, "normales" aktives Objekt suchen
+					systemObjectInformation = _configurationFileManager.getActiveObject(pid);
+					// jetzt muss noch geprüft werden, dass das Objekt in dieser Simulation gültig ist, d. h.
+					// der Typ des Objekts darf nicht in der Simulationsstrecke definiert worden sein,
+					// sonst wäre dieses nicht-simulierte Objekt dort ungültig
+					checkSimulationObject = true;
+				}
+			}
+			else {
+				systemObjectInformation = _configurationFileManager.getActiveObject(pid);
+			}
 		}
 		if(systemObjectInformation != null) {
-			return createSystemObject(systemObjectInformation);
+			SystemObject systemObject = createSystemObject(systemObjectInformation);
+			if(checkSimulationObject){
+				// Jetzt muss noch geprüft werden ob das "normale" Objekt in der Simulation gültig ist
+				if(!objectIsValidInSimulation(systemObject, simulationVariant)){
+					_debug.fine("Zur angegebenen PID " + pid + " gibt es kein Objekt in Simulation " + simulationVariant + "!");
+					return null;
+				}
+			}
+			return systemObject;
 		}
 		else {
 			_debug.fine("Zur angegebenen PID " + pid + " gibt es kein Objekt!");
@@ -1340,6 +1402,46 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			_debug.fine("Zur angegebenen ID " + id + " gibt es kein Objekt!");
 			return null;
 		}
+	}
+
+	@Override
+	public List<SystemObject> getObjects(final long... ids) {
+		final List<SystemObject> result = new ArrayList<SystemObject>(ids.length);
+		for(final long id : ids) {
+			result.add(getObject(id));
+		}
+		return result;
+	}
+
+	@Override
+	public List<SystemObject> getObjects(final String... pids) {
+		return getObjects(pids, (short)0);
+	}
+
+	public List<SystemObject> getObjects(final String[] pids, final short simulationVariant) {
+		final List<SystemObject> result = new ArrayList<SystemObject>(pids.length);
+		for(final String pid : pids) {
+			result.add(getObject(pid, simulationVariant));
+		}
+		return result;
+	}
+	
+	@Override
+	public List<SystemObject> getObjectsById(final Collection<Long> ids) {
+		final List<SystemObject> result = new ArrayList<SystemObject>(ids.size());
+		for(final long id : ids) {
+			result.add(getObject(id));
+		}
+		return result;
+	}
+
+	@Override
+	public List<SystemObject> getObjectsByPid(final Collection<String> pids) {
+		final List<SystemObject> result = new ArrayList<SystemObject>(pids.size());
+		for(final String pid : pids) {
+			result.add(getObject(pid));
+		}
+		return result;
 	}
 
 	/**
@@ -1710,7 +1812,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 //		return null;
 //	}
 
-	public ConfigurationObject createConfigurationObject(ConfigurationObjectType type, String pid, String name, List sets) throws ConfigurationChangeException {
+	public ConfigurationObject createConfigurationObject(ConfigurationObjectType type, String pid, String name, List<? extends ObjectSet> sets) throws ConfigurationChangeException {
 		throw new ConfigurationChangeException("Methode DataModel.createConfigurationObject(..) wird nicht mehr unterstützt.");
 	}
 
@@ -1725,29 +1827,270 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	 */
 	public void deleteObjects(short simulationVariant) {
 		final List<DynamicObjectInfo> dynamicObjectInfos = _configurationFileManager.getObjects(simulationVariant);
+		final Set<ConfigDynamicObjectType> affectedTypes = new HashSet<ConfigDynamicObjectType>();
 		for(DynamicObjectInfo dynamicObjectInfo : dynamicObjectInfos) {
-//			DynamicObject dynamicObject = (DynamicObject) getObject(dynamicObjectInfo.getID());
-//			((ConfigDynamicObjectType) dynamicObject.getType()).informInvalidationListener(dynamicObject);
+			ConfigDynamicObjectType dynamicObjectType = (ConfigDynamicObjectType) getObject(dynamicObjectInfo.getTypeId());
+			affectedTypes.add(dynamicObjectType);
 			dynamicObjectInfo.remove();
+		}
+		for(ConfigDynamicObjectType affectedType : affectedTypes) {
+			// Gecachte Objektliste leeren
+			affectedType.invalidateCache();
 		}
 	}
 
-	public Collection<SystemObject> getObjects(String pid, long startTime, long endTime) {
+	/**
+	 * Ermittelt, welche Objekte endgültig gelöscht werden können und markiert diese.
+	 * Entfernt historische Referenzen in dynamischen Mengen
+	 * @param spec Spezifikation, welche Objekttypen nach welchen Zeiträumen gelöscht werden dürfen
+	 */
+	public void doMaintenance(final MaintenanceSpec spec) {
+		if(spec == null) throw new IllegalArgumentException("spec ist null");
+
+		_debug.info("Analyse und Bereinigung der Konfigurationsbereiche wird gestartet");
+
+		int numSetReferences = 0;
+		int numDynObjects = 0;
+
+		SystemObjectType mutableSetType = getType(Pid.Type.MUTABLE_SET);
+
+		// Alle Bereiche mit aktuellem KV raussuchen
+		for(ConfigurationArea configurationArea : getAllConfigurationAreas().values()) {
+			ConfigurationAuthority configurationAuthority = configurationArea.getConfigurationAuthority();
+
+			if(!configurationAuthority.getPid().equals(_managementFile.getConfigurationAuthority())) {
+				// KB nicht änderbar, da falscher KV
+				continue;
+			}
+
+			_debug.fine("Bereinige Konfigurationsbereich", configurationArea.getPid());
+
+			ConfigurationAreaFile areaFile = _configurationFileManager.getAreaFile(configurationArea.getPid());
+
+			// Typen dieser Objekte ermitteln
+			final Set<Long> typeIds = new HashSet<Long>();
+
+			// Ersetzbar durch Lambda für Java 8
+			areaFile.forEachOldDynamicObject(new Consumer<DynamicObjectInfo>() {
+				                                 @Override
+				                                 public void accept(final DynamicObjectInfo dynamicObjectInfo) {
+					                                 typeIds.add(dynamicObjectInfo.getTypeId());
+				                                 }
+			                                 });
+
+			final Set<Long> referencedObjects = collectReferences(typeIds);
+
+			// Zum merken, welche Objekte gelöscht werden sollen
+			// (alle werden gleichzeitig gelöscht um Restrukturierungsaufwand zu verringern)
+			final List<Long> objectsToDelete = new ArrayList<Long>();
+
+			// Ersetzbar durch Lambda für Java 8
+			areaFile.forEachOldDynamicObject(new Consumer<DynamicObjectInfo>() {
+				                                 @Override
+				                                 public void accept(final DynamicObjectInfo dynamicObjectInfo) {
+					                                 // Wenn die Parameter das Löschen erlauben und das Objekt nicht referenziert wird, löschen
+					                                 if(!referencedObjects.contains(dynamicObjectInfo.getID()) && spec.canDeleteObject(dynamicObjectInfo)){
+						                                 _debug.fine("Bereinigtes Objekt", dynamicObjectInfo);
+						                                 objectsToDelete.add(dynamicObjectInfo.getID());
+					                                 }
+				                                 }
+			                                 });
+
+			// Gefundene Objekte als löschbar markieren (für den nächste Neust
+			if(!objectsToDelete.isEmpty()) {
+				areaFile.markObjectsForDeletion(objectsToDelete);
+				numDynObjects += objectsToDelete.size();
+			}
+
+			// Alle Mengen dieses Bereichs bereinigen
+			if(mutableSetType != null) {
+				List<SystemObject> sets = mutableSetType.getElements();
+				for(SystemObject set : sets) {
+					if(set instanceof ConfigMutableSet) {
+						Long setKeepTime = spec.getSetKeepTime((ObjectSetType) set.getType());
+						if(setKeepTime != null)	{
+							ConfigMutableSet mutableSet = (ConfigMutableSet) set;
+							_debug.fine("Bereinigtes Menge", mutableSet);
+							try {
+								numSetReferences += mutableSet.deleteElementsOlderThan(System.currentTimeMillis() - setKeepTime).size();
+							}
+							catch(ConfigurationChangeException e) {
+								_debug.warning("Kann historische Mengenelemente nicht bereinigen", e);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		_debug.info(numDynObjects + " dynamische Objekte für das endgültige Löschen vorbereitet und " + numSetReferences + " historische Mengenreferenzen bereinigt.");
+	}
+
+	/**
+	 * Gibt alle Objekte der angegebenen Typen zurück, die von einem beliebigen gültigen, anderen Objekt referenziert werden
+	 * @param typeIds Menge mit Typ-IDs von Objekten, zu denen Referenzen gesucht werden sollen
+	 * @return Alle Objekt der angegebenen typen, die von einem anderen gültigen Objekt referenziert werden.
+	 */
+	private Set<Long> collectReferences(final Set<Long> typeIds) {
+		final Set<Long> result = new HashSet<Long>();
+		final Set<SystemObjectType> referencingTypes = new HashSet<SystemObjectType>();
+		for(Long typeId : typeIds) {
+			SystemObjectType type = (SystemObjectType) getObject(typeId);
+			referencingTypes.addAll(getReferencingTypes(type));
+		}
+		for(SystemObjectType referencingType : referencingTypes) {
+			for(SystemObject object : referencingType.getElements()) {
+				collectReferences(result, typeIds, object);
+			}
+		}
+		return result;
+	}
+
+	private Collection<? extends SystemObjectType> getReferencingTypes(final SystemObjectType type) {
+		return getReferenceHelper().getReferencingTypes(type);
+	}
+
+	public ReferenceHelper getReferenceHelper() {
+		synchronized(_referenceHelperLock) {
+			if(_referenceHelper == null) {
+				_referenceHelper = new ReferenceHelper(this);
+			}
+			return _referenceHelper;
+		}
+	}
+
+	/**
+	 * Sammelt alle von gültigen Objekten referenzierte ObjektIds. Diese dürfen nicht bereinigt werden.
+	 * @param referencedObjects Rückgabe-Set
+	 * @param typeIds
+	 * @param object Zu behandelndes Objekt
+	 */
+	private void collectReferences(final Set<Long> referencedObjects, final Set<Long> typeIds, final SystemObject object) {
+		if(!object.isValid()) return; // Nicht rekursiv nach referenzierten Objekten suchen, wenn selbst nicht gültig
+
+		if(object instanceof ConfigurationObject) {
+			ConfigurationObject confOb = (ConfigurationObject) object;
+			for(ObjectSet objectSet : confOb.getObjectSets()) {
+				for(SystemObject systemObject : objectSet.getElements()) {
+					if(typeIds.contains(systemObject.getType().getId())) {
+						referencedObjects.add(systemObject.getId());
+					}
+				}
+			}
+		}
+		for(AttributeGroupUsage usage : object.getUsedAttributeGroupUsages()) {
+			Data configurationData = object.getConfigurationData(usage);
+			assert configurationData != null;
+			collectReferences(referencedObjects,typeIds, configurationData);
+		}
+	}
+
+	private void collectReferences(final Set<Long> referencedObjects, final Set<Long> typeIds, final Data configurationData) {
+		if(configurationData.isPlain()){
+			if(configurationData.getAttributeType() instanceof ReferenceAttributeType){
+				SystemObject ref = configurationData.asReferenceValue().getSystemObject();
+				if(ref != null && typeIds.contains(ref.getType().getId())) {
+					referencedObjects.add(ref.getId());
+				}
+			}
+		}
+		else {
+			for(Data subData : configurationData) {
+				collectReferences(referencedObjects, typeIds, subData);
+			}
+		}
+	}
+
+	/**
+	 * Gibt die Objekte zurück, die aus Sicht der angegebenen Simulationsvariante zu der angegebenen Pid in dem angegebenen Zeitraum gültig
+	 * waren.
+	 *
+	 * @param pid               die Pid der gewünschten Objekte
+	 * @param startTime         der zu betachtende Startzeitpunkt des Anfragezeitraums
+	 * @param endTime           der zu betrachtende Endzeitpunkt des Anfragezeitraums
+	 * @param simulationVariant die Simulationsvariante
+	 * @return Die Objekte, die zu der angegebenen Pid in dem angegebenen Zeitraum in der angegebenen Simulation gültig waren.
+	 */
+	public Collection<SystemObject> getObjects(String pid, long startTime, long endTime, short simulationVariant) {
 		// alle Bereiche durchgehen
 		final Collection<SystemObject> objects = new ArrayList<SystemObject>();
 		ConfigurationAreaFile[] areaFiles = getConfigurationFileManager().getConfigurationAreas();
 		for(ConfigurationAreaFile areaFile : areaFiles) {
 			// es wird die lokale Aktivierungszeit verwendet, die Verwendung der globalen Aktivierungszeit wurde bisher noch nicht gefordert
-			SystemObjectInformationInterface[] objectInfos = areaFile.getObjects(pid, startTime, endTime, ConfigurationAreaTime.LOCAL_ACTIVATION_TIME);
+			List<SystemObjectInformationInterface> objectInfos = areaFile.getObjects(pid, startTime, endTime, ConfigurationAreaTime.LOCAL_ACTIVATION_TIME, simulationVariant);
 			for(SystemObjectInformationInterface systemObjectInfo : objectInfos) {
 				SystemObject systemObject = createSystemObject(systemObjectInfo);
-				objects.add(systemObject);
+				if(objectIsValidInSimulation(systemObject, simulationVariant)) {
+					objects.add(systemObject);
+				}
 			}
 		}
 		return Collections.unmodifiableCollection(objects);
 	}
 
-	public Collection<SystemObject> getObjects(
+	/**
+	 * Prüft, ob ein Objekt in der angegebenen Simulation gültig ist
+	 * @param systemObject Zu prüfendes Objekt
+	 * @param simulationVariant Sumulationsvariante der zu prüfenden Simulation oder 0 falls keine Simulation verwendet wird
+	 * @return true: Objekt ist gültig, false sonst. Insbesondere ist ein Objekt dann gültig wenn
+	 * <ul>
+	 *     <li>Keine Simulation verwendet wird und das Objekt auch nicht simuliert ist
+	 *     <li>Eine Simulation verwendet wird und das Objekt dieselbe Simulationsvariante besitzt
+	 *     <li>Eine Simulation verwendet wird und das Objekt nicht simuliert ist, der Typ des Objektes aber auch nicht in der
+	 *     Simulationsstrecke definiert ist
+	 * </ul>
+	 */
+	public boolean objectIsValidInSimulation(final SystemObject systemObject, final short simulationVariant) {
+		if(systemObject instanceof ConfigDynamicObject) {
+			ConfigDynamicObject configDynamicObject = (ConfigDynamicObject) systemObject;
+			short objectSimulationVariant = configDynamicObject.getSimulationVariant();
+			if(simulationVariant <= 0) {
+				return objectSimulationVariant <= 0;
+			}
+			else {
+				// simulationVariant > 0, d.h. es soll auch sicht einer Simulation betrachtet werden
+				if(simulationVariant == objectSimulationVariant){
+					return true;
+				}
+				if(objectSimulationVariant != 0){
+					// Objekte fremder Simulationen sind nicht gültig
+					return false;
+				}
+				ConfigSimulationObject simulationObject = getSimulation(simulationVariant);
+				if(simulationObject == null){
+					_debug.fine("Simulation wurde nicht gefunden:", simulationVariant);
+					return false;
+				}
+				if(simulationObject.isSpecialTreatedDynamicObjectType((DynamicObjectType) configDynamicObject.getType())){
+					// Typ ist in Simulationsstrecke eingetragen, gewöhliches Objekt ist daher in dieser Simulation nicht gültig
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	private ConfigSimulationObject getSimulation(final short simulationVariant) {
+		return _simulationHandler.getSimulationByVariant(simulationVariant);
+	}
+
+	public Collection<SystemObject> getObjects(String pid, long startTime, long endTime) {
+		return getObjects(pid, startTime, endTime, (short) 0);
+	}
+
+	/**
+	 * Gibt alle Objekte unabhängig von der Simulationsvariante zurück
+	 * @param configurationAreas      Konfigurationsbereiche, die zu berücksichtigen sind. Wird <code>null</code> übergeben, so gilt dies als Wildcard und alle
+	 *                                Konfigurationsbereiche werden betrachtet.
+	 * @param systemObjectTypes       Objekttypen, die zu berücksichtigen sind. Wird <code>null</code> übergeben, so gilt dies als Wildcard und alle Objekttypen
+	 *                                werden betrachtet.
+	 * @param objectTimeSpecification Gibt den Gültigkeitsbereich der geforderten Objekte an.
+	 *
+	 * @return Objekte
+	 *
+	 * @see #getObjects(java.util.Collection, java.util.Collection, de.bsvrz.dav.daf.main.config.ObjectTimeSpecification)
+	 */
+	public Collection<SystemObject> getAllObjects(
 			final Collection<ConfigurationArea> configurationAreas,
 			final Collection<SystemObjectType> systemObjectTypes,
 			ObjectTimeSpecification objectTimeSpecification) {
@@ -1791,17 +2134,57 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 		}
 
 		// Ermittlung der direkten Objekte der angegebenen Typen
-//		System.out.println("ConfigDataModel.getObjects");
-//		System.out.println("configurationAreas = " + configurationAreas);
-//		System.out.println("systemObjectTypes = " + systemObjectTypes);
 		for(ConfigurationArea configurationArea : areas) {
-//			System.out.println("configurationArea = " + configurationArea);
 			Collection<SystemObject> directObjects = configurationArea.getDirectObjects(relevantObjectTypes, objectTimeSpecification);
-//			System.out.println("directObjects = " + directObjects);
 			objects.addAll(directObjects);
 		}
-//		System.out.println("objects = " + objects);
+
 		return objects;
+	}
+
+	/**
+	 * Gibt alle Objekte zurück, außer Objekten die in Simulationen sind
+	 * @param configurationAreas      Konfigurationsbereiche, die zu berücksichtigen sind. Wird <code>null</code> übergeben, so gilt dies als Wildcard und alle
+	 *                                Konfigurationsbereiche werden betrachtet.
+	 * @param systemObjectTypes       Objekttypen, die zu berücksichtigen sind. Wird <code>null</code> übergeben, so gilt dies als Wildcard und alle Objekttypen
+	 *                                werden betrachtet.
+	 * @param objectTimeSpecification Gibt den Gültigkeitsbereich der geforderten Objekte an.
+	 *
+	 * @return Objekte
+	 *
+	 * @see #getAllObjects(java.util.Collection, java.util.Collection, de.bsvrz.dav.daf.main.config.ObjectTimeSpecification)
+	 */
+	public Collection<SystemObject> getObjects(
+			final Collection<ConfigurationArea> configurationAreas,
+			final Collection<SystemObjectType> systemObjectTypes,
+			ObjectTimeSpecification objectTimeSpecification) {
+		return getObjects(configurationAreas, systemObjectTypes, objectTimeSpecification, (short)0);
+	}
+
+	/**
+	 * Gibt alle Objekte zurück, die in einer bestimmten Simulation gültig sind
+	 * @param configurationAreas      Konfigurationsbereiche, die zu berücksichtigen sind. Wird <code>null</code> übergeben, so gilt dies als Wildcard und alle
+	 *                                Konfigurationsbereiche werden betrachtet.
+	 * @param systemObjectTypes       Objekttypen, die zu berücksichtigen sind. Wird <code>null</code> übergeben, so gilt dies als Wildcard und alle Objekttypen
+	 *                                werden betrachtet.
+	 * @param objectTimeSpecification Gibt den Gültigkeitsbereich der geforderten Objekte an.
+	 * @param simulationVariant       Simulationsvariante
+	 * @return Objekte
+	 */
+	public Collection<SystemObject> getObjects(
+			final Collection<ConfigurationArea> configurationAreas,
+			final Collection<SystemObjectType> systemObjectTypes,
+			ObjectTimeSpecification objectTimeSpecification,
+			short simulationVariant) {
+		Collection<SystemObject> allObjects = getAllObjects(configurationAreas, systemObjectTypes, objectTimeSpecification);
+		final List<SystemObject> result = new ArrayList<SystemObject>(allObjects.size());
+
+		for(SystemObject obj : allObjects) {
+			if(objectIsValidInSimulation(obj, simulationVariant)){
+				result.add(obj);
+			}
+		}
+		return result;
 	}
 
 	public UserAdministration getUserAdministration() {
@@ -2121,13 +2504,15 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 		return _ignoreDependencyErrorsInConsistencyCheck;
 	}
 
-	public void saveSetElementsFileLater(final ConfigMutableSet configMutableSet) {
-		_dirtyMutableSets.add(configMutableSet);
+	public void saveSetElementsFileLater(final MutableSetExtFileStorage mutableSetExtFileStorage) {
+		_dirtyMutableSets.add(mutableSetExtFileStorage);
 	}
 
 	public void saveSetElementsFiles() {
-		for(ConfigMutableSet dirtyMutableSet : _dirtyMutableSets) {
-			dirtyMutableSet.saveElementsData();
+		synchronized(_dirtyMutableSets) {
+			for(MutableSetExtFileStorage dirtyMutableSet : _dirtyMutableSets) {
+				dirtyMutableSet.saveElementsData();
+			}
 		}
 	}
 
@@ -2181,6 +2566,90 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	 */
 	public ConfigAuthentication getUserManagement() {
 		return _userManagement;
+	}
+
+	/**
+	 * Setzt die Simulationsverwaltung die für manche Funktionen benötigt wird
+	 * @param simulationHandler Klasse zur Abfrage nach Simulationen
+	 */
+	public void setSimulationHandler(final SimulationHandler simulationHandler) {
+		_simulationHandler = simulationHandler;
+	}
+
+	/**
+	 * Bei Simulationen muss sichergestellt sein, dass Konfigurationsdaten von dynamischen Objekten aus Simulationen keine (assoziativen)
+	 * Referenzen auf Objekte enthalten, die in dieser Simulation nicht gültig sind.
+	 * <p/>
+	 * Ebenfalls dürfen für das Löschen vorgemerkte Objekte nicht referenziert werden
+	 * <p/>
+	 * Diese Prüfung wird hier vorgenommen und kann von verschiedenen Stellen aus aufgerufen werden
+	 *
+	 * @param referencingObject Referenzierendes Objekt
+	 * @param data              Konfigurationsdaten
+	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException Wird geworfen wenn Referenzen ungültig sind
+	 */
+	public void verifyDataReferences(final ConfigSystemObject referencingObject, final Data data) throws ConfigurationChangeException{
+		if(referencingObject instanceof ConfigDynamicObject) {
+			ConfigDynamicObject dynamicObject = (ConfigDynamicObject) referencingObject;
+			verifyDataReferences(dynamicObject.getSimulationVariant(), data);
+		}
+		else {
+			verifyDataReferences((short)0, data);
+		}
+	}
+
+	/**
+	 * Bei Simulationen muss sichergestellt sein, dass Konfigurationsdaten von dynamischen Objekten aus Simulationen keine (assoziativen)
+	 * Referenzen auf Objekte enthalten, die in dieser Simulation nicht gültig sind.
+	 * <p/>
+	 * Ebenfalls dürfen für das Löschen vorgemerkte Objekte nicht referenziert werden
+	 * <p/>
+	 * Diese Prüfung wird hier vorgenommen und kann von verschiedenen Stellen aus aufgerufen werden
+	 *
+	 * @param simulationVariant Simulationsvariante des dynamischen Objekts
+	 * @param data              Konfigurationsdaten
+	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException Wird geworfen wenn Referenzen ungültig sind
+	 */
+	public void verifyDataReferences(final short simulationVariant, final Data data) throws ConfigurationChangeException {
+		if(simulationVariant == 0) return;
+		if(!data.isPlain()) {
+			for(Data subData : data) {
+				verifyDataReferences(simulationVariant, subData);
+			}
+		}
+		else {
+			AttributeType attributeType = data.getAttributeType();
+			if(attributeType instanceof ReferenceAttributeType) {
+				ReferenceAttributeType referenceAttributeType = (ReferenceAttributeType) attributeType;
+				SystemObject systemObject = data.asReferenceValue().getSystemObject();
+				if(systemObject != null) {
+
+					if(referenceAttributeType.getReferenceType() == ReferenceType.ASSOCIATION) {
+						if(!objectIsValidInSimulation(systemObject, simulationVariant)) {
+							throw new ConfigurationChangeException("Das referenzierte Objekt \"" + systemObject + "\" ist in dieser Simulation nicht gültig");
+						}
+					}
+					else {
+						synchronized(this) {
+							if(referenceAllowed(systemObject)) {
+								throw new ConfigurationChangeException("Das referenzierte Objekt \"" + systemObject + "\" ist nicht mehr gültig");
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Gibt <tt>true</tt> zurück, wenn das angegebene Objekt referenziert werden darf. Ein Objekt darf nicht mehr Referenziert werden,
+	 * wenn es fürs endgültige Löschen vorgemerkt wurde-
+	 * @return <tt>true</tt>, wenn das angegebene Objekt referenziert werden darf, sonst <tt>false</tt>
+	 */
+	public boolean referenceAllowed(final SystemObject systemObject) {
+		ConfigurationArea area = systemObject.getConfigurationArea();
+		ConfigurationAreaFile areaFile = getConfigurationFileManager().getAreaFile(area.getPid());
+		return areaFile.referenceAllowed(((ConfigSystemObject)systemObject)._systemObjectInfo);
 	}
 }
 

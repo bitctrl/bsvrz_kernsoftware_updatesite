@@ -24,7 +24,7 @@ package de.bsvrz.puk.config.xmlFile.properties;
  *
  * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 5618 $ / $Date: 2007-12-17 13:45:27 +0100 (Mo, 17 Dez 2007) $ / ($Author: rs $)
+ * @version $Revision: 5618 $ / $Date: 2007-12-17 13:45:27 +0100 (Mon, 17 Dec 2007) $ / ($Author: rs $)
  */
 public class ConfigurationObjectSet implements ConfigurationObjectElements{
 	private final String _name;
