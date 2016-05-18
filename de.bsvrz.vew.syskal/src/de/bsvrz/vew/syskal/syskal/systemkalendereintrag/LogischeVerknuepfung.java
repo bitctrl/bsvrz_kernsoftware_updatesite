@@ -47,7 +47,7 @@ import java.util.TreeSet;
  * Vorgehensweise könnte dahingehend sein, dass beim Jahrewechsel die Zustandswechsel neu berechnet werden. Muss also
  * noch geklärt werden *
  * 
- * @version $Revision: 1.4 $ / $Date: 2010/08/03 07:44:20 $ / ($Author: Pittner $)
+ * @version $Revision: 1.7 $ / $Date: 2015/06/08 15:13:12 $ / ($Author: Pittner $)
  * 
  * @author Dambach-Werke GmbH
  * @author Timo Pittner
@@ -410,7 +410,7 @@ public class LogischeVerknuepfung extends DatumJahr
    *          Endezeitpunkt der Berechnung
    * @return SortedMap<Long, Boolean> zeitlich sortierte Liste mit dem Zeitpunkten der Zustandswechsel und dem Zustand
    */
-  protected SortedMap<Long, Boolean> berechneNegativZustandsWechsel(String von, String bis)
+  public static SortedMap<Long, Boolean> berechneNegativZustandsWechsel(String von, String bis)
   {
 
     long time = 0;
@@ -947,12 +947,7 @@ public class LogischeVerknuepfung extends DatumJahr
               Set<Long> tmp2Set = new TreeSet<Long>();
 
               tmpSet = new TreeSet<Long>();
-              
-//              System.out.println(pid + " : " + definition);
-//
-//              System.out.println("a: " + a.length);
-//              System.out.println("b: " + b.length);
-              
+                            
               for (int i = 0; i < a.length; i += 2)
               {
                 Long i1A = (Long)a[i];
@@ -1001,16 +996,22 @@ public class LogischeVerknuepfung extends DatumJahr
                 Set<Long> tmp2Set = new TreeSet<Long>();
   
                 tmpSet = new TreeSet<Long>();
-  
-                for (int i = 0; i < a.length; i += 2)
+                
+                for (int i = 0; i < a.length - 1; i += 2)
                 {
                   Long i1A = (Long)a[i];
-                  Long i1E = (Long)a[i + 1];
-  
-                  for (int j = 0; j < b.length; j += 2)
+                  Long i1E = i1A;
+                  if (i < a.length-1)
+                    i1E = (Long)a[i + 1];
+//                  Long i1E = (Long)a[i + 1];
+                    
+                  for (int j = 0; j < b.length - 1; j += 2)
                   {
                     Long i2A = (Long)b[j];
-                    Long i2E = (Long)b[j + 1];
+                    Long i2E = i2A;
+                    if (j < b.length-1)
+                      i2E = (Long)b[j + 1];
+//                    Long i2E = (Long)b[j + 1];
   
                     Long x1 = i1A > i2A ? i1A : i2A;
                     Long x2 = i1E < i2E ? i1E : i2E;
@@ -1020,15 +1021,10 @@ public class LogischeVerknuepfung extends DatumJahr
   
                       tmp2Set.add(x1);
                       tmp2Set.add(x2);
-  
                     }
-  
                   }
-  
                 }
-  
-                tmpSet.addAll(tmp2Set);
-                
+                tmpSet.addAll(tmp2Set);                
               }
             }
           }
@@ -1048,12 +1044,6 @@ public class LogischeVerknuepfung extends DatumJahr
               tmpSet.addAll(map.keySet());
 
           }
-//          if (pid.equals("ske.o2")){
-//          
-//            System.out.println("Oder: " + s);
-//            System.out.println("Map: " + tmpSet.size());
-//          
-//          }
         }
         else if (s.contains("nicht"))
         {
@@ -1263,12 +1253,7 @@ public class LogischeVerknuepfung extends DatumJahr
               Set<Long> tmp2Set = new TreeSet<Long>();
               
               tmpSet = new TreeSet<Long>();
-              
-//              System.out.println(pid + " : " + definition);
-//
-//              System.out.println("a: " + a.length);
-//              System.out.println("b: " + b.length);
-              
+                            
               for (int i = 0; i < a.length; i += 2)
               {
                 Long i1A = (Long)a[i];
@@ -1364,12 +1349,6 @@ public class LogischeVerknuepfung extends DatumJahr
               tmpSet.addAll(map.keySet());
             
           }
-//          if (pid.equals("ske.o2")){
-//          
-//            System.out.println("Oder: " + s);
-//            System.out.println("Map: " + tmpSet.size());
-//          
-//          }
         }
         else if (s.contains("nicht"))
         {

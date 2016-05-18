@@ -43,7 +43,7 @@ import java.util.TreeMap;
  * aktuelle Kalenderjahr. Die Vorgehensweise könnte dahingehend sein, dass beim Jahrewechsel die Zustandswechsel neu
  * berechnet werden. Muss also noch geklärt werden *
  * 
- * @version $Revision: 1.6 $ / $Date: 2010/08/03 07:44:21 $ / ($Author: Pittner $)
+ * @version $Revision: 1.7 $ / $Date: 2015/06/08 15:13:12 $ / ($Author: Pittner $)
  * 
  * @author Dambach-Werke GmbH
  * @author Timo Pittner
@@ -52,7 +52,7 @@ import java.util.TreeMap;
 /**
  * Kommentar
  * 
- * @version $Revision: 1.6 $ / $Date: 2010/08/03 07:44:21 $ / ($Author: Pittner $)
+ * @version $Revision: 1.7 $ / $Date: 2015/06/08 15:13:12 $ / ($Author: Pittner $)
  * 
  * @author Dambach-Werke GmbH
  * @author Timo Pittner
@@ -156,10 +156,6 @@ public class DatumVonBis extends DatumJahr implements Cloneable
       }
       catch (ParseException e1)
       {
-        // TODO Auto-generated catch block
-        
-//        System.out.println(pid + " " + definition);        
-        
         if (split[0].contains("*") | split[1].contains("*"))
         {
 

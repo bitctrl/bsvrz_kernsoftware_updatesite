@@ -13,7 +13,7 @@
 
 	<groupId>de.bsvrz.vew</groupId>
 	<artifactId>de.bsvrz.vew.syskal</artifactId>
-	<version>1.2.0-SNAPSHOT</version>
+	<version>1.2.4-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 
 </project>

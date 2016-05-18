@@ -60,7 +60,7 @@ import de.bsvrz.vew.syskal.syskal.benachrichtigungsfunktion.BenachrichtigeListen
  * Klasse die Methoden bereitstellt, welche die Systemkalender-Bibliothek benutzt. Es kann damit ein Systemkalender
  * aufgebaut werden!
  * 
- * @version $Revision: 1.4 $ / $Date: 2010/08/03 07:34:26 $ / ($Author: Pittner $)
+ * @version $Revision: 1.6 $ / $Date: 2015/06/08 15:40:17 $ / ($Author: Pittner $)
  * 
  * @author Dambach-Werke GmbH
  * @author Timo Pittner
@@ -565,13 +565,11 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
   // if (ske.isGueltig(jetzt))
   // {
   //
-  // System.out.println("anfrage zeitpunkt: " + datum + " : " + ske.getPid() + " : gueltig");
   //
   // }
   // else
   // {
   //
-  // System.out.println("anfrage zeitpunkt: " + datum + " : " + ske.getPid() + " : nicht gueltig");
   // }
   // }
   //
@@ -620,11 +618,9 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
   //
   // if (ske.isGueltig(jetzt))
   // {
-  // System.out.println("anfrage zeitpunkt: " + datum + " : " + ske.getPid() + " : gueltig");
   // }
   // else
   // {
-  // System.out.println("anfrage zeitpunkt: " + datum + " : " + ske.getPid() + " : nicht gueltig");
   // }
   // }else
   // _debug.fine(pid + " nicht vorhanden!");
@@ -688,7 +684,7 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
       while (parseList.size() > 0)
       {
 
-        if (cntRekursiv > 10)
+        if (cntRekursiv > 20)
         {
           getDebug().fine("Maximale Rekursionstiefe erreicht -> Abbruch des Parsens!!!");
           break;
@@ -844,7 +840,6 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
   //
   // String datum = format.format(d);
   //
-  // System.out.println("anfrage intervall: " + datum + " : " + entry.getValue()[0] + " : " + entry.getValue()[1]);
   //
   // }
   //
@@ -982,7 +977,6 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
   //
   // String datum = format.format(d);
   //
-  // System.out.println("anfrage intervall: " + datum + " : " + entry.getValue()[0] + " : " + entry.getValue()[1]);
   //
   // }
   //
@@ -1016,7 +1010,7 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
       }
       else
       {
-        System.out.println(so.getPid() + " ist nicht der Liste der Systemkalendereinträge");
+        _debug.error(so.getPid() + " ist nicht der Liste der Systemkalendereinträge");
       }
     }
     
@@ -1051,7 +1045,7 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
       }
       else
       {
-        System.out.println(so.getPid() + " ist nicht der Liste der Systemkalendereinträge");
+        _debug.error(so.getPid() + " ist nicht der Liste der Systemkalendereinträge");
       }
     }
 
@@ -1163,7 +1157,6 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
   //
   // String datum = format.format(d);
   //
-  // System.out.println("anfrage intervall: " + datum + " : " + entry.getValue()[0] + " : " + entry.getValue()[1]);
   //
   // }
 
@@ -1193,7 +1186,7 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
     }
     else
     {
-      System.out.println(pid + " ist nicht der Liste der Systemkalendereinträge");
+      _debug.error(pid + " ist nicht der Liste der Systemkalendereinträge");
     }
 
     return ergebnis;
@@ -1225,7 +1218,7 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
     }
     else
     {
-      System.out.println(pid + " ist nicht der Liste der Systemkalendereinträge");
+      _debug.error(pid + " ist nicht der Liste der Systemkalendereinträge");
     }
     
     return ergebnis;

@@ -42,7 +42,7 @@ import java.util.TreeMap;
  * Die Klasse erzeugt SystemKalenderEintraege vom Typ: "Ostersonntag + 1Tag", also Eintraege die durch bereits
  * definierte Eintraege und die Angabe eines Zeitwertes definiert werden.
  * 
- * @version $Revision: 1.6 $ / $Date: 2010/08/03 07:44:21 $ / ($Author: Pittner $)
+ * @version $Revision: 1.8 $ / $Date: 2015/06/08 15:13:11 $ / ($Author: Pittner $)
  * 
  * @author Dambach-Werke GmbH
  * @author Timo Pittner
@@ -51,7 +51,7 @@ import java.util.TreeMap;
 /**
  * Kommentar
  * 
- * @version $Revision: 1.6 $ / $Date: 2010/08/03 07:44:21 $ / ($Author: Pittner $)
+ * @version $Revision: 1.8 $ / $Date: 2015/06/08 15:13:11 $ / ($Author: Pittner $)
  * 
  * @author Dambach-Werke GmbH
  * @author Timo Pittner
@@ -211,8 +211,6 @@ public class DefinierterEintrag extends LogischeVerknuepfung
         // if (pid.contains(s))
         if (ske.getName().equals(s))
         {
-          // System.out.println(getName() + " : " + definition + " -> " + s);
-
           Date d1 = null;
           Date d2 = null;
 
@@ -471,17 +469,34 @@ public class DefinierterEintrag extends LogischeVerknuepfung
     if (map == null)
       return null;
 
-    Object[] oa = map.keySet().toArray();
-    int size = oa.length;
+//    Object[] oa = map.keySet().toArray();
+//    int size = oa.length;
+    
+    Object[] oatmp = map.keySet().toArray();
+    int size = oatmp.length;
+    Object[] oa = new Object[2];
+    if (oatmp.length > 1){
+      
+      if (symbol == "+")
+      {
+        oa[0] = oatmp[size-2]; 
+        oa[1] = oatmp[size-1]; 
+            
+      }else if (symbol == "-"){
+        oa[0] = oatmp[0]; 
+        oa[1] = oatmp[1]; 
+        
+      }else{                
+        _debug.error("Definierter Eintrag -> Fehler Rechenzeichen: " + symbol);
+         return null;
+      }            
+    }
 
     Date date = new Date();
     for (int i = 0; i < oa.length; i++)
     {
       Long l = (Long)oa[i];
       date.setTime(l);
-
-      String format = df.format(date);
-      // System.out.println(pid + " -> "+ format);
 
       Ostern ostern = new Ostern();
       Calendar oStart = ostern.Ostersonntag(jahr);
@@ -580,12 +595,7 @@ public class DefinierterEintrag extends LogischeVerknuepfung
         }
         
         Boolean b = map.get(l);
-        
-//        System.out.println(df.format(tmp.getTime()) + " : " + b);
-        
         listeZustandsWechselAbfrage.getListeZustandsWechsel().put(tmp.getTimeInMillis(), b);
-
-//        testPeuker(listeZustandsWechselAbfrage, cal1, cal2, dt, oa, size);
       }
 
     }
@@ -654,7 +664,6 @@ public class DefinierterEintrag extends LogischeVerknuepfung
     //
     // listeZustandsWechselAbfrage.getListeZustandsWechsel().put(cal1.getTimeInMillis(), true);
     //
-    // //System.out.println(pid + " : " + cal1.getTime() + " true");
     //
     // tmp = cal2;
     // tmp.add(Calendar.DATE, t);
@@ -663,8 +672,6 @@ public class DefinierterEintrag extends LogischeVerknuepfung
     // listeZustandsWechselAbfrage.getListeZustandsWechsel().put(cal2.getTimeInMillis(), false);
 
     // listeZustandsWechselAbfrage.getListeZustandsWechsel().put(cal2.getTimeInMillis()+1, false);
-
-    // System.out.println(pid + " : " + cal2.getTime() + " false");
 
     return listeZustandsWechselAbfrage.getListeZustandsWechsel();
 
@@ -718,10 +725,7 @@ public class DefinierterEintrag extends LogischeVerknuepfung
     {
       Long l = (Long)oa[i];
       date.setTime(l);
-      
-      String format = df.format(date);
-      // System.out.println(pid + " -> "+ format);
-      
+            
       Ostern ostern = new Ostern();
       Calendar oStart = ostern.Ostersonntag(jahr);
       
@@ -775,7 +779,23 @@ public class DefinierterEintrag extends LogischeVerknuepfung
         
       }
       
-      if (l >= von && l <= bis)
+//      Calendar calTmp1 = GregorianCalendar.getInstance();
+      cal1.setTimeInMillis(von);
+//      Calendar calTmp2 = GregorianCalendar.getInstance();
+      cal2.setTimeInMillis(bis);
+      
+      cal1.set(Calendar.HOUR_OF_DAY, 0);
+      cal1.set(Calendar.MINUTE, 0);
+      cal1.set(Calendar.SECOND, 0);
+      cal1.set(Calendar.MILLISECOND, 0);
+      
+      cal2.set(Calendar.HOUR_OF_DAY, 23);
+      cal2.set(Calendar.MINUTE, 59);
+      cal2.set(Calendar.SECOND, 59);
+      cal2.set(Calendar.MILLISECOND, 999);
+      
+//      if (l >= von && l <= bis)
+      if (l >= cal1.getTimeInMillis() && l <= cal2.getTimeInMillis())
       {
         
         String string = ergebnis.get(1);
@@ -831,7 +851,6 @@ public class DefinierterEintrag extends LogischeVerknuepfung
           l2 = null;
         }
         
-//        System.out.println(df.format(tmp.getTime()) + " : " + b);
         
 //        listeZustandsWechselAbfrage.getListeZustandsWechsel().put(tmp.getTimeInMillis(), b);
         
@@ -904,7 +923,6 @@ public class DefinierterEintrag extends LogischeVerknuepfung
     //
     // listeZustandsWechselAbfrage.getListeZustandsWechsel().put(cal1.getTimeInMillis(), true);
     //
-    // //System.out.println(pid + " : " + cal1.getTime() + " true");
     //
     // tmp = cal2;
     // tmp.add(Calendar.DATE, t);
@@ -913,8 +931,6 @@ public class DefinierterEintrag extends LogischeVerknuepfung
     // listeZustandsWechselAbfrage.getListeZustandsWechsel().put(cal2.getTimeInMillis(), false);
     
     // listeZustandsWechselAbfrage.getListeZustandsWechsel().put(cal2.getTimeInMillis()+1, false);
-    
-    // System.out.println(pid + " : " + cal2.getTime() + " false");
     
     return liste;
     
@@ -988,8 +1004,6 @@ public class DefinierterEintrag extends LogischeVerknuepfung
 
     listeZustandsWechselAbfrage.getListeZustandsWechsel().put(cal1.getTimeInMillis(), true);
 
-    // System.out.println(pid + " : " + cal1.getTime() + " true");
-
     tmp = cal2;
     tmp.add(Calendar.DATE, t);
     cal2 = tmp;
@@ -1047,8 +1061,6 @@ public class DefinierterEintrag extends LogischeVerknuepfung
 
       Date d = new Date();
       d.setTime((Long)oa[i]);
-
-//      System.out.println(df.format(df));
 
       Ostern ostern = new Ostern();
       // Calendar oStart = ostern.Ostersonntag(new GregorianCalendar().getInstance().get(Calendar.YEAR));

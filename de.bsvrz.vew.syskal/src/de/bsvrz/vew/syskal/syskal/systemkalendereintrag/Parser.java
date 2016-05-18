@@ -37,7 +37,7 @@ import de.bsvrz.sys.funclib.debug.Debug;
 /**
  * Die Klasse parst SystemKalenderEintraege aller möglichen Typen
  * 
- * @version $Revision: 1.3 $ / $Date: 2010/07/29 16:00:22 $ / ($Author: Pittner $)
+ * @version $Revision: 1.4 $ / $Date: 2015/06/08 15:13:12 $ / ($Author: Pittner $)
  * 
  * @author Dambach-Werke GmbH
  * @author Timo Pittner
@@ -374,7 +374,7 @@ public class Parser
 
         }else{          
           //return false;
-          System.out.println("Eintrag konnte nicht verarbeitet werden");
+          _debug.error("Eintrag konnte nicht verarbeitet werden" + pid);
           
         }
       }

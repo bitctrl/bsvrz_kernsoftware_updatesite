@@ -48,7 +48,7 @@ import de.bsvrz.vew.syskal.syskal.erinnerungsfunktion.ErinnerungsFunktion;
  * Die Klasse erzeugt die atomaren SystemKalenderEintraege: Montag, Dienstag, Mittwoch, Donnerstag, Freitag, Samstag
  * Sonntag, Ostersonntag und Tag *
  * 
- * @version $Revision: 1.7 $ / $Date: 2010/08/03 07:44:21 $ / ($Author: Pittner $)
+ * @version $Revision: 1.8 $ / $Date: 2015/06/08 15:13:12 $ / ($Author: Pittner $)
  * @author Dambach-Werke GmbH
  * @author Timo Pittner
  */
@@ -334,8 +334,6 @@ public class Atomar implements SystemkalenderEintrag, Cloneable
 
     DateFormat df_ger = DateFormat.getDateInstance(DateFormat.FULL, Locale.GERMANY);
 
-    // System.out.println("d: " + days);
-
     for (int i = 0; i < days; i++)
     {
 
@@ -347,16 +345,11 @@ public class Atomar implements SystemkalenderEintrag, Cloneable
 
       if (definition.equals("tag"))
       {
-
         listeZustandsWechselAbfrage.getListeZustandsWechsel().put(cal1.getTimeInMillis(), true);
-        // System.out.println("true: " + cal1.getTime());
-
       }
       else if (definition.equals("ostersonntag"))
       {
-
         listeZustandsWechselAbfrage.getListeZustandsWechsel().put(cal1.getTimeInMillis(), true);
-
       }
       else if (datum.contains(woTag))
       {
@@ -369,11 +362,8 @@ public class Atomar implements SystemkalenderEintrag, Cloneable
 
       if (definition.equals("tag"))
       {
-
         listeZustandsWechselAbfrage.getListeZustandsWechsel().put(cal2.getTimeInMillis(), false);
         // listeZustandsWechselAbfrage.getListeZustandsWechsel().put(cal2.getTimeInMillis()+1, false);
-        // System.out.println("false: " + cal1.getTime());
-
       }
       else if (definition.equals("ostersonntag"))
       {
@@ -446,8 +436,6 @@ public class Atomar implements SystemkalenderEintrag, Cloneable
       time = cal2.getTime().getTime() - cal1.getTime().getTime();
       days = Math.round((double)time / (24. * 60. * 60. * 1000.));
 
-      // System.out.println("d1: " + days);
-
       // Der erste Tag der Abfrage endet um...
       cal2.setTimeInMillis(von);
       cal2.set(Calendar.YEAR, temp);
@@ -483,9 +471,6 @@ public class Atomar implements SystemkalenderEintrag, Cloneable
     }
 
     DateFormat df_ger = DateFormat.getDateInstance(DateFormat.FULL, Locale.GERMANY);
-
-    // System.out.println("d: " + days);
-
     for (int i = 0; i < days; i++)
     {
 
@@ -497,11 +482,8 @@ public class Atomar implements SystemkalenderEintrag, Cloneable
 
       if (definition.equals("tag"))
       {
-
         // listeZustandsWechselAbfrage.getListeZustandsWechsel().put(cal1.getTimeInMillis(), true);
         listeZustandsWechsel.getListeZustandsWechsel().put(cal1.getTimeInMillis(), true);
-        // System.out.println("true: " + cal1.getTime());
-
       }
       else if (definition.equals("ostersonntag"))
       {
@@ -524,12 +506,9 @@ public class Atomar implements SystemkalenderEintrag, Cloneable
 
       if (definition.equals("tag"))
       {
-
         // listeZustandsWechselAbfrage.getListeZustandsWechsel().put(cal2.getTimeInMillis(), false);
         listeZustandsWechsel.getListeZustandsWechsel().put(cal2.getTimeInMillis(), false);
         // listeZustandsWechselAbfrage.getListeZustandsWechsel().put(cal2.getTimeInMillis()+1, false);
-        // System.out.println("false: " + cal1.getTime());
-
       }
       else if (definition.equals("ostersonntag"))
       {
@@ -809,8 +788,6 @@ public class Atomar implements SystemkalenderEintrag, Cloneable
       }
       else if (l1 == null && l2 != null){
 //        listeGruppe.put(von, l2.getKey());
-      }else{
-//        System.out.println("l1 und l2 ist null!");
       }
     }
     return listeGruppe;
@@ -887,16 +864,12 @@ public class Atomar implements SystemkalenderEintrag, Cloneable
 
       if (map != null)
       {
-
-        // System.out.println(pid + " : " + map.size() + " : " + i);
         // tmp.putAll(map);
-
         for (Map.Entry<Long, Boolean> me : map.entrySet())
         {
           if (me.getKey() >= von && me.getKey() <= bis)
             tmp.put(me.getKey(), me.getValue());
         }
-
       }
 
     }
@@ -1019,8 +992,6 @@ public class Atomar implements SystemkalenderEintrag, Cloneable
 
       if (map != null)
       {
-
-        // System.out.println(pid + " : " + map.size() + " : " + i);
         // tmp.putAll(map);
 
         for (Map.Entry<Long, Long> me : map.entrySet())
@@ -1031,8 +1002,9 @@ public class Atomar implements SystemkalenderEintrag, Cloneable
             tmp.put(me.getKey(), bis);
           else if (me.getKey() < von && me.getKey() <= bis)
             tmp.put(von, me.getValue());
-          else{
-            System.out.println("else");
+          else
+          {
+            
           }
         }
 
@@ -1131,9 +1103,6 @@ public class Atomar implements SystemkalenderEintrag, Cloneable
     }
 
     DateFormat df_ger = DateFormat.getDateInstance(DateFormat.FULL, Locale.GERMANY);
-
-    // System.out.println("d: " + days);
-
     for (int i = 0; i < days; i++)
     {
 
@@ -1155,7 +1124,6 @@ public class Atomar implements SystemkalenderEintrag, Cloneable
       // {
       //
       // listeZustandsWechselAbfrage.getListeZustandsWechsel().put(cal1.getTimeInMillis(), true);
-      // // System.out.println("true: " + cal1.getTime());
       //
       // }
       // else if (definition.equals("ostersonntag"))
@@ -1183,7 +1151,6 @@ public class Atomar implements SystemkalenderEintrag, Cloneable
       //
       // listeZustandsWechselAbfrage.getListeZustandsWechsel().put(cal2.getTimeInMillis(), false);
       // // listeZustandsWechselAbfrage.getListeZustandsWechsel().put(cal2.getTimeInMillis()+1, false);
-      // // System.out.println("false: " + cal1.getTime());
       //
       // }
       // else if (definition.equals("ostersonntag"))

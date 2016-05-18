@@ -51,7 +51,7 @@ import de.bsvrz.vew.syskal.syskal.benachrichtigungsfunktion.BenachrichtigeListen
 /**
  * Kommentar
  * 
- * @version $Revision: 1.1 $ / $Date: 2009/09/24 12:49:16 $ / ($Author: Pittner $)
+ * @version $Revision: 1.2 $ / $Date: 2015/06/08 15:13:12 $ / ($Author: Pittner $)
  * 
  * @author Dambach-Werke GmbH
  * @author Timo Pittner
@@ -186,52 +186,47 @@ public class SystemkalenderTest implements StandardApplication,
     list.add(_connection.getDataModel().getObject("ske./"));
     
     
-    System.out.println("------------------->Test1");
+    _debug.error("------------------->Test1");
     
     Date start = formatter.parse("01.01.2004 00:00:00,000");
     Date end = formatter.parse("31.12.2004 23:59:59,999");
     arbeiter.berechneGueltigVonBis(list, start.getTime(), end.getTime());
     
     
-    System.out.println("------------------->Test2");
+    _debug.error("------------------->Test2");
     
     start = formatter.parse("01.01.2003 00:00:00,000");
     end = formatter.parse("31.12.2004 23:59:59,999");
     //arbeiter.berechneGueltigVonBis("ske./", start.getTime(), end.getTime());
     
-    System.out.println("------------------->Test2");
+    _debug.error("------------------->Test2");
 
     start = formatter.parse("01.01.2004 00:00:00,000");
     end = formatter.parse("31.12.2004 23:59:59,999");
     //arbeiter.berechneGueltigVonBis("ske.ostermontag", start.getTime(), end.getTime());
 
-    System.out.println("------------------->Test4");
+    _debug.error("------------------->Test4");
     
     start = formatter.parse("01.01.2008 00:00:00,000");
     end = formatter.parse("31.12.2008 23:59:59,999");
     //arbeiter.berechneGueltigVonBis("ske.osterdienstag", start.getTime(), end.getTime());
     
-    System.out.println("------------------->Test5");        
+    _debug.error("------------------->Test5");        
     Date now = new Date();
     //arbeiter.berechneGueltigJetzt("ske.donnerstag", now.getTime());
     
-    System.out.println("------------------->Test6");        
+    _debug.error("------------------->Test6");        
 
     //arbeiter.berechneGueltigJetzt("ske.freitag", now.getTime());
     
-    System.out.println("------------------->Test Ende");
+    _debug.error("------------------->Test Ende");
     
     start = formatter.parse("01.01.2008 00:00:00,000");
     end = formatter.parse("31.12.2009 23:59:59,999");
     //arbeiter.berechneGueltigVonBis("ske.falsch", start.getTime(), end.getTime());
     
-    System.out.println("------------------->Test Ende");
-    
-//    formatter.setLenient(false);
-//    
-//    start = formatter.parse("29.02.2009 00:00:00,000");
-//    
-//    System.out.println(formatter.format(start));
+    _debug.error("------------------->Test Ende");
+        
   
   }// public void initialize(ClientDavInterface connection)
 
@@ -250,7 +245,7 @@ public class SystemkalenderTest implements StandardApplication,
   public void update(BenachrichtigeEvent e)
   {
     // TODO Auto-generated method stub
-    System.out.println("update: " + e.getMeldung());
+    _debug.error("update: " + e.getMeldung());
 
   }
 

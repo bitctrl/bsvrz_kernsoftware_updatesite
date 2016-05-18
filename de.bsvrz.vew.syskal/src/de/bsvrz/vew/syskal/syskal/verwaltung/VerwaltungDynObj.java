@@ -31,7 +31,7 @@ import de.bsvrz.sys.funclib.debug.Debug;
 /**
  * Kommentar 
  *
- * @version $Revision: 1.1 $ / $Date: 2009/09/24 12:49:16 $ / ($Author: Pittner $)
+ * @version $Revision: 1.2 $ / $Date: 2015/06/08 15:13:12 $ / ($Author: Pittner $)
  *
  * @author Dambach-Werke GmbH
  * @author Timo Pittner
@@ -150,7 +150,7 @@ public class VerwaltungDynObj implements Verwaltung, ClientSenderInterface
     if (so != null)
     {
 
-      System.out.println("Objekt " + so.getPid() + " vorhanden, loesche!");
+      _debug.error("Objekt " + so.getPid() + " vorhanden, loesche!");
 
       _dynamicObject = (DynamicObject)_dm.getObject(pid);
 
@@ -160,7 +160,7 @@ public class VerwaltungDynObj implements Verwaltung, ClientSenderInterface
         {
           _dynamicObject.invalidate();
 
-          System.out.println("Objekt " + _dynamicObject.getPid() + " geloescht!");
+          _debug.error("Objekt " + _dynamicObject.getPid() + " geloescht!");
         }
         catch (ConfigurationChangeException e)
         {
@@ -173,7 +173,7 @@ public class VerwaltungDynObj implements Verwaltung, ClientSenderInterface
     else
     {
 
-      System.out.println("Objekt " + pid + " nicht vorhanden");
+      _debug.error("Objekt " + pid + " nicht vorhanden");
       return false;
 
     }
@@ -216,7 +216,7 @@ public class VerwaltungDynObj implements Verwaltung, ClientSenderInterface
 
         }
 
-        System.out.println(_dot.getPid() + " " + pid + " " + name + " " + daaui.getData() + " "
+        _debug.error(_dot.getPid() + " " + pid + " " + name + " " + daaui.getData() + " "
             + daaui.getAttributeGroupUsage());
 
         _dynamicObject = _ca.createDynamicObject(_dot, pid, name, col);
@@ -224,7 +224,7 @@ public class VerwaltungDynObj implements Verwaltung, ClientSenderInterface
       }
       else{
         
-        System.out.println(_dot +":"+  pid +":"+  name);
+        _debug.error(_dot +":"+  pid +":"+  name);
         
         _dynamicObject = _ca.createDynamicObject(_dot, pid, name, null);
       }
@@ -244,9 +244,6 @@ public class VerwaltungDynObj implements Verwaltung, ClientSenderInterface
    */
   public void dataRequest(SystemObject arg0, DataDescription arg1, byte arg2)
   {
-    // TODO Auto-generated method stub
-    //System.out.println("SenderAnfrage : Objekt " + arg0.getPid() + " dd " + arg1 + " state " + arg2);
-
     if (arg2 == 0)
     {
       flag = true;
@@ -346,7 +343,6 @@ public class VerwaltungDynObj implements Verwaltung, ClientSenderInterface
 
         _debug.config("send2 : " + resultData.getData());
         getConnection().sendData(resultData);
-        //System.out.println(resultData.getObject() + " send : " + resultData.getData());
       }
       catch (DataNotSubscribedException e1)
       {
