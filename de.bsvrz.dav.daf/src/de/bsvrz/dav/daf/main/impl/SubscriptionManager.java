@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl;
@@ -42,22 +48,22 @@ import java.util.*;
 
 /**
  * Verwaltung der Sende- und Empfangsanmeldungen der Datenverteiler-Applikationsfunktionen
- * <p/>
- * Diese interne Subkomponente SubscriptionManager ist für die An und Abmeldungen zuständig. Sie startet beim Aufruf die notwendigen Anmeldungen für die
- * gerichtete Kommunikation zwischen Applikation und Konfiguration oder Archiv. Sie bietet Methoden, um Anmeldungen und Abmeldungen, als Empfänger, Senke,
- * Sender oder Quelle, über die Protokollsteuerung DaVDAF, beim Datenverteiler durchzuführen. Die Anmeldungen werden hier verwaltet, so dass keine doppelten
- * Anmeldungen der gleichen Daten beim Datenverteiler existieren. Weiterhin bietet sie Methoden, um Daten, über die Protokollsteuerung DaV-DAF, zum
- * Datenverteiler zu senden. Die zu sendenden Datensätze werden mit dem passenden Datensatzindex2 versehen (alter Datensatzindex + 1). Falls eine
- * Empfangsanmeldung auch Archivdaten verlangt, werden die Anfrage aktueller Daten und die Archivanfrage so gesteuert, dass keine Lücken entstehen. Sie wird vom
- * Cache-Manager benachrichtigt, falls neue Daten angekommen sind. Diese werden dann in eine Tabelle eingefügt. Diese wird von einem Aktualisierungsthread
+ * <p>
+ * Diese interne Subkomponente SubscriptionManager ist fÃ¼r die An und Abmeldungen zustÃ¤ndig. Sie startet beim Aufruf die notwendigen Anmeldungen fÃ¼r die
+ * gerichtete Kommunikation zwischen Applikation und Konfiguration oder Archiv. Sie bietet Methoden, um Anmeldungen und Abmeldungen, als EmpfÃ¤nger, Senke,
+ * Sender oder Quelle, Ã¼ber die Protokollsteuerung DaVDAF, beim Datenverteiler durchzufÃ¼hren. Die Anmeldungen werden hier verwaltet, so dass keine doppelten
+ * Anmeldungen der gleichen Daten beim Datenverteiler existieren. Weiterhin bietet sie Methoden, um Daten, Ã¼ber die Protokollsteuerung DaV-DAF, zum
+ * Datenverteiler zu senden. Die zu sendenden DatensÃ¤tze werden mit dem passenden Datensatzindex2 versehen (alter Datensatzindex + 1). Falls eine
+ * Empfangsanmeldung auch Archivdaten verlangt, werden die Anfrage aktueller Daten und die Archivanfrage so gesteuert, dass keine LÃ¼cken entstehen. Sie wird vom
+ * Cache-Manager benachrichtigt, falls neue Daten angekommen sind. Diese werden dann in eine Tabelle eingefÃ¼gt. Diese wird von einem Aktualisierungsthread
  * zyklisch entleert, und die Daten werden an den Interessenten weitergeleitet. Durch die zyklische en-bloc- Bearbeitung der in der Tabelle aufgelaufenen Daten
- * erreicht man eine bessere Durchsatzrate im Vergleich zur Einzelbearbeitung der Datensätze.
- * <p/>
+ * erreicht man eine bessere Durchsatzrate im Vergleich zur Einzelbearbeitung der DatensÃ¤tze.
+ * <p>
  * Alle Sende und Empfangsanmeldungen werden in entsprechenden Hashtables gespeichert. Ein Thread leitet empfangene Telegramme an die entsprechenden
- * angemeldeten Empfänger weiter.
+ * angemeldeten EmpfÃ¤nger weiter.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 12984 $
+ * @version $Revision$
  */
 public class SubscriptionManager {
 
@@ -76,10 +82,10 @@ public class SubscriptionManager {
 	/** Der Konfigurationsmanager */
 	private ConfigurationManager _configurationManager;
 
-	/** Liste mit weiteren Konfigurationsmanagern für entfernte/remote Konfigurationen */
+	/** Liste mit weiteren Konfigurationsmanagern fÃ¼r entfernte/remote Konfigurationen */
 	private final List<ConfigurationManager> _secondaryConfigurationManagers = new ArrayList<ConfigurationManager>();
 
-	/** Die höhere Ebene der Kommunikation */
+	/** Die hÃ¶here Ebene der Kommunikation */
 	private ClientHighLevelCommunication _highLevelCommunication;
 
 	/** Die Parameter der Datenverteiler-Applikationsfunktionen */
@@ -99,7 +105,7 @@ public class SubscriptionManager {
 			new HashMap<Long, ConfigurationRequestStatus>()
 	);
 
-	/** Der Thread, der empfangene Datensätze an die angemeldeten Empfänger weiterleitet. */
+	/** Der Thread, der empfangene DatensÃ¤tze an die angemeldeten EmpfÃ¤nger weiterleitet. */
 	private DataDeliveryThread _dataDeliveryThread;
 
 	/** Verwaltung der angemeldeten Receiver */
@@ -119,9 +125,9 @@ public class SubscriptionManager {
 	}
 
 	/**
-	 * Setzt die ClientHighLevelCommunication-Subkomponente um Anmeldungen, Abmeldungen und Datensätze an den Datenverteiler weiterzuleiten. Diese interne Methode
-	 * wird von der ClientHighLevelCommunication während der Initialisierungsphase aufgerufen, um die interne Kommunikation zwischen beiden Subkomponenten zu
-	 * gewährleisten.
+	 * Setzt die ClientHighLevelCommunication-Subkomponente um Anmeldungen, Abmeldungen und DatensÃ¤tze an den Datenverteiler weiterzuleiten. Diese interne Methode
+	 * wird von der ClientHighLevelCommunication wÃ¤hrend der Initialisierungsphase aufgerufen, um die interne Kommunikation zwischen beiden Subkomponenten zu
+	 * gewÃ¤hrleisten.
 	 *
 	 * @param highLevelCommunication Referenz auf die zu setzende Kommunikationsschicht
 	 */
@@ -132,7 +138,7 @@ public class SubscriptionManager {
 	}
 
 	/**
-	 * Bestimmt die Kommunikationsschicht von der der SubscriptionManager abhängig ist
+	 * Bestimmt die Kommunikationsschicht von der der SubscriptionManager abhÃ¤ngig ist
 	 *
 	 * @return Die Kommunikationsschicht.
 	 */
@@ -143,11 +149,11 @@ public class SubscriptionManager {
 	/**
 	 * Initialisierung der Anmeldungsverwaltung. Diese Methode wird nach erfolgreicher Authentifizierung beim Datenverteiler aufgerufen und meldet sich auf
 	 * Konfigurationsanfragen und -antworten an.
-	 * <p/>
-	 * Für alle Applikationen außer der Konfiguration sorgt diese Methode für die Anmeldung als Sender von Lese- und Schreibkonfigurationsanfragen und als Senke
-	 * für Lese- und Schreibkonfigurationsantworten, um eine gerichtete Kommunikation mit der Konfiguration zu gewährleisten. Diese Methode wird von
+	 * <p>
+	 * FÃ¼r alle Applikationen auÃŸer der Konfiguration sorgt diese Methode fÃ¼r die Anmeldung als Sender von Lese- und Schreibkonfigurationsanfragen und als Senke
+	 * fÃ¼r Lese- und Schreibkonfigurationsantworten, um eine gerichtete Kommunikation mit der Konfiguration zu gewÃ¤hrleisten. Diese Methode wird von
 	 * ClientDavConnection aufgerufen.
-	 * @param skipConfiguration Anmeldung von Konfigurationsanfragen unterdrücken
+	 * @param skipConfiguration Anmeldung von Konfigurationsanfragen unterdrÃ¼cken
 	 */
 	public final void completeInitialisation(final boolean skipConfiguration) {
 		if(_highLevelCommunication == null) {
@@ -159,8 +165,8 @@ public class SubscriptionManager {
 		final String applicationTypePid = _dafParameters.getApplicationTypePid();
 
 		if(skipConfiguration || applicationTypePid.equals(CommunicationConstant.CONFIGURATION_TYPE_PID)) {
-			// Anmeldung von Konfigurationsdaten nicht nötig, weil entweder selbst Konfiguration
-			// oder weil es eine 2. Verbindung gibt, die die Konfigurationsanfragen durchführt.
+			// Anmeldung von Konfigurationsdaten nicht nÃ¶tig, weil entweder selbst Konfiguration
+			// oder weil es eine 2. Verbindung gibt, die die Konfigurationsanfragen durchfÃ¼hrt.
 			_initialisationComplete = true;
 		}
 		else {
@@ -199,7 +205,7 @@ public class SubscriptionManager {
 	}
 
 	/**
-	 * Überprüft, ob die notwendigen Anmeldungen einer gerichtete Kommunikation durch die Konfiguration erfolgt sind oder nicht.
+	 * ÃœberprÃ¼ft, ob die notwendigen Anmeldungen einer gerichtete Kommunikation durch die Konfiguration erfolgt sind oder nicht.
 	 *
 	 * @return true wenn die Initialisierungsphase abgeschlossen ist; sonst false
 	 */
@@ -208,8 +214,8 @@ public class SubscriptionManager {
 	}
 
 	/**
-	 * Setzt den CacheManager dieser Subkomponente. Diese interne Methode wird während der Initialisierungsphase vom CacheManager aufgerufen, um die interne
-	 * Kommunikation zwischen beiden Subkomponenten zu gewährleisten.
+	 * Setzt den CacheManager dieser Subkomponente. Diese interne Methode wird wÃ¤hrend der Initialisierungsphase vom CacheManager aufgerufen, um die interne
+	 * Kommunikation zwischen beiden Subkomponenten zu gewÃ¤hrleisten.
 	 *
 	 * @param cacheManager Referenz auf den zu setzenden Cachemanager
 	 */
@@ -218,9 +224,9 @@ public class SubscriptionManager {
 	}
 
 	/**
-	 * Setzt den ConfigurationManager dieser Subkomponente und benachrichtigt die Protokollsteuerung DaV-DAF über die Bereitschaft, Konfigurationsdaten zu
-	 * empfangen. Diese interne Methode wird während der Initialisierungsphase vom ConfigurationManager aufgerufen, um die interne Kommunikation zwischen beiden
-	 * Subkomponenten zu gewährleisten.
+	 * Setzt den ConfigurationManager dieser Subkomponente und benachrichtigt die Protokollsteuerung DaV-DAF Ã¼ber die Bereitschaft, Konfigurationsdaten zu
+	 * empfangen. Diese interne Methode wird wÃ¤hrend der Initialisierungsphase vom ConfigurationManager aufgerufen, um die interne Kommunikation zwischen beiden
+	 * Subkomponenten zu gewÃ¤hrleisten.
 	 *
 	 * @param configurationManager Referenz auf den zu setzenden Konfigurationsmanager
 	 */
@@ -232,13 +238,13 @@ public class SubscriptionManager {
 	}
 
 	/**
-	 * Realisiert eine Aspektumleitung, sofern dies über entsprechende Aufrufargumente der Applikation vorgegeben wurde. Gibt den Originalaspekt eines ersetzten
-	 * Aspekts einer Attributgruppe zurück. Wenn keine entsprechende Aspektumleitung besteht, wird der übergebene Aspekt unverändert zurückgegeben.
+	 * Realisiert eine Aspektumleitung, sofern dies Ã¼ber entsprechende Aufrufargumente der Applikation vorgegeben wurde. Gibt den Originalaspekt eines ersetzten
+	 * Aspekts einer Attributgruppe zurÃ¼ck. Wenn keine entsprechende Aspektumleitung besteht, wird der Ã¼bergebene Aspekt unverÃ¤ndert zurÃ¼ckgegeben.
 	 *
 	 * @param attributeGroup Umzuleitende Attributgruppe.
 	 * @param aspect         Ersetzer Aspekt.
 	 *
-	 * @return Originalaspekt eines ersetzenden Aspekts. Wenn keine Aspektumleitung besteht, wird der übergebene Aspekt unverändert zurückgegeben.
+	 * @return Originalaspekt eines ersetzenden Aspekts. Wenn keine Aspektumleitung besteht, wird der Ã¼bergebene Aspekt unverÃ¤ndert zurÃ¼ckgegeben.
 	 */
 	private final Aspect substituteToAspect(AttributeGroup attributeGroup, Aspect aspect) {
 		if(_configurationManager == null) {
@@ -262,7 +268,7 @@ public class SubscriptionManager {
 
 	
 	/**
-	 * Anmeldung zum Empfangen von Daten für eine Datenidentifikation.
+	 * Anmeldung zum Empfangen von Daten fÃ¼r eine Datenidentifikation.
 	 *
 	 * @param receiverSubscription Anmeldeinformationen
 	 *
@@ -284,7 +290,7 @@ public class SubscriptionManager {
 		final ClientReceiverInterface receiver = receiverSubscription.getClientReceiver();
 		final CollectingReceiver collectingReceiver = _receiverManager.addReceiverReference(receiver);
 		try {
-			// Die Anmeldung und das evtl. Versenden eines bereits gespeichert Datensatzes darf sich nicht mit dem Versand eines neueren Datensatzes überschneiden
+			// Die Anmeldung und das evtl. Versenden eines bereits gespeichert Datensatzes darf sich nicht mit dem Versand eines neueren Datensatzes Ã¼berschneiden
 			synchronized(_receiverManager) {
 				// Keine Anmeldung dieses Datums vorhanden
 				if(receiveSubscriptionObject == null) {
@@ -303,7 +309,7 @@ public class SubscriptionManager {
 
 				ResultData lastResult = null;
 
-				// Prüfen, ob ein passender Datensatz im Cache vorhanden ist. Dies kann der Fall sein, wenn es bereits eine Anmeldung gibt.
+				// PrÃ¼fen, ob ein passender Datensatz im Cache vorhanden ist. Dies kann der Fall sein, wenn es bereits eine Anmeldung gibt.
 				if(receiveSubscriptionObject.isActualDataAvaillable()) {
 					CachedObject cachedObject = _cacheManager.getLastValueOfCachedData(
 							baseSubscriptionInfo, receiverSubscription.getDelayedDataFlag()
@@ -350,17 +356,17 @@ public class SubscriptionManager {
 	}
 
 	/**
-	 * Anmeldung zum Empfangen von Daten. Mit der Anmeldung wird von der Applikation ein Objekt bereitgestellt, daß bei nachfolgenden Aktualisierungen der Daten
+	 * Anmeldung zum Empfangen von Daten. Mit der Anmeldung wird von der Applikation ein Objekt bereitgestellt, daÃŸ bei nachfolgenden Aktualisierungen der Daten
 	 * entsprechend benachrichtigt wird.
 	 *
-	 * @param receiver        Ein von der Applikation bereitzustellendes Objekt, das bei Aktualisierungen entsprechende Methodenaufrufe erhält.
-	 * @param objects         Liste mit System-Objekten für die die spezifizierten Daten anzumelden sind.
+	 * @param receiver        Ein von der Applikation bereitzustellendes Objekt, das bei Aktualisierungen entsprechende Methodenaufrufe erhÃ¤lt.
+	 * @param objects         Liste mit System-Objekten fÃ¼r die die spezifizierten Daten anzumelden sind.
 	 * @param dataDescription Beschreibende Informationen zu den anzumeldenden Daten.
-	 * @param options         Für die Anmeldung zu verwendende Optionen.
-	 * @param role            Für die Anmeldung zu verwendende Rolle (Empfänger oder Senke).
+	 * @param options         FÃ¼r die Anmeldung zu verwendende Optionen.
+	 * @param role            FÃ¼r die Anmeldung zu verwendende Rolle (EmpfÃ¤nger oder Senke).
 	 * @param cacheTime       Vorhaltezeitraum in Millisekunden. Der Vorhaltezeitraum spezifiziert, wie lange empfangene Daten zwischengespeichert werden sollen.
 	 *
-	 * @throws IllegalArgumentException Die angegebene ReceiverRole verstößt gegen die Attributgruppenverwendung.
+	 * @throws IllegalArgumentException Die angegebene ReceiverRole verstÃ¶ÃŸt gegen die Attributgruppenverwendung.
 	 */
 	public final void subscribeReceiver(
 			ClientReceiverInterface receiver,
@@ -377,13 +383,13 @@ public class SubscriptionManager {
 			// Es handelt sich nicht um eine Testverbindung und die Datenidentifikation darf so nicht angemeldet werden.
 			final Aspect aspect = dataDescription.getAspect();
 			throw new IllegalArgumentException(
-					"Die anzumeldende ReceiverRole " + role + " verstößt gegen die Attributgruppenverwendung. Verwendung: "
+					"Die anzumeldende ReceiverRole " + role + " verstÃ¶ÃŸt gegen die Attributgruppenverwendung. Verwendung: "
 					+ dataDescription.getAttributeGroup().getAttributeGroupUsage(aspect)
 			);
 		}
 
-		// Wenn in der Datadescription keine Simulationsvariante explizit vorgegeben wurde, dann muss für die Anmeldung beim Datenverteiler die über
-		// Aufrufparameter von außen vorgebbare Simulationsvariante benutzt werden
+		// Wenn in der Datadescription keine Simulationsvariante explizit vorgegeben wurde, dann muss fÃ¼r die Anmeldung beim Datenverteiler die Ã¼ber
+		// Aufrufparameter von auÃŸen vorgebbare Simulationsvariante benutzt werden
 		short externalSimulationVariant = dataDescription.getSimulationVariant();
 		if(externalSimulationVariant == (short)-1) {
 			externalSimulationVariant = _dafParameters.getSimulationVariant();
@@ -398,7 +404,7 @@ public class SubscriptionManager {
 	}
 
 	/**
-	 * Gibt den Zeitpunkt einer Sender-Anmeldung zurück
+	 * Gibt den Zeitpunkt einer Sender-Anmeldung zurÃ¼ck
 	 * @param info Anmeldung
 	 * @return Sekunden seit 1970
 	 */
@@ -408,15 +414,15 @@ public class SubscriptionManager {
 	}
 
 	/**
-	 * Prüft, ob eine Anmeldung als Senke/Empfänger laut der benutzten ATG-Verwendung erlaubt ist.
-	 * <p/>
+	 * PrÃ¼ft, ob eine Anmeldung als Senke/EmpfÃ¤nger laut der benutzten ATG-Verwendung erlaubt ist.
+	 * <p>
 	 * Eine Ausnahme bildet eine "Testverbindung", eine Testverbidnung darf Datenidentifikationen anmelden, die bei normalen Verbindungen nicht erlaubt sind.
 	 *
 	 * @param dataDescription Datenidentifikation, mit der angemeldet werden soll.
 	 * @param receiverRole    Rolle, mit der angemeldet werden soll.
 	 *
-	 * @return true = Die übergebene Datenidentifikation und die übergebene Rolle sind korrekt oder es handelt sich um eine Testverbindung; false = Die Senderolle
-	 *         verstößt gegen die ATG-Verwendung
+	 * @return true = Die Ã¼bergebene Datenidentifikation und die Ã¼bergebene Rolle sind korrekt oder es handelt sich um eine Testverbindung; false = Die Senderolle
+	 *         verstÃ¶ÃŸt gegen die ATG-Verwendung
 	 *
 	 * @throws IllegalArgumentException Es sollen Konfigurationsdaten angemeldet werden. Dies ist immer verboten.
 	 */
@@ -426,18 +432,18 @@ public class SubscriptionManager {
 
 		if(isOnlineUsage(usedATGUsage.getUsage())) {
 			if(_dafParameters.isConnectionForTests()) {
-				// Es handelt sich um eine Verbindung für Tests und es sollen Onlinedaten angemeldet werden. Damit muss nicht weiter geprüft werden
+				// Es handelt sich um eine Verbindung fÃ¼r Tests und es sollen Onlinedaten angemeldet werden. Damit muss nicht weiter geprÃ¼ft werden
 				return true;
 			}
 			else {
-				// Es müssen alle Bediengungen geprüft werden, da es sich nicht um eine Anmeldung für einen Test handelt
+				// Es mÃ¼ssen alle Bediengungen geprÃ¼ft werden, da es sich nicht um eine Anmeldung fÃ¼r einen Test handelt
 
 				if(usedATGUsage.getUsage() == AttributeGroupUsage.Usage.OnlineDataAsSenderDrain) {
 					// Es darf nur als Senke angemeldet werden
 					return receiverRole.isDrain();
 				}
 				else if(usedATGUsage.getUsage() == AttributeGroupUsage.Usage.OnlineDataAsSourceReceiver) {
-					// Es darf nur als Empfänger angemeldet werden
+					// Es darf nur als EmpfÃ¤nger angemeldet werden
 					return receiverRole.isReceiver();
 				}
 				else if(usedATGUsage.getUsage() == AttributeGroupUsage.Usage.OnlineDataAsSourceReceiverOrSenderDrain) {
@@ -453,7 +459,7 @@ public class SubscriptionManager {
 		else {
 			// Es sollen Konfigurationsdaten angemeldet werden, dass ist verboten.
 			throw new IllegalArgumentException(
-					"Es darf nur der Online-Modus verwendet werden. Datenidentifikation: " + dataDescription + " Senke/Empfänger: " + receiverRole
+					"Es darf nur der Online-Modus verwendet werden. Datenidentifikation: " + dataDescription + " Senke/EmpfÃ¤nger: " + receiverRole
 			);
 		}
 	}
@@ -464,17 +470,17 @@ public class SubscriptionManager {
 
 		if(isOnlineUsage(usedATGUsage.getUsage())) {
 			if(_dafParameters.isConnectionForTests()) {
-				// Es handelt sich um eine Verbindung für Tests und es sollen Onlinedaten angemeldet werden. Damit muss nicht weiter geprüft werden
+				// Es handelt sich um eine Verbindung fÃ¼r Tests und es sollen Onlinedaten angemeldet werden. Damit muss nicht weiter geprÃ¼ft werden
 				return true;
 			}
 			else {
-				// Es müssen alle Bediengungen geprüft werden, da es sich nicht um eine Anmeldung für einen Test handelt
+				// Es mÃ¼ssen alle Bediengungen geprÃ¼ft werden, da es sich nicht um eine Anmeldung fÃ¼r einen Test handelt
 				if(usedATGUsage.getUsage() == AttributeGroupUsage.Usage.OnlineDataAsSenderDrain) {
 					// Es darf nur als Sender angemeldet werden
 					return senderRole.isSender();
 				}
 				else if(usedATGUsage.getUsage() == AttributeGroupUsage.Usage.OnlineDataAsSourceReceiver) {
-					// Es darf nur als Empfänger angemeldet werden
+					// Es darf nur als EmpfÃ¤nger angemeldet werden
 					return senderRole.isSource();
 				}
 				else if(usedATGUsage.getUsage() == AttributeGroupUsage.Usage.OnlineDataAsSourceReceiverOrSenderDrain) {
@@ -496,7 +502,7 @@ public class SubscriptionManager {
 	}
 
 	/**
-	 * Prüft ob es sich um eine Anmeldung auf Onlinedaten handelt.
+	 * PrÃ¼ft ob es sich um eine Anmeldung auf Onlinedaten handelt.
 	 *
 	 * @param usage Verwendete ATG-Usage
 	 *
@@ -517,10 +523,10 @@ public class SubscriptionManager {
 	}
 
 	/**
-	 * Abmeldung von angemeldeten Daten. Die Methode macht eine mit der Methode {@link #subscribeReceiver} durchgeführte Empfangsanmeldung wieder rückgängig.
+	 * Abmeldung von angemeldeten Daten. Die Methode macht eine mit der Methode {@link #subscribeReceiver} durchgefÃ¼hrte Empfangsanmeldung wieder rÃ¼ckgÃ¤ngig.
 	 *
 	 * @param receiver        Das Anwendungsobjekt, das bei der Anmeldung benutzt wurde.
-	 * @param objects         Feld mit System-Objekten für die die spezifizierten Daten abzumelden sind.
+	 * @param objects         Feld mit System-Objekten fÃ¼r die die spezifizierten Daten abzumelden sind.
 	 * @param dataDescription Beschreibende Informationen zu den abzumeldenden Daten.
 	 */
 	public final void unsubscribeReceiver(
@@ -530,8 +536,8 @@ public class SubscriptionManager {
 					"Die Datenverteiler-Applikationsfunktionen sind noch nicht initialisiert."
 			);
 		}
-		// Wenn in der Datadescription keine Simulationsvariante explizit vorgegeben wurde, dann muss für die Anmeldung beim Datenverteiler die über
-		// Aufrufparameter von außen vorgebbare Simulationsvariante benutzt werden
+		// Wenn in der Datadescription keine Simulationsvariante explizit vorgegeben wurde, dann muss fÃ¼r die Anmeldung beim Datenverteiler die Ã¼ber
+		// Aufrufparameter von auÃŸen vorgebbare Simulationsvariante benutzt werden
 		short externalSimulationVariant = dataDescription.getSimulationVariant();
 		if(externalSimulationVariant == (short)-1) {
 			externalSimulationVariant = _dafParameters.getSimulationVariant();
@@ -568,12 +574,12 @@ public class SubscriptionManager {
 	 * Anmeldung zum Senden von Daten.
 	 *
 	 * @param sender          Applikationsobjekt zur Verarbeitung von Sendesteuerungen
-	 * @param objects         Feld mit System-Objekten für die spezifizierten Daten anzumelden sind.
+	 * @param objects         Feld mit System-Objekten fÃ¼r die spezifizierten Daten anzumelden sind.
 	 * @param dataDescription Beschreibende Informationen zu den anzumeldenden Daten.
-	 * @param role            Für die Anmeldung zu verwendende Rolle (Quelle oder Sender).
+	 * @param role            FÃ¼r die Anmeldung zu verwendende Rolle (Quelle oder Sender).
 	 *
-	 * @throws IllegalArgumentException Die SenderRole verstößt gegen die Attributgruppenverwendung
-	 * @throws de.bsvrz.dav.daf.main.OneSubscriptionPerSendData Wenn bereits eine lokale Sendeanmeldung für diese Datenidentifikation vorhanden ist
+	 * @throws IllegalArgumentException Die SenderRole verstÃ¶ÃŸt gegen die Attributgruppenverwendung
+	 * @throws de.bsvrz.dav.daf.main.OneSubscriptionPerSendData Wenn bereits eine lokale Sendeanmeldung fÃ¼r diese Datenidentifikation vorhanden ist
 	 */
 	public final void subscribeSender(
 			ClientSenderInterface sender, SystemObject[] objects, DataDescription dataDescription, SenderRole role)
@@ -591,13 +597,13 @@ public class SubscriptionManager {
 			// Es handelt sich nicht um eine Testverbindung und die Datenidentifikation darf so nicht angemeldet werden.
 			final Aspect aspect = dataDescription.getAspect();
 			throw new IllegalArgumentException(
-					"Die anzumeldende SenderRole " + role + " verstößt gegen die Attributgruppenverwendung. Verwendung: "
+					"Die anzumeldende SenderRole " + role + " verstÃ¶ÃŸt gegen die Attributgruppenverwendung. Verwendung: "
 					+ dataDescription.getAttributeGroup().getAttributeGroupUsage(aspect)
 			);
 		}
 
-		// Wenn in der Datadescription keine Simulationsvariante explizit vorgegeben wurde, dann muss für die Anmeldung beim Datenverteiler die über
-		// Aufrufparameter von außen vorgebbare Simulationsvariante benutzt werden
+		// Wenn in der Datadescription keine Simulationsvariante explizit vorgegeben wurde, dann muss fÃ¼r die Anmeldung beim Datenverteiler die Ã¼ber
+		// Aufrufparameter von auÃŸen vorgebbare Simulationsvariante benutzt werden
 		short externalSimulationVariant = dataDescription.getSimulationVariant();
 		if(externalSimulationVariant == (short)-1) {
 			externalSimulationVariant = _dafParameters.getSimulationVariant();
@@ -619,7 +625,7 @@ public class SubscriptionManager {
 				}
 			}
 			else if(role.equals(SenderRole.sender()) && !sendSubscriptionObject.isSource()){
-				// Mehrere Sender dürfen sich auf eine Identifikation anmelden
+				// Mehrere Sender dÃ¼rfen sich auf eine Identifikation anmelden
 				sendSubscriptionObject.addSender(_senderSubscription);
 			}
 			else {
@@ -630,10 +636,10 @@ public class SubscriptionManager {
 	}
 
 	/**
-	 * Abmeldung von angemeldeten Daten. Die Methode macht eine mit der Methode {@link #subscribeSender} durchgeführte Sendeanmeldung wieder rückgängig.
+	 * Abmeldung von angemeldeten Daten. Die Methode macht eine mit der Methode {@link #subscribeSender} durchgefÃ¼hrte Sendeanmeldung wieder rÃ¼ckgÃ¤ngig.
 	 *
 	 * @param sender          Das Anwendungsobjekt, das bei der Anmeldung benutzt wurde.
-	 * @param objects         Feld mit System-Objekten für die die spezifizierten Daten abzumelden sind.
+	 * @param objects         Feld mit System-Objekten fÃ¼r die die spezifizierten Daten abzumelden sind.
 	 * @param dataDescription Beschreibende Informationen zu den abzumeldenden Daten.
 	 */
 	public final void unsubscribeSender(
@@ -647,8 +653,8 @@ public class SubscriptionManager {
 			return;
 		}
 
-		// Wenn in der Datadescription keine Simulationsvariante explizit vorgegeben wurde, dann muss für die Anmeldung beim Datenverteiler die über
-		// Aufrufparameter von außen vorgebbare Simulationsvariante benutzt werden
+		// Wenn in der Datadescription keine Simulationsvariante explizit vorgegeben wurde, dann muss fÃ¼r die Anmeldung beim Datenverteiler die Ã¼ber
+		// Aufrufparameter von auÃŸen vorgebbare Simulationsvariante benutzt werden
 		short externalSimulationVariant = dataDescription.getSimulationVariant();
 		if(externalSimulationVariant == (short)-1) {
 			externalSimulationVariant = _dafParameters.getSimulationVariant();
@@ -672,7 +678,7 @@ public class SubscriptionManager {
 	}
 
 	/**
-	 * Sendet eine Konfigurationsanfrage zum Datenverteiler. Die Daten müssen vorher mit einer Sendeanmeldung angemeldet worden sein.
+	 * Sendet eine Konfigurationsanfrage zum Datenverteiler. Die Daten mÃ¼ssen vorher mit einer Sendeanmeldung angemeldet worden sein.
 	 *
 	 * @param sendData Zu sendender Datensatz.
 	 *
@@ -723,7 +729,7 @@ public class SubscriptionManager {
 	}
 
 	/**
-	 * Sendet einen Ergebnisdatensatz zum Datenverteiler. Die Daten müssen vorher mit einer Sendeanmeldung angemeldet worden sein.
+	 * Sendet einen Ergebnisdatensatz zum Datenverteiler. Die Daten mÃ¼ssen vorher mit einer Sendeanmeldung angemeldet worden sein.
 	 *
 	 * @param result Ergebnis mit dem zu sendenden Datensatz.
 	 *
@@ -751,8 +757,8 @@ public class SubscriptionManager {
 		}
 		long id = systemObject.getId();
 
-		// Wenn in der Datadescription keine Simulationsvariante explizit vorgegeben wurde, dann muss für die Anmeldung beim Datenverteiler die über
-		// Aufrufparameter von außen vorgebbare Simulationsvariante benutzt werden
+		// Wenn in der Datadescription keine Simulationsvariante explizit vorgegeben wurde, dann muss fÃ¼r die Anmeldung beim Datenverteiler die Ã¼ber
+		// Aufrufparameter von auÃŸen vorgebbare Simulationsvariante benutzt werden
 		short externalSimulationVariant = description.getSimulationVariant();
 		if(externalSimulationVariant == (short)-1) {
 			externalSimulationVariant = _dafParameters.getSimulationVariant();
@@ -768,7 +774,7 @@ public class SubscriptionManager {
 			        + systemObject.getPidOrNameOrId() + ", " + attributeGroup.getPidOrNameOrId() + ", " + aspect.getPidOrNameOrId() + ")");
 		}
 		if(!sendSubscriptionObject.canSendData()) {
-			throw new SendSubscriptionNotConfirmed("Die Sendeanmeldung wurde noch nicht bestätigt ("
+			throw new SendSubscriptionNotConfirmed("Die Sendeanmeldung wurde noch nicht bestÃ¤tigt ("
 			        + systemObject.getPidOrNameOrId() + ", " + attributeGroup.getPidOrNameOrId() + ", " + aspect.getPidOrNameOrId() + ")");
 		}
 		final Data data = result.getData();
@@ -781,7 +787,7 @@ public class SubscriptionManager {
 			}
 			else {
 				Thread.dumpStack();
-				throw new IllegalArgumentException("Daten können nicht serialisiert werden: " + data.getClass().getName());
+				throw new IllegalArgumentException("Daten kÃ¶nnen nicht serialisiert werden: " + data.getClass().getName());
 			}
 		}
 		else {
@@ -804,11 +810,11 @@ public class SubscriptionManager {
 	}
 
 	/**
-	 * Wenn eine Sendeanmeldung mit aktivierter Benachrichtigungsoption vorliegt, dann wird ihr über diese Methode mitgeteilt, welche Aktion von ihr durchzuführen
-	 * ist. Es gibt folgende mögliche Aktionen: o Sendung starten. o Sendung anhalten. o Sendung anhalten (Grund: keine Rechte vorhanden). o Sendung anhalten
-	 * (Grund: mehrere Quellen vorhanden). Wenn eine Sendung wegen mehrerer vorhandener Quellen angehalten werden muss, wird der zugehörige Vermerk der Anmeldung
+	 * Wenn eine Sendeanmeldung mit aktivierter Benachrichtigungsoption vorliegt, dann wird ihr Ã¼ber diese Methode mitgeteilt, welche Aktion von ihr durchzufÃ¼hren
+	 * ist. Es gibt folgende mÃ¶gliche Aktionen: o Sendung starten. o Sendung anhalten. o Sendung anhalten (Grund: keine Rechte vorhanden). o Sendung anhalten
+	 * (Grund: mehrere Quellen vorhanden). Wenn eine Sendung wegen mehrerer vorhandener Quellen angehalten werden muss, wird der zugehÃ¶rige Vermerk der Anmeldung
 	 * aus dem Anmelde-Manager entfernt. Die Nachricht wird durch den Aufruf der ClientSenderInterface-Methode dataRequest(SystemObject object, DataDescription
-	 * dataDescription, byte state) zum Sender weitergeleitet: Auch die Sendeanmeldungen der Konfiguration wird hierdurch bestätigt. So wird ersichtlich, ob eine
+	 * dataDescription, byte state) zum Sender weitergeleitet: Auch die Sendeanmeldungen der Konfiguration wird hierdurch bestÃ¤tigt. So wird ersichtlich, ob eine
 	 * Konfiguration im System vorhanden ist.
 	 *
 	 * @param info Anmeldeinfo, auf die sich die Sendesteuerung bezieht
@@ -829,9 +835,9 @@ public class SubscriptionManager {
 			}
 			if(info.getUsageIdentification() == AttributeGroupUsageIdentifications.CONFIGURATION_READ_REQUEST) {
 				if(state == 0) {
-					_debug.finest(configIdentifier + " ist verfügbar (Lesen)");
+					_debug.finest(configIdentifier + " ist verfÃ¼gbar (Lesen)");
 					if(!configurationRequestStatus.isConfigurationReadRequestConfirmed() && configurationRequestStatus.isConfigurationWriteRequestConfirmed()) {
-						_debug.info(configIdentifier + " ist für Anfragen bereit");
+						_debug.info(configIdentifier + " ist fÃ¼r Anfragen bereit");
 					}
 					configurationRequestStatus.setConfigurationReadRequestConfirmed(true);
 					if(configurationRequestStatus.isConfigurationWriteRequestConfirmed()) {
@@ -840,9 +846,9 @@ public class SubscriptionManager {
 				}
 				else {
 					// stop Sending there is no configuration any more
-					_debug.finest(configIdentifier + " ist nicht verfügbar (Lesen)");
+					_debug.finest(configIdentifier + " ist nicht verfÃ¼gbar (Lesen)");
 					if(configurationRequestStatus.isConfigurationReadRequestConfirmed() && configurationRequestStatus.isConfigurationWriteRequestConfirmed()) {
-						_debug.warning(configIdentifier + " ist nicht mehr für Anfragen bereit");
+						_debug.warning(configIdentifier + " ist nicht mehr fÃ¼r Anfragen bereit");
 					}
 					configurationRequestStatus.setConfigurationReadRequestConfirmed(false);
 				}
@@ -850,9 +856,9 @@ public class SubscriptionManager {
 			}
 			else if(info.getUsageIdentification() == AttributeGroupUsageIdentifications.CONFIGURATION_WRITE_REQUEST) {
 				if(state == 0) {
-					_debug.finest(configIdentifier + " ist verfügbar (Schreiben)");
+					_debug.finest(configIdentifier + " ist verfÃ¼gbar (Schreiben)");
 					if(configurationRequestStatus.isConfigurationReadRequestConfirmed() && !configurationRequestStatus.isConfigurationWriteRequestConfirmed()) {
-						_debug.info(configIdentifier + " ist für Anfragen bereit");
+						_debug.info(configIdentifier + " ist fÃ¼r Anfragen bereit");
 					}
 					configurationRequestStatus.setConfigurationWriteRequestConfirmed(true);
 					if(configurationRequestStatus.isConfigurationReadRequestConfirmed()) {
@@ -861,9 +867,9 @@ public class SubscriptionManager {
 				}
 				else {
 					// stop Sending there is no configuration any more
-					_debug.finest(configIdentifier + " ist nicht verfügbar (Schreiben)");
+					_debug.finest(configIdentifier + " ist nicht verfÃ¼gbar (Schreiben)");
 					if(configurationRequestStatus.isConfigurationReadRequestConfirmed() && configurationRequestStatus.isConfigurationWriteRequestConfirmed()) {
-						_debug.warning(configIdentifier + " ist nicht mehr für Anfragen bereit");
+						_debug.warning(configIdentifier + " ist nicht mehr fÃ¼r Anfragen bereit");
 					}
 					configurationRequestStatus.setConfigurationWriteRequestConfirmed(false);
 				}
@@ -883,10 +889,10 @@ public class SubscriptionManager {
 
 				String warning = null;
 				if(state == RequestSenderDataTelegram.STOP_SENDING_NOT_A_VALID_SUBSCRIPTION) {
-					warning = "Ungültige Anmeldung";
+					warning = "UngÃ¼ltige Anmeldung";
 				}
 				if(state == RequestSenderDataTelegram.STOP_SENDING_NO_RIGHTS) {
-					warning = "Ungültige Anmeldung (keine Rechte)";
+					warning = "UngÃ¼ltige Anmeldung (keine Rechte)";
 				}
 
 				Collection<SenderSubscription> senderSubscriptions = sendSubscriptionObject.getSenderSubscriptions();
@@ -918,7 +924,7 @@ public class SubscriptionManager {
 	}
 
 	/**
-	 * Gibt die Verweilzeit eines Datums im Cache zurück
+	 * Gibt die Verweilzeit eines Datums im Cache zurÃ¼ck
 	 *
 	 * @param info Anmeldeinfo, zu der die Verweilzeit bestimmt werden soll.
 	 *
@@ -927,25 +933,25 @@ public class SubscriptionManager {
 	long getTimeInCache(BaseSubscriptionInfo info) {
 		ReceiveSubscriptionObject receiveSubscriptionObject = _receiverObjectTable.get(info);
 		if(receiveSubscriptionObject == null) {
-			return 0; // Wenn es keine Anmeldungen (mehr) gibt, dann muss auch nicht länger vorgehalten werden.
+			return 0; // Wenn es keine Anmeldungen (mehr) gibt, dann muss auch nicht lÃ¤nger vorgehalten werden.
 		}
 		else {
 			long time = receiveSubscriptionObject.getTimeInCache();
 			if(time < 0) {
-				time = 0; // Überflüssig, weil dies bereits im Konstruktor von ReceiverSubscription sichergestellt wird 
+				time = 0; // ÃœberflÃ¼ssig, weil dies bereits im Konstruktor von ReceiverSubscription sichergestellt wird 
 			}
 			return time;
 		}
 	}
 
 	/**
-	 * Diese Methode wird von Cache-Manager aufgerufen, wenn aktuelle Daten empfangen wurden. Wenn eine entsprechende Empfangsanmeldung für diese Daten vorliegt,
-	 * dann wird der zugehörige Repräsentant darüber benachrichtigt. Die Daten werden an angemeldete Empfänger weitergeleitet. Vorher wird der ursprüngliche bei
+	 * Diese Methode wird von Cache-Manager aufgerufen, wenn aktuelle Daten empfangen wurden. Wenn eine entsprechende Empfangsanmeldung fÃ¼r diese Daten vorliegt,
+	 * dann wird der zugehÃ¶rige ReprÃ¤sentant darÃ¼ber benachrichtigt. Die Daten werden an angemeldete EmpfÃ¤nger weitergeleitet. Vorher wird der ursprÃ¼ngliche bei
 	 * der Anmeldung verwendete Aspekt wiederhergestellt, falls dieser umgeleitet wurde.
 	 *
 	 * @param cachedObject Empfangener Datensatz.
 	 *
-	 * @throws InterruptedException Wenn der Thread während eines blockierenden Aufrufs unterbrochen wurde
+	 * @throws InterruptedException Wenn der Thread wÃ¤hrend eines blockierenden Aufrufs unterbrochen wurde
 	 */
 	void actualDataUpdate(CachedObject cachedObject) throws InterruptedException {
 		if((_configurationManager == null) || (_cacheManager == null) /*|| (archiveManager == null)*/) {
@@ -1011,8 +1017,8 @@ public class SubscriptionManager {
 
 
 	/**
-	 * Gibt der Index der Sendung der gegebene Anmeldungsinformation zurück. Der Index startet immer mit 1 und wird bei jeder Abfrage um 1 erhöht und wenn es
-	 * 0x3FFFFFFF erreicht hat, dann fängt es wieder bei 1 an.
+	 * Gibt der Index der Sendung der gegebene Anmeldungsinformation zurÃ¼ck. Der Index startet immer mit 1 und wird bei jeder Abfrage um 1 erhÃ¶ht und wenn es
+	 * 0x3FFFFFFF erreicht hat, dann fÃ¤ngt es wieder bei 1 an.
 	 *
 	 * @param info Anmeldeinformationen der Sendung
 	 *
@@ -1026,7 +1032,7 @@ public class SubscriptionManager {
 		return 0;
 	}
 
-	/** Schließt diese Subkomponente und terminiert den Aktualisierungsthread. */
+	/** SchlieÃŸt diese Subkomponente und terminiert den Aktualisierungsthread. */
 	public final void close() {
 		if(_dataDeliveryThread != null) {
 			_dataDeliveryThread.interrupt();
@@ -1034,7 +1040,7 @@ public class SubscriptionManager {
 	}
 
 	/**
-	 * Fügt einen ConfigurationManager für eine entfernte Konfiguration hinzu
+	 * FÃ¼gt einen ConfigurationManager fÃ¼r eine entfernte Konfiguration hinzu
 	 * @param configurationManager ConfigurationManager
 	 * @param name Name der Konfiguration
 	 */
@@ -1044,8 +1050,8 @@ public class SubscriptionManager {
 	}
 
 	/**
-	 * Gibt eine Liste mit ConfigurationManagern zurück, die entfernte Konfigurationen verwalten
-	 * @return eine unveränderliche Liste mit Konfigurationsmanagern
+	 * Gibt eine Liste mit ConfigurationManagern zurÃ¼ck, die entfernte Konfigurationen verwalten
+	 * @return eine unverÃ¤nderliche Liste mit Konfigurationsmanagern
 	 */
 	public List<ConfigurationManager> getSecondaryConfigurationManagers() {
 		return Collections.unmodifiableList(_secondaryConfigurationManagers);
@@ -1102,10 +1108,10 @@ public class SubscriptionManager {
 	 * Status der Verbindung mit einer Konfiguration
 	 */
 	private class ConfigurationRequestStatus {
-		/** Signalisiert, dass die Konfigurationsanfrage zum Lesen vom Datenverteiler bestätigt wurde */
+		/** Signalisiert, dass die Konfigurationsanfrage zum Lesen vom Datenverteiler bestÃ¤tigt wurde */
 		private boolean _configurationReadRequestConfirmed = false;
 
-		/** Signalisiert, dass die Konfigurationsanfrage zum Schreiben vom Datenverteiler bestätigt wurde */
+		/** Signalisiert, dass die Konfigurationsanfrage zum Schreiben vom Datenverteiler bestÃ¤tigt wurde */
 		private boolean _configurationWriteRequestConfirmed = false;
 
 		private final String _name;

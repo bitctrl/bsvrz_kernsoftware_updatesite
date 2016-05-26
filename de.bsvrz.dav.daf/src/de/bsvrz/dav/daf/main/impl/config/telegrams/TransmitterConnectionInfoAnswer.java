@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config.telegrams;
@@ -26,17 +32,17 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Diese Klasse stellt ein Antworttelegramm zu den Verbindungsinformationen eines DAV dar. In diesem Telegramm werden die Verbindungen eines DAV, welcher über
+ * Diese Klasse stellt ein Antworttelegramm zu den Verbindungsinformationen eines DAV dar. In diesem Telegramm werden die Verbindungen eines DAV, welcher Ã¼ber
  * eine ID identifiziert worden ist, gespeichert.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
+ * @version $Revision$
  */
 public class TransmitterConnectionInfoAnswer extends ConfigTelegram {
 
 	/**
-	 * Version der Antwort. Der Wert 0 kennzeichnet, dass nur die ursprüngliche Version des Antworttelegramms ohne Benutzernamen für die Authentifizierung
-	 * übertragen wird; der Wert 1 kennzeichnet, dass die neue Version der Antwort mit Benutzernamen für die Authentifizierung übertragen wird.
+	 * Version der Antwort. Der Wert 0 kennzeichnet, dass nur die ursprÃ¼ngliche Version des Antworttelegramms ohne Benutzernamen fÃ¼r die Authentifizierung
+	 * Ã¼bertragen wird; der Wert 1 kennzeichnet, dass die neue Version der Antwort mit Benutzernamen fÃ¼r die Authentifizierung Ã¼bertragen wird.
 	 *
 	 * @see TransmitterConnectionInfoRequest
 	 */
@@ -48,7 +54,7 @@ public class TransmitterConnectionInfoAnswer extends ConfigTelegram {
 	/** Array mit den Verbindungsinformationen des Datenverteilers */
 	private TransmitterConnectionInfo _transmitterConnectionInfos[];
 
-	/** Erzeugt ein neues Objekt ohne Parameter. Die Parameter werden zu einem späteren Zeitpunkt über die read-Methode eingelesen. */
+	/** Erzeugt ein neues Objekt ohne Parameter. Die Parameter werden zu einem spÃ¤teren Zeitpunkt Ã¼ber die read-Methode eingelesen. */
 	public TransmitterConnectionInfoAnswer() {
 		_type = TRANSMITTER_CONNECTION_INFO_ANSWER_TYPE;
 	}
@@ -71,8 +77,8 @@ public class TransmitterConnectionInfoAnswer extends ConfigTelegram {
 	/**
 	 * Bestimmt die Version des Antworttelegramms.
 	 *
-	 * @return Der Wert 0 kennzeichnet, dass nur die ursprüngliche Version des Antworttelegramms ohne Benutzernamen für die Authentifizierung übertragen wird; der
-	 *         Wert 1 kennzeichnet, dass die neue Version der Antwort mit Benutzernamen für die Authentifizierung übertragen wird.
+	 * @return Der Wert 0 kennzeichnet, dass nur die ursprÃ¼ngliche Version des Antworttelegramms ohne Benutzernamen fÃ¼r die Authentifizierung Ã¼bertragen wird; der
+	 *         Wert 1 kennzeichnet, dass die neue Version der Antwort mit Benutzernamen fÃ¼r die Authentifizierung Ã¼bertragen wird.
 	 *
 	 * @see TransmitterConnectionInfoRequest
 	 */
@@ -81,7 +87,7 @@ public class TransmitterConnectionInfoAnswer extends ConfigTelegram {
 	}
 
 	/**
-	 * Gibt die Id des Datenverteilers zurück
+	 * Gibt die Id des Datenverteilers zurÃ¼ck
 	 *
 	 * @return ID des Datenverteilers
 	 */

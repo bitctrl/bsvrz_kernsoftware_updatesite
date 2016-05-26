@@ -1,12 +1,12 @@
 /*
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel;
@@ -32,10 +38,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 /**
- * Diese Hilfsklasse stellt Methoden zur Verfügung, mit denen DatenTelegramme zerlegt und wieder zusammengefügt werden können.
+ * Diese Hilfsklasse stellt Methoden zur VerfÃ¼gung, mit denen DatenTelegramme zerlegt und wieder zusammengefÃ¼gt werden kÃ¶nnen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11572 $
+ * @version $Revision$
  */
 public class TelegramUtility {
 
@@ -44,12 +50,12 @@ public class TelegramUtility {
 	}
 
 	/**
-	 * Diese Methode zerteilt ein Daten Telegramm, wenn es eine maximale Größe überschreitet in mehrere Teiltelegramme. Wenn ein Datensatz == null ist, wird ein
-	 * <code>ApplictionDataTelegram</code> ohne Nutzdaten erzeugt und zurückgegeben.
+	 * Diese Methode zerteilt ein Daten Telegramm, wenn es eine maximale GrÃ¶ÃŸe Ã¼berschreitet in mehrere Teiltelegramme. Wenn ein Datensatz == null ist, wird ein
+	 * <code>ApplictionDataTelegram</code> ohne Nutzdaten erzeugt und zurÃ¼ckgegeben.
 	 *
 	 * @param dataToSend Der zusendende Datensatz
 	 *
-	 * @return Gibt ein Array mit den Teiltelegrammen zurück.
+	 * @return Gibt ein Array mit den Teiltelegrammen zurÃ¼ck.
 	 *
 	 * @see #getSendDataObject(de.bsvrz.dav.daf.communication.lowLevel.telegrams.ApplicationDataTelegram[])
 	 */
@@ -73,7 +79,7 @@ public class TelegramUtility {
 		}
 
 		int i = 0, telegramNumber = 0;
-		//offset entweder 0 oder 1 (Wenn die Zahl, die geteilt wird, einen Rest hat. Dann muss dieser Rest ebenfalls verschickt werden. Dafür wird allerdings ein Paket benötigt)
+		//offset entweder 0 oder 1 (Wenn die Zahl, die geteilt wird, einen Rest hat. Dann muss dieser Rest ebenfalls verschickt werden. DafÃ¼r wird allerdings ein Paket benÃ¶tigt)
 		final int offset = (data.length % CommunicationConstant.MAX_SPLIT_THRESHOLD) == 0 ? 0 : 1;
 		final int maxTelegrams = offset + (data.length / CommunicationConstant.MAX_SPLIT_THRESHOLD);
 		final byte priority = getPriority(dataToSend);
@@ -104,25 +110,25 @@ public class TelegramUtility {
 
 
 	/**
-	 * Diese Methode baut aus dem Übergabeparameter ein vollständiges Datentelegramm und gibt dieses zurück.
-	 * <p/>
-	 * Das Datentelegram wurde zuvor in Teilstücke zerlegt, da es eine maximale Größe überschritten hatte.
+	 * Diese Methode baut aus dem Ãœbergabeparameter ein vollstÃ¤ndiges Datentelegramm und gibt dieses zurÃ¼ck.
+	 * <p>
+	 * Das Datentelegram wurde zuvor in TeilstÃ¼cke zerlegt, da es eine maximale GrÃ¶ÃŸe Ã¼berschritten hatte.
 	 *
-	 * @param receivedData Array, bestehend aus Teilstücken des Datentelegramms
+	 * @param receivedData Array, bestehend aus TeilstÃ¼cken des Datentelegramms
 	 *
-	 * @return gibt einen vollständigen Datensatz zurück. Gibt null zurück wenn <code>IOException</code> geworfen wurde
+	 * @return gibt einen vollstÃ¤ndigen Datensatz zurÃ¼ck. Gibt null zurÃ¼ck wenn <code>IOException</code> geworfen wurde
 	 *
-	 * @throws IllegalArgumentException die Exception wird geworfen wenn:<br> - Übergabeparameter ist eine Referenz auf <code>null </code><br> - Die Länge des
-	 *                                  Übergabeparametrs stimmt nicht mit der erwarteten Länge überein.<br> - wenn ein Element des Arrays eien Referenz auf
+	 * @throws IllegalArgumentException die Exception wird geworfen wenn:<br> - Ãœbergabeparameter ist eine Referenz auf <code>null </code><br> - Die LÃ¤nge des
+	 *                                  Ãœbergabeparametrs stimmt nicht mit der erwarteten LÃ¤nge Ã¼berein.<br> - wenn ein Element des Arrays eien Referenz auf
 	 *                                  <code>null</code> ist.<br> - wenn ein Element an der falschen Position im Array steht.  <br>
 	 * @see #splitToApplicationTelegrams(de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.SendDataObject)
 	 */
 	public static SendDataObject getSendDataObject(ApplicationDataTelegram[] receivedData) {
 		if(receivedData == null) {
-			throw new IllegalArgumentException("Die übergebenen Daten sind leer\n");
+			throw new IllegalArgumentException("Die Ã¼bergebenen Daten sind leer\n");
 		}
 		if(receivedData[0].getTotalTelegramsCount() != receivedData.length) {
-			throw new IllegalArgumentException("Die übergebenen Daten sind nicht vollständig\n");
+			throw new IllegalArgumentException("Die Ã¼bergebenen Daten sind nicht vollstÃ¤ndig\n");
 		}
 		SendDataObject sendDataObject = null;
 		ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
@@ -159,21 +165,21 @@ public class TelegramUtility {
 	}
 
 	/**
-	 * Diese Methode übersetzt das Telegramm in ein <code>sendDataObject</code>.
+	 * Diese Methode Ã¼bersetzt das Telegramm in ein <code>sendDataObject</code>.
 	 *
-	 * @param telegram Das vollständige DatenTelegramm.
+	 * @param telegram Das vollstÃ¤ndige DatenTelegramm.
 	 *
-	 * @return gibt ein <code>sendDataObject</code> zurück.
+	 * @return gibt ein <code>sendDataObject</code> zurÃ¼ck.
 	 *
-	 * @throws IllegalArgumentException die Exception wird geworfen wenn:<br> - Übergabeparameter ist eine Referenz auf <code>null </code><br> - Die Zahl der
-	 *                                  enthaltene Telegramme größer als 1 ist<br>
+	 * @throws IllegalArgumentException die Exception wird geworfen wenn:<br> - Ãœbergabeparameter ist eine Referenz auf <code>null </code><br> - Die Zahl der
+	 *                                  enthaltene Telegramme grÃ¶ÃŸer als 1 ist<br>
 	 */
 	public static SendDataObject getSendDataObject(ApplicationDataTelegram telegram) {
 		if(telegram == null) {
-			throw new IllegalArgumentException("Das übergebene Datum ist leer\n");
+			throw new IllegalArgumentException("Das Ã¼bergebene Datum ist leer\n");
 		}
 		if(telegram.getTotalTelegramsCount() > 1) {
-			throw new IllegalArgumentException("Das übergebene Datum ist inkonsistent (>1)\n");
+			throw new IllegalArgumentException("Das Ã¼bergebene Datum ist inkonsistent (>1)\n");
 		}
 
 		return new SendDataObject(
@@ -188,11 +194,11 @@ public class TelegramUtility {
 	}
 
 	/**
-	 * Diese Methode liefert die Priorität eines Telegramms.
+	 * Diese Methode liefert die PrioritÃ¤t eines Telegramms.
 	 *
-	 * @param applicationData Telegramm, dessen Priorität zu ermitteln ist.
+	 * @param applicationData Telegramm, dessen PrioritÃ¤t zu ermitteln ist.
 	 *
-	 * @return Priorität des Telegramms. Ist der Übergabeparameter eine Refernz auf null wird -1 zurückgegeben.
+	 * @return PrioritÃ¤t des Telegramms. Ist der Ãœbergabeparameter eine Refernz auf null wird -1 zurÃ¼ckgegeben.
 	 */
 	public static byte getPriority(SendDataObject applicationData) {
 		if(applicationData == null) {
@@ -212,11 +218,11 @@ public class TelegramUtility {
 	}
 
 	/**
-	 * Diese Methode liefert die Priorität eines Telegramms.
+	 * Diese Methode liefert die PrioritÃ¤t eines Telegramms.
 	 *
-	 * @param telegram Datentelegramm, dessen Priorität zu ermitteln ist.
+	 * @param telegram Datentelegramm, dessen PrioritÃ¤t zu ermitteln ist.
 	 *
-	 * @return Priorität des Telegramms. Ist der Übergabeparameter eine Refernz auf null wird -1 zurückgegeben.
+	 * @return PrioritÃ¤t des Telegramms. Ist der Ãœbergabeparameter eine Refernz auf null wird -1 zurÃ¼ckgegeben.
 	 */
 	public static byte getPriority(ApplicationDataTelegram telegram) {
 		if(telegram == null) {
@@ -236,11 +242,11 @@ public class TelegramUtility {
 	}
 
 	/**
-	 * Diese Methode liefert die Priorität eines Telegramms.
+	 * Diese Methode liefert die PrioritÃ¤t eines Telegramms.
 	 *
-	 * @param telegram Transmissionstelegramm, dessen Priorität zu ermitteln ist.
+	 * @param telegram Transmissionstelegramm, dessen PrioritÃ¤t zu ermitteln ist.
 	 *
-	 * @return Priorität des Telegramms. Ist der Übergabeparameter eine Referenz auf null wird -1 zurückgegeben.
+	 * @return PrioritÃ¤t des Telegramms. Ist der Ãœbergabeparameter eine Referenz auf null wird -1 zurÃ¼ckgegeben.
 	 */
 	public static byte getPriority(TransmitterDataTelegram telegram) {
 		if(telegram == null) {

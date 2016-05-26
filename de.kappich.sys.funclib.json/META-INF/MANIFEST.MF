@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Funclib Json
+Bundle-SymbolicName: de.kappich.sys.funclib.json
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Kappich Systemberatung
+Require-Bundle: org.eclipse.core.runtime,
+ de.bsvrz.sys.funclib.kappich
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: de.kappich.sys.funclib.json

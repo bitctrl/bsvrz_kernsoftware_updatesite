@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.main.impl.archive.request;
 
@@ -51,40 +57,40 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Diese Klasse stellt ein Objekt zur Verfügung, das Archidaten und Onlinedaten mischt. Dafür meldet es sich als
- * Empfänger auf vorgegebene Daten an und fordert dann aus dem Archivsystem ebenfalls Daten an um diese zu mischen.
+ * Diese Klasse stellt ein Objekt zur VerfÃ¼gung, das Archidaten und Onlinedaten mischt. DafÃ¼r meldet es sich als
+ * EmpfÃ¤nger auf vorgegebene Daten an und fordert dann aus dem Archivsystem ebenfalls Daten an um diese zu mischen.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 5084 $ / $Date: 2007-09-03 10:42:50 +0200 (Mon, 03 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class SubscriptionArchiveOnlineDataManager {
 
 	/**
-	 * Speichert alle Objekte, die als Empfänger angemeldet sind
+	 * Speichert alle Objekte, die als EmpfÃ¤nger angemeldet sind
 	 */
 	private final Map<ReceiverKey, Receiver> _receiverList = new HashMap<ReceiverKey, Receiver>();
 
 	/**
-	 * Objekt, über das Archivanfragen gestellt werden können. Wird benötigt um Archivdaten vor den Onlinestrom zu mischen
+	 * Objekt, Ã¼ber das Archivanfragen gestellt werden kÃ¶nnen. Wird benÃ¶tigt um Archivdaten vor den Onlinestrom zu mischen
 	 */
 	private final ArchiveRequestManager _archive;
 
 	/**
-	 * Wird zum an/abmelden der Datenidentifikationen benötigt
+	 * Wird zum an/abmelden der Datenidentifikationen benÃ¶tigt
 	 */
 	private final ClientDavInterface _connection;
 
 	/**
-	 * DebugLogger für Debug-Ausgaben
+	 * DebugLogger fÃ¼r Debug-Ausgaben
 	 */
 	private static final Debug _debug = Debug.getLogger();
 
 	/**
-	 * Erzeugt ein Objekt, das es ermöglicht einen Empfänger anzumelden. Vor die Onlinedatensätze werden Archidatensätze
+	 * Erzeugt ein Objekt, das es ermÃ¶glicht einen EmpfÃ¤nger anzumelden. Vor die OnlinedatensÃ¤tze werden ArchidatensÃ¤tze
 	 * gemischt.
 	 *
-	 * @param archive    Archiv, das die Archivdaten zur Verfügung stellt
+	 * @param archive    Archiv, das die Archivdaten zur VerfÃ¼gung stellt
 	 * @param connection Verbindung zum DaV
 	 */
 	public SubscriptionArchiveOnlineDataManager(ArchiveRequestManager archive, ClientDavInterface connection) {
@@ -93,8 +99,8 @@ public class SubscriptionArchiveOnlineDataManager {
 	}
 
 	/**
-	 * Meldet sich als Empfänger von Datensätzen an und stellt über das Objekt <code>receiver</code> die Daten
-	 * (Archivdaten+Online) zur Verfügung.
+	 * Meldet sich als EmpfÃ¤nger von DatensÃ¤tzen an und stellt Ã¼ber das Objekt <code>receiver</code> die Daten
+	 * (Archivdaten+Online) zur VerfÃ¼gung.
 	 *
 	 * @param receiver
 	 * @param object
@@ -117,13 +123,13 @@ public class SubscriptionArchiveOnlineDataManager {
 
 
 		final Receiver newReceiver = new Receiver(_archive, _connection, receiver, object, dataDescription, options, historyType, history);
-		// damit das Receiverobjekt in die Map eingefügt werden kann
+		// damit das Receiverobjekt in die Map eingefÃ¼gt werden kann
 		final ReceiverKey key = new ReceiverKey(receiver, object, dataDescription);
 
 		// Anmelden
 		_connection.subscribeReceiver(newReceiver, object, dataDescription, options, ReceiverRole.receiver());
 
-		// In einer Map ablegen, damit der Empfänger sich wieder abmelden kann
+		// In einer Map ablegen, damit der EmpfÃ¤nger sich wieder abmelden kann
 		synchronized (_receiverList) {
 			_receiverList.put(key, newReceiver);
 		}
@@ -140,37 +146,37 @@ public class SubscriptionArchiveOnlineDataManager {
 	}
 
 	/**
-	 * Objekt, das Onlinedaten puffert oder durchreicht, es stellt ebenfalls den ersten Online verfügbaren Datensatz zur
-	 * Verfügung. Es enthält alle Informationen, die nötig sind, um ein anderes Objekt Archivanfragen stellen zu lassen. Es
-	 * stellt ein Synchronisationsobjekt zur Verfügung, auf dem sich ein anderes Objekt synchronisieren kann.
+	 * Objekt, das Onlinedaten puffert oder durchreicht, es stellt ebenfalls den ersten Online verfÃ¼gbaren Datensatz zur
+	 * VerfÃ¼gung. Es enthÃ¤lt alle Informationen, die nÃ¶tig sind, um ein anderes Objekt Archivanfragen stellen zu lassen. Es
+	 * stellt ein Synchronisationsobjekt zur VerfÃ¼gung, auf dem sich ein anderes Objekt synchronisieren kann.
 	 */
 	private final class Receiver implements ClientReceiverInterface {
 
 		/**
-		 * Objekt, über das Archivanfragen gestellt werden können. Wird benötigt um Archivdaten vor den Onlinestrom zu
+		 * Objekt, Ã¼ber das Archivanfragen gestellt werden kÃ¶nnen. Wird benÃ¶tigt um Archivdaten vor den Onlinestrom zu
 		 * mischen
 		 */
 		private final ArchiveRequestManager _archive;
 
 		/**
-		 * TBD wird benötigt, wenn es nur begrentzt viele Thread geben soll
-		 * Wird zum an/abmelden der Datenidentifikationen benötigt
+		 * TBD wird benÃ¶tigt, wenn es nur begrentzt viele Thread geben soll
+		 * Wird zum an/abmelden der Datenidentifikationen benÃ¶tigt
 		 */
 		private final ClientDavInterface _connection;
 
 		/**
-		 * Puffert online Daten während Archivdaten angefordert werden. Der Puffer enthält auch den ersten Datensatz, der zum
-		 * rausfinden des Endzeitpunkts der Archivanfrage benötigt wird.
+		 * Puffert online Daten wÃ¤hrend Archivdaten angefordert werden. Der Puffer enthÃ¤lt auch den ersten Datensatz, der zum
+		 * rausfinden des Endzeitpunkts der Archivanfrage benÃ¶tigt wird.
 		 */
 		private final List<ResultData[]> _onlineBuffer = new ArrayList<ResultData[]>();
 
 		/**
-		 * Empfänger, der die gemischten Archin/Onlinedaten haben möchte.
+		 * EmpfÃ¤nger, der die gemischten Archin/Onlinedaten haben mÃ¶chte.
 		 */
 		private final DatasetReceiverInterface _receiverArchiveOnlineStream;
 
 		/**
-		 * Wird benötigt um zu entscheiden ob die Archidaten delta oder normal sein sollen
+		 * Wird benÃ¶tigt um zu entscheiden ob die Archidaten delta oder normal sein sollen
 		 */
 		private final ReceiveOptions _receiveOptions;
 
@@ -181,16 +187,16 @@ public class SubscriptionArchiveOnlineDataManager {
 
 		/**
 		 * Zeitbereich oder Index, der aus dem aus Archivsystem angefordert werden soll. Diese Variable wird im laufe der
-		 * Archivanfrage angepaßt. Wenn 10 Archivdaten benötigt werden, aber es werden nur 5 empfangen, müssen in der nächsten
+		 * Archivanfrage angepaÃŸt. Wenn 10 Archivdaten benÃ¶tigt werden, aber es werden nur 5 empfangen, mÃ¼ssen in der nÃ¤chsten
 		 * Archivanfrage nur noch 5 Archivdaten angefordert werden. Das selbe passiert mit einer Anfrage, die sich auf Zeit
-		 * bezieht, wenn 4 Stunden benötigt werden, es werden aber nur 3 geliefert, wird die nächste Archivanfrage auf 1
+		 * bezieht, wenn 4 Stunden benÃ¶tigt werden, es werden aber nur 3 geliefert, wird die nÃ¤chste Archivanfrage auf 1
 		 * Stunde relativ gestellt. Kommentar Konstruktor beachten.
 		 */
 		private long _history;
 
 		/**
 		 * Objekt, auf das synchronisiert wird sobald Daten empfangen werden. Synchronisiert sich jemand anderes auf das
-		 * Objekt, können solange keine Daten mehr empfangen werden (Zeit um den Puffer zu leeren).
+		 * Objekt, kÃ¶nnen solange keine Daten mehr empfangen werden (Zeit um den Puffer zu leeren).
 		 */
 		private final Object _dataReceived = new Object();
 
@@ -200,8 +206,8 @@ public class SubscriptionArchiveOnlineDataManager {
 		private boolean _receivedFirstOnlineDataSet = false;
 
 		/**
-		 * Können die online empfangenen Daten direkt durchgereicht werden? Das ist möglich, wenn die Archivdaten alle
-		 * übertragen wurden und der Puffer, der die online Daten speichert, leer ist.
+		 * KÃ¶nnen die online empfangenen Daten direkt durchgereicht werden? Das ist mÃ¶glich, wenn die Archivdaten alle
+		 * Ã¼bertragen wurden und der Puffer, der die online Daten speichert, leer ist.
 		 */
 		private boolean _handOverOnline = false;
 
@@ -211,18 +217,18 @@ public class SubscriptionArchiveOnlineDataManager {
 		private ResultData _firstOnlineDataSet;
 
 		/**
-		 * Wird für die Archivanfrage gebraucht
+		 * Wird fÃ¼r die Archivanfrage gebraucht
 		 */
 		private final SystemObject _systemObject;
 
 		/**
-		 * Wird für die Archivanfrage gebraucht
+		 * Wird fÃ¼r die Archivanfrage gebraucht
 		 */
 		private final DataDescription _dataDescription;
 
 		/**
 		 * Diese Variable wird true, wenn der Sender abgemeldet wurde. Die Variable verhindert dann, das weitere Daten an den
-		 * Empfänger verschickt werden.
+		 * EmpfÃ¤nger verschickt werden.
 		 */
 		private boolean _unsubcribeReceiver = false;
 
@@ -247,10 +253,10 @@ public class SubscriptionArchiveOnlineDataManager {
 			_receiveOptions = receiveOptions;
 			_historyType = historyType;
 
-			// Wenn XX Datensätze vor dem aktuellen Datensatz gefordert werden muss +1 gerechnet werden,
+			// Wenn XX DatensÃ¤tze vor dem aktuellen Datensatz gefordert werden muss +1 gerechnet werden,
 			// weil der letzte Archivdatensatz gleich dem Onlinedatensatz ist.
-			// Wenn 5 Archivdatensätze gefordert werden würden, würden 5 vom Archivsystem zurückgegeben,
-			// aber es würden nur 4 der update-Methode übergeben, der fünfte wäre der erste Onlinedatensatz.
+			// Wenn 5 ArchivdatensÃ¤tze gefordert werden wÃ¼rden, wÃ¼rden 5 vom Archivsystem zurÃ¼ckgegeben,
+			// aber es wÃ¼rden nur 4 der update-Methode Ã¼bergeben, der fÃ¼nfte wÃ¤re der erste Onlinedatensatz.
 			// also wird ein Datensatz "mehr" angefordert, weil der letzte Archivdatensatz und der Onlinedatensatz
 			// identisch sind.
 			if (_historyType == HistoryTypeParameter.INDEX) {
@@ -265,34 +271,34 @@ public class SubscriptionArchiveOnlineDataManager {
 		}
 
 		public void update(ResultData results[]) {
-			// Für Debugausgaben
+			// FÃ¼r Debugausgaben
 			final String format = "dd.MM.yyyy HH:mm:ss,SSS";
 			final DateFormat timeFormat = new SimpleDateFormat(format);
 			// Sobald der erste Datensatz empfangen wird, wird dieser Zeitstempel als
-			// Endzeitpunkt für die Archivanfrage benutzt. Onlinedaten, die zwischendurch empfangen werden, werden
+			// Endzeitpunkt fÃ¼r die Archivanfrage benutzt. Onlinedaten, die zwischendurch empfangen werden, werden
 			// gepuffert.
-			// Wurden alle Archivdaten vor den Onlinestrom gemisch, werden die Datensätze nur noch durchgereicht.
+			// Wurden alle Archivdaten vor den Onlinestrom gemisch, werden die DatensÃ¤tze nur noch durchgereicht.
 			synchronized (_dataReceived) {
 				if (_handOverOnline) {
-					// Es wurden alle Archivdaten verschickt, der Puffer mit den zwischengespeicherten Online Datensätzen
-					// wurde auch verschickt, also können die gerade empfangenden Daten durchgreicht werden.
+					// Es wurden alle Archivdaten verschickt, der Puffer mit den zwischengespeicherten Online DatensÃ¤tzen
+					// wurde auch verschickt, also kÃ¶nnen die gerade empfangenden Daten durchgreicht werden.
 					sendData(results);
 				} else {
 					// Wurde der erste Datensatz schon empfangen ?
 					if (_receivedFirstOnlineDataSet) {
-						// Der erste Datensatz wurde schon empfangen, also müssen diese Daten
+						// Der erste Datensatz wurde schon empfangen, also mÃ¼ssen diese Daten
 						// gepuffert werden
 						_onlineBuffer.add(results);
 					} else {
 						// Der erste Datensatz wurde noch nicht empfangen, also befindet er sich unter
-						// den gerade empfangenen Daten. Dieser wird gespeichert und alle Datensätze
+						// den gerade empfangenen Daten. Dieser wird gespeichert und alle DatensÃ¤tze
 						//, mit dem ersten, werden in den Puffer abgelegt.
 
 						// Alles in den Puffer
 						_onlineBuffer.add(results);
 
 						if (results[0].getData() != null) {
-							// Der erste Onlinedatensatz steht zur Verfügung
+							// Der erste Onlinedatensatz steht zur VerfÃ¼gung
 							_firstOnlineDataSet = results[0];
 							_receivedFirstOnlineDataSet = true;
 
@@ -304,7 +310,7 @@ public class SubscriptionArchiveOnlineDataManager {
 
 						} else {
 							
-							_debug.info("Der erste Datensatz war null, der dafür benutzt werden sollte um den Andzeitpunkt der Archivanfrage zu bestimmen. Es wird auf den nächsten Datensatz gewartet");
+							_debug.info("Der erste Datensatz war null, der dafÃ¼r benutzt werden sollte um den Andzeitpunkt der Archivanfrage zu bestimmen. Es wird auf den nÃ¤chsten Datensatz gewartet");
 							return;
 						}
 					}
@@ -313,13 +319,13 @@ public class SubscriptionArchiveOnlineDataManager {
 		}
 
 		/**
-		 * Diese Methode wird aufgerufen, wenn der Empfänger abgemeldet wird. Weitere Datensätze, die zu dem Empfänger
+		 * Diese Methode wird aufgerufen, wenn der EmpfÃ¤nger abgemeldet wird. Weitere DatensÃ¤tze, die zu dem EmpfÃ¤nger
 		 * geschickt werden sollen, werden nicht weitergereicht. Falls der Thread, der Archivdaten anfordert, noch Archivdaten
 		 * verschicken will, werden diese ebenfalls nicht durchgereicht.
 		 */
 		public void unsubscribeReceiver() {
-			// Der Zugriff ist nicht synchronisiert, weil der Empfänger abgemeldet wurde und es somit völlig egal
-			// ist, wer derzeit Daten senden dürfte, es sollen keine Daten mehr an den Empfänger durchgereicht werden.
+			// Der Zugriff ist nicht synchronisiert, weil der EmpfÃ¤nger abgemeldet wurde und es somit vÃ¶llig egal
+			// ist, wer derzeit Daten senden dÃ¼rfte, es sollen keine Daten mehr an den EmpfÃ¤nger durchgereicht werden.
 			_unsubcribeReceiver = true;
 			// Falls noch Archivdaten unterwegs sind, werden diese jetzt abgebrochen
 			_archiveThread.cancelThread();
@@ -338,28 +344,28 @@ public class SubscriptionArchiveOnlineDataManager {
 		}
 
 		/**
-		 * Verschickt Datensätze an den Vorgegebenen Empfänger, falls dieser die Verbindung noch nicht abgemeldet hat. Wurde
+		 * Verschickt DatensÃ¤tze an den Vorgegebenen EmpfÃ¤nger, falls dieser die Verbindung noch nicht abgemeldet hat. Wurde
 		 * die Verbindung abgemeldet, dann werden die Daten verworfen.
 		 *
 		 * @param datasetResult Archivdaten oder ResultData, die verschickt werden sollen
 		 */
 		public void sendData(Dataset[] datasetResult) {
 			if (_unsubcribeReceiver == false) {
-				// Es dürfen noch Daten verschickt werden, falls nicht, werden die Daten einfach verworfen
+				// Es dÃ¼rfen noch Daten verschickt werden, falls nicht, werden die Daten einfach verworfen
 				_receiverArchiveOnlineStream.update(datasetResult);
 			}
 		}
 
 		/**
 		 * Diese Methode wird aufgerufen, sobald alle Archivdaten vor den Onlinestrom gemischt wurden. Der Puffer, der die
-		 * Onlinedaten zwischengespeichert hat, wird dann übertragen. Die Methode sperrt die update-Methode und setzt danach
+		 * Onlinedaten zwischengespeichert hat, wird dann Ã¼bertragen. Die Methode sperrt die update-Methode und setzt danach
 		 * eine Variable, so dass alle folgenden Onlinedaten direkt durchgereicht werden, ohne gepuffert zu werden.
 		 */
 		private void sendOnlineBuffer() {
 			synchronized (_dataReceived) {
 //				System.out.println("*** Puffer leeren *** " + _onlineBuffer.size());
 				for (int nr = 0; nr < _onlineBuffer.size(); nr++) {
-					// Die Datensätze in der Reihenfolge ihres eintreffens verschicken
+					// Die DatensÃ¤tze in der Reihenfolge ihres eintreffens verschicken
 					final ResultData bufferdOnlineData[] = _onlineBuffer.get(nr);
 					sendData(bufferdOnlineData);
 				}
@@ -376,22 +382,22 @@ public class SubscriptionArchiveOnlineDataManager {
 	private final static class ArchiveDataRequester implements Runnable {
 
 		/**
-		 * Enthält alle Daten und Methoden, die der Thread braucht um Archivdaten anzufodern und diese vor die aktuellen Daten
+		 * EnthÃ¤lt alle Daten und Methoden, die der Thread braucht um Archivdaten anzufodern und diese vor die aktuellen Daten
 		 * zu mischen
 		 */
 		private final Receiver _receiver;
 
 		/**
-		 * Erster Onlinedatensatz, dieser Datensatz dient als Endzeitpunkt für die Archivanfrage
+		 * Erster Onlinedatensatz, dieser Datensatz dient als Endzeitpunkt fÃ¼r die Archivanfrage
 		 */
 		private ResultData _firstOnlineDataSet;
 
 		/**
-		 * Speichert den letzten Datensatz einer Archivanfrage. Dieser wird benötigt, wenn bei einer Archivanfrage nicht alle
-		 * benötigten Werte übertragen wurden. Es fehlen zum Beispiel die letzten drei Datensätze, weil diese gerade
-		 * archiviert werden und das Archivsystem sie deshalb nicht mitgeschickt hat. Um an alle Daten zu kommen, würde erneut
-		 * angefragt werden, ein paar Archivdatensätze dieser Anfrage könnte aber verworfen werden, weil sie bereits in der
-		 * ersten Anfrage vorhanden waren. Damit diese Datensätze erkannt werden können, wird der letzte Datensatz
+		 * Speichert den letzten Datensatz einer Archivanfrage. Dieser wird benÃ¶tigt, wenn bei einer Archivanfrage nicht alle
+		 * benÃ¶tigten Werte Ã¼bertragen wurden. Es fehlen zum Beispiel die letzten drei DatensÃ¤tze, weil diese gerade
+		 * archiviert werden und das Archivsystem sie deshalb nicht mitgeschickt hat. Um an alle Daten zu kommen, wÃ¼rde erneut
+		 * angefragt werden, ein paar ArchivdatensÃ¤tze dieser Anfrage kÃ¶nnte aber verworfen werden, weil sie bereits in der
+		 * ersten Anfrage vorhanden waren. Damit diese DatensÃ¤tze erkannt werden kÃ¶nnen, wird der letzte Datensatz
 		 * gespeichert.
 		 */
 		private ArchiveData _lastReceivedDataSet = null;
@@ -403,23 +409,23 @@ public class SubscriptionArchiveOnlineDataManager {
 
 		/**
 		 * Zeitbereich oder Index, der aus dem aus Archivsystem angefordert werden soll. Diese Variable wird im laufe der
-		 * Archivanfrage angepaßt. Wenn 10 Archivdaten benötigt werden, aber es werden nur 5 empfangen, müssen in der nächsten
+		 * Archivanfrage angepaÃŸt. Wenn 10 Archivdaten benÃ¶tigt werden, aber es werden nur 5 empfangen, mÃ¼ssen in der nÃ¤chsten
 		 * Archivanfrage nur noch 5 Archivdaten angefordert werden. Das selbe passiert mit einer Anfrage, die sich auf Zeit
-		 * bezieht, wenn 4 Stunden benötigt werden, es werden aber nur 3 geliefert, wird die nächste Archivanfrage auf 1
+		 * bezieht, wenn 4 Stunden benÃ¶tigt werden, es werden aber nur 3 geliefert, wird die nÃ¤chste Archivanfrage auf 1
 		 * Stunde relativ gestellt.
 		 */
 		private long _history;
 
 		/**
-		 * Wird benötigt um zu entscheiden ob die Archidaten delta oder normal sein sollen
+		 * Wird benÃ¶tigt um zu entscheiden ob die Archidaten delta oder normal sein sollen
 		 */
 		private final ReceiveOptions _receiveOptions;
 		/**
-		 * Wird für die Archivanfrage gebraucht
+		 * Wird fÃ¼r die Archivanfrage gebraucht
 		 */
 		private final SystemObject _systemObject;
 		/**
-		 * Wird für die Archivanfrage gebraucht
+		 * Wird fÃ¼r die Archivanfrage gebraucht
 		 */
 		private final DataDescription _dataDescription;
 		/**
@@ -430,7 +436,7 @@ public class SubscriptionArchiveOnlineDataManager {
 		/**
 		 * Wurden schon einmal Archivdaten verschickt. Wird nur EOA vom Archiv empfangen und es wurden schon einmal
 		 * Archivdaten verschickt, dann wird auf Daten gewartet. Wird hingegen EOA empfangen und es wurden noch nie
-		 * Archivdaten verschickt, hat das Archiv keine Daten für diese Datenidentifikation.
+		 * Archivdaten verschickt, hat das Archiv keine Daten fÃ¼r diese Datenidentifikation.
 		 */
 		private boolean _archiveDataSend = false;
 
@@ -456,34 +462,34 @@ public class SubscriptionArchiveOnlineDataManager {
 		}
 
 		public void run() {
-			// warten, bis Onlinedaten zur Verfügung stehen
+			// warten, bis Onlinedaten zur VerfÃ¼gung stehen
 			Object dataReceivedLockObject = _receiver.getDataReceived();
 			synchronized (dataReceivedLockObject) {
 				while (_receiver.isReceivedFirstOnlineDataSet() == false) {
-					// Es steht noch kein Datensatz zur Verfügung, also kann der Thread schlafen gelegt werden.
-					// Wird er geweckt und der erste Datensatz steht zur Verfügung, kann er die Archivdaten anfordern
+					// Es steht noch kein Datensatz zur VerfÃ¼gung, also kann der Thread schlafen gelegt werden.
+					// Wird er geweckt und der erste Datensatz steht zur VerfÃ¼gung, kann er die Archivdaten anfordern
 					try {
 						dataReceivedLockObject.wait();
 					} catch (InterruptedException e) {
 					}
 				}
 
-				// Der erste Datensatz steht zur Verfügung
+				// Der erste Datensatz steht zur VerfÃ¼gung
 				_firstOnlineDataSet = _receiver.getFirstOnlineDataSet();
-				// Der Thread hat nun alle Daten die er braucht um arbeiten zu können. Der Synchblock kann verlassen werden
+				// Der Thread hat nun alle Daten die er braucht um arbeiten zu kÃ¶nnen. Der Synchblock kann verlassen werden
 			}
 
-			// Der erste Onlinedatensatz wurde gefunden, also können jetzt die Archivdaten angefordert werden
+			// Der erste Onlinedatensatz wurde gefunden, also kÃ¶nnen jetzt die Archivdaten angefordert werden
 
-			// Wenn das Archiv keine Daten mehr zur Verfügung stelle kann, die vor den Onlinestrom geschrieben werden
-			// können, wird diese Variable true.
-			// Es müssen nicht zwangsläufig Daten empfangen worden sein, wenn es keine Archivdaten gibt, wird diese
+			// Wenn das Archiv keine Daten mehr zur VerfÃ¼gung stelle kann, die vor den Onlinestrom geschrieben werden
+			// kÃ¶nnen, wird diese Variable true.
+			// Es mÃ¼ssen nicht zwangslÃ¤ufig Daten empfangen worden sein, wenn es keine Archivdaten gibt, wird diese
 			// Variable ebenfalls true.
 			boolean allPossibleArchiveDataReceived = false;
 
 			while (allPossibleArchiveDataReceived == false) {
-				// Es müssen zwei Fälle unterschieden werden.
-				// Fall 1, "Es wurden noch keine Archivdaten angefordert": Bei XXX Datensätze vor
+				// Es mÃ¼ssen zwei FÃ¤lle unterschieden werden.
+				// Fall 1, "Es wurden noch keine Archivdaten angefordert": Bei XXX DatensÃ¤tze vor
 				// dem aktuellen Datensatz wird der Index benutzt, bei XXX ms vor dem aktuellen Datensatz wird der Zeitpunkt berechnet.
 				// Fall 2, "Es wurden bereits Archivdaten angefordert": Der letzte empfangende Datensatz des Archivs ist bekannt
 				// (_lastReceivedDataSet) und kann als Startindex benutzt werden
@@ -492,7 +498,7 @@ public class SubscriptionArchiveOnlineDataManager {
 				if (_lastReceivedDataSet != null) {
 					// Der letzte Datensatz einer Archivanfrage ist bekannt.
 					// Dieser Fall tritt ein, wenn bereits eine Archivanfrage gestellt wurde, aber nicht alle
-					// Datensätze aus dem Archiv übertragen wurden. Dann wird erneut angefragt, diesmal wird
+					// DatensÃ¤tze aus dem Archiv Ã¼bertragen wurden. Dann wird erneut angefragt, diesmal wird
 					// aber eine Archivanfrage auf den Datenindex gestellt. Als Anfangswert wird der Datenindex
 					// des _lastReceivedDataSet benutzt, als Endindex wird der Datenindex des _firstOnlineDataSet
 					// benutzt.
@@ -501,10 +507,10 @@ public class SubscriptionArchiveOnlineDataManager {
 				} else if (_historyType == HistoryTypeParameter.TIME) {
 					final long archiveDataEndTime = _firstOnlineDataSet.getDataTime();
 					final long archiveDataStartTime = archiveDataEndTime - _history;
-					// Es sollen _history viele ms vor dem ersten Onlinedatensatz zurückgegeben werden
+					// Es sollen _history viele ms vor dem ersten Onlinedatensatz zurÃ¼ckgegeben werden
 					archiveTimeSpecification = new ArchiveTimeSpecification(TimingType.DATA_TIME, false, archiveDataStartTime, archiveDataEndTime);
 				} else {
-					// Es werden mindestens _history viele Datensätze vorher angefordert. Als Endwert wird der Datenindex des ersten
+					// Es werden mindestens _history viele DatensÃ¤tze vorher angefordert. Als Endwert wird der Datenindex des ersten
 					// Onlinedatensatzes benutzt.
 					archiveTimeSpecification = new ArchiveTimeSpecification(TimingType.DATA_INDEX, true, _history, _firstOnlineDataSet.getDataIndex());
 				}
@@ -532,17 +538,17 @@ public class SubscriptionArchiveOnlineDataManager {
 				try {
 					archiveResponse = _archive.request(ArchiveQueryPriority.MEDIUM, archiveDataSpecification);
 				} catch (IllegalStateException e) {
-					_debug.warning("Anmeldung mit Historie gibt nur den Onlinestrom zurück: ", e);
-					// Es gibt keine Verbindung zum Archiv, also wird nur der Onlinestrom zurückgegeben
+					_debug.warning("Anmeldung mit Historie gibt nur den Onlinestrom zurÃ¼ck: ", e);
+					// Es gibt keine Verbindung zum Archiv, also wird nur der Onlinestrom zurÃ¼ckgegeben
 					break;
 				}
 
 				try {
 					if (archiveResponse.isRequestSuccessful()) {
-						// Es stehen Archivdaten zur Verfügung
+						// Es stehen Archivdaten zur VerfÃ¼gung
 						ArchiveDataStream currentStream = archiveResponse.getStreams()[0];
 
-						// Speichert alle Archivdaten, die mit Aufruf der update-Methode des Empfänger übergeben werden
+						// Speichert alle Archivdaten, die mit Aufruf der update-Methode des EmpfÃ¤nger Ã¼bergeben werden
 						final List<ArchiveData> archiveDataList = new LinkedList<ArchiveData>();
 
 
@@ -550,40 +556,40 @@ public class SubscriptionArchiveOnlineDataManager {
 
 						if ((_lastReceivedDataSet == null) && (currentArchiveData.getDataType() != DataState.END_OF_ARCHIVE)) {
 							// Das Objekt wurde noch nicht gesetzt, also ist dies die erste Archivantwort auf eine Anfrage.
-							// Es steht kein Index zur Verfügung, also wird vom ersten Onlineaktuellen Datensatz
-							// entweder die oder Datenindex abgezogen um zu prüfen ob der Archivdatensatz übertragen werden
+							// Es steht kein Index zur VerfÃ¼gung, also wird vom ersten Onlineaktuellen Datensatz
+							// entweder die oder Datenindex abgezogen um zu prÃ¼fen ob der Archivdatensatz Ã¼bertragen werden
 							// kann.
 							if (_historyType == HistoryTypeParameter.TIME) {
-								// Ist der erste Datensatz nun ein Kandidat für Archivdaten, die übertragen werden müssen,
+								// Ist der erste Datensatz nun ein Kandidat fÃ¼r Archivdaten, die Ã¼bertragen werden mÃ¼ssen,
 								// oder stellt er nur den Datensatz dar, der anzeigt in welchem Bereich der folgende
-								// Datensatz gültig ist ?
+								// Datensatz gÃ¼ltig ist ?
 								// Beispiel: Es wurden die Daten 11:59, 12:01 gespeichert, bei einer Archivanfrage auf 12:00
 								// (Der Benutzer ruft um 15:00 subscribeReceiver auf, mit history = 3 Stunden)
-								// würde der Datensatz 11:59 übertragen, er darf aber nicht übertragen werden, sondern nur der 12:01 Datensatz
+								// wÃ¼rde der Datensatz 11:59 Ã¼bertragen, er darf aber nicht Ã¼bertragen werden, sondern nur der 12:01 Datensatz
 
 								if (currentArchiveData.getDataTime() < (_firstOnlineDataSet.getDataTime() - _history)) {
-									// Die Datenzeit des ersten Datensatzes liegt ausserhalb der gewünschten Zeit.
+									// Die Datenzeit des ersten Datensatzes liegt ausserhalb der gewÃ¼nschten Zeit.
 									// Dieser Datensatz darf nicht in die Liste aufgenommen werden, aber er kann als
-									// Datensatz für _lastReceivedDataSet benutzt werden
+									// Datensatz fÃ¼r _lastReceivedDataSet benutzt werden
 									_lastReceivedDataSet = currentArchiveData;
 
-									// Nun den nächsten Datensatz anfordern, dieser wird innerhalb des gewünschten
+									// Nun den nÃ¤chsten Datensatz anfordern, dieser wird innerhalb des gewÃ¼nschten
 									// Zeitrahmens liegen (oder ist nicht vorhanden)
 									currentArchiveData = currentStream.take();
 								} else if ((currentArchiveData.getDataTime() >= (_firstOnlineDataSet.getDataTime() - _history))
 										&& (currentArchiveData.getDataTime() <= _firstOnlineDataSet.getDataTime())) {
-									// Die Datenzeit des ersten Datensatzes ist größer gleich dem Startbereich,
+									// Die Datenzeit des ersten Datensatzes ist grÃ¶ÃŸer gleich dem Startbereich,
 									// in dem die Daten liegen sollen. Ist aber kleiner gleich dem Ende des Startbereichs
-									// für die benötigten Archivdaten.
-									// Dieser Datensatz muss in die Liste der zu übertragenen Archivdatensätze
+									// fÃ¼r die benÃ¶tigten Archivdaten.
+									// Dieser Datensatz muss in die Liste der zu Ã¼bertragenen ArchivdatensÃ¤tze
 									// aufgenommen werden, danach dient er als _lastReceivedDataSet
 									archiveDataList.add(currentArchiveData);
 									_lastReceivedDataSet = currentArchiveData;
 
-									// Den nächsten Datensatz anfordern
+									// Den nÃ¤chsten Datensatz anfordern
 									currentArchiveData = currentStream.take();
 								} else {
-									// Die Datenzeit des ersten Archivdatensatzes liegt außerhalb des gewünschten
+									// Die Datenzeit des ersten Archivdatensatzes liegt auÃŸerhalb des gewÃ¼nschten
 									// Bereichs (oberhalb). Dieser Fall kann nicht aufreten.
 									
 
@@ -591,13 +597,13 @@ public class SubscriptionArchiveOnlineDataManager {
 								}
 
 							} else {
-								// Der erste Datensatz bei einer relativen Anfrage mit XXX Datensätze davor kann immer
-								// weggelassen werden, da er den Zustand vor dem gewünschten Datensatz wiederspiegelt.
+								// Der erste Datensatz bei einer relativen Anfrage mit XXX DatensÃ¤tze davor kann immer
+								// weggelassen werden, da er den Zustand vor dem gewÃ¼nschten Datensatz wiederspiegelt.
 								// Also kann dieser Archivdatensatz auch als _lastReceivedDataSet benutzt werden.
 								_lastReceivedDataSet = currentArchiveData;
 
-								// Den nächsten Datensatz anfordern, dieser gehört in die Liste mit benötigen
-								// Archivdatensätzen, die zurückgegeben werden müssen
+								// Den nÃ¤chsten Datensatz anfordern, dieser gehÃ¶rt in die Liste mit benÃ¶tigen
+								// ArchivdatensÃ¤tzen, die zurÃ¼ckgegeben werden mÃ¼ssen
 								currentArchiveData = currentStream.take();
 							}
 						}
@@ -605,17 +611,17 @@ public class SubscriptionArchiveOnlineDataManager {
 						
 
 
-						// Liste mit Archivdaten füllen, die übertragen werden sollen, der EAO Datensatz wird nicht mehr gespeichert
+						// Liste mit Archivdaten fÃ¼llen, die Ã¼bertragen werden sollen, der EAO Datensatz wird nicht mehr gespeichert
 						while ((currentArchiveData.getDataType() != DataState.END_OF_ARCHIVE) && (_cancel == false)) {
-							// Der Datenindex des Datensatzes aus der Archivantwort muss immer größer sein, als der der in _lastReceivedDataSet
-							// gespeichert wurde. Somit werden automatisch doppelte Datensätze rausgefilter, die in einer zweiten Archivantwort
-							// doppelt übertragen werden
+							// Der Datenindex des Datensatzes aus der Archivantwort muss immer grÃ¶ÃŸer sein, als der der in _lastReceivedDataSet
+							// gespeichert wurde. Somit werden automatisch doppelte DatensÃ¤tze rausgefilter, die in einer zweiten Archivantwort
+							// doppelt Ã¼bertragen werden
 
 							if (currentArchiveData.getDataIndex() > _lastReceivedDataSet.getDataIndex()) {
-								// Der Datensatz wurde noch nicht übertragen
+								// Der Datensatz wurde noch nicht Ã¼bertragen
 								archiveDataList.add(currentArchiveData);
 							}
-							// Den nächsten Archivdatensatz anfordern
+							// Den nÃ¤chsten Archivdatensatz anfordern
 							currentArchiveData = currentStream.take();
 
 							
@@ -643,8 +649,8 @@ public class SubscriptionArchiveOnlineDataManager {
 
 						// Es wurden alle Archivdaten, ausser dem EOA ausgelesen. War der letzte Archivdatensatz gleich
 						// der erste Onlinedatensatz, der empfangen wurde.
-						// Wenn ja, dann sind alle Archivdaten vorhanden, die vor die Onlinedaten gemischt werden müssen.
-						// Wenn nicht, dann müssen erneut Archivdaten angefordert werden, dies geschieht, in dem die while-Schleife
+						// Wenn ja, dann sind alle Archivdaten vorhanden, die vor die Onlinedaten gemischt werden mÃ¼ssen.
+						// Wenn nicht, dann mÃ¼ssen erneut Archivdaten angefordert werden, dies geschieht, in dem die while-Schleife
 						// erneut durchlaufen wird. Es kann auch passieren, dass das Archivsystem einen alten Archivdatensatz
 						// verschickt + EOA, dies geschieht, wenn das Archivsystem einfach noch keine neuen Daten besitzt, auch
 						// dann wird durch erneutes durchlaufen der while-Schleife Archivdaten angefordert.
@@ -660,8 +666,8 @@ public class SubscriptionArchiveOnlineDataManager {
 							final ArchiveData lastArchiveDataSet = archiveDataList.get(archiveDataList.size() - 1);
 
 							if (lastArchiveDataSet.getDataIndex() == _firstOnlineDataSet.getDataIndex()) {
-								// Der Datenindex stimmt überein, also sind alle Archivdaten vorhanden.
-								// Der letzte Archivdatensatz in der Liste wird gelöscht, da dieser
+								// Der Datenindex stimmt Ã¼berein, also sind alle Archivdaten vorhanden.
+								// Der letzte Archivdatensatz in der Liste wird gelÃ¶scht, da dieser
 								// ebenfalls als Onlinedatensatz vorhanden ist
 								archiveDataList.remove(archiveDataList.size() - 1);
 
@@ -671,19 +677,19 @@ public class SubscriptionArchiveOnlineDataManager {
 								allPossibleArchiveDataReceived = true;
 
 								final ArchiveData archiveDataArray[] = (ArchiveData[]) archiveDataList.toArray(new ArchiveData[archiveDataList.size()]);
-								// Archivdaten verschicken, als nächstes muss der Puffer der Onlinedaten übertragen werden
+								// Archivdaten verschicken, als nÃ¤chstes muss der Puffer der Onlinedaten Ã¼bertragen werden
 								_receiver.sendData(archiveDataArray);
 							} else {
 								// Es wurden brauchbare Archivdaten empfangen, aber es fehle noch welche
 								_archiveDataSend = true;
 
-								// Es können alle Daten übertragen werden, aber es fehlen noch welche
+								// Es kÃ¶nnen alle Daten Ã¼bertragen werden, aber es fehlen noch welche
 								final ArchiveData archiveDataArray[] = (ArchiveData[]) archiveDataList.toArray(new ArchiveData[archiveDataList.size()]);
 								_lastReceivedDataSet = archiveDataArray[archiveDataArray.length - 1];
 								_receiver.sendData(archiveDataArray);
 
 								// Jetzt wird die while-Schleife erneut durchlaufen, aber diesmal steht ein "letzter Datensatz"
-								// aus einer Archivanfrage zur Verfügung, dieser wird benutzt um die neue Archivanfrage anzupassen
+								// aus einer Archivanfrage zur VerfÃ¼gung, dieser wird benutzt um die neue Archivanfrage anzupassen
 							}
 						} else {
 							if (!_archiveDataSend) {
@@ -691,7 +697,7 @@ public class SubscriptionArchiveOnlineDataManager {
 								// Die gepufferten Onlinedaten verschicken
 								allPossibleArchiveDataReceived = true;
 
-								// Der Else-Zweig dieser IF-Abrage würde bedeuten:
+								// Der Else-Zweig dieser IF-Abrage wÃ¼rde bedeuten:
 								// Es wurden schon einmal Archivdaten empfangen diesmal nur bekannter Datensatz + EAO, also noch einmal fragen, es fehlen noch
 								// Daten und das geschieht von alleine.
 							}
@@ -699,35 +705,35 @@ public class SubscriptionArchiveOnlineDataManager {
 
 					} else {
 						// Die Archivanfrage konnte nicht beantwortet werden, also gibt es keine Archivdaten, der Onlinestrom
-						// wird übergeben
+						// wird Ã¼bergeben
 						allPossibleArchiveDataReceived = true;
 					}
 				} catch (InterruptedException e) {
 					
 					_debug.warning("Fehler bei der Archivanfrage, es wird nur der Onlinestrom durchgereicht, da es Aufgrund des Fehlers keine Archivdaten gibt: ", e);
-					// Nur die Onlinedaten übertagen
+					// Nur die Onlinedaten Ã¼bertagen
 					break;
 				} catch (IOException e) {
 					e.printStackTrace();
 					_debug.warning("Unbekannter IO-Fehler, es werden nur der Onlinestrom angezeigt", e);
 					break;
 				}
-			} // while, die die Archivdaten überträgt
+			} // while, die die Archivdaten Ã¼bertrÃ¤gt
 
-			// Es wurden alle Archivdaten übertragen oder die Übertragung wurde abgebrochen
+			// Es wurden alle Archivdaten Ã¼bertragen oder die Ãœbertragung wurde abgebrochen
 
 			if (_cancel == false) {
-				// Es wurden alle Daten übertragen und nicht abgebrochen4, also ganz normal weiter
-				// Diese Synchronisation blockiert die update-Methode, also kann der Puffer für Onlinedatensätze
-				// übertragen werden. Falls ein Thread in der update-Methode blockiert, wird dieser sobald er
-				// nicht mehr blockiert ist, die Datensätze direkt durchschleusen ohne sie in den Puffer zu schreiben.
+				// Es wurden alle Daten Ã¼bertragen und nicht abgebrochen4, also ganz normal weiter
+				// Diese Synchronisation blockiert die update-Methode, also kann der Puffer fÃ¼r OnlinedatensÃ¤tze
+				// Ã¼bertragen werden. Falls ein Thread in der update-Methode blockiert, wird dieser sobald er
+				// nicht mehr blockiert ist, die DatensÃ¤tze direkt durchschleusen ohne sie in den Puffer zu schreiben.
 				synchronized (dataReceivedLockObject) {
-					// Den Onlinepuffer übertragen
+					// Den Onlinepuffer Ã¼bertragen
 					_receiver.sendOnlineBuffer();
 				}
 			}
 		}
-		// Alle Archivdaten übertragen, Onlinepuffer übertragen, der Thread kann sich beenden
+		// Alle Archivdaten Ã¼bertragen, Onlinepuffer Ã¼bertragen, der Thread kann sich beenden
 
 		/**
 		 * Wird aufgerufen, wenn der Thread gestoppt werden soll, weil die Archivdaten nicht mehr gebraucht werden
@@ -738,7 +744,7 @@ public class SubscriptionArchiveOnlineDataManager {
 	}
 
 	/**
-	 * Stellt ein Objekt für eine HashMap zur Verfügung
+	 * Stellt ein Objekt fÃ¼r eine HashMap zur VerfÃ¼gung
 	 */
 	private final static class ReceiverKey {
 		private final DatasetReceiverInterface _receiver;

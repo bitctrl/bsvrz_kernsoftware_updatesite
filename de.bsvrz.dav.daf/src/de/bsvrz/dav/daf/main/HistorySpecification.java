@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main;
@@ -25,14 +31,14 @@ package de.bsvrz.dav.daf.main;
  * Diese Klasse dient zur Angabe von Parametern bei der Abfrage von historischen Daten mit der Methode {@link ClientDavInterface#getCachedData}.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5055 $
+ * @version $Revision$
  */
 public class HistorySpecification {
 
 	/** Typ der Anfrage */
 	private byte _type;
 
-	/** Anzahl zu lesender Datensätze. */
+	/** Anzahl zu lesender DatensÃ¤tze. */
 	private int _count;
 
 	/** Startszeit des Zeitintervalls */
@@ -53,34 +59,34 @@ public class HistorySpecification {
 	}
 
 	/**
-	 * Bestimmt, ob diese Spezifikation über die Anzahl gewünschter Datensätze definiert wurde.
+	 * Bestimmt, ob diese Spezifikation Ã¼ber die Anzahl gewÃ¼nschter DatensÃ¤tze definiert wurde.
 	 *
-	 * @return <code>true</code> falls diese Spezifikation über die Anzahl definiert wurde, sonst <code>false</code>.
+	 * @return <code>true</code> falls diese Spezifikation Ã¼ber die Anzahl definiert wurde, sonst <code>false</code>.
 	 */
 	public final boolean isCountSpecification() {
 		return _type == 0;
 	}
 
 	/**
-	 * Bestimmt, ob diese Spezifikation über einen Zeitbereich definiert wurde.
+	 * Bestimmt, ob diese Spezifikation Ã¼ber einen Zeitbereich definiert wurde.
 	 *
-	 * @return <code>true</code> falls diese Spezifikation über einen Zeitbereich definiert wurde, sonst <code>false</code>.
+	 * @return <code>true</code> falls diese Spezifikation Ã¼ber einen Zeitbereich definiert wurde, sonst <code>false</code>.
 	 */
 	public final boolean isTimeSpecification() {
 		return _type == 1;
 	}
 
 	/**
-	 * Liefert die spezifizierte Anzahl gewünschter Datensätze zurück.
+	 * Liefert die spezifizierte Anzahl gewÃ¼nschter DatensÃ¤tze zurÃ¼ck.
 	 *
-	 * @return Anzahl gewünschter Datensätze.
+	 * @return Anzahl gewÃ¼nschter DatensÃ¤tze.
 	 */
 	public final int getCount() {
 		return _count;
 	}
 
 	/**
-	 * Liefert den Anfang des spezifierten Zeitbereichs zurück.
+	 * Liefert den Anfang des spezifierten Zeitbereichs zurÃ¼ck.
 	 *
 	 * @return Anfang des spezifierten Zeitbereichs in Millisekunden seit 1970.
 	 */
@@ -89,7 +95,7 @@ public class HistorySpecification {
 	}
 
 	/**
-	 * Liefert das Ende des spezifierten Zeitbereichs zurück.
+	 * Liefert das Ende des spezifierten Zeitbereichs zurÃ¼ck.
 	 *
 	 * @return Ende des spezifierten Zeitbereichs in Millisekunden seit 1970.
 	 */
@@ -107,9 +113,9 @@ public class HistorySpecification {
 	}
 
 	/**
-	 * Erzeugt ein neues Parameterobjekt zur Abfrage der letzten historischen Datensätze mit Angabe der Anzahl zu lesender Datensätze.
+	 * Erzeugt ein neues Parameterobjekt zur Abfrage der letzten historischen DatensÃ¤tze mit Angabe der Anzahl zu lesender DatensÃ¤tze.
 	 *
-	 * @param count Anzahl zu lesender Datensätze.
+	 * @param count Anzahl zu lesender DatensÃ¤tze.
 	 *
 	 * @return Parameterobjekt zur Abfrage von historischen Daten.
 	 */
@@ -118,9 +124,9 @@ public class HistorySpecification {
 	}
 
 	/**
-	 * Erzeugt ein neues Parameterobjekt zur Abfrage des zu einem bestimmten Zeitpunkt gültigen Datensatzes.
+	 * Erzeugt ein neues Parameterobjekt zur Abfrage des zu einem bestimmten Zeitpunkt gÃ¼ltigen Datensatzes.
 	 *
-	 * @param time Zeitpunkt, an dem der gewünschte Datensatz gültig war, in Millisekunden seit 1970.
+	 * @param time Zeitpunkt, an dem der gewÃ¼nschte Datensatz gÃ¼ltig war, in Millisekunden seit 1970.
 	 *
 	 * @return Parameterobjekt zur Abfrage von historischen Daten
 	 */
@@ -129,7 +135,7 @@ public class HistorySpecification {
 	}
 
 	/**
-	 * Erzeugt ein neues Parameterobjekt zur Abfrage der in einem bestimmten Zeitbereich gültigen Datensätze.
+	 * Erzeugt ein neues Parameterobjekt zur Abfrage der in einem bestimmten Zeitbereich gÃ¼ltigen DatensÃ¤tze.
 	 *
 	 * @param fromTime Anfangszeitpunkt des Zeitbereichs in Millisekunden seit 1970.
 	 * @param toTime   Endezeitpunkt des Zeitbereichs in Millisekunden seit 1970.
@@ -141,7 +147,7 @@ public class HistorySpecification {
 	}
 
 	/**
-	 * Erzeugt ein neues Parameterobjekt zur Abfrage der Datensätze in einem Zeitbereich beginnend bei einem angegebenen Zeitpunkt bis zum aktuellen Zeitpunkt.
+	 * Erzeugt ein neues Parameterobjekt zur Abfrage der DatensÃ¤tze in einem Zeitbereich beginnend bei einem angegebenen Zeitpunkt bis zum aktuellen Zeitpunkt.
 	 *
 	 * @param time Anfangszeitpunkt des Zeitbereichs in Millisekunden seit 1970.
 	 *
@@ -152,7 +158,7 @@ public class HistorySpecification {
 	}
 
 	/**
-	 * Erzeugt ein neues Parameterobjekt zur Abfrage der Datensätze in einem Zeitbereich, der über eine spezifizierte Zeitdauer in der unmittelbaren Vergangenheit
+	 * Erzeugt ein neues Parameterobjekt zur Abfrage der DatensÃ¤tze in einem Zeitbereich, der Ã¼ber eine spezifizierte Zeitdauer in der unmittelbaren Vergangenheit
 	 * bis zum aktuellen Zeitpunkt definiert ist.
 	 *
 	 * @param time Dauer des Zeitbereichs in Millisekunden.

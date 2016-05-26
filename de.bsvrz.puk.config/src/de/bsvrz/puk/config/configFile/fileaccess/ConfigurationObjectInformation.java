@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.fileaccess;
@@ -32,14 +38,14 @@ import java.util.*;
 import java.util.zip.InflaterInputStream;
 
 /**
- * Dieses Objekt stellt alle Informationen zur Verfügung, die für ein Konfigurationsobjekt relevant sind. Die Methoden sind Thread-sicher. <br>
- * <p/>
- * Falls das Objekt in eine Datei geschrieben werden soll, sollte das Objekt zum synchronisieren benutzt werden. Dies verhindert, dass sich das Objekt während
- * des Schreibvorgangs verändert, lesende Zugriffe sind weiterhin möglich.
+ * Dieses Objekt stellt alle Informationen zur VerfÃ¼gung, die fÃ¼r ein Konfigurationsobjekt relevant sind. Die Methoden sind Thread-sicher. <br>
+ * <p>
+ * Falls das Objekt in eine Datei geschrieben werden soll, sollte das Objekt zum synchronisieren benutzt werden. Dies verhindert, dass sich das Objekt wÃ¤hrend
+ * des Schreibvorgangs verÃ¤ndert, lesende Zugriffe sind weiterhin mÃ¶glich.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 13170 $ / $Date: 2015-02-10 19:36:53 +0100 (Tue, 10 Feb 2015) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigurationObjectInformation extends SystemObjectInformation implements ConfigurationObjectInfo {
 
@@ -48,7 +54,7 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 	private short _firstInvalidVersion = 0;
 
 	/**
-	 * Speichert alle Mengen, die zu diesem Objekt gehören. Als Schlüssel dient die Id der Menge. Als value wird eine Menge zurückgegeben. In dieser Menge sind
+	 * Speichert alle Mengen, die zu diesem Objekt gehÃ¶ren. Als SchlÃ¼ssel dient die Id der Menge. Als value wird eine Menge zurÃ¼ckgegeben. In dieser Menge sind
 	 * alle Objekte gespeichert, die sich in der Menge befinden.
 	 */
 	private final Map<Long, Set<Long>> _sets = new HashMap<Long, Set<Long>>();
@@ -58,21 +64,21 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 	/** Speichert die letzte abselute Position ab, an der das Objekt gespeichert wurde. */
 	private FilePointer _lastFilePosition = null;
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	/**
-	 * Der Zeitpunkt, wann das Objekt ungültig wird, wird automatisch auf 0 gesetzt
+	 * Der Zeitpunkt, wann das Objekt ungÃ¼ltig wird, wird automatisch auf 0 gesetzt
 	 *
 	 * @param configAreaFile    der Konfigurationsbereich
 	 * @param id                Id des Objekts
 	 * @param pid               Pid des Objekts
-	 * @param typeId            Typ des Objekts, dieser wird über die Id des Typs identifiziert
+	 * @param typeId            Typ des Objekts, dieser wird Ã¼ber die Id des Typs identifiziert
 	 * @param name              Name des Objekts, <code>null</code> wird als "" interpretiert
-	 * @param firstValidVersion Version, mit der das Objekt gütlig wird
-	 * @param saveModifications true = Das Objekt wird angelegt und in die Datei des Konfigurationsbereichs später gespeichert, werden Änderungen vorgenommen
-	 *                          (Datensätze geändert, usw), so werden die Änderungen gespeichert; false = Das Objekt wird angelegt und nicht gespeichert (beim
-	 *                          laden des Objekts aus der Datei wäre dies sinnvoll), acuh Modifikationen am Objekt werden nicht gespeichert, damit gespeichert wird
+	 * @param firstValidVersion Version, mit der das Objekt gÃ¼tlig wird
+	 * @param saveModifications true = Das Objekt wird angelegt und in die Datei des Konfigurationsbereichs spÃ¤ter gespeichert, werden Ã„nderungen vorgenommen
+	 *                          (DatensÃ¤tze geÃ¤ndert, usw), so werden die Ã„nderungen gespeichert; false = Das Objekt wird angelegt und nicht gespeichert (beim
+	 *                          laden des Objekts aus der Datei wÃ¤re dies sinnvoll), acuh Modifikationen am Objekt werden nicht gespeichert, damit gespeichert wird
 	 *                          muss {@link #saveObjectModifications} aufgerufen werden
 	 */
 	public ConfigurationObjectInformation(
@@ -84,14 +90,14 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 	/**
 	 * @param id                  Id des Objekts
 	 * @param pid                 Pid des Objekts
-	 * @param typeId              Typ des Objekts, dieser wird über die Id des Typs identifiziert
+	 * @param typeId              Typ des Objekts, dieser wird Ã¼ber die Id des Typs identifiziert
 	 * @param name                Name des Objekts, <code>null</code> wird als "" interpretiert
-	 * @param firstValidVersion   Version, mit der das Objekt gütlig wird
-	 * @param firstInvalidVersion Version, mit der das Objekt ungütlig wird
+	 * @param firstValidVersion   Version, mit der das Objekt gÃ¼tlig wird
+	 * @param firstInvalidVersion Version, mit der das Objekt ungÃ¼tlig wird
 	 * @param configAreaFile      der Konfigurationsbereich
-	 * @param saveModifications   true = Das Objekt wird angelegt und in die Datei des Konfigurationsbereichs später gespeichert, werden Änderungen vorgenommen
-	 *                            (Datensätze geändert, usw), so werden die Änderungen gespeichert; false = Das Objekt wird angelegt und nicht gespeichert (beim
-	 *                            laden des Objekts aus der Datei wäre dies sinnvoll), acuh Modifikationen am Objekt werden nicht gespeichert, damit gespeichert
+	 * @param saveModifications   true = Das Objekt wird angelegt und in die Datei des Konfigurationsbereichs spÃ¤ter gespeichert, werden Ã„nderungen vorgenommen
+	 *                            (DatensÃ¤tze geÃ¤ndert, usw), so werden die Ã„nderungen gespeichert; false = Das Objekt wird angelegt und nicht gespeichert (beim
+	 *                            laden des Objekts aus der Datei wÃ¤re dies sinnvoll), acuh Modifikationen am Objekt werden nicht gespeichert, damit gespeichert
 	 *                            wird muss {@link #saveObjectModifications} aufgerufen werden
 	 */
 	public ConfigurationObjectInformation(
@@ -158,29 +164,29 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 			}
 //				final String name = readString(deserializer);
 
-			// Es stehen nun alle Informationen zur Verfügung, um ein Objekt zu erzeugen.
-			// An dieses Objekt werden dann alle Mengen hinzugefügt.
+			// Es stehen nun alle Informationen zur VerfÃ¼gung, um ein Objekt zu erzeugen.
+			// An dieses Objekt werden dann alle Mengen hinzugefÃ¼gt.
 			final ConfigurationObjectInformation newConfObject = new ConfigurationObjectInformation(
 					id, pid, typeId, name, firstValid, firstInvalid, configAreaFile, false
 			);
 			// Am Objekt speichern, wo es in der Datei zu finden ist
 			newConfObject.setLastFilePosition(FilePointer.fromAbsolutePosition(filePosition, configAreaFile));
 
-			// konfigurierende Datensätze einlesen und direkt an dem Objekt hinzufügen
+			// konfigurierende DatensÃ¤tze einlesen und direkt an dem Objekt hinzufÃ¼gen
 
-			// Menge der konfigurierenden Datensätze
+			// Menge der konfigurierenden DatensÃ¤tze
 			final int numberOfConfigurationData = deserializer.readInt();
 			for(int nr = 0; nr < numberOfConfigurationData; nr++) {
 				// ATG-Verwendung einlesen
 				final long atgUseId = deserializer.readLong();
-				// Länge der Daten
+				// LÃ¤nge der Daten
 				final int sizeOfData = deserializer.readInt();
 				final byte[] data = deserializer.readBytes(sizeOfData);
 				newConfObject.setConfigurationData(atgUseId, data);
 			}
 
-			// alle Daten einlesen, die spezifisch für ein Konfigurationsobjekt sind und
-			// direkt am Objekt hinzufügen
+			// alle Daten einlesen, die spezifisch fÃ¼r ein Konfigurationsobjekt sind und
+			// direkt am Objekt hinzufÃ¼gen
 
 			// Anzahl Mengen am Objekt
 			final short numberOfSets = deserializer.readShort();
@@ -199,7 +205,7 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 				}
 			}
 
-			// Das Objekt wurde geladen, also können ab jetzt alle Änderungen gespeichert werden
+			// Das Objekt wurde geladen, also kÃ¶nnen ab jetzt alle Ã„nderungen gespeichert werden
 			newConfObject.saveObjectModifications();
 			return newConfObject;
 		}
@@ -213,40 +219,40 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 	}
 
 	/**
-	 * Gibt die Version zurück, mit der das Objekt ungültig wird. Der Zugriff ist synchonisiert, weil zum Zeitpunkt des Zugriffs, das Objekt gerade gesetzt werden
-	 * könnte.
+	 * Gibt die Version zurÃ¼ck, mit der das Objekt ungÃ¼ltig wird. Der Zugriff ist synchonisiert, weil zum Zeitpunkt des Zugriffs, das Objekt gerade gesetzt werden
+	 * kÃ¶nnte.
 	 *
-	 * @return Version, mit der das Objekt ungültig wird
+	 * @return Version, mit der das Objekt ungÃ¼ltig wird
 	 */
 	public synchronized short getFirstInvalidVersion() {
 		return _firstInvalidVersion;
 	}
 
 	/**
-	 * Das Konfigurationsobjekt wird mit der nächsten Version des Konfigurationsbereichs ungültig. Diese Objekte müssen nicht sofort gespeichert werden, da sie bis
+	 * Das Konfigurationsobjekt wird mit der nÃ¤chsten Version des Konfigurationsbereichs ungÃ¼ltig. Diese Objekte mÃ¼ssen nicht sofort gespeichert werden, da sie bis
 	 * zum beenden der Konfiguration im Speicher bleiben.
-	 * <p/>
-	 * War das Objekt noch nicht gültig, so wird es direkt gelöscht.
+	 * <p>
+	 * War das Objekt noch nicht gÃ¼ltig, so wird es direkt gelÃ¶scht.
 	 *
 	 * @see #revalidate
 	 */
 	public synchronized void invalidate() {
 
-		// Nur wenn das Objekt noch gültig ist, kann es auf ungültig gesetzt werden. Ohne diese Abfrage werden auch Objekte im nGa-Bereich
-		// fälschlicherweise als Lücke deklariert.
+		// Nur wenn das Objekt noch gÃ¼ltig ist, kann es auf ungÃ¼ltig gesetzt werden. Ohne diese Abfrage werden auch Objekte im nGa-Bereich
+		// fÃ¤lschlicherweise als LÃ¼cke deklariert.
 		if(_firstInvalidVersion == 0) {
-			// Das Objekt wird in der Version ungültig in der es auch gültig werden würde -> Es kann gelöscht werden.
+			// Das Objekt wird in der Version ungÃ¼ltig in der es auch gÃ¼ltig werden wÃ¼rde -> Es kann gelÃ¶scht werden.
 			// Es kann also gar nicht aktiviert werden.
 			if(_firstValidVersion == _configAreaFile.getNextActiveVersion()) {
 				_debug.fine(
-						"Das Objekt Id" + super.getID() + " wird gelöscht, Version mit der das Objekt gültig werden sollte " + _firstValidVersion
+						"Das Objekt Id" + super.getID() + " wird gelÃ¶scht, Version mit der das Objekt gÃ¼ltig werden sollte " + _firstValidVersion
 						+ " aktive Version des Konfigurationsbereichs " + _configAreaFile.getNextActiveVersion()
 				);
 
-				// Das Objekt kann sich noch im Puffer befinden, dort muss es vorher entfernt werden. Sonst wird es beim nächsten flush wieder geschrieben
+				// Das Objekt kann sich noch im Puffer befinden, dort muss es vorher entfernt werden. Sonst wird es beim nÃ¤chsten flush wieder geschrieben
 				_configAreaFile.dontSaveObject(this);
 
-				// Das Objekt wird als Lücke erklärt und somit gelöscht
+				// Das Objekt wird als LÃ¼cke erklÃ¤rt und somit gelÃ¶scht
 				_configAreaFile.declareObjectAsAGap(_lastFilePosition);
 				_configAreaFile.removeNewObject(this);
 			}
@@ -261,15 +267,15 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 	}
 
 	/**
-	 * Solange der Konfigurationsbereich noch nicht in eine neue Version überführt wurde, kann ein Konfigurationsobjekt, welches auf ungültig gesetzt wurde, mit
-	 * dieser Methode wieder auf gültig gesetzt werden.
+	 * Solange der Konfigurationsbereich noch nicht in eine neue Version Ã¼berfÃ¼hrt wurde, kann ein Konfigurationsobjekt, welches auf ungÃ¼ltig gesetzt wurde, mit
+	 * dieser Methode wieder auf gÃ¼ltig gesetzt werden.
 	 *
 	 * @see #invalidate
 	 */
 	public synchronized void revalidate() {
-		// Diese Methode darf nur dann aufgerufen werden, wenn sich das Objekt nicht in einem nGa-Bereich befindet. Dies kann aber hier nicht geprüft werden
+		// Diese Methode darf nur dann aufgerufen werden, wenn sich das Objekt nicht in einem nGa-Bereich befindet. Dies kann aber hier nicht geprÃ¼ft werden
 		// und muss von der Klasse erledigt werden, die diese Methode aufruft.
-		// if (_firstInvalidVersion > 0 && _configAreaFile.getActiveVersion() >= _firstInvalidVersion) throw new IllegalStateException("Objekt kann nicht wieder auf gültig gesetzt werden, da der Konfigurationsbereich bereits in einer neuen Version läuft.");
+		// if (_firstInvalidVersion > 0 && _configAreaFile.getActiveVersion() >= _firstInvalidVersion) throw new IllegalStateException("Objekt kann nicht wieder auf gÃ¼ltig gesetzt werden, da der Konfigurationsbereich bereits in einer neuen Version lÃ¤uft.");
 		_firstInvalidVersion = 0;
 		if(_saveModifications) {
 			_configAreaFile.objectModified(this);
@@ -293,7 +299,7 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 	}
 
 	public synchronized void addObjectSetId(long setId) throws IllegalStateException {
-		// Die Methode wird zum einlesen der Sets aus der Datei benötigt. Aus diesem Grund muss nicht geprüft werden, ob das Objekt noch gültig ist.
+		// Die Methode wird zum einlesen der Sets aus der Datei benÃ¶tigt. Aus diesem Grund muss nicht geprÃ¼ft werden, ob das Objekt noch gÃ¼ltig ist.
 		synchronized(_sets) {
 			if(!_sets.containsKey(setId)) {
 				// Menge erzeugen, die Objekte der Menge aufnehmen kann
@@ -304,7 +310,7 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 				// Die Menge wurde bereits angelegt
 				throw new IllegalStateException(
 						"Die Menge mit der Id " + setId + " kann nicht am Konfigurationsobjekt mit der Id " + getID()
-						+ " hinzugefügt werden, da diese Menge bereits am Objekt vorhanden ist."
+						+ " hinzugefÃ¼gt werden, da diese Menge bereits am Objekt vorhanden ist."
 				);
 			}
 		}
@@ -326,7 +332,7 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 
 		synchronized(setObjects) {
 			final Long objectsLong[] = (Long[])setObjects.toArray(new Long[setObjects.size()]);
-			// long Array, dies ist die Rückgabe
+			// long Array, dies ist die RÃ¼ckgabe
 			final long objectslong[] = new long[objectsLong.length];
 			for(int nr = 0; nr < objectsLong.length; nr++) {
 				objectslong[nr] = objectsLong[nr].longValue();
@@ -336,7 +342,7 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 	}
 
 	public synchronized void addObjectSetObject(long setId, long objectId) throws IllegalArgumentException, IllegalStateException {
-		// Die Methode wird zum einlesen der Sets aus der Datei benötigt. Aus diesem Grund muss nicht geprüft werden, ob das Objekt noch gültig ist.
+		// Die Methode wird zum einlesen der Sets aus der Datei benÃ¶tigt. Aus diesem Grund muss nicht geprÃ¼ft werden, ob das Objekt noch gÃ¼ltig ist.
 		final Set setObjects;
 		synchronized(_sets) {
 			if(_sets.containsKey(setId)) {
@@ -349,7 +355,7 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 			}
 		}
 
-		// Das Objekt hinzufügen
+		// Das Objekt hinzufÃ¼gen
 		synchronized(setObjects) {
 			if(!setObjects.contains(objectId)) {
 				// Das Objekt ist noch nicht in der Menge
@@ -357,7 +363,7 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 			}
 			else {
 				throw new IllegalStateException(
-						"Die Menge mit der Id " + setId + " enthält das Objekt mit der Id " + objectId + " bereits, Id des betroffenen Konfigurationsobjekts"
+						"Die Menge mit der Id " + setId + " enthÃ¤lt das Objekt mit der Id " + objectId + " bereits, Id des betroffenen Konfigurationsobjekts"
 						+ getID()
 				);
 			}
@@ -384,8 +390,8 @@ public class ConfigurationObjectInformation extends SystemObjectInformation impl
 		final StringBuffer out = new StringBuffer();
 		out.append("Konfigurationsobjekt: " + "\n");
 		out.append(super.toString());
-		out.append("nicht mehr gültig ab Version: " + getFirstInvalidVersion() + "\n");
-		out.append("gültig ab Version: " + getFirstValidVersion() + "\n");
+		out.append("nicht mehr gÃ¼ltig ab Version: " + getFirstInvalidVersion() + "\n");
+		out.append("gÃ¼ltig ab Version: " + getFirstValidVersion() + "\n");
 
 		// Alle Mengen und deren Objekte einlesen
 		final long[] objectSetIds = getObjectSetIds();

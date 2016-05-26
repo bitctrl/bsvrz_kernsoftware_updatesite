@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel.telegrams;
@@ -28,10 +34,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Die Applikation meldet Daten, f¸r die sie als Quelle oder Sender angemeldet war (siehe  Sendeanmeldung ), wieder ab.
+ * Die Applikation meldet Daten, f√ºr die sie als Quelle oder Sender angemeldet war (siehe  Sendeanmeldung ), wieder ab.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
+ * @version $Revision$
  */
 public class ReceiveUnsubscriptionTelegram extends DataTelegram {
 
@@ -85,7 +91,7 @@ public class ReceiveUnsubscriptionTelegram extends DataTelegram {
 		unsubscription.read(in);
 		length = 14;
 		if(length != _length) {
-			throw new IOException("Falsche Telegramml‰nge");
+			throw new IOException("Falsche Telegramml√§nge");
 		}
 	}
 }

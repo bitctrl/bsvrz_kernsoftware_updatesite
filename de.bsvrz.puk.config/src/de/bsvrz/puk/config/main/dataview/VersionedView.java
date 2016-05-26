@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main.dataview;
@@ -28,23 +34,23 @@ import de.bsvrz.sys.funclib.debug.Debug;
 import java.util.*;
 
 /**
- * Klasse zum Zugriff auf Konfigurationdaten, bei der für jeden Konfigurationsbereich eine bestimmte vorgegebene Version berücksichtigt wird.
+ * Klasse zum Zugriff auf Konfigurationdaten, bei der fÃ¼r jeden Konfigurationsbereich eine bestimmte vorgegebene Version berÃ¼cksichtigt wird.
  * Beim Erzeugen des Objekts wird dem Konstruktor mitgeteilt, welcher Konfigurationsbereich in welcher Version zu betrachten ist.
- * Alle Abfragemethoden berücksichtigen dann die angegebenen Versionen.
+ * Alle Abfragemethoden berÃ¼cksichtigen dann die angegebenen Versionen.
  *
  * @author Kappich Systemberatung
  * @version $Revision: 0 $
  */
 public class VersionedView implements ObjectLookup {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	private DataModel _dataModel;
 
 	private Map<ConfigurationArea, Short> _configurationAreaVersions;
 
-	/** Map der aktuell noch nicht gültigen Objekte, die aber in der durch den View zu betrachtenden Version gültig werden. Schlüssel ist die Pid des Objekts. */
+	/** Map der aktuell noch nicht gÃ¼ltigen Objekte, die aber in der durch den View zu betrachtenden Version gÃ¼ltig werden. SchlÃ¼ssel ist die Pid des Objekts. */
 	private Map<String,SystemObject> _newlyActiveObjects = null;
 
 	public VersionedView(final DataModel dataModel, final Map<ConfigurationArea, Short> configurationAreaVersions) {
@@ -54,13 +60,13 @@ public class VersionedView implements ObjectLookup {
 
 	/**
 	 * Bestimmt, ob das angegebene System-Objekt ein Element des angegebenen Typs ist. Ein System-Objekt ist Element des Typs, wenn der Typ des Objekts mit
-	 * dem angegebenen Typ übereinstimmt oder diesen erweitert.
+	 * dem angegebenen Typ Ã¼bereinstimmt oder diesen erweitert.
 	 *
-	 * @param object Zu prüfendes Objekt.
-	 * @param ancestorType   Zu prüfender Typ.
+	 * @param object Zu prÃ¼fendes Objekt.
+	 * @param ancestorType   Zu prÃ¼fender Typ.
 	 *
-	 * @return <code>true</code>, wenn der übergebene Typ mit dem Typ des Objekts oder mit einem der direkten oder indirekten Vorgänger in der Vererbungshierarchie
-	 *         übereinstimmt; sonst <code>false</code>.
+	 * @return <code>true</code>, wenn der Ã¼bergebene Typ mit dem Typ des Objekts oder mit einem der direkten oder indirekten VorgÃ¤nger in der Vererbungshierarchie
+	 *         Ã¼bereinstimmt; sonst <code>false</code>.
 	 */
 	public boolean isOfType(SystemObject object, SystemObjectType ancestorType) {
 		final SystemObjectType objectType = object.getType();
@@ -69,12 +75,12 @@ public class VersionedView implements ObjectLookup {
 	}
 
 	/**
-	 * Prüft, ob der angegebene Typ <code>ancestorType</code> in der Typhierarchie oberhalb angegebenen Typs <code>derivedType</code> vorkommt.
+	 * PrÃ¼ft, ob der angegebene Typ <code>ancestorType</code> in der Typhierarchie oberhalb angegebenen Typs <code>derivedType</code> vorkommt.
 	 * Dies ist dann der Fall, wenn <code>derivedType</code> direkt oder indirekt <code>ancestorType</code> erweitert und damit dessen
 	 * Eigenschaften erbt.
 	 *
-	 * @param derivedType Zu prüfender abgeleiteter Typ
-	 * @param ancestorType        Zu prüfender übergeordneter Typ
+	 * @param derivedType Zu prÃ¼fender abgeleiteter Typ
+	 * @param ancestorType        Zu prÃ¼fender Ã¼bergeordneter Typ
 	 *
 	 * @return <code>true</code> wenn <code>derivedType</code> direkt oder indirekt <code>ancestorType</code> erweitert, sonst <code>false</code>.
 	 */
@@ -154,16 +160,16 @@ public class VersionedView implements ObjectLookup {
 		Short version = _configurationAreaVersions.get(configurationArea);
 		if(version != null) return version.shortValue();
 		// throw new IllegalStateException("Version des Konfigurationsbereichs " + object.getConfigurationArea().getPidOrNameOrId() + " nicht definiert");
-		// Falls in der Map ein Konfigurationsbereich nicht enthalten ist, dann wird die aktive Version des Bereichs zurückgegeben.
+		// Falls in der Map ein Konfigurationsbereich nicht enthalten ist, dann wird die aktive Version des Bereichs zurÃ¼ckgegeben.
 		return configurationArea.getActiveVersion();
 	}
 
 	/**
-	 * Liefert das System-Objekt mit der angegebenen PID zurück.
+	 * Liefert das System-Objekt mit der angegebenen PID zurÃ¼ck.
 	 *
 	 * @param pid Die permanente ID des System-Objekts
 	 *
-	 * @return Das gewünschte System-Objekt oder <code>null</code>, wenn es kein Objekt mit der angegebenen PID gibt.
+	 * @return Das gewÃ¼nschte System-Objekt oder <code>null</code>, wenn es kein Objekt mit der angegebenen PID gibt.
 	 *
 	 * @see de.bsvrz.dav.daf.main.config.DataModel
 	 */
@@ -218,11 +224,11 @@ public class VersionedView implements ObjectLookup {
 	}
 
 	/**
-	 * Liefert das System-Objekt mit der angegebenen Objekt-ID zurück.
+	 * Liefert das System-Objekt mit der angegebenen Objekt-ID zurÃ¼ck.
 	 *
 	 * @param id Die Objekt-ID des System-Objekts
 	 *
-	 * @return Das gewünschte System-Objekt oder <code>null</code>, wenn es kein Objekt mit der angegebenen ID gibt.
+	 * @return Das gewÃ¼nschte System-Objekt oder <code>null</code>, wenn es kein Objekt mit der angegebenen ID gibt.
 	 *
 	 * @see de.bsvrz.dav.daf.main.config.DataModel
 	 */

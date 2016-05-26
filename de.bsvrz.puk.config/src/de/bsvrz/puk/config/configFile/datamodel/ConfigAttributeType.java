@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2006 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -34,15 +40,15 @@ import de.bsvrz.sys.funclib.debug.Debug;
 import java.io.ByteArrayInputStream;
 
 /**
- * Implementierung des Interfaces für Attributtypen.
+ * Implementierung des Interfaces fÃ¼r Attributtypen.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
  * @author Roland Schmitz (rs), Kappich Systemberatung
- * @version $Revision: 8550 $ / $Date: 2011-01-06 10:48:12 +0100 (Thu, 06 Jan 2011) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigAttributeType extends ConfigConfigurationObject implements AttributeType {
 	/**
-	 * DebugLogger für Debug-Ausgaben
+	 * DebugLogger fÃ¼r Debug-Ausgaben
 	 */
 	private static final Debug _debug = Debug.getLogger();
 
@@ -52,10 +58,10 @@ public class ConfigAttributeType extends ConfigConfigurationObject implements At
 	private String _defaultAttributeValue;
 
 	/**
-	 * Konstruktor für Attributtypen.
+	 * Konstruktor fÃ¼r Attributtypen.
 	 *
 	 * @param configurationArea der Konfigurationsbereich dieses Attribut-Typs
-	 * @param systemObjectInfo  das korrespondierende Objekt für die Dateioperationen dieses Attribut-Typs
+	 * @param systemObjectInfo  das korrespondierende Objekt fÃ¼r die Dateioperationen dieses Attribut-Typs
 	 */
 	public ConfigAttributeType(ConfigurationArea configurationArea, SystemObjectInformationInterface systemObjectInfo) {
 		super(configurationArea, systemObjectInfo);
@@ -72,7 +78,7 @@ public class ConfigAttributeType extends ConfigConfigurationObject implements At
 	}
 
 	/**
-	 * Lädt den Default-Attributwert dieses Attributtyps aus einem konfigurierenden Datensatz.
+	 * LÃ¤dt den Default-Attributwert dieses Attributtyps aus einem konfigurierenden Datensatz.
 	 */
 	public synchronized void loadDefaultAttributeValue() {
 		try {
@@ -90,7 +96,7 @@ public class ConfigAttributeType extends ConfigConfigurationObject implements At
 
 				_defaultAttributeValue = deserializer.readString(32767);
 
-				in.close();	// Stream schließen
+				in.close();	// Stream schlieÃŸen
 			}
 		} catch (IllegalArgumentException e) {
 			// Datensatz nicht vorhanden
@@ -103,8 +109,8 @@ public class ConfigAttributeType extends ConfigConfigurationObject implements At
 	}
 
 	/**
-	 * Wird aufgerufen, wenn das Objekt verändert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zurücksetzen. Erbende Klassen müssen diese
-	 * Funktion überschreiben, wenn sie Daten cachen.
+	 * Wird aufgerufen, wenn das Objekt verÃ¤ndert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zurÃ¼cksetzen. Erbende Klassen mÃ¼ssen diese
+	 * Funktion Ã¼berschreiben, wenn sie Daten cachen.
 	 */
 	@Override
 	synchronized void invalidateCache() {

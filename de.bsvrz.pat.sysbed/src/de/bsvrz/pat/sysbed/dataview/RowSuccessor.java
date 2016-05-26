@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.dataview;
@@ -24,18 +30,18 @@ package de.bsvrz.pat.sysbed.dataview;
 import java.util.*;
 
 /**
- * Diese Klasse wird von der Klasse {@link RowData} benötigt, um Arrays von Listen/Attributen speichern 
- * zu können. Ein Objekt dieses Typs entspricht einer Liste oder einem Attribut. Viele Objekte dieses 
+ * Diese Klasse wird von der Klasse {@link RowData} benÃ¶tigt, um Arrays von Listen/Attributen speichern 
+ * zu kÃ¶nnen. Ein Objekt dieses Typs entspricht einer Liste oder einem Attribut. Viele Objekte dieses 
  * Typs als Nachfolger einer RowData entsprechen einem Array von Listen oder einem Array von Attributen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8084 $
+ * @version $Revision$
  */
 public class RowSuccessor {
 
 	/** speichert alle Nachfolger */
 	private final List<RowData> _successors;
-	/** speichert den Schlüssel */
+	/** speichert den SchlÃ¼ssel */
 	private CellKey _key;
 
 	/* ################ Konstruktor ############ */
@@ -45,7 +51,7 @@ public class RowSuccessor {
 	}
 
 	/**
-	 * Fügt einen Nachfolger hinzu.
+	 * FÃ¼gt einen Nachfolger hinzu.
 	 *
 	 * @param rowData ein Nachfolger
 	 */
@@ -54,7 +60,7 @@ public class RowSuccessor {
 	}
 
 	/**
-	 * Gibt alle Nachfolger zurück.
+	 * Gibt alle Nachfolger zurÃ¼ck.
 	 *
 	 * @return alle Nachfolger
 	 */
@@ -63,9 +69,9 @@ public class RowSuccessor {
 	}
 
 	/**
-	 * Gibt den CellKey zurück.
+	 * Gibt den CellKey zurÃ¼ck.
 	 * 
-     * @return gibt den key zurück
+     * @return gibt den key zurÃ¼ck
      */
     public CellKey getKey() {
 	    return _key;

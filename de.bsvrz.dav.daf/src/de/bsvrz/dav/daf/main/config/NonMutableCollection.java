@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.config;
@@ -24,14 +30,14 @@ package de.bsvrz.dav.daf.main.config;
 import java.util.List;
 
 /**
- * Diese Schnittstelle definiert Methoden um auf Elemente von nicht online änderbaren Zusammenstellungen von
- * System-Objekten zugreifen zu können. Sie wird benutzt bei <ul> <li>{@link ObjectSet Mengen}, um auf die
- * Elemente einer Menge zugreifen zu können;</li> <li>{@link SystemObjectType Typen} um auf alle Objekte des
- * jeweiligen Typs zugreifen zu können;</li> </ul>
+ * Diese Schnittstelle definiert Methoden um auf Elemente von nicht online Ã¤nderbaren Zusammenstellungen von
+ * System-Objekten zugreifen zu kÃ¶nnen. Sie wird benutzt bei <ul> <li>{@link ObjectSet Mengen}, um auf die
+ * Elemente einer Menge zugreifen zu kÃ¶nnen;</li> <li>{@link SystemObjectType Typen} um auf alle Objekte des
+ * jeweiligen Typs zugreifen zu kÃ¶nnen;</li> </ul>
  *
  * @author Roland Schmitz (rs), Kappich Systemberatung
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 5052 $ / $Date: 2007-08-31 20:02:55 +0200 (Fri, 31 Aug 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public interface NonMutableCollection extends SystemObjectCollection {
 	/**
@@ -42,30 +48,30 @@ public interface NonMutableCollection extends SystemObjectCollection {
 	public List<SystemObject> getElementsInModifiableVersion();
 
 	/**
-	 * Bestimmt die in einer bestimmten Konfigurationsversion zur Zusammenstellung gehörenden Elemente.
+	 * Bestimmt die in einer bestimmten Konfigurationsversion zur Zusammenstellung gehÃ¶renden Elemente.
 	 *
 	 * @param version Version der Konfiguration
-	 * @return Liste mit den in der angegebenen Version zur Zusammenstellung gehörenden System-Objekten.
+	 * @return Liste mit den in der angegebenen Version zur Zusammenstellung gehÃ¶renden System-Objekten.
 	 */
 	public List<SystemObject> getElementsInVersion(short version);
 
 	/**
 	 * Bestimmt die Elemente, die in allen Konfigurationsversionen eines vorgegebenen Versionsbereichs zur
-	 * Zusammenstellung gehört haben.
+	 * Zusammenstellung gehÃ¶rt haben.
 	 *
 	 * @param fromVersion Erste Version des Bereichs von Konfigurationversionen
 	 * @param toVersion   Letzte Version des Bereichs von Konfigurationversionen
-	 * @return Liste mit den in allen Versionen des Bereichs zur Zusammenstellung gehörenden System-Objekten.
+	 * @return Liste mit den in allen Versionen des Bereichs zur Zusammenstellung gehÃ¶renden System-Objekten.
 	 */
 	public List<SystemObject> getElementsInAllVersions(short fromVersion, short toVersion);
 
 	/**
 	 * Bestimmt die Elemente, die in mindestens einer Konfigurationsversion eines vorgegebenen Versionsbereichs
-	 * zur Zusammenstellung gehört haben.
+	 * zur Zusammenstellung gehÃ¶rt haben.
 	 *
 	 * @param fromVersion Erste Version des Bereichs von Konfigurationversionen
 	 * @param toVersion   Letzte Version des Bereichs von Konfigurationversionen
-	 * @return Liste mit den in mindestens einer Version des Bereichs zur Zusammenstellung gehörenden
+	 * @return Liste mit den in mindestens einer Version des Bereichs zur Zusammenstellung gehÃ¶renden
 	 *         System-Objekten.
 	 */
 	public List<SystemObject> getElementsInAnyVersions(short fromVersion, short toVersion);

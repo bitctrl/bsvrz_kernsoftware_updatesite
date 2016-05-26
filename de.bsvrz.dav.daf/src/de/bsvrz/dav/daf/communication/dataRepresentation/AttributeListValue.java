@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.dataRepresentation;
@@ -38,14 +44,14 @@ import java.util.List;
  * TBD Beschreibung
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5622 $
+ * @version $Revision$
  */
 public class AttributeListValue extends AttributeBaseValue {
 
 	/** Die Attribute dieser Liste */
 	private AttributeBaseValue _attributes[];
 
-	/** Die L‰nge des Arrays, wenn <code>attribute</code> ein Array ist sonst 1 */
+	/** Die L√§nge des Arrays, wenn <code>attribute</code> ein Array ist sonst 1 */
 	private int _count = 0;
 
 	/**
@@ -75,20 +81,20 @@ public class AttributeListValue extends AttributeBaseValue {
 	}
 
 	/**
-	 * Gibt die L‰nge des Feldes mit den Attributen zur¸ck.
+	 * Gibt die L√§nge des Feldes mit den Attributen zur√ºck.
 	 *
-	 * @return L‰nge des Feldes
+	 * @return L√§nge des Feldes
 	 */
 	public final synchronized int getElementsCount() {
 		return _count;
 	}
 
 	/**
-	 * Diese Methode setzt die Grˆﬂe des Feldes mit den Attributen.
+	 * Diese Methode setzt die Gr√∂√üe des Feldes mit den Attributen.
 	 *
-	 * @param count L‰nge des Feldes
+	 * @param count L√§nge des Feldes
 	 *
-	 * @throws ConfigurationException, wenn Fehler bei Konfigurations‰nderungen auftreten
+	 * @throws ConfigurationException, wenn Fehler bei Konfigurations√§nderungen auftreten
 	 */
 	public final synchronized void setElementsCount(int count) throws ConfigurationException {
 		if(_attribute.isArray() && _attribute.isCountVariable() && (count > -1)) {
@@ -124,11 +130,11 @@ public class AttributeListValue extends AttributeBaseValue {
 	}
 
 	/**
-	 * Diese Methode gibt ein Feld mit den Basiswerten der Atrribute zur¸ck.
+	 * Diese Methode gibt ein Feld mit den Basiswerten der Atrribute zur√ºck.
 	 *
 	 * @return Feld mit den Basiswerten der Atrribute
 	 *
-	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationException , wenn Fehler bei Konfigurations‰nderungen auftreten
+	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationException , wenn Fehler bei Konfigurations√§nderungen auftreten
 	 */
 	public final synchronized AttributeBaseValue[] getAttributeBaseValues() throws ConfigurationException {
 		if(_attributes == null) {
@@ -183,7 +189,7 @@ public class AttributeListValue extends AttributeBaseValue {
 		}
 		if(_value instanceof AttributeListAttribute) {
 			if(_attribute.isArray()) {
-				throw new IllegalArgumentException("Kein zul‰ssiger Datensatz f¸r ein Attributlistenfeld");
+				throw new IllegalArgumentException("Kein zul√§ssiger Datensatz f√ºr ein Attributlistenfeld");
 			}
 			if(_attributes == null) {
 				getAttributeBaseValues();
@@ -199,7 +205,7 @@ public class AttributeListValue extends AttributeBaseValue {
 		}
 		else if(_value instanceof AttributeListArrayAttribute) {
 			if(!_attribute.isArray()) {
-				throw new IllegalArgumentException("Kein zul‰ssiger Datensatz f¸r eine Attributliste");
+				throw new IllegalArgumentException("Kein zul√§ssiger Datensatz f√ºr eine Attributliste");
 			}
 			if(_attribute.isCountLimited()) {
 				AttributeListAttribute attributeValues[] = (AttributeListAttribute[])_value.getValue();
@@ -253,7 +259,7 @@ public class AttributeListValue extends AttributeBaseValue {
 			}
 		}
 		else {
-			throw new IllegalArgumentException("Kein zul‰ssiger Datensatz f¸r eine Attributliste");
+			throw new IllegalArgumentException("Kein zul√§ssiger Datensatz f√ºr eine Attributliste");
 		}
 	}
 
@@ -317,7 +323,7 @@ public class AttributeListValue extends AttributeBaseValue {
 	}
 
 	/**
-	 * Gibt den HashKode zur¸ck
+	 * Gibt den HashKode zur√ºck
 	 *
 	 * @return Hashcode
 	 */

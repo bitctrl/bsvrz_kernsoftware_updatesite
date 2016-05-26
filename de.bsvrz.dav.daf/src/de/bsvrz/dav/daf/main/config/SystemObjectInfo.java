@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2004, 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2004, 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.config;
@@ -42,12 +48,12 @@ import java.util.regex.Pattern;
  * @author Roland Schmitz (rs), Kappich Systemberatung
  * @author Achim Wullenkord (aw), Kappich Systemberatung
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 5084 $ / $Date: 2007-09-03 10:42:50 +0200 (Mon, 03 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  * @see puk.configuration
  */
 public class SystemObjectInfo {
 	/**
-	 * DebugLogger für Debug-Ausgaben
+	 * DebugLogger fÃ¼r Debug-Ausgaben
 	 */
 	private static final Debug _debug = Debug.getLogger();
 
@@ -72,7 +78,7 @@ public class SystemObjectInfo {
 	private final String _descriptionAsXML;
 
 	/**
-	 * Objekt für die synchronisierte Umwandlung der Kurzinfo/Beschreibung vom XML-Format ins HTML-Format
+	 * Objekt fÃ¼r die synchronisierte Umwandlung der Kurzinfo/Beschreibung vom XML-Format ins HTML-Format
 	 */
 	private final Object _lock = new Object();
 
@@ -86,19 +92,19 @@ public class SystemObjectInfo {
 	 * Initialisiert ein neues Info-Objekt mit beschreibenden Informationen eines Systemobjekts.
 	 *
 	 * @param shortInfo   Kurze beschreibende Information des jeweiligen Systemobjekts.
-	 * @param description Ausführliche Beschreibung des jeweiligen Systemobjekts.
+	 * @param description AusfÃ¼hrliche Beschreibung des jeweiligen Systemobjekts.
 	 */
 	public SystemObjectInfo(String shortInfo, String description) {
-		// die XML-Version wird nur für die Versorgungsdateien im Export benötigt (also nur für interne Zwecke)
+		// die XML-Version wird nur fÃ¼r die Versorgungsdateien im Export benÃ¶tigt (also nur fÃ¼r interne Zwecke)
 		_shortInfoAsXML = shortInfo;
 		_descriptionAsXML = description;
 	}
 
 	/**
-	 * Lieferte eine kurze beschreibende Information des jeweiligen Systemobjekts zurück, die <code>HTML</code> konform ist.
+	 * Lieferte eine kurze beschreibende Information des jeweiligen Systemobjekts zurÃ¼ck, die <code>HTML</code> konform ist.
 	 *
-	 * @return <code>HTML</code> konformer Text, der die Kurzbeschreibung enthält. Ist keine Beschreibung vorhanden, wird ein leerer String <code>""</code>
-	 *         zurückgegeben.
+	 * @return <code>HTML</code> konformer Text, der die Kurzbeschreibung enthÃ¤lt. Ist keine Beschreibung vorhanden, wird ein leerer String <code>""</code>
+	 *         zurÃ¼ckgegeben.
 	 */
 	public String getShortInfo() {
 		if (_shortInfoAsHTML == null) {
@@ -116,10 +122,20 @@ public class SystemObjectInfo {
 	}
 
 	/**
-	 * Lieferte eine ausführliche Beschreibung des jeweiligen Systemobjekts zurück, die <code>HTML</code> konform ist.
+	 * Lieferte eine kurze beschreibende Information des jeweiligen Systemobjekts zurÃ¼ck, die in <code>Markdown</code> formatiert ist.
 	 *
-	 * @return <code>HTML</code> konformer Text, der die ausführliche Beschreibung enthält. Ist keine Beschreibung vorhanden, wird ein leerer String
-	 *         <code>""</code> zurückgegeben.
+	 * @return <code>Markdown</code> konformer Text, der die Kurzbeschreibung enthÃ¤lt. Ist keine Beschreibung vorhanden, wird ein leerer String <code>""</code>
+	 *         zurÃ¼ckgegeben.
+	 */
+	public String getShortInfoAsMarkdown() {
+		return getMarkdownText("<kurzinfo>" + _shortInfoAsXML + "</kurzinfo>");
+	}
+
+	/**
+	 * Lieferte eine ausfÃ¼hrliche Beschreibung des jeweiligen Systemobjekts zurÃ¼ck, die <code>HTML</code> konform ist.
+	 *
+	 * @return <code>HTML</code> konformer Text, der die ausfÃ¼hrliche Beschreibung enthÃ¤lt. Ist keine Beschreibung vorhanden, wird ein leerer String
+	 *         <code>""</code> zurÃ¼ckgegeben.
 	 */
 	public String getDescription() {
 		if (_descriptionAsHTML == null) {
@@ -137,7 +153,17 @@ public class SystemObjectInfo {
 	}
 
 	/**
-	 * Liefert die Kurzinformation des jeweiligen Systemobjekts zurück, wie sie in der Versorgungsdatei steht. Die Formatierung entspricht der K2S.DTD.
+	 * Lieferte eine ausfÃ¼hrliche Beschreibung des jeweiligen Systemobjekts zurÃ¼ck, die in <code>Markdown</code> formatiert ist.
+	 *
+	 * @return <code>Markdown</code> konformer Text, der die ausfÃ¼hrliche Beschreibung enthÃ¤lt. Ist keine Beschreibung vorhanden, wird ein leerer String
+	 *         <code>""</code> zurÃ¼ckgegeben.
+	 */
+	public String getDescriptionAsMarkdown() {
+		return getMarkdownText("<beschreibung>" + _descriptionAsXML + "</beschreibung>");
+	}
+
+	/**
+	 * Liefert die Kurzinformation des jeweiligen Systemobjekts zurÃ¼ck, wie sie in der Versorgungsdatei steht. Die Formatierung entspricht der K2S.DTD.
 	 *
 	 * @return Originaltext der Kurzinformation des jeweiligen Systemobjekts aus der Versorgungsdatei
 	 */
@@ -146,7 +172,7 @@ public class SystemObjectInfo {
 	}
 
 	/**
-	 * Liefert die ausführliche Beschreibung des jeweiligen Systemobjekts zurück, wie sie in der Versorgungsdatei steht. Die Formatierung entspricht der K2S.DTD.
+	 * Liefert die ausfÃ¼hrliche Beschreibung des jeweiligen Systemobjekts zurÃ¼ck, wie sie in der Versorgungsdatei steht. Die Formatierung entspricht der K2S.DTD.
 	 *
 	 * @return Originaltext der Beschreibung des jeweiligen Systemobjekts aus der Versorgungsdatei
 	 */
@@ -155,9 +181,9 @@ public class SystemObjectInfo {
 	}
 
 	/**
-	 * String-Repräsentation dieses Objekts. Enthält die Kurzinformation und die ausführliche Beschreibung.
+	 * String-ReprÃ¤sentation dieses Objekts. EnthÃ¤lt die Kurzinformation und die ausfÃ¼hrliche Beschreibung.
 	 *
-	 * @return String-Repräsentation dieses Objekts
+	 * @return String-ReprÃ¤sentation dieses Objekts
 	 *
 	 * @see #getShortInfo
 	 * @see #getDescription
@@ -183,7 +209,7 @@ public class SystemObjectInfo {
 			NodeList childs = element.getChildNodes();
 			if (childs.getLength() <= 0) return "";	// Tag zwar da, aber ohne Inhalt
 			if (childs.getLength() == 1 && (childs.item(0) instanceof Text)) {
-				// enthält der Tag nur Text, dann ...
+				// enthÃ¤lt der Tag nur Text, dann ...
 				return ((Text) childs.item(0)).getNodeValue();
 			} else {
 				// Tags werden durch HTML konforme Tags ersetzt
@@ -193,6 +219,41 @@ public class SystemObjectInfo {
 				resultText.append("</body></html>");
 				return resultText.toString();
 			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return text;
+		}
+	}
+
+	/**
+	 * Wandelt Text im XML-Format in einen Text im Markdown-Format um.
+	 *
+	 * @param text umzuwandelnder Text im XML-Format
+	 * @return Text im Markdown-Format
+	 */
+	private String getMarkdownText(String text) {
+		try {
+			final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			StringReader reader = new StringReader(text);
+			InputSource source = new InputSource(reader);
+			Document xmlDocument = builder.parse(source);
+			Element element = xmlDocument.getDocumentElement();
+			NodeList childs = element.getChildNodes();
+			if (childs.getLength() <= 0) return "";	// Tag zwar da, aber ohne Inhalt
+			final String result;
+			if (childs.getLength() == 1 && (childs.item(0) instanceof Text)) {
+				// enthÃ¤lt der Tag nur Text, dann ...
+				result = ((Text) childs.item(0)).getNodeValue();
+			} else {
+				// Tags werden durch Markdown konforme Tags ersetzt
+				StringBuilder resultText = new StringBuilder();
+				transferXmlToMarkdown(childs, resultText);
+
+				result = resultText.toString();
+				//.replaceAll("(?m)[ \\t]+","-")
+			}
+			return result.replaceAll("\\r\\n", "\n").replaceAll("\\r","\n").replaceAll("^\\s*|\\s*$","").replaceAll("[ \\t]+\\n","\n").replaceAll("\\n\\n+","\n\n");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			return text;
@@ -251,13 +312,13 @@ public class SystemObjectInfo {
 			text = Pattern.compile("&").matcher(text).replaceAll("&amp;");
 			text = Pattern.compile("<").matcher(text).replaceAll("&lt;");
 			text = Pattern.compile(">").matcher(text).replaceAll("&gt;");
-			text = Pattern.compile("ä").matcher(text).replaceAll("&auml;");
-			text = Pattern.compile("ö").matcher(text).replaceAll("&ouml;");
-			text = Pattern.compile("ü").matcher(text).replaceAll("&uuml;");
-			text = Pattern.compile("ß").matcher(text).replaceAll("&szlig;");
-			text = Pattern.compile("Ä").matcher(text).replaceAll("&Auml;");
-			text = Pattern.compile("Ö").matcher(text).replaceAll("&Ouml;");
-			text = Pattern.compile("Ü").matcher(text).replaceAll("&Uuml;");
+			text = Pattern.compile("Ã¤").matcher(text).replaceAll("&auml;");
+			text = Pattern.compile("Ã¶").matcher(text).replaceAll("&ouml;");
+			text = Pattern.compile("Ã¼").matcher(text).replaceAll("&uuml;");
+			text = Pattern.compile("ÃŸ").matcher(text).replaceAll("&szlig;");
+			text = Pattern.compile("Ã„").matcher(text).replaceAll("&Auml;");
+			text = Pattern.compile("Ã–").matcher(text).replaceAll("&Ouml;");
+			text = Pattern.compile("Ãœ").matcher(text).replaceAll("&Uuml;");
 			resultText.append(text);
 		} else if (node instanceof CDATASection) {
 			CDATASection cdataSection = (CDATASection) node;
@@ -275,6 +336,84 @@ public class SystemObjectInfo {
 		int nodeCount = nodes.getLength();
 		for (int i = 0; i < nodeCount; ++i) {
 			transferXml(nodes.item(i), resultText);
+		}
+	}
+	/**
+	 * Ersetzt einzelne XML-Tags durch passende Markdown-Tags
+	 *
+	 * @param node	   XML-Tag
+	 * @param resultText umgewandelter Text in Markdown-Format
+	 */
+	private void transferXmlToMarkdown(Node node, StringBuilder resultText) {
+		if (node instanceof Element) {
+			Element element = (Element) node;
+			String tag = element.getTagName();
+			if (tag.equals("verweis")) {
+				resultText.append(element.getAttribute("txt"));
+			} else if (tag.equals("absatz")) {
+				resultText.append("\n\n");
+				transferXmlToMarkdown(element.getChildNodes(), resultText);
+				resultText.append("\n\n");
+			} else if (tag.equals("titel")) {
+				resultText.append("\n\n**");
+				transferXmlToMarkdown(element.getChildNodes(), resultText);
+				resultText.append("**\n\n");
+			} else if (tag.equals("wichtig")) {
+				resultText.append("**");
+				transferXmlToMarkdown(element.getChildNodes(), resultText);
+				resultText.append("**");
+			} else if (tag.equals("liste")) {
+				resultText.append("\n\n");
+				transferXmlToMarkdown(element.getChildNodes(), resultText);
+				resultText.append("\n\n");
+			} else if (tag.equals("numListe")) {
+				resultText.append("\n\n");
+				transferXmlToMarkdown(element.getChildNodes(), resultText);
+				resultText.append("<\n\n>");
+			} else if (tag.equals("listenPunkt")) {
+				resultText.append(" *  ");
+				transferXmlToMarkdown(element.getChildNodes(), resultText);
+				resultText.append("\n");
+			} else if (tag.equals("code") || tag.equals("pre")) {
+				resultText.append("`");
+				transferXmlToMarkdown(element.getChildNodes(), resultText);
+				resultText.append("`");
+			} else if (tag.equals("kapitel") || tag.equals("sektion")) {
+				transferXmlToMarkdown(element.getChildNodes(), resultText);
+			} else {
+				_debug.finer("XML-Tag " + element.getTagName() + " wird noch nicht in Markdown umgesetzt!");
+			}
+		} else if (node instanceof Text) {
+			Text textNode = (Text) node;
+			String text = textNode.getNodeValue();
+//			text = Pattern.compile("\\s+").matcher(text).replaceAll(" ");
+//			text = Pattern.compile("&").matcher(text).replaceAll("&amp;");
+//			text = Pattern.compile("<").matcher(text).replaceAll("&lt;");
+//			text = Pattern.compile(">").matcher(text).replaceAll("&gt;");
+//			text = Pattern.compile("Ã¤").matcher(text).replaceAll("&auml;");
+//			text = Pattern.compile("Ã¶").matcher(text).replaceAll("&ouml;");
+//			text = Pattern.compile("Ã¼").matcher(text).replaceAll("&uuml;");
+//			text = Pattern.compile("ÃŸ").matcher(text).replaceAll("&szlig;");
+//			text = Pattern.compile("Ã„").matcher(text).replaceAll("&Auml;");
+//			text = Pattern.compile("Ã–").matcher(text).replaceAll("&Ouml;");
+//			text = Pattern.compile("Ãœ").matcher(text).replaceAll("&Uuml;");
+			resultText.append(text);
+		} else if (node instanceof CDATASection) {
+			CDATASection cdataSection = (CDATASection) node;
+			resultText.append(cdataSection.getNodeValue());
+		}
+	}
+
+	/**
+	 * Parst den Text nach XML-Tags und gibt sie zur weiteren Verarbeitung an die Methoden {@link #transferXmlToMarkdown(org.w3c.dom.Node, StringBuilder)} weiter.
+	 *
+	 * @param nodes	  alle im Text enthaltenen Tags
+	 * @param resultText den im Markdown-Format umgewandelten Text
+	 */
+	private void transferXmlToMarkdown(NodeList nodes, StringBuilder resultText) {
+		int nodeCount = nodes.getLength();
+		for (int i = 0; i < nodeCount; ++i) {
+			transferXmlToMarkdown(nodes.item(i), resultText);
 		}
 	}
 }

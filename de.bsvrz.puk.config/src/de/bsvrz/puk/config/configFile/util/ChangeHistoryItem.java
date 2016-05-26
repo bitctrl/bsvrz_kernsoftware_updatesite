@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.util;
@@ -23,50 +29,50 @@ package de.bsvrz.puk.config.configFile.util;
 import java.util.Date;
 
 /**
- * Diese Klasse stellt einen Eintrag im Log der Änderugshistorie dar.
+ * Diese Klasse stellt einen Eintrag im Log der Ã„nderugshistorie dar.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11591 $
+ * @version $Revision$
  */
 public class ChangeHistoryItem {
 
-	/** Autor der Änderung */
+	/** Autor der Ã„nderung */
 	final private String _author;
 
-	/** Grund der Änderung */
+	/** Grund der Ã„nderung */
 	final private String _reason;
 
-	/** Beschreibung der Änderung */
+	/** Beschreibung der Ã„nderung */
 	final private String _text;
 
 	/** Version */
 	final private short _version;
 
-	/** Das Datum der Änderung. */
+	/** Das Datum der Ã„nderung. */
 	final private Date _timeStamp;
 
 	/**
-	 * Gibt den Autor der Änderung zurück.
+	 * Gibt den Autor der Ã„nderung zurÃ¼ck.
 	 *
-	 * @return Autor der Änderung
+	 * @return Autor der Ã„nderung
 	 */
 	public String getAuthor() {
 		return _author;
 	}
 
 	/**
-	 * Gibt den Grund der Änderung zurück.
+	 * Gibt den Grund der Ã„nderung zurÃ¼ck.
 	 *
-	 * @return Grund der Änderung
+	 * @return Grund der Ã„nderung
 	 */
 	public String getReason() {
 		return _reason;
 	}
 
 	/**
-	 * Gibt die Beschreibung der Änderung zurück.
+	 * Gibt die Beschreibung der Ã„nderung zurÃ¼ck.
 	 *
-	 * @return Beschreibung der Änderung
+	 * @return Beschreibung der Ã„nderung
 	 */
 	public String getText() {
 		return _text;
@@ -77,20 +83,20 @@ public class ChangeHistoryItem {
 	}
 
 	/**
-	 * Gibt das Datum der Änderung zurück.
+	 * Gibt das Datum der Ã„nderung zurÃ¼ck.
 	 *
-	 * @return Datum der Änderung
+	 * @return Datum der Ã„nderung
 	 */
 	public Date getTimeStamp() {
 		return _timeStamp;
 	}
 
 	/**
-	 * Konstruktor zur manuellen Erstellung eines Änderungseintrages.
+	 * Konstruktor zur manuellen Erstellung eines Ã„nderungseintrages.
 	 * @param timestamp Zeitstempel in ms
 	 * @param author Autor
 	 * @param version versio
-	 * @param reason Grund der Änderung
+	 * @param reason Grund der Ã„nderung
 	 * @param text weiterer Text
 	 */
 	public ChangeHistoryItem(final long timestamp, final String author, final short version, final String reason, final String text) {

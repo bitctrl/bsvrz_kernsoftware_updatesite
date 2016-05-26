@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel;
@@ -24,11 +30,11 @@ package de.bsvrz.dav.daf.communication.lowLevel;
 import de.bsvrz.dav.daf.main.CommunicationError;
 
 /**
- * Eine Implementierung dieses Interfaces legt fest, welches Netzwerkprotokoll die Daten zwischen Softwareeinheiten oder Rechner ¸bertragen werden. Die
- * Funktionalit‰t wird protokollneutral durch dieses Interface f¸r die Server-seitig notwendigen Methoden nach Auﬂen vertreten.
+ * Eine Implementierung dieses Interfaces legt fest, welches Netzwerkprotokoll die Daten zwischen Softwareeinheiten oder Rechner √ºbertragen werden. Die
+ * Funktionalit√§t wird protokollneutral durch dieses Interface f√ºr die Server-seitig notwendigen Methoden nach Au√üen vertreten.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
+ * @version $Revision$
  */
 public interface ServerConnectionInterface {
 
@@ -41,14 +47,14 @@ public interface ServerConnectionInterface {
 	 */
 	public void connect(int subAdressNumber) throws CommunicationError;
 
-	/** Schlieﬂt die aktuelle Verbindung. */
+	/** Schlie√üt die aktuelle Verbindung. */
 	public void disconnect();
 
 	/**
-	 * Wartet auf eine Verbindungsanfrage eines Clients (passive Verbindung). Wenn die Anfrage erfolgt, wird der Repr‰sentant einer Verbindung erzeugt und
-	 * zur¸ckgegeben.
+	 * Wartet auf eine Verbindungsanfrage eines Clients (passive Verbindung). Wenn die Anfrage erfolgt, wird der Repr√§sentant einer Verbindung erzeugt und
+	 * zur√ºckgegeben.
 	 *
-	 * @return Repr‰sentant einer Verbindung oder <code>null</code>, wenn keine Verbindung erzeugt werden konnte.
+	 * @return Repr√§sentant einer Verbindung oder <code>null</code>, wenn keine Verbindung erzeugt werden konnte.
 	 */
 	public ConnectionInterface accept();
 

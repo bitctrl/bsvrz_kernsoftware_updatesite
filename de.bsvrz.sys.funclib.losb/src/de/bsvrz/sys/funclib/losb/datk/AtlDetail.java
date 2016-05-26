@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.sys.funclib.losb.
  * 
- * de.bsvrz.sys.funclib.losb is free software; you can redistribute it and/or modify
+ * de.bsvrz.sys.funclib.losb is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.losb is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.sys.funclib.losb; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.losb.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.losb.datk;
@@ -30,7 +36,7 @@ import java.io.Serializable;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 11423 $ / $Date: 2013-07-22 12:02:01 +0200 (Mon, 22 Jul 2013) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class AtlDetail implements Serializable {
 
@@ -46,7 +52,7 @@ public class AtlDetail implements Serializable {
 	public byte[] checksum;
 
 	/**
-	 * Erzeugt ein Stellvertreter-Objekt für die Attributliste
+	 * Erzeugt ein Stellvertreter-Objekt fÃ¼r die Attributliste
 	 *
 	 * @param version  Versionsnummer
 	 * @param fileName Dateiname des Skriptquelltexts
@@ -58,13 +64,13 @@ public class AtlDetail implements Serializable {
 		this.checksum = checksum;
 	}
 
-	/** Erzeugt ein Stellvertreter-Objekt für die Attributliste mit Standardwerten */
+	/** Erzeugt ein Stellvertreter-Objekt fÃ¼r die Attributliste mit Standardwerten */
 	public AtlDetail() {
 		this(1, "", new byte[0]);
 	}
 
 	/**
-	 * Trägt die Werte dieses Objekts in das Daten-Objekt ein.
+	 * TrÃ¤gt die Werte dieses Objekts in das Daten-Objekt ein.
 	 *
 	 * @param data Ziel der Eintragung.
 	 */
@@ -77,7 +83,7 @@ public class AtlDetail implements Serializable {
 	}
 
 	/**
-	 * Erzeugt ein Java-Objekt aus den übergebenen Daten.
+	 * Erzeugt ein Java-Objekt aus den Ã¼bergebenen Daten.
 	 *
 	 * @param data Daten.
 	 *

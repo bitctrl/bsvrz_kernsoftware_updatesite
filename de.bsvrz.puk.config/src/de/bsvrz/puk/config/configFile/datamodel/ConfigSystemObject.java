@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung, Aachen
- * Copyright 2006 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -44,26 +50,26 @@ import static de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentificatio
 
 
 /**
- * Implementierung des Interfaces {@link SystemObject} auf Seiten der Konfiguration. Die Methoden, die allgemein für das SystemObjekt gelten, wurden in einer
- * {@link AbstractConfigSystemObject abstrakten Klasse} implemenentiert. Alle anderen Methoden, die in Abhängigkeit zur Konfiguration stehen, sind hier
+ * Implementierung des Interfaces {@link SystemObject} auf Seiten der Konfiguration. Die Methoden, die allgemein fÃ¼r das SystemObjekt gelten, wurden in einer
+ * {@link AbstractConfigSystemObject abstrakten Klasse} implemenentiert. Alle anderen Methoden, die in AbhÃ¤ngigkeit zur Konfiguration stehen, sind hier
  * implementiert.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13128 $
+ * @version $Revision$
  */
 public abstract class ConfigSystemObject extends AbstractConfigSystemObject implements SystemObject {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
-	/** Das korrespondierende Objekt für die Dateioperationen dieses SystemObjekts. */
+	/** Das korrespondierende Objekt fÃ¼r die Dateioperationen dieses SystemObjekts. */
 	final SystemObjectInformationInterface _systemObjectInfo;
 
 	/**
-	 * Konstruktor für ein SystemObjekt.
+	 * Konstruktor fÃ¼r ein SystemObjekt.
 	 *
 	 * @param configurationArea der Konfigurationsbereich dieses SystemObjekts
-	 * @param systemObjectInfo  das korrespondierende Objekt für die Dateioperationen dieses SystemObjekts
+	 * @param systemObjectInfo  das korrespondierende Objekt fÃ¼r die Dateioperationen dieses SystemObjekts
 	 */
 	public ConfigSystemObject(ConfigurationArea configurationArea, SystemObjectInformationInterface systemObjectInfo) {
 		super(configurationArea);
@@ -96,18 +102,18 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 	}
 
 	public void setName(String name) throws ConfigurationChangeException {
-		// prüfen, ob die Berechtigung vorliegt, an diesem Objekt etwas zu ändern
+		// prÃ¼fen, ob die Berechtigung vorliegt, an diesem Objekt etwas zu Ã¤ndern
 		if(checkChangePermit()) {
 
-			// prüfen, ob der Name geändert werden darf
+			// prÃ¼fen, ob der Name geÃ¤ndert werden darf
 			if(getType().isNameOfObjectsPermanent() && !isNotActivatedYet()) {
-				// Bei schon aktivierten Objekten Namensänderung verbieten, wenn der Name permanent ist
+				// Bei schon aktivierten Objekten NamensÃ¤nderung verbieten, wenn der Name permanent ist
 				throw new ConfigurationChangeException(
-						"Der Name des Objekts (" + getNameOrPidOrId() + ") darf nicht geändert werden. Er wurde permanent gespeichert."
+						"Der Name des Objekts (" + getNameOrPidOrId() + ") darf nicht geÃ¤ndert werden. Er wurde permanent gespeichert."
 				);
 			}
 			else {
-				// Wenn name == null -> wird name als "" interpretiert, da anzunehmen ist, dass der Name gelöscht werden soll.
+				// Wenn name == null -> wird name als "" interpretiert, da anzunehmen ist, dass der Name gelÃ¶scht werden soll.
 				final String newName;
 				if(name == null) {
 					newName = "";
@@ -119,13 +125,13 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 				if(newName.length() > 255) {
 					throw new ConfigurationChangeException(
 							"Der Name des Objekts ist zu lang, es sind nur 255 Zeichen erlaubt. Name, der gesetzt werden sollte: " + newName
-							+ " Länge des Strings: " + newName.length()
+							+ " LÃ¤nge des Strings: " + newName.length()
 					);
 				}
 
 				_systemObjectInfo.setName(newName);
 
-				// Wenn es sich um ein dynamisches Objekt handelt, müssen die Listener für Namensänderungen informiert werden
+				// Wenn es sich um ein dynamisches Objekt handelt, mÃ¼ssen die Listener fÃ¼r NamensÃ¤nderungen informiert werden
 				final SystemObjectType systemObjectType = getType();
 				if(systemObjectType instanceof ConfigDynamicObjectType) {
 					// Es handlet sich um ein dynamisches Objekt. Die Listener informieren.
@@ -134,7 +140,7 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 			}
 		}
 		else {
-			final String errorMessage = "Der Name des Objekts " + getNameOrPidOrId() + " durfte nicht geändert werden, da keine Berechtigung hierfür vorliegt.";
+			final String errorMessage = "Der Name des Objekts " + getNameOrPidOrId() + " durfte nicht geÃ¤ndert werden, da keine Berechtigung hierfÃ¼r vorliegt.";
 			_debug.warning(errorMessage);
 			throw new ConfigurationChangeException(errorMessage);
 		}
@@ -145,11 +151,11 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 	}
 
 	/**
-	 * Liefert einen konfigurierenden Datensatz dieses Objekts zurück.
+	 * Liefert einen konfigurierenden Datensatz dieses Objekts zurÃ¼ck.
 	 *
-	 * @param atg          Attributgruppe des gewünschten Datensatzes.
-	 * @param asp          Aspekt des gewünschten Datensatzes.
-	 * @param objectLookup Objekt das bei der Deserialisierung zur Auflösung von Objektreferenzen benutzt werden soll.
+	 * @param atg          Attributgruppe des gewÃ¼nschten Datensatzes.
+	 * @param asp          Aspekt des gewÃ¼nschten Datensatzes.
+	 * @param objectLookup Objekt das bei der Deserialisierung zur AuflÃ¶sung von Objektreferenzen benutzt werden soll.
 	 *
 	 * @return Konfigurierender Datensatz der angegebenen Attributgruppe oder <code>null</code>, wenn das Objekt keinen Datensatz der angegebenen Attributgruppe
 	 *         hat.
@@ -179,7 +185,7 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 			}
 			catch(Exception ex) {
 				final StringBuffer errorMessage = new StringBuffer();
-				errorMessage.append("Der konfigurierende Datensatz für das Objekt ").append(getPidOrNameOrId()).append(" mit ID ").append(getId());
+				errorMessage.append("Der konfigurierende Datensatz fÃ¼r das Objekt ").append(getPidOrNameOrId()).append(" mit ID ").append(getId());
 				errorMessage.append(" und der " + "\nAttributgruppenverwendung ").append(atgUsage.getPidOrNameOrId());
 				errorMessage.append(" mit ID ").append(atgUsage.getId()).append(" konnten nicht deserialisiert werden");
 				_debug.warning(errorMessage.toString(), ex);
@@ -208,10 +214,10 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 	}
 
 	/**
-	 * Liefert einen konfigurierenden Datensatz dieses Objekts zurück.
+	 * Liefert einen konfigurierenden Datensatz dieses Objekts zurÃ¼ck.
 	 *
-	 * @param atgUsage     Attributgruppenverwendung des gewünschten Datensatzes
-	 * @param objectLookup Objekt das bei der Deserialisierung zur Auflösung von Objektreferenzen benutzt werden soll.
+	 * @param atgUsage     Attributgruppenverwendung des gewÃ¼nschten Datensatzes
+	 * @param objectLookup Objekt das bei der Deserialisierung zur AuflÃ¶sung von Objektreferenzen benutzt werden soll.
 	 *
 	 * @return Konfigurierender Datensatz der angegebenen Attributgruppenverwendung oder <code>null</code>, wenn das Objekt keinen Datensatz zu der angegebenen
 	 *         Attributgruppenverwendung hat.
@@ -230,7 +236,7 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 			}
 			catch(Exception ex) {
 				final StringBuffer errorMessage = new StringBuffer();
-				errorMessage.append("Der konfigurierende Datensatz für das Objekt ").append(getPidOrNameOrId()).append(" mit ID ").append(getId());
+				errorMessage.append("Der konfigurierende Datensatz fÃ¼r das Objekt ").append(getPidOrNameOrId()).append(" mit ID ").append(getId());
 				errorMessage.append(" und der " + "\nAttributgruppenverwendung ").append(atgUsage.getPidOrNameOrId());
 				errorMessage.append(" mit ID ").append(atgUsage.getId()).append(" konnten nicht deserialisiert werden");
 				_debug.error(errorMessage.toString(), ex);
@@ -240,10 +246,10 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 	}
 
 	/**
-	 * Liefert einen konfigurierenden Datensatz dieses Objekts zurück. Als Aspekt des gewünschten Datensatzes wird "asp.eigenschaften" angenommen.
+	 * Liefert einen konfigurierenden Datensatz dieses Objekts zurÃ¼ck. Als Aspekt des gewÃ¼nschten Datensatzes wird "asp.eigenschaften" angenommen.
 	 *
-	 * @param atg          Attributgruppe des gewünschten Datensatzes.
-	 * @param objectLookup Objekt das bei der Deserialisierung zur Auflösung von Objektreferenzen benutzt werden soll.
+	 * @param atg          Attributgruppe des gewÃ¼nschten Datensatzes.
+	 * @param objectLookup Objekt das bei der Deserialisierung zur AuflÃ¶sung von Objektreferenzen benutzt werden soll.
 	 *
 	 * @return Konfigurierender Datensatz der angegebenen Attributgruppe oder <code>null</code>, wenn das Objekt keinen Datensatz der angegebenen Attributgruppe
 	 *         hat.
@@ -253,9 +259,9 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 	}
 
 	/**
-	 * Gibt ein ObjectLookup zurück, das für die Auflösung von Referenzen in Konfigurationsdaten benutzt wird,
-	 * Dies ist üblicherweise einfach das ConfigDataModel (siehe {@link #getDataModel()}), für dynamische Objekte muss
-	 * aber die Simulationsvariante dieses Objekts zur Auflösung der Referenzen verwendet werden.
+	 * Gibt ein ObjectLookup zurÃ¼ck, das fÃ¼r die AuflÃ¶sung von Referenzen in Konfigurationsdaten benutzt wird,
+	 * Dies ist Ã¼blicherweise einfach das ConfigDataModel (siehe {@link #getDataModel()}), fÃ¼r dynamische Objekte muss
+	 * aber die Simulationsvariante dieses Objekts zur AuflÃ¶sung der Referenzen verwendet werden.
 	 * @return ObjectLookup
 	 */
 	protected ObjectLookup getObjectLookupForData() {
@@ -263,12 +269,12 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 	}
 
 	/**
-	 * Gibt den konfigurierenden Datensatz als Byte-Array zurück, der am Objekt gespeichert ist. Der Datensatz wird über die ID der Attributgruppenverwendung
+	 * Gibt den konfigurierenden Datensatz als Byte-Array zurÃ¼ck, der am Objekt gespeichert ist. Der Datensatz wird Ã¼ber die ID der Attributgruppenverwendung
 	 * identifiziert.
 	 *
 	 * @param attributeGroupUsage die Attributgruppenverwendung
 	 *
-	 * @return das Byte-Array des konfigurierenden Datensatzes oder <code>null</code>, falls es keinen konfigurierenden Datensatz für die Attributgruppenverwendung
+	 * @return das Byte-Array des konfigurierenden Datensatzes oder <code>null</code>, falls es keinen konfigurierenden Datensatz fÃ¼r die Attributgruppenverwendung
 	 *         gibt
 	 */
 	public byte[] getConfigurationDataBytes(AttributeGroupUsage attributeGroupUsage) {
@@ -276,7 +282,7 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 	}
 
 	/**
-	 * Gibt die Version des Serializers zurück, die der Konfigurationsbereich dieses Systemobjekts verwendet.
+	 * Gibt die Version des Serializers zurÃ¼ck, die der Konfigurationsbereich dieses Systemobjekts verwendet.
 	 *
 	 * @return die Version des Serializers, die der Konfigurationsbereich dieses Systemobjekts verwendet
 	 */
@@ -295,7 +301,7 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 			return false;
 		}
 
-		// Wenn die Referenzen gleich sind, dann ist auch das Objekt identisch. Damit verhält sich die Methode wie früher
+		// Wenn die Referenzen gleich sind, dann ist auch das Objekt identisch. Damit verhÃ¤lt sich die Methode wie frÃ¼her
 		return other == this || ((SystemObject)other).getId() == getId();
 	}
 
@@ -331,59 +337,59 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 		if(checkChangePermit()) {
 
 			if(_systemObjectInfo.isDeleted()){
-				// der Datensatz darf nicht geändert werden
-				// Diese Prüfung erfolgt ersatzweise noch einmal später beim Setzen in SystemObjectInformationInterface,
+				// der Datensatz darf nicht geÃ¤ndert werden
+				// Diese PrÃ¼fung erfolgt ersatzweise noch einmal spÃ¤ter beim Setzen in SystemObjectInformationInterface,
 				// aber hier ist es einfacher eine gute Fehlermeldung zu erzeugen.
 				final String errorMessage = "Der konfigurierende Datensatz an der AttributgruppenVerwendung " + atgUsage.getPid()
-						+ " darf nicht geändert oder erstellt werden, da das Objekt " + getPidOrNameOrId() + " nicht mehr gültig ist.";
+						+ " darf nicht geÃ¤ndert oder erstellt werden, da das Objekt " + getPidOrNameOrId() + " nicht mehr gÃ¼ltig ist.";
 				_debug.error(errorMessage);
 				throw new ConfigurationChangeException(errorMessage);
 			}
 
-			// Prüfen, ob die Attributgruppe am Typ definiert ist.
+			// PrÃ¼fen, ob die Attributgruppe am Typ definiert ist.
 			ConfigSystemObjectType type = getType();
 			type.validateAttributeGroup(atgUsage.getAttributeGroup());
 
-			// TPuK1-113 (TPuK1-83) Änderung von konfigurierenden Datensätzen
-			// der Datensatz darf geändert werden, wenn die Attributgruppenverwendung "Changeable..." ist.
-			// der Datensatz darf nicht gelöscht werden, wenn die Attributgruppenverwendung "...Required..." ist
+			// TPuK1-113 (TPuK1-83) Ã„nderung von konfigurierenden DatensÃ¤tzen
+			// der Datensatz darf geÃ¤ndert werden, wenn die Attributgruppenverwendung "Changeable..." ist.
+			// der Datensatz darf nicht gelÃ¶scht werden, wenn die Attributgruppenverwendung "...Required..." ist
 			if(atgUsage.getUsage() == AttributeGroupUsage.Usage.ChangeableOptionalConfigurationData || (
 					atgUsage.getUsage() == AttributeGroupUsage.Usage.ChangeableRequiredConfigurationData && data != null)) {
-				// der konfigurierende Datensatz darf geändert werden
+				// der konfigurierende Datensatz darf geÃ¤ndert werden
 			}
 			else if(isNotActivatedYet()) {
-				// wenn das Objekt noch nicht aktiviert wurde (sich also noch in Bearbeitung befindet), dann darf es geändert werden
-				// dynamische Objekte dürfen nicht mehr geändert werden, da sie sofort aktiv sind!!
+				// wenn das Objekt noch nicht aktiviert wurde (sich also noch in Bearbeitung befindet), dann darf es geÃ¤ndert werden
+				// dynamische Objekte dÃ¼rfen nicht mehr geÃ¤ndert werden, da sie sofort aktiv sind!!
 			}
 			else if("atg.werteBereichsEigenschaften".equals(atgUsage.getAttributeGroup().getPid())
 					&& RelaxedModelChanges.getInstance(getDataModel()).allowChangeValueRange(this, this.getConfigurationData(atgUsage), data)){
-				// Erlaubt durch Spezialbehandlung unversionierte Datenmodelländerung
+				// Erlaubt durch Spezialbehandlung unversionierte DatenmodellÃ¤nderung
 			}
 			else if("atg.attributEigenschaften".equals(atgUsage.getAttributeGroup().getPid())
 					&& RelaxedModelChanges.getInstance(getDataModel()).allowChangeArrayMaxCount(
 					this, this.getConfigurationData(atgUsage), data
 			)){
-				// Erlaubt durch Spezialbehandlung unversionierte Datenmodelländerung
+				// Erlaubt durch Spezialbehandlung unversionierte DatenmodellÃ¤nderung
 			}
 			else {
-				// der Datensatz darf nicht geändert werden
-				final String errorMessage = "Die Verwendungsmöglichkeit " + atgUsage.getUsage() + " der AttributgruppenVerwendung "
-				                            + atgUsage.getNameOrPidOrId() + " erlaubt keine Änderung des Datensatzes.";
+				// der Datensatz darf nicht geÃ¤ndert werden
+				final String errorMessage = "Die VerwendungsmÃ¶glichkeit " + atgUsage.getUsage() + " der AttributgruppenVerwendung "
+				                            + atgUsage.getNameOrPidOrId() + " erlaubt keine Ã„nderung des Datensatzes.";
 				_debug.error(errorMessage);
 				throw new ConfigurationChangeException(errorMessage);
 			}
 
-			// Referenzen auf ungültige Objekte müssen verhindert werden
+			// Referenzen auf ungÃ¼ltige Objekte mÃ¼ssen verhindert werden
 			if(data != null) {
 				getDataModel().verifyDataReferences(this, data);
 			}
 
-			// der Datensatz darf also geändert oder neu angelegt werden!
+			// der Datensatz darf also geÃ¤ndert oder neu angelegt werden!
 			createConfigurationData(atgUsage, data);
 		}
 		else {
 			final String errorMessage = "Der konfigurierende Datensatz an der AttributgruppenVerwendung " + atgUsage.getPid()
-			                            + " darf weder geändert noch erstellt werden, da hierfür keine Berechtigung vorliegt."
+			                            + " darf weder geÃ¤ndert noch erstellt werden, da hierfÃ¼r keine Berechtigung vorliegt."
 			                            + "\nKonfigurationsverantwortlicher der Konfiguration:Bereich(" + getConfigurationArea().getPid() + ") = "
 			                            + getDataModel().getConfigurationAuthorityPid() + " : " + getConfigurationArea().getConfigurationAuthority().getPid();
 			_debug.warning(errorMessage);
@@ -392,7 +398,7 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 	}
 
 	/**
-	 * Gibt zurück, ob sich das Objekt noch in Bearbeitung befindet und noch nicht aktiviert wurde.
+	 * Gibt zurÃ¼ck, ob sich das Objekt noch in Bearbeitung befindet und noch nicht aktiviert wurde.
 	 *
 	 * @return true wenn noch nicht aktiviert
 	 */
@@ -419,7 +425,7 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 	 * Anhand der Attributgruppenverwendung wird an diesem System-Objekt ein konfigurierender Datensatz gespeichert.
 	 *
 	 * @param atgUsage die Attributgruppenverwendung
-	 * @param data     der konfigurierende Datensatz oder <code>null</code>, falls der Datensatz gelöscht werden soll
+	 * @param data     der konfigurierende Datensatz oder <code>null</code>, falls der Datensatz gelÃ¶scht werden soll
 	 *
 	 * @throws ConfigurationChangeException Falls der Datensatz nicht gespeichert werden konnte.
 	 */
@@ -446,9 +452,9 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 	}
 
 	/**
-	 * Löscht zu dieser Attributgruppenverwendung an diesem Objekt den zugehörigen Datensatz.
+	 * LÃ¶scht zu dieser Attributgruppenverwendung an diesem Objekt den zugehÃ¶rigen Datensatz.
 	 *
-	 * @param atgUsage die Attributgruppenverwendung, dessen Datensatz gelöscht werden soll.
+	 * @param atgUsage die Attributgruppenverwendung, dessen Datensatz gelÃ¶scht werden soll.
 	 */
 	public void removeConfigurationData(final AttributeGroupUsage atgUsage) {
 		_systemObjectInfo.removeConfigurationData(atgUsage.getId());
@@ -456,26 +462,26 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 	}
 
 	/**
-	 * Löscht eventuell zwischengespeicherte Daten, die erneuert werden müssen, falls {@link #createConfigurationData(de.bsvrz.dav.daf.main.config.AttributeGroupUsage,
+	 * LÃ¶scht eventuell zwischengespeicherte Daten, die erneuert werden mÃ¼ssen, falls {@link #createConfigurationData(de.bsvrz.dav.daf.main.config.AttributeGroupUsage,
 	 * de.bsvrz.dav.daf.main.Data)} oder {@link #setConfigurationData(de.bsvrz.dav.daf.main.config.AttributeGroup, de.bsvrz.dav.daf.main.Data)} aufgerufen wird.
 	 * Dies wird automatisch beim Aufruf der genannten Methoden gemacht.
 	 */
 	void invalidateCache() {
-		/** Leer, da diese Klasse nichts zwischenspeichert. Wird aber von {@link ConfigConfigurationObject} und weiteren Klassen überschrieben. **/
+		/** Leer, da diese Klasse nichts zwischenspeichert. Wird aber von {@link ConfigConfigurationObject} und weiteren Klassen Ã¼berschrieben. **/
 	}
 
 	public void invalidate() throws ConfigurationChangeException {
 		if(!checkChangePermit()) {
-			final String errorMessage = "Das Objekt '" + getNameOrPidOrId() + "' darf nicht ungültig gemacht werden, da keine Berechtigung hierfür vorliegt.";
+			final String errorMessage = "Das Objekt '" + getNameOrPidOrId() + "' darf nicht ungÃ¼ltig gemacht werden, da keine Berechtigung hierfÃ¼r vorliegt.";
 			_debug.warning(errorMessage);
 			throw new ConfigurationChangeException(errorMessage);
 		}
 	}
 
 	/**
-	 * Löscht jedes einzelne Objekt, unabhängig davon, ob es sich um ein freies Objekt handelt oder nicht.
+	 * LÃ¶scht jedes einzelne Objekt, unabhÃ¤ngig davon, ob es sich um ein freies Objekt handelt oder nicht.
 	 *
-	 * @throws ConfigurationChangeException Wenn das Objekt nicht ungültig gemacht werden konnte.
+	 * @throws ConfigurationChangeException Wenn das Objekt nicht ungÃ¼ltig gemacht werden konnte.
 	 */
 	public void simpleInvalidation() throws ConfigurationChangeException {
 		if(checkChangePermit()) {
@@ -487,7 +493,7 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 					((DynamicObjectInfo)_systemObjectInfo).setInvalid();
 					final ConfigDynamicObject dynamicObject = (ConfigDynamicObject) getDataModel().createSystemObject(_systemObjectInfo);
 					dynamicObject.informListeners();	// alle InvalidationListener des Objekts werden benachrichtigt
-					// Alle Listener des Typs informieren, dass ein Objekt ungültig geworden ist
+					// Alle Listener des Typs informieren, dass ein Objekt ungÃ¼ltig geworden ist
 					((ConfigDynamicObjectType)dynamicObject.getType()).informInvalidationListener(dynamicObject);
 				}
 				catch(IllegalStateException ex) {
@@ -501,7 +507,7 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 			}
 		}
 		else {
-			final String errorMessage = "Das Objekt " + getNameOrPidOrId() + " durfte nicht ungültig gemacht werden, da keine Berechtigung hierfür vorliegt.";
+			final String errorMessage = "Das Objekt " + getNameOrPidOrId() + " durfte nicht ungÃ¼ltig gemacht werden, da keine Berechtigung hierfÃ¼r vorliegt.";
 			_debug.warning(errorMessage);
 			throw new ConfigurationChangeException(errorMessage);
 		}
@@ -515,9 +521,9 @@ public abstract class ConfigSystemObject extends AbstractConfigSystemObject impl
 	}
 
 	/**
-	 * Prüft, ob die Konfiguration berechtigt ist an diesem SystemObjekt eine Änderung durchzuführen.
+	 * PrÃ¼ft, ob die Konfiguration berechtigt ist an diesem SystemObjekt eine Ã„nderung durchzufÃ¼hren.
 	 *
-	 * @return <code>true</code>, falls die Konfiguration die Berechtigung hat Änderungen am Objekt durchzuführen, <br/> <code>false</code>, falls die
+	 * @return <code>true</code>, falls die Konfiguration die Berechtigung hat Ã„nderungen am Objekt durchzufÃ¼hren, <br/> <code>false</code>, falls die
 	 *         Konfiguration diese Berechtigung nicht hat
 	 */
 	boolean checkChangePermit() {

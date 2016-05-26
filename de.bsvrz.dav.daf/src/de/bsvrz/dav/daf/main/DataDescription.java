@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main;
@@ -30,14 +36,14 @@ import de.bsvrz.dav.daf.main.config.AttributeGroup;
  * #NO_SIMULATION_VARIANT_SET}) und bei der Kommunikation mit dem Datenverteiler automatisch durch den Defaultwert ersetzt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5058 $
+ * @version $Revision$
  */
 public class DataDescription {
 
 	/**
 	 * Konstante, die signalisiert, dass die Simulationsvariante nicht explizit vorgegeben wurde, sondern der Defaultwert benutzt werden soll. Der Defaultwert kann
-	 * beim Start einer Applikation über den Aufrufparameter -simVariante=... vorgegeben werden. Der Defaultwert wird aus den {@link de.bsvrz.dav.daf.main.ClientDavParameters
-	 * Verbindungsparametern} (normalerweise <code>0</code>) bestimmt und kann damit über Aufrufargumente der Applikation (-simVariante=...) vorgegeben werden.
+	 * beim Start einer Applikation Ã¼ber den Aufrufparameter -simVariante=... vorgegeben werden. Der Defaultwert wird aus den {@link de.bsvrz.dav.daf.main.ClientDavParameters
+	 * Verbindungsparametern} (normalerweise <code>0</code>) bestimmt und kann damit Ã¼ber Aufrufargumente der Applikation (-simVariante=...) vorgegeben werden.
 	 * Siehe dazu auch die Schnittstellenbeschreibung <i>DatenverteilerApplikationsfunktionen-Starter</i>.
 	 */
 	public static final short NO_SIMULATION_VARIANT_SET = -1;
@@ -69,7 +75,7 @@ public class DataDescription {
 	}
 
 	/**
-	 * Liefert einen Hash-Code für das Objekt. Implementierung hält sich an die Ratschläge in "Bloch, Joshua: Effective Java".
+	 * Liefert einen Hash-Code fÃ¼r das Objekt. Implementierung hÃ¤lt sich an die RatschlÃ¤ge in "Bloch, Joshua: Effective Java".
 	 *
 	 * @return int	den Hash-Code des Objekts
 	 */
@@ -82,9 +88,9 @@ public class DataDescription {
 	}
 
 	/**
-	 * Erzeugt eine neue Datenbeschreibung mit den übergebenen Werten für die Attributgruppe und den Aspekt. Die Simulationsvariante wird auf den Wert {@link
+	 * Erzeugt eine neue Datenbeschreibung mit den Ã¼bergebenen Werten fÃ¼r die Attributgruppe und den Aspekt. Die Simulationsvariante wird auf den Wert {@link
 	 * #NO_SIMULATION_VARIANT_SET} gesetzt, was bedeutet, dass der Defaultwert aus den {@link de.bsvrz.dav.daf.main.ClientDavParameters Verbindungsparametern} (normalerweise
-	 * <code>0</code>) benutzt werden soll und damit über Aufrufargumente der Applikation vorgegeben werden kann. Siehe dazu auch die Schnittstellenbeschreibung
+	 * <code>0</code>) benutzt werden soll und damit Ã¼ber Aufrufargumente der Applikation vorgegeben werden kann. Siehe dazu auch die Schnittstellenbeschreibung
 	 * <i>DatenverteilerApplikationsfunktionen-Starter</i>.
 	 *
 	 * @param attributeGroup Attributgruppe der Datenbeschreibung
@@ -95,9 +101,9 @@ public class DataDescription {
 	}
 
 	/**
-	 * Erzeugt eine neue Datenbeschreibung mit den übergebenen Werten für die Attributgruppe, den Aspekt und die Simulationsvariante. Diese Konstruktor-Variante
-	 * ist zu Testzwecken und für spezielle Applikationen vorgesehen, die die Simulationsvariante explizit vorgeben müssen. Eine Applikation, die man mehrfach mit
-	 * verschiedenen Simulationsvarianten starten können soll, sollte die Simulationsvariante nicht selbst spezifizieren, sondern den {@link
+	 * Erzeugt eine neue Datenbeschreibung mit den Ã¼bergebenen Werten fÃ¼r die Attributgruppe, den Aspekt und die Simulationsvariante. Diese Konstruktor-Variante
+	 * ist zu Testzwecken und fÃ¼r spezielle Applikationen vorgesehen, die die Simulationsvariante explizit vorgeben mÃ¼ssen. Eine Applikation, die man mehrfach mit
+	 * verschiedenen Simulationsvarianten starten kÃ¶nnen soll, sollte die Simulationsvariante nicht selbst spezifizieren, sondern den {@link
 	 * #DataDescription(de.bsvrz.dav.daf.main.config.AttributeGroup,Aspect) Konstruktor ohne Simulationsvariante} benutzen.
 	 *
 	 * @param attributeGroup    Attributgruppe der Datenbeschreibung
@@ -111,7 +117,7 @@ public class DataDescription {
 	}
 
 	/**
-	 * Liefert die Attributgruppe dieser Datenbeschreibung zurück.
+	 * Liefert die Attributgruppe dieser Datenbeschreibung zurÃ¼ck.
 	 *
 	 * @return Attributgruppe dieser Datenbeschreibung
 	 */
@@ -120,7 +126,7 @@ public class DataDescription {
 	}
 
 	/**
-	 * Liefert den Aspekt dieser Datenbeschreibung zurück.
+	 * Liefert den Aspekt dieser Datenbeschreibung zurÃ¼ck.
 	 *
 	 * @return Aspekt dieser Datenbeschreibung
 	 */
@@ -129,7 +135,7 @@ public class DataDescription {
 	}
 
 	/**
-	 * Liefert die Simulationsvariante dieser Datenbeschreibung zurück.
+	 * Liefert die Simulationsvariante dieser Datenbeschreibung zurÃ¼ck.
 	 *
 	 * @return Simulationsvariante dieser Datenbeschreibung oder {@link #NO_SIMULATION_VARIANT_SET}, wenn die Simulationsvariante nicht explizit spezifiziert ist.
 	 */
@@ -142,7 +148,7 @@ public class DataDescription {
 	 *
 	 * @param simulationVariant Simulationsvariante dieser Datenbeschreibung
 	 *
-	 * @deprecated Sollte nicht mehr verwendet werden, da die Änderung dieses Objekts zu Problemen führen kann, wenn es bereits als Schlüssel in einer Map
+	 * @deprecated Sollte nicht mehr verwendet werden, da die Ã„nderung dieses Objekts zu Problemen fÃ¼hren kann, wenn es bereits als SchlÃ¼ssel in einer Map
 	 *             eingetragen wurde.
 	 */
 	public final void setSimulationVariant(short simulationVariant) {
@@ -150,7 +156,7 @@ public class DataDescription {
 	}
 
 	/**
-	 * Gibt eine Kopie dieses Objektes mit der gegebenen Attributgruppe und der gegebenen Simulationsvariante und dem übergebenen Aspekt.
+	 * Gibt eine Kopie dieses Objektes mit der gegebenen Attributgruppe und der gegebenen Simulationsvariante und dem Ã¼bergebenen Aspekt.
 	 *
 	 * @param aspect der zu verwendende Aspekt
 	 *
@@ -161,7 +167,7 @@ public class DataDescription {
 	}
 
 	/**
-	 * Liefert eine textuelle Beschreibung dieses Objekts zurück. Das genaue Format ist nicht festgelegt und kann sich ändern.
+	 * Liefert eine textuelle Beschreibung dieses Objekts zurÃ¼ck. Das genaue Format ist nicht festgelegt und kann sich Ã¤ndern.
 	 *
 	 * @return Beschreibung dieses Objekts.
 	 */

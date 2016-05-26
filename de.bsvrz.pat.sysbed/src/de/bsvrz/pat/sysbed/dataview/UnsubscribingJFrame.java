@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.dataview;
@@ -37,7 +43,7 @@ import java.util.List;
  * Klasse, welche das Printable implementiert.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8369 $
+ * @version $Revision$
  */
 public class UnsubscribingJFrame extends JFrame implements Printable {
 
@@ -68,7 +74,7 @@ public class UnsubscribingJFrame extends JFrame implements Printable {
 		_receiver = receiver;
 	}
 
-	/** ‹berschreibt die geerbte Methode und f¸gt bei Schlieﬂen des Fensters die Abmeldung des Receivers hinzu. */
+	/** √úberschreibt die geerbte Methode und f√ºgt bei Schlie√üen des Fensters die Abmeldung des Receivers hinzu. */
 	@Override
 	protected void processWindowEvent(final WindowEvent e) {
 		super.processWindowEvent(e);

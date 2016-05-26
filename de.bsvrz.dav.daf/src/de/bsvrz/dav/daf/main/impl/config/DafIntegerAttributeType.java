@@ -1,13 +1,13 @@
 /*
  * Copyright 2008 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config;
@@ -36,14 +42,14 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Klasse, die den Zugriff auf Ganzzahl-Attributtypen seitens der Datenverteiler-Applikationsfunktionen ermˆglicht.
+ * Klasse, die den Zugriff auf Ganzzahl-Attributtypen seitens der Datenverteiler-Applikationsfunktionen erm√∂glicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13141 $
+ * @version $Revision$
  */
 public class DafIntegerAttributeType extends DafAttributeType implements IntegerAttributeType {
 
-	/** Liste der Zust‰nde */
+	/** Liste der Zust√§nde */
 	private List<IntegerValueState> _states;
 
 	/** Die Id des Wertebereichobjektes */
@@ -56,8 +62,8 @@ public class DafIntegerAttributeType extends DafAttributeType implements Integer
 	private boolean _undefinedValueRequested = false;
 
 	/**
-	 * Enth‰lt entweder den undefiniert Wert, oder <code>null</code> falls der Wert nicht berechenbar war. Der Wert kann nicht im konstruktor berechnet werden, da
-	 * dort die States nicht zur Verf¸gung stehen.
+	 * Enth√§lt entweder den undefiniert Wert, oder <code>null</code> falls der Wert nicht berechenbar war. Der Wert kann nicht im konstruktor berechnet werden, da
+	 * dort die States nicht zur Verf√ºgung stehen.
 	 */
 	private Long _undefinedValue;
 
@@ -138,7 +144,7 @@ public class DafIntegerAttributeType extends DafAttributeType implements Integer
 	public List<IntegerValueState> getStates() {
 		if((_states == null)) {
 			final ArrayList<IntegerValueState> states = new ArrayList<IntegerValueState>();
-			ObjectSet statesSet = getObjectSet("zust‰nde");
+			ObjectSet statesSet = getObjectSet("zust√§nde");
 			List<SystemObject> stateElements = statesSet.getElements();
 			for(SystemObject stateElement : stateElements) {
 				if(stateElement instanceof IntegerValueState) {
@@ -209,9 +215,9 @@ public class DafIntegerAttributeType extends DafAttributeType implements Integer
 	}
 
 	/**
-	 * Stellt den undefiniert Wert zur Verf¸gung. Ist dieser noch nicht vorhanden, wird er angefordert.
+	 * Stellt den undefiniert Wert zur Verf√ºgung. Ist dieser noch nicht vorhanden, wird er angefordert.
 	 *
-	 * @return undefiniert Wert, <code>null</code> bedeutet, dass es keinen Wert f¸r diesen Attributtyp gibt
+	 * @return undefiniert Wert, <code>null</code> bedeutet, dass es keinen Wert f√ºr diesen Attributtyp gibt
 	 */
 	synchronized private Long getUndefinedValue() {
 		if(!_undefinedValueRequested) {

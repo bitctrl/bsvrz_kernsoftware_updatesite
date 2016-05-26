@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.main.impl.config.request.telegramManager;
 
@@ -28,10 +34,10 @@ import de.bsvrz.dav.daf.main.config.ConfigurationAuthority;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
 
 /**
- * Beauftragt die Konfigurations bestimmte Konfigurationsbereiche zu pr¸fen/modifizieren.
+ * Beauftragt die Konfigurations bestimmte Konfigurationsbereiche zu pr√ºfen/modifizieren.
  *
  * @author Achim Wullenkord (AW), Kappich Systemberatung
- * @version $Revision: 5060 $ / $Date: 2007-09-01 15:04:35 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigurationRequestArea extends AbstractSenderReceiverCommunication implements SenderReceiverCommunication {
 
@@ -52,7 +58,7 @@ public class ConfigurationRequestArea extends AbstractSenderReceiverCommunicatio
 		_responseAspect = dataModel.getAspect("asp.antwort");
 		_responseAtg = dataModel.getAttributeGroup("atg.konfigurationsBereichsverwaltungsAnfrageSchnittstelle");
 
-		// Sender und Empf‰nger anmelden
+		// Sender und Empf√§nger anmelden
 		init(_requestAtg, _requestAspect, _responseAtg, _responseAspect, null);
 	}
 }

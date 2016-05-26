@@ -6,7 +6,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config.request.telegramManager;
@@ -27,26 +33,26 @@ import de.bsvrz.dav.daf.main.config.MutableCollectionChangeListener;
 import de.bsvrz.dav.daf.main.impl.config.request.RequestException;
 
 /**
- * Dieses Interface emöglicht eine Kommunikation mit einem Sender und einem Empfänger. Der Sender verschickt Aufträge und empfängt dann die Antworten auf diese
- * Aufträge.
+ * Dieses Interface emÃ¶glicht eine Kommunikation mit einem Sender und einem EmpfÃ¤nger. Der Sender verschickt AuftrÃ¤ge und empfÃ¤ngt dann die Antworten auf diese
+ * AuftrÃ¤ge.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13310 $
+ * @version $Revision$
  */
 public interface SenderReceiverCommunication {
 
 	/**
 	 * Verschickt eine Anfrage vom angegeben Typ und mit dem in einem Byte Array angegebenen serialisierten Inhalt, die Methode gibt ohne zu blockieren eine
-	 * neue Anfragenummer zurück. Die Antwort kann mit {@link #waitForReply} abgerufen werden.
+	 * neue Anfragenummer zurÃ¼ck. Die Antwort kann mit {@link #waitForReply} abgerufen werden.
 	 *
 	 * @param messageType Anfragetyp
 	 * @param data Daten Serialiserte Anfragedaten.
 	 *
-	 * @return Index, der benötigt wird um die Antwort auf eine Anfrage zu abzufragen.
+	 * @return Index, der benÃ¶tigt wird um die Antwort auf eine Anfrage zu abzufragen.
 	 *
-	 * @throws SendSubscriptionNotConfirmed Wenn noch keine positive Sendesteuerung vom Datenverteiler für die zu versendenden Daten vorliegt
-	 * @throws IllegalStateException        Die Daten können versendet werden, aber die Antwort kann nicht empfangen werden, da für den empfang der Daten nicht die
-	 *                                      benötigten Rechte vorhanden sind. Aus diesem Grund werden die Daten nicht verschickt.
+	 * @throws SendSubscriptionNotConfirmed Wenn noch keine positive Sendesteuerung vom Datenverteiler fÃ¼r die zu versendenden Daten vorliegt
+	 * @throws IllegalStateException        Die Daten kÃ¶nnen versendet werden, aber die Antwort kann nicht empfangen werden, da fÃ¼r den empfang der Daten nicht die
+	 *                                      benÃ¶tigten Rechte vorhanden sind. Aus diesem Grund werden die Daten nicht verschickt.
 	 */
 	public int sendData(String messageType, byte[] data) throws SendSubscriptionNotConfirmed, IllegalStateException;
 
@@ -55,25 +61,25 @@ public interface SenderReceiverCommunication {
 	 *
 	 * @param messageType Antworttyp
 	 * @param data Daten Serialiserte Anfragedaten.
-	 * @param queryIndex Index der zugehörigen Anfrage
+	 * @param queryIndex Index der zugehÃ¶rigen Anfrage
 	 *
-	 * @throws SendSubscriptionNotConfirmed Wenn noch keine positive Sendesteuerung vom Datenverteiler für die zu versendenden Daten vorliegt
-	 * @throws IllegalStateException        Die Daten können versendet werden, aber die Antwort kann nicht empfangen werden, da für den empfang der Daten nicht die
-	 *                                      benötigten Rechte vorhanden sind. Aus diesem Grund werden die Daten nicht verschickt.
+	 * @throws SendSubscriptionNotConfirmed Wenn noch keine positive Sendesteuerung vom Datenverteiler fÃ¼r die zu versendenden Daten vorliegt
+	 * @throws IllegalStateException        Die Daten kÃ¶nnen versendet werden, aber die Antwort kann nicht empfangen werden, da fÃ¼r den empfang der Daten nicht die
+	 *                                      benÃ¶tigten Rechte vorhanden sind. Aus diesem Grund werden die Daten nicht verschickt.
 	 */
 	public void sendData(String messageType, byte[] data, int queryIndex) throws SendSubscriptionNotConfirmed, IllegalStateException;
 
 	/**
-	 * Stellt die Antwort auf eine Anfrage zur Verfügung
+	 * Stellt die Antwort auf eine Anfrage zur VerfÃ¼gung
 	 *
-	 * @param requestIndex Index, der bei der Methode {@link #sendData} als Rückgabeparameter zurückgegeben wurde
+	 * @param requestIndex Index, der bei der Methode {@link #sendData} als RÃ¼ckgabeparameter zurÃ¼ckgegeben wurde
 	 *
 	 * @return Antwort auf eine Anfrage
 	 * @throws de.bsvrz.dav.daf.main.impl.config.request.RequestException Wenn die Kommunikation zum Datenverteiler unterbrochen wurde.
 	 */
 	public Data waitForReply(int requestIndex) throws RequestException;
 
-	/** Schließt alle geöffneten Verbindungen und beendet mögliche Threads */
+	/** SchlieÃŸt alle geÃ¶ffneten Verbindungen und beendet mÃ¶gliche Threads */
 	public void close();
 
 	/**
@@ -84,7 +90,7 @@ public interface SenderReceiverCommunication {
 	public ConnectionState getConnectionState();
 
 	/**
-	 * Setzt den Listener zur Verarbeitung und Verteilung von Aktualisierungsnachrichten bzgl. Änderungen der Elemente von dynamischen Mengen bzw. dynamischen
+	 * Setzt den Listener zur Verarbeitung und Verteilung von Aktualisierungsnachrichten bzgl. Ã„nderungen der Elemente von dynamischen Mengen bzw. dynamischen
 	 * Typen.
 	 * @param notifyingMutableCollectionChangeListener Listener zur Verarbeitung und Verteilung von Aktualisierungsnachrichten.
 	 */

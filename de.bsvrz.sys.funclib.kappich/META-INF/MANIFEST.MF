@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Funclib Kappich
+Bundle-SymbolicName: de.bsvrz.sys.funclib.kappich
+Bundle-Version: 3.7.4.qualifier
+Bundle-Vendor: Kappich Systemberatung
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: de.bsvrz.sys.funclib.kappich,
+ de.bsvrz.sys.funclib.kappich.annotations

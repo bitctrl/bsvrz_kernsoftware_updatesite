@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.sys.funclib.dataIdentificationSettings.
  * 
  * de.bsvrz.sys.funclib.dataIdentificationSettings is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.dataIdentificationSettings is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.dataIdentificationSettings; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.dataIdentificationSettings; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.dataIdentificationSettings;
@@ -55,12 +61,12 @@ import de.bsvrz.sys.funclib.debug.Debug;
 import java.util.*;
 
 /**
- * Diese Klasse dient zur Verwaltung von Parametersätzen mit Einstellungen die sich auf Datenidentifikationen beziehen. Derartige Parameterdatensätze werden
- * z.B. zur Steuerung des Archivverhaltens (atg.archiv) und der Parametrierung (atg.parametrierung) eingesetzt. Über die Parameterdatensätze können in einzelnen
- * Einträgen mit Hilfe von Aufzählungen und Wildcards Einstellungen für viele Datenidentifikation auf einmal eingeben werden.
+ * Diese Klasse dient zur Verwaltung von ParametersÃ¤tzen mit Einstellungen die sich auf Datenidentifikationen beziehen. Derartige ParameterdatensÃ¤tze werden
+ * z.B. zur Steuerung des Archivverhaltens (atg.archiv) und der Parametrierung (atg.parametrierung) eingesetzt. Ãœber die ParameterdatensÃ¤tze kÃ¶nnen in einzelnen
+ * EintrÃ¤gen mit Hilfe von AufzÃ¤hlungen und Wildcards Einstellungen fÃ¼r viele Datenidentifikation auf einmal eingeben werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8324 $
+ * @version $Revision$
  */
 public class SettingsManager {
 
@@ -84,32 +90,32 @@ public class SettingsManager {
 
 	private final boolean _simulationVariantUsed;
 
-	/** Dieses Set speichert alle Attributgruppen, die über den SettingsManager nicht angemeldet werden dürfen. Sonst gibt es ein Senke - Empfänger - Konflikt. */
+	/** Dieses Set speichert alle Attributgruppen, die Ã¼ber den SettingsManager nicht angemeldet werden dÃ¼rfen. Sonst gibt es ein Senke - EmpfÃ¤nger - Konflikt. */
 	private final Set<AttributeGroup> _excludedAttributeGroups = new HashSet<AttributeGroup>();
 
-	/** Die dynamischen Objekt-Typen werden hier gespeichert, da zur Laufzeit Objekte dieser Typen erstellt und auf ungültig gesetzt werden können. */
+	/** Die dynamischen Objekt-Typen werden hier gespeichert, da zur Laufzeit Objekte dieser Typen erstellt und auf ungÃ¼ltig gesetzt werden kÃ¶nnen. */
 	private final Set<DynamicObjectType> _dynamicObjectTypes = new HashSet<DynamicObjectType>();
 
 	/**
-	 * Die dynamischen Objekte werden hier gespeichert, da zur Laufzeit diese Objekte ungültig werden können und dann müssen die Einstellungen neu publiziert
+	 * Die dynamischen Objekte werden hier gespeichert, da zur Laufzeit diese Objekte ungÃ¼ltig werden kÃ¶nnen und dann mÃ¼ssen die Einstellungen neu publiziert
 	 * werden.
 	 */
 	private final Set<DynamicObject> _dynamicObjects = new HashSet<DynamicObject>();
 
 	/**
-	 * Die änderbaren Mengen werden hier gespeichert, da sich zur Laufzeit der Inhalt der Elemente ändern kann. Dann müssen die neuen Einstellungen publiziert
+	 * Die Ã¤nderbaren Mengen werden hier gespeichert, da sich zur Laufzeit der Inhalt der Elemente Ã¤ndern kann. Dann mÃ¼ssen die neuen Einstellungen publiziert
 	 * werden.
 	 */
 	private final Set<MutableSet> _mutableSets = new HashSet<MutableSet>();
 
-	/** Wurden dynamische Typen angegeben, so registriert sich dieses Objekt bei diesen, um Änderungen mitzubekommen. */
+	/** Wurden dynamische Typen angegeben, so registriert sich dieses Objekt bei diesen, um Ã„nderungen mitzubekommen. */
 	private final RegisterDynamicListener _registerDynamicListener = new RegisterDynamicListener();
 
 	/** Speichert den zuletzt empfangenen Datensatz mit den Einstellungen. */
 	private Data _lastSettingsData;
 
 	/**
-	 * Runnable-Objekt des Threads, der asynchron die Änderungen der Einstellungen und dynamischen Objekten/Mengen verarbeitet und die angemeldeten Listener
+	 * Runnable-Objekt des Threads, der asynchron die Ã„nderungen der Einstellungen und dynamischen Objekten/Mengen verarbeitet und die angemeldeten Listener
 	 * informiert.
 	 */
 	ChangeNotifier _changeNotifier = new ChangeNotifier();
@@ -118,8 +124,8 @@ public class SettingsManager {
 
 	/**
 	 * Erzeugt ein neues Verwaltungsobjekt.
-	 * Beim Zugriff auf dynamische Mengen und dynamischen Typen wird zur Auflösung
-	 * von Wildcards für Elemente von dynamischen Mengen und dynamischen Typen die Simulationsvariante der angegebenen Datenidentifikation des
+	 * Beim Zugriff auf dynamische Mengen und dynamischen Typen wird zur AuflÃ¶sung
+	 * von Wildcards fÃ¼r Elemente von dynamischen Mengen und dynamischen Typen die Simulationsvariante der angegebenen Datenidentifikation des
 	 * Parameterdatensatzes oder die Simulationsvariante 0 verwendet, falls in der Datenidentifikation des Parameterdatensatzes keine explizite Angabe der
 	 * Simulationsvariante gemacht wurde.
 	 *
@@ -135,7 +141,7 @@ public class SettingsManager {
 	 *
 	 * @param connection              Verbindung zum Datenverteiler
 	 * @param parameterIdentification der Parameterdatensatz
-	 * @param simulationVariantForTypeAndSetWildcardExpansion Simulationsvariante, die beim Zugriff auf dynamische Mengen und dynamischen Typen zur Auflösung
+	 * @param simulationVariantForTypeAndSetWildcardExpansion Simulationsvariante, die beim Zugriff auf dynamische Mengen und dynamischen Typen zur AuflÃ¶sung
 	 * von Wildcards verwendet werden soll.
 	 */
 	public SettingsManager(ClientDavInterface connection, DataIdentification parameterIdentification, short simulationVariantForTypeAndSetWildcardExpansion) {
@@ -156,8 +162,8 @@ public class SettingsManager {
 
 		_debug.finest("_aspectUsed = " + _aspectUsed);
 
-		// Hier werden die Attributgruppen bestimmt, die nicht für Anmeldungen publiziert werden dürfen! Werden sie dennoch verwendet,
-		// so gibt es ein Senke - Empfänger - Konflikt.
+		// Hier werden die Attributgruppen bestimmt, die nicht fÃ¼r Anmeldungen publiziert werden dÃ¼rfen! Werden sie dennoch verwendet,
+		// so gibt es ein Senke - EmpfÃ¤nger - Konflikt.
 		final DataModel configuration = connection.getDataModel();
 		AttributeGroup atg = configuration.getAttributeGroup("atg.konfigurationsAnfrageSchnittstelle");
 		if(atg != null) _excludedAttributeGroups.add(atg);
@@ -184,7 +190,7 @@ public class SettingsManager {
 	}
 
 	/**
-	 * Ergänzt die Liste der Beobachter, die bei Änderung des Parameters zu informieren sind, um einen weiteren Eintrag.
+	 * ErgÃ¤nzt die Liste der Beobachter, die bei Ã„nderung des Parameters zu informieren sind, um einen weiteren Eintrag.
 	 *
 	 * @param listener Neuer Beobachter.
 	 */
@@ -195,9 +201,9 @@ public class SettingsManager {
 	}
 
 	/**
-	 * Löscht einen Beobachter aus der Liste der Beobachter, die bei Änderung des Parameters zu informieren sind.
+	 * LÃ¶scht einen Beobachter aus der Liste der Beobachter, die bei Ã„nderung des Parameters zu informieren sind.
 	 *
-	 * @param listener Zu löschender Beobachter.
+	 * @param listener Zu lÃ¶schender Beobachter.
 	 */
 	public void removeUpdateListener(UpdateListener listener) {
 		synchronized(_updateListeners) {
@@ -206,7 +212,7 @@ public class SettingsManager {
 	}
 
 	/**
-	 * Ergänzt die Liste der Beobachter, die informiert werden wollen, sobald alle Einstellungen abgearbeitet wurden.
+	 * ErgÃ¤nzt die Liste der Beobachter, die informiert werden wollen, sobald alle Einstellungen abgearbeitet wurden.
 	 *
 	 * @param listener neuer Beobachter
 	 */
@@ -217,9 +223,9 @@ public class SettingsManager {
 	}
 
 	/**
-	 * Löscht einen Beobachter aus der Liste der Beobachter, die informiert werden wollen, sobald alle Einstellungen abgearbeitet wurden.
+	 * LÃ¶scht einen Beobachter aus der Liste der Beobachter, die informiert werden wollen, sobald alle Einstellungen abgearbeitet wurden.
 	 *
-	 * @param listener zu löschender Beobachter
+	 * @param listener zu lÃ¶schender Beobachter
 	 */
 	public void removeEndOfSettingsListener(EndOfSettingsListener listener) {
 		synchronized(_endOfSettingsListener) {
@@ -228,8 +234,8 @@ public class SettingsManager {
 	}
 
 	/**
-	 * Meldet die im Konstruktor übergebene Datenidentifikation an und startet damit auch die Verarbeitung und Weitergabe der alten und neuen Einstellungen pro
-	 * Datenidentifikation aus erhaltenen Parameterdatensätzen an die angemeldeten Beobachter.
+	 * Meldet die im Konstruktor Ã¼bergebene Datenidentifikation an und startet damit auch die Verarbeitung und Weitergabe der alten und neuen Einstellungen pro
+	 * Datenidentifikation aus erhaltenen ParameterdatensÃ¤tzen an die angemeldeten Beobachter.
 	 *
 	 * @throws IllegalStateException Wenn der Manager bereits gestartet wurde.
 	 */
@@ -248,8 +254,8 @@ public class SettingsManager {
 	}
 
 	/**
-	 * Meldet die im Konstruktor übergebene Datenidentifikation wieder ab und beendet damit auch die Verarbeitung und Weitergabe der alten und neuen Einstellungen
-	 * pro Datenidentifikation aus erhaltenen Parameterdatensätzen an die angemeldeten Beobachter.
+	 * Meldet die im Konstruktor Ã¼bergebene Datenidentifikation wieder ab und beendet damit auch die Verarbeitung und Weitergabe der alten und neuen Einstellungen
+	 * pro Datenidentifikation aus erhaltenen ParameterdatensÃ¤tzen an die angemeldeten Beobachter.
 	 */
 	public void stop() {
 		if(_receiver == null) return;
@@ -262,14 +268,14 @@ public class SettingsManager {
 	}
 
 	/**
-	 * Aktualisiert die Tabelle mit den Einstellungen je Datenidentifikation mit den jeweiligen Einstellungen aus dem übergebenen Datensatz.
+	 * Aktualisiert die Tabelle mit den Einstellungen je Datenidentifikation mit den jeweiligen Einstellungen aus dem Ã¼bergebenen Datensatz.
 	 *
 	 * @param settingsData
 	 * @param newSettings  die neuen Einstellungen
 	 */
 	private void extractSettings(final Data settingsData, Map<DataIdentification, Data> newSettings) {
-		// Objekt-Typen werden hier gespeichert. Diese werden am Ende der Methode weitergereicht, damit sich der SettingsManager sich auf Änderungen
-		// an den Objekt-Typen anmeldet. Gleiches gilt für dynamische Objekte und änderbare Mengen.
+		// Objekt-Typen werden hier gespeichert. Diese werden am Ende der Methode weitergereicht, damit sich der SettingsManager sich auf Ã„nderungen
+		// an den Objekt-Typen anmeldet. Gleiches gilt fÃ¼r dynamische Objekte und Ã¤nderbare Mengen.
 		final Set<DynamicObjectType> dynamicObjectTypes = new HashSet<DynamicObjectType>();
 		final Set<DynamicObject> dynamicObjects = new HashSet<DynamicObject>();
 		final Set<MutableSet> mutableSets = new HashSet<MutableSet>();
@@ -282,7 +288,7 @@ public class SettingsManager {
 			boolean refreshParams = false;
 			final Data modifiableDataCopy = settingsData.createModifiableCopy();
 			Data parameterArray = modifiableDataCopy.getItem("ParameterSatz");
-			//Schleife über die einzelnen Elemente des Arrays ParameterSatz
+			//Schleife Ã¼ber die einzelnen Elemente des Arrays ParameterSatz
 			for(Iterator iterator = parameterArray.iterator(); iterator.hasNext();) {
 				final Data parameter = (Data)iterator.next();
 				Data settings = parameter.getItem("Einstellungen");
@@ -312,7 +318,7 @@ public class SettingsManager {
 					final boolean attributeGroupsEmpty = specifiedAtgs.length == 0;
 					specifiedAtgs = removeNullReferences(specifiedAtgs);
 
-					// Sortierung ist notwendig für das spätere binäre Suchen in diesem Array s.u.
+					// Sortierung ist notwendig fÃ¼r das spÃ¤tere binÃ¤re Suchen in diesem Array s.u.
 					Arrays.sort(specifiedAtgs);
 					final HashSet<AttributeGroup> specifiedAtgsHash = new HashSet<AttributeGroup>();
 					for(SystemObject specifiedAtg : specifiedAtgs) {
@@ -331,7 +337,7 @@ public class SettingsManager {
 						aspectsEmpty = specifiedAspects.length == 0;
 						specifiedAspects = removeNullReferences(specifiedAspects);
 
-						// Sortierung ist notwendig für das spätere binäre Suchen in diesem Array s.u.
+						// Sortierung ist notwendig fÃ¼r das spÃ¤tere binÃ¤re Suchen in diesem Array s.u.
 						Arrays.sort(specifiedAspects);
 					}
 					else {
@@ -374,16 +380,16 @@ public class SettingsManager {
 						for(SystemObject object : specifiedObjects) {
 							if(object instanceof DynamicObjectType) {
 								final DynamicObjectType dynamicObjectType = (DynamicObjectType)object;
-								// auf alle relevanten dynamischen Typen anmelden, falls neue Objekte hinzukommen oder welche ungültig werden
+								// auf alle relevanten dynamischen Typen anmelden, falls neue Objekte hinzukommen oder welche ungÃ¼ltig werden
 								registerDynamicObjectTypeOrSubTypes(dynamicObjectTypes, dynamicObjectType, specifiedAtgsHash, specifiedAspectsHash);
 //								dynamicObjectTypes.add(dynamicObjectType);
 								objectList.addAll(dynamicObjectType.getElements(_simulationVariantForTypeAndSetWildcardExpansion));
 							}
 							else if(object instanceof MutableSet) {
 								final MutableSet mutableSet = (MutableSet)object;
-								// änderbare Mengen merken, falls sich dort etwas ändert
+								// Ã¤nderbare Mengen merken, falls sich dort etwas Ã¤ndert
 								mutableSets.add(mutableSet);
-								// alle Elemente der Menge berücksichtigen
+								// alle Elemente der Menge berÃ¼cksichtigen
 								objectList.addAll(mutableSet.getElements(_simulationVariantForTypeAndSetWildcardExpansion));
 							}
 							else if(object instanceof SystemObjectCollection) {
@@ -398,7 +404,7 @@ public class SettingsManager {
 						}
 					}
 
-					// Einschränkung auf ausgewählte Konfigurationsbereiche
+					// EinschrÃ¤nkung auf ausgewÃ¤hlte Konfigurationsbereiche
 					if(!configAreasEmpty) {
 						_debug.finest("specifiedConfigAreas.length = " + specifiedConfigAreas.length);
 						List<SystemObject> specifiedConfigAreaList = Arrays.asList(specifiedConfigAreas);
@@ -407,19 +413,19 @@ public class SettingsManager {
 							ConfigurationArea configurationArea = systemObject.getConfigurationArea();
 							if(specifiedConfigAreaList.contains(configurationArea)) {
 								newObjectList.add(systemObject);
-							} // alle anderen werden aus der Objektliste gelöscht
+							} // alle anderen werden aus der Objektliste gelÃ¶scht
 						}
 						objectList.clear();
 						objectList.addAll(newObjectList);
 					}
-					// Folgende Map Enthält als Schlüssel die zu betrachtenden Typen und als Wert jeweils ein Set mit den zu
+					// Folgende Map EnthÃ¤lt als SchlÃ¼ssel die zu betrachtenden Typen und als Wert jeweils ein Set mit den zu
 					// betrachtenden Objekten des Typs:
 					Map<SystemObjectType, Collection<SystemObject>> type2objectSetMap = new TreeMap<SystemObjectType, Collection<SystemObject>>();
 
 					// Erzeugen der Map, d.h. sortieren nach Typen und sicherstellen, dass jedes Objekt nur einmal enthalten ist.
 					for(final SystemObject object : objectList) {
 						SystemObjectType type = object.getType();
-						// wenn das Objekt nicht gültig ist, nicht weiter betrachten
+						// wenn das Objekt nicht gÃ¼ltig ist, nicht weiter betrachten
 						
 
 
@@ -436,12 +442,12 @@ public class SettingsManager {
 					objectList = null;
 					// FIXME: Riesige Funktion, in Methoden auslagern?
 
-					// Schleife über Map mit Typ/ObjektSet Paaren
+					// Schleife Ã¼ber Map mit Typ/ObjektSet Paaren
 					for(Map.Entry<SystemObjectType, Collection<SystemObject>> entry : type2objectSetMap.entrySet()) {
 						SystemObjectType type = entry.getKey();
 						Collection<SystemObject> objectCollection = entry.getValue();
 						// Im folgenden werden alle Attributgruppen des Typs betrachtet und diese eventuell weiter
-						// eingeschränkt, dadurch werden unsinnige Spezifikation ignoriert.
+						// eingeschrÃ¤nkt, dadurch werden unsinnige Spezifikation ignoriert.
 						List<AttributeGroup> typeAtgs = type.getAttributeGroups();
 						for(AttributeGroup typeAtg : typeAtgs) {
 							// Wenn keine Attributgruppen spezifiziert wurden, dann werden alle des Typs weiter betrachtet,
@@ -466,9 +472,9 @@ public class SettingsManager {
 								// Konfigurierende Attributgruppenverwendungen werden ignoriert
 								if(typeAtg.getAttributeGroupUsage(atgAspect).isConfigurating()) continue;
 
-								//Für alle spezifizierten Objekte des betrachteten Typs die spezifizierte Einstellung merken
+								//FÃ¼r alle spezifizierten Objekte des betrachteten Typs die spezifizierte Einstellung merken
 								for(SystemObject object : objectCollection) {
-									// alle dynamischen Objekte speichern, deren Typ nicht bereits für Änderungen gespeichert wird,
+									// alle dynamischen Objekte speichern, deren Typ nicht bereits fÃ¼r Ã„nderungen gespeichert wird,
 									// damit sich der SettingsManager darauf anmelden kann
 									if(object instanceof DynamicObject && !dynamicObjectTypes.contains(object.getType())) {
 										dynamicObjects.add((DynamicObject)object);
@@ -494,17 +500,17 @@ public class SettingsManager {
 				sendNewParams(modifiableDataCopy);
 			}
 		}
-		// Anmelden auf Änderungen der dynamischen Objekt-Typen (hier können zur Laufzeit Objekte angelegt werden)
+		// Anmelden auf Ã„nderungen der dynamischen Objekt-Typen (hier kÃ¶nnen zur Laufzeit Objekte angelegt werden)
 		registerDynamicObjectTypes(dynamicObjectTypes);
 		registerDynamicObjects(dynamicObjects);
 		registerMutableSets(mutableSets);
 	}
 
 	/**
-	 * Sucht aus einem Objekt-Array veraltete Einträge, aktualisiert diese, und korrigiert das übergebene Daten-Array gleich mit
+	 * Sucht aus einem Objekt-Array veraltete EintrÃ¤ge, aktualisiert diese, und korrigiert das Ã¼bergebene Daten-Array gleich mit
 	 * @param referenceArray Datenobjekt
 	 * @param objects Systemobjekt-Array
-	 * @return true wenn etwas verändert wurde (d.h. wenn das Array behebbare ungültige Objekte enthielt)
+	 * @return true wenn etwas verÃ¤ndert wurde (d.h. wenn das Array behebbare ungÃ¼ltige Objekte enthielt)
 	 */
 	private boolean fixOldReferences(final Data.ReferenceArray referenceArray, final SystemObject[] objects) {
 		boolean arrayChanged = false;
@@ -512,7 +518,7 @@ public class SettingsManager {
 			if(objects[i] != null && !objects[i].isValid()) {
 				final SystemObject systemObject = getCurrentObject(objects[i].getPid());
 				// Falls kein aktuelles Systemobjekt gefunden wurde, das veraltete Objekt im Array lassen,
-				// da der Settingsmanager fälschlicherweise annehmen könnte, dass das Array leer wäre und so alle Objekte auswählen würde
+				// da der Settingsmanager fÃ¤lschlicherweise annehmen kÃ¶nnte, dass das Array leer wÃ¤re und so alle Objekte auswÃ¤hlen wÃ¼rde
 				
 				if(systemObject != null && !objects[i].equals(systemObject)) {
 					objects[i] = systemObject;
@@ -533,7 +539,7 @@ public class SettingsManager {
 	 * @param data Neuer, modifizierter/korrigierter Datensatz
 	 */
 	private void sendNewParams(final Data data) {
-		_debug.info(_parameterIdentification + " enthält veraltete Objektreferenzen. Diese werden durch aktuelle ersetzt.");
+		_debug.info(_parameterIdentification + " enthÃ¤lt veraltete Objektreferenzen. Diese werden durch aktuelle ersetzt.");
 
 		try {
 			if(_sender == null) {
@@ -551,30 +557,30 @@ public class SettingsManager {
 	}
 
 	/**
-	 * Anmeldungen bei den relevanten änderbaren Mengen auf Änderung.
+	 * Anmeldungen bei den relevanten Ã¤nderbaren Mengen auf Ã„nderung.
 	 *
-	 * @param mutableSets die relevanten änderbaren Mengen
+	 * @param mutableSets die relevanten Ã¤nderbaren Mengen
 	 */
 	private void registerMutableSets(final Set<MutableSet> mutableSets) {
-		// Anmeldungen, die nicht mehr benötigt werden, wieder abmelden
+		// Anmeldungen, die nicht mehr benÃ¶tigt werden, wieder abmelden
 		for(Iterator<MutableSet> iterator = _mutableSets.iterator(); iterator.hasNext();) {
 			MutableSet mutableSet = iterator.next();
 			if(!mutableSets.contains(mutableSet)) {
 				// abmelden
 //				mutableSet.removeChangeListener(_registerDynamicListener);
 				mutableSet.removeChangeListener(_simulationVariantForTypeAndSetWildcardExpansion, _registerDynamicListener);
-				// Objekt aus dem Set löschen
+				// Objekt aus dem Set lÃ¶schen
 				iterator.remove();
 			}
 		}
 
-		// nur auf die änderbaren Mengen anmelden, auf die noch nicht angemeldet wurde
+		// nur auf die Ã¤nderbaren Mengen anmelden, auf die noch nicht angemeldet wurde
 		for(MutableSet mutableSet : mutableSets) {
 			if(!_mutableSets.contains(mutableSet)) {
 				// anmelden
 //				mutableSet.addChangeListener(_registerDynamicListener);
 				mutableSet.addChangeListener(_simulationVariantForTypeAndSetWildcardExpansion, _registerDynamicListener);
-				// Objekt dem Set hinzufügen
+				// Objekt dem Set hinzufÃ¼gen
 				_mutableSets.add(mutableSet);
 			}
 		}
@@ -586,13 +592,13 @@ public class SettingsManager {
 	 * @param dynamicObjects die relevanten dynamischen Objekte
 	 */
 	private void registerDynamicObjects(final Set<DynamicObject> dynamicObjects) {
-		// Anmeldungen, die nicht mehr benötigt werden, wieder abmelden
+		// Anmeldungen, die nicht mehr benÃ¶tigt werden, wieder abmelden
 		for(Iterator<DynamicObject> iterator = _dynamicObjects.iterator(); iterator.hasNext();) {
 			DynamicObject dynamicObject = iterator.next();
 			if(!dynamicObjects.contains(dynamicObject)) {
 				// abmelden
 				dynamicObject.removeListenerForInvalidation(_registerDynamicListener);
-				// Objekt aus dem Set löschen
+				// Objekt aus dem Set lÃ¶schen
 				iterator.remove();
 			}
 		}
@@ -602,19 +608,19 @@ public class SettingsManager {
 			if(!_dynamicObjects.contains(dynamicObject)) {
 				// anmelden
 				dynamicObject.addListenerForInvalidation(_registerDynamicListener);
-				// Objekt dem Set hinzufügen
+				// Objekt dem Set hinzufÃ¼gen
 				_dynamicObjects.add(dynamicObject);
 			}
 		}
 	}
 
 	/**
-	 * Registriert den angegebenen dynamischen Typ oder Sub-Typen davon zur Anmeldung auf neue und gelöschte Objekte, falls am Typ bzw. Sub-Typ passende
-	 * Attributgruppen und Aspekte Online verwendet werden können.
-	 * @param registeredDynamicObjectTypes Bereits registrierte Typen. Die neu registrierten Typen werden in dieses Set hinzugefügt.
+	 * Registriert den angegebenen dynamischen Typ oder Sub-Typen davon zur Anmeldung auf neue und gelÃ¶schte Objekte, falls am Typ bzw. Sub-Typ passende
+	 * Attributgruppen und Aspekte Online verwendet werden kÃ¶nnen.
+	 * @param registeredDynamicObjectTypes Bereits registrierte Typen. Die neu registrierten Typen werden in dieses Set hinzugefÃ¼gt.
 	 * @param toBeRegisteredType Zu betrachtender dynamischer Typ.
-	 * @param specifiedAtgs Relevante Attributgruppen. Ein leeres Set wird als Wildcard für alle Attributgruppen berücksichtigt.
-	 * @param specifiedAspects Relevante Aspekte. Ein leeres Set wird als Wildcard für alle Aspekte berücksichtigt.
+	 * @param specifiedAtgs Relevante Attributgruppen. Ein leeres Set wird als Wildcard fÃ¼r alle Attributgruppen berÃ¼cksichtigt.
+	 * @param specifiedAspects Relevante Aspekte. Ein leeres Set wird als Wildcard fÃ¼r alle Aspekte berÃ¼cksichtigt.
 	 */
 	private void registerDynamicObjectTypeOrSubTypes(Set<DynamicObjectType> registeredDynamicObjectTypes, DynamicObjectType toBeRegisteredType, Set<AttributeGroup> specifiedAtgs, Set<Aspect> specifiedAspects) {
 		if(registeredDynamicObjectTypes.contains(toBeRegisteredType)) return;
@@ -634,10 +640,10 @@ public class SettingsManager {
 	}
 
 	/**
-	 * Prüft, ob an dem angegebenen dynamischen Typ passende Attributgruppen und Aspekte Online verwendet werden können.
+	 * PrÃ¼ft, ob an dem angegebenen dynamischen Typ passende Attributgruppen und Aspekte Online verwendet werden kÃ¶nnen.
 	 * @param toBeRegisteredType Zu betrachtender dynamischer Typ.
-	 * @param specifiedAtgs Relevante Attributgruppen. Ein leeres Set wird als Wildcard für alle Attributgruppen berücksichtigt.
-	 * @param specifiedAspects Relevante Aspekte. Ein leeres Set wird als Wildcard für alle Aspekte berücksichtigt.
+	 * @param specifiedAtgs Relevante Attributgruppen. Ein leeres Set wird als Wildcard fÃ¼r alle Attributgruppen berÃ¼cksichtigt.
+	 * @param specifiedAspects Relevante Aspekte. Ein leeres Set wird als Wildcard fÃ¼r alle Aspekte berÃ¼cksichtigt.
 	 * @return <code>true</code> falls es mindestens eine passende Attributgruppen-Aspekt-Kombination am zu betrachtenden Typ gibt, sonst <code>false</code>.
 	 */
 	private boolean hasMatchingAttributGroupUsage(
@@ -658,8 +664,8 @@ public class SettingsManager {
 	}
 
 	/**
-	 * Registriert den angegebenen dynamischen Typ zur Anmeldung auf neue und gelöschte Objekte.
-	 * @param registeredDynamicObjectTypes Bereits registrierte Typen. Der neu registrierte Typ wird in dieses Set hinzugefügt.
+	 * Registriert den angegebenen dynamischen Typ zur Anmeldung auf neue und gelÃ¶schte Objekte.
+	 * @param registeredDynamicObjectTypes Bereits registrierte Typen. Der neu registrierte Typ wird in dieses Set hinzugefÃ¼gt.
 	 * @param toBeRegisteredType Zu registrierender dynamischer Typ.
 	 */
 	private void registerDynamicObjectType(Set<DynamicObjectType> registeredDynamicObjectTypes, DynamicObjectType toBeRegisteredType) {
@@ -668,7 +674,7 @@ public class SettingsManager {
 //		toBeRegisteredType.addObjectCreationListener(_registerDynamicListener);
 //		toBeRegisteredType.addInvalidationListener(_registerDynamicListener);
 		toBeRegisteredType.addChangeListener(_simulationVariantForTypeAndSetWildcardExpansion, _registerDynamicListener);
-		// Typ dem Set hinzufügen
+		// Typ dem Set hinzufÃ¼gen
 		_dynamicObjectTypes.add(toBeRegisteredType);
 	}
 
@@ -678,7 +684,7 @@ public class SettingsManager {
 	 * @param dynamicObjectTypes die relevante Objekt-Typen
 	 */
 	private void registerDynamicObjectTypes(Set<DynamicObjectType> dynamicObjectTypes) {
-		// Anmeldungen, die nicht mehr benötigt werden, wieder abmelden
+		// Anmeldungen, die nicht mehr benÃ¶tigt werden, wieder abmelden
 		for(Iterator<DynamicObjectType> iterator = _dynamicObjectTypes.iterator(); iterator.hasNext();) {
 			DynamicObjectType dynamicObjectType = iterator.next();
 			if(!dynamicObjectTypes.contains(dynamicObjectType)) {
@@ -686,7 +692,7 @@ public class SettingsManager {
 //				dynamicObjectType.removeObjectCreationListener(_registerDynamicListener);
 //				dynamicObjectType.removeInvalidationListener(_registerDynamicListener);
 				dynamicObjectType.removeChangeListener(_simulationVariantForTypeAndSetWildcardExpansion, _registerDynamicListener);
-				// Typ aus dem Set löschen
+				// Typ aus dem Set lÃ¶schen
 				iterator.remove();
 			}
 		}
@@ -698,13 +704,13 @@ public class SettingsManager {
 //				dynamicObjectType.addObjectCreationListener(_registerDynamicListener);
 //				dynamicObjectType.addInvalidationListener(_registerDynamicListener);
 				dynamicObjectType.addChangeListener(_simulationVariantForTypeAndSetWildcardExpansion, _registerDynamicListener);
-				// Typ dem Set hinzufügen
+				// Typ dem Set hinzufÃ¼gen
 				_dynamicObjectTypes.add(dynamicObjectType);
 			}
 		}
 	}
 
-	/** Klasse, die sich auf Änderungen von dynamischen Objekten (erstellen und ungültig setzen), ObjektTypen und änderbaren Mengen anmeldet. */
+	/** Klasse, die sich auf Ã„nderungen von dynamischen Objekten (erstellen und ungÃ¼ltig setzen), ObjektTypen und Ã¤nderbaren Mengen anmeldet. */
 	private final class RegisterDynamicListener implements DynamicObjectType.DynamicObjectCreatedListener, InvalidationListener, MutableSetChangeListener, MutableCollectionChangeListener {
 
 		public void objectCreated(DynamicObject createdObject) {
@@ -744,14 +750,14 @@ public class SettingsManager {
 	}
 
 	/**
-	 * Iteriert über die Tabelle mit den Einstellungen je Datenidentifikation und informiert die angemeldeten Beobachter über Änderungen an den Einstellungen je
-	 * Datenidentifikation. Die übergebenen Einstellungen werden als aktuelle Einstellungen übernommen.
+	 * Iteriert Ã¼ber die Tabelle mit den Einstellungen je Datenidentifikation und informiert die angemeldeten Beobachter Ã¼ber Ã„nderungen an den Einstellungen je
+	 * Datenidentifikation. Die Ã¼bergebenen Einstellungen werden als aktuelle Einstellungen Ã¼bernommen.
 	 *
 	 * @param newSettingsTable Map mit Einstellungen je Datenidentifikation
 	 */
 	private void activateSettings(Map<DataIdentification, Data> newSettingsTable) {
-		// Schleife über Zeilen der neuen Tabelle
-		// entsprechender Eintrag in alter Tabelle wird gelöscht
+		// Schleife Ã¼ber Zeilen der neuen Tabelle
+		// entsprechender Eintrag in alter Tabelle wird gelÃ¶scht
 		// Benachrichtigung an alle Beobachter
 		long startTime = System.currentTimeMillis();
 		_debug.fine("+++aktiviere " + newSettingsTable.size() + " neue Einstellungen");
@@ -770,8 +776,8 @@ public class SettingsManager {
 
 		_debug.fine("---deaktiviere verbleibende " + _settingsTable.size() + " alte Einstellungen");
 		startTime = System.currentTimeMillis();
-		// Schleife über die verbleibenden Einträge in der alten Tabelle, das sind die Einträge, zu denen es keine
-		// neuen Einträge mehr gibt. Jeweils entsprechende Benachrichtigung der angemeldeten Beobachter.
+		// Schleife Ã¼ber die verbleibenden EintrÃ¤ge in der alten Tabelle, das sind die EintrÃ¤ge, zu denen es keine
+		// neuen EintrÃ¤ge mehr gibt. Jeweils entsprechende Benachrichtigung der angemeldeten Beobachter.
 		for(Iterator<Map.Entry<DataIdentification,Data>> iterator = _settingsTable.entrySet().iterator(); iterator.hasNext();) {
 			Map.Entry<DataIdentification, Data> entry = iterator.next();
 			DataIdentification dataIdentification = entry.getKey();
@@ -783,23 +789,23 @@ public class SettingsManager {
 				"+++Ende Deaktivierung " + _settingsTable.size() + " alte Einstellungen (Zeit: " + duration + "ms [pro Parametersatz "
 				+ ((double)duration / (double)((_settingsTable.size() == 0) ? 1 : (_settingsTable.size()))) + " ms]"
 		);
-		// Neue Einstellungstabelle wird als aktuelle übernommen
+		// Neue Einstellungstabelle wird als aktuelle Ã¼bernommen
 		_settingsTable.clear();
 		_settingsTable = newSettingsTable;
 		notifyEndOfSettings();
 	}
 
 	/**
-	 * Iteriert über alle Beobachter und gibt die Datenidentifikation mit alten und neuen Einstellungen an die {@link UpdateListener#update update(...)} Methode
+	 * Iteriert Ã¼ber alle Beobachter und gibt die Datenidentifikation mit alten und neuen Einstellungen an die {@link UpdateListener#update update(...)} Methode
 	 * weiter.
 	 *
 	 * @param dataIdentification Betroffene Datenidentifikation.
-	 * @param oldSettings        Zur Datenidentifikation gehörende Einstellung vor der Änderung oder <code>null</code> wenn es vor der Änderung keinen spezifischen
+	 * @param oldSettings        Zur Datenidentifikation gehÃ¶rende Einstellung vor der Ã„nderung oder <code>null</code> wenn es vor der Ã„nderung keinen spezifischen
 	 *                           Eintrag gab.
-	 * @param newSettings        Zur Datenidentifikation gehörende Einstellung nach der Änderung oder <code>null</code>
+	 * @param newSettings        Zur Datenidentifikation gehÃ¶rende Einstellung nach der Ã„nderung oder <code>null</code>
 	 */
 	private void notifySettings(DataIdentification dataIdentification, Data oldSettings, Data newSettings) {
-		//Schleife über alle Beobachter und jeweils Aufruf der update-Methode
+		//Schleife Ã¼ber alle Beobachter und jeweils Aufruf der update-Methode
 		synchronized(_updateListeners) {
 			for(Iterator<UpdateListener> iterator = _updateListeners.iterator(); iterator.hasNext();) {
 				UpdateListener listener = iterator.next();
@@ -808,7 +814,7 @@ public class SettingsManager {
 		}
 	}
 
-	/** Iteriert über alle Beobachter, die informiert werden wollen, sobald alle Einstellungen an den {@link UpdateListener} geschickt wurden. */
+	/** Iteriert Ã¼ber alle Beobachter, die informiert werden wollen, sobald alle Einstellungen an den {@link UpdateListener} geschickt wurden. */
 	private void notifyEndOfSettings() {
 		synchronized(_endOfSettingsListener) {
 			for(Iterator<EndOfSettingsListener> iterator = _endOfSettingsListener.iterator(); iterator.hasNext();) {
@@ -818,24 +824,24 @@ public class SettingsManager {
 		}
 	}
 
-	/** Klasse, die zur Entgegennahme der Parameterdatensätze vom Datenverteiler die entsprechende Update-Methode implementiert. */
+	/** Klasse, die zur Entgegennahme der ParameterdatensÃ¤tze vom Datenverteiler die entsprechende Update-Methode implementiert. */
 	private class Receiver implements ClientReceiverInterface {
 
-		/** Flag, dass dafür sorgt, dass initiale leere Datensätze ignoriert werden */
+		/** Flag, dass dafÃ¼r sorgt, dass initiale leere DatensÃ¤tze ignoriert werden */
 		private boolean _seenNonEmptyData = false;
 
 		/**
-		 * Der Datensatzindex des zuletzt verarbeiteten Parameterdatensatz wird als Workaround benutzt um doppelte Datensätze zu erkennen und zu ignorieren.
-		 * <p/>
-		 * Doppelte Datensätze können bei veränderten AnmeldeOptionen einer zweiten Anmeldung auf diese Datenidentifikation auftreten.
+		 * Der Datensatzindex des zuletzt verarbeiteten Parameterdatensatz wird als Workaround benutzt um doppelte DatensÃ¤tze zu erkennen und zu ignorieren.
+		 * <p>
+		 * Doppelte DatensÃ¤tze kÃ¶nnen bei verÃ¤nderten AnmeldeOptionen einer zweiten Anmeldung auf diese Datenidentifikation auftreten.
 		 */
 		private long _lastDataIndex = 0;
 
 		/**
 		 * Aktualisierungsmethode, die nach Empfang eines angemeldeten Datensatzes von den Datenverteiler-Applikationsfunktionen aufgerufen wird. Diese Methode muss
-		 * von der Applikation zur Verarbeitung der empfangenen Datensätze implementiert werden.
+		 * von der Applikation zur Verarbeitung der empfangenen DatensÃ¤tze implementiert werden.
 		 *
-		 * @param results Feld mit den empfangenen Ergebnisdatensätzen.
+		 * @param results Feld mit den empfangenen ErgebnisdatensÃ¤tzen.
 		 */
 		public void update(ResultData results[]) {
 			try {
@@ -896,11 +902,11 @@ public class SettingsManager {
 					boolean gotNewData = false;
 					boolean gotDynamicUpdate= false;
 					synchronized(_notificationQueue) {
-						// Warten auf neue Aufträge
+						// Warten auf neue AuftrÃ¤ge
 						while(_notificationQueue.isEmpty()) _notificationQueue.wait();
 
-						// Verzögerung solange, bis mindestens 500 Millisekunden lang keine weiteren Aktualisierungen anliegen
-						// Maximale Gesamtverzögerung auf 10000 Millisekunden begrenzt um den Thread nicht verhungern zu lassen
+						// VerzÃ¶gerung solange, bis mindestens 500 Millisekunden lang keine weiteren Aktualisierungen anliegen
+						// Maximale GesamtverzÃ¶gerung auf 10000 Millisekunden begrenzt um den Thread nicht verhungern zu lassen
 						long time0 = System.currentTimeMillis();
 						int lastSize = _notificationQueue.size();
 						long timeMax = time0 + 10000;

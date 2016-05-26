@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,17 +14,23 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.puk.config.xmlFile.properties;
 
 /**
  * Diese Klasse stellt eine "objektMenge" nach K2S.DTD dar.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 5618 $ / $Date: 2007-12-17 13:45:27 +0100 (Mon, 17 Dec 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigurationObjectSet implements ConfigurationObjectElements{
 	private final String _name;
@@ -33,7 +39,7 @@ public class ConfigurationObjectSet implements ConfigurationObjectElements{
 	 */
 	private final String _elements[];
 
-	/** Pid der Konfiguration, die die Elementzugehörigkeit der Menge verwaltet*/
+	/** Pid der Konfiguration, die die ElementzugehÃ¶rigkeit der Menge verwaltet*/
 	private final String _managementPid;
 
 	public ConfigurationObjectSet(String name, String[] elements, final String managementPid) {
@@ -53,7 +59,7 @@ public class ConfigurationObjectSet implements ConfigurationObjectElements{
 
 	/**
 	 * Name
-	 * @return Name oder "" falls im Konstruktor <code>null</code> übergeben wurde.
+	 * @return Name oder "" falls im Konstruktor <code>null</code> Ã¼bergeben wurde.
 	 */
 	public String getName() {
 		return _name;
@@ -68,8 +74,8 @@ public class ConfigurationObjectSet implements ConfigurationObjectElements{
 	}
 
 	/**
-	 * Liefert die Pid der Konfiguration, die die Elementzugehörigkeit der Menge verwaltet.
-	 * @return Pid der Konfiguration, die die Elementzugehörigkeit der Menge verwaltet
+	 * Liefert die Pid der Konfiguration, die die ElementzugehÃ¶rigkeit der Menge verwaltet.
+	 * @return Pid der Konfiguration, die die ElementzugehÃ¶rigkeit der Menge verwaltet
 	 */
 	public String getManagementPid() {
 		return _managementPid;

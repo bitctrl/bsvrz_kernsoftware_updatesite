@@ -1,12 +1,12 @@
 /*
  * Copyright 2009 by Kappich Systemberatung Aachen 
- * Copyright 2005 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.puk.config.xmlFile.parser;
 
@@ -35,9 +41,9 @@ import java.util.prefs.Preferences;
 /**
  * Klasse, die noch zu dokumentieren ist.
  *
- * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * @author Kappich+Kni√ü Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 6373 $ / $Date: 2009-02-20 15:36:56 +0100 (Fri, 20 Feb 2009) $ / ($Author: sw $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigAreaBrowser {
 	private static Debug _debug;
@@ -58,7 +64,7 @@ public class ConfigAreaBrowser {
 				System.exit(0);
 			}
 		} catch (Exception e) {
-			_debug.error("Beim Ausf¸hren der Applikation ist ein unerwarteter Fehler aufgetreten", e);
+			_debug.error("Beim Ausf√ºhren der Applikation ist ein unerwarteter Fehler aufgetreten", e);
 			usage();
 		}
 	}
@@ -69,7 +75,7 @@ public class ConfigAreaBrowser {
 		System.out.println("");
 		System.out.println("Ohne Optionen wird ein File-Dialog zur Auswahl der zu lesenden Datei angezeigt.");
 		System.out.println("");
-		System.out.println("Folgende Optionen werden unterst¸tzt:");
+		System.out.println("Folgende Optionen werden unterst√ºtzt:");
 		System.out.println("   -?");
 		System.out.println("   -hilfe");
 		System.out.println("      Ausgabe dieser Beschreibung der Aufrufargumente");
@@ -149,7 +155,7 @@ public class ConfigAreaBrowser {
 	}
 
 	private File chooseFileAwt() {
-		FileDialog chooser = new FileDialog(JOptionPane.getRootFrame(), "Datei ausw‰hlen", FileDialog.LOAD);
+		FileDialog chooser = new FileDialog(JOptionPane.getRootFrame(), "Datei ausw√§hlen", FileDialog.LOAD);
 		chooser.setFilenameFilter(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.toLowerCase().endsWith(".xml");

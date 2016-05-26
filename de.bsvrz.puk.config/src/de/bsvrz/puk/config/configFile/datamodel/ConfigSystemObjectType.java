@@ -1,13 +1,13 @@
 /*
  * Copyright 2008 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2006 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -34,7 +40,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
  * Implementierung der {@link SystemObjectType Typen von System-Objekten} auf Seiten der Konfiguration.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13170 $
+ * @version $Revision$
  */
 public class ConfigSystemObjectType extends ConfigConfigurationObject implements SystemObjectType {
 
@@ -44,13 +50,13 @@ public class ConfigSystemObjectType extends ConfigConfigurationObject implements
 	/** Speichert die Sub-Typen dieses Objekt-Typs. */
 	private List<SystemObjectType> _subTypes = null;
 
-	/** Speichert die Attributgruppen, die an diesem Objekt-Typ definiert wurden. Geerbte Attributgruppen werden hier nicht aufgeführt. */
+	/** Speichert die Attributgruppen, die an diesem Objekt-Typ definiert wurden. Geerbte Attributgruppen werden hier nicht aufgefÃ¼hrt. */
 	private List<AttributeGroup> _directAttributeGroups = null;
 
 	/** Alle Attributgruppen dieses Objekt-Typs. */
 	private List<AttributeGroup> _attributeGroups = null;
 
-	/** Alle Attributgruppen dieses Objekt-Typs, die in aktueller oder in zukünftiger Version gültig sind. */
+	/** Alle Attributgruppen dieses Objekt-Typs, die in aktueller oder in zukÃ¼nftiger Version gÃ¼ltig sind. */
 	private Set<AttributeGroup> _attributeGroupsRelaxed = null;
 
 	/** Die Mengenverwendungen, die an diesem Objekt-Typ definiert wurden. Geerbte Mengenverwendungen werden hier nicht gespeichert. */
@@ -59,10 +65,10 @@ public class ConfigSystemObjectType extends ConfigConfigurationObject implements
 	/** Alle Mengenverwendungen dieses Objekt-Typs. */
 	private List<ObjectSetUse> _objectSetUses = null;
 
-	/** Objekt für den synchronisierten Zugriff auf die Elemente dieses Objekt-Typs. */
+	/** Objekt fÃ¼r den synchronisierten Zugriff auf die Elemente dieses Objekt-Typs. */
 	private final Object _lockObject = new Object();
 
-	/** Enthält alle aktuellen System-Objekte, die von diesem Objekt-Typ sind. */
+	/** EnthÃ¤lt alle aktuellen System-Objekte, die von diesem Objekt-Typ sind. */
 	private Collection<SystemObject> _allElements;
 
 	/** _allElements ist bei dynamischen Typen ein Set, da einige Funktionen eine Liste erwarten, wird hier eine Listenkopie erstellt und gecacht */
@@ -72,7 +78,7 @@ public class ConfigSystemObjectType extends ConfigConfigurationObject implements
 	 * Konstruktor eines System-Objekt-Typs.
 	 *
 	 * @param configurationArea der Konfigurationsbereich dieses Objekts
-	 * @param systemObjectInfo  das korrespondierende Objekt für die Dateioperationen dieses Objekts
+	 * @param systemObjectInfo  das korrespondierende Objekt fÃ¼r die Dateioperationen dieses Objekts
 	 */
 	public ConfigSystemObjectType(ConfigurationArea configurationArea, SystemObjectInformationInterface systemObjectInfo) {
 		super(configurationArea, systemObjectInfo);
@@ -93,7 +99,7 @@ public class ConfigSystemObjectType extends ConfigConfigurationObject implements
 	}
 
 	/**
-	 * Gibt alle Supertypen in der aktuell gültigen oder in zukünftig gültigen Versionen zurücl
+	 * Gibt alle Supertypen in der aktuell gÃ¼ltigen oder in zukÃ¼nftig gÃ¼ltigen Versionen zurÃ¼cl
 	 * @return Liste mit Supertypen
 	 */
 	private List<SystemObjectType> getSuperTypesRelaxed() {
@@ -126,14 +132,14 @@ public class ConfigSystemObjectType extends ConfigConfigurationObject implements
 			// die Dateien der Konfigurationsbereiche holen
 			final ConfigurationAreaFile[] areaFiles = configDataModel.getConfigurationFileManager().getConfigurationAreas();
 
-			// Sonderfall für Typ.Typ
+			// Sonderfall fÃ¼r Typ.Typ
 			if(getPid().equals(Pid.Type.TYPE)) {
 				typeIds.add(getId()); // ID von typ.typ nicht vergessen
 
 				for(ConfigurationAreaFile areaFile : areaFiles) {
-					// nur aktive Bereiche werden berücksichtigt
+					// nur aktive Bereiche werden berÃ¼cksichtigt
 					if(getDataModel().getObject(areaFile.getConfigurationAreaInfo().getPid()) != null) {
-						// alle aktuellen Objekte, die diese Type-ID als Typ haben, werden zurückgegeben
+						// alle aktuellen Objekte, die diese Type-ID als Typ haben, werden zurÃ¼ckgegeben
 						SystemObjectInformationInterface[] systemObjectInfos = areaFile.getActualObjects(typeIds);
 						for(SystemObjectInformationInterface systemObjectInfo : systemObjectInfos) {
 							SystemObject systemObject = configDataModel.createSystemObject(systemObjectInfo);
@@ -144,7 +150,7 @@ public class ConfigSystemObjectType extends ConfigConfigurationObject implements
 								}
 							}
 						}
-						// zurückgegeben werden müssten folgende Typen: typ.mengenTyp und typ.dynamischerTyp
+						// zurÃ¼ckgegeben werden mÃ¼ssten folgende Typen: typ.mengenTyp und typ.dynamischerTyp
 					}
 				}
 			}
@@ -158,7 +164,7 @@ public class ConfigSystemObjectType extends ConfigConfigurationObject implements
 
 				// alle Konfigurationsbereiche durchgehen
 				for(ConfigurationAreaFile areaFile : areaFiles) {
-					// nur aktive Bereiche werden berücksichtigt
+					// nur aktive Bereiche werden berÃ¼cksichtigt
 					if(getDataModel().getObject(areaFile.getConfigurationAreaInfo().getPid()) != null) {
 						SystemObjectInformationInterface[] systemObjectInfos = areaFile.getActualObjects(typeIds);
 
@@ -194,9 +200,9 @@ public class ConfigSystemObjectType extends ConfigConfigurationObject implements
 	}
 
 	/**
-	 * Liefert eine Liste aller aktuell gültigen und aller zukünftig gültigen
-	 * Attributgruppen, die von System-Objekten dieses Typs verwendet werden können und
-	 * nicht von einem Supertyp geerbt wurden, zurück.
+	 * Liefert eine Liste aller aktuell gÃ¼ltigen und aller zukÃ¼nftig gÃ¼ltigen
+	 * Attributgruppen, die von System-Objekten dieses Typs verwendet werden kÃ¶nnen und
+	 * nicht von einem Supertyp geerbt wurden, zurÃ¼ck.
 	 *
 	 * @return Liste von {@link AttributeGroup Attributgruppen}
 	 */
@@ -227,8 +233,8 @@ public class ConfigSystemObjectType extends ConfigConfigurationObject implements
 	}
 
 	/**
-	 * Liefert eine Liste aller aktuell gültigen und aller zukünftig gültigen
-	 * Attributgruppen, die von System-Objekten dieses Typs verwendet werden können, zurück.
+	 * Liefert eine Liste aller aktuell gÃ¼ltigen und aller zukÃ¼nftig gÃ¼ltigen
+	 * Attributgruppen, die von System-Objekten dieses Typs verwendet werden kÃ¶nnen, zurÃ¼ck.
 	 *
 	 * @return Liste von {@link AttributeGroup Attributgruppen}
 	 */
@@ -300,7 +306,7 @@ public class ConfigSystemObjectType extends ConfigConfigurationObject implements
 			return data.getTextValue("namePermanent").getText().equals("Ja");
 		}
 		throw new IllegalStateException(
-				"Es kann nicht ermittelt werden, ob der Name eines Objekts vom Typ '" + getPidOrNameOrId() + "' geändert werden kann oder nicht."
+				"Es kann nicht ermittelt werden, ob der Name eines Objekts vom Typ '" + getPidOrNameOrId() + "' geÃ¤ndert werden kann oder nicht."
 		);
 	}
 
@@ -311,7 +317,7 @@ public class ConfigSystemObjectType extends ConfigConfigurationObject implements
 	public List<SystemObject> getElements() {
 		Collection<SystemObject> allElements = _allElements;
 		if(allElements instanceof List || (allElements == null && isConfigurating())) {
-			// Konfigurierend und Unveränderlich
+			// Konfigurierend und UnverÃ¤nderlich
 			return (List<SystemObject>) getAllElements();
 		}
 		else {
@@ -328,8 +334,8 @@ public class ConfigSystemObjectType extends ConfigConfigurationObject implements
 	}
 
 	/**
-	 * Liefert alle aktuellen Elemente des Typs zurück. Bei dynamischen Typen werden auch die in einer Simulation erzeugten Objekte zurückgeliefert.
-	 * @return Alle aktuellen Elemente des Typs unabhängig von der Simulationsvariante.
+	 * Liefert alle aktuellen Elemente des Typs zurÃ¼ck. Bei dynamischen Typen werden auch die in einer Simulation erzeugten Objekte zurÃ¼ckgeliefert.
+	 * @return Alle aktuellen Elemente des Typs unabhÃ¤ngig von der Simulationsvariante.
 	 */
 	protected Collection<SystemObject> getAllElements() {
 		synchronized(_lockObject) {
@@ -337,7 +343,7 @@ public class ConfigSystemObjectType extends ConfigConfigurationObject implements
 				final List<SystemObjectType> objectTypes = new ArrayList<SystemObjectType>();
 				objectTypes.add(this);
 
-				// hier müssen alle Bereiche gefragt werden - die vollständigen SubTypen werden in der getObjects-Methode ermittelt
+				// hier mÃ¼ssen alle Bereiche gefragt werden - die vollstÃ¤ndigen SubTypen werden in der getObjects-Methode ermittelt
 				final Collection<SystemObject> objects = getDataModel().getAllObjects(
 						null, objectTypes, ObjectTimeSpecification.valid()
 				);
@@ -346,10 +352,10 @@ public class ConfigSystemObjectType extends ConfigConfigurationObject implements
 					_allElements = Collections.unmodifiableList(new ArrayList<SystemObject>(objects));
 				}
 				else {
-					// handelt es sich um einen dynamischen Typ, dann werden die Objekte auch gespeichert und bei Änderungen wird diese Collection modifiziert.
+					// handelt es sich um einen dynamischen Typ, dann werden die Objekte auch gespeichert und bei Ã„nderungen wird diese Collection modifiziert.
 					_allElements = new ConcurrentSkipListSet<SystemObject>(objects);
-					// Eine Alternative wäre eine java.util.concurrent.ConcurrentLinkedQueue, aber die hat O(n) Performance beim
-					// Löschen während diese Klasse O(log(n))-Performance hat.
+					// Eine Alternative wÃ¤re eine java.util.concurrent.ConcurrentLinkedQueue, aber die hat O(n) Performance beim
+					// LÃ¶schen wÃ¤hrend diese Klasse O(log(n))-Performance hat.
 				}
 			}
 			return _allElements;
@@ -359,7 +365,7 @@ public class ConfigSystemObjectType extends ConfigConfigurationObject implements
 	public List<SystemObject> getElements(long time) {
 		final List<SystemObjectType> objectTypes = new ArrayList<SystemObjectType>();
 		objectTypes.add(this);
-		// alle Bereich müssen betrachtet werden
+		// alle Bereich mÃ¼ssen betrachtet werden
 		final Collection<SystemObject> objects = getDataModel().getAllObjects(null, objectTypes, ObjectTimeSpecification.valid(time));
 		return Collections.unmodifiableList(new ArrayList<SystemObject>(objects));
 	}
@@ -367,7 +373,7 @@ public class ConfigSystemObjectType extends ConfigConfigurationObject implements
 	public List<SystemObject> getElementsInPeriod(long startTime, long endTime) {
 		final List<SystemObjectType> objectTypes = new ArrayList<SystemObjectType>();
 		objectTypes.add(this);
-		// alle Bereich müssen betrachtet werden
+		// alle Bereich mÃ¼ssen betrachtet werden
 		final Collection<SystemObject> objects = getDataModel().getAllObjects(null, objectTypes, ObjectTimeSpecification.validInPeriod(startTime, endTime));
 		return Collections.unmodifiableList(new ArrayList<SystemObject>(objects));
 	}
@@ -375,7 +381,7 @@ public class ConfigSystemObjectType extends ConfigConfigurationObject implements
 	public List<SystemObject> getElementsDuringPeriod(long startTime, long endTime) {
 		final List<SystemObjectType> objectTypes = new ArrayList<SystemObjectType>();
 		objectTypes.add(this);
-		// alle Bereich müssen betrachtet werden
+		// alle Bereich mÃ¼ssen betrachtet werden
 		final Collection<SystemObject> objects = getDataModel().getAllObjects(null, objectTypes, ObjectTimeSpecification.validDuringPeriod(startTime, endTime));
 		return Collections.unmodifiableList(new ArrayList<SystemObject>(objects));
 	}
@@ -410,7 +416,7 @@ public class ConfigSystemObjectType extends ConfigConfigurationObject implements
 	 */
 	protected void validateAttributeGroup(final AttributeGroup attributeGroup) throws ConfigurationChangeException {
 		if(!getAttributeGroupsRelaxed().contains(attributeGroup)){
-			// Cache leeren, es könnte in der Zwischenzeit eine neue Attributgruppe geben
+			// Cache leeren, es kÃ¶nnte in der Zwischenzeit eine neue Attributgruppe geben
 			synchronized(_lockObject) {
 				_attributeGroupsRelaxed = null;
 			}

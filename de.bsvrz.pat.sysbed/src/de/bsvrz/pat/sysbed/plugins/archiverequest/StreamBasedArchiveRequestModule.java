@@ -1,13 +1,13 @@
 /*
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.plugins.archiverequest;
@@ -53,18 +59,18 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Diese Klasse implementiert das Modul für eine streambasierte Archivanfrage. Mit Hilfe eines Dialogs werden alle benötigten Parameter eingestellt, die die
- * streambasierte Archivanfrage braucht. Hierzu gehört die Priorität, der (Zeit-)Bereich und die Art der Archivanfrage. Falls erforderlich muß die
- * Sortierreihenfolge der als nachgeliefert gekennzeichneten Archivdatensätzen angegeben werden. Weiterhin muß angegeben werden, ob es sich um eine Zustands-
- * oder Deltaanfrage handelt. Zur Darstellung in einer Tabelle kann die Sortierreihenfolge der Archivdaten angegeben werden. Zwei Möglichkeiten stehen hierfür
- * zur Verfügung. Es ist möglich nach der Zeit oder nach den Datenidentifikationen zu sortieren.
+ * Diese Klasse implementiert das Modul fÃ¼r eine streambasierte Archivanfrage. Mit Hilfe eines Dialogs werden alle benÃ¶tigten Parameter eingestellt, die die
+ * streambasierte Archivanfrage braucht. Hierzu gehÃ¶rt die PrioritÃ¤t, der (Zeit-)Bereich und die Art der Archivanfrage. Falls erforderlich muÃŸ die
+ * Sortierreihenfolge der als nachgeliefert gekennzeichneten ArchivdatensÃ¤tzen angegeben werden. Weiterhin muÃŸ angegeben werden, ob es sich um eine Zustands-
+ * oder Deltaanfrage handelt. Zur Darstellung in einer Tabelle kann die Sortierreihenfolge der Archivdaten angegeben werden. Zwei MÃ¶glichkeiten stehen hierfÃ¼r
+ * zur VerfÃ¼gung. Es ist mÃ¶glich nach der Zeit oder nach den Datenidentifikationen zu sortieren.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11925 $
+ * @version $Revision$
  */
 public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter implements ExternalModule {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	/** speichert den Text des Tooltips */
@@ -76,7 +82,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 	/* ################### Methoden ########### */
 
 	/**
-	 * Gibt den Namen des Moduls zurück.
+	 * Gibt den Namen des Moduls zurÃ¼ck.
 	 *
 	 * @return der Name des Moduls
 	 */
@@ -85,7 +91,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 	}
 
 	/**
-	 * Gibt des Text des Buttons zurück.
+	 * Gibt des Text des Buttons zurÃ¼ck.
 	 *
 	 * @return Text des Buttons
 	 */
@@ -94,7 +100,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 	}
 
 	/**
-	 * Gibt den Text des Tooltips zurück.
+	 * Gibt den Text des Tooltips zurÃ¼ck.
 	 *
 	 * @return Text des Tooltips
 	 */
@@ -103,10 +109,10 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 	}
 
 	/**
-	 * Diese Methode erhält alle ausgewählten Parameter und startet den {@link StreamBasedArchiveRequestDialog Dialog} zur Auswahl weiterer Einstellungen der
+	 * Diese Methode erhÃ¤lt alle ausgewÃ¤hlten Parameter und startet den {@link StreamBasedArchiveRequestDialog Dialog} zur Auswahl weiterer Einstellungen der
 	 * Archivanfrage.
 	 *
-	 * @param settingsData enthält die ausgewählte Datenidentifikation
+	 * @param settingsData enthÃ¤lt die ausgewÃ¤hlte Datenidentifikation
 	 */
 	public void startModule(final SettingsData settingsData) {
 		_dialog = new StreamBasedArchiveRequestDialog();
@@ -114,7 +120,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 	}
 
 	/**
-	 * Diese Methode erhält alle Einstellungen für die Archivanfrage und startet diese ohne den Dialog anzuzeigen.
+	 * Diese Methode erhÃ¤lt alle Einstellungen fÃ¼r die Archivanfrage und startet diese ohne den Dialog anzuzeigen.
 	 *
 	 * @param settingsData die Einstellungsdaten
 	 */
@@ -124,7 +130,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 	}
 
 	/**
-	 * Diese Methode erhält alle Einstellungen für die Archivanfrage und startet den {@link StreamBasedArchiveRequestDialog Dialog} und füllt ihn entsprechend mit
+	 * Diese Methode erhÃ¤lt alle Einstellungen fÃ¼r die Archivanfrage und startet den {@link StreamBasedArchiveRequestDialog Dialog} und fÃ¼llt ihn entsprechend mit
 	 * den Einstellungen.
 	 *
 	 * @param settingsData die Einstellungsdaten
@@ -135,33 +141,33 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 	}
 
 	/**
-	 * Überprüft, ob die Voraussetzungen für das Modul gegeben sind.
+	 * ÃœberprÃ¼ft, ob die Voraussetzungen fÃ¼r das Modul gegeben sind.
 	 *
-	 * @param settingsData enthält die ausgewählte Datenidentifikation
+	 * @param settingsData enthÃ¤lt die ausgewÃ¤hlte Datenidentifikation
 	 *
-	 * @return gibt zurück, ob die Voraussetzungen für das Modul gegeben sind
+	 * @return gibt zurÃ¼ck, ob die Voraussetzungen fÃ¼r das Modul gegeben sind
 	 */
 	public boolean isPreselectionValid(final SettingsData settingsData) {
 		if(!super.isPreselectionValid(settingsData)) {
-			_tooltipText = "Genau eine Attributgruppe, ein Aspekt und mindestens ein Objekt müssen ausgewählt sein.";
+			_tooltipText = "Genau eine Attributgruppe, ein Aspekt und mindestens ein Objekt mÃ¼ssen ausgewÃ¤hlt sein.";
 			return false;
 		}
 
-		// ATGV prüfen
+		// ATGV prÃ¼fen
 		final AttributeGroupUsage atgUsage = settingsData.getAttributeGroup().getAttributeGroupUsage(settingsData.getAspect());
 		if(atgUsage == null || atgUsage.isConfigurating()) {
-			_tooltipText = "Es muss eine Online-Attributgruppenverwendung ausgewählt werden.";
+			_tooltipText = "Es muss eine Online-Attributgruppenverwendung ausgewÃ¤hlt werden.";
 			return false;
 		}
-		_tooltipText = "Auswahl übernehmen";
+		_tooltipText = "Auswahl Ã¼bernehmen";
 		return true;
 	}
 
 	/* ################ Klasse ArchiveRequestDialog ############# */
 
 	/**
-	 * Stellt einen Dialog dar, womit Parameter für die Archivanfrage eingestellt werden können. Diese Einstellungen können gespeichert werden. Durch betätigen des
-	 * "OK"-Buttons werden die Einstellungen übernommen, die Archivanfrage gestartet und der Dialog geschlossen. Durch betätigen des "Speichern unter ..."-Buttons
+	 * Stellt einen Dialog dar, womit Parameter fÃ¼r die Archivanfrage eingestellt werden kÃ¶nnen. Diese Einstellungen kÃ¶nnen gespeichert werden. Durch betÃ¤tigen des
+	 * "OK"-Buttons werden die Einstellungen Ã¼bernommen, die Archivanfrage gestartet und der Dialog geschlossen. Durch betÃ¤tigen des "Speichern unter ..."-Buttons
 	 * werden die Einstellungen gespeichert.
 	 */
 	private class StreamBasedArchiveRequestDialog implements DialogInterface {
@@ -175,25 +181,25 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 		/** speichert die Datenidentifikationsauswahl */
 		private DataIdentificationChoice _dataIdentificationChoice;
 
-		/** Gibt die möglichen Prioritäten für eine Archivanfrage an. */
+		/** Gibt die mÃ¶glichen PrioritÃ¤ten fÃ¼r eine Archivanfrage an. */
 		private final String[] _priorityUnit = {"Hoch", "Mittel", "Niedrig"};
 
-		/** Gibt die möglichen (Zeit-)Bereiche an. */
+		/** Gibt die mÃ¶glichen (Zeit-)Bereiche an. */
 		private final String[] _timingUnit = {"Datenzeitstempel", "Archivzeitstempel", "Datenindex"};
 
-		/** Gibt die möglichen Sortierreihenfolgen der als nachgeliefert gekennzeichneten Archivdatensätze an. */
+		/** Gibt die mÃ¶glichen Sortierreihenfolgen der als nachgeliefert gekennzeichneten ArchivdatensÃ¤tze an. */
 		private final String[] _sortOfDataUnit = {"Datenindex", "Datenzeitstempel"};
 
-		/** Betrifft die Sortierung der Datensätze bei der Darstellung in einer Tabelle. */
+		/** Betrifft die Sortierung der DatensÃ¤tze bei der Darstellung in einer Tabelle. */
 		private final String[] _sortViewUnit = {"Zeitstempel", "Datenidentifikation"};
 
-		/** Das Panel für die (Zeit-)Bereichsanfrage. */
+		/** Das Panel fÃ¼r die (Zeit-)Bereichsanfrage. */
 		private JPanel _domainPanel;
 
-		/** Die Auswahlbox für die Prioritäten der Archivanfrage. */
+		/** Die Auswahlbox fÃ¼r die PrioritÃ¤ten der Archivanfrage. */
 		private JComboBox _priorityComboBox;
 
-		/** Die Auswahlbox für die möglichen (Zeit-)Bereiche der Archivanfrage. */
+		/** Die Auswahlbox fÃ¼r die mÃ¶glichen (Zeit-)Bereiche der Archivanfrage. */
 		private JComboBox _timingComboBox;
 
 		/** Gibt den Startwert des Zeitbereichs der Archivanfrage an. */
@@ -202,46 +208,46 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 		/** Gibt den Endzeitpunkt des Zeitbereichs der Archivanfrage an. */
 		private JSpinner _endTimeSpinner;
 
-		/** Gibt den Startwert der Anfrage für des Datenindex an. */
+		/** Gibt den Startwert der Anfrage fÃ¼r des Datenindex an. */
 		private JSpinner _startIndexSpinner;
 
-		/** Gibt den Endwert der Anfrage für den Datenindex an. */
+		/** Gibt den Endwert der Anfrage fÃ¼r den Datenindex an. */
 		private JSpinner _endIndexSpinner;
 
-		/** Gibt an, wieviele Datensätze vor dem Endwert der Archivanfrage übertragen werden sollen. */
+		/** Gibt an, wieviele DatensÃ¤tze vor dem Endwert der Archivanfrage Ã¼bertragen werden sollen. */
 		private JSpinner _numberOfDatasetsSpinner;
 
-		/** Das Ankreuzfeld für die Art der Archivanfrage: aktuelle Daten */
+		/** Das Ankreuzfeld fÃ¼r die Art der Archivanfrage: aktuelle Daten */
 		private JCheckBox _oaDataCheckBox;
 
-		/** Das Ankreuzfeld für die Art der Archivanfrage: nachgefordert-aktuelle Daten */
+		/** Das Ankreuzfeld fÃ¼r die Art der Archivanfrage: nachgefordert-aktuelle Daten */
 		private JCheckBox _naDataCheckBox;
 
-		/** Das Ankreuzfeld für die Art der Archivanfrage: nachgelieferte Daten */
+		/** Das Ankreuzfeld fÃ¼r die Art der Archivanfrage: nachgelieferte Daten */
 		private JCheckBox _onDataCheckBox;
 
-		/** Das Ankreuzfeld für die Art der Archivanfrage: nachgefordert-nachgelieferte Daten */
+		/** Das Ankreuzfeld fÃ¼r die Art der Archivanfrage: nachgefordert-nachgelieferte Daten */
 		private JCheckBox _nnDataCheckBox;
 
-		/** Die Auswahlbox für die Sortierreihenfolge der als nachgeliefert gekennzeichneten Archivdatensätze. */
+		/** Die Auswahlbox fÃ¼r die Sortierreihenfolge der als nachgeliefert gekennzeichneten ArchivdatensÃ¤tze. */
 		private JComboBox _sortSequenceComboBox;
 
-		/** Die Auswahlbox für die Sortierung der Archivdatensätze zur Darstellung in einer Tabelle. */
+		/** Die Auswahlbox fÃ¼r die Sortierung der ArchivdatensÃ¤tze zur Darstellung in einer Tabelle. */
 		private JComboBox _viewSortComboBox;
 
-		/** zur Auswahl, ob historische Objekte berücksichtigt werden sollen */
+		/** zur Auswahl, ob historische Objekte berÃ¼cksichtigt werden sollen */
 		private JCheckBox _useOldObjectsBox;
 
-		/** Auswahlschaltfläche, ob alle Datensätze in dem spezifizierten Zeitraum übergeben werden sollen. */
+		/** AuswahlschaltflÃ¤che, ob alle DatensÃ¤tze in dem spezifizierten Zeitraum Ã¼bergeben werden sollen. */
 		private JRadioButton _stateRadioButton;
 
-		/** Auswahlschaltfläche, ob nur Archivdatensätze übermittelt werden, die sich auch vom vorhergehenden Datensatz unterscheiden. */
+		/** AuswahlschaltflÃ¤che, ob nur ArchivdatensÃ¤tze Ã¼bermittelt werden, die sich auch vom vorhergehenden Datensatz unterscheiden. */
 		private JRadioButton _deltaRadioButton;
 
 		/** Stellt die untere Buttonleiste dar mit den Buttons "Speichern unter", "Abbrechen" und "OK" */
 		private ButtonBar _buttonBar;
 
-		/** Gibt an, ob der ausgewählte Bereich relativ oder absolut ist. */
+		/** Gibt an, ob der ausgewÃ¤hlte Bereich relativ oder absolut ist. */
 		private JCheckBox _relativeBox;
 
 		/* ################# Methoden ################### */
@@ -252,9 +258,9 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 		}
 
 		/**
-		 * Mit dieser Methode können die Datenidentifikationsdaten übergeben werden.
+		 * Mit dieser Methode kÃ¶nnen die Datenidentifikationsdaten Ã¼bergeben werden.
 		 *
-		 * @param data enthält die ausgewählte Datenidentifikation
+		 * @param data enthÃ¤lt die ausgewÃ¤hlte Datenidentifikation
 		 */
 		public void setDataIdentification(final SettingsData data) {
 			if(_dialog == null) {
@@ -268,7 +274,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 		}
 
 		/**
-		 * Diese Methode zeigt den Dialog an und trägt die Einstellungsdaten in die entsprechenden Felder ein.
+		 * Diese Methode zeigt den Dialog an und trÃ¤gt die Einstellungsdaten in die entsprechenden Felder ein.
 		 *
 		 * @param data Einstellungsdaten
 		 */
@@ -467,7 +473,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 				archiveDataSpecifications.add(ads);
 			}
 			if(useOldObjects && !usePidQuery){
-				_debug.warning("Archivanfrage kann historische Objekte nicht berücksichtigen, bitte DAF-Bibliothek aktualisieren.");
+				_debug.warning("Archivanfrage kann historische Objekte nicht berÃ¼cksichtigen, bitte DAF-Bibliothek aktualisieren.");
 			}
 			// Erzeugen des Ausgabefensters mit der Online-Tabelle
 			final ArchiveDataTableView dataTableView = new ArchiveDataTableView(settingsData, getConnection(), dataDescription);	// anzeigen der Tabelle
@@ -488,12 +494,12 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 				}
 			}
 			catch(InterruptedException ex) {
-				_debug.warning("Die Übertragung der Archivdaten wurde aufgrund eines Übertragungsfehlers unterbrochen (siehe exception)", ex);
-				JOptionPane.showMessageDialog(_dialog, "Übertragung der Archivdaten wurde unterbrochen.", "Übertragungsfehler", JOptionPane.ERROR_MESSAGE);
+				_debug.warning("Die Ãœbertragung der Archivdaten wurde aufgrund eines Ãœbertragungsfehlers unterbrochen (siehe exception)", ex);
+				JOptionPane.showMessageDialog(_dialog, "Ãœbertragung der Archivdaten wurde unterbrochen.", "Ãœbertragungsfehler", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 
-		/** Diese Klasse verarbeitet die erhaltenen Streams einer Archivanfrage und stellt die Datensätze in einer Online-Tabelle dar. */
+		/** Diese Klasse verarbeitet die erhaltenen Streams einer Archivanfrage und stellt die DatensÃ¤tze in einer Online-Tabelle dar. */
 		private final class ArchiveRequest implements Runnable {
 
 			private final ArchiveDataStream[] _archiveDataStreams;
@@ -511,13 +517,13 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 			public void run() {
 				
 
-				// Dieses Lock sorgt dafür, dass die beiden Threads abwechselnd zugreifen.
+				// Dieses Lock sorgt dafÃ¼r, dass die beiden Threads abwechselnd zugreifen.
 				// Swing nimmt sich einen Datensatz (solange ist take gesperrt), dann darf take wieder einen Datensatz ablegen
 				final Semaphore lock = new Semaphore(1);
 				for(int i = 0; i < _archiveDataStreams.length; i++) {
 					try {
 						ArchiveDataStream dataStream = _archiveDataStreams[i];
-						// Es soll ein take ausgeführt werden, also muss ein Lock angefordert werden
+						// Es soll ein take ausgefÃ¼hrt werden, also muss ein Lock angefordert werden
 						lock.acquire();
 						ArchiveData archiveData = dataStream.take();
 						while(archiveData != null) {
@@ -527,9 +533,9 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 								break;
 							}
 							else {
-								// Datensatz für die Online-Tabelle erzeugen und weiterreichen
+								// Datensatz fÃ¼r die Online-Tabelle erzeugen und weiterreichen
 
-								// Es wird eine final Variable benötigt
+								// Es wird eine final Variable benÃ¶tigt
 								final ArchiveData helper = archiveData;
 								Runnable runner = new Runnable() {
 									public void run() {
@@ -545,35 +551,35 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 												helper.getData()
 										);
 										_dataTableView.addDataset(dataTableObject);
-										// Die Daten wurden dargestellt, also darf nun der nächste Datensatz erzeugt werden
+										// Die Daten wurden dargestellt, also darf nun der nÃ¤chste Datensatz erzeugt werden
 										lock.release();
 									}
 								};
 								EventQueue.invokeLater(runner);
 
-								// Es sollen Datensätze angefordert werden, dies darf nur geschehen, wenn der Swingthread
+								// Es sollen DatensÃ¤tze angefordert werden, dies darf nur geschehen, wenn der Swingthread
 								// fertig ist
 								lock.acquire();
-								// nächsten Datensatz vom Archivsystem holen
+								// nÃ¤chsten Datensatz vom Archivsystem holen
 								archiveData = dataStream.take();
 							}
 						}
 					}
 					catch(InterruptedException ex) {
-						_debug.error("Die Übertragung der Archivdaten wurde aufgrund eines Übertragungsfehlers unterbrochen (siehe exception)", ex);
+						_debug.error("Die Ãœbertragung der Archivdaten wurde aufgrund eines Ãœbertragungsfehlers unterbrochen (siehe exception)", ex);
 						JOptionPane.showMessageDialog(
-								_dialog, "Übertragung der Archivdaten wurde unterbrochen.", "Übertragungsfehler", JOptionPane.ERROR_MESSAGE
+								_dialog, "Ãœbertragung der Archivdaten wurde unterbrochen.", "Ãœbertragungsfehler", JOptionPane.ERROR_MESSAGE
 						);
 					}
 					catch(IOException ex) {
-						_debug.error("Übertragungsfehler zum Datenverteiler oder zum Archiv (siehe exception)", ex);
+						_debug.error("Ãœbertragungsfehler zum Datenverteiler oder zum Archiv (siehe exception)", ex);
 						JOptionPane.showMessageDialog(
-								_dialog, "Problem mit Datenverteiler oder Archivsystem.", "Übertragungsfehler", JOptionPane.ERROR_MESSAGE
+								_dialog, "Problem mit Datenverteiler oder Archivsystem.", "Ãœbertragungsfehler", JOptionPane.ERROR_MESSAGE
 						);
 					}
 					finally {
 						lock.release();
-						_debug.info("Keine weiteren Archivdatensätze für diese Datenidentifikation.");
+						_debug.info("Keine weiteren ArchivdatensÃ¤tze fÃ¼r diese Datenidentifikation.");
 					}
 				}
 				_debug.info("Alle Datenidentifikationen abgearbeitet. Keine weiteren Daten vorhanden.");
@@ -602,9 +608,9 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 			archivePanel.setBorder(BorderFactory.createTitledBorder("Archivoptionen"));
 			archivePanel.setLayout(new BoxLayout(archivePanel, BoxLayout.Y_AXIS));
 
-			// Priorität
+			// PrioritÃ¤t
 			JPanel priorityPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			JLabel priorityLabel = new JLabel("Priorität der Anfrage: ");
+			JLabel priorityLabel = new JLabel("PrioritÃ¤t der Anfrage: ");
 			_priorityComboBox = new JComboBox(_priorityUnit);
 			priorityPanel.add(priorityLabel);
 			priorityPanel.add(Box.createHorizontalStrut(5));
@@ -649,7 +655,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 			domainPanel.add(Box.createHorizontalStrut(10));
 			domainPanel.add(_relativeBox);
 
-			// Bereich hinzufügen bzw. wegnehmen
+			// Bereich hinzufÃ¼gen bzw. wegnehmen
 			_domainPanel.add(domainPanel);
 			_domainPanel.add(createDomainPanel(_timingComboBox.getSelectedIndex(), _relativeBox.isSelected()));
 			archivePanel.add(_domainPanel);
@@ -671,7 +677,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 			sortSequencePanel.add(sortSequenceLabel);
 			sortSequencePanel.add(_sortSequenceComboBox);
 
-			_useOldObjectsBox = new JCheckBox("Historische Objekte mit gleicher Pid berücksichtigen");
+			_useOldObjectsBox = new JCheckBox("Historische Objekte mit gleicher Pid berÃ¼cksichtigen");
 
 			_oaDataCheckBox.addItemListener(
 					new ItemListener() {
@@ -681,7 +687,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 								_buttonBar.getAcceptButton().setEnabled(true);
 							}
 							else {
-								// ist jetzt keiner mehr ausgewählt? -> OK-Button disablen
+								// ist jetzt keiner mehr ausgewÃ¤hlt? -> OK-Button disablen
 								if(!_naDataCheckBox.isSelected() && !_onDataCheckBox.isSelected() && !_nnDataCheckBox.isSelected()) {
 									_buttonBar.getAcceptButton().setEnabled(false);
 								}
@@ -770,7 +776,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 			requestPanel.add(_deltaRadioButton);
 			archivePanel.add(requestPanel);
 
-			// Historische Objekte berücksichtigen
+			// Historische Objekte berÃ¼cksichtigen
 			JPanel box = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			box.add(_useOldObjectsBox);
 			archivePanel.add(box);
@@ -790,14 +796,14 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 			pane.add(viewSortPanel);
 
 			// untere Buttonleiste
-			_buttonBar = new ButtonBar(this);	 // brauche noch Übergabeparameter
+			_buttonBar = new ButtonBar(this);	 // brauche noch Ãœbergabeparameter
 			_dialog.getRootPane().setDefaultButton(_buttonBar.getAcceptButton());
 			pane.add(_buttonBar);
 
 			// Listener, ob das Archivsystem da ist
 			if(!_archiveRequestManager.isArchiveAvailable()) {
 				_buttonBar.getAcceptButton().setEnabled(false);
-				_buttonBar.getAcceptButton().setToolTipText("Das Archivsystem ist nicht verfügbar.");
+				_buttonBar.getAcceptButton().setToolTipText("Das Archivsystem ist nicht verfÃ¼gbar.");
 			}
 			_archiveRequestManager.addArchiveAvailabilityListener(new ArchiveListener(_buttonBar.getAcceptButton()));
 		}
@@ -817,18 +823,18 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 				}
 				else {
 					_okButton.setEnabled(false);
-					_okButton.setToolTipText("Das Archivsystem ist nicht verfügbar.");
+					_okButton.setToolTipText("Das Archivsystem ist nicht verfÃ¼gbar.");
 				}
 			}
 		}
 
 		/**
-		 * Das Panel für den Bereich, der angefragt wird, wird erstellt und zurückgegeben.
+		 * Das Panel fÃ¼r den Bereich, der angefragt wird, wird erstellt und zurÃ¼ckgegeben.
 		 *
 		 * @param domain     Datenzeitstempel, Archivzeitstempel oder Datenindex
 		 * @param isRelative gibt an, ob es sich um eine relative Bereichsangabe handelt
 		 *
-		 * @return Panel für den anzufragenden Bereich
+		 * @return Panel fÃ¼r den anzufragenden Bereich
 		 */
 		private JPanel createDomainPanel(int domain, boolean isRelative) {
 			if(domain == 0 || domain == 1) {	// Zeitbereich
@@ -836,11 +842,11 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 				domainPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 				domainPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 				final JLabel startLabel;
-				long time = System.currentTimeMillis();	 // Werte für die Zeitbereiche minutengenau einstellen
+				long time = System.currentTimeMillis();	 // Werte fÃ¼r die Zeitbereiche minutengenau einstellen
 				long temp = time % 60000;
 				time = time - temp;
 				if(isRelative) {				// relative Angabe
-					startLabel = new JLabel("Anzahl Datensätze: ");
+					startLabel = new JLabel("Anzahl DatensÃ¤tze: ");
 					if(_numberOfDatasetsSpinner == null) {
 						final SpinnerModel numberModel = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
 						_numberOfDatasetsSpinner = new JSpinner(numberModel);
@@ -898,7 +904,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 				domainPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 				final JLabel startLabel;
 				if(isRelative) {			   // relative Angabe
-					startLabel = new JLabel("Anzahl Datensätze: ");
+					startLabel = new JLabel("Anzahl DatensÃ¤tze: ");
 					if(_numberOfDatasetsSpinner == null) {
 						final SpinnerModel numberModel = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
 						_numberOfDatasetsSpinner = new JSpinner(numberModel);
@@ -959,25 +965,25 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 		}
 
 		/**
-		 * Gibt die Priorität der Archivanfrage zurück.
+		 * Gibt die PrioritÃ¤t der Archivanfrage zurÃ¼ck.
 		 *
-		 * @return die Priorität ("Hoch", "Mittel", "Niedrig")
+		 * @return die PrioritÃ¤t ("Hoch", "Mittel", "Niedrig")
 		 */
 		private String getPriority() {
 			return (String)_priorityComboBox.getSelectedItem();
 		}
 
 		/**
-		 * Setzt die Priorität der Archivanfrage im Dialog.
+		 * Setzt die PrioritÃ¤t der Archivanfrage im Dialog.
 		 *
-		 * @param priority die Priorität ("Hoch", "Mittel", "Niedrig")
+		 * @param priority die PrioritÃ¤t ("Hoch", "Mittel", "Niedrig")
 		 */
 		private void setPriority(String priority) {
 			_priorityComboBox.setSelectedItem(priority);
 		}
 
 		/**
-		 * Gibt den (Zeit-)Bereich der Archivanfrage zurück.
+		 * Gibt den (Zeit-)Bereich der Archivanfrage zurÃ¼ck.
 		 *
 		 * @return der (Zeit-)Bereich ("Datenzeitstempel", "Archivzeitstempel", "Datenindex")
 		 */
@@ -995,7 +1001,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 		}
 
 		/**
-		 * Gibt zurück, ob die Zeit- / Index-Angabe relativ oder absolut gemacht wurde. Wobei relativ bedeutet, dass der eine Wert die Anzahl der Datensätze bestimmt,
+		 * Gibt zurÃ¼ck, ob die Zeit- / Index-Angabe relativ oder absolut gemacht wurde. Wobei relativ bedeutet, dass der eine Wert die Anzahl der DatensÃ¤tze bestimmt,
 		 * die vor dem zweiten Wert liegen.
 		 *
 		 * @return ob relativ oder absolut
@@ -1014,7 +1020,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 		}
 
 		/**
-		 * Gibt den Startpunkt des (Zeit-)Bereichs zurück.
+		 * Gibt den Startpunkt des (Zeit-)Bereichs zurÃ¼ck.
 		 *
 		 * @return Startpunkt des (Zeit-)Bereichs
 		 */
@@ -1059,9 +1065,9 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 		}
 
 		/**
-		 * Gibt den Endpunkt des (Zeit-)Bereichs zurück.
+		 * Gibt den Endpunkt des (Zeit-)Bereichs zurÃ¼ck.
 		 *
-		 * @return Endpunkt des Zeitbereichs oder Anzahl der Datensätze, die ausgegeben werden sollen
+		 * @return Endpunkt des Zeitbereichs oder Anzahl der DatensÃ¤tze, die ausgegeben werden sollen
 		 */
 		private String getTo() {
 			if(_timingComboBox.getSelectedIndex() == 0 || _timingComboBox.getSelectedIndex() == 1) {	// Zeitbereich
@@ -1075,10 +1081,10 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 		}
 
 		/**
-		 * Setzt den Wert für das Feld "Bis:" bzw. "Anzahl vor dem Index:", je nachdem welche Timingangabe angegeben wird.
+		 * Setzt den Wert fÃ¼r das Feld "Bis:" bzw. "Anzahl vor dem Index:", je nachdem welche Timingangabe angegeben wird.
 		 *
 		 * @param timing "Datenzeitstempel", "Archivzeitstempel" oder "Datenindex"
-		 * @param to     entweder ein Zeitstempel oder die Anzahl Datensätze vor dem Index
+		 * @param to     entweder ein Zeitstempel oder die Anzahl DatensÃ¤tze vor dem Index
 		 */
 		private void setTo(String timing, String to) {
 			if(timing.equals(_timingUnit[0]) || timing.equals(_timingUnit[1])) {	// Zeitbereich
@@ -1091,7 +1097,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 		}
 
 		/**
-		 * Gibt zurück, welche Arten der Archivanfrage ausgewählt wurden.
+		 * Gibt zurÃ¼ck, welche Arten der Archivanfrage ausgewÃ¤hlt wurden.
 		 *
 		 * @return z.B. "oa on nn"
 		 */
@@ -1131,7 +1137,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 		}
 
 		/**
-		 * Gibt zurück, wie die nachgelieferten Archivdatensätze einsortiert werden sollen.
+		 * Gibt zurÃ¼ck, wie die nachgelieferten ArchivdatensÃ¤tze einsortiert werden sollen.
 		 *
 		 * @return "Datenindex" oder "Datenzeitstempel"
 		 */
@@ -1140,16 +1146,16 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 		}
 
 		/**
-		 * Setzt den Parameter für die Sortierreihenfolge der als nachgeliefert gekennzeichneten Archivdatensätze.
+		 * Setzt den Parameter fÃ¼r die Sortierreihenfolge der als nachgeliefert gekennzeichneten ArchivdatensÃ¤tze.
 		 *
-		 * @param sortSequence Sortierreihenfolge der nachgeliegerten Archivdatensätze
+		 * @param sortSequence Sortierreihenfolge der nachgeliegerten ArchivdatensÃ¤tze
 		 */
 		private void setSortSequence(String sortSequence) {
 			_sortSequenceComboBox.setSelectedItem(sortSequence);
 		}
 
 		/**
-		 * Gibt zurück, ob es sich um eine Zustands- oder Deltaanfrage handelt.
+		 * Gibt zurÃ¼ck, ob es sich um eine Zustands- oder Deltaanfrage handelt.
 		 *
 		 * @return "state" oder "delta"
 		 */
@@ -1197,7 +1203,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 		}
 
 		/**
-		 * Gibt zurück, historische Objekte mit gleicher Pid berücksichtigt werden sollen
+		 * Gibt zurÃ¼ck, historische Objekte mit gleicher Pid berÃ¼cksichtigt werden sollen
 		 *
 		 * @return
 		 */
@@ -1206,7 +1212,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 		}
 
 		/**
-		 * Das Flag des Moduls wird gesetzt, wenn historische Objekte mit gleicher Pid berücksichtigt werden sollen
+		 * Das Flag des Moduls wird gesetzt, wenn historische Objekte mit gleicher Pid berÃ¼cksichtigt werden sollen
 		 *
 		 * @param relative
 		 */
@@ -1218,7 +1224,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 		/**
 		 * Erstellt die Einstellungsdaten.
 		 *
-		 * @param title der Name für die Einstellungen
+		 * @param title der Name fÃ¼r die Einstellungen
 		 *
 		 * @return die Einstellungsdaten
 		 */
@@ -1262,7 +1268,7 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 		}
 
 		/**
-		 * Durch betätigen des "OK"-Buttons wird die Archivanfrage mit den eingestellten Parametern in einem neuen Fenster gestartet und dieser Dialog wird
+		 * Durch betÃ¤tigen des "OK"-Buttons wird die Archivanfrage mit den eingestellten Parametern in einem neuen Fenster gestartet und dieser Dialog wird
 		 * geschlossen. Die Parameter werden gespeichert.
 		 */
 		public void doOK() {
@@ -1274,19 +1280,19 @@ public class StreamBasedArchiveRequestModule extends ExternalModuleAdapter imple
 			}
 			catch(Exception ex) {
 				String message = ex.getMessage();
-				_debug.error("Aufgrund einer unerwarteten Ausnahme konnte die gewünschte Archivanfrage nicht gestellt werden (siehe exception)", ex);
+				_debug.error("Aufgrund einer unerwarteten Ausnahme konnte die gewÃ¼nschte Archivanfrage nicht gestellt werden (siehe exception)", ex);
 				JOptionPane.showMessageDialog(_dialog, message, "Archivanfrage kann nicht gestellt werden.", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 
-		/** Durch betätigen des "Abbrechen"-Buttons wird der Dialog geschlossen. */
+		/** Durch betÃ¤tigen des "Abbrechen"-Buttons wird der Dialog geschlossen. */
 		public void doCancel() {
 			_dialog.setVisible(false);
 			_dialog.dispose();
 		}
 
 		/**
-		 * Durch betätigen des "Speichern unter ..."-Buttons werden die Einstellungen gespeichert.
+		 * Durch betÃ¤tigen des "Speichern unter ..."-Buttons werden die Einstellungen gespeichert.
 		 *
 		 * @param title Titel der Einstellungen
 		 */

@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.preselection.lists;
@@ -34,14 +40,14 @@ import java.util.*;
  * Die Klasse <code>PreselectionListsHandler</code> verarbeitet die Daten des Panels {@link PreselectionLists}.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 10130 $
+ * @version $Revision$
  */
 class PreselectionListsHandler {
 
 	/** speichert ein Objekt der Klasse <code>PreselectionLists</code> */
 	private PreselectionLists _preselectionLists;
 
-	/* diese Variablen speichern die für die Listen benötigten Objekte */
+	/* diese Variablen speichern die fÃ¼r die Listen benÃ¶tigten Objekte */
 	private List<SystemObject> _objectsDependOnTree;
 
 	private List<SystemObject> _objectsDependOnObjectType;
@@ -61,7 +67,7 @@ class PreselectionListsHandler {
 	private Set<AttributeGroup> _attributeGroupFilter;
 
 	/**
-	 * Konstruktor, damit {@link PreselectionLists} und <code>PreselectionListsHandler</code> miteinander arbeiten können. D.h.
+	 * Konstruktor, damit {@link PreselectionLists} und <code>PreselectionListsHandler</code> miteinander arbeiten kÃ¶nnen. D.h.
 	 * <code>PreselectionListsHandler</code> verarbeitet die Daten (Objekte) und stellt sie wieder auf dem Panel PreselectionLists dar.
 	 *
 	 * @param preselectionLists das Panel PreselectionLists
@@ -71,7 +77,7 @@ class PreselectionListsHandler {
 	}
 
 	/**
-	 * Versetzt die Listen in ihren initialen Zustand. Die Listen werden anhand der übergebenen SystemObjekte erstellt und angezeigt.
+	 * Versetzt die Listen in ihren initialen Zustand. Die Listen werden anhand der Ã¼bergebenen SystemObjekte erstellt und angezeigt.
 	 *
 	 * @param systemObjects die anzuzeigenden SystemObjekte
 	 */
@@ -103,7 +109,7 @@ class PreselectionListsHandler {
 	}
 
 	/**
-	 * Liefert zu den übergebenden SystemObjekten ihre Objekttypen und die Objekttypen von denen sie abgeleitet sind.
+	 * Liefert zu den Ã¼bergebenden SystemObjekten ihre Objekttypen und die Objekttypen von denen sie abgeleitet sind.
 	 *
 	 * @param objects SystemObjekte, zu denen die Objekttypen gebraucht werden
 	 *
@@ -116,11 +122,11 @@ class PreselectionListsHandler {
 		for(SystemObject systemObject : objects) {
 			allObjectTypes.add(systemObject.getType());
 		}
-		// Dann für jeden Typ die übergeordneten Typen abfragen
+		// Dann fÃ¼r jeden Typ die Ã¼bergeordneten Typen abfragen
 		for(SystemObjectType objectType : allObjectTypes) {
 			allObjectTypeSet.addAll(getAllSuperTypes(objectType, allObjectTypeSet));
 		}
-		// Alle Objekt-Typen ermittelt - prüfen, ob eine Filterung vorliegt
+		// Alle Objekt-Typen ermittelt - prÃ¼fen, ob eine Filterung vorliegt
 		if(_objectTypeFilter == null || _objectTypeFilter.isEmpty()) {
 			// Menge sortieren nach Name
 			return SortUtil.sortCollection(allObjectTypeSet);
@@ -136,7 +142,7 @@ class PreselectionListsHandler {
 	}
 
 	/**
-	 * Hilfsmethode zu {@link #getObjectTypeData}. Gibt zurück, von welchen Objekttypen der übergebene Objekttyp erbt.
+	 * Hilfsmethode zu {@link #getObjectTypeData}. Gibt zurÃ¼ck, von welchen Objekttypen der Ã¼bergebene Objekttyp erbt.
 	 *
 	 * @param systemObjectType Objekttyp, zu dem seine Objekttypen gesucht werden
 	 * @param set              hier werden die Objekttypen gespeichert
@@ -160,7 +166,7 @@ class PreselectionListsHandler {
 	}
 
 	/**
-	 * Gibt die zu den Systemobjekten gehörenden Attributgruppen zurück.
+	 * Gibt die zu den Systemobjekten gehÃ¶renden Attributgruppen zurÃ¼ck.
 	 *
 	 * @param objects Liste der Systemobjekte
 	 *
@@ -174,14 +180,14 @@ class PreselectionListsHandler {
 		for(SystemObject systemObject : objects) {
 			allObjectTypes.add(systemObject.getType());
 		}
-		// Dann für jeden Typ die Attributgruppen abrufen
+		// Dann fÃ¼r jeden Typ die Attributgruppen abrufen
 		for(SystemObjectType objectType : allObjectTypes) {
 			final List<AttributeGroup> attributeGroups = objectType.getAttributeGroups();
 			for(AttributeGroup attributeGroup : attributeGroups) {
 				allAttributeGroups.add(attributeGroup);
 			}
 		}
-		// Prüfen, ob Filterung vorliegt
+		// PrÃ¼fen, ob Filterung vorliegt
 		if(_attributeGroupFilter == null || _attributeGroupFilter.isEmpty()) {
 			// Menge nach Namen sortieren
 			return SortUtil.sortCollection(allAttributeGroups);
@@ -198,10 +204,10 @@ class PreselectionListsHandler {
 	}
 
 	/**
-	 * Gibt die zu den Systemobjekten gehörenden Aspekte in Abhängigkeit der Attributgruppen zurück.
+	 * Gibt die zu den Systemobjekten gehÃ¶renden Aspekte in AbhÃ¤ngigkeit der Attributgruppen zurÃ¼ck.
 	 *
 	 * @param objects      Liste der Systemobjekte
-	 * @param selectedAtgs Liste der ausgewählten Attributgruppen
+	 * @param selectedAtgs Liste der ausgewÃ¤hlten Attributgruppen
 	 *
 	 * @return Liste der gefundenen Aspekte
 	 */
@@ -215,7 +221,7 @@ class PreselectionListsHandler {
 		for(SystemObject systemObject : objects) {
 			allObjectTypes.add(systemObject.getType());
 		}
-		// Dann für jeden Typ die Attributgruppen abrufen
+		// Dann fÃ¼r jeden Typ die Attributgruppen abrufen
 		for(SystemObjectType objectType : allObjectTypes) {
 			final List<AttributeGroup> attributeGroups = objectType.getAttributeGroups();
 			for(AttributeGroup attributeGroup : attributeGroups) {
@@ -238,7 +244,7 @@ class PreselectionListsHandler {
 			}
 		}
 
-		// Prüfen, ob Filterung vorliegt
+		// PrÃ¼fen, ob Filterung vorliegt
 		if(_aspectFilter == null || _aspectFilter.isEmpty()) {
 			// Menge sortieren
 			return SortUtil.sortCollection(allAspects);
@@ -255,7 +261,7 @@ class PreselectionListsHandler {
 	}
 
 	/**
-	 * Überprüft rekursiv, ob der übergebene Objekttyp eines Systemobjekts in der Liste der Objekttypen vorkommt.
+	 * ÃœberprÃ¼ft rekursiv, ob der Ã¼bergebene Objekttyp eines Systemobjekts in der Liste der Objekttypen vorkommt.
 	 *
 	 * @param systemObjectType ein Objekttyp
 	 * @param objects          Liste von Objekttypen
@@ -278,14 +284,14 @@ class PreselectionListsHandler {
 	}
 
 	/**
-	 * Zu jeder der vier Listen der Klasse <code>PreselectionLists</code> werden in Abhängigkeit der selektierten Werte die Objekte gefiltert und gespeichert.
+	 * Zu jeder der vier Listen der Klasse <code>PreselectionLists</code> werden in AbhÃ¤ngigkeit der selektierten Werte die Objekte gefiltert und gespeichert.
 	 *
 	 * @param selectedObjectTypes die selektierten Objekttypen
 	 * @param selectedATGs        die selektierten Attributgruppen
 	 * @param selectedASPs        die selektierten Aspekte
 	 */
 	private void objectsDependOn(List<SystemObjectType> selectedObjectTypes, List<AttributeGroup> selectedATGs, List<Aspect> selectedASPs) {
-		// Filterung muss berücksichtigt werden
+		// Filterung muss berÃ¼cksichtigt werden
 		if(selectedObjectTypes == null || selectedObjectTypes.isEmpty()) {
 			// falls es eine Filterung gibt, dann diese nehmen
 			if(_objectTypeFilter != null) {
@@ -299,7 +305,7 @@ class PreselectionListsHandler {
 			for(Iterator iterator = _objectsDependOnTree.iterator(); iterator.hasNext();) {
 				SystemObject systemObject = (SystemObject)iterator.next();
 				SystemObjectType systemObjectType = systemObject.getType();
-				// überprüfe rekursiv, ob dieses Objekt eines dieser ObjektTypen als Obertypen besitzt
+				// Ã¼berprÃ¼fe rekursiv, ob dieses Objekt eines dieser ObjektTypen als Obertypen besitzt
 				if(hasObjectSuperType(systemObjectType, selectedObjectTypes)) {
 					set.add(systemObject);
 				}
@@ -362,7 +368,7 @@ class PreselectionListsHandler {
 	}
 
 	/**
-	 * Diese Methode aktualisiert die Listen der Attributgruppen, Aspekte und Objekte in Abhängigkeit von den selektierten Werten der Listen Objekttyp,
+	 * Diese Methode aktualisiert die Listen der Attributgruppen, Aspekte und Objekte in AbhÃ¤ngigkeit von den selektierten Werten der Listen Objekttyp,
 	 * Attributgruppe und Aspekt.
 	 *
 	 * @param selectedObjectTypes die selektierten Objekttypen
@@ -377,7 +383,7 @@ class PreselectionListsHandler {
 	}
 
 	/**
-	 * Diese Methode aktualisiert die Listen der Aspekte und der Objekte in Abhängigkeit von den selektierten Werten der Listen Objekttyp, Attributgruppe und
+	 * Diese Methode aktualisiert die Listen der Aspekte und der Objekte in AbhÃ¤ngigkeit von den selektierten Werten der Listen Objekttyp, Attributgruppe und
 	 * Aspekt.
 	 *
 	 * @param selectedObjectTypes die selektierten Objekttypen
@@ -391,7 +397,7 @@ class PreselectionListsHandler {
 	}
 
 	/**
-	 * Diese Methode aktualisiert die Listen der Objekte in Abhängigkeit von den selektierten Werten der Listen Objekttyp, Attributgruppe und Aspekt.
+	 * Diese Methode aktualisiert die Listen der Objekte in AbhÃ¤ngigkeit von den selektierten Werten der Listen Objekttyp, Attributgruppe und Aspekt.
 	 *
 	 * @param selectedObjectType die selektierten Objekttypen
 	 * @param selectedATGs       die selektierten Attributgruppen
@@ -416,7 +422,7 @@ class PreselectionListsHandler {
 		acquireFilterAttributeGroups();
 		acquireFilterAspects();
 		if(_objectsDependOnTree != null) {
-			// Objekte wurden bereits übergeben
+			// Objekte wurden bereits Ã¼bergeben
 			objectsDependOnObjectType(null, new ArrayList<AttributeGroup>(attributeGroups), null);
 		}
 	}
@@ -425,7 +431,7 @@ class PreselectionListsHandler {
 		_wantedAspectFilter = new HashSet<Aspect>(aspects);
 		acquireFilterAspects();
 		if(_objectsDependOnTree != null) {
-			// Objekte wurden bereits übergeben
+			// Objekte wurden bereits Ã¼bergeben
 			objectsDependOnAtg(null, null, new ArrayList<Aspect>(aspects));
 		}
 	}
@@ -465,7 +471,7 @@ class PreselectionListsHandler {
 			// Schnittmenge ermitteln, wenn die Filter gesetzt und nicht leer sind
 			final Set<Aspect> aspectFilter = new HashSet<Aspect>();
 
-			// alle Aspekte der Attributgruppen ermitteln und prüfen, ob sie in den gewünschten Aspekten vorkommen.
+			// alle Aspekte der Attributgruppen ermitteln und prÃ¼fen, ob sie in den gewÃ¼nschten Aspekten vorkommen.
 			for(AttributeGroup attributeGroup : _wantedAttributeGroupFilter) {
 				for(Aspect aspect : attributeGroup.getAspects()) {
 					if(_wantedAspectFilter.contains(aspect)) {

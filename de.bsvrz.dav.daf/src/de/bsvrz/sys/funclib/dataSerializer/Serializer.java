@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.dataSerializer;
@@ -29,17 +35,17 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Schnittstelle zum Serialisieren von Datensätzen. Konkrete Objekte zum Serialisieren können mit den verschiedenen
- * Methoden der Klasse {@link SerializingFactory} erzeugt werden. Dabei kann der Ausgabe-Stream für die Serialisierung
+ * Schnittstelle zum Serialisieren von DatensÃ¤tzen. Konkrete Objekte zum Serialisieren kÃ¶nnen mit den verschiedenen
+ * Methoden der Klasse {@link SerializingFactory} erzeugt werden. Dabei kann der Ausgabe-Stream fÃ¼r die Serialisierung
  * vorgegeben werden.
- * <p/>
- * Mit den verschiedenen <code>write</code>-Methoden können primitive Datentypen, Referenzen auf {@link SystemObject
- * System-Objekte} und ganze {@link Data Datensätze} auf einen OutputStream serialisiert werden.
- * <p/>
- * Über die {@link #getVersion} Methode kann die Version eines konkreten Serialisieres abgefragt werden.
+ * <p>
+ * Mit den verschiedenen <code>write</code>-Methoden kÃ¶nnen primitive Datentypen, Referenzen auf {@link SystemObject
+ * System-Objekte} und ganze {@link Data DatensÃ¤tze} auf einen OutputStream serialisiert werden.
+ * <p>
+ * Ãœber die {@link #getVersion} Methode kann die Version eines konkreten Serialisieres abgefragt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5055 $
+ * @version $Revision$
  * @see Deserializer
  */
 public interface Serializer {
@@ -52,9 +58,9 @@ public interface Serializer {
 	int getVersion();
 
 	/**
-	 * Bestimmt den für die Serialisierung zu verwendenden Ausgabe-Stream.
+	 * Bestimmt den fÃ¼r die Serialisierung zu verwendenden Ausgabe-Stream.
 	 *
-	 * @return Für die Serialisierung zu verwendenden Ausgabe-Stream.
+	 * @return FÃ¼r die Serialisierung zu verwendenden Ausgabe-Stream.
 	 */
 	OutputStream getOutputStream();
 
@@ -137,29 +143,29 @@ public interface Serializer {
 	public void writeFloat(float value) throws IOException;
 
 	/**
-	 * Serialisiert einen <code>String</code>-Wert mit einer maximalLänge von 65535 in einen Bytestrom und schreibt diesen
+	 * Serialisiert einen <code>String</code>-Wert mit einer maximalLÃ¤nge von 65535 in einen Bytestrom und schreibt diesen
 	 * auf den Ausgabe-Stream.
 	 *
 	 * @param value Der zu serialisierende Wert.
 	 * @throws IOException              Wenn ein I/O Fehler bei Schreiben auf den Ausgabe-Stream auftritt.
-	 * @throws IllegalArgumentException Wenn die Länge des Strings größer als 65535 Zeichen ist.
+	 * @throws IllegalArgumentException Wenn die LÃ¤nge des Strings grÃ¶ÃŸer als 65535 Zeichen ist.
 	 */
 	public void writeString(String value) throws IOException;
 
 	/**
 	 * Serialisiert einen <code>String</code>-Wert in einen Bytestrom und schreibt diesen auf den Ausgabe-Stream. Es ist zu
-	 * beachten, dass beim Deserialiseren die gleiche Maximalgröße wie beim serialisieren angegeben wird.
+	 * beachten, dass beim Deserialiseren die gleiche MaximalgrÃ¶ÃŸe wie beim serialisieren angegeben wird.
 	 *
 	 * @param value     Der zu serialisierende Wert.
-	 * @param maxLength Maximale Länge des zu serialisierenden Strings oder <code>0</code> wenn keine Begrenzung vorgegeben
+	 * @param maxLength Maximale LÃ¤nge des zu serialisierenden Strings oder <code>0</code> wenn keine Begrenzung vorgegeben
 	 *                  werden kann.
 	 * @throws IOException              Wenn ein I/O Fehler bei Schreiben auf den Ausgabe-Stream auftritt.
-	 * @throws IllegalArgumentException Wenn die Länge des Strings größer als die angegebene Maximallänge ist.
+	 * @throws IllegalArgumentException Wenn die LÃ¤nge des Strings grÃ¶ÃŸer als die angegebene MaximallÃ¤nge ist.
 	 */
 	public void writeString(String value, int maxLength) throws IOException;
 
 	/**
-	 * Schreibt ein Byte-Array auf den Ausgabe-Stream. Es ist zu beachten, dass die Größe des Arrays nicht implizit
+	 * Schreibt ein Byte-Array auf den Ausgabe-Stream. Es ist zu beachten, dass die GrÃ¶ÃŸe des Arrays nicht implizit
 	 * serialisiert wird und beim Deserialisieren angegeben werden muss.
 	 *
 	 * @param bytes Zu schreibendes Byte-Array

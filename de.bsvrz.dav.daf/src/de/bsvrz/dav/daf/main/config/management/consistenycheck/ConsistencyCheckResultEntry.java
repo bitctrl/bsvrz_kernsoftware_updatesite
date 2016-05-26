@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.config.management.consistenycheck;
@@ -26,12 +32,12 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
 import java.util.*;
 
 /**
- * Kommt es bei einer Konsistenzprüfung zu einem "lokalen Fehler" oder "Interferenzfehler" oder zu einer "Warnung", sammelt dieses Objekt alle Informationen,
- * die benötigt werden, um das Verhalten zu analysieren.
+ * Kommt es bei einer KonsistenzprÃ¼fung zu einem "lokalen Fehler" oder "Interferenzfehler" oder zu einer "Warnung", sammelt dieses Objekt alle Informationen,
+ * die benÃ¶tigt werden, um das Verhalten zu analysieren.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 8542 $ / $Date: 2011-01-05 14:40:38 +0100 (Wed, 05 Jan 2011) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConsistencyCheckResultEntry {
 
@@ -41,7 +47,7 @@ public class ConsistencyCheckResultEntry {
 	/** Betroffener Konfigurationsbereich */
 	private final ConfigurationArea _configurationArea;
 
-	/** Objekte, die den Fehler, die Warnung, ausgelöst haben */
+	/** Objekte, die den Fehler, die Warnung, ausgelÃ¶st haben */
 	private final SystemObject _involvedObjects[];
 
 	/** Text, der die Art des Fehlers genauer beschreibt */
@@ -50,7 +56,7 @@ public class ConsistencyCheckResultEntry {
 	/**
 	 * @param entryType         lokaler Fehler, Interferenzfehler oder Warnung
 	 * @param configurationArea Konfigurationsbereich, in dem der Fehler, die Warnung, aufgetaucht ist
-	 * @param involvedObjects   Objekte, die dazu geführt haben, dass es zu einem Fehler oder einer Warnung gekommen ist
+	 * @param involvedObjects   Objekte, die dazu gefÃ¼hrt haben, dass es zu einem Fehler oder einer Warnung gekommen ist
 	 * @param errorText         Fehlertext, der die Art des Fehlers/Warnung genauer Beschreibt. Der Text kann mit {@link #getErrorText} angefordert werden.
 	 */
 	public ConsistencyCheckResultEntry(
@@ -65,7 +71,7 @@ public class ConsistencyCheckResultEntry {
 	/**
 	 * @param entryType         lokaler Fehler, Interferenzfehler oder Warnung
 	 * @param configurationArea Konfigurationsbereich, in dem der Fehler, die Warnung, aufgetaucht ist
-	 * @param involvedObjects   Objekte, die dazu geführt haben, dass es zu einem Fehler oder einer Warnung gekommen ist
+	 * @param involvedObjects   Objekte, die dazu gefÃ¼hrt haben, dass es zu einem Fehler oder einer Warnung gekommen ist
 	 * @param errorText         Fehlertext, der die Art des Fehlers/Warnung genauer Beschreibt. Der Text kann mit {@link #getErrorText} angefordert werden.
 	 */
 	public ConsistencyCheckResultEntry(
@@ -96,7 +102,7 @@ public class ConsistencyCheckResultEntry {
 	}
 
 	/**
-	 * Objekte, die zu dem Fehler, der Warnung geführt haben
+	 * Objekte, die zu dem Fehler, der Warnung gefÃ¼hrt haben
 	 *
 	 * @return s.o.
 	 */
@@ -105,7 +111,7 @@ public class ConsistencyCheckResultEntry {
 	}
 
 	/**
-	 * Fehlertext, der zu dem Fehler, der Warnung gehört. Der Text wurde im Konstruktor übergeben
+	 * Fehlertext, der zu dem Fehler, der Warnung gehÃ¶rt. Der Text wurde im Konstruktor Ã¼bergeben
 	 *
 	 * @return s.o.
 	 */

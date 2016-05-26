@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.util.cron;
@@ -26,19 +32,19 @@ import java.util.*;
 
 /**
  * Definition eines Cron-Eintrages.
- * <p/>
+ * <p>
  * Ein Cron-Eintrag besteht aus 5 Werten:
- * <p/>
+ * <p>
  * <ol> <li>Minute (0-59)</li> <li>Stunde (0-23)</li> <li>Tag des Monats (0-31)</li> <li>Monat (1-12 oder Monatsnamen)</li> <li>Tag der
  * Woche (0-7, 0 und 7 sind Sonntag, oder Namen)</li> </ol>
- * <p/>
- * Soll ein Wert ignoriert werden, sind Sternchen möglich.
- * <p/>
- * Listen und Bereiche können ebenfalls angegeben werden mit "," und "-". Mit / kann der Befehl alle x Intervalle ausgeführt werden.
- * <p/>
- * Wochen und Monatsnamen sind in deutscher Sprache anzugeben und werden tolerant behandelt. Gültig für Sonntag ist beispielsweise "so",
- * "son", "Sonntag", usw., Groß- und Kleinschreibung ist unerheblich.
- * <p/>
+ * <p>
+ * Soll ein Wert ignoriert werden, sind Sternchen mÃ¶glich.
+ * <p>
+ * Listen und Bereiche kÃ¶nnen ebenfalls angegeben werden mit "," und "-". Mit / kann der Befehl alle x Intervalle ausgefÃ¼hrt werden.
+ * <p>
+ * Wochen und Monatsnamen sind in deutscher Sprache anzugeben und werden tolerant behandelt. GÃ¼ltig fÃ¼r Sonntag ist beispielsweise "so",
+ * "son", "Sonntag", usw., GroÃŸ- und Kleinschreibung ist unerheblich.
+ * <p>
  * Beispiele:<br/>
  * <code><pre>
  * Min    Std  Tag  Mon   WT
@@ -49,18 +55,18 @@ import java.util.*;
  * &nbsp;&nbsp;5      4    *    *  son    Jeden Sonntag um 04:05:00
  * &nbsp;&nbsp;0      1    1   12    1    Jeden 1. Dezember UND jeden Montag im Dezember jeweils um 01:00:00
  * </pre></code>
- * <p/>
- * Für weitere Erklärungen und Beispiele siehe Dokumentation der /etc/crontab oder https://de.wikipedia.org/wiki/Cron
+ * <p>
+ * FÃ¼r weitere ErklÃ¤rungen und Beispiele siehe Dokumentation der /etc/crontab oder https://de.wikipedia.org/wiki/Cron
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13118 $
+ * @version $Revision$
  */
 public final class CronDefinition {
 
 	private final BitSet _minutes = new BitSet(60); // Minuten 0-59
 	private final BitSet _hours = new BitSet(24);   // Stunden 0-32
-	private final BitSet _days = new BitSet(31);    // Tage im Monat 0-30 (+1 Rechnen für richtigen Tag)
-	private final BitSet _months = new BitSet(12);  // Monate 0-11 (+1 Rechnen für richtigen Monat)
+	private final BitSet _days = new BitSet(31);    // Tage im Monat 0-30 (+1 Rechnen fÃ¼r richtigen Tag)
+	private final BitSet _months = new BitSet(12);  // Monate 0-11 (+1 Rechnen fÃ¼r richtigen Monat)
 	private final BitSet _dayOfWeek = new BitSet(7); // Wochentage mit 0=Sonntag, 1=Montag,...
 	private final ThreadLocal<Calendar> calendar = new ThreadLocal<Calendar>() {
 		@Override
@@ -71,15 +77,15 @@ public final class CronDefinition {
 	private final String[] _segments;
 
 	/**
-	 * Erstellt eien neue Cron-Definition zum periodischen Ausführen von Aufgaben. Diese Klasse dient nur zum Festlegen der Zeitpunkte.
+	 * Erstellt eien neue Cron-Definition zum periodischen AusfÃ¼hren von Aufgaben. Diese Klasse dient nur zum Festlegen der Zeitpunkte.
 	 * Zum Planen von Aufgaben bitte {@link de.bsvrz.dav.daf.util.cron.CronScheduler#schedule(Runnable, CronDefinition)} verwenden.
 	 *
 	 * @param definition Definition, siehe Dokumentation von {@link de.bsvrz.dav.daf.util.cron.CronDefinition}. Beispiel: "* * * * *"
-	 *                   führt eine Aufgabe jede Minute aus.
-	 * @throws IllegalArgumentException Wenn der übergebene String nicht verarbeitet werden kann.
+	 *                   fÃ¼hrt eine Aufgabe jede Minute aus.
+	 * @throws IllegalArgumentException Wenn der Ã¼bergebene String nicht verarbeitet werden kann.
 	 */
 	public CronDefinition(String definition) throws IllegalArgumentException {
-		// Überflüssige Leerzeichen entfernen
+		// ÃœberflÃ¼ssige Leerzeichen entfernen
 		definition = definition.replaceAll("\\s*,\\s*", ",");
 		definition = definition.replaceAll("\\s*/\\s*", "/");
 		definition = definition.replaceAll("\\s*-\\s*", "-");
@@ -87,58 +93,58 @@ public final class CronDefinition {
 		// In 5 Teile Auftrennen
 		_segments = definition.trim().split("\\s+");
 		if(_segments.length != 5) {
-			throw new IllegalArgumentException("Cron-String benötigt 5 Angaben");
+			throw new IllegalArgumentException("Cron-String benÃ¶tigt 5 Angaben");
 		}
 
-		// Einzelne Bestandteile parsen und Bitsets füllen
+		// Einzelne Bestandteile parsen und Bitsets fÃ¼llen
 		IntParser intParser = new IntParser();
 		try {
 			intParser.parseField(_minutes, 0, 59, _segments[0]);
 		}
 		catch(IllegalArgumentException e) {
-			throw new IllegalArgumentException("Ungültige Minuten-Angabe: '" + _segments[0] + "'", e);
+			throw new IllegalArgumentException("UngÃ¼ltige Minuten-Angabe: '" + _segments[0] + "'", e);
 		}
 		try {
 			intParser.parseField(_hours, 0, 23, _segments[1]);
 		}
 		catch(IllegalArgumentException e) {
-			throw new IllegalArgumentException("Ungültige Stunden-Angabe: '" + _segments[1] + "'", e);
+			throw new IllegalArgumentException("UngÃ¼ltige Stunden-Angabe: '" + _segments[1] + "'", e);
 		}
 		try {
 			new DoMParser().parseField(_days, 0, 30, _segments[2]);
 		}
 		catch(IllegalArgumentException e) {
-			throw new IllegalArgumentException("Ungültige Tages-Angabe: '" + _segments[2] + "'", e);
+			throw new IllegalArgumentException("UngÃ¼ltige Tages-Angabe: '" + _segments[2] + "'", e);
 		}
 		try {
 			new MonthParser().parseField(_months, 0, 11, _segments[3]);
 		}
 		catch(IllegalArgumentException e) {
-			throw new IllegalArgumentException("Ungültige Monats-Angabe: '" + _segments[3] + "'", e);
+			throw new IllegalArgumentException("UngÃ¼ltige Monats-Angabe: '" + _segments[3] + "'", e);
 		}
 		try {
 			new DoWParser().parseField(_dayOfWeek, 0, 7, _segments[4]);
 		}
 		catch(IllegalArgumentException e) {
-			throw new IllegalArgumentException("Ungültige Wochentags-Angabe: '" + _segments[4] + "'", e);
+			throw new IllegalArgumentException("UngÃ¼ltige Wochentags-Angabe: '" + _segments[4] + "'", e);
 		}
 
 		if(nextScheduledTime(0) == -1){
-			// ungültige Definition
-			throw new IllegalArgumentException("Ungültige Cron-Definition, Datum wird nie gültig");
+			// ungÃ¼ltige Definition
+			throw new IllegalArgumentException("UngÃ¼ltige Cron-Definition, Datum wird nie gÃ¼ltig");
 		}
 	}
 
 	/**
-	 * Gibt den nächsten geplanten Zeitpunkt zurück
+	 * Gibt den nÃ¤chsten geplanten Zeitpunkt zurÃ¼ck
 	 * @param startTimeMillis Startzeit
-	 * @return Nächster Zeitpunkt in Millisekungen analog zu System.currentTimeMillis()
+	 * @return NÃ¤chster Zeitpunkt in Millisekungen analog zu System.currentTimeMillis()
 	 */
 	public long nextScheduledTime(long startTimeMillis) {
 		Calendar cal = calendar.get();
 		cal.setTimeInMillis(startTimeMillis);
 		if(cal.get(Calendar.SECOND) > 0 || cal.get(Calendar.MILLISECOND) > 0) {
-			// Nächste Minute
+			// NÃ¤chste Minute
 			cal.add(Calendar.MINUTE, 1);
 			cal.set(Calendar.SECOND, 0);
 			cal.set(Calendar.MILLISECOND, 0);
@@ -152,11 +158,11 @@ public final class CronDefinition {
 			int dow = cal.get(Calendar.DAY_OF_WEEK) - 1; // Woche startet hier mit Sonntag = 0
 			int year = cal.get(Calendar.YEAR);
 			if(year > startYear + 100){
-				// Keine Ausführung in den nächsten 100 Jahren, wahrscheinlich weil ungültiges Datum wie 31. Februar angegeben wurde.
+				// Keine AusfÃ¼hrung in den nÃ¤chsten 100 Jahren, wahrscheinlich weil ungÃ¼ltiges Datum wie 31. Februar angegeben wurde.
 				return -1;
 			}
 			if(!_months.get(month)) {
-				// falscher Monat, beginn nächsten Monats auswählen
+				// falscher Monat, beginn nÃ¤chsten Monats auswÃ¤hlen
 				cal.set(Calendar.MINUTE, 0);
 				cal.set(Calendar.HOUR_OF_DAY, 0);
 				cal.set(Calendar.DAY_OF_MONTH, 1);
@@ -164,34 +170,34 @@ public final class CronDefinition {
 				continue;
 			}
 			if(_segments[2].equals("*") && !_dayOfWeek.get(dow)) {
-				// falscher Wochentag, beginn nächsten Tags auswählen
+				// falscher Wochentag, beginn nÃ¤chsten Tags auswÃ¤hlen
 				cal.set(Calendar.MINUTE, 0);
 				cal.set(Calendar.HOUR_OF_DAY, 0);
 				cal.add(Calendar.DAY_OF_MONTH, 1);
 				continue;
 			}
 			if(_segments[4].equals("*") && !_days.get(day)) {
-				// falscher Tag des Monats, beginn nächsten Tags auswählen
+				// falscher Tag des Monats, beginn nÃ¤chsten Tags auswÃ¤hlen
 				cal.set(Calendar.MINUTE, 0);
 				cal.set(Calendar.HOUR_OF_DAY, 0);
 				cal.add(Calendar.DAY_OF_MONTH, 1);
 				continue;
 			}
 			if(!_dayOfWeek.get(dow) || !_days.get(day)) {
-				// falscher Tag (ODER-Bedingung-Sonderfall), beginn nächsten Tags auswählen
+				// falscher Tag (ODER-Bedingung-Sonderfall), beginn nÃ¤chsten Tags auswÃ¤hlen
 				cal.set(Calendar.MINUTE, 0);
 				cal.set(Calendar.HOUR_OF_DAY, 0);
 				cal.add(Calendar.DAY_OF_MONTH, 1);
 				continue;
 			}
 			if(!_hours.get(hour)) {
-				// falsche Stunde, beginn nächster Stunde auswählen
+				// falsche Stunde, beginn nÃ¤chster Stunde auswÃ¤hlen
 				cal.set(Calendar.MINUTE, 0);
 				cal.add(Calendar.HOUR_OF_DAY, 1);
 				continue;
 			}
 			if(!_minutes.get(min)) {
-				// falsche Minute, nächste Minute auswählen
+				// falsche Minute, nÃ¤chste Minute auswÃ¤hlen
 				cal.add(Calendar.MINUTE, 1);
 				continue;
 			}
@@ -201,11 +207,11 @@ public final class CronDefinition {
 	}
 
 	/**
-	 * Gibt eine Liste mit 5 Strings zurück, die die Einträge für Minuten, Stunden, Monatstag, Monat und Tag der Woche in dieser Reihenfolge
-	 * repräsentiert. Dies entspricht dem im Kontruktor übergebenen String, wobei überflüssige Leerzeichen entfernt wurden und der String
+	 * Gibt eine Liste mit 5 Strings zurÃ¼ck, die die EintrÃ¤ge fÃ¼r Minuten, Stunden, Monatstag, Monat und Tag der Woche in dieser Reihenfolge
+	 * reprÃ¤sentiert. Dies entspricht dem im Kontruktor Ã¼bergebenen String, wobei Ã¼berflÃ¼ssige Leerzeichen entfernt wurden und der String
 	 * entsprechend der Cron-Spezifikation in seine 5 Abschnitte geteilt wurde.
 	 *
-	 * @return Liste mit 5 Strings, die die Cron-Definition repräsentieren
+	 * @return Liste mit 5 Strings, die die Cron-Definition reprÃ¤sentieren
 	 */
 	public List<String> getSegments() {
 		return Collections.unmodifiableList(Arrays.asList(_segments));
@@ -220,7 +226,7 @@ public final class CronDefinition {
 		}
 		builder.setLength(builder.length()-1);
 		long scheduledTime = nextScheduledTime(System.currentTimeMillis());
-		builder.append("\" Nächste Ausführung: ");
+		builder.append("\" NÃ¤chste AusfÃ¼hrung: ");
 		builder.append(new SimpleDateFormat("EEE, d. MMM yyyy HH:mm", Locale.GERMANY).format(scheduledTime));
 		return builder.toString();
 	}

@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.config;
@@ -28,14 +34,14 @@ import java.util.*;
  *
  * @author Roland Schmitz (rs), Kappich Systemberatung
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 5052 $ / $Date: 2007-08-31 20:02:55 +0200 (Fri, 31 Aug 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public interface AttributeGroup extends AttributeSet {
 
 	/**
-	 * Ermittelt, ob diese Attributgruppe mit dem Aspekt "asp.eigenschaften" für konfigurierende Datensätze benutzt werden kann.
+	 * Ermittelt, ob diese Attributgruppe mit dem Aspekt "asp.eigenschaften" fÃ¼r konfigurierende DatensÃ¤tze benutzt werden kann.
 	 *
-	 * @return <code>true</code>, wenn die Attributgruppe mit dem Aspekt "asp.eigenschaften" für konfigurierende Datensätze benutzt werden kann; sonst
+	 * @return <code>true</code>, wenn die Attributgruppe mit dem Aspekt "asp.eigenschaften" fÃ¼r konfigurierende DatensÃ¤tze benutzt werden kann; sonst
 	 *         <code>false</code>.
 	 *
 	 * @deprecated Wird durch die Methode {@link AttributeGroupUsage#isConfigurating} ersetzt.
@@ -51,25 +57,25 @@ public interface AttributeGroup extends AttributeSet {
 	public boolean isParameter();
 
 	/**
-	 * Bestimmt die möglichen Aspekte, unter denen die Attributgruppe verwendet werden kann.
+	 * Bestimmt die mÃ¶glichen Aspekte, unter denen die Attributgruppe verwendet werden kann.
 	 *
 	 * @return Liste von {@link Aspect Aspekten}
 	 */
 	public Collection<Aspect> getAspects();
 
 	/**
-	 * Liefert alle Attributgruppenverwendungen dieser Attributgruppe zurück.
+	 * Liefert alle Attributgruppenverwendungen dieser Attributgruppe zurÃ¼ck.
 	 *
 	 * @return alle Attributgruppenverwendungen dieser Attributgruppe
 	 */
 	public Collection<AttributeGroupUsage> getAttributeGroupUsages();
 
 	/**
-	 * Gibt die Attributgruppenverwendung des angegebenen Aspekts zurück.
+	 * Gibt die Attributgruppenverwendung des angegebenen Aspekts zurÃ¼ck.
 	 *
-	 * @param aspect Aspekt der gewünschten Attributgruppenverwendung
+	 * @param aspect Aspekt der gewÃ¼nschten Attributgruppenverwendung
 	 *
-	 * @return Attributgruppenverwendung für den angegebenen Aspekt oder <code>null</code>, falls zum angegebenen Aspekt keine Attributgruppenverwendung definiert
+	 * @return Attributgruppenverwendung fÃ¼r den angegebenen Aspekt oder <code>null</code>, falls zum angegebenen Aspekt keine Attributgruppenverwendung definiert
 	 *         ist.
 	 */
 	public AttributeGroupUsage getAttributeGroupUsage(Aspect aspect);

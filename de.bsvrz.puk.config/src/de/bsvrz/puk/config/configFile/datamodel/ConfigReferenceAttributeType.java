@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2006 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -41,11 +47,11 @@ import java.io.ByteArrayInputStream;
  * Implementierung des Interfaces {@link ReferenceAttributeType} auf Seiten der Konfiguration.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 8550 $ / $Date: 2011-01-06 10:48:12 +0100 (Thu, 06 Jan 2011) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigReferenceAttributeType extends ConfigAttributeType implements ReferenceAttributeType {
 	/**
-	 * DebugLogger für Debug-Ausgaben
+	 * DebugLogger fÃ¼r Debug-Ausgaben
 	 */
 	private static final Debug _debug = Debug.getLogger();
 
@@ -77,7 +83,7 @@ public class ConfigReferenceAttributeType extends ConfigAttributeType implements
 	}
 
 	/**
-	 * Lädt die Eigenschaften dieses Referenz-Attribut-Typs aus einem Datensatz ein und speichert diese in einem {@link
+	 * LÃ¤dt die Eigenschaften dieses Referenz-Attribut-Typs aus einem Datensatz ein und speichert diese in einem {@link
 	 * #_values Objekt}.
 	 *
 	 * @return die Eigenschaften dieses Referenz-Attribut-Typs
@@ -90,8 +96,8 @@ public class ConfigReferenceAttributeType extends ConfigAttributeType implements
 	}
 
 	/**
-	 * Wird aufgerufen, wenn das Objekt verändert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zurücksetzen. Erbende Klassen müssen diese
-	 * Funktion überschreiben, wenn sie Daten cachen.
+	 * Wird aufgerufen, wenn das Objekt verÃ¤ndert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zurÃ¼cksetzen. Erbende Klassen mÃ¼ssen diese
+	 * Funktion Ã¼berschreiben, wenn sie Daten cachen.
 	 */
 	@Override
 	synchronized void invalidateCache() {
@@ -108,12 +114,12 @@ public class ConfigReferenceAttributeType extends ConfigAttributeType implements
 	}
 
 	/**
-	 * Diese Klasse lädt die Eigenschaften dieses Referenz-Attribut-Typs aus einem Datensatz ein. Mittels spezieller
-	 * Zugriffsmethoden können die eingelesenen Werte abgerufen werden.
+	 * Diese Klasse lÃ¤dt die Eigenschaften dieses Referenz-Attribut-Typs aus einem Datensatz ein. Mittels spezieller
+	 * Zugriffsmethoden kÃ¶nnen die eingelesenen Werte abgerufen werden.
 	 */
 	private class ReferenceAttributeTypeValues {
 		/**
-		 * der Typ von Objekten, die von Attributen dieses Attribut-Typs referenziert werden können
+		 * der Typ von Objekten, die von Attributen dieses Attribut-Typs referenziert werden kÃ¶nnen
 		 */
 		private SystemObjectType _referencedObjectType;
 
@@ -128,20 +134,20 @@ public class ConfigReferenceAttributeType extends ConfigAttributeType implements
 		private ReferenceType _referenceType;
 
 		/**
-		 * Lädt aus einem Datensatz die Eigenschaften dieses Referenz-Attribut-Typs.
+		 * LÃ¤dt aus einem Datensatz die Eigenschaften dieses Referenz-Attribut-Typs.
 		 */
 		public ReferenceAttributeTypeValues() {
 			try {
-				// Das Objekt wird direkt aus dem Byte-Strom gelesen, da der Deserializer dieses Objekt benötigt, um ein Data zu erzeugen.
+				// Das Objekt wird direkt aus dem Byte-Strom gelesen, da der Deserializer dieses Objekt benÃ¶tigt, um ein Data zu erzeugen.
 				final AttributeGroup atg = getDataModel().getAttributeGroup("atg.objektReferenzAttributTypEigenschaften");
 				final Aspect asp = getDataModel().getAspect("asp.eigenschaften");
 				final AttributeGroupUsage attributeGroupUsage = atg.getAttributeGroupUsage(asp);
 				byte[] bytes = _systemObjectInfo.getConfigurationData(attributeGroupUsage.getId());
 
-				// Länge des Byte-Arrays prüfen
+				// LÃ¤nge des Byte-Arrays prÃ¼fen
 				if (bytes.length > 10) {
 					throw new RuntimeException("Das Format des eingelesenen Byte-Stroms des konfigurierenden Datensatzes des AttributTyps " + getNameOrPidOrId()
-							+ " hat sich geändert.");
+							+ " hat sich geÃ¤ndert.");
 				}
 
 				final ByteArrayInputStream in = new ByteArrayInputStream(bytes);
@@ -161,7 +167,7 @@ public class ConfigReferenceAttributeType extends ConfigAttributeType implements
 						_referenceType = ReferenceType.COMPOSITION;
 						break;
 					default:
-						throw new RuntimeException("Diese Referenzierungsart wird nicht unterstützt: " + type);
+						throw new RuntimeException("Diese Referenzierungsart wird nicht unterstÃ¼tzt: " + type);
 				}
 
 				in.close();
@@ -173,9 +179,9 @@ public class ConfigReferenceAttributeType extends ConfigAttributeType implements
 		}
 
 		/**
-		 * Gibt den Typ von Objekten, die von Attributen dieses Attribut-Typs referenziert werden können, zurück.
+		 * Gibt den Typ von Objekten, die von Attributen dieses Attribut-Typs referenziert werden kÃ¶nnen, zurÃ¼ck.
 		 *
-		 * @return der Typ von Objekten, die von Attributen dieses Attribut-Typs referenziert werden können
+		 * @return der Typ von Objekten, die von Attributen dieses Attribut-Typs referenziert werden kÃ¶nnen
 		 */
 		public SystemObjectType getReferencedObjectType() {
 			return _referencedObjectType;
@@ -191,7 +197,7 @@ public class ConfigReferenceAttributeType extends ConfigAttributeType implements
 		}
 
 		/**
-		 * Gibt die Referenzierungsart zurück.
+		 * Gibt die Referenzierungsart zurÃ¼ck.
 		 *
 		 * @return die Referenzierungsart (Assoziation, Aggregation, Komposition)
 		 */

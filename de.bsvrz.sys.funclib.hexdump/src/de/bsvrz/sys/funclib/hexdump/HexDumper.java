@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.sys.funclib.hexdump.
  * 
  * de.bsvrz.sys.funclib.hexdump is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.hexdump is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.hexdump; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.hexdump; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.hexdump;
@@ -25,7 +31,7 @@ import java.io.PrintStream;
 
 /**
  * Klasse zum Erzeugen von Hex-Dumps.
- * Ein Hex-Dump enthält ein Darstellung der in einem Byte-Array enthaltenen
+ * Ein Hex-Dump enthÃ¤lt ein Darstellung der in einem Byte-Array enthaltenen
  * Bytes.
  * Beispiel:
  * <pre>
@@ -34,14 +40,14 @@ import java.io.PrintStream;
  * 00000020:  40 41 42 43  44 45 46 47  48 49 4A 4B  4C 4D 4E 4F    @ABCDEFGHIJKLMNO
  * 00000030:  50 51 52 53  54 55 56 57  58 59 5A 5B  5C 5D 5E 5F    PQRSTUVWXYZ[\]^_
  *</pre>
- * Eine Zeile eines Hexdumps enthält die Darstellung von bis zu 16 Bytes des Byte-Arrays.
+ * Eine Zeile eines Hexdumps enthÃ¤lt die Darstellung von bis zu 16 Bytes des Byte-Arrays.
  * Links wird die Adresse des ersten Bytes der Zeile dargestellt, in der Mitte werden
- * die Bytes in Hexadezimaler Form und rechts in lesbarer Form dargestellt. Für die
+ * die Bytes in Hexadezimaler Form und rechts in lesbarer Form dargestellt. FÃ¼r die
  * lesbare Darstellung wird die ISO-8859-1 Kodierung angenommen und nicht darstellbare
  * Zeichen werden durch Punkte ersetzt.
 
  * @author Kappich Systemberatung
- * @version $Revision: 5001 $
+ * @version $Revision$
  */
 public class HexDumper {
 
@@ -67,7 +73,7 @@ public class HexDumper {
 
 	/**
 	 * Konvertiert ein Byte-Array in ein Hex-Dump.
-	 * @param baseAddress  Offset für die Addressausgaben. Der angegebene Wert
+	 * @param baseAddress  Offset fÃ¼r die Addressausgaben. Der angegebene Wert
 	 *                     wird als Adresse des ersten Bytes im Byte-Array
 	 *                     interpretiert.
 	 * @param bytes  Array mit zu konvertierenden Bytes.
@@ -79,7 +85,7 @@ public class HexDumper {
 
 	/**
 	 * Konvertiert ein Byte-Array in ein Hex-Dump.
-	 * @param baseAddress  Offset für die Addressausgaben. Der angegebene Wert
+	 * @param baseAddress  Offset fÃ¼r die Addressausgaben. Der angegebene Wert
 	 *                     wird als Adresse des ersten Bytes im Byte-Array
 	 *                     interpretiert.
 	 * @param bytes  Array mit zu konvertierenden Bytes.
@@ -120,7 +126,7 @@ public class HexDumper {
 	 * Konvertiert ein Byte-Array in ein Hex-Dump und gibt das Ergebnis auf einen
 	 * PrintStream aus.
 	 * @param out  PrintStream der zur Ausgabe benutzt werden soll.
-	 * @param baseAddress  Offset für die Addressausgaben. Der angegebene Wert
+	 * @param baseAddress  Offset fÃ¼r die Addressausgaben. Der angegebene Wert
 	 *                     wird als Adresse des ersten Bytes im Byte-Array
 	 *                     interpretiert.
 	 * @param bytes  Array mit zu konvertierenden Bytes.
@@ -133,7 +139,7 @@ public class HexDumper {
 	 * Konvertiert ein Byte-Array in ein Hex-Dump und gibt das Ergebnis auf einen
 	 * PrintStream aus.
 	 * @param out  PrintStream der zur Ausgabe benutzt werden soll.
-	 * @param baseAddress  Offset für die Addressausgaben. Der angegebene Wert
+	 * @param baseAddress  Offset fÃ¼r die Addressausgaben. Der angegebene Wert
 	 *                     wird als Adresse des ersten Bytes im Byte-Array
 	 *                     interpretiert.
 	 * @param bytes  Array mit zu konvertierenden Bytes.
@@ -145,7 +151,7 @@ public class HexDumper {
 	}
 
 	/**
-	 * Erzeugt ein neues HexDumper-Objekt, das bei der Ausgabe über {@link #dump dump(...)}
+	 * Erzeugt ein neues HexDumper-Objekt, das bei der Ausgabe Ã¼ber {@link #dump dump(...)}
 	 * den PrintStream {@link System#out} benutzt.
 	 */
 	public HexDumper() {
@@ -153,7 +159,7 @@ public class HexDumper {
 	}
 
 	/**
-	 * Erzeugt ein neues HexDumper-Objekt, das zur Ausgabe über {@link #dump dump(...)}
+	 * Erzeugt ein neues HexDumper-Objekt, das zur Ausgabe Ã¼ber {@link #dump dump(...)}
 	 * das angegebene PrintStream-Objekt benutzt.
 	 * @param out  PrintStream-Objekt, das bei der Ausgabe mit den Funktionen
 	 */
@@ -187,7 +193,7 @@ public class HexDumper {
 	 * Konvertiert ein Byte-Array in ein Hex-Dump und gibt das Ergebnis auf den
 	 * PrintStream aus, der diesem HexDumper-Objekt im Konstruktor zugeordnet
 	 * wurde.
-	 * @param baseAddress  Offset für die Addressausgaben. Der angegebene Wert
+	 * @param baseAddress  Offset fÃ¼r die Addressausgaben. Der angegebene Wert
 	 *                     wird als Adresse des ersten Bytes im Byte-Array
 	 *                     interpretiert.
 	 * @param bytes  Array mit zu konvertierenden Bytes.
@@ -200,7 +206,7 @@ public class HexDumper {
 	 * Konvertiert ein Byte-Array in ein Hex-Dump und gibt das Ergebnis auf den
 	 * PrintStream aus, der diesem HexDumper-Objekt im Konstruktor zugeordnet
 	 * wurde.
-	 * @param baseAddress  Offset für die Addressausgaben. Der angegebene Wert
+	 * @param baseAddress  Offset fÃ¼r die Addressausgaben. Der angegebene Wert
 	 *                     wird als Adresse des ersten Bytes im Byte-Array
 	 *                     interpretiert.
 	 * @param bytes  Array mit zu konvertierenden Bytes.
@@ -215,12 +221,12 @@ public class HexDumper {
 	/**
 	 * Konvertiert ein Int-Array in ein Byte-Array.
 	 * Dabei werden int-Werte zwischen 0 und 255 in entsprechende Werte eines
-	 * Bytes konvertiert (0 bis 127 und -128 bis -1). Andere Werte führen
+	 * Bytes konvertiert (0 bis 127 und -128 bis -1). Andere Werte fÃ¼hren
 	 * zu einer RunTimeException
 	 * @param ints  Zu konvertierendes int-Array mit Werten zwischen 0 und 255.
 	 * @return  byte-Array mit entsprechenden Werten im Bereich 0 bis 127 und -128 bis -1.
 	 * @throws IllegalArgumentException  Wenn im zu konvertierenden int-Array Werte
-	 *         außerhalb des Bereich 0-255 vorkommen.
+	 *         auÃŸerhalb des Bereich 0-255 vorkommen.
 	 */
 	public static byte[] toBytes(int[] ints) {
 		int length= ints.length;

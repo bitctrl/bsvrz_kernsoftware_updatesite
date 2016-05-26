@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2003 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2003 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.onlprot.
  * 
- * de.bsvrz.pat.onlprot is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.onlprot is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.onlprot is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.onlprot; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.onlprot.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.onlprot.standardProtocolModule;
@@ -27,25 +33,25 @@ import de.bsvrz.sys.funclib.commandLineArgs.ArgumentList;
 import java.io.PrintWriter;
 
 /**
- * Festlegung der Funktionalit‰t von Protokollierungsmodulen
- * <p/>
- * Ein Protokollierungsmodul muﬂ folgende Methoden zur Verg¸gung stellen <ul> <li> <code>initProtocol</code>	- Initialisierung <li> <code>closeProtocol</code>	-
- * Abschluﬂ der Protokollierung </ul>
+ * Festlegung der Funktionalit√§t von Protokollierungsmodulen
+ * <p>
+ * Ein Protokollierungsmodul mu√ü folgende Methoden zur Verg√ºgung stellen <ul> <li> <code>initProtocol</code>	- Initialisierung <li> <code>closeProtocol</code>	-
+ * Abschlu√ü der Protokollierung </ul>
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5055 $
+ * @version $Revision$
  */
 public interface ProtocolModuleInterface {
 
 	/**
-	 * Gibt Information ¸ber die Aufrufparameter des Protokollierungsmoduls zur¸ck
+	 * Gibt Information √ºber die Aufrufparameter des Protokollierungsmoduls zur√ºck
 	 *
 	 * @return String mit der Beschreibung der erlaubten Aufrufparameter und deren erwartetes Format
 	 */
 	public abstract String getHelp();
 
 	/**
-	 * F¸hrt die Initialisierungsschritte des Protokollierungsmoduls aus.
+	 * F√ºhrt die Initialisierungsschritte des Protokollierungsmoduls aus.
 	 *
 	 * @return ClientReceiverInterface-Handle auf den benutzten Protokollierer
 	 *
@@ -55,6 +61,6 @@ public interface ProtocolModuleInterface {
 	 */
 	public ClientReceiverInterface initProtocol(ArgumentList argumentList, PrintWriter protocolFile, String[] args);
 
-	/** F¸hrt Aufr‰umarbeiten nach Beendigung des Protokollierens aus. */
+	/** F√ºhrt Aufr√§umarbeiten nach Beendigung des Protokollierens aus. */
 	public abstract void closeProtocol();
 }

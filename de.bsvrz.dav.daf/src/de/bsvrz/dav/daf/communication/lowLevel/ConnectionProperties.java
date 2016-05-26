@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel;
@@ -25,7 +31,7 @@ package de.bsvrz.dav.daf.communication.lowLevel;
  * Speichert die Eigenschaften einer Verbindung zum Datenverteiler.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
+ * @version $Revision$
  */
 public class ConnectionProperties {
 
@@ -38,24 +44,24 @@ public class ConnectionProperties {
 	/** Der Benutzername */
 	private String _userName;
 
-	/** Das verschlüsselte Benutzer-Passwort */
+	/** Das verschlÃ¼sselte Benutzer-Passwort */
 	private String _userPassword;
 
-	/** Die Zeit nach der spätestens ein keepalive Telegramm geschickt werden muss, wenn in dieser Zeit kein Telegramm empfangen wurde. */
+	/** Die Zeit nach der spÃ¤testens ein keepalive Telegramm geschickt werden muss, wenn in dieser Zeit kein Telegramm empfangen wurde. */
 	private long _keepAliveSendTimeOut;
 
-	/** Die Zeit in der spätestens ein Telegramm empfangen werden muss, sonst wird die Verbindung terminiert. */
+	/** Die Zeit in der spÃ¤testens ein Telegramm empfangen werden muss, sonst wird die Verbindung terminiert. */
 	private long _keepAliveReceiveTimeOut;
 
-	/** Die Grösse in Bytes des Sendebuffers */
+	/** Die GrÃ¶sse in Bytes des Sendebuffers */
 	private int _sendBufferSize;
 
-	/** Die Grösse in Bytes des Empfangsbuffers */
+	/** Die GrÃ¶sse in Bytes des Empfangsbuffers */
 	private int _receiveBufferSize;
 
 
 	/**
-	 * Dieser Konstruktor wird für Tests benötigt.
+	 * Dieser Konstruktor wird fÃ¼r Tests benÃ¶tigt.
 	 */
 	public ConnectionProperties() {
 	}
@@ -82,7 +88,7 @@ public class ConnectionProperties {
 	}
 
 	/**
-	 * Gibt die unterste Kommunikationskomponente zurück.
+	 * Gibt die unterste Kommunikationskomponente zurÃ¼ck.
 	 *
 	 * @return die unterste Kommunikationskomponente
 	 */
@@ -100,7 +106,7 @@ public class ConnectionProperties {
 	}
 
 	/**
-	 * Gibt die Authentifikationskomponente zurück.
+	 * Gibt die Authentifikationskomponente zurÃ¼ck.
 	 *
 	 * @return die Authentifikationskomponente
 	 */
@@ -118,7 +124,7 @@ public class ConnectionProperties {
 	}
 
 	/**
-	 * Gibt den Benutzernamen zurück.
+	 * Gibt den Benutzernamen zurÃ¼ck.
 	 *
 	 * @return den Namen des Benutzers
 	 */
@@ -136,7 +142,7 @@ public class ConnectionProperties {
 	}
 
 	/**
-	 * Gibt das Benutzerpasswort zurück.
+	 * Gibt das Benutzerpasswort zurÃ¼ck.
 	 *
 	 * @return das Benutzerpasswort
 	 */
@@ -154,7 +160,7 @@ public class ConnectionProperties {
 	}
 
 	/**
-	 * Gibt die Zeit zurück, nach der spätestens ein keepalive Telegramm geschickt werden muss, wenn in dieser Zeit kein Telegramm empfangen wurde.
+	 * Gibt die Zeit zurÃ¼ck, nach der spÃ¤testens ein keepalive Telegramm geschickt werden muss, wenn in dieser Zeit kein Telegramm empfangen wurde.
 	 *
 	 * @return die Keepalive-Sendezeit
 	 */
@@ -163,7 +169,7 @@ public class ConnectionProperties {
 	}
 
 	/**
-	 * Setzt die Zeit, nach der spätestens ein keepalive Telegramm geschickt werden muss, wenn in dieser Zeit kein Telegramm empfangen wurde.
+	 * Setzt die Zeit, nach der spÃ¤testens ein keepalive Telegramm geschickt werden muss, wenn in dieser Zeit kein Telegramm empfangen wurde.
 	 *
 	 * @param keepAliveSendTimeOut die Keepalive-Sendezeit
 	 */
@@ -172,7 +178,7 @@ public class ConnectionProperties {
 	}
 
 	/**
-	 * Gibt die Zeit zurück, in der spätestens ein Telegramm empfangen werden muss, sonst wird die Verbindung terminiert.
+	 * Gibt die Zeit zurÃ¼ck, in der spÃ¤testens ein Telegramm empfangen werden muss, sonst wird die Verbindung terminiert.
 	 *
 	 * @return die Keepalive-Empfangszeit
 	 */
@@ -181,7 +187,7 @@ public class ConnectionProperties {
 	}
 
 	/**
-	 * Setzt die Zeit, in der spätestens ein Telegramm empfangen werden muss, sonst wird die Verbindung terminiert.
+	 * Setzt die Zeit, in der spÃ¤testens ein Telegramm empfangen werden muss, sonst wird die Verbindung terminiert.
 	 *
 	 * @param keepAliveReceiveTimeOut die Keepalive-Empfangszeit
 	 */
@@ -190,36 +196,36 @@ public class ConnectionProperties {
 	}
 
 	/**
-	 * Gibt die Grösse in Bytes des Sendebuffers zurück.
+	 * Gibt die GrÃ¶sse in Bytes des Sendebuffers zurÃ¼ck.
 	 *
-	 * @return die Grösse des Sendebuffers
+	 * @return die GrÃ¶sse des Sendebuffers
 	 */
 	public final int getSendBufferSize() {
 		return _sendBufferSize;
 	}
 
 	/**
-	 * Setzt die Grösse des Sendebuffers.
+	 * Setzt die GrÃ¶sse des Sendebuffers.
 	 *
-	 * @param sendBufferSize die neue Grösse des Sendebuffers
+	 * @param sendBufferSize die neue GrÃ¶sse des Sendebuffers
 	 */
 	public final void setSendBufferSize(int sendBufferSize) {
 		_sendBufferSize = sendBufferSize;
 	}
 
 	/**
-	 * Gibt die Grösse in Bytes des Empfangsbuffers zurück.
+	 * Gibt die GrÃ¶sse in Bytes des Empfangsbuffers zurÃ¼ck.
 	 *
-	 * @return die Grösse des Empfangsbuffers
+	 * @return die GrÃ¶sse des Empfangsbuffers
 	 */
 	public final int getReceiveBufferSize() {
 		return _receiveBufferSize;
 	}
 
 	/**
-	 * Setzt die Grösse des Empfangsbuffers.
+	 * Setzt die GrÃ¶sse des Empfangsbuffers.
 	 *
-	 * @param receiveBufferSize die neue Grösse des Empfangsbuffers
+	 * @param receiveBufferSize die neue GrÃ¶sse des Empfangsbuffers
 	 */
 	public final void setReceiveBufferSize(int receiveBufferSize) {
 		_receiveBufferSize = receiveBufferSize;

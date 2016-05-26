@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,17 +15,23 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main;
 
 /**
- * Verwaltung der Rolle der Applikation bei Empfangsanmeldungen. Die Klasse verwaltet, ob eine Anmeldung als normaler Empf‰nger oder als Senke erfolgen soll.
+ * Verwaltung der Rolle der Applikation bei Empfangsanmeldungen. Die Klasse verwaltet, ob eine Anmeldung als normaler Empf√§nger oder als Senke erfolgen soll.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5055 $
+ * @version $Revision$
  * @see ClientDavInterface#subscribeReceiver
  */
 public final class ReceiverRole {
@@ -33,16 +39,16 @@ public final class ReceiverRole {
 	/** Anmeldung als Senke. */
 	private static final ReceiverRole DRAIN = new ReceiverRole(true);
 
-	/** Anmeldung als Empf‰nger. */
+	/** Anmeldung als Empf√§nger. */
 	private static final ReceiverRole RECEIVER = new ReceiverRole(false);
 
 	/** Speichert, ob die Applikation in dieser Rolle eine Senke ist. */
 	private final boolean _isDrain;
 
 	/**
-	 * Erzeugt die Rolle der Applikation als normalen Empf‰nger oder als Senke.
+	 * Erzeugt die Rolle der Applikation als normalen Empf√§nger oder als Senke.
 	 *
-	 * @param asDrain <code>true</code>, wenn die Anmeldung als Senke erfolgen soll; <code>false</code>, wenn die Anmeldung als Empf‰nger erfolgen soll.
+	 * @param asDrain <code>true</code>, wenn die Anmeldung als Senke erfolgen soll; <code>false</code>, wenn die Anmeldung als Empf√§nger erfolgen soll.
 	 */
 	public ReceiverRole(boolean asDrain) {
 		_isDrain = asDrain;
@@ -71,7 +77,7 @@ public final class ReceiverRole {
 	}
 
 	/**
-	 * Liefert eine textuelle Beschreibung dieses Objekts zur¸ck.
+	 * Liefert eine textuelle Beschreibung dieses Objekts zur√ºck.
 	 *
 	 * @return Beschreibung dieses Objekts.
 	 */
@@ -80,14 +86,14 @@ public final class ReceiverRole {
 			return "Senke";
 		}
 		else {
-			return "Empf‰nger";
+			return "Empf√§nger";
 		}
 	}
 
 	/**
-	 * Erzeugt die Rolle der Applikation als normalen Empf‰nger.
+	 * Erzeugt die Rolle der Applikation als normalen Empf√§nger.
 	 *
-	 * @return Rolle f¸r Empfangsanmeldungen als normaler Empf‰nger.
+	 * @return Rolle f√ºr Empfangsanmeldungen als normaler Empf√§nger.
 	 */
 	public static ReceiverRole receiver() {
 		return RECEIVER;
@@ -96,7 +102,7 @@ public final class ReceiverRole {
 	/**
 	 * Erzeugt die Rolle der Applikation als Senke.
 	 *
-	 * @return Rolle f¸r Empfangsanmeldungen als Senke.
+	 * @return Rolle f√ºr Empfangsanmeldungen als Senke.
 	 */
 	public static ReceiverRole drain() {
 		return DRAIN;
@@ -112,9 +118,9 @@ public final class ReceiverRole {
 	}
 
 	/**
-	 * Bestimmt, ob die Applikation in dieser Rolle ein normaler Empf‰nger ist.
+	 * Bestimmt, ob die Applikation in dieser Rolle ein normaler Empf√§nger ist.
 	 *
-	 * @return <code>true</code>, falls die Applikation in dieser Rolle ein Empf‰nger ist; sonst <code>false</code>.
+	 * @return <code>true</code>, falls die Applikation in dieser Rolle ein Empf√§nger ist; sonst <code>false</code>.
 	 */
 	public final boolean isReceiver() {
 		return !_isDrain;

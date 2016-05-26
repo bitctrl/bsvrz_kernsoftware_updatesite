@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl;
@@ -39,11 +45,11 @@ import java.util.ListIterator;
  * TBD Beschreibung
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13141 $
+ * @version $Revision$
  */
 public class ConfigurationManager {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	/** Das Datenmodel */
@@ -94,7 +100,7 @@ public class ConfigurationManager {
 	 *
 	 * @param subscriptionManager Anmeldemanager
 	 *
-	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationException wenn Fehler bei Konfigurationsänderungen auftreten.
+	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationException wenn Fehler bei KonfigurationsÃ¤nderungen auftreten.
 	 */
 	public final void completeInitialisation(SubscriptionManager subscriptionManager) throws ConfigurationException {
 		_subscriptionManager = subscriptionManager;
@@ -105,7 +111,7 @@ public class ConfigurationManager {
 	}
 
 	/**
-	 * Gibt die Pid der Konfiguration zurück.
+	 * Gibt die Pid der Konfiguration zurÃ¼ck.
 	 *
 	 * @return Pid der Konfiguration
 	 */
@@ -114,7 +120,7 @@ public class ConfigurationManager {
 	}
 
 	/**
-	 * Gibt die ID der Konfiguration zurück
+	 * Gibt die ID der Konfiguration zurÃ¼ck
 	 * @return Id der Konfiguration
 	 */
 	public long getConfigurationId() {
@@ -122,7 +128,7 @@ public class ConfigurationManager {
 	}
 
 	/**
-	 * Gibt den Pfad der Konfiguration zurück.
+	 * Gibt den Pfad der Konfiguration zurÃ¼ck.
 	 *
 	 * @return Pfad der Konfiguration
 	 */
@@ -131,7 +137,7 @@ public class ConfigurationManager {
 	}
 
 	/**
-	 * Gibt den Name der Applikation zurück.
+	 * Gibt den Name der Applikation zurÃ¼ck.
 	 *
 	 * @return Name der Applikation
 	 */
@@ -140,7 +146,7 @@ public class ConfigurationManager {
 	}
 
 	/**
-	 * Gibt das Datenmodel zurück.
+	 * Gibt das Datenmodel zurÃ¼ck.
 	 *
 	 * @return Datenmodel
 	 */
@@ -244,12 +250,12 @@ public class ConfigurationManager {
 	}
 
 	/**
-	 * Überprüfft ob die Authentificationsdaten existent und gültig sind. Wenn der Benutzer gültig ist und sein Passwort mit den gegebenen verschlüsselten Passwort
-	 * übereinstimmt, dann schickt die Konfiguration die Id des Benutzers zurück, sonst -1
+	 * ÃœberprÃ¼fft ob die Authentificationsdaten existent und gÃ¼ltig sind. Wenn der Benutzer gÃ¼ltig ist und sein Passwort mit den gegebenen verschlÃ¼sselten Passwort
+	 * Ã¼bereinstimmt, dann schickt die Konfiguration die Id des Benutzers zurÃ¼ck, sonst -1
 	 *
 	 * @param userName          der Benutzername
-	 * @param encriptedPassword verschlüsselte Passwort
-	 * @param text              der Zufallstext mit den der Passwort verschlüsselt wurde
+	 * @param encriptedPassword verschlÃ¼sselte Passwort
+	 * @param text              der Zufallstext mit den der Passwort verschlÃ¼sselt wurde
 	 * @param processName       der Authentifikationsvervahren
 	 *
 	 * @throws ConfigurationException Wenn von der Konfiguration keine Antwort innerhalb eine bestimmten Zeit angekommen ist.
@@ -299,9 +305,9 @@ public class ConfigurationManager {
 	}
 
 	/**
-	 * Führt eine Konfigurationsanfrage durch um die versorgte Datenverteilertopologie zu ermitteln.
+	 * FÃ¼hrt eine Konfigurationsanfrage durch um die versorgte Datenverteilertopologie zu ermitteln.
 	 *
-	 * @param transmitterId Die Id des Datenverteilers, dessen Verbindungsinformationen bestimmt werden müssen.
+	 * @param transmitterId Die Id des Datenverteilers, dessen Verbindungsinformationen bestimmt werden mÃ¼ssen.
 	 *
 	 * @return Array mit Verbindungsinformationen
 	 */

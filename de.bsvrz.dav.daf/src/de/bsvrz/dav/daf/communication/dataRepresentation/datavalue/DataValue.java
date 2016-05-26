@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.dataRepresentation.datavalue;
@@ -26,73 +32,73 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Diese Klasse stellt eine Basisklasse f¸r das Package Datavalue dar. Es werden Konstanten festgelegt und gemeinsamme Methoden deklariert.
+ * Diese Klasse stellt eine Basisklasse f√ºr das Package Datavalue dar. Es werden Konstanten festgelegt und gemeinsamme Methoden deklariert.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5049 $
+ * @version $Revision$
  */
 public abstract class DataValue {
 
-	/** Konstante repr‰sentiert den DatenTyp byte */
+	/** Konstante repr√§sentiert den DatenTyp byte */
 	public static final byte BYTE_TYPE = 1;
 
-	/** Konstante repr‰sentiert den DatenTyp short */
+	/** Konstante repr√§sentiert den DatenTyp short */
 	public static final byte SHORT_TYPE = 2;
 
-	/** Konstante repr‰sentiert den DatenTyp int */
+	/** Konstante repr√§sentiert den DatenTyp int */
 	public static final byte INTEGER_TYPE = 3;
 
-	/** Konstante repr‰sentiert den DatenTyp long */
+	/** Konstante repr√§sentiert den DatenTyp long */
 	public static final byte LONG_TYPE = 4;
 
-	/** Konstante repr‰sentiert den DatenTyp float */
+	/** Konstante repr√§sentiert den DatenTyp float */
 	public static final byte FLOAT_TYPE = 5;
 
-	/** Konstante repr‰sentiert den DatenTyp double */
+	/** Konstante repr√§sentiert den DatenTyp double */
 	public static final byte DOUBLE_TYPE = 6;
 
-	/** Konstante repr‰sentiert den DatenTyp String */
+	/** Konstante repr√§sentiert den DatenTyp String */
 	public static final byte STRING_TYPE = 7;
 
-	/** Konstante repr‰sentiert den DatenTyp bit Array */
+	/** Konstante repr√§sentiert den DatenTyp bit Array */
 	public static final byte BIT_ARRAY_TYPE = 10;
 
-	/** Konstante repr‰sentiert den DatenTyp byte Array */
+	/** Konstante repr√§sentiert den DatenTyp byte Array */
 
 	public static final byte BYTE_ARRAY_TYPE = 11;
 
-	/** Konstante repr‰sentiert den DatenTyp short Array */
+	/** Konstante repr√§sentiert den DatenTyp short Array */
 	public static final byte SHORT_ARRAY_TYPE = 12;
 
-	/** Konstante repr‰sentiert den DatenTyp int Array */
+	/** Konstante repr√§sentiert den DatenTyp int Array */
 	public static final byte INTEGER_ARRAY_TYPE = 13;
 
-	/** Konstante repr‰sentiert den DatenTyp long Array */
+	/** Konstante repr√§sentiert den DatenTyp long Array */
 	public static final byte LONG_ARRAY_TYPE = 14;
 
-	/** Konstante repr‰sentiert den DatenTyp float Array */
+	/** Konstante repr√§sentiert den DatenTyp float Array */
 	public static final byte FLOAT_ARRAY_TYPE = 15;
 
-	/** Konstante repr‰sentiert den DatenTyp double Array */
+	/** Konstante repr√§sentiert den DatenTyp double Array */
 	public static final byte DOUBLE_ARRAY_TYPE = 16;
 
-	/** Konstante repr‰sentiert den DatenTyp String Array */
+	/** Konstante repr√§sentiert den DatenTyp String Array */
 	public static final byte STRING_ARRAY_TYPE = 17;
 
-	/** Konstante repr‰sentiert den DatenTyp Liste */
+	/** Konstante repr√§sentiert den DatenTyp Liste */
 	public static final byte ATTRIBUTE_LIST_TYPE = 100;
 
-	/** Konstante repr‰sentiert den DatenTyp Arrayliste */
+	/** Konstante repr√§sentiert den DatenTyp Arrayliste */
 	public static final byte ATTRIBUTE_LIST_ARRAY_TYPE = 110;
 
-	/** Konstante repr‰sentiert den Array-Offset */
+	/** Konstante repr√§sentiert den Array-Offset */
 	public static final byte ARRAY_OFFSET = 10;
 
 	/** Der Typ dieses Datensatzes */
 	protected byte _type;
 
 	/**
-	 * Gibt den Typ dieses Datensatzes zur¸ck
+	 * Gibt den Typ dieses Datensatzes zur√ºck
 	 *
 	 * @return Typ dieses Datensatzes
 	 */
@@ -101,11 +107,11 @@ public abstract class DataValue {
 	}
 
 	/**
-	 * Gibt ein leeres Objekt vom gegebenen Typ zur¸ck
+	 * Gibt ein leeres Objekt vom gegebenen Typ zur√ºck
 	 *
 	 * @param _type _type des Objektes
 	 *
-	 * @return leeres Objekt vom Typ des ‹bergabeparameters
+	 * @return leeres Objekt vom Typ des √úbergabeparameters
 	 */
 	public static DataValue getObject(byte _type) {
 		switch(_type) {
@@ -187,14 +193,14 @@ public abstract class DataValue {
 	public abstract DataValue cloneObject();
 
 	/**
-	 * Gibt ein String zurr¸ck, der diesen Datensatz beschreibt
+	 * Gibt ein String zurr√ºck, der diesen Datensatz beschreibt
 	 *
 	 * @return Der String, der diesen Datensatz beschreibt
 	 */
 	public abstract String parseToString();
 
 	/**
-	 * gibt den Wert zur¸ck des Objektes
+	 * gibt den Wert zur√ºck des Objektes
 	 *
 	 * @return der Wert des Objektes
 	 */

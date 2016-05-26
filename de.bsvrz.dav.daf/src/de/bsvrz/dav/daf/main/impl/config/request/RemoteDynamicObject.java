@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config.request;
@@ -43,7 +49,7 @@ import java.util.*;
  *
  * @author Roland Schmitz (rs), Kappich Systemberatung
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 5961 $ / $Date: 2008-03-26 18:29:53 +0100 (Wed, 26 Mar 2008) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class RemoteDynamicObject implements DynamicObject {
 
@@ -80,7 +86,7 @@ public class RemoteDynamicObject implements DynamicObject {
 	}
 
 	/**
-	 * Liefert den Zeitpunkt ab dem dieses dynamische Objekt gültig geworden ist.
+	 * Liefert den Zeitpunkt ab dem dieses dynamische Objekt gÃ¼ltig geworden ist.
 	 *
 	 * @return Zeit in Millisekunden seit 1970.
 	 */
@@ -89,7 +95,7 @@ public class RemoteDynamicObject implements DynamicObject {
 	}
 
 	/**
-	 * Liefert den Zeitpunkt ab dem dieses dynamische Objekt nicht mehr gültig ist.
+	 * Liefert den Zeitpunkt ab dem dieses dynamische Objekt nicht mehr gÃ¼ltig ist.
 	 *
 	 * @return Zeit in Millisekunden seit 1970.
 	 */
@@ -117,7 +123,7 @@ public class RemoteDynamicObject implements DynamicObject {
 	}
 
 	/**
-	 * Liefert die Objekt-ID des System-Objekts zurück.
+	 * Liefert die Objekt-ID des System-Objekts zurÃ¼ck.
 	 *
 	 * @return ID dieses System-Objekts oder 0, wenn das Objekt keine ID hat.
 	 */
@@ -126,7 +132,7 @@ public class RemoteDynamicObject implements DynamicObject {
 	}
 
 	/**
-	 * Liefert den Typ dieses System-Objekts zurück.
+	 * Liefert den Typ dieses System-Objekts zurÃ¼ck.
 	 *
 	 * @return Typ dieses System-Objekts.
 	 *
@@ -139,13 +145,13 @@ public class RemoteDynamicObject implements DynamicObject {
 
 	/**
 	 * Bestimmt, ob dieses System-Objekt ein Element des angegebenen Typs ist. Ein System-Objekt ist Element des Objekt-Typs, der von der Methode {@link #getType}
-	 * zurückgeliefert wird. Außerdem ist das Objekt ein Element von den direkten und indirekten {@link de.bsvrz.dav.daf.main.config.SystemObjectType#getSuperTypes
+	 * zurÃ¼ckgeliefert wird. AuÃŸerdem ist das Objekt ein Element von den direkten und indirekten {@link de.bsvrz.dav.daf.main.config.SystemObjectType#getSuperTypes
 	 * Super-Typen} des Objekt-Typs.
 	 *
-	 * @param type Zu prüfender Typ.
+	 * @param type Zu prÃ¼fender Typ.
 	 *
-	 * @return <code>true</code>, wenn der übergebene Typ mit dem Objekt-Typ oder mit einem der direkten oder indirekten Vorgänger in der Vererbungshierarchie
-	 *         übereinstimmt; sonst <code>false</code>.
+	 * @return <code>true</code>, wenn der Ã¼bergebene Typ mit dem Objekt-Typ oder mit einem der direkten oder indirekten VorgÃ¤nger in der Vererbungshierarchie
+	 *         Ã¼bereinstimmt; sonst <code>false</code>.
 	 *
 	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationException
 	 *          Wenn bei der Kommunikation mit der Konfiguration Fehler aufgetreten sind.
@@ -156,13 +162,13 @@ public class RemoteDynamicObject implements DynamicObject {
 
 	/**
 	 * Bestimmt, ob dieses System-Objekt ein Element des angegebenen Typs ist. Ein System-Objekt ist Element des Objekt-Typs, der von der Methode {@link #getType}
-	 * zurückgeliefert wird. Außerdem ist das Objekt ein Element von den direkten und indirekten {@link de.bsvrz.dav.daf.main.config.SystemObjectType#getSuperTypes
+	 * zurÃ¼ckgeliefert wird. AuÃŸerdem ist das Objekt ein Element von den direkten und indirekten {@link de.bsvrz.dav.daf.main.config.SystemObjectType#getSuperTypes
 	 * Super-Typen} des Objekt-Typs.
 	 *
-	 * @param typePid PID des zu prüfenden Typs.
+	 * @param typePid PID des zu prÃ¼fenden Typs.
 	 *
-	 * @return <code>true</code>, wenn der übergebene Typ mit dem Objekt-Typ oder mit einem der direkten oder indirekten Vorgänger in der Vererbungshierarchie
-	 *         übereinstimmt; sonst <code>false</code>.
+	 * @return <code>true</code>, wenn der Ã¼bergebene Typ mit dem Objekt-Typ oder mit einem der direkten oder indirekten VorgÃ¤nger in der Vererbungshierarchie
+	 *         Ã¼bereinstimmt; sonst <code>false</code>.
 	 *
 	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationException
 	 *          Wenn bei der Kommunikation mit der Konfiguration Fehler aufgetreten sind.
@@ -172,7 +178,7 @@ public class RemoteDynamicObject implements DynamicObject {
 	}
 
 	/**
-	 * Liefert die permanente ID (PID) dieses Objekts zurück. Wenn das Objekt keine PID hat, wird ein leerer String zurückgegeben.
+	 * Liefert die permanente ID (PID) dieses Objekts zurÃ¼ck. Wenn das Objekt keine PID hat, wird ein leerer String zurÃ¼ckgegeben.
 	 *
 	 * @return PID des System-Objekts oder einen leeren String, wenn das Objekt keine PID hat.
 	 */
@@ -181,19 +187,19 @@ public class RemoteDynamicObject implements DynamicObject {
 	}
 
 	/**
-	 * Setzt die permanente ID (PID) dieses Objekts. Zu beachten ist, daß die PID eines Objektes, wenn sie einmal vergeben wurde, nicht mehr geändert werden kann.
+	 * Setzt die permanente ID (PID) dieses Objekts. Zu beachten ist, daÃŸ die PID eines Objektes, wenn sie einmal vergeben wurde, nicht mehr geÃ¤ndert werden kann.
 	 *
 	 * @param pid Neue PID des Objektes.
 	 *
 	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationException
-	 *          Wenn die PID des Objektes nicht geändert werden konnte.
+	 *          Wenn die PID des Objektes nicht geÃ¤ndert werden konnte.
 	 */
 	public void setPid(String pid) throws ConfigurationException {
 		throw new UnsupportedOperationException("nicht implementiert");
 	}
 
 	/**
-	 * Liefert den Namen dieses Objekts zurück. Wenn das Objekt keinen Namen hat, wird <code>null</code> zurückgegeben.
+	 * Liefert den Namen dieses Objekts zurÃ¼ck. Wenn das Objekt keinen Namen hat, wird <code>null</code> zurÃ¼ckgegeben.
 	 *
 	 * @return Name des System-Objekts oder <code>null</code>, wenn das Objekt keinen Namen hat.
 	 */
@@ -207,7 +213,7 @@ public class RemoteDynamicObject implements DynamicObject {
 	 * @param name Neuer Name des Objekts.
 	 *
 	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationException
-	 *          Wenn der Name des Objektes nicht geändert werden konnte.
+	 *          Wenn der Name des Objektes nicht geÃ¤ndert werden konnte.
 	 * @see de.bsvrz.dav.daf.main.config.SystemObjectType#isNameOfObjectsPermanent
 	 */
 	public void setName(String name) throws ConfigurationException {
@@ -215,10 +221,10 @@ public class RemoteDynamicObject implements DynamicObject {
 	}
 
 	/**
-	 * Liefert eine Bezeichnung für dieses Objekt zurück. Wenn dieses Objekt einen nicht leeren Namen hat, wird dieser zurückgegeben. Ansonsten wird (falls
-	 * vorhanden) die PID des Objekts zurückgeben. Wenn die PID auch nicht vorhanden ist, wird die ID des Objekts zurückgegeben.
+	 * Liefert eine Bezeichnung fÃ¼r dieses Objekt zurÃ¼ck. Wenn dieses Objekt einen nicht leeren Namen hat, wird dieser zurÃ¼ckgegeben. Ansonsten wird (falls
+	 * vorhanden) die PID des Objekts zurÃ¼ckgeben. Wenn die PID auch nicht vorhanden ist, wird die ID des Objekts zurÃ¼ckgegeben.
 	 *
-	 * @return Text, der den Namen die PID oder die ID des System-Objekts enthält.
+	 * @return Text, der den Namen die PID oder die ID des System-Objekts enthÃ¤lt.
 	 */
 	public String getNameOrPidOrId() {
 		String result = getName();
@@ -228,10 +234,10 @@ public class RemoteDynamicObject implements DynamicObject {
 	}
 
 	/**
-	 * Liefert eine Bezeichnung für dieses Objekt zurück. Wenn dieses Objekt eine nicht leere PID hat, wird diese zurückgegeben. Ansonsten wird (falls vorhanden)
-	 * der Name des Objekts zurückgegeben. Wenn der Name auch nicht vorhanden ist, wird die ID des Objekts zurückgegeben.
+	 * Liefert eine Bezeichnung fÃ¼r dieses Objekt zurÃ¼ck. Wenn dieses Objekt eine nicht leere PID hat, wird diese zurÃ¼ckgegeben. Ansonsten wird (falls vorhanden)
+	 * der Name des Objekts zurÃ¼ckgegeben. Wenn der Name auch nicht vorhanden ist, wird die ID des Objekts zurÃ¼ckgegeben.
 	 *
-	 * @return Text, der die PID, den Namen oder die ID des System-Objekts enthält.
+	 * @return Text, der die PID, den Namen oder die ID des System-Objekts enthÃ¤lt.
 	 */
 	public String getPidOrNameOrId() {
 		String result = getPid();
@@ -241,10 +247,10 @@ public class RemoteDynamicObject implements DynamicObject {
 	}
 
 	/**
-	 * Liefert eine Bezeichnug für dieses Objekt zurück. Wenn dieses Objekt eine nicht leere PID hat, wird diese zurückgegeben. Ansonsten wird die ID des Objekts
-	 * zurückgegeben.
+	 * Liefert eine Bezeichnug fÃ¼r dieses Objekt zurÃ¼ck. Wenn dieses Objekt eine nicht leere PID hat, wird diese zurÃ¼ckgegeben. Ansonsten wird die ID des Objekts
+	 * zurÃ¼ckgegeben.
 	 *
-	 * @return Text, der die PID oder die ID des System-Objekts enthält.
+	 * @return Text, der die PID oder die ID des System-Objekts enthÃ¤lt.
 	 */
 	public String getPidOrId() {
 		String result = getPid();
@@ -253,13 +259,13 @@ public class RemoteDynamicObject implements DynamicObject {
 	}
 
 	/**
-	 * Bestimmt, ob dieses Objekt zum aktuellen Zeitpunkt gültig ist. Konfigurierende System-Objekte sind nach deren {@link
-	 * de.bsvrz.dav.daf.main.config.DataModel#createConfigurationObject Erzeugung} noch nicht gültig, sondern werden erst mit der Aktivierung der nächsten
-	 * Konfigurationsversion gültig. Nach dem {@link #invalidate Löschen} eines Konfigurationsobjekts bleibt es bis zur Aktivierung der nächsten
-	 * Konfigurationsversion gültig. Dynamische Objekte werden sofort mit deren {@link de.bsvrz.dav.daf.main.config.ConfigurationArea#createDynamicObject
-	 * Erzeugung} gültig und mit dem {@link #invalidate Löschen} ungültig.
+	 * Bestimmt, ob dieses Objekt zum aktuellen Zeitpunkt gÃ¼ltig ist. Konfigurierende System-Objekte sind nach deren {@link
+	 * de.bsvrz.dav.daf.main.config.DataModel#createConfigurationObject Erzeugung} noch nicht gÃ¼ltig, sondern werden erst mit der Aktivierung der nÃ¤chsten
+	 * Konfigurationsversion gÃ¼ltig. Nach dem {@link #invalidate LÃ¶schen} eines Konfigurationsobjekts bleibt es bis zur Aktivierung der nÃ¤chsten
+	 * Konfigurationsversion gÃ¼ltig. Dynamische Objekte werden sofort mit deren {@link de.bsvrz.dav.daf.main.config.ConfigurationArea#createDynamicObject
+	 * Erzeugung} gÃ¼ltig und mit dem {@link #invalidate LÃ¶schen} ungÃ¼ltig.
 	 *
-	 * @return <code>true</code>, falls das Objekt gültig ist; <code>false</code>, falls das Objekt nicht gültig ist.
+	 * @return <code>true</code>, falls das Objekt gÃ¼ltig ist; <code>false</code>, falls das Objekt nicht gÃ¼ltig ist.
 	 *
 	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationException
 	 *          Wenn bei der Kommunikation mit der Konfiguration Fehler aufgetreten sind.
@@ -269,19 +275,19 @@ public class RemoteDynamicObject implements DynamicObject {
 	}
 
 	/**
-	 * Löscht das Objekt, indem es ungültig gemacht wird. Dynamische System-Objekte werden sofort ungültig. Bereits gültige konfigurierende System-Objekte werden
-	 * mit Aktivierung der nächsten Konfigurationsversion ungültig. Für historische Anfragen bleiben ungültige Objekte nach wie vor existent. Konfigurierende
-	 * System-Objekte, die noch nie gültig waren, werden durch diese Methode gelöscht und sind nicht mehr zugreifbar.
+	 * LÃ¶scht das Objekt, indem es ungÃ¼ltig gemacht wird. Dynamische System-Objekte werden sofort ungÃ¼ltig. Bereits gÃ¼ltige konfigurierende System-Objekte werden
+	 * mit Aktivierung der nÃ¤chsten Konfigurationsversion ungÃ¼ltig. FÃ¼r historische Anfragen bleiben ungÃ¼ltige Objekte nach wie vor existent. Konfigurierende
+	 * System-Objekte, die noch nie gÃ¼ltig waren, werden durch diese Methode gelÃ¶scht und sind nicht mehr zugreifbar.
 	 *
 	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationException
-	 *          Wenn das Objekt nicht ungültig gemacht werden konnte.
+	 *          Wenn das Objekt nicht ungÃ¼ltig gemacht werden konnte.
 	 */
 	public void invalidate() throws ConfigurationException {
 		throw new UnsupportedOperationException("nicht implementiert");
 	}
 
 	/**
-	 * Liefert das zu diesem Objekt gehörende Datenmodell zurück.
+	 * Liefert das zu diesem Objekt gehÃ¶rende Datenmodell zurÃ¼ck.
 	 *
 	 * @return Datenmodell des Objekts.
 	 */
@@ -290,9 +296,9 @@ public class RemoteDynamicObject implements DynamicObject {
 	}
 
 	/**
-	 * Liefert einen konfigurierenden Datensatz dieses Objekts zurück.
+	 * Liefert einen konfigurierenden Datensatz dieses Objekts zurÃ¼ck.
 	 *
-	 * @param atg Attributgruppe des gewünschten Datensatzes.
+	 * @param atg Attributgruppe des gewÃ¼nschten Datensatzes.
 	 *
 	 * @return Konfigurierender Datensatz der angegebenen Attributgruppe oder <code>null</code>, wenn das Objekt keinen Datensatz der angegebenen Attributgruppe
 	 *         hat.
@@ -305,10 +311,10 @@ public class RemoteDynamicObject implements DynamicObject {
 	}
 
 	/**
-	 * Liefert einen konfigurierenden Datensatz dieses Objekts zurück.
+	 * Liefert einen konfigurierenden Datensatz dieses Objekts zurÃ¼ck.
 	 *
-	 * @param atg Attributgruppe des gewünschten Datensatzes.
-	 * @param asp Aspekt des gewünschten Datensatzes.
+	 * @param atg Attributgruppe des gewÃ¼nschten Datensatzes.
+	 * @param asp Aspekt des gewÃ¼nschten Datensatzes.
 	 *
 	 * @return Konfigurierender Datensatz der angegebenen Attributgruppe oder <code>null</code>, wenn das Objekt keinen Datensatz der angegebenen Attributgruppe
 	 *         hat.
@@ -322,13 +328,13 @@ public class RemoteDynamicObject implements DynamicObject {
 	}
 
 	/**
-	 * Ändert einen konfigurierenden Datensatz dieses Objekts.
+	 * Ã„ndert einen konfigurierenden Datensatz dieses Objekts.
 	 *
-	 * @param atg  Attributgruppe des zu ändernden Datensatzes
+	 * @param atg  Attributgruppe des zu Ã¤ndernden Datensatzes
 	 * @param data Neuer Datensatz
 	 *
 	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationException
-	 *          Wenn der nicht geändert werden konnte.
+	 *          Wenn der nicht geÃ¤ndert werden konnte.
 	 */
 	public void setConfigurationData(AttributeGroup atg, Data data) throws ConfigurationException {
 		throw new UnsupportedOperationException("nicht implementiert");
@@ -343,11 +349,11 @@ public class RemoteDynamicObject implements DynamicObject {
 	}
 
 	public Collection<AttributeGroupUsage> getUsedAttributeGroupUsages() {
-		throw new UnsupportedOperationException("Diese Methode 'getUsedAttributeGroupUsage()' wird hier nicht unterstützt.");
+		throw new UnsupportedOperationException("Diese Methode 'getUsedAttributeGroupUsage()' wird hier nicht unterstÃ¼tzt.");
 	}
 
 	/**
-	 * Liefert ein Objekt mit beschreibenden Informationen zu diesem Objekt zurück.
+	 * Liefert ein Objekt mit beschreibenden Informationen zu diesem Objekt zurÃ¼ck.
 	 *
 	 * @return Objekt mit beschreibenden Informationen.
 	 */
@@ -356,7 +362,7 @@ public class RemoteDynamicObject implements DynamicObject {
 	}
 
 	/**
-	 * Liefert den Konfigurationsbereich, zu dem dieses Objekt gehört, zurück.
+	 * Liefert den Konfigurationsbereich, zu dem dieses Objekt gehÃ¶rt, zurÃ¼ck.
 	 *
 	 * @return Konfigurationsbereich dieses Objekts.
 	 */
@@ -373,19 +379,19 @@ public class RemoteDynamicObject implements DynamicObject {
 	/**
 	 * Compares this object with the specified object for order.  Returns a negative integer, zero, or a positive integer as this object is less than, equal to, or
 	 * greater than the specified object.<p>
-	 * <p/>
+	 * <p>
 	 * In the foregoing description, the notation <tt>sgn(</tt><i>expression</i><tt>)</tt> designates the mathematical <i>signum</i> function, which is defined to
 	 * return one of <tt>-1</tt>, <tt>0</tt>, or <tt>1</tt> according to whether the value of <i>expression</i> is negative, zero or positive.
-	 * <p/>
+	 * <p>
 	 * The implementor must ensure <tt>sgn(x.compareTo(y)) == -sgn(y.compareTo(x))</tt> for all <tt>x</tt> and <tt>y</tt>. (This implies that
 	 * <tt>x.compareTo(y)</tt> must throw an exception iff <tt>y.compareTo(x)</tt> throws an exception.)<p>
-	 * <p/>
+	 * <p>
 	 * The implementor must also ensure that the relation is transitive: <tt>(x.compareTo(y)&gt;0 &amp;&amp; y.compareTo(z)&gt;0)</tt> implies
 	 * <tt>x.compareTo(z)&gt;0</tt>.<p>
-	 * <p/>
+	 * <p>
 	 * Finally, the implementer must ensure that <tt>x.compareTo(y)==0</tt> implies that <tt>sgn(x.compareTo(z)) == sgn(y.compareTo(z))</tt>, for all
 	 * <tt>z</tt>.<p>
-	 * <p/>
+	 * <p>
 	 * It is strongly recommended, but <i>not</i> strictly required that <tt>(x.compareTo(y)==0) == (x.equals(y))</tt>. Generally speaking, any class that
 	 * implements the <tt>Comparable</tt> interface and violates this condition should clearly indicate this fact.  The recommended language is "Note: this class
 	 * has a natural ordering that is inconsistent with equals."

@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config;
@@ -37,11 +43,11 @@ import java.util.LinkedList;
  * Applikationsseitige Implementierung der Schnittstelle zum Zugriff auf die Eigenschaften eines Bereichs.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13141 $
+ * @version $Revision$
  */
 public class DafConfigurationArea extends DafConfigurationObject implements ConfigurationArea {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	/** Aktive Version des Bereichs oder -1 falls diese Version noch nicht abgefragt wurde. * */
@@ -79,15 +85,15 @@ public class DafConfigurationArea extends DafConfigurationObject implements Conf
 
 	public ConfigurationAuthority getConfigurationAuthority() {
 		AttributeGroup atg = getDataModel().getAttributeGroup("atg.konfigurationsBereichEigenschaften");
-		Data.ReferenceValue reference = getConfigurationData(atg).getReferenceValue("zuständiger");
+		Data.ReferenceValue reference = getConfigurationData(atg).getReferenceValue("zustÃ¤ndiger");
 		return (ConfigurationAuthority)reference.getSystemObject();
 	}
 
 	/**
-	 * Diese Methode fordert den konfigurierenden Datensatz des Bereichs mit der ATG "atg.konfigurationsBereichÜbernahmeInformationen" und dem Aspekt
-	 * "asp.eigenschaften" an, aus diesem wird dann eine Version ausgelesen. Die auszulesende Version wird über den übergebenen Parameter festgelegt.
+	 * Diese Methode fordert den konfigurierenden Datensatz des Bereichs mit der ATG "atg.konfigurationsBereichÃœbernahmeInformationen" und dem Aspekt
+	 * "asp.eigenschaften" an, aus diesem wird dann eine Version ausgelesen. Die auszulesende Version wird Ã¼ber den Ã¼bergebenen Parameter festgelegt.
 	 *
-	 * @param kindOfVersion Version, die aus dem Datensatz gelesen werden soll ("übernehmbareVersion" oder "aktivierbareVersion")
+	 * @param kindOfVersion Version, die aus dem Datensatz gelesen werden soll ("Ã¼bernehmbareVersion" oder "aktivierbareVersion")
 	 *
 	 * @return Version
 	 *
@@ -95,7 +101,7 @@ public class DafConfigurationArea extends DafConfigurationObject implements Conf
 	 */
 	private short getVersion(String kindOfVersion) throws IllegalStateException {
 		final Data data = getConfigurationData(
-				getDataModel().getAttributeGroup("atg.konfigurationsBereichÜbernahmeInformationen"), getDataModel().getAspect("asp.eigenschaften")
+				getDataModel().getAttributeGroup("atg.konfigurationsBereichÃœbernahmeInformationen"), getDataModel().getAspect("asp.eigenschaften")
 		);
 
 		if(data != null) {
@@ -113,7 +119,7 @@ public class DafConfigurationArea extends DafConfigurationObject implements Conf
 	}
 
 	public short getTransferableVersion() {
-		return getVersion("übernehmbareVersion");
+		return getVersion("Ã¼bernehmbareVersion");
 	}
 
 	public short getModifiableVersion() {
@@ -128,24 +134,24 @@ public class DafConfigurationArea extends DafConfigurationObject implements Conf
 
 	public short getActiveVersion() {
 		if(_activeVersion == -1) {
-			// Version wird beim ersten Aufruf abgefragt und für weitere Aufrufe gespeichert.
+			// Version wird beim ersten Aufruf abgefragt und fÃ¼r weitere Aufrufe gespeichert.
 			_activeVersion = getDataModel().getActiveVersion(this);
 		}
 		return _activeVersion;
 	}
 
 	/**
-	 * Gibt einen Zeitpunkt zurück, dieser bezieht sich auf den übergebenen Parameter. Der Zeitpunkt wird aus einem konfigurierenden Datensatz ausgelesen
-	 * (atg.konfigurationsBereichÄnderungsZeiten), dieser Datensatz ist am Konfigurationsbereich gespeichert.
+	 * Gibt einen Zeitpunkt zurÃ¼ck, dieser bezieht sich auf den Ã¼bergebenen Parameter. Der Zeitpunkt wird aus einem konfigurierenden Datensatz ausgelesen
+	 * (atg.konfigurationsBereichÃ„nderungsZeiten), dieser Datensatz ist am Konfigurationsbereich gespeichert.
 	 *
-	 * @param kindOfTime "LetzteÄnderungszeitDynamischesObjekt", "LetzteÄnderungszeitKonfigurationsObjekt" oder "LetzteÄnderungszeitDatensatz"
+	 * @param kindOfTime "LetzteÃ„nderungszeitDynamischesObjekt", "LetzteÃ„nderungszeitKonfigurationsObjekt" oder "LetzteÃ„nderungszeitDatensatz"
 	 *
-	 * @return Zeitpunkt, der zu dem übergebenen Parameter gehört
+	 * @return Zeitpunkt, der zu dem Ã¼bergebenen Parameter gehÃ¶rt
 	 *
-	 * @throws IllegalStateException Der übergebene Parameter ist unbekannt
+	 * @throws IllegalStateException Der Ã¼bergebene Parameter ist unbekannt
 	 */
 	private long getTime(String kindOfTime) throws IllegalStateException {
-		Data data = getConfigurationData(getDataModel().getAttributeGroup("atg.konfigurationsBereichÄnderungsZeiten"));
+		Data data = getConfigurationData(getDataModel().getAttributeGroup("atg.konfigurationsBereichÃ„nderungsZeiten"));
 		if(data != null) {
 			return data.getTimeValue(kindOfTime).getMillis();
 		}
@@ -155,15 +161,15 @@ public class DafConfigurationArea extends DafConfigurationObject implements Conf
 	}
 
 	public long getTimeOfLastDynamicChange() {
-		return getTime("LetzteÄnderungszeitDynamischesObjekt");
+		return getTime("LetzteÃ„nderungszeitDynamischesObjekt");
 	}
 
 	public long getTimeOfLastNonActiveConfigurationChange() {
-		return getTime("LetzteÄnderungszeitKonfigurationsObjekt");
+		return getTime("LetzteÃ„nderungszeitKonfigurationsObjekt");
 	}
 
 	public long getTimeOfLastActiveConfigurationChange() {
-		return getTime("LetzteÄnderungszeitDatensatz");
+		return getTime("LetzteÃ„nderungszeitDatensatz");
 	}
 
 	public Collection<SystemObject> getObjects(Collection<SystemObjectType> systemObjectTypes, ObjectTimeSpecification timeSpecification) {
@@ -180,7 +186,7 @@ public class DafConfigurationArea extends DafConfigurationObject implements Conf
 		catch(RequestException e) {
 			e.printStackTrace();
 			_debug.error("Fehler bei der Abfrage der Objekte des Bereichs", e);
-			throw new RuntimeException("Fehler bei der Übertragung", e);
+			throw new RuntimeException("Fehler bei der Ãœbertragung", e);
 		}
 	}
 
@@ -198,16 +204,16 @@ public class DafConfigurationArea extends DafConfigurationObject implements Conf
 		catch(RequestException e) {
 			e.printStackTrace();
 			_debug.error("Fehler bei der Abfrage der noch nicht aktivierten Objekte des Bereichs", e);
-			throw new RuntimeException("Fehler bei der Übertragung", e);
+			throw new RuntimeException("Fehler bei der Ãœbertragung", e);
 		}
 	}
 
 	/**
-	 * Prüft, ob ein Name länger als 255 Zeichen ist.
+	 * PrÃ¼ft, ob ein Name lÃ¤nger als 255 Zeichen ist.
 	 *
 	 * @param name Name oder <code>null</code>
 	 *
-	 * @throws ConfigurationChangeException Der Name ist länger als 255 Zeichen
+	 * @throws ConfigurationChangeException Der Name ist lÃ¤nger als 255 Zeichen
 	 */
 	private void checkNameLength(final String name) throws ConfigurationChangeException {
 		if(name != null) {
@@ -215,17 +221,17 @@ public class DafConfigurationArea extends DafConfigurationObject implements Conf
 				return;
 			}
 			else {
-				throw new ConfigurationChangeException("Der Name ist länger als 255 Zeichen " + name + " Länge " + name.length());
+				throw new ConfigurationChangeException("Der Name ist lÃ¤nger als 255 Zeichen " + name + " LÃ¤nge " + name.length());
 			}
 		}
 	}
 
 	/**
-	 * Prüft, ob die Pid länger als 255 Zeichen ist.
+	 * PrÃ¼ft, ob die Pid lÃ¤nger als 255 Zeichen ist.
 	 *
 	 * @param pid Pid oder <code>null</code>
 	 *
-	 * @throws ConfigurationChangeException Die Pid ist länger als 255 Zeichen
+	 * @throws ConfigurationChangeException Die Pid ist lÃ¤nger als 255 Zeichen
 	 */
 	private void checkPidLength(final String pid) throws ConfigurationChangeException {
 		if(pid != null) {
@@ -233,7 +239,7 @@ public class DafConfigurationArea extends DafConfigurationObject implements Conf
 				return;
 			}
 			else {
-				throw new ConfigurationChangeException("Die Pid ist länger als 255 Zeichen " + pid + " Länge " + pid.length());
+				throw new ConfigurationChangeException("Die Pid ist lÃ¤nger als 255 Zeichen " + pid + " LÃ¤nge " + pid.length());
 			}
 		}
 	}
@@ -249,7 +255,7 @@ public class DafConfigurationArea extends DafConfigurationObject implements Conf
 		catch(RequestException e) {
 			e.printStackTrace();
 			_debug.error("Fehler beim Erzeugen eines neuen Konfigurationsobjekt", e);
-			throw new RuntimeException("Fehler bei der Übertragung", e);
+			throw new RuntimeException("Fehler bei der Ãœbertragung", e);
 		}
 	}
 
@@ -263,7 +269,7 @@ public class DafConfigurationArea extends DafConfigurationObject implements Conf
 		catch(RequestException e) {
 			e.printStackTrace();
 			_debug.error("Fehler beim Erzeugen eines neuen dynamischen Objekt", e);
-			throw new RuntimeException("Fehler bei der Übertragung", e);
+			throw new RuntimeException("Fehler bei der Ãœbertragung", e);
 		}
 	}
 
@@ -294,8 +300,8 @@ public class DafConfigurationArea extends DafConfigurationObject implements Conf
 		}
 		catch(RequestException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Erzeugen eines neuen dynamischen Objekt mit initialen Datensätzen", e);
-			throw new RuntimeException("Fehler bei der Übertragung", e);
+			_debug.error("Fehler beim Erzeugen eines neuen dynamischen Objekt mit initialen DatensÃ¤tzen", e);
+			throw new RuntimeException("Fehler bei der Ãœbertragung", e);
 		}
 	}
 

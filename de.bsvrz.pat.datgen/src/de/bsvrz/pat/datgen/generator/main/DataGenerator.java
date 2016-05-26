@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2003 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2003 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.datgen.
  * 
- * de.bsvrz.pat.datgen is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.datgen is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.datgen is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.datgen; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.datgen.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 
@@ -56,53 +62,53 @@ import de.bsvrz.sys.funclib.debug.Debug;
 import java.util.*;
 
 /**
- * Generator-Applikation zur zeitlich gesteuerten Erzeugung von Online-Daten beliebiger Attributgruppen zu Test- und Analysezwecken. Über Aufrufparameter können
- * Attributgruppe, Aspekt, Simulationsvariante und die Objekte, für die die Daten erzeugt werden, die Art der Anmeldung (als Quelle oder Sender) und das
- * zeitliche Verhalten vorgegeben werden. Die erzeugten Daten können bei Bedarf beim Versand protokolliert werden. Aufruf: <blockquote><code> java
+ * Generator-Applikation zur zeitlich gesteuerten Erzeugung von Online-Daten beliebiger Attributgruppen zu Test- und Analysezwecken. Ãœber Aufrufparameter kÃ¶nnen
+ * Attributgruppe, Aspekt, Simulationsvariante und die Objekte, fÃ¼r die die Daten erzeugt werden, die Art der Anmeldung (als Quelle oder Sender) und das
+ * zeitliche Verhalten vorgegeben werden. Die erzeugten Daten kÃ¶nnen bei Bedarf beim Versand protokolliert werden. Aufruf: <blockquote><code> java
  * de.bsvrz.pat.datgen.generator.main.DataGenerator [-protModul=<modulName>] [-datei=<protokollDatei>] [-autark] [<weitereParameterDesVerwendetenProtokollierungsmoduls>]
  * ([-zyklus=<zyklusVon>[-<zyklusBis>]] [-anzahl=<anzahlZyklen>] [-spreizung=<spreizungsGrad>] [-zeit=<zeitstempelWert>] [-rolle=<anmeldeRolle>]
- * –objekte=<objektSpezifikationen> -daten=<datenSpezifikation>)+ </code></blockquote> oder <blockquote><code> java de.bsvrz.pat.datgen.generator.main.DataGenerator
+ * Â–objekte=<objektSpezifikationen> -daten=<datenSpezifikation>)+ </code></blockquote> oder <blockquote><code> java de.bsvrz.pat.datgen.generator.main.DataGenerator
  * [-protModul=<modulName>] -eingabe=<eingabeDatei> [-basisUri=<uri>] [-zeitstempel=<wiedergabeVerhalten>] [-validieren=ja|nein] [-datei=<protokollDatei>]
  * [-autark] [<weitereParameterDesVerwendetenProtokollie-rungsmoduls>] ([-rolle=<anmeldeRolle>] [-objekte=<objektSpezifikationen> -daten=<datenSpezifikation>])+
  * </code></blockquote>
- * <p/>
+ * <p>
  * Beispiel: <blockquote><code> java de.bsvrz.pat.datgen.generator.main.DataGenerator -ausgabe=kopf -objekte=vrz.aachen:MQ -daten=atg.verkehrswerte:asp.analyseWerte </code></blockquote>
- * Es können also eine oder mehrere Anmeldespezifikationen beim Start des Programms angegeben werden. Jede Anmeldespezifikation kann optional die Zykluszeit,
- * Anmelde-Rolle, die Art der Protokollierung und die Angabe der Objekte, für die die Anmeldung durchgeführt werden soll, enthalten. Wenn diese Argumente
- * weggelassen werden, dann übernehmen sie ihren Wert aus der vorhergegangenen Anmeldespezifikation. Über die Datenspezifikation muss angegeben werden, welche
+ * Es kÃ¶nnen also eine oder mehrere Anmeldespezifikationen beim Start des Programms angegeben werden. Jede Anmeldespezifikation kann optional die Zykluszeit,
+ * Anmelde-Rolle, die Art der Protokollierung und die Angabe der Objekte, fÃ¼r die die Anmeldung durchgefÃ¼hrt werden soll, enthalten. Wenn diese Argumente
+ * weggelassen werden, dann Ã¼bernehmen sie ihren Wert aus der vorhergegangenen Anmeldespezifikation. Ãœber die Datenspezifikation muss angegeben werden, welche
  * Daten angemeldet werden sollen.
- * <p/>
+ * <p>
  * Die Zykluszeit kann durch eine {@link de.bsvrz.sys.funclib.commandLineArgs.ArgumentList.Argument#asRelativeTime relative Zeitangabe } spezifiziert werden.
- * <p/>
- * Für den Platzhalter <code>anmeldeRolle</code> können die Werte <code>quelle</code> bzw. <code>sender</code> eingesetzt werden, um zu signalisieren, dass die
- * anzumeldenden Daten als Quelle an beliebige Empfänger bzw. als Sender an eine Senke übertragen werden sollen. Wenn keine Anmelde-Rolle angegeben wurde, wird
- * standardmäßig der Wert <code>empfänger</code> benutzt.
- * <p/>
- * Mit dem Platzhalter <code>objektSpezifikationen</code>  können mehrere Objekte durch Komma getrennt spezifiziert werden. Ein Objekt wird entweder durch die
+ * <p>
+ * FÃ¼r den Platzhalter <code>anmeldeRolle</code> kÃ¶nnen die Werte <code>quelle</code> bzw. <code>sender</code> eingesetzt werden, um zu signalisieren, dass die
+ * anzumeldenden Daten als Quelle an beliebige EmpfÃ¤nger bzw. als Sender an eine Senke Ã¼bertragen werden sollen. Wenn keine Anmelde-Rolle angegeben wurde, wird
+ * standardmÃ¤ÃŸig der Wert <code>empfÃ¤nger</code> benutzt.
+ * <p>
+ * Mit dem Platzhalter <code>objektSpezifikationen</code>  kÃ¶nnen mehrere Objekte durch Komma getrennt spezifiziert werden. Ein Objekt wird entweder durch die
  * Objekt-Id oder vorzugsweise durch die PID des Objekts spezifiziert. Optional kann hinter der Objekt-ID oder PID mit Doppelpunkt getrennt ein Mengenname
  * angegeben werden; damit wird dann nicht das angegebene Objekt, sondern alle in der angegebenen Menge unterhalb des angegebenen Objekts enthaltenen Objekte
  * spezifiziert.
- * <p/>
+ * <p>
  * Mit dem Platzhalter <code>datenSpezifikation</code> werden durch Doppelpunkt getrennt die PID der Attributgruppe, die PID des Aspekts und die
- * Simulationsvariante für die Anmeldung und die Datenerzeugung spezifiziert. Die Simulationsvariante kann (einschließlich des vorhergehenden Doppelpunkts)
+ * Simulationsvariante fÃ¼r die Anmeldung und die Datenerzeugung spezifiziert. Die Simulationsvariante kann (einschlieÃŸlich des vorhergehenden Doppelpunkts)
  * weggelassen werden um die Default-Simulationsvariante (i.a. 0) zu benutzen.
- * <p/>
- * Nach der Anmeldung auf die spezifizierten Daten werden für jede Anmeldespezifikation unabhängig zyklisch Daten für die jeweiligen Objekte generiert. Dabei
- * wird das Senden der Datensätze über den im Platzhalter <code>spreizungsGrad</code> angegeben Wert (in Prozent) über den entsprechenden Anteil der Zykluszeit
- * homogen verteilt. Bei der Angabe <code>-zyklus=1m -spreizung=50</code> werden minütlich Datensätze für die Objekte generiert und innerhalb der ersten 30
- * Sekunden eines jeden Zyklus übertragen. Wenn kein Spreizungsgrad angegeben wurde, wird der Wert <code>0</code> benutzt. Dabei werden die Datensätze der
- * einzelnen Objekte in jedem Zyklus im Block übertragen.
- * <p/>
- * Die Anzahl der Zyklen, kann über den Platzhalter <code>anzahlZyklen</code> vorgegeben werden. Wenn keine Anzahl vorgegeben ist, dann wird der Wert 0 benutzt,
- * der als unbeschränkt interpretiert wird.
- * <p/>
- * Beim Versenden von Datensätzen können diese mit Hilfe der Ausgabefunktion des Onlineprotokollierers ausgegeben werden.
- * <p/>
- * Beim Erzeugen von Daten berücksichtigt der Datengenerator die im Metamodell angegebenen Wertebereichsgrenzen. Ansonsten sind die erzeugten Daten im
- * wesentlichen zufällig, d.h. aus fachlicher Sicht i.a. nicht sinnvoll.
+ * <p>
+ * Nach der Anmeldung auf die spezifizierten Daten werden fÃ¼r jede Anmeldespezifikation unabhÃ¤ngig zyklisch Daten fÃ¼r die jeweiligen Objekte generiert. Dabei
+ * wird das Senden der DatensÃ¤tze Ã¼ber den im Platzhalter <code>spreizungsGrad</code> angegeben Wert (in Prozent) Ã¼ber den entsprechenden Anteil der Zykluszeit
+ * homogen verteilt. Bei der Angabe <code>-zyklus=1m -spreizung=50</code> werden minÃ¼tlich DatensÃ¤tze fÃ¼r die Objekte generiert und innerhalb der ersten 30
+ * Sekunden eines jeden Zyklus Ã¼bertragen. Wenn kein Spreizungsgrad angegeben wurde, wird der Wert <code>0</code> benutzt. Dabei werden die DatensÃ¤tze der
+ * einzelnen Objekte in jedem Zyklus im Block Ã¼bertragen.
+ * <p>
+ * Die Anzahl der Zyklen, kann Ã¼ber den Platzhalter <code>anzahlZyklen</code> vorgegeben werden. Wenn keine Anzahl vorgegeben ist, dann wird der Wert 0 benutzt,
+ * der als unbeschrÃ¤nkt interpretiert wird.
+ * <p>
+ * Beim Versenden von DatensÃ¤tzen kÃ¶nnen diese mit Hilfe der Ausgabefunktion des Onlineprotokollierers ausgegeben werden.
+ * <p>
+ * Beim Erzeugen von Daten berÃ¼cksichtigt der Datengenerator die im Metamodell angegebenen Wertebereichsgrenzen. Ansonsten sind die erzeugten Daten im
+ * wesentlichen zufÃ¤llig, d.h. aus fachlicher Sicht i.a. nicht sinnvoll.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
+ * @version $Revision$
  */
 public class DataGenerator implements ClientSenderInterface {
 
@@ -110,7 +116,7 @@ public class DataGenerator implements ClientSenderInterface {
 	private static DataKindDeterminer dkd;
 
 	/*
-	 * Zeigt an, ob neue, zufällige Daten erzeugt werden (<code>true</code>)
+	 * Zeigt an, ob neue, zufÃ¤llige Daten erzeugt werden (<code>true</code>)
 	 * oder eine XML-Datei eingelesen und wiedergegeben werden soll
 	 * (<code>false</code>)
 	 */
@@ -119,16 +125,16 @@ public class DataGenerator implements ClientSenderInterface {
 	/** <code>true</code>, wenn Sendesteuerung verlangt wird. */
 	private static boolean isSendControlValid = false;
 
-	/** Liste der Objekte, für die Sendeerlaubnis vorliegt */
+	/** Liste der Objekte, fÃ¼r die Sendeerlaubnis vorliegt */
 	private static Set registeredObjects = new HashSet();
 
 	/** Sende-<i>Queue</i> */
 	private static final SendInterface sendQueue = new QueueSurrogate(); //new Queue();
 
-	/** Wartezeit nach dem Anmelden , damit die Sendesteuerungen eintreffen können, bevor Daten gesendet werden */
+	/** Wartezeit nach dem Anmelden , damit die Sendesteuerungen eintreffen kÃ¶nnen, bevor Daten gesendet werden */
 	private static long waitForDataRequests;
 
-	/** Klasse die statt der Klasse Queue zum Versenden eingesetzt wird, aber die Datensätze ungepuffert an die Datenverteiler-Applikationsfunktionen weitergibt. */
+	/** Klasse die statt der Klasse Queue zum Versenden eingesetzt wird, aber die DatensÃ¤tze ungepuffert an die Datenverteiler-Applikationsfunktionen weitergibt. */
 	private static class QueueSurrogate implements SendInterface {
 
 		/** Legt ein neues Objekt dieser Klasse an. */
@@ -144,7 +150,7 @@ public class DataGenerator implements ClientSenderInterface {
 		 * @param object {@link Object}, welches in die LIFO-Liste geschrieben wird.
 		 *
 		 * @throws ConfigurationException     wenn bei der Kommunikation mit der Konfiguration ein Problem auftritt.
-		 * @throws de.bsvrz.dav.daf.main.DataNotSubscribedException wenn für die bei der Konfiguration angeforderten Daten keine Anmeldung vorliegt.
+		 * @throws de.bsvrz.dav.daf.main.DataNotSubscribedException wenn fÃ¼r die bei der Konfiguration angeforderten Daten keine Anmeldung vorliegt.
 		 */
 		public void push(Object object) throws ConfigurationException, DataNotSubscribedException {
 
@@ -167,9 +173,9 @@ public class DataGenerator implements ClientSenderInterface {
 							/*
 							 * XXX
 							 * Work around: Ist die Simulationsvariante -1 (also nicht explizit
-							 * über die Aufrufparameter gesetzt), so wird sie durch die
+							 * Ã¼ber die Aufrufparameter gesetzt), so wird sie durch die
 							 * DaV-Applikationsfunktionen automatisch auf 0 gesetzt. Dieses
-							 * Verhalten ist unerwünscht und wird hier bis auf weiteres
+							 * Verhalten ist unerwÃ¼nscht und wird hier bis auf weiteres
 							 * umgangen.
 							 */
 							short[] rescueSimulationVariants = new short[resultsToSend.length];
@@ -209,10 +215,10 @@ public class DataGenerator implements ClientSenderInterface {
 	/** Anzahl der laufenden Datenerzeugungs-<i>Threads</i> */
 	private static int numberOfThreads = 0;
 
-	/** Andockstelle für Protokollierungsmodule */
+	/** Andockstelle fÃ¼r Protokollierungsmodule */
 	private static ProtocolModuleConnector pmc = null;
 
-	/** Gibt an, ober der Datengenerator Sendesteuerung wünscht oder nicht. */
+	/** Gibt an, ober der Datengenerator Sendesteuerung wÃ¼nscht oder nicht. */
 	private static boolean hasSendControl = false;
 
 
@@ -236,7 +242,7 @@ public class DataGenerator implements ClientSenderInterface {
 			xfr.checkValidity();
 		}
 		catch(Exception e) {
-			debug.error("Eingabedatei enthält Fehler: " + e.getMessage());
+			debug.error("Eingabedatei enthÃ¤lt Fehler: " + e.getMessage());
 			System.exit(1);
 		}
 
@@ -283,8 +289,8 @@ public class DataGenerator implements ClientSenderInterface {
 	}
 
 	/**
-	 * Anmeldungen durchgehen und den Wunsch nach Sendesteuerung entsprechend setzen. Sind keine Objekte angegeben, wird die Auswertung auf einen späteren
-	 * Zeitpunkt verschoben. Sonst gilt die Regel, daß generell keine Sendesteuerung gewünscht wird, außer es ist mindestens ein Sender vorhanden.
+	 * Anmeldungen durchgehen und den Wunsch nach Sendesteuerung entsprechend setzen. Sind keine Objekte angegeben, wird die Auswertung auf einen spÃ¤teren
+	 * Zeitpunkt verschoben. Sonst gilt die Regel, daÃŸ generell keine Sendesteuerung gewÃ¼nscht wird, auÃŸer es ist mindestens ein Sender vorhanden.
 	 *
 	 * @param	subscriptions	Liste der Anmeldunge
 	 */
@@ -309,7 +315,7 @@ public class DataGenerator implements ClientSenderInterface {
 	/**
 	 * Sendesteuerung des Datenverteilers an die Applikation.
 	 *
-	 * @param	object			Das in der zugehörigen Sendeanmeldung angegebene Objekt, auf das sich die Sendesteuerung bezieht.
+	 * @param	object			Das in der zugehÃ¶rigen Sendeanmeldung angegebene Objekt, auf das sich die Sendesteuerung bezieht.
 	 * @param	dataDescription	Beschreibende Informationen zu den angemeldeten Daten auf die sich die Sendesteuerung bezieht.
 	 * @param	state			Status der Sendesteuerung. Kann einen der Werte <code>START_SENDING</code>, <code>STOP_SENDING</code>, <code>STOP_SENDING_NO_RIGHTS</code>,
 	 * <code>STOP_SENDING_NOT_A_VALID_SUBSCRIPTION</code> enthalten.
@@ -324,12 +330,12 @@ public class DataGenerator implements ClientSenderInterface {
 			newObject.add(dataDescription);
 			synchronized(registeredObjects) {
 				registeredObjects.add(newObject);
-				debug.finer("Hinzugefügt: " + newObject);
+				debug.finer("HinzugefÃ¼gt: " + newObject);
 			}
 		}
 		else if((state == STOP_SENDING) || (state == STOP_SENDING_NO_RIGHTS) || (state == STOP_SENDING_NOT_A_VALID_SUBSCRIPTION)) {
-			if(state == STOP_SENDING_NO_RIGHTS) debug.warning("Keine Rechte zum Senden von " + dataDescription + " für " + object);
-			if(state == STOP_SENDING_NOT_A_VALID_SUBSCRIPTION) debug.warning("Fehlerhafte Anmeldung zum Senden von " + dataDescription + " für " + object);
+			if(state == STOP_SENDING_NO_RIGHTS) debug.warning("Keine Rechte zum Senden von " + dataDescription + " fÃ¼r " + object);
+			if(state == STOP_SENDING_NOT_A_VALID_SUBSCRIPTION) debug.warning("Fehlerhafte Anmeldung zum Senden von " + dataDescription + " fÃ¼r " + object);
 			synchronized(registeredObjects) {
 				if(registeredObjects.size() > 0) {
 					List deleteObject = new LinkedList();
@@ -347,9 +353,9 @@ public class DataGenerator implements ClientSenderInterface {
 	}
 
 	/**
-	 * Liefert Information, ob Datengenerator autark läuft oder nicht.
+	 * Liefert Information, ob Datengenerator autark lÃ¤uft oder nicht.
 	 *
-	 * @return boolean, welches <code>true</code> ist, falls der Datengenerator autark läuft. Sonst ist es <code>false</code>.
+	 * @return boolean, welches <code>true</code> ist, falls der Datengenerator autark lÃ¤uft. Sonst ist es <code>false</code>.
 	 */
 	public boolean getIsAutarkic() {
 		return isAutarkic;
@@ -358,13 +364,13 @@ public class DataGenerator implements ClientSenderInterface {
 	/**
 	 * Methode zur Feststellung, ob angegebenes Objekt gesendet werden darf
 	 *
-	 * @param	data	Der zu prüfende Datensatz
+	 * @param	data	Der zu prÃ¼fende Datensatz
 	 * @return boolean	welches anzeigt, ob das angegebene Objekt gesendet werden darf
 	 */
 	private static boolean hasDataRequest(ResultData data) {
 		if(!hasSendControl) {
 			// Sendesteuerung wurde nicht "beantragt" ==> Daten werden ohne
-			// Rücksicht <b>immer<i> gesendet.
+			// RÃ¼cksicht <b>immer<i> gesendet.
 			return true;
 		}
 		if(registeredObjects.size() > 0) {
@@ -385,13 +391,13 @@ public class DataGenerator implements ClientSenderInterface {
 	}
 
 	/**
-	 * Diese Methode muss von der Applikation implementiert werden, um zu signalisieren, ob Sendesteuerungen gewünscht sind und mit der Methode
-	 * <code>dataRequest</code> verarbeitet werden. Da hier Sendesteuerung erwünscht ist, liefert diese Methode <code>true</code> zurück.
+	 * Diese Methode muss von der Applikation implementiert werden, um zu signalisieren, ob Sendesteuerungen gewÃ¼nscht sind und mit der Methode
+	 * <code>dataRequest</code> verarbeitet werden. Da hier Sendesteuerung erwÃ¼nscht ist, liefert diese Methode <code>true</code> zurÃ¼ck.
 	 *
-	 * @param object          Das in der zugehörigen Sendeanmeldung angegebene System-Objekt.
-	 * @param dataDescription Die in der zugehörigen Sendeanmeldung angegebenen beschreibenden Informationen der angemeldeten Daten.
+	 * @param object          Das in der zugehÃ¶rigen Sendeanmeldung angegebene System-Objekt.
+	 * @param dataDescription Die in der zugehÃ¶rigen Sendeanmeldung angegebenen beschreibenden Informationen der angemeldeten Daten.
 	 *
-	 * @return	<code>true</code>, falls Sendesteuerungen gewünscht sind, sonst <code>false</code>.
+	 * @return	<code>true</code>, falls Sendesteuerungen gewÃ¼nscht sind, sonst <code>false</code>.
 	 */
 	public boolean isRequestSupported(SystemObject object, DataDescription dataDescription) {
 		debug.fine("object = " + object);
@@ -411,7 +417,7 @@ public class DataGenerator implements ClientSenderInterface {
 		Debug.init("DataGenerator", argumentList);
 		debug = Debug.getLogger();
 
-		/* Vollständige Aufrufparameter-Zeile */
+		/* VollstÃ¤ndige Aufrufparameter-Zeile */
 		String[] originalArguments = new String[arguments.length];
 		for(int i = 0; i < arguments.length; i++) {
 			originalArguments[i] = arguments[i];
@@ -469,7 +475,7 @@ public class DataGenerator implements ClientSenderInterface {
 			debug.error("Fehler beim Auswerten der Argumente:");
 			debug.error("  " + e.getMessage());
 			debug.error(
-					"Benutzung:\tjava de.bsvrz.pat.datgen.generator.main.DataGenerator [-protModul=<modulName>] [-datei=<protokollDatei>] [-autark] [<weitereParameterDesVerwendetenProtokollierungsmoduls>] ([-zyklus=<zyklusVon>[-<zyklusBis>]] [-anzahl=<anzahlZyklen>] [-spreizung=<spreizungsGrad>] [-zeit=<zeitstempelWert>] [-rolle=<anmeldeRolle>] –objekte=<objektSpezifikationen> -daten=<datenSpezifikation>)+"
+					"Benutzung:\tjava de.bsvrz.pat.datgen.generator.main.DataGenerator [-protModul=<modulName>] [-datei=<protokollDatei>] [-autark] [<weitereParameterDesVerwendetenProtokollierungsmoduls>] ([-zyklus=<zyklusVon>[-<zyklusBis>]] [-anzahl=<anzahlZyklen>] [-spreizung=<spreizungsGrad>] [-zeit=<zeitstempelWert>] [-rolle=<anmeldeRolle>] Â–objekte=<objektSpezifikationen> -daten=<datenSpezifikation>)+"
 			);
 			debug.error(
 					"bzw.\t\tjava de.bsvrz.pat.datgen.generator.main.DataGenerator [-protModul=<modulName>] -eingabe=<eingabeDatei> [-zeitstempel=<wiedergabeVerhalten>] [-datei=<protokollDatei>] [-autark] [<weitereParameterDesVerwendetenProtokollierungsmoduls>] ([-rolle=<anmeldeRolle>] -objekte=<objektSpezifikationen> -daten=<datenSpezifikation>)+"
@@ -479,15 +485,15 @@ public class DataGenerator implements ClientSenderInterface {
 			);
 			debug.error("-eingabe: XML-Datei mit den einzuspielenden Daten");
 			debug.error(
-					"-basisUri: Basis-URI für die DTD. Muß angegeben werden, wenn die URI der DTD in der einzulesenden XML-Datei nicht als absolute URI angegeben ist."
+					"-basisUri: Basis-URI fÃ¼r die DTD. MuÃŸ angegeben werden, wenn die URI der DTD in der einzulesenden XML-Datei nicht als absolute URI angegeben ist."
 			);
 			debug.error(
-					"-zeitstempel: \"uebernehmen\", wenn die Zeitstempel aus der Eingabedatei übernommen werden sollen; \"anpassen\", wenn die Startzeit des Protokolls durch die Startzeit des Starts des Datengenerators ersetzt werden soll"
+					"-zeitstempel: \"uebernehmen\", wenn die Zeitstempel aus der Eingabedatei Ã¼bernommen werden sollen; \"anpassen\", wenn die Startzeit des Protokolls durch die Startzeit des Starts des Datengenerators ersetzt werden soll"
 			);
 			debug.error("-validieren: \"ja\", falls die einzulesende XML-Datei validiert werden soll, sonst \"nein\"");
 			debug.error("-datei: Name der Protokolldatei");
 			debug.error("-autark: Die erzeugten Daten werden nicht an den DaV gesendet");
-			debug.error("-sendesteuerung: \"ja\", falls Sendesteuerung erwünscht, sonst \"nein\".");
+			debug.error("-sendesteuerung: \"ja\", falls Sendesteuerung erwÃ¼nscht, sonst \"nein\".");
 			if(pmc != null) {
 				debug.error(pmc.getHelp());
 			}
@@ -495,17 +501,17 @@ public class DataGenerator implements ClientSenderInterface {
 				debug.error("<weitere Parameter des Protokollierungsmoduls>");
 			}
 			debug.error(
-					"-zyklus: Zeitangabe als Folge von Zahlen und Einheiten (t für Tage, h für Stunden, m für Minuten, s für Sekunden und ms für Millisekunden"
+					"-zyklus: Zeitangabe als Folge von Zahlen und Einheiten (t fÃ¼r Tage, h fÃ¼r Stunden, m fÃ¼r Minuten, s fÃ¼r Sekunden und ms fÃ¼r Millisekunden"
 			);
-			debug.error("-anzahl: Anzahl der Zyklen oder 0, wenn die Anzahl nicht beschränkt ist");
-			debug.error("-spreizung: Zahl zwischen 0 und 100 als Anteil in Prozent der Zykluszeit, die zum Senden der Datensätze benutzt wird");
+			debug.error("-anzahl: Anzahl der Zyklen oder 0, wenn die Anzahl nicht beschrÃ¤nkt ist");
+			debug.error("-spreizung: Zahl zwischen 0 und 100 als Anteil in Prozent der Zykluszeit, die zum Senden der DatensÃ¤tze benutzt wird");
 			if(dkd != null) {
 				debug.error("-zeit: " + dkd.getValidTimeOptions().getInfo());
 				debug.error("-rolle: " + dkd.getValidRoles().getInfo());
 			}
 			else {
-				debug.error("-zeit: <keine Information verfügbar>");
-				debug.error("-rolle: <keine Information verfügbar>");
+				debug.error("-zeit: <keine Information verfÃ¼gbar>");
+				debug.error("-rolle: <keine Information verfÃ¼gbar>");
 			}
 			debug.error("-objekte: Komma separierte Liste von Objekt-Ids oder PIDs mit optionalem durch Doppelpunkt getrenntem Mengennamen");
 			debug.error("-daten: Durch Doppelpunkt getrennt Attributgruppen-PID, Aspekt-PID und optional Simulationsvariante");
@@ -530,7 +536,7 @@ public class DataGenerator implements ClientSenderInterface {
 	}
 
 	/**
-	 * Registrierung durchführen
+	 * Registrierung durchfÃ¼hren
 	 *
 	 * @param subscriptionInfos {@link List} mit den Anmeldeinformationen
 	 *
@@ -577,7 +583,7 @@ public class DataGenerator implements ClientSenderInterface {
 			}
 			;
 			debug.config(
-					"Anmeldung als " + subscriptionInfo.getSenderRole() + " für " + attributeGroup.getNameOrPidOrId() + ":" + aspect.getNameOrPidOrId()
+					"Anmeldung als " + subscriptionInfo.getSenderRole() + " fÃ¼r " + attributeGroup.getNameOrPidOrId() + ":" + aspect.getNameOrPidOrId()
 			);
 			debug.config(simulationVariantText);
 			debug.config(" Objekte: " + objects);
@@ -585,9 +591,9 @@ public class DataGenerator implements ClientSenderInterface {
 			/*
 			 * XXX
 			 * Work around: Ist die Simulationsvariante -1 (also nicht explizit
-			 * über die Aufrufparameter gesetzt), so wird sie durch die
+			 * Ã¼ber die Aufrufparameter gesetzt), so wird sie durch die
 			 * DaV-Applikationsfunktionen automatisch auf 0 gesetzt. Dieses
-			 * Verhalten ist unerwünscht und wird hier bis auf weiteres
+			 * Verhalten ist unerwÃ¼nscht und wird hier bis auf weiteres
 			 * umgangen.
 			 */
 			short rescueSimulationVariant = dataDescription.getSimulationVariant();
@@ -625,8 +631,8 @@ public class DataGenerator implements ClientSenderInterface {
 		/**
 		 * Erzeugt einen Sender
 		 *
-		 * @param connection {@link ClientDavInterface}, welches die Verbindung zum DaV hält
-		 * @param pmc        {@link de.bsvrz.pat.onlprot.protocoller.protocolModuleConnector.ProtocolModuleConnector}, welcher die Verbindung zum Protokollierer hält
+		 * @param connection {@link ClientDavInterface}, welches die Verbindung zum DaV hÃ¤lt
+		 * @param pmc        {@link de.bsvrz.pat.onlprot.protocoller.protocolModuleConnector.ProtocolModuleConnector}, welcher die Verbindung zum Protokollierer hÃ¤lt
 		 */
 		Sender(ClientDavInterface connection, ProtocolModuleConnector pmc) {
 			_connection = connection;
@@ -664,16 +670,16 @@ public class DataGenerator implements ClientSenderInterface {
 		/** Die Anmeldeinformationen */
 		private SubscriptionInfo _info;
 
-		/** Typ eines Typ-Objekts (für die Kommunikation mit der Konfiguration) */
+		/** Typ eines Typ-Objekts (fÃ¼r die Kommunikation mit der Konfiguration) */
 		private SystemObjectType _typeType;
 
-		/** Liste aller Objekte eines bestimmten Typs (wird für die zufällige Erzeugung von Datem vom Typ "Referenz" benötigt) */
+		/** Liste aller Objekte eines bestimmten Typs (wird fÃ¼r die zufÃ¤llige Erzeugung von Datem vom Typ "Referenz" benÃ¶tigt) */
 		private final Map _objectsOfType = new TreeMap();
 
 		/**
 		 * Erzeugt ein Datenerzeugungs-Objekt
 		 *
-		 * @param connection {@link ClientDavInterface}, welches die Verbindung zum DaV hält
+		 * @param connection {@link ClientDavInterface}, welches die Verbindung zum DaV hÃ¤lt
 		 * @param info       {@link SubscriptionInfo} mit den Anmeldeinformationen der zu erzeugenden Objekte
 		 *
 		 * @throws Exception bei Problemen
@@ -688,9 +694,9 @@ public class DataGenerator implements ClientSenderInterface {
 		}
 
 		/**
-		 * Zufälligen Text (der hier aus den "Lottozahlen der nächsten Woche" besteht) erzeugen
+		 * ZufÃ¤lligen Text (der hier aus den "Lottozahlen der nÃ¤chsten Woche" besteht) erzeugen
 		 *
-		 * @return String mit zufällig erzeugtem Text
+		 * @return String mit zufÃ¤llig erzeugtem Text
 		 */
 		private String getRandomText() {
 			HashSet set = new HashSet(7);
@@ -701,16 +707,16 @@ public class DataGenerator implements ClientSenderInterface {
 
 			String setString = set.toString();
 			setString = setString.substring(1, setString.length() - 1);
-			return setString + " (Lottozahlen der nächsten Woche)";
+			return setString + " (Lottozahlen der nÃ¤chsten Woche)";
 		}
 
 
 		/**
-		 * Zufälliges System-Objekt vom gewünschten Typ erzeugen
+		 * ZufÃ¤lliges System-Objekt vom gewÃ¼nschten Typ erzeugen
 		 *
-		 * @param type Der gewünschte Typ
+		 * @param type Der gewÃ¼nschte Typ
 		 *
-		 * @return Zufällig erzeugtes System-Objekt
+		 * @return ZufÃ¤llig erzeugtes System-Objekt
 		 *
 		 * @throws Exception wenn Kommunikation mit der Konfiguration nicht klappt oder ein anderes Problem auftritt
 		 */
@@ -730,9 +736,9 @@ public class DataGenerator implements ClientSenderInterface {
 		}
 
 		/**
-		 * Zufälligen Integer-Wert erzeugen
+		 * ZufÃ¤lligen Integer-Wert erzeugen
 		 *
-		 * @param iType Spezifiziert den gewünschten Integer-Typ
+		 * @param iType Spezifiziert den gewÃ¼nschten Integer-Typ
 		 *
 		 * @return long mit erzeugtem Wert
 		 */
@@ -776,9 +782,9 @@ public class DataGenerator implements ClientSenderInterface {
 		}
 
 		/**
-		 * <code>Data</code>-Element mit zufällig erzeugten Daten belegen
+		 * <code>Data</code>-Element mit zufÃ¤llig erzeugten Daten belegen
 		 *
-		 * @param data Das zu füllende Datenfeld
+		 * @param data Das zu fÃ¼llende Datenfeld
 		 *
 		 * @throws Exception wenn beim Belegen des Datenfeldes ein Problem auftritt
 		 */
@@ -802,7 +808,7 @@ public class DataGenerator implements ClientSenderInterface {
 					String randomText = getRandomText();
 					StringAttributeType sat = (StringAttributeType)attributeType;
 
-					// Wenn der Text länger ist, als die maximal erlaubte Länge
+					// Wenn der Text lÃ¤nger ist, als die maximal erlaubte LÃ¤nge
 					// des Data-Objekts, wird abgeschnitten.
 					if(sat.isLengthLimited()) {
 						int lengthChecker = sat.getMaxLength();
@@ -813,7 +819,7 @@ public class DataGenerator implements ClientSenderInterface {
 					data.asTextValue().setText(randomText);
 				}
 				else {
-					debug.fine("AttributTyp " + attributeType + " wird nicht unterstützt");
+					debug.fine("AttributTyp " + attributeType + " wird nicht unterstÃ¼tzt");
 				}
 			}
 			else {
@@ -828,8 +834,8 @@ public class DataGenerator implements ClientSenderInterface {
 					Data.Array dataArray = data.asArray();
 
 					/*
-					 * Für Felder variabler Länge sollen bei keiner
-					 * Größenbeschränkung max. 10 Einträge erzeugt werden
+					 * FÃ¼r Felder variabler LÃ¤nge sollen bei keiner
+					 * GrÃ¶ÃŸenbeschrÃ¤nkung max. 10 EintrÃ¤ge erzeugt werden
 					 */
 					int length = 10;
 					if(dataArray.isCountLimited()) {
@@ -847,7 +853,7 @@ public class DataGenerator implements ClientSenderInterface {
 					}
 				}
 				else {
-					throw new IllegalStateException("Ungültige Datenstruktur im Datensatz");
+					throw new IllegalStateException("UngÃ¼ltige Datenstruktur im Datensatz");
 				}
 			}
 		}
@@ -855,7 +861,7 @@ public class DataGenerator implements ClientSenderInterface {
 		/**
 		 * Ergebnis erzeugen.
 		 *
-		 * @param object {@link SystemObject}, für welches ein Telegramm erzeugt wird
+		 * @param object {@link SystemObject}, fÃ¼r welches ein Telegramm erzeugt wird
 		 * @param data   Datensatz, der diesem Ergebnis zugeordnet werden soll.
 		 *
 		 * @return {@link ResultData} mit dem erzeugten Telegramm
@@ -891,9 +897,9 @@ public class DataGenerator implements ClientSenderInterface {
 		/**
 		 * Neue Daten generieren
 		 *
-		 * @param resultArray   Array mit Ergebnissen für alle Objekte.
-		 * @param dataArray     Array mit Datensätzen für alle Objekte.
-		 * @param objectIndex   Index des Objekts für das neue Daten generiert werden sollen.
+		 * @param resultArray   Array mit Ergebnissen fÃ¼r alle Objekte.
+		 * @param dataArray     Array mit DatensÃ¤tzen fÃ¼r alle Objekte.
+		 * @param objectIndex   Index des Objekts fÃ¼r das neue Daten generiert werden sollen.
 		 * @param intervalStart Der Zeitstempel des Telegramms
 		 *
 		 * @return Das modifizierte Ergebnis (resultArray[objectIndex]).
@@ -923,7 +929,7 @@ public class DataGenerator implements ClientSenderInterface {
 				long intervalStart;
 				long actualInterval = 0;
 
-				// Startzeit für das nächste Intervall ermitteln
+				// Startzeit fÃ¼r das nÃ¤chste Intervall ermitteln
 				if(_info.getIntervalLowerBound() == 0) {
 					intervalStart = System.currentTimeMillis();
 				}
@@ -946,15 +952,15 @@ public class DataGenerator implements ClientSenderInterface {
 				if(_info.getIntervalCount() == 0) {
 					forEver = true;
 				}
-				// Was muß erzeugt werden?
+				// Was muÃŸ erzeugt werden?
 				String[] dataSpecs = _info.getSplittedData(":", 3);
 				AttributeGroup atg = dataModel.getAttributeGroup(dataSpecs[0]);
 				int numberOfObjects = _info.getObjects().size();
-				// Datenfeld f. entsprechende Anz. Datensätze anlegen
+				// Datenfeld f. entsprechende Anz. DatensÃ¤tze anlegen
 				Data[] dataArray = new Data[numberOfObjects];
 				// Feld anlegen, das versendet wird
 				ResultData[] resultArray = new ResultData[numberOfObjects];
-				// Struktur der Datensätze generieren
+				// Struktur der DatensÃ¤tze generieren
 				for(int i = 0; i < numberOfObjects; ++i) {
 					dataArray[i] = _connection.createData(atg);
 				}
@@ -962,7 +968,7 @@ public class DataGenerator implements ClientSenderInterface {
 				Iterator objectsIterator = _info.getObjects().iterator();
 				while(objectsIterator.hasNext()) {
 					SystemObject object = (SystemObject)objectsIterator.next();
-					// Struktur für einen Datensatz erzeugen
+					// Struktur fÃ¼r einen Datensatz erzeugen
 					resultArray[objectIndex] = createResult(object, dataArray[objectIndex]);
 					++objectIndex;
 				}
@@ -978,14 +984,14 @@ public class DataGenerator implements ClientSenderInterface {
 					if(wait < -10000 && actualInterval > 0) {
 						long dropCount = -wait / actualInterval + 1;
 						intervalStart += dropCount * actualInterval;
-						debug.warning("Intervallzyklus um mehr als 10 Sekunden überschritten. Es werden " + dropCount + " Intervalle ausgelassen.");
+						debug.warning("Intervallzyklus um mehr als 10 Sekunden Ã¼berschritten. Es werden " + dropCount + " Intervalle ausgelassen.");
 					}
 					else {
 						if(firstInterval) {
 							firstInterval = false;
 							debug.fine("Zykluszeit " + actualInterval + " Millisekunden, Start des ersten Zyklus in ca. " + (wait / 1000) + " Sekunden");
 						}
-						// Auf Beginn des nächsten Intervalls warten
+						// Auf Beginn des nÃ¤chsten Intervalls warten
 						if(wait > 0) {
 							Thread.sleep(wait);
 						}
@@ -1023,7 +1029,7 @@ public class DataGenerator implements ClientSenderInterface {
 					}
 					debug.finer("intervalCount: " + _info.getIntervalCount());
 
-					// Intervallbeginn für die "nächste Runde" berechnen
+					// Intervallbeginn fÃ¼r die "nÃ¤chste Runde" berechnen
 					if(_info.getIntervalLowerBound() == 0) {
 						intervalStart = System.currentTimeMillis();
 					}

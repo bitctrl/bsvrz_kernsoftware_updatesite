@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.xmlFile.properties;
@@ -25,9 +31,9 @@ import java.util.*;
 /**
  * Diese Klasse beschreibt eine Ganzzahl nach der K2S.DTD.
  *
- * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * @author Kappich+Kni√ü Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 5091 $ / $Date: 2007-09-03 15:31:49 +0200 (Mon, 03 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigurationIntegerDef implements ConfigurationAttributeType {
 
@@ -66,22 +72,22 @@ public class ConfigurationIntegerDef implements ConfigurationAttributeType {
 	 *
 	 * @param bits s.o.
 	 *
-	 * @throws IllegalArgumentException Die Anzahl Bits ist kleiner gleich 0 oder grˆﬂer als 64
+	 * @throws IllegalArgumentException Die Anzahl Bits ist kleiner gleich 0 oder gr√∂√üer als 64
 	 */
 	public void setBits(int bits) throws IllegalArgumentException {
 		if(bits > 0 && bits <= 64) {
-			// Mehr als 0 und hˆchstens 64 Bits
+			// Mehr als 0 und h√∂chstens 64 Bits
 			_bits = bits;
 		}
 		else {
 			throw new IllegalArgumentException(
-					"F¸r eine Ganzzahl soll eine ung¸ltige Anzahl Bits benutzt werden (g¸ltige Werte sind grˆﬂer als 0 und kleiner gleich 64): " + bits
+					"F√ºr eine Ganzzahl soll eine ung√ºltige Anzahl Bits benutzt werden (g√ºltige Werte sind gr√∂√üer als 0 und kleiner gleich 64): " + bits
 			);
 		}
 	}
 
 	/**
-	 * Array, das Objekte enth‰lt, die vom Typ ConfigurationValueRange und vom Typ ConfigurationState sein kˆnnen.
+	 * Array, das Objekte enth√§lt, die vom Typ ConfigurationValueRange und vom Typ ConfigurationState sein k√∂nnen.
 	 *
 	 * @return Array mit Objekten (Typ siehe oben) oder ein leeres Array, falls keine Objekte vorhanden sind
 	 */
@@ -90,7 +96,7 @@ public class ConfigurationIntegerDef implements ConfigurationAttributeType {
 	}
 
 	/**
-	 * @param regionAndState Array, das Objekte enth‰lt, die vom Typ ConfigurationValueRange und vom Typ ConfigurationState sein kˆnnen. Sind keine Objekte
+	 * @param regionAndState Array, das Objekte enth√§lt, die vom Typ ConfigurationValueRange und vom Typ ConfigurationState sein k√∂nnen. Sind keine Objekte
 	 *                       vorhanden, so ist das Array leer.
 	 *
 	 * @throws IllegalArgumentException Bei Objekten vom Typ "ConfigurationState" muss jeder Wert und jeder Name eindeutig (nur einmal vergeben) sein. Wird diese
@@ -100,7 +106,7 @@ public class ConfigurationIntegerDef implements ConfigurationAttributeType {
 		if(regionAndState != null) {
 			_regionAndState = regionAndState;
 
-			// Bei den Zust‰nden darf jeder Wert und jeder Name nur einmal vorkommen.
+			// Bei den Zust√§nden darf jeder Wert und jeder Name nur einmal vorkommen.
 
 			final Set<String> stateNames = new HashSet<String>();
 			final Set<Long> stateValues = new HashSet<Long>();

@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.plugins.api.settings;
@@ -30,12 +36,12 @@ import java.util.*;
 
 /**
  * Diese Klasse dient dazu, die Einstellungen eines Dialogs zu speichern. Ein Dialog ist Bestandteil eines {@link de.bsvrz.pat.sysbed.plugins.api.ExternalModule Moduls}. Die zu jedem
- * Modul gehörende Datenidentifikation (Attributgruppe, Aspekt und Objekte), die Klasse des benutzten Moduls und der Name des Moduls werden in einem Objekt
- * dieser Klasse gespeichert. Zusätzlich können die Parameter eines Dialogs als {@link KeyValueObject Key/Value-Paare} übergeben werden. Der Einstellung kann
+ * Modul gehÃ¶rende Datenidentifikation (Attributgruppe, Aspekt und Objekte), die Klasse des benutzten Moduls und der Name des Moduls werden in einem Objekt
+ * dieser Klasse gespeichert. ZusÃ¤tzlich kÃ¶nnen die Parameter eines Dialogs als {@link KeyValueObject Key/Value-Paare} Ã¼bergeben werden. Der Einstellung kann
  * ein Name zugewiesen werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5052 $
+ * @version $Revision$
  */
 public class SettingsData {
 
@@ -66,10 +72,10 @@ public class SettingsData {
 	/** speichert die Key/Value-Objekte */
 	private List<KeyValueObject> _keyValueList = new LinkedList<KeyValueObject>();
 
-	/** speichert den Pfad im Baum, der zur Datenidentifikation gehört */
+	/** speichert den Pfad im Baum, der zur Datenidentifikation gehÃ¶rt */
 	private String _treePath = "";
 
-	/** speichert, ob es sich um eine gültige Einstellung handelt, oder nicht */
+	/** speichert, ob es sich um eine gÃ¼ltige Einstellung handelt, oder nicht */
 	private boolean _isValid = true;
 
 
@@ -78,7 +84,7 @@ public class SettingsData {
 	}
 
 	/**
-	 * Konstruktor. Ein Objekt wird angelegt, welches die übergebenen Daten speichert.
+	 * Konstruktor. Ein Objekt wird angelegt, welches die Ã¼bergebenen Daten speichert.
 	 *
 	 * @param objectTypes    die Objekt-Typen
 	 * @param attributeGroup die Attributgruppe
@@ -90,8 +96,8 @@ public class SettingsData {
 	}
 
 	/**
-	 * Konstruktor. Benötigt wird der Modulname, die Klasse des Moduls und die Datenidentifikation, bestehend aus einer Attributgruppe, einem Aspekt und beliebig
-	 * vielen Objekten. Ein Objekt wird angelegt, welches die übergebenen Daten speichert.
+	 * Konstruktor. BenÃ¶tigt wird der Modulname, die Klasse des Moduls und die Datenidentifikation, bestehend aus einer Attributgruppe, einem Aspekt und beliebig
+	 * vielen Objekten. Ein Objekt wird angelegt, welches die Ã¼bergebenen Daten speichert.
 	 *
 	 * @param moduleName     der Name des Moduls
 	 * @param moduleClass    die Klasse des Moduls
@@ -117,7 +123,7 @@ public class SettingsData {
 	}
 
 	/**
-	 * Fügt ein Key/Value-Paar den Einstellungen hinzu.
+	 * FÃ¼gt ein Key/Value-Paar den Einstellungen hinzu.
 	 *
 	 * @param keyValueObject ein Key/Value-Paar
 	 */
@@ -126,7 +132,7 @@ public class SettingsData {
 	}
 
 	/**
-	 * Gibt den Aspekt zurück.
+	 * Gibt den Aspekt zurÃ¼ck.
 	 *
 	 * @return der Aspekt der Datenidentifikation
 	 */
@@ -135,7 +141,7 @@ public class SettingsData {
 	}
 
 	/**
-	 * Gibt die Attributgruppe zurück.
+	 * Gibt die Attributgruppe zurÃ¼ck.
 	 *
 	 * @return die Attributgruppe der Datenidentifikation
 	 */
@@ -144,7 +150,7 @@ public class SettingsData {
 	}
 
 	/**
-	 * Gibt die Key/Value-Paare zurück.
+	 * Gibt die Key/Value-Paare zurÃ¼ck.
 	 *
 	 * @return die Key/Value-Paare
 	 */
@@ -153,7 +159,7 @@ public class SettingsData {
 	}
 
 	/**
-	 * Gibt die Klasse des Moduls zurück.
+	 * Gibt die Klasse des Moduls zurÃ¼ck.
 	 *
 	 * @return die Klasse des Moduls
 	 */
@@ -162,7 +168,7 @@ public class SettingsData {
 	}
 
 	/**
-	 * Gibt den Namen des Moduls zurück.
+	 * Gibt den Namen des Moduls zurÃ¼ck.
 	 *
 	 * @return Name des Moduls
 	 */
@@ -171,7 +177,7 @@ public class SettingsData {
 	}
 
 	/**
-	 * Gibt die Objekte zurück.
+	 * Gibt die Objekte zurÃ¼ck.
 	 *
 	 * @return die Objekte der Datenidentifikation
 	 */
@@ -180,7 +186,7 @@ public class SettingsData {
 	}
 
 	/**
-	 * Gibt die Objekttypen zurück.
+	 * Gibt die Objekttypen zurÃ¼ck.
 	 *
 	 * @return die Objekttypen
 	 */
@@ -189,7 +195,7 @@ public class SettingsData {
 	}
 
 	/**
-	 * Gibt die Simulationsvariante der Datenidentifikation zurück.
+	 * Gibt die Simulationsvariante der Datenidentifikation zurÃ¼ck.
 	 *
 	 * @return die Simulationvariante
 	 */
@@ -198,7 +204,7 @@ public class SettingsData {
 	}
 
 	/**
-	 * Gibt den Namen / Titel der Einstellung zurück.
+	 * Gibt den Namen / Titel der Einstellung zurÃ¼ck.
 	 *
 	 * @return Name der Einstellung
 	 */
@@ -207,7 +213,7 @@ public class SettingsData {
 	}
 
 	/**
-	 * Gibt den Pfad im Baum zurück, welcher angewählt war, als die Datenidentifikation ausgewählt worden ist.
+	 * Gibt den Pfad im Baum zurÃ¼ck, welcher angewÃ¤hlt war, als die Datenidentifikation ausgewÃ¤hlt worden ist.
 	 *
 	 * @return den Pfad im Baum
 	 */
@@ -216,9 +222,9 @@ public class SettingsData {
 	}
 
 	/**
-	 * Gibt zurück, ob es sich um eine gültige Einstellung handelt, oder nicht.
+	 * Gibt zurÃ¼ck, ob es sich um eine gÃ¼ltige Einstellung handelt, oder nicht.
 	 *
-	 * @return ob die Einstellung gültig ist
+	 * @return ob die Einstellung gÃ¼ltig ist
 	 */
 	public boolean isValid() {
 		return _isValid;
@@ -306,7 +312,7 @@ public class SettingsData {
 	}
 
 	/**
-	 * Übergibt den Pfad im Baum, welcher angewählt war, als die Datenidentifikation ausgewählt wurde.
+	 * Ãœbergibt den Pfad im Baum, welcher angewÃ¤hlt war, als die Datenidentifikation ausgewÃ¤hlt wurde.
 	 *
 	 * @param treePath der Pfad im Baum
 	 */
@@ -315,18 +321,18 @@ public class SettingsData {
 	}
 
 	/**
-	 * Setzt die Gültigkeit der Einstellung. Ist die Einstellung ungültig, dann kann sie auch nicht gestartet werden.
+	 * Setzt die GÃ¼ltigkeit der Einstellung. Ist die Einstellung ungÃ¼ltig, dann kann sie auch nicht gestartet werden.
 	 *
-	 * @param valid ob die Einstellung gültig ist
+	 * @param valid ob die Einstellung gÃ¼ltig ist
 	 */
 	public void setValid(boolean valid) {
 		_isValid = valid;
 	}
 
 	/**
-	 * Gibt eine String-Repräsentation dieses Objekts zurück.
+	 * Gibt eine String-ReprÃ¤sentation dieses Objekts zurÃ¼ck.
 	 *
-	 * @return String-Repräsentation dieses Objekts
+	 * @return String-ReprÃ¤sentation dieses Objekts
 	 */
 	public String toString() {
 		return "SettingsData{" + "_title='" + _title + "'" + ", _moduleName='" + _moduleName + "'" + ", _moduleClass=" + _moduleClass + ", _attributeGroup="

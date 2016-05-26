@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.plugins.onlprot;
@@ -43,11 +49,11 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Implementiert das Modul für den Online-Protokollierer. Ein Dialog wird zur Verfügung gestellt, damit die benötigten Parameter für den Online-Protokollierer
- * eingestellt werden können. Die anzuzeigenden Daten werden in einer Konsole angezeigt.
+ * Implementiert das Modul fÃ¼r den Online-Protokollierer. Ein Dialog wird zur VerfÃ¼gung gestellt, damit die benÃ¶tigten Parameter fÃ¼r den Online-Protokollierer
+ * eingestellt werden kÃ¶nnen. Die anzuzeigenden Daten werden in einer Konsole angezeigt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5053 $
+ * @version $Revision$
  * @see de.bsvrz.pat.onlprot.protocoller.main.Receiver
  */
 public class OnlineProtocolModule extends ExternalModuleAdapter {
@@ -61,7 +67,7 @@ public class OnlineProtocolModule extends ExternalModuleAdapter {
 
 	/* ############## Methoden ############# */
 	/**
-	 * Gibt den Namen des Moduls zurück.
+	 * Gibt den Namen des Moduls zurÃ¼ck.
 	 *
 	 * @return der Name des Moduls
 	 */
@@ -70,7 +76,7 @@ public class OnlineProtocolModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Gibt den Text des Buttons zurück.
+	 * Gibt den Text des Buttons zurÃ¼ck.
 	 *
 	 * @return Text des Buttons
 	 */
@@ -79,7 +85,7 @@ public class OnlineProtocolModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Gibt den Text des Tooltips zurück.
+	 * Gibt den Text des Tooltips zurÃ¼ck.
 	 *
 	 * @return Text des Tooltips
 	 */
@@ -88,10 +94,10 @@ public class OnlineProtocolModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Diese Methode erhält die ausgewählte Datenidentifikation und startet den {@link OnlineProtocolDialog Dialog} zur Auswahl der Einstellungen des
+	 * Diese Methode erhÃ¤lt die ausgewÃ¤hlte Datenidentifikation und startet den {@link OnlineProtocolDialog Dialog} zur Auswahl der Einstellungen des
 	 * Online-Protokollierers.
 	 *
-	 * @param settingsData enthält die ausgewählte Datenidentifikation
+	 * @param settingsData enthÃ¤lt die ausgewÃ¤hlte Datenidentifikation
 	 */
 	public void startModule(final SettingsData settingsData) {
 		_dialog = new OnlineProtocolDialog();
@@ -99,9 +105,9 @@ public class OnlineProtocolModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Diese Methode erhält alle Einstellungen für den Online-Protokollierer und startet diesen ohne den Dialog anzuzeigen.
+	 * Diese Methode erhÃ¤lt alle Einstellungen fÃ¼r den Online-Protokollierer und startet diesen ohne den Dialog anzuzeigen.
 	 *
-	 * @param settingsData die Einstellungen für den Online-Protokollierer
+	 * @param settingsData die Einstellungen fÃ¼r den Online-Protokollierer
 	 */
 	public void startSettings(final SettingsData settingsData) {
 		_dialog = new OnlineProtocolDialog();
@@ -109,7 +115,7 @@ public class OnlineProtocolModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Diese Methode erhält alle Einstellungen für den Online-Protokollierer und startet den {@link OnlineProtocolDialog Dialog} und füllt ihn entsprechend der
+	 * Diese Methode erhÃ¤lt alle Einstellungen fÃ¼r den Online-Protokollierer und startet den {@link OnlineProtocolDialog Dialog} und fÃ¼llt ihn entsprechend der
 	 * Einstellungen.
 	 *
 	 * @param settingsData die Einstellungsdaten
@@ -120,33 +126,33 @@ public class OnlineProtocolModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Überprüft, ob die ausgewählte Datenidentifikation für dieses Modul zutrifft oder nicht.
+	 * ÃœberprÃ¼ft, ob die ausgewÃ¤hlte Datenidentifikation fÃ¼r dieses Modul zutrifft oder nicht.
 	 *
-	 * @param settingsData enthält die ausgewählte Datenidentifikation
+	 * @param settingsData enthÃ¤lt die ausgewÃ¤hlte Datenidentifikation
 	 *
-	 * @return gibt an, ob die ausgewählte Datenidentifikation für dieses Modul zutrifft
+	 * @return gibt an, ob die ausgewÃ¤hlte Datenidentifikation fÃ¼r dieses Modul zutrifft
 	 */
 	public boolean isPreselectionValid(final SettingsData settingsData) {
 		if(!super.isPreselectionValid(settingsData)) {
-			_tooltipText = "Genau eine Attributgruppe, ein Aspekt und mindestens ein Objekt müssen ausgewählt sein.";
+			_tooltipText = "Genau eine Attributgruppe, ein Aspekt und mindestens ein Objekt mÃ¼ssen ausgewÃ¤hlt sein.";
 			return false;
 		}
 
-		// ATGV prüfen
+		// ATGV prÃ¼fen
 		final AttributeGroupUsage atgUsage = settingsData.getAttributeGroup().getAttributeGroupUsage(settingsData.getAspect());
 		if(atgUsage == null || atgUsage.isConfigurating()) {
-			_tooltipText = "Es muss eine Online-Attributgruppenverwendung ausgewählt werden.";
+			_tooltipText = "Es muss eine Online-Attributgruppenverwendung ausgewÃ¤hlt werden.";
 			return false;
 		}
-		_tooltipText = "Auswahl übernehmen";
+		_tooltipText = "Auswahl Ã¼bernehmen";
 		return true;
 	}
 
 
 	/* ################ Klasse OnlineProtocolDialog ############ */
 	/**
-	 * Stellt einen Dialog dar, womit Parameter für den Online-Protokollierer eingestellt werden können. Diese Parameter können gespeichert werden. Durch betätigen
-	 * des "OK"-Buttons werden die Einstellungen übernommen, der Online-Protokollierer gestartet und der Dialog geschlossen.
+	 * Stellt einen Dialog dar, womit Parameter fÃ¼r den Online-Protokollierer eingestellt werden kÃ¶nnen. Diese Parameter kÃ¶nnen gespeichert werden. Durch betÃ¤tigen
+	 * des "OK"-Buttons werden die Einstellungen Ã¼bernommen, der Online-Protokollierer gestartet und der Dialog geschlossen.
 	 */
 	private class OnlineProtocolDialog implements DialogInterface {
 
@@ -156,16 +162,16 @@ public class OnlineProtocolModule extends ExternalModuleAdapter {
 		/** speichert die Datenidentifikationsauswahl */
 		private DataIdentificationChoice _dataIdentificationChoice;
 
-		/** gibt an, welche Rollen zur Verfügung stehen */
-		private final String[] _roleUnit = {"Empfänger", "Senke"};
+		/** gibt an, welche Rollen zur VerfÃ¼gung stehen */
+		private final String[] _roleUnit = {"EmpfÃ¤nger", "Senke"};
 
-		/** gibt an, welche Anmeldearten zur Verfügung stehen */
-		private final String[] _applyModeEntries = {"Online", "Nur geänderte Datensätze", "Auch nachgelieferte Datensätze"};
+		/** gibt an, welche Anmeldearten zur VerfÃ¼gung stehen */
+		private final String[] _applyModeEntries = {"Online", "Nur geÃ¤nderte DatensÃ¤tze", "Auch nachgelieferte DatensÃ¤tze"};
 
-		/** hiermit kann die Rolle ausgewählt werden */
+		/** hiermit kann die Rolle ausgewÃ¤hlt werden */
 		private JComboBox _roleComboBox;
 
-		/** hiermit kann die Anmeldeart ausgewählt werden */
+		/** hiermit kann die Anmeldeart ausgewÃ¤hlt werden */
 		private JComboBox _applyModeCombo;
 
 		/** speichert ein Objekt der Ausgabeoptionen */
@@ -178,9 +184,9 @@ public class OnlineProtocolModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Mit dieser Methode können die Datenidentifikationsdaten übergeben werden. Der Dialog wird mit Default-Werten dargestellt.
+		 * Mit dieser Methode kÃ¶nnen die Datenidentifikationsdaten Ã¼bergeben werden. Der Dialog wird mit Default-Werten dargestellt.
 		 *
-		 * @param data enthält die ausgewählte Datenidentifikation
+		 * @param data enthÃ¤lt die ausgewÃ¤hlte Datenidentifikation
 		 */
 		public void setDataIdentification(final SettingsData data) {
 			if(_dialog == null) {
@@ -194,7 +200,7 @@ public class OnlineProtocolModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Diese Methode zeigt den Dialog an und trägt die Einstellungsdaten in die entsprechenden Felder ein.
+		 * Diese Methode zeigt den Dialog an und trÃ¤gt die Einstellungsdaten in die entsprechenden Felder ein.
 		 *
 		 * @param data Einstellungsdaten
 		 */
@@ -299,7 +305,7 @@ public class OnlineProtocolModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Gibt die ausgewählte Rolle für den Datengenerator zurück.
+		 * Gibt die ausgewÃ¤hlte Rolle fÃ¼r den Datengenerator zurÃ¼ck.
 		 *
 		 * @return die Rolle
 		 */
@@ -314,7 +320,7 @@ public class OnlineProtocolModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Setzt die Rolle für den Online-Protokollierer.
+		 * Setzt die Rolle fÃ¼r den Online-Protokollierer.
 		 *
 		 * @param role die Rolle des Online-Protokollierers
 		 */
@@ -330,7 +336,7 @@ public class OnlineProtocolModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Gibt die Anmeldeart zurück.
+		 * Gibt die Anmeldeart zurÃ¼ck.
 		 *
 		 * @return die Anmeldeart
 		 */
@@ -371,7 +377,7 @@ public class OnlineProtocolModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Gibt zurück, wie detailliert die Daten ausgegeben werden sollen.
+		 * Gibt zurÃ¼ck, wie detailliert die Daten ausgegeben werden sollen.
 		 *
 		 * @return Detaillierungsgrad
 		 */
@@ -389,18 +395,18 @@ public class OnlineProtocolModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Gibt den vollständigen Pfad (incl. Dateinamen) zurück, welcher für die Ausgabe vorgesehen ist.
+		 * Gibt den vollstÃ¤ndigen Pfad (incl. Dateinamen) zurÃ¼ck, welcher fÃ¼r die Ausgabe vorgesehen ist.
 		 *
-		 * @return Pfad incl. Dateiname für die Ausgabe
+		 * @return Pfad incl. Dateiname fÃ¼r die Ausgabe
 		 */
 		private String getFileName() {
 			return _outputOptions.getFileName();
 		}
 
 		/**
-		 * Übergibt den Dateinamen an die {@link de.bsvrz.pat.sysbed.plugins.api.OutputOptionsPanel Ausgabeoptionen}.
+		 * Ãœbergibt den Dateinamen an die {@link de.bsvrz.pat.sysbed.plugins.api.OutputOptionsPanel Ausgabeoptionen}.
 		 *
-		 * @param fileName Pfad incl. Dateiname für die Ausgabe
+		 * @param fileName Pfad incl. Dateiname fÃ¼r die Ausgabe
 		 */
 		private void setFileName(final String fileName) {
 			_outputOptions.setFileName(fileName);
@@ -455,11 +461,11 @@ public class OnlineProtocolModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Sammelt alle Einstellungen in einer Liste und gibt sie zurück. Die Liste enthält die Parameter für den Online-Protokollierer.
+		 * Sammelt alle Einstellungen in einer Liste und gibt sie zurÃ¼ck. Die Liste enthÃ¤lt die Parameter fÃ¼r den Online-Protokollierer.
 		 *
 		 * @param settingsData die Einstellungsdaten des Dialogs
 		 *
-		 * @return Liste aller Einstellungen für die Konsole
+		 * @return Liste aller Einstellungen fÃ¼r die Konsole
 		 */
 		private List<String> getParameterList(final SettingsData settingsData) {
 			List<String> parameterList = new LinkedList<String>();
@@ -491,7 +497,7 @@ public class OnlineProtocolModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Durch betätigen des "OK"-Buttons wird der Onlineprotokollierer mit den eingestellten Parametern in einem neuen Fenster gestartet und dieser Dialog wird
+		 * Durch betÃ¤tigen des "OK"-Buttons wird der Onlineprotokollierer mit den eingestellten Parametern in einem neuen Fenster gestartet und dieser Dialog wird
 		 * geschlossen.
 		 */
 		public void doOK() {
@@ -501,14 +507,14 @@ public class OnlineProtocolModule extends ExternalModuleAdapter {
 			saveSettings(settingsData);
 		}
 
-		/** Durch betätigen des "Abbrechen"-Buttons wird der Dialog geschlossen. */
+		/** Durch betÃ¤tigen des "Abbrechen"-Buttons wird der Dialog geschlossen. */
 		public void doCancel() {
 			_dialog.setVisible(false);
 			_dialog.dispose();
 		}
 
 		/**
-		 * Durch betätigen des "Speichern unter ..."-Buttons werden die Einstellungen gespeichert.
+		 * Durch betÃ¤tigen des "Speichern unter ..."-Buttons werden die Einstellungen gespeichert.
 		 *
 		 * @param title Titel der Einstellungen
 		 */

@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,48 +14,56 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.subscription;
 
+import de.bsvrz.dav.daf.communication.dataRepresentation.data.byteArray.ByteArrayData;
 import de.bsvrz.dav.daf.main.ClientReceiverInterface;
+import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.ResultData;
 
 import java.util.*;
 
 /**
- * Speichert vom Datenverteiler empfangene Datens‰tze zur sp‰teren Auslieferung an einen Receiver der Applikation.
+ * Speichert vom Datenverteiler empfangene Datens√§tze zur sp√§teren Auslieferung an einen Receiver der Applikation.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 10127 $
+ * @version $Revision$
  */
 public class CollectingReceiver {
 
-	/** Liste mit den auszuliefernden Datens‰tzen */
+	/** Liste mit den auszuliefernden Datens√§tzen */
 	private final ArrayList<ResultData> _results = new ArrayList<ResultData>();
 
-	/** Receiver der Applikation, an den die gespeicherten Datens‰tze ausgeliefert werden sollen. */
+	/** Receiver der Applikation, an den die gespeicherten Datens√§tze ausgeliefert werden sollen. */
 	private final ClientReceiverInterface _receiver;
 
-	/** Gesamtgrˆﬂe der auszuliefernden Datens‰tze. */
+	/** Gesamtgr√∂√üe der auszuliefernden Datens√§tze. */
 	private int _collectedSize = 0;
 
 	private int _referenceCount = 0;
 
 
-	/** Erzeugt ein neues Objekt f¸r den angegebenen Receiver */
+	/** Erzeugt ein neues Objekt f√ºr den angegebenen Receiver */
 	public CollectingReceiver(final ClientReceiverInterface receiver) {
 		_receiver = receiver;
 	}
 
 
 	/**
-	 * Speichert einen Datensatz zur sp‰teren Auslieferung an den zugeordneten Receiver der Applikation.
+	 * Speichert einen Datensatz zur sp√§teren Auslieferung an den zugeordneten Receiver der Applikation.
 	 *
 	 * @param result Zu speichernder Datensatz.
-	 * @param size   Grˆﬂe des zu speichernden Datensatzes.
+	 * @param size   Gr√∂√üe des zu speichernden Datensatzes.
 	 *
 	 * @return <code>true</code>, wenn kein noch nicht ausgelieferter Datensatz gespeichert war; <code>false</code> sonst.
 	 */
@@ -69,9 +77,9 @@ public class CollectingReceiver {
 	}
 
 	/**
-	 * Liefert die gespeicherten Datens‰tze an den Receiver der Applikation aus.
+	 * Liefert die gespeicherten Datens√§tze an den Receiver der Applikation aus.
 	 *
-	 * @return Gesamtgrˆﬂe der ausgelieferten Datens‰tze.
+	 * @return Gesamtgr√∂√üe der ausgelieferten Datens√§tze.
 	 */
 	public int deliver() {
 		final int deliveredSize;
@@ -87,23 +95,32 @@ public class CollectingReceiver {
 			}
 			_collectedSize = 0;
 		}
-		if(results.length != 0) _receiver.update(results);
+		if(results.length != 0) {
+			for(ResultData result : results) {
+				Data data = result.getData();
+				if(data instanceof ByteArrayData) {
+					ByteArrayData byteArrayData = (ByteArrayData) data;
+					byteArrayData.resolveReferences();
+				}
+			}
+			_receiver.update(results);
+		}
 		return (deliveredSize);
 	}
 
-	/** Erhˆht den Referenzz‰hler um eins. */
+	/** Erh√∂ht den Referenzz√§hler um eins. */
 	public void incrementReferenceCount() {
 		++_referenceCount;
 	}
 
 	/**
-	 * Verringert den Referenzz‰hler um eins.
+	 * Verringert den Referenzz√§hler um eins.
 	 *
-	 * @return <code>true</code>, wenn der Referenzz‰hler den Wert 0 erreicht hat.
+	 * @return <code>true</code>, wenn der Referenzz√§hler den Wert 0 erreicht hat.
 	 */
 	public boolean decrementReferenceCount() {
 		if(--_referenceCount == 0) return true;
 		if(_referenceCount > 0) return false;
-		throw new IllegalStateException("Referenzz‰hler wurde decrementiert, obwohl er nicht mehr positiv war");
+		throw new IllegalStateException("Referenzz√§hler wurde decrementiert, obwohl er nicht mehr positiv war");
 	}
 }

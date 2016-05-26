@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main;
@@ -30,10 +36,10 @@ import de.bsvrz.sys.funclib.application.StandardApplicationRunner;
 import de.bsvrz.sys.funclib.commandLineArgs.ArgumentList;
 
 /**
- * Kommandozeilenprogramm zum Durchführen von Backups der Konfigurationsdateien. Das Programm ist mit den üblichen -benutzer= und -authentifizierung=-Parametern
- * zu starten, zusätzlich kann mit -dir= ein Zielverzeichnis angegeben werden, in das die Dateien gesichert werden sollen
+ * Kommandozeilenprogramm zum DurchfÃ¼hren von Backups der Konfigurationsdateien. Das Programm ist mit den Ã¼blichen -benutzer= und -authentifizierung=-Parametern
+ * zu starten, zusÃ¤tzlich kann mit -dir= ein Zielverzeichnis angegeben werden, in das die Dateien gesichert werden sollen
  * und mit -kv ein Konfigurationsverantwortlicher angegeben werden, dessen Konfigurationsbereiche gesichert werden sollen (sonst wird alles gesichert). Das Zielverzeichnis sollte relativ
- * angegeben werden und muss sich in dem Verzeichnis befinden, dass von der Konfiguration für Sicherungen festgelegt wurde, bzw. das man beim Starten der
+ * angegeben werden und muss sich in dem Verzeichnis befinden, dass von der Konfiguration fÃ¼r Sicherungen festgelegt wurde, bzw. das man beim Starten der
  * Konfiguration mit dem Parameter -sicherungsVerzeichnis angeben kann. Wenn kein Zielverzeichnis angegeben wird, wird anhand der aktuellen Zeit ein neues
  * Verzeichnis angelegt.
  *
@@ -56,14 +62,14 @@ public class ConfigDataBackup implements StandardApplication {
 
 	private void usage() {
 		System.err.println();   // Leerzeile
-		System.err.println("Folgende Parameter werden unterstützt:");
+		System.err.println("Folgende Parameter werden unterstÃ¼tzt:");
 		System.err.println("\t-benutzer=                Benutzer zur Authentifizierung");
 		System.err.println("\t-authentifizierung=       Authentifizierungsdatei");
 		System.err.println("\t-dir=                     (optional) Zielverzeichnis, in das die Dateien gesichert werden sollen");
 		System.err.println("\t-kv=                      (optional) Konfigurationsverantwortlicher, dessen Konfigurationsdateien gesichert werden sollen");
 		System.err.println();   // Leerzeile
 		System.err.println("Das Zielverzeichnis sollte relativ"
-		                   + " angegeben werden und muss sich in dem Verzeichnis befinden, dass von der Konfiguration für Sicherungen festgelegt wurde, bzw. das man beim Starten der"
+		                   + " angegeben werden und muss sich in dem Verzeichnis befinden, dass von der Konfiguration fÃ¼r Sicherungen festgelegt wurde, bzw. das man beim Starten der"
 		                   + " Konfiguration mit dem Parameter -sicherungsVerzeichnis angeben kann. Wenn kein Zielverzeichnis angegeben wird, wird anhand der aktuellen Zeit ein neues"
 		                   + " Verzeichnis angelegt.");
 	}
@@ -112,7 +118,7 @@ public class ConfigDataBackup implements StandardApplication {
 
 	public static void main(String[] args) {
 		System.out.println();
-		System.out.println("Kommandozeilenprogramm zum Durchführen von Backups der Konfigurationsdateien");
+		System.out.println("Kommandozeilenprogramm zum DurchfÃ¼hren von Backups der Konfigurationsdateien");
 		System.out.print("Verwendung: ");
 		System.out.println("java " + ConfigDataBackup.class.getName() + " -benutzer=<benutzer> -authentifizierung=<datei> [-dir=<Zielverzeichnis>] [-kv=<Konfigurationsverantwortlicher>]");
 		StandardApplicationRunner.run(new ConfigDataBackup(), args);

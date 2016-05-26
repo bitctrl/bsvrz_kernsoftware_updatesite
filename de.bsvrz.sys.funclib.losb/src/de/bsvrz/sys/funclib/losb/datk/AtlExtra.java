@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.sys.funclib.losb.
  * 
- * de.bsvrz.sys.funclib.losb is free software; you can redistribute it and/or modify
+ * de.bsvrz.sys.funclib.losb is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.losb is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.sys.funclib.losb; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.losb.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.losb.datk;
@@ -32,7 +38,7 @@ import java.io.Serializable;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 8433 $ / $Date: 2010-12-13 11:40:26 +0100 (Mon, 13 Dec 2010) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class AtlExtra implements Serializable {
 
@@ -52,13 +58,13 @@ public class AtlExtra implements Serializable {
 	private final AtlDefaults _atlDefaults;
 
 	/**
-	 * Erzeugt ein Stellvertreter Objekt für die Attributliste
+	 * Erzeugt ein Stellvertreter Objekt fÃ¼r die Attributliste
 	 *
 	 * @param sender      Absender
 	 * @param requestId   Auftragskennung
 	 * @param opCode      Operationscode
 	 * @param source      Quellcode des Skripts
-	 * @param atlDefaults Standardwerte des Skripts (Es bringt nichts, diesen Parameter beim Erzeugen eines Skripts zu füllen, dieser Konstruktor sollte
+	 * @param atlDefaults Standardwerte des Skripts (Es bringt nichts, diesen Parameter beim Erzeugen eines Skripts zu fÃ¼llen, dieser Konstruktor sollte
 	 *                    sinnvollerweise von PuA benutzt werden, um dem Client die Standardwerte eines Skriptes zu liefern)
 	 */
 	public AtlExtra(SystemObject sender, long requestId, int opCode, String source, final AtlDefaults atlDefaults) {
@@ -70,7 +76,7 @@ public class AtlExtra implements Serializable {
 	}
 
 	/**
-	 * Erzeugt ein Stellvertreter Objekt für die Attributliste
+	 * Erzeugt ein Stellvertreter Objekt fÃ¼r die Attributliste
 	 *
 	 * @param sender    Absender
 	 * @param requestId Auftragskennung
@@ -86,7 +92,7 @@ public class AtlExtra implements Serializable {
 	}
 
 	/**
-	 * Trägt die Werte dieses Objekts in das Daten-Objekt ein.
+	 * TrÃ¤gt die Werte dieses Objekts in das Daten-Objekt ein.
 	 *
 	 * @param data Ziel der Eintragung.
 	 */
@@ -103,7 +109,7 @@ public class AtlExtra implements Serializable {
 	}
 
 	/**
-	 * Erzeugt ein Java-Objekt aus den übergebenen Daten.
+	 * Erzeugt ein Java-Objekt aus den Ã¼bergebenen Daten.
 	 *
 	 * @param data Daten.
 	 *
@@ -130,7 +136,7 @@ public class AtlExtra implements Serializable {
 	}
 
 	/**
-	 * Gibt, falls vorhanden, die Standardwerte des Skripts in diesem Datensatz zurück.
+	 * Gibt, falls vorhanden, die Standardwerte des Skripts in diesem Datensatz zurÃ¼ck.
 	 * @return Die Standardwerte des Skripts oder null.
 	 */
 	public AtlDefaults getDefaults() {

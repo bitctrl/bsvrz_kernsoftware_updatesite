@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.sys.funclib.asyncReceiver.
  * 
  * de.bsvrz.sys.funclib.asyncReceiver is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.asyncReceiver is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.asyncReceiver; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.asyncReceiver; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.asyncReceiver;
@@ -28,9 +34,9 @@ import de.bsvrz.sys.funclib.debug.Debug;
 import de.bsvrz.sys.funclib.concurrent.UnboundedQueue;
 
 /**
- * Klasse, die beim Empfang von Datens‰tzen zur Entkopplung von Datenverteiler-Applikationsfunktionen und
- * Verarbeitungsfunktionen eingesetzt werden kann. Empfangene Datens‰tze werden in eine Queue eingetragen und asynchron
- * von einem eigenen Thread an die eigentlichen Empf‰nger weitergeleitet. <br/> Wenn zum Beispiel statt
+ * Klasse, die beim Empfang von Datens√§tzen zur Entkopplung von Datenverteiler-Applikationsfunktionen und
+ * Verarbeitungsfunktionen eingesetzt werden kann. Empfangene Datens√§tze werden in eine Queue eingetragen und asynchron
+ * von einem eigenen Thread an die eigentlichen Empf√§nger weitergeleitet. <br/> Wenn zum Beispiel statt
  * <pre>
  *    ClientReceiverInterface receiver= new ....;
  *    connection.subscribeReceiver(receiver, ... );
@@ -42,12 +48,12 @@ import de.bsvrz.sys.funclib.concurrent.UnboundedQueue;
  *    connection.subscribeReceiver(asyncReceiver, ... );
  * </pre>
  * dann wird jeder empfangene Datensatz im Hintergrund verarbeitet. <br/> Es ist zu beachten, dass die Klasse ein
- * einzigen Thread verwendet, der asynchron zu den anderen Aktivit‰ten der Applikation und insbesondere asynchron zum
- * update-Thread der Datenverteiler-Applikationsfunktionen arbeitet. Die in einer Queue zwischengespeicherten Datens‰tze
- * werden sequentiell an die update-Methode des eigentlichen Empf‰ngers weiterleitet.
+ * einzigen Thread verwendet, der asynchron zu den anderen Aktivit√§ten der Applikation und insbesondere asynchron zum
+ * update-Thread der Datenverteiler-Applikationsfunktionen arbeitet. Die in einer Queue zwischengespeicherten Datens√§tze
+ * werden sequentiell an die update-Methode des eigentlichen Empf√§ngers weiterleitet.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5058 $
+ * @version $Revision$
  */
 public class AsyncReceiver implements ClientReceiverInterface {
 	private static final Debug _debug = Debug.getLogger();
@@ -107,10 +113,10 @@ public class AsyncReceiver implements ClientReceiverInterface {
 	private final ClientReceiverInterface _syncReceiver;
 
 	/**
-	 * Erzeugt ein neues Empf‰ngerobjekt mit asynchroner Weiterleitung empfangener Daten an das ¸bergebene
-	 * Empf‰ngerobjekt.
+	 * Erzeugt ein neues Empf√§ngerobjekt mit asynchroner Weiterleitung empfangener Daten an das √ºbergebene
+	 * Empf√§ngerobjekt.
 	 *
-	 * @param syncReceiver Empf‰ngerobjekt, an das empfangene Daten asynchron zur Verarbeitung weitergeleitet werden
+	 * @param syncReceiver Empf√§ngerobjekt, an das empfangene Daten asynchron zur Verarbeitung weitergeleitet werden
 	 *                     sollen.
 	 */
 
@@ -121,11 +127,11 @@ public class AsyncReceiver implements ClientReceiverInterface {
 	/**
 	 * Aktualisierungsmethode, die nach Empfang eines angemeldeten Datensatzes von den
 	 * Datenverteiler-Applikationsfunktionen aufgerufen wird.
-	 * <p/>
-	 * Empfangene Datens‰tze werden in eine Queue eingetragen und asynchron an das eigentliche Empf‰ngerobjekt zur
+	 * <p>
+	 * Empfangene Datens√§tze werden in eine Queue eingetragen und asynchron an das eigentliche Empf√§ngerobjekt zur
 	 * Verarbeitung weitergeleitet.
 	 *
-	 * @param results Feld mit den empfangenen Ergebnisdatens‰tzen.
+	 * @param results Feld mit den empfangenen Ergebnisdatens√§tzen.
 	 */
 	public void update(ResultData results[]) {
 		_queueSingleton.put(new QueueEntry(_syncReceiver, results));

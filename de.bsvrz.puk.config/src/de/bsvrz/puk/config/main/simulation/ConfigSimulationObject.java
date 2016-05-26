@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main.simulation;
@@ -32,8 +38,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Dieses Objekt stellt eine Simulation aus Sicht der Konfiguration dar. Das Objekt meldet sich auf alle nötigen Attributgruppen an und verschickt die
- * benötigten Datensätze.
+ * Dieses Objekt stellt eine Simulation aus Sicht der Konfiguration dar. Das Objekt meldet sich auf alle nÃ¶tigen Attributgruppen an und verschickt die
+ * benÃ¶tigten DatensÃ¤tze.
  *
  * @author Achim Wullenkord (AW), Kappich Systemberatung
  * @version $Revision:5077 $ / $Date:2007-09-02 14:48:31 +0200 (So, 02 Sep 2007) $ / ($Author:rs $)
@@ -46,7 +52,7 @@ public class ConfigSimulationObject {
 
 	private SimulationStates _simulationState;
 
-	/** Datenidentifikation für Statusänderungen */
+	/** Datenidentifikation fÃ¼r StatusÃ¤nderungen */
 	private final DataDescription _stateDataDescription;
 
 	private final StateChangeReceiver _stateChangeReceiver;
@@ -60,8 +66,8 @@ public class ConfigSimulationObject {
 	private final SimulationStates _deleted;
 
 	/**
-	 * true = Es handlet sich um eine Offline-Simulation. Es stehen Zeitstempel zur Verfügung. false = Es handelt sich um eine Online-Simulation, es stehen keine
-	 * Zeitstempel zur Verfügung.
+	 * true = Es handlet sich um eine Offline-Simulation. Es stehen Zeitstempel zur VerfÃ¼gung. false = Es handelt sich um eine Online-Simulation, es stehen keine
+	 * Zeitstempel zur VerfÃ¼gung.
 	 */
 	private final boolean _offlineSimulation;
 
@@ -76,26 +82,26 @@ public class ConfigSimulationObject {
 
 	/**
 	 * Auf dieses Objekt wird synchronisiert, sobald mit der Variablen <code>_simulationState</code> gearbeitet wird. Es kann nicht auf die Variable selbst gelockt
-	 * werden, da sich diese mit jeder Zustandänderung ändert.
+	 * werden, da sich diese mit jeder ZustandÃ¤nderung Ã¤ndert.
 	 */
 	private final Object _stateLock = new Object();
 
 	/**
-	 * Speichert alle Mengentypen, die bei Simulationen speziell behandelt werden müssen.
-	 * <p/>
-	 * Bei speziellen Mengentypen muss beim hinzufügen von Elementen zu dieser Art von Mengen das Element in der Simulationsvariante der Simulation gespeichert
+	 * Speichert alle Mengentypen, die bei Simulationen speziell behandelt werden mÃ¼ssen.
+	 * <p>
+	 * Bei speziellen Mengentypen muss beim hinzufÃ¼gen von Elementen zu dieser Art von Mengen das Element in der Simulationsvariante der Simulation gespeichert
 	 * werden.
-	 * <p/>
+	 * <p>
 	 * Beim lesenden Zugriff werden nur Elemente der Simulationsvariante angefordert.
-	 * <p/>
-	 * Alle Mengen, zu denen Elemente hinzugefügt wurden, werden um diese Elemte bereinigt wenn die dynamischen Objekte gelöscht werden (Vorstart, löschen der
+	 * <p>
+	 * Alle Mengen, zu denen Elemente hinzugefÃ¼gt wurden, werden um diese Elemte bereinigt wenn die dynamischen Objekte gelÃ¶scht werden (Vorstart, lÃ¶schen der
 	 * Simulation).
 	 */
 	private Set<ObjectSetType> _specialObjectSetTypes = new HashSet<ObjectSetType>();
 
 	/**
-	 * Enthält alle dynamischen Typen, deren Objekte gesondert behandelt werden müssen. Soll ein dynamisches Objekt mit einem dieser Typen erzeugt werden, so muss
-	 * die Simulationsvariante berücksichtigt werden.
+	 * EnthÃ¤lt alle dynamischen Typen, deren Objekte gesondert behandelt werden mÃ¼ssen. Soll ein dynamisches Objekt mit einem dieser Typen erzeugt werden, so muss
+	 * die Simulationsvariante berÃ¼cksichtigt werden.
 	 */
 	private Set<DynamicObjectType> _specialDynamicTypes = new HashSet<DynamicObjectType>();
 
@@ -105,7 +111,7 @@ public class ConfigSimulationObject {
 	final private SystemObject _simulationObject;
 
 	/**
-	 * Das Objekt spiegelt die Simulationsstrecke wieder. Von diesem Objekte können die spezielle zu behandelnden Mengen/Objekte angefordert werden. Siehe auch
+	 * Das Objekt spiegelt die Simulationsstrecke wieder. Von diesem Objekte kÃ¶nnen die spezielle zu behandelnden Mengen/Objekte angefordert werden. Siehe auch
 	 * <code>_simulationsStreckenBeschreibung</code>.
 	 */
 	final private SystemObject _simulationsStreckenObjekt;
@@ -117,12 +123,12 @@ public class ConfigSimulationObject {
 	private DataDescription _simulationsStreckenBeschreibung;
 
 	/**
-	 * Dieses Objekt stellt aus Sicht der Konfiguration eine Simulation dar. Das Objekt meldet sich als Empfänger für die Zustände der Simulation an und als
+	 * Dieses Objekt stellt aus Sicht der Konfiguration eine Simulation dar. Das Objekt meldet sich als EmpfÃ¤nger fÃ¼r die ZustÃ¤nde der Simulation an und als
 	 * Sender
 	 *
 	 * @param connection
 	 * @param simulationObject          SystemObject vom Typ typ.simulation.
-	 * @param configurationQueryManager Objekt, mit denen das Objekt die Konfiguration beauftragen kann, einen Empfänger für Konfigurationsanfragen für diese
+	 * @param configurationQueryManager Objekt, mit denen das Objekt die Konfiguration beauftragen kann, einen EmpfÃ¤nger fÃ¼r Konfigurationsanfragen fÃ¼r diese
 	 *                                  Simulationsvariante anzumelden/abzumelden
 	 *
 	 * @throws de.bsvrz.dav.daf.main.OneSubscriptionPerSendData
@@ -175,10 +181,10 @@ public class ConfigSimulationObject {
 		).getReferenceValue("SimulationsStreckenReferenz").getSystemObject();
 
 		if(_simulationsStreckenObjekt == null || !_simulationsStreckenObjekt.isValid()) {
-			throw new IllegalStateException("Simulationsstrecke der Simulation " + _simulationObject + " nicht vorhanden oder ungültig: " + _simulationsStreckenObjekt);
+			throw new IllegalStateException("Simulationsstrecke der Simulation " + _simulationObject + " nicht vorhanden oder ungÃ¼ltig: " + _simulationsStreckenObjekt);
 		}
 
-		// Datenstrukturen initialisieren, dafür wird die <code>_simulationsStreckenBeschreibung</code> benötigt.
+		// Datenstrukturen initialisieren, dafÃ¼r wird die <code>_simulationsStreckenBeschreibung</code> benÃ¶tigt.
 		getSpecialTypes();
 
 		final AttributeGroup atg;
@@ -207,8 +213,8 @@ public class ConfigSimulationObject {
 		// atg.simulationsSteuerungOnline:asp.zustand und atg.simulationsSteuerungOffline:asp.zustand werden immer mit Simulationsvariante 0 angemeldet
 		_stateDataDescription = new DataDescription(atg, aspekt, (short)0);
 		_stateChangeReceiver = new StateChangeReceiver();
-		// Vor dieser Anmeldung müssen die States initialisiert sein, da sofort ein "noSource" Datensatz gesendet werden kann -> nullPointerException
-//		System.out.println("Melde empfänger für state an: " + _stateDataDescription.getAttributeGroup() + " " + _stateDataDescription.getAspect() + " Simvar " + _simulationVariant + " Objekt: " + _simulationObject.getPid());
+		// Vor dieser Anmeldung mÃ¼ssen die States initialisiert sein, da sofort ein "noSource" Datensatz gesendet werden kann -> nullPointerException
+//		System.out.println("Melde empfÃ¤nger fÃ¼r state an: " + _stateDataDescription.getAttributeGroup() + " " + _stateDataDescription.getAspect() + " Simvar " + _simulationVariant + " Objekt: " + _simulationObject.getPid());
 		_connection.subscribeReceiver(_stateChangeReceiver, _simulationObject, _stateDataDescription, ReceiveOptions.normal(), ReceiverRole.receiver());
 	}
 
@@ -216,9 +222,9 @@ public class ConfigSimulationObject {
 		synchronized(_stateLock) {
 //			System.out.println("State-Wechsel nach: " + state);
 			// Die If-Abfrage soll verhindern, dass ein Thread(ConfigurationsQueryManager-Thread) simulationRemovedFromSet() abarbeitet
-			// (und den Zustand auf delete setzt), der andere Thread(der für die Simulation zuständig ist) aber
-			// in diesem synchronized hängt und sobald er freikommt den Zustand falsch setzt.
-			// In allen anderen Fällen wird der Zustand immer nur durch einen Thread(Simulationsthread) gesetzt.
+			// (und den Zustand auf delete setzt), der andere Thread(der fÃ¼r die Simulation zustÃ¤ndig ist) aber
+			// in diesem synchronized hÃ¤ngt und sobald er freikommt den Zustand falsch setzt.
+			// In allen anderen FÃ¤llen wird der Zustand immer nur durch einen Thread(Simulationsthread) gesetzt.
 			if(_simulationState != _deleted) {
 				_simulationState = state;
 			}
@@ -238,10 +244,10 @@ public class ConfigSimulationObject {
 	}
 
 	/**
-	 * Fordert einen Datensatz an und ließt alle Typen von Mengen aus, die speziell behandelt werden sollen. Das gleiche gilt für Typen von dynamischen Objekten.
-	 * <p/>
+	 * Fordert einen Datensatz an und lieÃŸt alle Typen von Mengen aus, die speziell behandelt werden sollen. Das gleiche gilt fÃ¼r Typen von dynamischen Objekten.
+	 * <p>
 	 * Die Datenstrukturen, die diese Informationen speichern, werden dadurch auf den neusten Stand gebracht.
-	 * <p/>
+	 * <p>
 	 * Diese Methode sollte beim Neustart einer Simulation (Konstruktor) und beim Vorstart aufgerufen werden.
 	 */
 	synchronized void getSpecialTypes() {
@@ -262,7 +268,7 @@ public class ConfigSimulationObject {
 			// Alle parameterSatzSimulationsdaten
 			Data item;
 			try {
-				// Der Name dieses Attributs hat sich geändert
+				// Der Name dieses Attributs hat sich geÃ¤ndert
 				item = simulationsStreckenBeschreibungen.getItem("ParameterSatz");
 			}
 			catch(IllegalArgumentException oldDataModel) {
@@ -293,7 +299,7 @@ public class ConfigSimulationObject {
 	}
 
 	/**
-	 * Gibt das Systemobject zurück, das aus Sicht des Datenverteilers eine Simulation darstellt.
+	 * Gibt das Systemobject zurÃ¼ck, das aus Sicht des Datenverteilers eine Simulation darstellt.
 	 *
 	 * @return s.o.
 	 */
@@ -302,10 +308,10 @@ public class ConfigSimulationObject {
 	}
 
 	/**
-	 * Diese Methode wird aufgerufen sobald die Simulation, die zu diesem Objekt gehört, aus der Menge der Simulationen entfernt wird. Dieser Aufruf kann jederzeit
-	 * von außen geschehen.
-	 * <p/>
-	 * Alle Mengen, die speziell behandelt werden sollen, werden aufgeräumt.
+	 * Diese Methode wird aufgerufen sobald die Simulation, die zu diesem Objekt gehÃ¶rt, aus der Menge der Simulationen entfernt wird. Dieser Aufruf kann jederzeit
+	 * von auÃŸen geschehen.
+	 * <p>
+	 * Alle Mengen, die speziell behandelt werden sollen, werden aufgerÃ¤umt.
 	 */
 	public void simulationRemovedFromSet() {
 		synchronized(_stateLock) {
@@ -316,13 +322,13 @@ public class ConfigSimulationObject {
 	}
 
 	/**
-	 * Der Aufruf dieser Methode bewirkt, dass alle Mengen der im Konstruktor übergebenen Mengentypen, bearbeitet werden. Dabei werden alle Elemente, die durch die
+	 * Der Aufruf dieser Methode bewirkt, dass alle Mengen der im Konstruktor Ã¼bergebenen Mengentypen, bearbeitet werden. Dabei werden alle Elemente, die durch die
 	 * Simulation angelegt werden, aus den jeweiligen Mengen entfernt.
 	 */
 	synchronized void cleanUpSets() {
 
 		for(ObjectSetType objectSetType : _specialObjectSetTypes) {
-			// Alle Mengen, die zu diesem Typ gehören, anfordern
+			// Alle Mengen, die zu diesem Typ gehÃ¶ren, anfordern
 			final List<ObjectSet> objectSets = objectSetType.getObjectSets();
 			for(ObjectSet objectSet : objectSets) {
 				if(objectSet instanceof ConfigMutableSet) {
@@ -331,7 +337,7 @@ public class ConfigSimulationObject {
 						mutableSet.deleteElements(_simulationVariant);
 					}
 					catch(ConfigurationChangeException e) {
-						// Dieser Fall kann vorkommen, weil alle Mengen zurückgegeben werden. Die Konfiguration muss nicht für alle Mengen die nötigen
+						// Dieser Fall kann vorkommen, weil alle Mengen zurÃ¼ckgegeben werden. Die Konfiguration muss nicht fÃ¼r alle Mengen die nÃ¶tigen
 						// Rechte besitzen.
 					}
 				}
@@ -344,40 +350,40 @@ public class ConfigSimulationObject {
 	}
 
 	/**
-	 * @return true = Es handelt sich um eine Offline-Simulation. Es stehen der Anfangs und der Endzeitpunkt der Simulation zur Verfügung. false = Es handelt sich
-	 *         um eine Online-Simulation, Beginn und Endzeitpunkt stehen nicht zur Verfügung.
+	 * @return true = Es handelt sich um eine Offline-Simulation. Es stehen der Anfangs und der Endzeitpunkt der Simulation zur VerfÃ¼gung. false = Es handelt sich
+	 *         um eine Online-Simulation, Beginn und Endzeitpunkt stehen nicht zur VerfÃ¼gung.
 	 */
 	public boolean isOfflineSimulation() {
 		return _offlineSimulation;
 	}
 
 	/**
-	 * Prüft, ob der Typ einer Menge zu den Typen gehört, die an Simulationsstrecke festgelegt wurden. Ist dies der Fall, müssen die Mengen dieses Typs speziell
-	 * behandlet werden (lesender und schreibender Zugriff auf die Menge über die Simulationsvariante).
+	 * PrÃ¼ft, ob der Typ einer Menge zu den Typen gehÃ¶rt, die an Simulationsstrecke festgelegt wurden. Ist dies der Fall, mÃ¼ssen die Mengen dieses Typs speziell
+	 * behandlet werden (lesender und schreibender Zugriff auf die Menge Ã¼ber die Simulationsvariante).
 	 *
-	 * @param setType Mengentyp, der geprüft werden soll. Vererbung wird nicht berücksichtigt.
+	 * @param setType Mengentyp, der geprÃ¼ft werden soll. Vererbung wird nicht berÃ¼cksichtigt.
 	 *
-	 * @return true = Der übergebene Typ befindet sich in der Menge der speziell zu behandelnden Mengetypen; false = sonst
+	 * @return true = Der Ã¼bergebene Typ befindet sich in der Menge der speziell zu behandelnden Mengetypen; false = sonst
 	 */
 	synchronized public boolean isSpecialTreatedSetType(ObjectSetType setType) {
 		return _specialObjectSetTypes.contains(setType);
 	}
 
 	/**
-	 * Diese Methode prüft ob der übergeben Typ speziell behandelt werden soll. Die ist der Fall, wenn der Typ an einer Simulationsstrecke eingetragen ist.
-	 * <p/>
-	 * Die Auswirkungen sind, dass neue Objekte, die vom übergebnen Typ sein sollen, mit der Simulationsvariante der Simulation angelegt werden müssen, usw..
+	 * Diese Methode prÃ¼ft ob der Ã¼bergeben Typ speziell behandelt werden soll. Die ist der Fall, wenn der Typ an einer Simulationsstrecke eingetragen ist.
+	 * <p>
+	 * Die Auswirkungen sind, dass neue Objekte, die vom Ã¼bergebnen Typ sein sollen, mit der Simulationsvariante der Simulation angelegt werden mÃ¼ssen, usw..
 	 *
-	 * @param dynamicObjectType dynamischer Typ, der geprüft werden soll
+	 * @param dynamicObjectType dynamischer Typ, der geprÃ¼ft werden soll
 	 *
-	 * @return true = Der übergebene Typ befindet sich in der Liste der speziell zu behandelnden Typen (kb.tmVewSimulationGlobal: DynamischeSimulationsObjekte)
+	 * @return true = Der Ã¼bergebene Typ befindet sich in der Liste der speziell zu behandelnden Typen (kb.tmVewSimulationGlobal: DynamischeSimulationsObjekte)
 	 */
 	synchronized public boolean isSpecialTreatedDynamicObjectType(DynamicObjectType dynamicObjectType) {
 		return _specialDynamicTypes.contains(dynamicObjectType);
 	}
 
 //	/**
-//	 * Diese Methode gibt den Startzeitpunkt der Offline-Simulation zurück.
+//	 * Diese Methode gibt den Startzeitpunkt der Offline-Simulation zurÃ¼ck.
 //	 *
 //	 * @return Startzeitpunkt der Simulation (ms seit 1970)
 //	 *
@@ -395,7 +401,7 @@ public class ConfigSimulationObject {
 //			}
 //		}
 //		else {
-//			throw new IllegalStateException("Es handlet sich um eine Online-Simulation. Es steht kein Zeitpunkt für den Simulationsbeginn zur Verfügung.");
+//			throw new IllegalStateException("Es handlet sich um eine Online-Simulation. Es steht kein Zeitpunkt fÃ¼r den Simulationsbeginn zur VerfÃ¼gung.");
 //		}
 //	}
 

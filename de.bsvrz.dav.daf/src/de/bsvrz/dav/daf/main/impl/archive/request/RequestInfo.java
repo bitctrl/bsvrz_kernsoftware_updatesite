@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.main.impl.archive.request;
 
@@ -46,12 +52,12 @@ import java.io.InputStream;
 import java.util.*;
 
 /**
- * Diese Klasse stellt ein Objekt zur Verfügung, über das eine Archivinformationsanfrage gestartet werden kann.
+ * Diese Klasse stellt ein Objekt zur VerfÃ¼gung, Ã¼ber das eine Archivinformationsanfrage gestartet werden kann.
  * Diese Klasse wird von der Klasse {@link StreamedArchiveRequester} benutzt.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 5084 $ / $Date: 2007-09-03 10:42:50 +0200 (Mon, 03 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class RequestInfo implements ArchiveInfoQueryResult {
 
@@ -60,7 +66,7 @@ public class RequestInfo implements ArchiveInfoQueryResult {
 	private final List<ArchiveDataSpecification> _specs;
 
 	/**
-	 * DebugLogger für Debug-Ausgaben
+	 * DebugLogger fÃ¼r Debug-Ausgaben
 	 */
 	private static final Debug _debug = Debug.getLogger();
 
@@ -95,11 +101,11 @@ public class RequestInfo implements ArchiveInfoQueryResult {
 	}
 
 	/**
-	 * Diese Methode gibt eine Liste zurück, die alle Zeit/Indexbereiche einer Archivinformationsanfrage beinhaltet. Der
-	 * Aufruf ist blockierend, bis ein Ergebnis vorliegt. War die Anfrage erfolgreich, wird die Liste zurückgegeben. War
-	 * die Anfrage nicht erfolgreich wird eine RuntimeException ausgelöst ! Ein Aufruf dieser Methode sollte also nur
+	 * Diese Methode gibt eine Liste zurÃ¼ck, die alle Zeit/Indexbereiche einer Archivinformationsanfrage beinhaltet. Der
+	 * Aufruf ist blockierend, bis ein Ergebnis vorliegt. War die Anfrage erfolgreich, wird die Liste zurÃ¼ckgegeben. War
+	 * die Anfrage nicht erfolgreich wird eine RuntimeException ausgelÃ¶st ! Ein Aufruf dieser Methode sollte also nur
 	 * erfolgen, nach dem sichergestellt wurde das <code>isRequestSuccessful</code> den Wert <code>true</code>
-	 * zurückliefert.
+	 * zurÃ¼ckliefert.
 	 *
 	 * @return
 	 */
@@ -119,7 +125,7 @@ public class RequestInfo implements ArchiveInfoQueryResult {
 	/**
 	 * Diese Methode ist blockierend, bis die Antwort des Archivs vorliegt.
 	 *
-	 * @return true = Die Anfrage konnte fehlerfrei bearbeitet werden; false = Während der Bearbeitung der Anfrage kam es
+	 * @return true = Die Anfrage konnte fehlerfrei bearbeitet werden; false = WÃ¤hrend der Bearbeitung der Anfrage kam es
 	 *         zu einem Fehler, dieser kann mit <code>getErrorMessage</code> angezeigt werden
 	 * @throws InterruptedException Der Thread, der den Auftrag bearbeitet, wurde abgebrochen
 	 */
@@ -137,8 +143,8 @@ public class RequestInfo implements ArchiveInfoQueryResult {
 	}
 
 	/**
-	 * Diese Methode liefert einen String mit der Fehlermeldung, die dazu geführt hat das die Informationsanfrage nicht
-	 * ausgeführt werden konnte. Dieser Aufruf blockiert solange, bis ein Ergebnis des Archivsystems vorliegt.
+	 * Diese Methode liefert einen String mit der Fehlermeldung, die dazu gefÃ¼hrt hat das die Informationsanfrage nicht
+	 * ausgefÃ¼hrt werden konnte. Dieser Aufruf blockiert solange, bis ein Ergebnis des Archivsystems vorliegt.
 	 *
 	 * @return String mit einer Fehlermeldung
 	 * @throws InterruptedException Der Thread, der den Auftrag bearbeitet, wurde abgebrochen
@@ -163,22 +169,22 @@ public class RequestInfo implements ArchiveInfoQueryResult {
 
 		// Die ArchivInfoAnfrage in ein byte-Array umwandeln
 
-		// Alle Parameter müssen in einen Datensatz verpackt werden.
-		// Die Priorität und die "spec" werden dabei in einem byte-Array des Datensatzes übertragen.
+		// Alle Parameter mÃ¼ssen in einen Datensatz verpackt werden.
+		// Die PrioritÃ¤t und die "spec" werden dabei in einem byte-Array des Datensatzes Ã¼bertragen.
 		// Die Daten werden mit einem Serializer verpackt und entsprechend auf der Empfangsseite mit einem
 		// Deserializer entpackt. Damit die Daten mit der richtigen Version des Deserializers ausgepackt werden,
 		// wird diese mitgeschickt. Die ersten 4 Bytes des byte-Arrays sind dabei die Versionsnummer
 		// des Serializers und die entsprechende Version muss der Deserializer benutzen.
 		// Die ersten 4 Bytes werden "von Hand" ein/ausgepackt, ohne den Serializer/Deserializer zu benutzen.
-		// (somit ist die Versionsnummer immer unabhängig verfügbar, egal welche Version des Serializer/Deserializer
-		// die Apllikation zur Verfügung hat)
+		// (somit ist die Versionsnummer immer unabhÃ¤ngig verfÃ¼gbar, egal welche Version des Serializer/Deserializer
+		// die Apllikation zur VerfÃ¼gung hat)
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		Serializer serializer = SerializingFactory.createSerializer(out);
 
 		try {
-			// Anzahl Einträge der Liste speichern, beim auspacken ist dann bekannt, wie viele Einträge
-			// entpackt werden müssen.
+			// Anzahl EintrÃ¤ge der Liste speichern, beim auspacken ist dann bekannt, wie viele EintrÃ¤ge
+			// entpackt werden mÃ¼ssen.
 			serializer.writeInt(_specs.size());
 
 			// Jede Anfrage, die in der spec-Liste steht, in das byte-Array speichern
@@ -281,8 +287,8 @@ public class RequestInfo implements ArchiveInfoQueryResult {
 					// Dabei tritt ein Sonderfall auf, wenn die Simulationsvariante auf
 					// <code>NO_SIMULATION_VARIANT_SET</code> , dies entspricht einer
 					// <code>-1</code>, gesetzt wurde. In diesem Fall muss der default Wert
-					// für die Simulationsvariante gewählt werden. Der default-Wert wurde im Konstruktor dieser
-					// Klasse übergeben.
+					// fÃ¼r die Simulationsvariante gewÃ¤hlt werden. Der default-Wert wurde im Konstruktor dieser
+					// Klasse Ã¼bergeben.
 					if (dataDescription.getSimulationVariant() != -1) {
 						serializer.writeShort(dataDescription.getSimulationVariant());
 					} else {
@@ -310,11 +316,11 @@ public class RequestInfo implements ArchiveInfoQueryResult {
 		// Die Versionsnummer des Serializer speichern
 		final int serializerVersion = serializer.getVersion();
 
-		// daten + 4 bytes für die Serializerversion
+		// daten + 4 bytes fÃ¼r die Serializerversion
 		byte[] dataAndSeriVersion = new byte[data.length + 4];
 
 		// Serializerversion speichern
-		// Das höherwärtigste Byte steht in Zelle 0
+		// Das hÃ¶herwÃ¤rtigste Byte steht in Zelle 0
 		dataAndSeriVersion[0] = (byte) ((serializerVersion & 0xff000000) >>> 24);
 		dataAndSeriVersion[1] = (byte) ((serializerVersion & 0x00ff0000) >>> 16);
 		dataAndSeriVersion[2] = (byte) ((serializerVersion & 0x0000ff00) >>> 8);
@@ -330,7 +336,7 @@ public class RequestInfo implements ArchiveInfoQueryResult {
 			e.printStackTrace();
 		} catch (SendSubscriptionNotConfirmed sendSubscriptionNotConfirmed) {
 			sendSubscriptionNotConfirmed.printStackTrace();
-			throw new IllegalStateException("Versand einer Anfrage ist wegen nicht vorliegender positiver Sendesteuerung nicht möglich", sendSubscriptionNotConfirmed);
+			throw new IllegalStateException("Versand einer Anfrage ist wegen nicht vorliegender positiver Sendesteuerung nicht mÃ¶glich", sendSubscriptionNotConfirmed);
 		}
 
 
@@ -339,7 +345,7 @@ public class RequestInfo implements ArchiveInfoQueryResult {
 
 	/**
 	 * Diese Methode wird aufgerufen, wenn die Antwort des Archivsystems empfangen wurde. Die Antwort wird analysiert und
-	 * die betreffenden Objekte zur Verfügung gestellt, wartende Threads werden benachrichtigt.
+	 * die betreffenden Objekte zur VerfÃ¼gung gestellt, wartende Threads werden benachrichtigt.
 	 */
 	public void archiveResponse(Data data) {
 		synchronized (this) {
@@ -411,9 +417,9 @@ public class RequestInfo implements ArchiveInfoQueryResult {
 
 						final int volumeId = deserializer.readInt();
 
-						// Die ArchiveDataSpec werden nicht übertragen, sondern nur ein Index auf welche ArchiveDataSpec
+						// Die ArchiveDataSpec werden nicht Ã¼bertragen, sondern nur ein Index auf welche ArchiveDataSpec
 						// sich diese antwort bezieht, somit kann aus der Liste der ArchiveDataSpecs der richtige
-						// ausgewählt werden.
+						// ausgewÃ¤hlt werden.
 						final int pointerArchiveDataSpec = deserializer.readInt();
 
 						// Es wurden alle Infos eingelesen um ein ArchiveInformationResult Objekt zu erzeugen

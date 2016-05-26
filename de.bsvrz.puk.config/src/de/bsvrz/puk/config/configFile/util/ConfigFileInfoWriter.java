@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.util;
@@ -29,7 +35,7 @@ import java.util.List;
  * Klasse, die Informationen zu Konfigurationsbereichen auf Konsole ausgibt und formatiert.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11592 $
+ * @version $Revision$
  */
 public class ConfigFileInfoWriter {
 	private final boolean _displayShortInfo;
@@ -55,10 +61,10 @@ public class ConfigFileInfoWriter {
 		printHeader("Konfigurationsbereich: ", configFileInfo);
 		if(_displayShortInfo) printData("Kurzinfo", configFileInfo.getShortInfo());
 		if(_displayDescription) printData("Beschreibung", configFileInfo.getDescription());
-		if(_displayTransferVersion) printData("‹bernahme-Version", configFileInfo.getTransferableVersion());
+		if(_displayTransferVersion) printData("√úbernahme-Version", configFileInfo.getTransferableVersion());
 		if(_displayActivatableVersion) printData("Aktivierbare Version", configFileInfo.getActivatableVersion());
-		if(_displayDependencies) printData("Abh‰ngigkeiten", configFileInfo.getDependencies());
-		if(_displayChanges) printData("ƒnderungsvermerke", configFileInfo.getChanges());
+		if(_displayDependencies) printData("Abh√§ngigkeiten", configFileInfo.getDependencies());
+		if(_displayChanges) printData("√Ñnderungsvermerke", configFileInfo.getChanges());
 		System.out.println();
 		System.out.println();
 	}
@@ -67,16 +73,16 @@ public class ConfigFileInfoWriter {
 	public void writeDependencySummary(final List<ConfigAreaDependency> required, final List<ConfigAreaDependency> optional) {
 		printHeader("Zusammenfassung", "");
 		if(required.size() == 0){
-			printData("Notwendige Abh‰ngigkeiten", "Keine unerf¸llten notwendigen Abh‰ngigkeiten.");
+			printData("Notwendige Abh√§ngigkeiten", "Keine unerf√ºllten notwendigen Abh√§ngigkeiten.");
 		}
 		else{
-			printData("Notwendige Abh‰ngigkeiten", required);
+			printData("Notwendige Abh√§ngigkeiten", required);
 		}
 		if(optional.size() == 0){
-			printData("Optionale Abh‰ngigkeiten", "Keine unerf¸llten optionalen Abh‰ngigkeiten.");
+			printData("Optionale Abh√§ngigkeiten", "Keine unerf√ºllten optionalen Abh√§ngigkeiten.");
 		}
 		else{
-			printData("Optionale Abh‰ngigkeiten", optional);
+			printData("Optionale Abh√§ngigkeiten", optional);
 		}
 	}
 
@@ -97,7 +103,7 @@ public class ConfigFileInfoWriter {
 			return;
 		}
 		if(data == null){
-			printText("[Nicht verf¸gbar]");
+			printText("[Nicht verf√ºgbar]");
 		}
 		else {
 			printText(data.toString());

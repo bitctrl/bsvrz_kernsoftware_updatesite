@@ -3,13 +3,13 @@
  * Copyright 2008 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -18,8 +18,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config;
@@ -50,26 +56,26 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Applikationsseitige Implementierung der DataModel Schnittstelle, die Zugriffe auf die Datenmodelle und Versorgungsdaten ermöglicht.
+ * Applikationsseitige Implementierung der DataModel Schnittstelle, die Zugriffe auf die Datenmodelle und Versorgungsdaten ermÃ¶glicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13460 $
+ * @version $Revision$
  */
 public class DafDataModel implements DataModel, UpdateDynamicObjects {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	/** Maximale Protokollversion (beginnend bei 0) */
 	public static final int MAX_PROTOCOL_VERSION = 1;
 
-	/** Von der Konfiguration unterstützte Protokollversion <= MAX_PROTOCOL_VERSION */
+	/** Von der Konfiguration unterstÃ¼tzte Protokollversion <= MAX_PROTOCOL_VERSION */
 	private long _protocolVersion = 1;
 
 	/** Verbindung zum Datenverteiler. Wenn 2 Datenverteilerverbindungen verwendet werden die interne Verbindung. */
 	private ClientDavInterface _connection;
 
-	/** Verbindung zum Datenverteiler. Wenn 2 Datenverteilerverbindungen verwendet werden die öffentliche Verbindung. */
+	/** Verbindung zum Datenverteiler. Wenn 2 Datenverteilerverbindungen verwendet werden die Ã¶ffentliche Verbindung. */
 	private ClientDavInterface _publicConnection = null;
 
 	/** Map der zwischengespeicherten konfigurierenden oder dynamischen Systemobjekte, als Key dient die ID des Objekts */
@@ -78,13 +84,13 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	/** Map der zwischengespeicherten Objekte mit PID, als Key dient die PID des Objekts */
 	private HashMap<String, DafSystemObject> _systemObjectsByPid;
 
-	/** Tabelle der zwischengespeicherten konfigurierenden Datensätze, als Key dient ein ConfigDataKey mit Systemobjekt und Attributgruppenverwendung */
+	/** Tabelle der zwischengespeicherten konfigurierenden DatensÃ¤tze, als Key dient ein ConfigDataKey mit Systemobjekt und Attributgruppenverwendung */
 	private Hashtable<ConfigDataKey, Object> _configDataValuesTable;
 
-	/** ConfigurationRequester für Konfigurationsanfragen. */
+	/** ConfigurationRequester fÃ¼r Konfigurationsanfragen. */
 	private ConfigurationRequester _remoteRequester;
 
-	/** Objekt zur asynchronen Benachrichtigung der Listener für Änderungen der Elemente von dynamischen Zusammenstellungen. */
+	/** Objekt zur asynchronen Benachrichtigung der Listener fÃ¼r Ã„nderungen der Elemente von dynamischen Zusammenstellungen. */
 	private NotifyingMutableCollectionChangeListener _notifyingMutableCollectionChangeListener;
 
 	private int _acceptedCachedAreas = 0;
@@ -101,56 +107,56 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 
 
 	/**
-	 * @return Liefert die Anzahl von Konfigurationsbereichen, die aus dem lokal gespeicherten Cache der Konfigurationsobjekte übernommen wurden.
+	 * @return Liefert die Anzahl von Konfigurationsbereichen, die aus dem lokal gespeicherten Cache der Konfigurationsobjekte Ã¼bernommen wurden.
 	 */
 	public int getAcceptedCachedAreas() {
 		return _acceptedCachedAreas;
 	}
 
 	/**
-	 * @return Liefert die Anzahl von Konfigurationsbereichen, die nicht aus dem lokal gespeicherten Cache der Konfigurationsobjekte übernommen wurden.
+	 * @return Liefert die Anzahl von Konfigurationsbereichen, die nicht aus dem lokal gespeicherten Cache der Konfigurationsobjekte Ã¼bernommen wurden.
 	 */
 	public int getIgnoredCachedAreas() {
 		return _ignoredCachedAreas;
 	}
 
 	/**
-	 * @return Liefert die Anzahl von Konfigurationsobjekten, die aus dem lokal gespeicherten Cache der Konfigurationsobjekte übernommen wurden.
+	 * @return Liefert die Anzahl von Konfigurationsobjekten, die aus dem lokal gespeicherten Cache der Konfigurationsobjekte Ã¼bernommen wurden.
 	 */
 	public int getAcceptedCachedSystemObjects() {
 		return _acceptedCachedSystemObjects;
 	}
 
 	/**
-	 * @return Liefert die Anzahl von Konfigurationsobjekten, die nicht aus dem lokal gespeicherten Cache der Konfigurationsobjekte übernommen wurden.
+	 * @return Liefert die Anzahl von Konfigurationsobjekten, die nicht aus dem lokal gespeicherten Cache der Konfigurationsobjekte Ã¼bernommen wurden.
 	 */
 	public int getIgnoredCachedSystemObjects() {
 		return _ignoredCachedSystemObjects;
 	}
 
 	/**
-	 * @return Liefert die Anzahl von konfigurierenden Datensätzen, die aus dem lokal gespeicherten Cache der Konfigurationsobjekte übernommen wurden.
+	 * @return Liefert die Anzahl von konfigurierenden DatensÃ¤tzen, die aus dem lokal gespeicherten Cache der Konfigurationsobjekte Ã¼bernommen wurden.
 	 */
 	public int getAcceptedCachedConfigData() {
 		return _acceptedCachedConfigData;
 	}
 
 	/**
-	 * @return Liefert die Anzahl von konfigurierenden Datensätzen, die nicht aus dem lokal gespeicherten Cache der Konfigurationsobjekte übernommen wurden.
+	 * @return Liefert die Anzahl von konfigurierenden DatensÃ¤tzen, die nicht aus dem lokal gespeicherten Cache der Konfigurationsobjekte Ã¼bernommen wurden.
 	 */
 	public int getIgnoredCachedConfigData() {
 		return _ignoredCachedConfigData;
 	}
 
 	/**
-	 * @return Liefert die Hashtabelle mit den zwischengespeicherten konfigurierenden Datensätzen zurück.
+	 * @return Liefert die Hashtabelle mit den zwischengespeicherten konfigurierenden DatensÃ¤tzen zurÃ¼ck.
 	 */
 	Hashtable<ConfigDataKey, Object> getConfigDataValuesTable() {
 		return _configDataValuesTable;
 	}
 
 	/**
-	 * Falls ein Datensatz angefordert wurde, aber es keinen Datensatz gab, wird dieser Platzhalter eingefügt. Dies verhindert, das der Datensatz erneut
+	 * Falls ein Datensatz angefordert wurde, aber es keinen Datensatz gab, wird dieser Platzhalter eingefÃ¼gt. Dies verhindert, das der Datensatz erneut
 	 * angefordert wird.
 	 */
 	private static final Object _noDataMarker = new Object();
@@ -158,7 +164,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	/** Konfigurationsverantwortlicher der Konfiguration */
 	private DafConfigurationAuthority _configurationAuthority;
 
-	/** Anmeldeinfo für Konfigurationsanfragen zum Lesen */
+	/** Anmeldeinfo fÃ¼r Konfigurationsanfragen zum Lesen */
 	private BaseSubscriptionInfo _readBaseSubscriptionInfo;
 
 	/** Objekt zur Verwaltung der Kommunikation mit der Konfiguration */
@@ -169,7 +175,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	/** Die Objekt-Id des Konfigurationsverantwortlichen */
 	private long _configurationAuthorityId;
 
-	/** Aspekt "asp.eigenschaften", der als Default für Konfigurierende Datensätze bei Anfragen ohne Aspekt benutzt wird. */
+	/** Aspekt "asp.eigenschaften", der als Default fÃ¼r Konfigurierende DatensÃ¤tze bei Anfragen ohne Aspekt benutzt wird. */
 	private Aspect _defaultConfigurationDataAspect;
 
 	/** Attribugruppenverwendung Konfigurationsleseanfragen */
@@ -185,8 +191,8 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	private AttributeGroupUsage _configurationWriteReplyUsage;
 
 	/**
-	 * Verschickt Auftrage zur Benutzerverwaltung mittels des ConfigurationsRequesters an die Konfiguration. Das Objekt wird so spät wie möglich initialisiert,
-	 * damit alle Verbindungen aufgebaut werden können.
+	 * Verschickt Auftrage zur Benutzerverwaltung mittels des ConfigurationsRequesters an die Konfiguration. Das Objekt wird so spÃ¤t wie mÃ¶glich initialisiert,
+	 * damit alle Verbindungen aufgebaut werden kÃ¶nnen.
 	 */
 	private UserAdministration _userAdministration = null;
 
@@ -202,7 +208,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	private Set<SystemObjectType> _metaObjectTypes;
 
 	/**
-	 * Erzeugt ein neues Objekt zum Zugriff auf die Konfiguration über eine vorgegebene Datenverteilerverbindung.
+	 * Erzeugt ein neues Objekt zum Zugriff auf die Konfiguration Ã¼ber eine vorgegebene Datenverteilerverbindung.
 	 *
 	 * @param connection Verbindung zum Datenverteiler.
 	 */
@@ -247,12 +253,12 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Wird bei der Initialisierung aufgerufen um die öffentliche ClientDavConnection zu setzen.
+	 * Wird bei der Initialisierung aufgerufen um die Ã¶ffentliche ClientDavConnection zu setzen.
 	 * @param publicConnection ClientDavConnection
 	 */
 	public void setPublicConnection(final ClientDavConnection publicConnection) {
 		if(_configurationManager != null){
-			// Methode nicht beliebig aufrufen lassen, nur für interne Zwecke der ClientDavConnection
+			// Methode nicht beliebig aufrufen lassen, nur fÃ¼r interne Zwecke der ClientDavConnection
 			throw new IllegalStateException("Bereits initialisiert");
 		}
 		_publicConnection = publicConnection;
@@ -300,20 +306,20 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Liest lokal zwischengespeicherte Konfigurationsobjekte und konfigurierende Datensätze ein, falls in dem entsprechenden Aufrufparameter ein Verzeichnis
+	 * Liest lokal zwischengespeicherte Konfigurationsobjekte und konfigurierende DatensÃ¤tze ein, falls in dem entsprechenden Aufrufparameter ein Verzeichnis
 	 * angegeben wurde und dort eine passende Datei vorhanden ist.
-	 * Nach der Anzahl der relevanten Konfigurationsbereiche werden für jeden Konfigurationsbereich folgende Informationen in der Datei erwartet
+	 * Nach der Anzahl der relevanten Konfigurationsbereiche werden fÃ¼r jeden Konfigurationsbereich folgende Informationen in der Datei erwartet
 	 * <ul><li>die (long-)Id des Konfigurationsbereiches,</li> <li>die  (short-)Aktive Version des Konfigurationsbereiches,</li><li> der (long-) Zeitstempel der
-	 * letzen Änderung von dynamischen Objekten,</li><li> der (long-) Zeitsempel der letzten Änderung von konfigurierenden Objekten,</li><li> der Zeitstempel der
-	 * letzten Änderung von konfigurierenden Datensätzen</li></ul>
-	 * Diese Informationen werden mit den entsprechenden Werten in der Konfiguration verglichen. Nur wenn alle Werte übereinstimmen, werden Objekte des
+	 * letzen Ã„nderung von dynamischen Objekten,</li><li> der (long-) Zeitsempel der letzten Ã„nderung von konfigurierenden Objekten,</li><li> der Zeitstempel der
+	 * letzten Ã„nderung von konfigurierenden DatensÃ¤tzen</li></ul>
+	 * Diese Informationen werden mit den entsprechenden Werten in der Konfiguration verglichen. Nur wenn alle Werte Ã¼bereinstimmen, werden Objekte des
 	 * jeweiligen Bereichs aus der Datei geladen.
 	 * Ein Konfigurationsobjekt wird seriell wie folgt aus der Datei gelesen: <ol> <li>byte: 1 (die eins kennzeichnet ein Konfigurationsobjekt und zeigt an, dass
 	 * ein solches folgt)</li> <li>byte: internType (gint an, um welchen Typ von Konfigurationsobjekt es sich handelt)</li> <li>Object: object(serielles
 	 * Objekt)</li> </ol> Ein konfigurierender Datensatz wird seriell aus der Datei wie folgt gelesen: <ol> <li> byte: 2 (die zwei kennzeichnet einen
-	 * konfigurierenden Datensatz und zeigt an das ein solcher folgt)</li> <li> long: Objekt-ID(Die ID des Objektes zu dem der konfiguriende Datensatz gehört)</li>
-	 * <li> long: AtgV-ID(Die ID der Atributgruppenverwedung des konfigurienden Datensatzes)</li> <li> boolean: true-> Datensatz enthält Daten, false-> Datensatz
-	 * enthält keine Daten</li> <li> Data: serialisierte Daten des Datensatzes</li> </ol> Abschließend wird eine byte-0 geschrieben, das anzeigt, dass das Ende der
+	 * konfigurierenden Datensatz und zeigt an das ein solcher folgt)</li> <li> long: Objekt-ID(Die ID des Objektes zu dem der konfiguriende Datensatz gehÃ¶rt)</li>
+	 * <li> long: AtgV-ID(Die ID der Atributgruppenverwedung des konfigurienden Datensatzes)</li> <li> boolean: true-> Datensatz enthÃ¤lt Daten, false-> Datensatz
+	 * enthÃ¤lt keine Daten</li> <li> Data: serialisierte Daten des Datensatzes</li> </ol> AbschlieÃŸend wird eine byte-0 geschrieben, das anzeigt, dass das Ende der
 	 * Datei erreicht ist.
 	 */
 	public void loadLocalConfigurationCache() {
@@ -324,7 +330,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 				return;
 			}
 			Map<Long, ConfigurationAreaInfo> areaInfos = new HashMap<Long, ConfigurationAreaInfo>();
-			final Data[] datas = getConfigurationData(_configAreas, getAttributeGroup("atg.konfigurationsBereichÄnderungsZeiten"));
+			final Data[] datas = getConfigurationData(_configAreas, getAttributeGroup("atg.konfigurationsBereichÃ„nderungsZeiten"));
 			for(int i = 0; i < _configAreas.length; i++) {
 				DafSystemObject configArea = _configAreas[i];
 				if(configArea instanceof DafConfigurationArea) {
@@ -335,9 +341,9 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 					long configurationObjectChangeTime = -1;
 					long configurationDataChangeTime = -1;
 					if(datas[i] != null) {
-						dynamicObjectChangeTime = datas[i].getTimeValue("LetzteÄnderungszeitDynamischesObjekt").getMillis();
-						configurationObjectChangeTime = datas[i].getTimeValue("LetzteÄnderungszeitKonfigurationsObjekt").getMillis();
-						configurationDataChangeTime = datas[i].getTimeValue("LetzteÄnderungszeitDatensatz").getMillis();
+						dynamicObjectChangeTime = datas[i].getTimeValue("LetzteÃ„nderungszeitDynamischesObjekt").getMillis();
+						configurationObjectChangeTime = datas[i].getTimeValue("LetzteÃ„nderungszeitKonfigurationsObjekt").getMillis();
+						configurationDataChangeTime = datas[i].getTimeValue("LetzteÃ„nderungszeitDatensatz").getMillis();
 					}
 					final ConfigurationAreaInfo info;
 					info = new ConfigurationAreaInfo(
@@ -404,7 +410,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 
 				Set<Long> acceptableAreas = new HashSet<Long>();
 
-				// Anzahl der folgenden Blöcke, die jeweils Informationen zu einem Konfigurationsbereich aufweisen
+				// Anzahl der folgenden BlÃ¶cke, die jeweils Informationen zu einem Konfigurationsbereich aufweisen
 				int numberOfAreas = in.readInt();
 
 				_acceptedCachedAreas = 0;
@@ -420,13 +426,13 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 					// Aktive Version des Bereichs
 					short activeVersion = in.readShort();
 
-					// Zeitstempel der letzten Änderung an dynamischen Objekten des Bereichs
+					// Zeitstempel der letzten Ã„nderung an dynamischen Objekten des Bereichs
 					final long dynamicObjectChangeTime = in.readLong();
 
-					// Zeitstempel der letzten Änderung an Konfigurationsobjekten des Bereichs
+					// Zeitstempel der letzten Ã„nderung an Konfigurationsobjekten des Bereichs
 					final long configurationObjectChangeTime = in.readLong();
 
-					// Zeitstempel der letzten Änderung an konfigurierenden Datensätzen
+					// Zeitstempel der letzten Ã„nderung an konfigurierenden DatensÃ¤tzen
 					final long configurationDataChangeTime = in.readLong();
 
 					final DafDataModel.ConfigurationAreaInfo info = _areaInfos.get(areaId);
@@ -443,7 +449,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 					else {
 						_ignoredCachedAreas++;
 						_debug.info(
-								"Da sich der folgende Konfigurationsbereich geändert hat, werden lokal gespeicherte Objekte dieses Bereichs verworfen",
+								"Da sich der folgende Konfigurationsbereich geÃ¤ndert hat, werden lokal gespeicherte Objekte dieses Bereichs verworfen",
 								info._area.getPid()
 						);
 					}
@@ -509,7 +515,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 							}
 							catch(Exception e) {
 								//beim Lesen des Datensatzes ist ein Fehler aufgetreten,
-								//ab hier werden alle konfigurierenden Datensätze aus der Datei ignoriert
+								//ab hier werden alle konfigurierenden DatensÃ¤tze aus der Datei ignoriert
 								_debug.warning("Fehler beim Lesen eines Zwischengespeicherten Datensatzes", e);
 								break;
 							}
@@ -544,8 +550,8 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 				_debug.fine("Anzahl verworfener Konfigurationsbereiche", _ignoredCachedAreas);
 				_debug.fine("Anzahl akzeptierter SystemObjekte", _acceptedCachedSystemObjects);
 				_debug.fine("Anzahl verworfener SystemObjekte", _ignoredCachedSystemObjects);
-				_debug.fine("Anzahl akzeptierte konfigurierende Datensätze", _acceptedCachedConfigData);
-				_debug.fine("Anzahl verworfene konfigurierende Datensätze", _ignoredCachedConfigData);
+				_debug.fine("Anzahl akzeptierte konfigurierende DatensÃ¤tze", _acceptedCachedConfigData);
+				_debug.fine("Anzahl verworfene konfigurierende DatensÃ¤tze", _ignoredCachedConfigData);
 
 				_debug.info("lokale Konfigurationsdatei wurde erfolgreich eingelesen");
 			}
@@ -563,17 +569,17 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Speichert Konfigurationsobjekte und konfigurierende Datensätze in einer lokalen Konfigurationsdatei, falls im entsprechenden Aufrufparameter ein Verzeichnis
-	 * angegeben wurde. Vor den Konfigurationsobjekten und deren Datensätzen wird folgendes geschrieben: <ul><li>die (long-)Id des Konfigurationsbereiches,</li>
-	 * <li>die  (short-)Aktive Version des Konfigurationsbereiches,</li><li> der (long-) Zeitstempel der letzen Änderung von dynamischen Objekten,</li><li> der
-	 * (long-) Zeitsempel der letzten Änderung von konfigurierenden Objekten,</li><li> der Zeitstempel der letzten Änderung von konfigurierenden
-	 * Datensätzen</li></ul>
+	 * Speichert Konfigurationsobjekte und konfigurierende DatensÃ¤tze in einer lokalen Konfigurationsdatei, falls im entsprechenden Aufrufparameter ein Verzeichnis
+	 * angegeben wurde. Vor den Konfigurationsobjekten und deren DatensÃ¤tzen wird folgendes geschrieben: <ul><li>die (long-)Id des Konfigurationsbereiches,</li>
+	 * <li>die  (short-)Aktive Version des Konfigurationsbereiches,</li><li> der (long-) Zeitstempel der letzen Ã„nderung von dynamischen Objekten,</li><li> der
+	 * (long-) Zeitsempel der letzten Ã„nderung von konfigurierenden Objekten,</li><li> der Zeitstempel der letzten Ã„nderung von konfigurierenden
+	 * DatensÃ¤tzen</li></ul>
 	 * EinkonfigurationsObjekt wird seriell wie folgt in der Datei abgelegt: <ol> <li>byte: 1 (die eins kennzeichnet ein Konfigurationsobjekt und zeigt an, dass
 	 * ein solches folgt)</li> <li>byte: internType (gint an, um welchen Typ von Konfigurationsobjekt es sich handelt)</li> <li>Object: object(serielles
 	 * Objekt)</li> </ol> Ein konfigurierender Datensatz wird seriell in der Datei wie folgt abgelegt: <ol> <li> byte: 2 (die zwei kennzeichnet einen
-	 * konfigurierenden Datensatz und zeigt an das ein solcher folgt)</li> <li> long: Objekt-ID(Die ID des Objektes zu dem der konfiguriende Datensatz gehört)</li>
-	 * <li> long: AtgV-ID(Die ID der Atributgruppenverwedung des konfigurienden Datensatzes)</li> <li> boolean: true-> Datensatz enthält Daten, false-> Datensatz
-	 * enthält keine Daten</li> <li> Data: serialisierte Daten des Datensatzes</li> </ol> Abschließend wird eine byte-0 geschrieben, die anzeigt, dass das Ende der
+	 * konfigurierenden Datensatz und zeigt an das ein solcher folgt)</li> <li> long: Objekt-ID(Die ID des Objektes zu dem der konfiguriende Datensatz gehÃ¶rt)</li>
+	 * <li> long: AtgV-ID(Die ID der Atributgruppenverwedung des konfigurienden Datensatzes)</li> <li> boolean: true-> Datensatz enthÃ¤lt Daten, false-> Datensatz
+	 * enthÃ¤lt keine Daten</li> <li> Data: serialisierte Daten des Datensatzes</li> </ol> AbschlieÃŸend wird eine byte-0 geschrieben, die anzeigt, dass das Ende der
 	 * Datei erreicht ist.
 	 */
 	private void saveLocalConfigurationCache() {
@@ -608,7 +614,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 				out.writeUTF("LokaleKonfigurationsCacheDatei");
 				// Versionsnummer
 				out.writeByte(1);
-				// Anzahl der folgenden Blöcke, die jeweils Informationen zu einem Konfigurationsbereich aufweisen
+				// Anzahl der folgenden BlÃ¶cke, die jeweils Informationen zu einem Konfigurationsbereich aufweisen
 				out.writeInt(_areaInfos.size());
 				for(Map.Entry<Long, ConfigurationAreaInfo> entry : _areaInfos.entrySet()) {
 					final long areaId = entry.getKey();
@@ -617,11 +623,11 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 					out.writeLong(areaId);
 					// Aktive Version des Bereichs
 					out.writeShort(info._activeVersion);
-					// Zeitstempel der letzten Änderung an dynamischen Objekten des Bereichs
+					// Zeitstempel der letzten Ã„nderung an dynamischen Objekten des Bereichs
 					out.writeLong(info._dynamicObjectChangeTime);
-					// Zeitstempel der letzten Änderung an Konfigurationsobjekten des Bereichs
+					// Zeitstempel der letzten Ã„nderung an Konfigurationsobjekten des Bereichs
 					out.writeLong(info._configurationObjectChangeTime);
-					// Zeitstempel der letzten Änderung an konfigurierenden Datensätzen
+					// Zeitstempel der letzten Ã„nderung an konfigurierenden DatensÃ¤tzen
 					out.writeLong(info._configurationDataChangeTime);
 				}
 
@@ -648,7 +654,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 					}
 				}
 
-				//Konfigurierende Datensätze schreiben
+				//Konfigurierende DatensÃ¤tze schreiben
 				int configDataSetsWritten = 0;
 				final Serializer serializer = SerializingFactory.createSerializer(out);
 				final Set<Map.Entry<ConfigDataKey, Object>> entries = _configDataValuesTable.entrySet();
@@ -675,7 +681,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 					configDataSetsWritten++;
 				}
 				_debug.fine("Anzahl geschriebener Systemobjekte", systemObjectsWritten);
-				_debug.fine("Anzahl geschriebener konfigurierender Datensätze", configDataSetsWritten);
+				_debug.fine("Anzahl geschriebener konfigurierender DatensÃ¤tze", configDataSetsWritten);
 
 				// Kennung 0 heisst: Ende
 				out.writeByte(0);
@@ -699,12 +705,12 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Bestimmt das File-Objekt für die Datei zur lokalen Speicherung von Konfigurationsdaten. Der Dateiname setzt sich aus der Pid des
+	 * Bestimmt das File-Objekt fÃ¼r die Datei zur lokalen Speicherung von Konfigurationsdaten. Der Dateiname setzt sich aus der Pid des
 	 * Konfigurationsverantwortlichen der Konfiguration, dem Namen der Applikation und der Endung <code>.configcache</code> zusammen.
 	 *
-	 * @param configurationPath Verzeichnis für die Datei zur lokalen Speicherung von Konfigurationsdaten.
+	 * @param configurationPath Verzeichnis fÃ¼r die Datei zur lokalen Speicherung von Konfigurationsdaten.
 	 *
-	 * @return File-Objekt für die Datei zur lokalen Speicherung von Konfigurationsdaten.
+	 * @return File-Objekt fÃ¼r die Datei zur lokalen Speicherung von Konfigurationsdaten.
 	 */
 	private File getLocalConfigurationCacheFile(final String configurationPath) {
 		final File specifiedDirectory = new File(configurationPath);
@@ -724,7 +730,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Diese Methode sollte beim Terminieren der Datenverteilerverbindung aufgerufen werden. Sie speichert die zwischengespeicherten Objekte falls gewünscht in
+	 * Diese Methode sollte beim Terminieren der Datenverteilerverbindung aufgerufen werden. Sie speichert die zwischengespeicherten Objekte falls gewÃ¼nscht in
 	 * einer Datei im lokalen Dateisystem.
 	 */
 	public final void close() {
@@ -743,9 +749,9 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Mit dem zurückgegebenen Objekt können Anfragen an eine Konfiguration gestellt werden.
+	 * Mit dem zurÃ¼ckgegebenen Objekt kÃ¶nnen Anfragen an eine Konfiguration gestellt werden.
 	 *
-	 * @return Objekt für Konfigurationsanfragen
+	 * @return Objekt fÃ¼r Konfigurationsanfragen
 	 */
 	public ConfigurationRequester getRequester() {
 		if(_remoteRequester == null) {
@@ -775,7 +781,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Gibt die aktuelle Verbindung zum Datenverteiler zurück.
+	 * Gibt die aktuelle Verbindung zum Datenverteiler zurÃ¼ck.
 	 *
 	 * @return Die Verbindung zum Datenverteiler
 	 */
@@ -784,21 +790,21 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Aktualisiert die Tabellen mit zwischengespeicherten Objekten, wenn Objekte gültig bzw. ungültig geworden sind.
+	 * Aktualisiert die Tabellen mit zwischengespeicherten Objekten, wenn Objekte gÃ¼ltig bzw. ungÃ¼ltig geworden sind.
 	 *
-	 * @param systemObject Objekt das möglicherweise gültig bzw. ungültig geworden ist.
+	 * @param systemObject Objekt das mÃ¶glicherweise gÃ¼ltig bzw. ungÃ¼ltig geworden ist.
 	 * @param cachePidWhenDynamic Da Pids in verschiedenen Simulationsvarianten unterschiedliche Objekte referenzieren,
-	 *                            dürfen dynamische Objekte nicht in _systemObjectsByPid gespeichert werden,
-	 *                            wenn nicht sicher ist, dass das dynamische Objekt zu der aktuell verwendeten Simulation gehört.
+	 *                            dÃ¼rfen dynamische Objekte nicht in _systemObjectsByPid gespeichert werden,
+	 *                            wenn nicht sicher ist, dass das dynamische Objekt zu der aktuell verwendeten Simulation gehÃ¶rt.
 	 *                            Die Pid darf nur gecacht werden, wenn das Objekt als Ergebnis von
 	 *                            {@link #getObject(String)},
 	 *                            {@link #createDynamicObject(de.bsvrz.dav.daf.main.config.SystemObjectType, String, String)},
 	 *                            oder
-	 *                            beim Abruf von getElements()/getObjects() einer dynamischen Menge zurückgegeben wurde.
+	 *                            beim Abruf von getElements()/getObjects() einer dynamischen Menge zurÃ¼ckgegeben wurde.
 	 *                            In dem Fall ist der Parameter true. Konfigurationsobjekte werden immer gecacht,
 	 *                            hier ist der Parameter egal.
 	 *
-	 * @return Bereits vorher zwischengespeichertes Objekt mit der angegebenen Id oder übergebenes Objekt
+	 * @return Bereits vorher zwischengespeichertes Objekt mit der angegebenen Id oder Ã¼bergebenes Objekt
 	 */
 	DafSystemObject updateInternalDataStructure(DafSystemObject systemObject, boolean cachePidWhenDynamic) {
 
@@ -809,7 +815,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 				DafSystemObject oldObject = _systemObjectsById.put(id, systemObject);
 				if(oldObject != null) {
 					if(oldObject != systemObject) {
-						// Ein älteres Java-Objekt ist bereits vorhanden, also dieses verwenden
+						// Ein Ã¤lteres Java-Objekt ist bereits vorhanden, also dieses verwenden
 						systemObject = oldObject;
 						_systemObjectsById.put(id, systemObject);
 					}
@@ -823,7 +829,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 				}
 			}
 			else if(objectState == DafSystemObject.OBJECT_DELETED) {
-				// Dynamisches Objekt wurde gelöscht
+				// Dynamisches Objekt wurde gelÃ¶scht
 
 				// assert systemObject instanceof DafDynamicObject;
 
@@ -836,9 +842,9 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 
 						// Das gespeicherte Objekt wird nach 5 Minuten durch eine WeakReference ersetzt.
 						// Das Objekt darf nicht sofort auf der Map entfernt werden, weil es kurz nach
-						// dem Löschen noch in verschiedenen Benachrichtigungen vorkommen kann und eine
-						// erneute Abfrage des Objekts evtl. fehlschlagen würde (da ja bereits aus der
-						// Konfiguration gelöscht).
+						// dem LÃ¶schen noch in verschiedenen Benachrichtigungen vorkommen kann und eine
+						// erneute Abfrage des Objekts evtl. fehlschlagen wÃ¼rde (da ja bereits aus der
+						// Konfiguration gelÃ¶scht).
 						_systemObjectsById.expire(id, oldObject, 5 * 60000);
 					}
 				}
@@ -849,7 +855,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Liefert das Objekt zur Verwaltung der Kommunikation mit der Konfiguration zurück.
+	 * Liefert das Objekt zur Verwaltung der Kommunikation mit der Konfiguration zurÃ¼ck.
 	 *
 	 * @return Objekt zur Verwaltung der Kommunikation oder <code>null</code>, falls es noch nicht gesetzt wurde.
 	 *
@@ -935,7 +941,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 
 	public SystemObject getObject(String pid) {
 		if(pid == null) {
-			throw new IllegalArgumentException("Übergabeparameter ist null");
+			throw new IllegalArgumentException("Ãœbergabeparameter ist null");
 		}
 		SystemObject systemObject;
 		synchronized(_systemObjectsById) {
@@ -1019,7 +1025,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Initiale Abfrage der von der Applikation benötigten Objekte.
+	 * Initiale Abfrage der von der Applikation benÃ¶tigten Objekte.
 	 *
 	 * @return Array mit den Konfigurationsbereichen
 	 */
@@ -1050,7 +1056,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 							_iterator.remove();
 							MetaDataAnswer answer = (MetaDataAnswer) response;
 							_protocolVersion = answer.getProtocolVersion();
-							_debug.info("Protokollversion für Konfigurationsanfragen", _protocolVersion);
+							_debug.info("Protokollversion fÃ¼r Konfigurationsanfragen", _protocolVersion);
 							DafSystemObject objects[] = answer.getObjects();
 							ArrayList<DafSystemObject> configurationAreas = new ArrayList<DafSystemObject>();
 							if(objects != null) {
@@ -1119,7 +1125,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	@Override
 	public DynamicObject createDynamicObject(final SystemObjectType type, final String pid, final String name) throws ConfigurationChangeException {
 		if(!(type instanceof DynamicObjectType)){
-			throw new ConfigurationChangeException("Kein gültiger dynamischer Typ angegeben");
+			throw new ConfigurationChangeException("Kein gÃ¼ltiger dynamischer Typ angegeben");
 		}
 		try {
 			return getRequester().createDynamicObject((DynamicObjectType) type, pid, name);
@@ -1153,7 +1159,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 			getRequester().invalidate(dafSystemObject);
 		}
 		catch(RequestException e) {
-			throw new RuntimeException("Fehler beim Löschen eines Objekts", e);
+			throw new RuntimeException("Fehler beim LÃ¶schen eines Objekts", e);
 		}
 	}
 
@@ -1164,7 +1170,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 		dynamicObject.setNotValidSince(notValidSince);
 		if(updateInternalDataStructure(object, false) != object) {
 			_debug
-					.error("Es wurde ein Systemobjekt auf ungültig gesetzt, zu dessen Id ein anderes Objekt im Cache gewesen ist");
+					.error("Es wurde ein Systemobjekt auf ungÃ¼ltig gesetzt, zu dessen Id ein anderes Objekt im Cache gewesen ist");
 			Thread.dumpStack();
 		}
 	}
@@ -1238,7 +1244,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 
 	public UserAdministration getUserAdministration() {
 
-		// Das Objekt wird so spät wie möglich angelegt, damit alle Verbindungen initialisiert sind.
+		// Das Objekt wird so spÃ¤t wie mÃ¶glich angelegt, damit alle Verbindungen initialisiert sind.
 		synchronized(this) {
 			if(_userAdministration == null) {
 				_userAdministration = new ConfigurationUserAdministration(getRequester());
@@ -1261,12 +1267,12 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	/**
 	 * Ermittelt einen konfigurierenden Datensatz. Wenn nicht vorhanden wird es aus der Konfiguration geholt.
 	 *
-	 * @param object         Objekt des gewünschten Datensatzes
-	 * @param attributeGroup Attributgruppe des gewünschten Datensatzes
+	 * @param object         Objekt des gewÃ¼nschten Datensatzes
+	 * @param attributeGroup Attributgruppe des gewÃ¼nschten Datensatzes
 	 *
 	 * @return Liste mit den Attributwerten des Datensatzes.
 	 *
-	 * @deprecated Zum Lesen von konfigurierenden Datensätzen sollten die Methoden {@link #getConfigurationData} und {@link
+	 * @deprecated Zum Lesen von konfigurierenden DatensÃ¤tzen sollten die Methoden {@link #getConfigurationData} und {@link
 	 *             de.bsvrz.dav.daf.main.config.SystemObject#getConfigurationData} verwendet werden.
 	 */
 	@Deprecated
@@ -1278,7 +1284,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 				return ((AttributeBaseValueDataFactory.AttributeGroupAdapter)data)._attributeBaseValueList;
 			}
 			else {
-				throw new RuntimeException("Nicht unterstütze Data-Implementierung");
+				throw new RuntimeException("Nicht unterstÃ¼tze Data-Implementierung");
 			}
 		}
 		return null;
@@ -1331,7 +1337,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Gibt das SystemObjekt mit der angegebenen Objekt-Id aus dem Cache zurück. Befindet sich das Objekt nicht im Cache wird <code>null</code> zurückgegeben.
+	 * Gibt das SystemObjekt mit der angegebenen Objekt-Id aus dem Cache zurÃ¼ck. Befindet sich das Objekt nicht im Cache wird <code>null</code> zurÃ¼ckgegeben.
 	 *
 	 * @param objectId Id des Objekts
 	 *
@@ -1343,23 +1349,23 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 		}
 	}
 
-	/** Identifikation eines konfigurierenden Datensatzes, die das zugehörige Systemobjekt und die zugehörige Attributgruppenverwendung speichert. */
+	/** Identifikation eines konfigurierenden Datensatzes, die das zugehÃ¶rige Systemobjekt und die zugehÃ¶rige Attributgruppenverwendung speichert. */
 	static class ConfigDataKey {
 
 		/** Hashcode dieser Identifikation */
 		private final int _hashCode;
 
-		/** Zugehöriges Systemobjekt dieser Identifikation */
+		/** ZugehÃ¶riges Systemobjekt dieser Identifikation */
 		public final SystemObject _object;
 
-		/** Zugehörige Attribugruppenverwendung dieser Identifikation */
+		/** ZugehÃ¶rige Attribugruppenverwendung dieser Identifikation */
 		public final AttributeGroupUsage _atgUsage;
 
 		/**
 		 * Erzeugt eine neue Identifikation
 		 *
-		 * @param object   Zugehöriges Systemobjekt der neuen Identifikation
-		 * @param atgUsage Zugehörige Attribugruppenverwendung der neuen Identifikation
+		 * @param object   ZugehÃ¶riges Systemobjekt der neuen Identifikation
+		 * @param atgUsage ZugehÃ¶rige Attribugruppenverwendung der neuen Identifikation
 		 */
 		public ConfigDataKey(SystemObject object, AttributeGroupUsage atgUsage) {
 			_object = object;
@@ -1368,7 +1374,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 		}
 
 		/**
-		 * Gibt den Hashcode dieser Identifikation zurück. {@inheritDoc}
+		 * Gibt den Hashcode dieser Identifikation zurÃ¼ck. {@inheritDoc}
 		 *
 		 * @see #equals(Object)
 		 * @see Hashtable
@@ -1390,14 +1396,14 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 				return false;
 			}
 			final ConfigDataKey otherKey = (ConfigDataKey)other;
-			// "==" Operator ist hier zulässig, weil es von jedem SystemObjekt höchstens eine Instanziierung gibt.
+			// "==" Operator ist hier zulÃ¤ssig, weil es von jedem SystemObjekt hÃ¶chstens eine Instanziierung gibt.
 			return _object == otherKey._object && _atgUsage == otherKey._atgUsage;
 		}
 
 		/**
-		 * Ermittelt einen beschreibenden Text für diese Identifikation. Das genaue Format ist nicht festgelegt und kann sich ändern.
+		 * Ermittelt einen beschreibenden Text fÃ¼r diese Identifikation. Das genaue Format ist nicht festgelegt und kann sich Ã¤ndern.
 		 *
-		 * @return Beschreibender Text für diese Identifikation.
+		 * @return Beschreibender Text fÃ¼r diese Identifikation.
 		 */
 		@Override
 		public String toString() {
@@ -1406,15 +1412,15 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Liefert die konfigurierenden Datensätze einer Attributgruppenverwendung für mehrere Objekte zurück. Die zurückgelieferten Datensätze werden auch lokal
-	 * zwischengespeichert und können mit der Methode {@link de.bsvrz.dav.daf.main.config.SystemObject#getConfigurationData} ohne weitere Konfigurationsanfrage
-	 * abgefragt werden. Die Methode kann somit zur Minimierung der Anzahl von Konfigurationsanfragen und den damit verbundenen Verzögerungszeiten eingesetzt
+	 * Liefert die konfigurierenden DatensÃ¤tze einer Attributgruppenverwendung fÃ¼r mehrere Objekte zurÃ¼ck. Die zurÃ¼ckgelieferten DatensÃ¤tze werden auch lokal
+	 * zwischengespeichert und kÃ¶nnen mit der Methode {@link de.bsvrz.dav.daf.main.config.SystemObject#getConfigurationData} ohne weitere Konfigurationsanfrage
+	 * abgefragt werden. Die Methode kann somit zur Minimierung der Anzahl von Konfigurationsanfragen und den damit verbundenen VerzÃ¶gerungszeiten eingesetzt
 	 * werden.
 	 *
-	 * @param objects Liste der {@link de.bsvrz.dav.daf.main.config.SystemObject Systemobjekten} der gewünschten konfigurierenden Datensätze.
-	 * @param usage   Attributgruppenverwendung der gewünschten Datensätze.
+	 * @param objects Liste der {@link de.bsvrz.dav.daf.main.config.SystemObject Systemobjekten} der gewÃ¼nschten konfigurierenden DatensÃ¤tze.
+	 * @param usage   Attributgruppenverwendung der gewÃ¼nschten DatensÃ¤tze.
 	 *
-	 * @return Array mit den gewünschten konfigurierenden Datensätzen. Im Array enthält für jedes Element des Parameters <code>objects</code> einen
+	 * @return Array mit den gewÃ¼nschten konfigurierenden DatensÃ¤tzen. Im Array enthÃ¤lt fÃ¼r jedes Element des Parameters <code>objects</code> einen
 	 *         korrespondierender konfigurierender Datensatz oder <code>null</code>, wenn das Objekt keinen Datensatz der angegebenen Attributgruppenverwendung
 	 *         Kombination hat.
 	 */
@@ -1434,25 +1440,25 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 		AttributeGroupUsage attributeGroupUsage = atg.getAttributeGroupUsage(aspect);
 		if(attributeGroupUsage == null) {
 			throw new IllegalArgumentException(
-					"Keine Attributgruppenverwendung für Attributgruppe " + atg.getPidOrNameOrId() + " und Aspekt " + aspect.getPidOrNameOrId() + " gefunden"
+					"Keine Attributgruppenverwendung fÃ¼r Attributgruppe " + atg.getPidOrNameOrId() + " und Aspekt " + aspect.getPidOrNameOrId() + " gefunden"
 			);
 		}
 		if(!attributeGroupUsage.isConfigurating()) {
-			throw new IllegalArgumentException("Attributgruppenverwendung ist nicht für konfigurierende Datensätze vorgesehen");
+			throw new IllegalArgumentException("Attributgruppenverwendung ist nicht fÃ¼r konfigurierende DatensÃ¤tze vorgesehen");
 		}
 		return getConfigurationData(objects, attributeGroupUsage);
 	}
 
 	/**
-	 * Liefert die konfigurierenden Datensätze einer Attributgruppenverwendung für mehrere Objekte zurück. Die Methode sendet eine Konfiguationsanfrage an die
-	 * Konfiguration um die noch nicht im Zwischenspeicher vorhandenen Datensätze zu laden. Die zurückgelieferten Datensätze werden lokal zwischengespeichert
-	 * und können mit der Methode {@link de.bsvrz.dav.daf.main.config.SystemObject#getConfigurationData} ohne weitere Konfigurationsanfrage abgefragt werden.
-	 * Die Methode kann somit zur Minimierung der Anzahl von Konfigurationsanfragen und den damit verbundenen Verzögerungszeiten eingesetzt werden.
+	 * Liefert die konfigurierenden DatensÃ¤tze einer Attributgruppenverwendung fÃ¼r mehrere Objekte zurÃ¼ck. Die Methode sendet eine Konfiguationsanfrage an die
+	 * Konfiguration um die noch nicht im Zwischenspeicher vorhandenen DatensÃ¤tze zu laden. Die zurÃ¼ckgelieferten DatensÃ¤tze werden lokal zwischengespeichert
+	 * und kÃ¶nnen mit der Methode {@link de.bsvrz.dav.daf.main.config.SystemObject#getConfigurationData} ohne weitere Konfigurationsanfrage abgefragt werden.
+	 * Die Methode kann somit zur Minimierung der Anzahl von Konfigurationsanfragen und den damit verbundenen VerzÃ¶gerungszeiten eingesetzt werden.
 	 *
-	 * @param objects Array mit den {@link de.bsvrz.dav.daf.main.config.SystemObject Systemobjekten} der gewünschten konfigurierenden Datensätze.
-	 * @param usage   Attributgruppenverwendung der gewünschten Datensätze.
+	 * @param objects Array mit den {@link de.bsvrz.dav.daf.main.config.SystemObject Systemobjekten} der gewÃ¼nschten konfigurierenden DatensÃ¤tze.
+	 * @param usage   Attributgruppenverwendung der gewÃ¼nschten DatensÃ¤tze.
 	 *
-	 * @return Array mit den gewünschten konfigurierenden Datensätzen. Im Array existiert für jedes Element des Parameters <code>objects</code> ein
+	 * @return Array mit den gewÃ¼nschten konfigurierenden DatensÃ¤tzen. Im Array existiert fÃ¼r jedes Element des Parameters <code>objects</code> ein
 	 *         korrespondierender konfigurierender Datensatz oder <code>null</code>, wenn das Objekt keinen Datensatz der angegebenen Attributgruppenverwendung
 	 *         Kombination hat.
 	 */
@@ -1475,14 +1481,14 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 				}
 			}
 			else {
-				// Objekt muss per KonfigurationsAnfrage geholt werden, dazu in Liste einfügen
+				// Objekt muss per KonfigurationsAnfrage geholt werden, dazu in Liste einfÃ¼gen
 				remoteObjects.add(object);
-				// und Merken, wo das Objekt im Array hingehört
+				// und Merken, wo das Objekt im Array hingehÃ¶rt
 				originalPositions.add(i);
 			}
 		}
 
-		//Jetzt falls nötig KonfigurationsAnfrage für alle Objekte in der Liste senden
+		//Jetzt falls nÃ¶tig KonfigurationsAnfrage fÃ¼r alle Objekte in der Liste senden
 		if(remoteObjects.size() > 0) {
 			final Data[] datas = getConfigurationDataRemote(remoteObjects, usage);
 			//und  in das result-Array einsortieren
@@ -1495,13 +1501,13 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Liefert die konfigurierenden Datensätze einer Attributgruppenverwendung für mehrere Objekte zurück. Dies ist eine Hilfsfunktion zu
+	 * Liefert die konfigurierenden DatensÃ¤tze einer Attributgruppenverwendung fÃ¼r mehrere Objekte zurÃ¼ck. Dies ist eine Hilfsfunktion zu
 	 * <code>getConfigurationData</code>, die im Gegensatz zu dieser keine Daten aus dem Cache liest (wohl aber welche hineinschreibt).
 	 *
-	 * @param objects Array mit den {@link de.bsvrz.dav.daf.main.config.SystemObject Systemobjekten} der gewünschten konfigurierenden Datensätze.
-	 * @param usage   Attributgruppenverwendung der gewünschten Datensätze.
+	 * @param objects Array mit den {@link de.bsvrz.dav.daf.main.config.SystemObject Systemobjekten} der gewÃ¼nschten konfigurierenden DatensÃ¤tze.
+	 * @param usage   Attributgruppenverwendung der gewÃ¼nschten DatensÃ¤tze.
 	 *
-	 * @return Array mit den gewünschten konfigurierenden Datensätzen. Im Array existiert für jedes Element des Parameters <code>objects</code> einen
+	 * @return Array mit den gewÃ¼nschten konfigurierenden DatensÃ¤tzen. Im Array existiert fÃ¼r jedes Element des Parameters <code>objects</code> einen
 	 *         korrespondierender konfigurierender Datensatz oder <code>null</code>, wenn das Objekt keinen Datensatz der angegebenen Attributgruppenverwendung
 	 *         Kombination hat.
      */
@@ -1527,7 +1533,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 						datas[i] = data;
 					}
 					catch(Exception ex) {
-						final String errorMessage = "Der konfigurierende Datensatz für das Objekt " + objects.get(i) + " und der Attributgruppenverwendung " + usage
+						final String errorMessage = "Der konfigurierende Datensatz fÃ¼r das Objekt " + objects.get(i) + " und der Attributgruppenverwendung " + usage
 						                            + " konnte nicht deserialisiert werden";
 						_debug.warning(errorMessage, ex);
 						throw new RuntimeException(errorMessage, ex);
@@ -1538,7 +1544,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 		}
 		catch(RequestException e) {
 			String message =
-					"Fehler bei der Konfigurationsanfrage nach konfigurierenden Datensätzen für " + usage + " und die Objekte " + Arrays.asList(objects);
+					"Fehler bei der Konfigurationsanfrage nach konfigurierenden DatensÃ¤tzen fÃ¼r " + usage + " und die Objekte " + Arrays.asList(objects);
 			throw new RuntimeException(message, e);
 		}
 	}
@@ -1559,10 +1565,10 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Liefert einen konfigurierenden Datensatz eines Objekts zurück. Als Aspekt des gewünschten Datensatzes wird "<code>asp.eigenschaften</code>" angenommen.
+	 * Liefert einen konfigurierenden Datensatz eines Objekts zurÃ¼ck. Als Aspekt des gewÃ¼nschten Datensatzes wird "<code>asp.eigenschaften</code>" angenommen.
 	 *
-	 * @param object SystemObject des gewünschten Datensatzes.
-	 * @param atg    Attributgruppe des gewünschten Datensatzes.
+	 * @param object SystemObject des gewÃ¼nschten Datensatzes.
+	 * @param atg    Attributgruppe des gewÃ¼nschten Datensatzes.
 	 *
 	 * @return Konfigurierender Datensatz der angegebenen Attributgruppe oder <code>null</code>, wenn das Objekt keinen Datensatz der angegebenen Attributgruppe
 	 *         hat.
@@ -1573,10 +1579,10 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Liefert einen konfigurierenden Datensatz eines Objekts zurück.
+	 * Liefert einen konfigurierenden Datensatz eines Objekts zurÃ¼ck.
 	 *
-	 * @param object   SystemObject des gewünschten Datensatzes.
-	 * @param atgUsage Attributgruppenverwendung des gewünschten Datensatzes.
+	 * @param object   SystemObject des gewÃ¼nschten Datensatzes.
+	 * @param atgUsage Attributgruppenverwendung des gewÃ¼nschten Datensatzes.
 	 *
 	 * @return Konfigurierender Datensatz der angegebenen Attributgruppenverwendung oder <code>null</code>, wenn das Objekt keinen Datensatz der angegebenen
 	 *         Attributgruppenverwendung hat.
@@ -1586,7 +1592,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Gibt die Objekt-Id des Konfigurationsverantwortlichen zurück.
+	 * Gibt die Objekt-Id des Konfigurationsverantwortlichen zurÃ¼ck.
 	 *
 	 * @return Die Objekt-Id des Konfigurationsverantwortlichen
 	 */
@@ -1595,13 +1601,13 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Ordnet dem Konfigurationsobjekt eine weitere Menge zu. Die Zuordnung wird erst mit der nächsten Konfigurationsversion gültig.
+	 * Ordnet dem Konfigurationsobjekt eine weitere Menge zu. Die Zuordnung wird erst mit der nÃ¤chsten Konfigurationsversion gÃ¼ltig.
 	 *
 	 * @param configurationObject Objekt, dem eine neue Menge zugeordnet werden soll.
 	 * @param set                 Menge, die dem Konfigurationsobjekt zugeordnet werden soll.
 	 *
-	 * @throws ConfigurationChangeException Die Konfiguration führt den Auftrag nicht aus. Ein Grund wäre zum Beispiel, dass die Konfiguration nicht der
-	 *                                      Konfigurationsverantwortliche für dieses Objekt ist.
+	 * @throws ConfigurationChangeException Die Konfiguration fÃ¼hrt den Auftrag nicht aus. Ein Grund wÃ¤re zum Beispiel, dass die Konfiguration nicht der
+	 *                                      Konfigurationsverantwortliche fÃ¼r dieses Objekt ist.
 	 */
 	final void addSet(DafConfigurationObject configurationObject, ObjectSet set) throws ConfigurationChangeException {
 		try {
@@ -1616,13 +1622,13 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Entfernt die Zuordnung von diesem Konfigurationsobjekt zu einer Menge. Die Änderung wird erst mit der nächsten Konfigurationsversion gültig.
+	 * Entfernt die Zuordnung von diesem Konfigurationsobjekt zu einer Menge. Die Ã„nderung wird erst mit der nÃ¤chsten Konfigurationsversion gÃ¼ltig.
 	 *
 	 * @param configurationObject Objekt, von dem eine Menge entfernt werden soll
 	 * @param set                 Menge, die entfernt werden soll.
 	 *
-	 * @throws ConfigurationChangeException Die Konfiguration führt den Auftrag nicht aus. Ein Grund wäre zum Beispiel, dass die Konfiguration nicht der
-	 *                                      Konfigurationsverantwortliche für dieses Objekt ist.
+	 * @throws ConfigurationChangeException Die Konfiguration fÃ¼hrt den Auftrag nicht aus. Ein Grund wÃ¤re zum Beispiel, dass die Konfiguration nicht der
+	 *                                      Konfigurationsverantwortliche fÃ¼r dieses Objekt ist.
 	 */
 	final void removeSet(DafConfigurationObject configurationObject, ObjectSet set) throws ConfigurationChangeException {
 		try {
@@ -1637,12 +1643,12 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Bestimmt die zu einem vorgegebenen Zeitpunkt zur Zusammenstellung gehörenden Elemente.
+	 * Bestimmt die zu einem vorgegebenen Zeitpunkt zur Zusammenstellung gehÃ¶renden Elemente.
 	 *
-	 * @param type Type, der geprüft werden soll
+	 * @param type Type, der geprÃ¼ft werden soll
 	 * @param time Zeitpunkt des Zeitbereichs in Millisekunden seit 1970.
 	 *
-	 * @return Liste mit den während des gesamten Zeitbereichs zur Zusammenstellung gehörenden System-Objekten.
+	 * @return Liste mit den wÃ¤hrend des gesamten Zeitbereichs zur Zusammenstellung gehÃ¶renden System-Objekten.
 	 */
 	final List<SystemObject> getElementsOfType(DafSystemObjectType type, long time) {
 		final Collection<SystemObjectType> typs = new ArrayList<SystemObjectType>();
@@ -1651,13 +1657,13 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Bestimmt die Elemente, die an mindestens einem Zeitpunkt des angegebenen Zeitbereichs zur Zusammenstellung gehört haben.
+	 * Bestimmt die Elemente, die an mindestens einem Zeitpunkt des angegebenen Zeitbereichs zur Zusammenstellung gehÃ¶rt haben.
 	 *
 	 * @param type      die Id des Typs.
 	 * @param startTime Erster Zeitpunkt des Zeitbereichs in Millisekunden seit 1970.
 	 * @param endTime   Letzter Zeitpunkt des Zeitbereichs in Millisekunden seit 1970.
 	 *
-	 * @return Liste mit den während des gesamten Zeitbereichs zur Zusammenstellung gehörenden System-Objekten.
+	 * @return Liste mit den wÃ¤hrend des gesamten Zeitbereichs zur Zusammenstellung gehÃ¶renden System-Objekten.
 	 */
 	final List<SystemObject> getElementsOfTypeInPeriod(DafSystemObjectType type, long startTime, long endTime) {
 		final Collection<SystemObjectType> typs = new ArrayList<SystemObjectType>();
@@ -1666,13 +1672,13 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Bestimmt die Elemente, die während des gesamten angegebenen Zeitbereichs zur Zusammenstellung gehört haben.
+	 * Bestimmt die Elemente, die wÃ¤hrend des gesamten angegebenen Zeitbereichs zur Zusammenstellung gehÃ¶rt haben.
 	 *
 	 * @param type      die Id des Typs.
 	 * @param startTime Erster Zeitpunkt des Zeitbereichs in Millisekunden seit 1970.
 	 * @param endTime   Letzter Zeitpunkt des Zeitbereichs in Millisekunden seit 1970.
 	 *
-	 * @return Liste mit den während des gesamten Zeitbereichs zur Zusammenstellung gehörenden System-Objekten.
+	 * @return Liste mit den wÃ¤hrend des gesamten Zeitbereichs zur Zusammenstellung gehÃ¶renden System-Objekten.
 	 */
 	final List<SystemObject> getElementsOfTypeDuringPeriod(DafSystemObjectType type, long startTime, long endTime) {
 		final Collection<SystemObjectType> typs = new ArrayList<SystemObjectType>();
@@ -1681,9 +1687,9 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Diese Methode castet eine Collection, die Objekte enthält, die ein Interface implementieren, auf die konkrete Klasse.
+	 * Diese Methode castet eine Collection, die Objekte enthÃ¤lt, die ein Interface implementieren, auf die konkrete Klasse.
 	 *
-	 * @param systemObjects Collection, deren Elemente gecastet werden müssen
+	 * @param systemObjects Collection, deren Elemente gecastet werden mÃ¼ssen
 	 *
 	 * @return Liste mit gecasteten Objekten
 	 */
@@ -1697,12 +1703,12 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Bestimmt die zu einem vorgegebenen Zeitpunkt zur Mengenzusammenstellung gehörenden Elemente.
+	 * Bestimmt die zu einem vorgegebenen Zeitpunkt zur Mengenzusammenstellung gehÃ¶renden Elemente.
 	 *
 	 * @param set  Menge, aus der die Objekte angefordert werden sollen
 	 * @param time Zeitpunkt in Millisekunden seit 1970
 	 *
-	 * @return Liste mit den zum angegebenen Zeitpunkt zur Mengenzusammenstellung gehörenden System-Objekten.
+	 * @return Liste mit den zum angegebenen Zeitpunkt zur Mengenzusammenstellung gehÃ¶renden System-Objekten.
 	 */
 	final List getSetElements(DafObjectSet set, long time) {
 
@@ -1719,13 +1725,13 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Bestimmt die Elemente, die an mindestens einem Zeitpunkt des angegebenen Zeitbereichs zur Mengenzusammenstellung gehört haben.
+	 * Bestimmt die Elemente, die an mindestens einem Zeitpunkt des angegebenen Zeitbereichs zur Mengenzusammenstellung gehÃ¶rt haben.
 	 *
 	 * @param set       Menge, aus der die Objekte angefordert werden sollen
 	 * @param startTime Erster Zeitpunkt des Zeitbereichs in Millisekunden seit 1970.
 	 * @param endTime   Letzter Zeitpunkt des Zeitbereichs in Millisekunden seit 1970.
 	 *
-	 * @return Liste mit den zu mindestens einem Zeitpunkt des Zeitbereichs zur Mengenzusammenstellung gehörenden System-Objekten.
+	 * @return Liste mit den zu mindestens einem Zeitpunkt des Zeitbereichs zur Mengenzusammenstellung gehÃ¶renden System-Objekten.
 	 */
 	final List<SystemObject> getSetElementsInPeriod(DafObjectSet set, long startTime, long endTime) {
 		final ObjectTimeSpecification timeSpec = ObjectTimeSpecification.validInPeriod(startTime, endTime);
@@ -1741,13 +1747,13 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Bestimmt die Elemente, die während des gesamten angegebenen Zeitbereichs zur Mengenzusammenstellung gehört haben.
+	 * Bestimmt die Elemente, die wÃ¤hrend des gesamten angegebenen Zeitbereichs zur Mengenzusammenstellung gehÃ¶rt haben.
 	 *
 	 * @param set       Menge, aus der die Objekte angefordert werden sollen
 	 * @param startTime Erster Zeitpunkt des Zeitbereichs in Millisekunden seit 1970.
 	 * @param endTime   Letzter Zeitpunkt des Zeitbereichs in Millisekunden seit 1970.
 	 *
-	 * @return Liste mit den während des gesamten Zeitbereichs zur Mengenzusammenstellung gehörenden System-Objekten.
+	 * @return Liste mit den wÃ¤hrend des gesamten Zeitbereichs zur Mengenzusammenstellung gehÃ¶renden System-Objekten.
 	 */
 	final List<SystemObject> getSetElementsDuringPeriod(DafObjectSet set, long startTime, long endTime) {
 		final ObjectTimeSpecification timeSpec = ObjectTimeSpecification.validDuringPeriod(startTime, endTime);
@@ -1763,11 +1769,11 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Bestimmt die nach Aktivierung der nächsten Konfigurationsversion zur Mengenzusammenstellung gehörenden Elemente.
+	 * Bestimmt die nach Aktivierung der nÃ¤chsten Konfigurationsversion zur Mengenzusammenstellung gehÃ¶renden Elemente.
 	 *
 	 * @param set Menge, aus der die Objekte angefordert werden sollen
 	 *
-	 * @return Liste mit den in der nächsten Konfigurationsversion zur Zusammenstellung gehörenden System-Objekten.
+	 * @return Liste mit den in der nÃ¤chsten Konfigurationsversion zur Zusammenstellung gehÃ¶renden System-Objekten.
 	 */
 	final List<SystemObject> getSetElementsInNextVersion(DafObjectSet set) {
 		try {
@@ -1779,12 +1785,12 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Bestimmt die in einer bestimmten Konfigurationsversion zur Mengenzusammenstellung gehörenden Elemente.
+	 * Bestimmt die in einer bestimmten Konfigurationsversion zur Mengenzusammenstellung gehÃ¶renden Elemente.
 	 *
 	 * @param set     Menge, in der die Objekte betrachtet werden sollen
 	 * @param version Version der Konfiguration
 	 *
-	 * @return Liste mit den in der angegebenen Version zur Zusammenstellung gehörenden System-Objekten.
+	 * @return Liste mit den in der angegebenen Version zur Zusammenstellung gehÃ¶renden System-Objekten.
 	 */
 	final List<SystemObject> getSetElementsInVersion(DafObjectSet set, short version) {
 		try {
@@ -1796,13 +1802,13 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Bestimmt die Elemente, die in allen Konfigurationsversionen eines vorgegebenen Versionsbereichs zur Mengenzusammenstellung gehört haben.
+	 * Bestimmt die Elemente, die in allen Konfigurationsversionen eines vorgegebenen Versionsbereichs zur Mengenzusammenstellung gehÃ¶rt haben.
 	 *
-	 * @param set         Menge, die die Elemente enthält, die betrachtet werden sollen.
+	 * @param set         Menge, die die Elemente enthÃ¤lt, die betrachtet werden sollen.
 	 * @param fromVersion Erste Version des Bereichs von Konfigurationversionen
 	 * @param toVersion   Letzte Version des Bereichs von Konfigurationversionen
 	 *
-	 * @return Liste mit den in allen Version des Bereichs zur Mengenzusammenstellung gehörenden System-Objekten.
+	 * @return Liste mit den in allen Version des Bereichs zur Mengenzusammenstellung gehÃ¶renden System-Objekten.
 	 */
 	final List<SystemObject> getSetElementsInAllVersions(DafObjectSet set, short fromVersion, short toVersion) {
 		try {
@@ -1814,13 +1820,13 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Bestimmt die Elemente, die in mindestens einer Konfigurationsversion eines vorgegebenen Versionsbereichs zur Mengenzusammenstellung gehört haben.
+	 * Bestimmt die Elemente, die in mindestens einer Konfigurationsversion eines vorgegebenen Versionsbereichs zur Mengenzusammenstellung gehÃ¶rt haben.
 	 *
 	 * @param set         Menge, aus der die Objekte angefordert werden sollen
 	 * @param fromVersion Erste Version des Bereichs von Konfigurationversionen
 	 * @param toVersion   Letzte Version des Bereichs von Konfigurationversionen
 	 *
-	 * @return Liste mit den in mindestens einer Version des Bereichs zur Zusammenstellung gehörenden System-Objekten.
+	 * @return Liste mit den in mindestens einer Version des Bereichs zur Zusammenstellung gehÃ¶renden System-Objekten.
 	 */
 	final List<SystemObject> getSetElementsInAnyVersions(DafObjectSet set, short fromVersion, short toVersion) {
 		try {
@@ -1832,13 +1838,13 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 	}
 
 	/**
-	 * Ändert einen konfigurierenden Datensatz eines Objekts.
+	 * Ã„ndert einen konfigurierenden Datensatz eines Objekts.
 	 *
-	 * @param systemObject Systemobjekt an dem der Datensatz geändert werden soll.
-	 * @param atgUsage     Attributgruppenverwendung des zu ändernden Datensatzes
-	 * @param data         Der neue Datensatz. Wird <code>null</code> angegeben, wird der Datensatz am Objekt gelöscht.
+	 * @param systemObject Systemobjekt an dem der Datensatz geÃ¤ndert werden soll.
+	 * @param atgUsage     Attributgruppenverwendung des zu Ã¤ndernden Datensatzes
+	 * @param data         Der neue Datensatz. Wird <code>null</code> angegeben, wird der Datensatz am Objekt gelÃ¶scht.
 	 *
-	 * @throws ConfigurationChangeException Wenn der Datensatz nicht geändert werden konnte.
+	 * @throws ConfigurationChangeException Wenn der Datensatz nicht geÃ¤ndert werden konnte.
 	 */
 	void setConfigurationData(SystemObject systemObject, AttributeGroupUsage atgUsage, Data data) throws ConfigurationChangeException {
 
@@ -1848,24 +1854,24 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 			// Den Datensatz in ein byte-Array umwandeln.
 			final byte[] dataAsByteArray;
 			if(data != null) {
-				// Prüfen ob das Data-Objekt einen ganzen Datensatz darstellt
+				// PrÃ¼fen ob das Data-Objekt einen ganzen Datensatz darstellt
 				if(data.getAttributeType() != null) {
 					throw new IllegalArgumentException(
 							"Der zu speichernde Datensatz stellt keinen ganzen Datensatz dar sondern nur einen Teildatensatz vom Typ "
 							+ data.getAttributeType().getPid()
 					);
 				}
-				// Prüfen ob das Data-Objekt ein Datensatz der passenden Attributgruppe ist
+				// PrÃ¼fen ob das Data-Objekt ein Datensatz der passenden Attributgruppe ist
 				if(!data.getName().equals(atgUsage.getAttributeGroup().getPid())) {
 					throw new IllegalArgumentException(
 							"Die Attributgruppe des zu speichernden Data-Objekts (" + data.getName() + ") entspricht nicht der angegebenen Attributgruppe: "
 							+ atgUsage.getAttributeGroup().getPid() + ")"
 					);
 				}
-				// Prüfen, ob alle Attribute im Datensatz definiert sind
+				// PrÃ¼fen, ob alle Attribute im Datensatz definiert sind
 				if(!data.isDefined()) {
-					// Der Datensatz kann nicht verschickt werden, weil mindestens ein Attribut den "undefiniert Wert" enthält
-					throw new IllegalArgumentException("Der zu speichernde Datensatz enthält mindestens ein Attribut, dass nicht definiert ist: " + data);
+					// Der Datensatz kann nicht verschickt werden, weil mindestens ein Attribut den "undefiniert Wert" enthÃ¤lt
+					throw new IllegalArgumentException("Der zu speichernde Datensatz enthÃ¤lt mindestens ein Attribut, dass nicht definiert ist: " + data);
 				}
 				final ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
 				final Serializer serializer = SerializingFactory.createSerializer(byteArrayStream);
@@ -1877,7 +1883,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 				dataAsByteArray = new byte[0];
 			}
 			requester.setConfigurationData(atgUsage, systemObject, dataAsByteArray);
-			// Nach erfolgreicher Änderung des Datensatzes in der Konfiguration wird der neue Datensatz in den lokalen Cache eingetragen
+			// Nach erfolgreicher Ã„nderung des Datensatzes in der Konfiguration wird der neue Datensatz in den lokalen Cache eingetragen
 			ConfigDataKey configDataKey = new ConfigDataKey(systemObject, atgUsage);
 			if(data != null) {
 				final Data dataCopy = data.createUnmodifiableCopy();
@@ -1920,13 +1926,13 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 		return null;
 	}
 
-	/** Klasse zur asynchronen Benachrichtigung der Listener für Änderungen der Elemente von dynamischen Zusammenstellungen.*/
+	/** Klasse zur asynchronen Benachrichtigung der Listener fÃ¼r Ã„nderungen der Elemente von dynamischen Zusammenstellungen.*/
 	private class NotifyingMutableCollectionChangeListener implements MutableCollectionChangeListener {
 
-		/** Thread für die asynchrone Verarbeitung */
+		/** Thread fÃ¼r die asynchrone Verarbeitung */
 		private Thread _asyncNotifierThread;
 
-		/** Queue in der Benachrichtigungsaufträge zwischengespeichert werden. */
+		/** Queue in der BenachrichtigungsauftrÃ¤ge zwischengespeichert werden. */
 		private UnboundedQueue<NotificationObject> _notificationQueue = new UnboundedQueue<NotificationObject>();
 
 		public NotifyingMutableCollectionChangeListener() {
@@ -1949,7 +1955,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 			_asyncNotifierThread.interrupt();
 		}
 
-		/** Enthält die run-Methode des Threads zur asynchronen Verarbeitung. */
+		/** EnthÃ¤lt die run-Methode des Threads zur asynchronen Verarbeitung. */
 		public class AsyncNotifier implements Runnable {
 
 			public void run() {
@@ -1959,7 +1965,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 						collectionChanged(notificationObject._mutableCollection, notificationObject._simVariant, notificationObject._addedElements, notificationObject._removedElements);
 					}
 					catch(RuntimeException e) {
-						_debug.warning("Fehler bei der asynchronen Benachrichtigung bzgl. Änderungen von dynamischen Mengen und dynamischen Typen", e);
+						_debug.warning("Fehler bei der asynchronen Benachrichtigung bzgl. Ã„nderungen von dynamischen Mengen und dynamischen Typen", e);
 					}
 					catch(InterruptedException e) {
 						return;
@@ -1967,7 +1973,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 				}
 			}
 
-			/** Benachrichtigt die zugehörige dynamische Menge bzw. den dynamischen Typ, dass sich Änderungen an den Elementen ergeben haben. */
+			/** Benachrichtigt die zugehÃ¶rige dynamische Menge bzw. den dynamischen Typ, dass sich Ã„nderungen an den Elementen ergeben haben. */
 			public void collectionChanged(
 					MutableCollection mutableCollection, short simVariant, List<SystemObject> addedElements, List<SystemObject> removedElements) {
 				if(mutableCollection instanceof DafMutableSet) {
@@ -1987,7 +1993,7 @@ public class DafDataModel implements DataModel, UpdateDynamicObjects {
 
 	}
 
-	/** Speichert die für eine asynchrone Benachrichtigung erforderlichen Parameter. */
+	/** Speichert die fÃ¼r eine asynchrone Benachrichtigung erforderlichen Parameter. */
 	private static class NotificationObject {
 
 		private final MutableCollection _mutableCollection;

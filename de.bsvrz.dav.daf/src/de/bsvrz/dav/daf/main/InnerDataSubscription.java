@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main;
@@ -26,11 +32,11 @@ import de.bsvrz.dav.daf.main.config.AttributeGroupUsage;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 
 /**
- * Kapselt eine Datenanmeldung für Daten auf dem Datenverteiler. Für eine Transaktionsanmeldung als Quelle oder Senke muss dem Datenverteiler mitgeteilt
- * werden, welche inneren Daten diese Transaktion enthalten können soll. Dafür ist diese Klasse gedacht.
+ * Kapselt eine Datenanmeldung fÃ¼r Daten auf dem Datenverteiler. FÃ¼r eine Transaktionsanmeldung als Quelle oder Senke muss dem Datenverteiler mitgeteilt
+ * werden, welche inneren Daten diese Transaktion enthalten kÃ¶nnen soll. DafÃ¼r ist diese Klasse gedacht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8953 $
+ * @version $Revision$
  */
 public final class InnerDataSubscription {
 
@@ -64,7 +70,7 @@ public final class InnerDataSubscription {
 	}
 
 	/**
-	 * Liefert das Objekt dieser Datenbeschreibung zurück.
+	 * Liefert das Objekt dieser Datenbeschreibung zurÃ¼ck.
 	 *
 	 * @return Objekt dieser Datenbeschreibung
 	 */
@@ -73,7 +79,7 @@ public final class InnerDataSubscription {
 	}
 
 	/**
-	 * Liefert die Attributgruppe dieser Datenbeschreibung zurück.
+	 * Liefert die Attributgruppe dieser Datenbeschreibung zurÃ¼ck.
 	 *
 	 * @return Attributgruppe dieser Datenbeschreibung
 	 */
@@ -82,7 +88,7 @@ public final class InnerDataSubscription {
 	}
 
 	/**
-	 * Liefert den Aspekt dieser Datenbeschreibung zurück.
+	 * Liefert den Aspekt dieser Datenbeschreibung zurÃ¼ck.
 	 *
 	 * @return Aspekt dieser Datenbeschreibung
 	 */

@@ -2,13 +2,13 @@
  * Copyright 2010 by Kappich Systemberatung, Aachen
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -17,8 +17,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel;
@@ -45,41 +51,41 @@ import java.io.OutputStream;
 
 /**
  * Klasse zur Verwaltung der unteren Ebene von Datenverteilerverbindungen.
- * <p/>
+ * <p>
  * Die Aufgabe dieser Klasse ist es Telegramme zu versenden, zu empfangen und KeepAlive-Mechanismus zu verwalten.
- * <p/>
- * Jede dieser Aufgaben wird durch mindestens einen Thread übernommen:
- * <p/>
- * Empfang von Daten: ReceivingChannel (nimmt die Daten entgegen und legt diese in _receivingTable ab. Bei Konfigurationsanfragen kann es zur Zerstücklung von
+ * <p>
+ * Jede dieser Aufgaben wird durch mindestens einen Thread Ã¼bernommen:
+ * <p>
+ * Empfang von Daten: ReceivingChannel (nimmt die Daten entgegen und legt diese in _receivingTable ab. Bei Konfigurationsanfragen kann es zur ZerstÃ¼cklung von
  * Telegrammen kommen, diese Teiltelgramme werden in _splittedTelegramsTable abgelegt und dort mit jedem empfang eines Teiltelegramms langsam zusammen gebaut
- * und nach Vollendung an ClientHighLevelCommunication durchgereicht (nicht über den Worker-Thread). Beim empfang von Daten wird der KeepAlive-Thread
+ * und nach Vollendung an ClientHighLevelCommunication durchgereicht (nicht Ã¼ber den Worker-Thread). Beim empfang von Daten wird der KeepAlive-Thread
  * benachrichtigt.), WorkerThread (bearbeitet die _receivingTable und reicht empfangene Telegramme an ClientHighLevelCommunication weiter).
- * <p/>
- * Versand von Daten: SendingChannel (verschickt Telegramme aus der _sendingTable und benachrichtigt den KeepAlive Thread, sobald Daten verschickt wurden. Prüft
+ * <p>
+ * Versand von Daten: SendingChannel (verschickt Telegramme aus der _sendingTable und benachrichtigt den KeepAlive Thread, sobald Daten verschickt wurden. PrÃ¼ft
  * die Laufzeit der einzelnen Telegramme und unterbricht die Verbindung sobald diese einen kritischen Wert unterschreitet).
- * <p/>
- * KeepAlive-Mechanismus: KeepAliveThread (Verwaltet ob ein "KeepAlive" Telegramm verschickt werden muss. Dies ist abhängig davon, ob eine Telegramm
+ * <p>
+ * KeepAlive-Mechanismus: KeepAliveThread (Verwaltet ob ein "KeepAlive" Telegramm verschickt werden muss. Dies ist abhÃ¤ngig davon, ob eine Telegramm
  * versendet/empfangen wurde. Wurde eine bestimmte Anzahl Keepalive Telegramme versendet, so wird die Verbindung abgebaut. Wird nach dem versand eines KeepAlive
- * Telegramms ein normales Telegramm empfangen/gesendet, so wird der KeepAlive-Telegrammzähler wieder auf 0 gesetzt. Anmerkung: Das KeepAlive Paket wird nicht
- * über den SendingChannel-Thread verschickt, sondern direkt über den Outputstream.)
- * <p/>
- * Alle vollständigen Telegramme werden in zwei TelegramQueue-Objekten gespeichert (eine für den Empfang, eine für den Versand). Die oben beschriebenen Threads (ausser
+ * Telegramms ein normales Telegramm empfangen/gesendet, so wird der KeepAlive-TelegrammzÃ¤hler wieder auf 0 gesetzt. Anmerkung: Das KeepAlive Paket wird nicht
+ * Ã¼ber den SendingChannel-Thread verschickt, sondern direkt Ã¼ber den Outputstream.)
+ * <p>
+ * Alle vollstÃ¤ndigen Telegramme werden in zwei TelegramQueue-Objekten gespeichert (eine fÃ¼r den Empfang, eine fÃ¼r den Versand). Die oben beschriebenen Threads (ausser
  * der KeepAlive-Thread) arbeiten und synchronisieren sich auf den jeweiligen "PriorityTables".
- * <p/>
- * <p/>
- * Begriffsdefinitionen: Protokollsteuerung DaV-DAF (Klasse ClientHighLevelCommunication), Datenrepräsentation (Klassen DataInputStream und DataOutputStream),
+ * <p>
+ * <p>
+ * Begriffsdefinitionen: Protokollsteuerung DaV-DAF (Klasse ClientHighLevelCommunication), DatenreprÃ¤sentation (Klassen DataInputStream und DataOutputStream),
  * TCP-Kommunikationskanal (Klasse TCP_IP_Communication)
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13424 $
+ * @version $Revision$
  */
 public class LowLevelCommunication implements LowLevelCommunicationInterface {
 
-	/** Wert für den <code>mode</code>-Parameter des Konstruktors, der bewirkt, dass Konfigurationsantworten wie normale Datentelegramme verarbeitet werden. */
+	/** Wert fÃ¼r den <code>mode</code>-Parameter des Konstruktors, der bewirkt, dass Konfigurationsantworten wie normale Datentelegramme verarbeitet werden. */
 	public static final byte NORMAL_MODE = 0;
 
 	/**
-	 * Wert für den <code>mode</code>-Parameter des Konstruktors, der bewirkt, dass Konfigurationsantworten ausgewertet und entsprechend an die höhere
+	 * Wert fÃ¼r den <code>mode</code>-Parameter des Konstruktors, der bewirkt, dass Konfigurationsantworten ausgewertet und entsprechend an die hÃ¶here
 	 * Kommunikationsebene weitergegeben werden.
 	 */
 	public static final byte HANDLE_CONFIG_RESPONCES_MODE = 1;
@@ -116,10 +122,10 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 	/** Der KeepAlivethread */
 	private KeepAliveThread _keepAliveThread;
 
-	/** Die Zeit nach der spätestens ein KeepAlive-Telegramm gesendet werden muss, wenn in dieser Zeit kein sonstiges Telegramm gesendet wurde. */
+	/** Die Zeit in Millisekunden nach der spÃ¤testens ein KeepAlive-Telegramm gesendet werden muss, wenn in dieser Zeit kein sonstiges Telegramm gesendet wurde. */
 	private long _keepAliveSendTimeOut;
 
-	/** Die Zeit in der spätestens ein Telegramm empfangen werden muss. Wenn diese Zeit dreimal hintereinander abgelaufen ist, wird die Verbindung terminiert. */
+	/** Die Zeit in Millisekunden in der spÃ¤testens ein Telegramm empfangen werden muss. Wenn diese Zeit dreimal hintereinander abgelaufen ist, wird die Verbindung terminiert. */
 	private long _keepAliveReceiveTimeOut;
 
 	/** Verbindungsstatusinformation */
@@ -133,10 +139,10 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 	 */
 	private int _mode;
 
-	/** Temporäre Liste der zerstückelten Telegramme */
+	/** TemporÃ¤re Liste der zerstÃ¼ckelten Telegramme */
 	private SplittedApplicationTelegramsTable _splittedTelegramsTable;
 
-	/** Kennung, die <code>true</code> ist, wenn ein Verbindungsterminierungstelegramm beim Schließen der Verbindung versendet werden soll. */
+	/** Kennung, die <code>true</code> ist, wenn ein Verbindungsterminierungstelegramm beim SchlieÃŸen der Verbindung versendet werden soll. */
 	private boolean _sendTerminationTelegramWhenClosing = true;
 
 	private DataTelegram _terminationTelegram = null;
@@ -152,15 +158,15 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 	private String _remoteAddress = "[-:-]";
 
 	/**
-	 * @param connection              Verbindungsobjekt über dass die Kommunikation mit dem Kommunikationspartner realisiert wird.
-	 * @param sendBufferSize          Sendetabellenkapazität (in Byte)
-	 * @param receiveBufferSize       Empfangstabellenkapazität (in Byte)
+	 * @param connection              Verbindungsobjekt Ã¼ber dass die Kommunikation mit dem Kommunikationspartner realisiert wird.
+	 * @param sendBufferSize          SendetabellenkapazitÃ¤t (in Byte)
+	 * @param receiveBufferSize       EmpfangstabellenkapazitÃ¤t (in Byte)
 	 * @param keepAliveSendTimeOut    Zeitspanne in ms. Wird solange kein Telegramm verschickt, wird ein KeepAlive-Telegramm verschickt.
-	 * @param keepAliveReceiveTimeOut Zeitspanne in ms. Wird solange keine Telegramm empfangen, wird ein Zähler herabgesetzt. Erreicht der Zähler 0 wird die
-	 *                                Verbindung terminiert. Wird zwischendurch ein Telegramm empfangen, wird der Zähler auf das maximum gesetzt.
-	 * @param mode                    Modus für das Konfigurationsdatenverhalten. Falls hier der Wert {@link #HANDLE_CONFIG_RESPONCES_MODE} übergeben wird, dann
-	 *                                werden Konfigurationsantworten ausgewertet und entsprechend an die höhere Kommunikationsebene weitergegeben. Falls hier der
-	 *                                Wert {@link #NORMAL_MODE} übergeben wird, dann werden Konfigurationsantworten wie normale Datentelegramme verarbeitet.
+	 * @param keepAliveReceiveTimeOut Zeitspanne in ms. Wird solange keine Telegramm empfangen, wird ein ZÃ¤hler herabgesetzt. Erreicht der ZÃ¤hler 0 wird die
+	 *                                Verbindung terminiert. Wird zwischendurch ein Telegramm empfangen, wird der ZÃ¤hler auf das maximum gesetzt.
+	 * @param mode                    Modus fÃ¼r das Konfigurationsdatenverhalten. Falls hier der Wert {@link #HANDLE_CONFIG_RESPONCES_MODE} Ã¼bergeben wird, dann
+	 *                                werden Konfigurationsantworten ausgewertet und entsprechend an die hÃ¶here Kommunikationsebene weitergegeben. Falls hier der
+	 *                                Wert {@link #NORMAL_MODE} Ã¼bergeben wird, dann werden Konfigurationsantworten wie normale Datentelegramme verarbeitet.
 	 * @param connected               Information, ob die Verbindung bereits erfolgt ist oder nicht (connected)
 	 *
 	 * @throws de.bsvrz.dav.daf.main.ConnectionException Wenn das Verbindungsobjekt sich nicht im erwarteten Zustand befindet.
@@ -184,8 +190,8 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 		_sendQueue = new TelegramQueue<DataTelegram>(sendBufferSize, CommunicationConstant.MAX_PRIORITY);
 		_throughputChecker = new ThroughputChecker();
 		_receiveQueue = new TelegramQueue<DataTelegram>(receiveBufferSize, CommunicationConstant.MAX_PRIORITY);
-		_keepAliveSendTimeOut = keepAliveSendTimeOut;
-		_keepAliveReceiveTimeOut = keepAliveReceiveTimeOut;
+		_keepAliveSendTimeOut = keepAliveSendTimeOut * 1000000; // umrechnen un ns
+		_keepAliveReceiveTimeOut = keepAliveReceiveTimeOut * 1000000; // umrechnen un ns
 		if(connected) {
 			OutputStream outputStream = _connection.getOutputStream();
 			if(outputStream == null) {
@@ -207,7 +213,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 	}
 
 	/**
-	 * Diese Methode dient nur für automatisierte Tests und ist nicht für den realen Einsatz gedacht.
+	 * Diese Methode dient nur fÃ¼r automatisierte Tests und ist nicht fÃ¼r den realen Einsatz gedacht.
 	 *
 	 * @return KeepAlive-Thread oder <code>null</code> wenn dieser noch nicht aktiviert wurde.
 	 */
@@ -216,7 +222,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 	}
 
 	/**
-	 * Diese Methode dient nur für automatisierte Tests und ist nicht für den realen Einsatz gedacht.
+	 * Diese Methode dient nur fÃ¼r automatisierte Tests und ist nicht fÃ¼r den realen Einsatz gedacht.
 	 *
 	 * @return ReceivingChannel-Thread oder <code>null</code> wenn dieser noch nicht aktiviert wurde.
 	 */
@@ -225,7 +231,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 	}
 
 	/**
-	 * Diese Methode dient nur für automatisierte Tests und ist nicht für den realen Einsatz gedacht.
+	 * Diese Methode dient nur fÃ¼r automatisierte Tests und ist nicht fÃ¼r den realen Einsatz gedacht.
 	 *
 	 * @return SendingChannel-Thread oder <code>null</code> wenn dieser noch nicht aktiviert wurde.
 	 */
@@ -234,7 +240,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 	}
 
 	/**
-	 * Diese Methode dient nur für automatisierte Tests und ist nicht für den realen Einsatz gedacht.
+	 * Diese Methode dient nur fÃ¼r automatisierte Tests und ist nicht fÃ¼r den realen Einsatz gedacht.
 	 *
 	 * @return Updater-Thread oder <code>null</code> wenn dieser noch nicht aktiviert wurde.
 	 */
@@ -242,10 +248,12 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 		return _updater;
 	}
 
+	@Override
 	public final ConnectionInterface getConnectionInterface() {
 		return _connection;
 	}
 
+	@Override
 	public final void setHighLevelComponent(HighLevelCommunicationCallbackInterface highLevelComponent) {
 		if(highLevelComponent == null) throw new IllegalArgumentException("highLevelComponent darf nicht null sein");
 		_highLevelComponent = highLevelComponent;
@@ -265,24 +273,27 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 		return _highLevelComponent;
 	}
 
+	@Override
 	public final void updateKeepAliveParameters(long keepAliveSendTimeOut, long keepAliveReceiveTimeOut) {
 		_debug.finer(getRemotePrefix() + "updateKeepAliveParameters keepAliveSendTimeOut", keepAliveSendTimeOut);
 		_debug.finer(getRemotePrefix() + "updateKeepAliveParameters keepAliveReceiveTimeOut", keepAliveReceiveTimeOut);
-		_keepAliveSendTimeOut = keepAliveSendTimeOut;
-		_keepAliveReceiveTimeOut = keepAliveReceiveTimeOut;
+		_keepAliveSendTimeOut = keepAliveSendTimeOut * 1000000; // umrechnen un ns
+		_keepAliveReceiveTimeOut = keepAliveReceiveTimeOut * 1000000; // umrechnen un ns
 		_keepAliveThread.timeoutsChanged();
 	}
 
+	@Override
 	public final void updateThroughputParameters(float throughputControlSendBufferFactor, long throughputControlInterval, int minimumThroughput) {
 		_throughputChecker.setThroughputParameters(throughputControlSendBufferFactor, throughputControlInterval, minimumThroughput);
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * <p/>
+	 * <p>
 	 * Nach dem Verbindungsaufbau werden die Referenzen auf den Sende- und den Empfangskanal festgehalten. Diese werden von den Threads benutzt um Daten zu senden
 	 * oder empfangen.
 	 */
+	@Override
 	public final void connect(String mainAddress, int subAddress) throws ConnectionException {
 		if(_connection == null) {
 			throw new ConnectionException("Keine Kommunikationskomponente vorhanden.");
@@ -306,17 +317,19 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 		_disconnected = false;
 	}
 
+	@Override
 	public final boolean isNotConnected() {
 		return _disconnected || (!_connection.isConnected());
 	}
 
 	/**
 	 * Diese Methode wird von der Protokollschicht DaV-DAF aufgerufen, wenn ein Telegramm gesendet werden soll.
-	 * <p/>
-	 * Fügt ein Telegramm in die Sendetabelle ein.
+	 * <p>
+	 * FÃ¼gt ein Telegramm in die Sendetabelle ein.
 	 *
 	 * @param telegram Das zu versendende Telegramm.
 	 */
+	@Override
 	public final void send(DataTelegram telegram) {
 
 		//_debug.finer("Sendeauftrag", telegram.toShortDebugString());
@@ -328,6 +341,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 		}
 	}
 
+	@Override
 	public final void send(DataTelegram telegrams[]) {
 		if(telegrams == null) {
 			return;
@@ -340,18 +354,19 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 	}
 
 	/**
-	 * Diese Methode wird von der Protokollschicht DaV-DAF aufgerufen, wenn die Kommunikationskanäle geschlossen werden sollen.
-	 * <p/>
-	 * Zunächst wird der Empfangsthread geschlossen; dadurch werden keine Daten mehr empfangen. Danach wird der Keep-alive-Thread geschlossen. Daraufhin wird
-	 * gewartet, bis der Sendethread alle Telegramme aus der Sendetabelle gesendet hat, damit keine Daten verloren gehen. Anschließend wird der Sendethread
-	 * beendet. Zuletzt werden die Kommunikationskanäle geschlossen.
+	 * Diese Methode wird von der Protokollschicht DaV-DAF aufgerufen, wenn die KommunikationskanÃ¤le geschlossen werden sollen.
+	 * <p>
+	 * ZunÃ¤chst wird der Empfangsthread geschlossen; dadurch werden keine Daten mehr empfangen. Danach wird der Keep-alive-Thread geschlossen. Daraufhin wird
+	 * gewartet, bis der Sendethread alle Telegramme aus der Sendetabelle gesendet hat, damit keine Daten verloren gehen. AnschlieÃŸend wird der Sendethread
+	 * beendet. Zuletzt werden die KommunikationskanÃ¤le geschlossen.
 	 *
-	 * @param error   Besagt, ob es sich um eine Terminierung mit Fehler handelt. Falls <code>true</code> werden sämtliche noch zum Versand gepufferten Telegramme
-	 * verworfen; falls <code>false</code> wird versucht, sämtliche zum Versand gepufferten Telegramme zu versenden.
+	 * @param error   Besagt, ob es sich um eine Terminierung mit Fehler handelt. Falls <code>true</code> werden sÃ¤mtliche noch zum Versand gepufferten Telegramme
+	 * verworfen; falls <code>false</code> wird versucht, sÃ¤mtliche zum Versand gepufferten Telegramme zu versenden.
 	 * @param message Ursache der Terminierung im Fehlerfall.
-	 * @param terminationTelegram Das Telegramm, dass als letztes Telegramm vor dem Schließen der Verbindung versendet werden soll oder <code>null</code>, falls
-	 * kein abschließendes Telegramm versendet werden soll.
+	 * @param terminationTelegram Das Telegramm, dass als letztes Telegramm vor dem SchlieÃŸen der Verbindung versendet werden soll oder <code>null</code>, falls
+	 * kein abschlieÃŸendes Telegramm versendet werden soll.
 	 */
+	@Override
 	public final void disconnect(boolean error, String message, final DataTelegram terminationTelegram) {
 		if(_waitingForSendingChannel) {
 			_sendQueue.abort();
@@ -450,6 +465,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 		if(_highLevelComponent != null) {
 			final Runnable runnable = new Runnable() {
 
+				@Override
 				public void run() {
 					_highLevelComponent.disconnected(true, message);
 				}
@@ -460,6 +476,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 		}
 	}
 
+	@Override
 	public String getSendBufferState() {
 		try {
 			return _throughputChecker.getSendBufferState();
@@ -470,12 +487,13 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 		}
 	}
 
+	@Override
 	public void setRemoteName(final String name) {
 		_remoteName = name;
 		setRemotePrefix();
 	}
 
-	public void setRemoteAddress(final String remoteAddress, int remotePort) {
+	public final void setRemoteAddress(final String remoteAddress, int remotePort) {
 		_remoteAddress = "[" + remoteAddress + ":" + remotePort + "]";
 		setRemotePrefix();
 	}
@@ -490,7 +508,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 
 	/**
 	 * Dieser Thread verschickt Telegramme mittels einer Datenverteilerverbindung (Outputstream der Verbindung). Der Thread synchronisiert sich auf der
-	 * Datenstruktur <code>_sendingTable</code>, die alle zu versendenden Telegramme enthält.
+	 * Datenstruktur <code>_sendingTable</code>, die alle zu versendenden Telegramme enthÃ¤lt.
 	 */
 	class SendingChannel extends LowLevelThread {
 
@@ -498,6 +516,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 			super("SendingChannel");
 		}
 
+		@Override
 		public final void run() {
 			_debug.fine(getRemotePrefix() + "Thread LowLevelCommunication.SendingChannel startet");
 			try {
@@ -532,7 +551,6 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 			finally {
 				_debug.fine(getRemotePrefix() + "Thread LowLevelCommunication.SendingChannel beendet sich");
 			}
-			return;
 		}
 
 		@Override
@@ -570,7 +588,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 		}
 
 		/**
-		 * Verarbeitung von Telegrammen, die vorrangig berücksichtigt werden müssen.
+		 * Verarbeitung von Telegrammen, die vorrangig berÃ¼cksichtigt werden mÃ¼ssen.
 		 *
 		 * @param telegram Zu verarbeitendes Telegramm.
 		 *
@@ -605,7 +623,8 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 			return false;
 		}
 
-		/** Empfängt Telegramme von der Kommunikationsverbindung und gibt sie zur Verarbeitung weiter */
+		/** EmpfÃ¤ngt Telegramme von der Kommunikationsverbindung und gibt sie zur Verarbeitung weiter */
+		@Override
 		public final void run() {
 			_debug.fine(getRemotePrefix() + "Thread LowLevelCommunication.ReceivingChannel startet");
 			try {
@@ -665,6 +684,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 		}
 
 		/** The run loop method of this _connection thread */
+		@Override
 		public final void run() {
 			_debug.fine("Thread LowLevelCommunication.WorkerThread startet");
 			try {
@@ -680,7 +700,6 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 				}
 			}
 			catch(InterruptedException e) {
-				return;
 			}
 			finally {
 				_debug.fine(getRemotePrefix() + "Thread LowLevelCommunication.WorkerThread beendet sich");
@@ -702,13 +721,13 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 
 	private class ThroughputChecker {
 
-		/** Anzahl Bytes im Sendepuffer, ab dem die Durchsatzprüfung gestartet wird. */
+		/** Anzahl Bytes im Sendepuffer, ab dem die DurchsatzprÃ¼fung gestartet wird. */
 		private int _buffersizeThreshold;
 
-		/** Die Zeit zwischen zwei Messungen der Durchsatzprüfung in Millisekunden */
+		/** Die Zeit zwischen zwei Messungen der DurchsatzprÃ¼fung in Millisekunden */
 		private long _controlInterval;
 
-		/** Minimaler Sendedurchsatz für die Durchsatzprüfung in Bytes pro Sekunde */
+		/** Minimaler Sendedurchsatz fÃ¼r die DurchsatzprÃ¼fung in Bytes pro Sekunde */
 		private int _minimumThroughput;
 
 		ThroughputCheckerState _state;
@@ -728,36 +747,36 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 		}
 
 		/**
-		 * Diese Methode setzt die Parameter für die Durchsatzprüfung.
+		 * Diese Methode setzt die Parameter fÃ¼r die DurchsatzprÃ¼fung.
 		 *
 		 * @param throughputControlSendBufferFactor
-		 *                                  Füllungsgrad des Sendepuffers als Faktor zwischen 0 und 1, ab dem die Durchsatzprüfung anfängt zu arbeiten.
-		 * @param throughputControlInterval Zeit zwischen zwei Durchsatzprüfungen in Millisekunden
-		 * @param minimumThroughput         Minimal zulässiger Verbindungsdurchsatz in Bytes pro Sekunde
+		 *                                  FÃ¼llungsgrad des Sendepuffers als Faktor zwischen 0 und 1, ab dem die DurchsatzprÃ¼fung anfÃ¤ngt zu arbeiten.
+		 * @param throughputControlInterval Zeit zwischen zwei DurchsatzprÃ¼fungen in Millisekunden
+		 * @param minimumThroughput         Minimal zulÃ¤ssiger Verbindungsdurchsatz in Bytes pro Sekunde
 		 */
 		public synchronized final void setThroughputParameters(float throughputControlSendBufferFactor, long throughputControlInterval, int minimumThroughput) {
 			if(throughputControlInterval <= 0) {
-				throw new IllegalArgumentException(getRemotePrefix() + "Prüfintervall für Durchsatzprüfung ist zu klein: " + throughputControlInterval + " ms");
+				throw new IllegalArgumentException(getRemotePrefix() + "PrÃ¼fintervall fÃ¼r DurchsatzprÃ¼fung ist zu klein: " + throughputControlInterval + " ms");
 			}
 			if(minimumThroughput <= 0) {
-				throw new IllegalArgumentException(getRemotePrefix() + "Minimal Durchsatz für Durchsatzprüfung ist zu klein: " + _controlInterval + " Byte/s");
+				throw new IllegalArgumentException(getRemotePrefix() + "Minimal Durchsatz fÃ¼r DurchsatzprÃ¼fung ist zu klein: " + minimumThroughput + " Byte/s");
 			}
 			if(throughputControlSendBufferFactor <= 0.0) {
-				throw new IllegalArgumentException(getRemotePrefix() + "Pufferfüllgrad für Durchsatzprüfung ist zu klein: " + throughputControlSendBufferFactor);
+				throw new IllegalArgumentException(getRemotePrefix() + "PufferfÃ¼llgrad fÃ¼r DurchsatzprÃ¼fung ist zu klein: " + throughputControlSendBufferFactor);
 			}
 			if(throughputControlSendBufferFactor >= 1.0) {
-				throw new IllegalArgumentException(getRemotePrefix() + "Pufferfüllgrad für Durchsatzprüfung ist zu groß: " + throughputControlSendBufferFactor);
+				throw new IllegalArgumentException(getRemotePrefix() + "PufferfÃ¼llgrad fÃ¼r DurchsatzprÃ¼fung ist zu groÃŸ: " + throughputControlSendBufferFactor);
 			}
 			_buffersizeThreshold = (int)(throughputControlSendBufferFactor * _sendQueue.getCapacity());
-			_controlInterval = throughputControlInterval;
+			_controlInterval = throughputControlInterval * 1000000;
 			_minimumThroughput = minimumThroughput;
 		}
 
 		private void setState(final ThroughputCheckerState state) {
-			_debug.fine(getRemotePrefix() + "Zustand der Durchsatzprüfung", state);
+			_debug.fine(getRemotePrefix() + "Zustand der DurchsatzprÃ¼fung", state);
 			_debug.fine(getRemotePrefix() + "noch zu versendende Daten ", _sendQueue.getSize() + " Byte, Grenze: " + _buffersizeThreshold + " Byte");
 			_state = state;
-			_stateChangeTime = System.currentTimeMillis();
+			_stateChangeTime = System.nanoTime();
 			_numberOfBytesSent = 0;
 			_lastCheckedThroughput = -1;
 		}
@@ -799,9 +818,9 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 		}
 
 		/**
-		 * Prüft den Durchsatz und liefert die Zeit bis zur nächsten Prüfung zurück.
+		 * PrÃ¼ft den Durchsatz und liefert die Zeit bis zur nÃ¤chsten PrÃ¼fung zurÃ¼ck.
 		 *
-		 * @return Zeit bis zur nächsten Prüfung in Millisekunden
+		 * @return Zeit bis zur nÃ¤chsten PrÃ¼fung in Nanosekunden
 		 *
 		 * @throws IllegalStateException wenn ein zu geringer Durchsatz festgestellt wurde.
 		 */
@@ -810,23 +829,23 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 				case EMPTY_BUFFER:
 					break;
 				case FULL_BUFFER:
-					long bufferfullTimeout = _controlInterval - (System.currentTimeMillis() - _stateChangeTime);
+					long bufferfullTimeout = _controlInterval - (System.nanoTime() - _stateChangeTime);
 					if(bufferfullTimeout > 0) {
 						return bufferfullTimeout;
 					}
 					setState(ThroughputCheckerState.CHECKING_THROUGHPUT);
 					break;
 				case CHECKING_THROUGHPUT:
-					long checkingTime = System.currentTimeMillis() - _stateChangeTime;
+					long checkingTime = System.nanoTime() - _stateChangeTime;
 					long checkingTimeout = _controlInterval - checkingTime;
 					if(checkingTimeout > 0) {
 						return checkingTimeout;
 					}
-					final long throughput = (long)_numberOfBytesSent * 1000L / checkingTime;
+					final long throughput = (long)(_numberOfBytesSent / (checkingTime / 1000000000.0));
 					_debug.info(getRemotePrefix() + "Sendedurchsatz: " + throughput + " Byte/s");
 					if(throughput < _minimumThroughput) {
 						_lastCheckedThroughput = throughput;
-						throw new IllegalStateException(getRemotePrefix() + "Sendedurchsatz war in den letzten " + checkingTime + " ms zu gering: " + throughput + " Byte/s");
+						throw new IllegalStateException(getRemotePrefix() + "Sendedurchsatz war in den letzten " + checkingTime / 1000000 + " ms zu gering: " + throughput + " Byte/s");
 					}
 					setState(ThroughputCheckerState.CHECKING_THROUGHPUT);
 					_lastCheckedThroughput = throughput;
@@ -849,7 +868,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 					text.append(", Puffer voll");
 					break;
 				case CHECKING_THROUGHPUT:
-					text.append(", Durchsatzprüfung");
+					text.append(", DurchsatzprÃ¼fung");
 					if(_lastCheckedThroughput >= 0) text.append(" ").append(_lastCheckedThroughput).append("Byte/s"); 
 					break;
 			}
@@ -860,33 +879,33 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 	/**
 	 * Dieser Thread verschickt Keepalive Telegramme und baut die Verbindung ab, wenn dreimal nacheinander eine bestimmte Zeit lang keine Daten mehr empfangen
 	 * wurden.
-	 * <p/>
+	 * <p>
 	 * KeepAlive-Thread Senden: Wurde einen bestimmten Zeitraum kein Telegramm mehr verschickt, wird ein Keep-Alive Telegramm verschickt.
-	 * <p/>
+	 * <p>
 	 * KeepAlive-Thread Empfangen: Wurde dreimal nacheinander eine bestimmte Zeit kein Telegramm empfangen, wird die Verbindung abgebaut.
 	 */
 	class KeepAliveThread extends LowLevelThread {
 
-		/** Maximale Anzahl für das Ablaufen des Empfangstimeouts bevor die Verbindung terminiert wird. */
+		/** Maximale Anzahl fÃ¼r das Ablaufen des Empfangstimeouts bevor die Verbindung terminiert wird. */
 		private static final byte MAX_SOULS = 3;
 
-		/** Aktuelle noch verbleibende Anzahl für das Ablaufen des Empfangstimeouts bevor die Verbindung terminiert wird. */
+		/** Aktuelle noch verbleibende Anzahl fÃ¼r das Ablaufen des Empfangstimeouts bevor die Verbindung terminiert wird. */
 		private int _souls;
 
 		/** Zeitpunkt, an dem zuletzt angefangen wurde auf den Empfang von Daten zu warten */
 		private long _lastStartReceivingTime;
 
-		/** Zeit des letzten Empfangs von Daten */
+		/** Zeit in Nanosekunden des letzten Empfangs von Daten */
 		private long _lastReceivingTime;
 
-		/** Zeit des letzten Versands von Daten */
+		/** Zeit in Nanosekundendes letzten Versands von Daten */
 		private long _lastSendingTime;
 
-		/** Zeit des letzten zum Versand eingetragenen KeepAlive-Telegramms */
+		/** Zeit in Nanosekundendes letzten zum Versand eingetragenen KeepAlive-Telegramms */
 		private long _lastQueuedKeepAliveTime;
 
 		/**
-		 * Um diesen Faktor wird die Anzahl der Versuche vor der Terminierung erhöht, wenn gar nicht versucht wird, Keep-Alive-Telegramme (oder andere) zu laden
+		 * Um diesen Faktor wird die Anzahl der Versuche vor der Terminierung erhÃ¶ht, wenn gar nicht versucht wird, Keep-Alive-Telegramme (oder andere) zu laden
 		 */
 		private static final int NOT_RECEIVING_MULTIPLIER = 3;
 
@@ -895,7 +914,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 		public KeepAliveThread() {
 			super("KeepAlive");
 			_souls = MAX_SOULS;
-			final long now = System.currentTimeMillis();
+			final long now = System.nanoTime();
 			_lastReceivingTime = now;
 			_lastSendingTime = now;
 			_lastQueuedKeepAliveTime = now;
@@ -903,7 +922,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 
 		public void startReceiving() {
 			synchronized(this) {
-				_lastStartReceivingTime = System.currentTimeMillis();
+				_lastStartReceivingTime = System.nanoTime();
 				_waitingForData = true;
 				_souls = MAX_SOULS;
 			}
@@ -911,7 +930,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 
 		public void receivedTelegram() {
 			synchronized(this) {
-				_lastReceivingTime = System.currentTimeMillis();
+				_lastReceivingTime = System.nanoTime();
 				_waitingForData = false;
 				_souls = MAX_SOULS * NOT_RECEIVING_MULTIPLIER;
 			}
@@ -919,19 +938,19 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 
 		public void sentTelegram() {
 			synchronized(this) {
-				_lastSendingTime = System.currentTimeMillis();
+				_lastSendingTime = System.nanoTime();
 			}
 		}
 
 		public void timeoutsChanged() {
 			synchronized(this) {
-				// run-Methode s.u. soll das wait vorzeitig verlassen und die neuen Einstellungen berücksichtigen
+				// run-Methode s.u. soll das wait vorzeitig verlassen und die neuen Einstellungen berÃ¼cksichtigen
 				this.notifyAll();
 			}
 		}
 
 		/**
-		 * Diese Methode dient dazu JUnit-Tests zu unterstützen.
+		 * Diese Methode dient dazu JUnit-Tests zu unterstÃ¼tzen.
 		 *
 		 * @return Anzahl Versuche, bis die Verbindung terminiert wird. Sobald ein Telegramm verschickt wird, wird <code>_souls</code> wieder auf den maximalen Wert
 		 *         gesetzt.
@@ -942,6 +961,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 			}
 		}
 
+		@Override
 		public final void run() {
 			_debug.fine(getRemotePrefix(), "Thread LowLevelCommunication.KeepAliveThread startet");
 			try {
@@ -949,22 +969,22 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 					synchronized(this) {
 						try {
 							long lastSendOrQueuedTime = _lastSendingTime < _lastQueuedKeepAliveTime ? _lastQueuedKeepAliveTime : _lastSendingTime;
-							long sendingRemainingTime = _keepAliveSendTimeOut - (System.currentTimeMillis() - lastSendOrQueuedTime);
+							long sendingRemainingTime = _keepAliveSendTimeOut - (System.nanoTime() - lastSendOrQueuedTime);
 							if(sendingRemainingTime <= 0) {
-								// Wenn noch ein Telegramm in der sendQueue ist, dann wird das KeepAliveTelegramm unterdrückt, weil überflüssig
+								// Wenn noch ein Telegramm in der sendQueue ist, dann wird das KeepAliveTelegramm unterdrÃ¼ckt, weil Ã¼berflÃ¼ssig
 								if(_connection.isConnected() && (_outStream != null) && _sendQueue.getSize() == 0) {
 									DataTelegram telegram = new KeepAliveTelegram();
 									_sendQueue.put(telegram);
 									_throughputChecker.queuedTelegram();
 								}
-								_lastQueuedKeepAliveTime = System.currentTimeMillis();
-								sendingRemainingTime = _keepAliveSendTimeOut;
+								_lastQueuedKeepAliveTime = System.nanoTime();
+								sendingRemainingTime = _keepAliveSendTimeOut ;
 							}
 
-							long receivingRemainingTime = _keepAliveReceiveTimeOut - (System.currentTimeMillis() - _lastReceivingTime);
+							long receivingRemainingTime = _keepAliveReceiveTimeOut - (System.nanoTime() - _lastReceivingTime);
 
 							if(receivingRemainingTime <= 0) {
-								final long now = System.currentTimeMillis();
+								final long now = System.nanoTime();
 								final long deltaSinceLastReceive = now - _lastReceivingTime;
 								final long deltaSinceLastStartReceive = now - _lastStartReceivingTime;
 								_lastReceivingTime = now;
@@ -972,14 +992,14 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 								--_souls;
 								if(_waitingForData) {
 									_debug.fine(
-											getRemotePrefix() + "Seit " + deltaSinceLastReceive + " ms wurden keine Telegramme mehr empfangen, verbleibende Versuche: " + _souls
+											getRemotePrefix() + "Seit " + deltaSinceLastReceive / 1000000 + " ms wurden keine Telegramme mehr empfangen, verbleibende Versuche: " + _souls
 									);
 								}
 								else {
 									_debug.fine(
-											getRemotePrefix() + "Seit " + deltaSinceLastStartReceive
-											+ " ms konnten keine Telegramme mehr empfangen werden, weil die Empfangswarteschlange voll ist, verbleibende Versuche: "
-											+ _souls
+											getRemotePrefix() + "Seit " + deltaSinceLastStartReceive / 1000000
+													+ " ms konnten keine Telegramme mehr empfangen werden, weil die Empfangswarteschlange voll ist, verbleibende Versuche: "
+													+ _souls
 									);
 								}
 							}
@@ -988,13 +1008,13 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 								if(_waitingForData) {
 									handleAbnormalBehaviour(
 											false,
-											"Es wurden " + MAX_SOULS + " mal in Folge für jeweils " + (_keepAliveReceiveTimeOut / 1000)
+											"Es wurden " + MAX_SOULS + " mal in Folge fÃ¼r jeweils " + (_keepAliveReceiveTimeOut / 1000000000)
 											+ " Sekunden keine KeepAlive- oder sonstige Telegramme empfangen"
 									);
 								} else {
 									handleAbnormalBehaviour(
 											false,
-											"Es wurden " + (MAX_SOULS * NOT_RECEIVING_MULTIPLIER) + " mal in Folge für jeweils " + (_keepAliveReceiveTimeOut / 1000)
+											"Es wurden " + (MAX_SOULS * NOT_RECEIVING_MULTIPLIER) + " mal in Folge fÃ¼r jeweils " + (_keepAliveReceiveTimeOut / 1000000000)
 											+ " Sekunden keine KeepAlive- oder sonstige Telegramme empfangen, weil die Empfangswarteschlange voll ist"
 									);
 								}
@@ -1002,7 +1022,7 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 							}
 							long waitTime = sendingRemainingTime < receivingRemainingTime ? sendingRemainingTime : receivingRemainingTime;
 
-							// Durchsatzprüfung durchführen und Zeit bis zur nächsten Prüfung ermitteln
+							// DurchsatzprÃ¼fung durchfÃ¼hren und Zeit bis zur nÃ¤chsten PrÃ¼fung ermitteln
 							try {
 								final long throughputCheckWaitTime = _throughputChecker.checkThroughput();
 								if(throughputCheckWaitTime < waitTime) waitTime = throughputCheckWaitTime;
@@ -1015,9 +1035,10 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 							}
 
 							// Hier wird gewartet, bis eine der Restzeiten abgelaufen ist.
-							// Wenn die Timeoutparameter sich ändern, wird durch ein notify aus der Methode timeoutsChanged
+							// Wenn die Timeoutparameter sich Ã¤ndern, wird durch ein notify aus der Methode timeoutsChanged
 							// das wait() vorzeitig beendet.
-							if(waitTime > 0) this.wait(waitTime);
+							long waitTimeMillis = waitTime / 1000000;
+							if(waitTimeMillis > 0) this.wait(waitTimeMillis);
 						}
 						catch(InterruptedException e) {
 							return;
@@ -1037,5 +1058,10 @@ public class LowLevelCommunication implements LowLevelCommunicationInterface {
 		public LowLevelCommunication getLowLevelCommunication() {
 			return LowLevelCommunication.this;
 		}
+	}
+
+	@Override
+	public String toString() {
+		return _remoteName + _remoteAddress;
 	}
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.config;
@@ -24,16 +30,16 @@ import java.util.List;
 
 /**
  * Schnittstellenklasse zum Zugriff auf die Eigenschaften eines Datenverteiler-Objekts. Jeder Datenverteiler
- * erzeugt ein solches dynamisches Objekt f¸r sich selbst.
+ * erzeugt ein solches dynamisches Objekt f√ºr sich selbst.
  *
- * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * @author Kappich+Kni√ü Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
  * @author Stephan Homeyer (sth)
- * @version $Revision: 5763 $ / $Date: 2008-01-06 15:35:57 +0100 (Sun, 06 Jan 2008) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public interface DavApplication extends ConfigurationObject {
 	/**
-	 * Liefert die mit dem Datenverteiler verbundenen Applikationen zur¸ck. Diese werden vom jeweiligen
+	 * Liefert die mit dem Datenverteiler verbundenen Applikationen zur√ºck. Diese werden vom jeweiligen
 	 * Datenverteiler in der ihm zugeordneten Menge mit dem Namen "Applikationen" verwaltet.
 	 *
 	 * @return Liste von {@link ClientApplication Applikations-Objekten}
@@ -44,7 +50,7 @@ public interface DavApplication extends ConfigurationObject {
 	public List<ClientApplication> getClientApplications();
 
 	/**
-	 * Liefert die mit dem Datenverteiler verbundenen Applikationen in einer dynamischen Menge zur¸ck. Diese
+	 * Liefert die mit dem Datenverteiler verbundenen Applikationen in einer dynamischen Menge zur√ºck. Diese
 	 * werden vom jeweiligen Datenverteiler in der ihm zugeordneten Menge mit dem Namen "Applikationen"
 	 * verwaltet. Durch Abfrage der {@link MutableSet#getElements Elemente} gelangt man an die Applikationen.
 	 *

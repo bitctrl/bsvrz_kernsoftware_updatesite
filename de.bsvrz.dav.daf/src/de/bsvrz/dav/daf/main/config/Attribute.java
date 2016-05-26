@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,26 +14,32 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.config;
 
 /**
  * Schnittstellenklasse zum Zugriff auf die Eigenschaften von Attributen. Neben der Position eines Attributs
- * in der zugehˆrigen Attributgruppe oder Attributliste, und Informationen, die angeben, ob ein Attribut als
+ * in der zugeh√∂rigen Attributgruppe oder Attributliste, und Informationen, die angeben, ob ein Attribut als
  * Array verwendet wird, referenzieren Attribute einen {@link AttributeType Attribut-Typ}, der die
  * Eigenschaften eines konkreten Wertes des Attributs beschreibt.
  *
- * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * @author Kappich+Kni√ü Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
  * @author Stephan Homeyer (sth)
- * @version $Revision: 5052 $ / $Date: 2007-08-31 20:02:55 +0200 (Fri, 31 Aug 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public interface Attribute extends ConfigurationObject {
 	/**
-	 * Bestimmt die Position eines Attributs oder einer Attributliste in der ¸bergeordneten Attributmenge
+	 * Bestimmt die Position eines Attributs oder einer Attributliste in der √ºbergeordneten Attributmenge
 	 * (Attributgruppe bzw. Attributliste).
 	 *
 	 * @return Position eines Attributs. Das erste Attribut hat die Position <code>1</code>.
@@ -41,15 +47,15 @@ public interface Attribute extends ConfigurationObject {
 	public int getPosition();
 
 	/**
-	 * Bestimmt, ob die Feldgrˆﬂe dieses Attributs durch eine Obergrenze beschr‰nkt ist.
+	 * Bestimmt, ob die Feldgr√∂√üe dieses Attributs durch eine Obergrenze beschr√§nkt ist.
 	 *
-	 * @return <code>true</code>, wenn die Anzahl der Werte beschr‰nkt ist;<br/> <code>false</code>, wenn die
-	 *         Anzahl der Werte nicht beschr‰nkt ist.
+	 * @return <code>true</code>, wenn die Anzahl der Werte beschr√§nkt ist;<br/> <code>false</code>, wenn die
+	 *         Anzahl der Werte nicht beschr√§nkt ist.
 	 */
 	public boolean isCountLimited();
 
 	/**
-	 * Bestimmt, ob die Feldgrˆﬂe dieses Attributs variieren kann.
+	 * Bestimmt, ob die Feldgr√∂√üe dieses Attributs variieren kann.
 	 *
 	 * @return <code>true</code>, wenn die Anzahl der Werte dieses Attributs mit jedem Datensatz variieren
 	 *         kann;<br/> <code>false</code>, wenn die Anzahl der Werte fix ist.
@@ -57,11 +63,11 @@ public interface Attribute extends ConfigurationObject {
 	public boolean isCountVariable();
 
 	/**
-	 * Bestimmt, ob die maximale Feldgrˆﬂe dieses Attributs beschr‰nkt ist. Wenn die Feldgrˆﬂe nicht beschr‰nkt
-	 * ist, wird der Wert 0 zur¸ckgegeben. Wenn die Feldgrˆﬂe nicht variabel ist, wird die erforderliche
-	 * Feldgrˆﬂe zur¸ckgegeben.
+	 * Bestimmt, ob die maximale Feldgr√∂√üe dieses Attributs beschr√§nkt ist. Wenn die Feldgr√∂√üe nicht beschr√§nkt
+	 * ist, wird der Wert 0 zur√ºckgegeben. Wenn die Feldgr√∂√üe nicht variabel ist, wird die erforderliche
+	 * Feldgr√∂√üe zur√ºckgegeben.
 	 *
-	 * @return Maximale Feldgrˆﬂe.
+	 * @return Maximale Feldgr√∂√üe.
 	 */
 	public int getMaxCount();
 
@@ -74,8 +80,8 @@ public interface Attribute extends ConfigurationObject {
 	public boolean isArray();
 
 	/**
-	 * Bestimmt den Typ dieses Attributs ¸ber den ein Zugriff auf die Eigenschaften von konkreten Attributwerten
-	 * ermˆglicht wird.
+	 * Bestimmt den Typ dieses Attributs √ºber den ein Zugriff auf die Eigenschaften von konkreten Attributwerten
+	 * erm√∂glicht wird.
 	 *
 	 * @return Typ des Attributs.
 	 */

@@ -1,11 +1,11 @@
 /*
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.archive;
@@ -28,9 +34,9 @@ import de.bsvrz.dav.daf.main.archive.ArchiveDataKind;
 
 /**
  * Identifikation der Archivdaten eines Archivdatencontainers.
- * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * @author Kappich+Kni√ü Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 5064 $ / $Date: 2007-09-01 22:25:35 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public final class DataContainerIdentification implements Comparable {
 	private final SystemObject _object;
@@ -39,10 +45,10 @@ public final class DataContainerIdentification implements Comparable {
 
 	/**
 	 * Erzeugt eine neue Containeridentifikation.
-	 * @param object  System-Objekt auf das sich alle Datens‰tze des entsprechenden Containers beziehen.
+	 * @param object  System-Objekt auf das sich alle Datens√§tze des entsprechenden Containers beziehen.
 	 * @param dataDescription  Attributgruppe, Aspekt und Simulationsvariante auf die sich alle
-	 *                         Datens‰tze des entsprechenden Containers beziehen.
-	 * @param archiveDataKind  Datensatzart der Datens‰tze im entsprechenden Container
+	 *                         Datens√§tze des entsprechenden Containers beziehen.
+	 * @param archiveDataKind  Datensatzart der Datens√§tze im entsprechenden Container
 	 *                         (aktuell, nachgeliefert, nachgefordert).
 	 */
 	public DataContainerIdentification(SystemObject object, DataDescription dataDescription, ArchiveDataKind archiveDataKind) {
@@ -52,7 +58,7 @@ public final class DataContainerIdentification implements Comparable {
 	}
 
 	/**
-	 * Bestimmt das System-Objekt auf das sich alle Datens‰tze des entsprechenden Containers beziehen.
+	 * Bestimmt das System-Objekt auf das sich alle Datens√§tze des entsprechenden Containers beziehen.
 	 * @return Zugeordnetes System-Objekt.
 	 */
 	public SystemObject getObject() {
@@ -61,7 +67,7 @@ public final class DataContainerIdentification implements Comparable {
 
 	/**
 	 * Bestimmt Attributgruppe, Aspekt und Simulationsvariante auf die sich alle
-	 * Datens‰tze des entsprechenden Containers beziehen.
+	 * Datens√§tze des entsprechenden Containers beziehen.
 	 * @return Datenbeschreibung mit Attributgruppe, Aspekt und Simulationsvariante.
 	 */
 	public DataDescription getDataDescription() {
@@ -69,7 +75,7 @@ public final class DataContainerIdentification implements Comparable {
 	}
 
 	/**
-	 * Bestimmt die Datensatzart (aktuell, nachgeliefert, nachgefordert) der Datens‰tze
+	 * Bestimmt die Datensatzart (aktuell, nachgeliefert, nachgefordert) der Datens√§tze
 	 * im entsprechenden Container.
 	 * @return Zugeordnete Datensatzart.
 	 */
@@ -78,7 +84,7 @@ public final class DataContainerIdentification implements Comparable {
 	}
 
 	/**
-	 * Bestimmt einen hashCode, der nur von den im Konstruktor ¸bergebenen Werten abh‰ngig ist.
+	 * Bestimmt einen hashCode, der nur von den im Konstruktor √ºbergebenen Werten abh√§ngig ist.
 	 * Verschiedene Objekte dieser Klasse, die das gleiche Systemobjekt, die gleiche Datenbeschreibung
 	 * und die gleiche Archivdatensatzart enthalten werden als gleich angesehen.
 	 * @see #equals
@@ -90,7 +96,7 @@ public final class DataContainerIdentification implements Comparable {
 	}
 
 	/**
-	 * Pr¸ft, ob dieses Objekt dem ¸bergebenen Objekt gleicht.
+	 * Pr√ºft, ob dieses Objekt dem √ºbergebenen Objekt gleicht.
 	 * Verschiedene Objekte dieser Klasse, die das gleiche Systemobjekt, die gleiche Datenbeschreibung
 	 * und die gleiche Archivdatensatzart enthalten werden als gleich angesehen.
 	 * @param   object   Das Objekt mit dem dieses Objekt verglichen werden soll.
@@ -161,7 +167,7 @@ public final class DataContainerIdentification implements Comparable {
 	}
 
 	/**
-	 * Liefert eine textuelle Beschreibung dieses Objekts f¸r Debug-Zwecke.
+	 * Liefert eine textuelle Beschreibung dieses Objekts f√ºr Debug-Zwecke.
 	 * @return Beschreibung dieses Objekts.
 	 */
 	public String toString() {

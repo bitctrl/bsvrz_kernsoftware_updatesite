@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.plugins.api;
@@ -32,11 +38,11 @@ import java.util.*;
 import de.bsvrz.pat.sysbed.main.ApplicationInterface;
 
 /**
- * Diese Klasse stellt für einige Methoden des Interfaces {@link ExternalModule} Implementierungen zur Verfügung, die für jedes Modul gleich sind. Dazu gehört
- * das Bekanntmachen der {@link de.bsvrz.pat.sysbed.main.ApplicationInterface Applikation} mit den zu ihr gehörenden Methoden.
+ * Diese Klasse stellt fÃ¼r einige Methoden des Interfaces {@link ExternalModule} Implementierungen zur VerfÃ¼gung, die fÃ¼r jedes Modul gleich sind. Dazu gehÃ¶rt
+ * das Bekanntmachen der {@link de.bsvrz.pat.sysbed.main.ApplicationInterface Applikation} mit den zu ihr gehÃ¶renden Methoden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5055 $
+ * @version $Revision$
  * @see #setApplication
  * @see #getConnection
  * @see #getArgumentList
@@ -48,7 +54,7 @@ public abstract class ExternalModuleAdapter implements ExternalModule {
 	private ApplicationInterface _application;
 
 	/**
-	 * Setzt die Applikation für die Module. Die gleichnamige Methode des {@link ExternalModule Interfaces} wurde überschrieben.
+	 * Setzt die Applikation fÃ¼r die Module. Die gleichnamige Methode des {@link ExternalModule Interfaces} wurde Ã¼berschrieben.
 	 *
 	 * @param application die Applikation, die die Module nutzt
 	 */
@@ -57,7 +63,7 @@ public abstract class ExternalModuleAdapter implements ExternalModule {
 	}
 
 	/**
-	 * Gibt die {@link ApplicationInterface Applikation} zurück.
+	 * Gibt die {@link ApplicationInterface Applikation} zurÃ¼ck.
 	 *
 	 * @return die Applikation
 	 */
@@ -66,7 +72,7 @@ public abstract class ExternalModuleAdapter implements ExternalModule {
 	}
 
 	/**
-	 * Diese Methode ermöglicht den Modulen, die Verbindung zum Datenverteiler der Applikation zu nutzen. Sie wird zurückgegeben. Die gleichnamige Methode der
+	 * Diese Methode ermÃ¶glicht den Modulen, die Verbindung zum Datenverteiler der Applikation zu nutzen. Sie wird zurÃ¼ckgegeben. Die gleichnamige Methode der
 	 * Applikation wird delegiert.
 	 *
 	 * @return die Verbindung zum Datenverteiler
@@ -76,17 +82,17 @@ public abstract class ExternalModuleAdapter implements ExternalModule {
 	}
 
 	/**
-	 * Die Argumentliste, die an die <code>main</code>-Methode der Applikation übergeben wurde, wird hier zurückgegeben. Diese wird u.a. dann benötigt, wenn ein
-	 * Prozeß in einer Konsole gestartet werden soll. Die gleichnamige Methode der Applikation wird delegiert.
+	 * Die Argumentliste, die an die <code>main</code>-Methode der Applikation Ã¼bergeben wurde, wird hier zurÃ¼ckgegeben. Diese wird u.a. dann benÃ¶tigt, wenn ein
+	 * ProzeÃŸ in einer Konsole gestartet werden soll. Die gleichnamige Methode der Applikation wird delegiert.
 	 *
-	 * @return die Argumentliste, die an die <code>main</code>-Methode übergeben wurde
+	 * @return die Argumentliste, die an die <code>main</code>-Methode Ã¼bergeben wurde
 	 */
 	public List getArgumentList() {
 		return _application.getArgumentList();
 	}
 
 	/**
-	 * Diese Methode ermöglicht den Modulen die Einstellungen ihrer Dialoge an die Applikation zur Speicherung zu übergeben. Die gleichnamige Methode der
+	 * Diese Methode ermÃ¶glicht den Modulen die Einstellungen ihrer Dialoge an die Applikation zur Speicherung zu Ã¼bergeben. Die gleichnamige Methode der
 	 * Applikation wird delegiert.
 	 *
 	 * @param settingsData die Einstellungsdaten
@@ -96,12 +102,12 @@ public abstract class ExternalModuleAdapter implements ExternalModule {
 	}
 
 	/**
-	 * Allgemeingültige Einstellungen (eine Attributgruppe, Aspekt und mindestens ein Objekt müssen ausgewählt sein) werden hier geprüft. Soll noch mehr überprüft
-	 * werden, so muss die Methode überschrieben werden.
+	 * AllgemeingÃ¼ltige Einstellungen (eine Attributgruppe, Aspekt und mindestens ein Objekt mÃ¼ssen ausgewÃ¤hlt sein) werden hier geprÃ¼ft. Soll noch mehr Ã¼berprÃ¼ft
+	 * werden, so muss die Methode Ã¼berschrieben werden.
 	 *
 	 * @param settingsData die Einstellungsdaten mit der Datenidentifikation
 	 *
-	 * @return <code>true</code>, die Anforderungen wurden erfüllt, sonst <code>false</code>
+	 * @return <code>true</code>, die Anforderungen wurden erfÃ¼llt, sonst <code>false</code>
 	 */
 	public boolean isPreselectionValid(final SettingsData settingsData) {
 		final AttributeGroup atg = settingsData.getAttributeGroup();

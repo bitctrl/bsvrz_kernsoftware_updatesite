@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl;
@@ -29,7 +35,7 @@ import de.bsvrz.dav.daf.communication.lowLevel.telegrams.BaseSubscriptionInfo;
  * Eine Instanz dieser Klasse wird im {@link CacheManager} verwaltet und stellt einen gepufferten Datensatz dar.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 6010 $
+ * @version $Revision$
  */
 public class CachedObject {
 
@@ -71,14 +77,14 @@ public class CachedObject {
 	) {
 		baseSubscriptionInfo = _baseSubscriptionInfo;
 		if(baseSubscriptionInfo == null) {
-			throw new IllegalArgumentException("Falsche Übergabeparameter");
+			throw new IllegalArgumentException("Falsche Ãœbergabeparameter");
 		}
 		delayedDataFlag = _delayedDataFlag;
 		dataNumber = _dataNumber;
 		dataTime = _time;
 		errorFlag = _errorFlag;
 		if(dataModel == null) {
-			throw new IllegalArgumentException("Falsche Übergabeparameter");
+			throw new IllegalArgumentException("Falsche Ãœbergabeparameter");
 		}
 
 		_data = null;
@@ -103,7 +109,7 @@ public class CachedObject {
 	}
 
 	/**
-	 * Gibt die basisanmeldeinformationen zurück.
+	 * Gibt die basisanmeldeinformationen zurÃ¼ck.
 	 *
 	 * @return Basisanmeldeinformationen
 	 */
@@ -130,7 +136,7 @@ public class CachedObject {
 	}
 
 	/**
-	 * Gibt die Datenzeit zurück
+	 * Gibt die Datenzeit zurÃ¼ck
 	 *
 	 * @return Datenzeit
 	 */
@@ -149,16 +155,16 @@ public class CachedObject {
 	}
 
 	/**
-	 * Diese Methode wird von {@link CacheManager} aufgerufen und setzt die übergebenen Parameter im Objekt neu.
+	 * Diese Methode wird von {@link CacheManager} aufgerufen und setzt die Ã¼bergebenen Parameter im Objekt neu.
 	 *
-	 * @param _attributeIndicator wird nicht mehr unterstützt und muss <code>null</code> sein.
+	 * @param _attributeIndicator wird nicht mehr unterstÃ¼tzt und muss <code>null</code> sein.
 	 * @param data                Neuer Datensatz der mit {@link #getData()} angefordert werden kann
-	 * @param _delayedDataFlag    true = Die übergenenen Daten sind nachgeliefert
+	 * @param _delayedDataFlag    true = Die Ã¼bergenenen Daten sind nachgeliefert
 	 */
 	public void update(byte _attributeIndicator[], Data data, boolean _delayedDataFlag) {
 		if(_attributeIndicator != null) {
 			throw new IllegalArgumentException(
-					"Anmeldungen auf einzelne Attribute der Attributgruppe werden nicht unterstützt. " + "data: " + data
+					"Anmeldungen auf einzelne Attribute der Attributgruppe werden nicht unterstÃ¼tzt. " + "data: " + data
 			);
 		}
 

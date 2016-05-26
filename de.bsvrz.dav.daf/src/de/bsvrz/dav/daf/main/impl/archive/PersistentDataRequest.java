@@ -1,11 +1,11 @@
 /*
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.archive;
@@ -23,12 +29,12 @@ package de.bsvrz.dav.daf.main.impl.archive;
 import de.bsvrz.dav.daf.main.archive.ArchiveTimeSpecification;
 
 /**
- * Beschreibt eine Teilanfrage einer Archivanfrage. Eine Archivanfrage wird durch ¸bergabe eines Arrays von Teilanfragen
+ * Beschreibt eine Teilanfrage einer Archivanfrage. Eine Archivanfrage wird durch √ºbergabe eines Arrays von Teilanfragen
  * mit der Methode {@link PersistenceModule#getArchiveDataStreams} gestartet.
  *
- * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * @author Kappich+Kni√ü Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 5064 $ / $Date: 2007-09-01 22:25:35 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public final class PersistentDataRequest {
 
@@ -39,15 +45,15 @@ public final class PersistentDataRequest {
 	/**
 	 * Erzeugt eine neue Teilanfrage.
 
-	 * @param archiveTimeSpecification       Bereich ¸ber den sich die Archivanfrage erstreckt.
-	 * @param relevantContainers             Array mit den f¸r diese Teilanfrage zu betrachtenden Containern.
-	 * @param delayedDataReorderedByDataTime Spezifiziert, ob nachgelieferte Datens‰tze mit Hilfe des Datenzeitstempels
+	 * @param archiveTimeSpecification       Bereich √ºber den sich die Archivanfrage erstreckt.
+	 * @param relevantContainers             Array mit den f√ºr diese Teilanfrage zu betrachtenden Containern.
+	 * @param delayedDataReorderedByDataTime Spezifiziert, ob nachgelieferte Datens√§tze mit Hilfe des Datenzeitstempels
 	 *                                       einsortiert werden sollen. Der Wert <code>false</code> legt fest, dass die
-	 *                                       Datens‰tze in der Reihenfolge ihres Datensatzindexes geliefert werden sollen.
-	 *                                       Der Wert <code>true</code> definiert, dass die Datens‰tze aus Containern der
+	 *                                       Datens√§tze in der Reihenfolge ihres Datensatzindexes geliefert werden sollen.
+	 *                                       Der Wert <code>true</code> definiert, dass die Datens√§tze aus Containern der
 	 *                                       Datensatzart {@link de.bsvrz.dav.daf.main.archive.ArchiveDataKind#ONLINE} und {@link
 	 *                                       de.bsvrz.dav.daf.main.archive.ArchiveDataKind#REQUESTED} in der Reihenfolge ihres Datensatzindexes geliefert
-	 *                                       werden sollen und Datens‰tze aus Containern der Datensatzart {@link
+	 *                                       werden sollen und Datens√§tze aus Containern der Datensatzart {@link
 	 *                                       de.bsvrz.dav.daf.main.archive.ArchiveDataKind#ONLINE_DELAYED} und {@link de.bsvrz.dav.daf.main.archive.ArchiveDataKind#REQUESTED_DELAYED}
 	 *                                       entsprechend ihres Datenzeitstempels einsortiert werden sollen.
 	 */
@@ -60,7 +66,7 @@ public final class PersistentDataRequest {
 	}
 
 	/**
-	 * Bestimmt die f¸r diese Teilanfrage zu betrachtenden Container.
+	 * Bestimmt die f√ºr diese Teilanfrage zu betrachtenden Container.
 	 *
 	 * @return Array mit den relevanten Containern.
 	 */
@@ -69,12 +75,12 @@ public final class PersistentDataRequest {
 	}
 
 	/**
-	 * Bestimmt, ob nachgelieferte Datens‰tze mit Hilfe des Datenzeitstempels einsortiert werden sollen.
+	 * Bestimmt, ob nachgelieferte Datens√§tze mit Hilfe des Datenzeitstempels einsortiert werden sollen.
 	 *
-	 * @return <code>false</code>, falls die Datens‰tze in der Reihenfolge ihres Datensatzindexes geliefert werden sollen;
-	 *         <code>true</code> falls die Datens‰tze aus Containern der Datensatzart {@link de.bsvrz.dav.daf.main.archive.ArchiveDataKind#ONLINE} und
+	 * @return <code>false</code>, falls die Datens√§tze in der Reihenfolge ihres Datensatzindexes geliefert werden sollen;
+	 *         <code>true</code> falls die Datens√§tze aus Containern der Datensatzart {@link de.bsvrz.dav.daf.main.archive.ArchiveDataKind#ONLINE} und
 	 *         {@link de.bsvrz.dav.daf.main.archive.ArchiveDataKind#REQUESTED} in der Reihenfolge ihres Datensatzindexes geliefert werden sollen und
-	 *         Datens‰tze aus Containern der Datensatzart {@link de.bsvrz.dav.daf.main.archive.ArchiveDataKind#ONLINE_DELAYED} und {@link
+	 *         Datens√§tze aus Containern der Datensatzart {@link de.bsvrz.dav.daf.main.archive.ArchiveDataKind#ONLINE_DELAYED} und {@link
 	 *         de.bsvrz.dav.daf.main.archive.ArchiveDataKind#REQUESTED_DELAYED} entsprechend ihres Datenzeitstempels einsortiert werden sollen.
 	 */
 	public boolean isDelayedDataReorderedByDataTime() {

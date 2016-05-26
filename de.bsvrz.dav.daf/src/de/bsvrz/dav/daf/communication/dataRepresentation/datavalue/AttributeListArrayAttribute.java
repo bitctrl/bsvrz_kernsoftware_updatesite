@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.dataRepresentation.datavalue;
@@ -26,10 +32,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Diese Klasse stellt die Attribute und Funktionalitäten des Datentyps ListArray zur Verfügung.
+ * Diese Klasse stellt die Attribute und FunktionalitÃ¤ten des Datentyps ListArray zur VerfÃ¼gung.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13173 $
+ * @version $Revision$
  */
 public class AttributeListArrayAttribute extends DataValue {
 
@@ -37,7 +43,7 @@ public class AttributeListArrayAttribute extends DataValue {
 
 	private DataValue _attributeListValues[];
 
-	/** Erzeugt ein neues Objekt ohne Parameter. Die Parameter werden zu einem Späteren Zeitpunkt über die read-Methode eingelesen. */
+	/** Erzeugt ein neues Objekt ohne Parameter. Die Parameter werden zu einem SpÃ¤teren Zeitpunkt Ã¼ber die read-Methode eingelesen. */
 	public AttributeListArrayAttribute() {
 		_type = ATTRIBUTE_LIST_ARRAY_TYPE;
 	}
@@ -57,7 +63,7 @@ public class AttributeListArrayAttribute extends DataValue {
 	}
 
 	/**
-	 * Gibt den Wert zurrück.
+	 * Gibt den Wert zurrÃ¼ck.
 	 *
 	 * @return der Wert
 	 */
@@ -66,7 +72,7 @@ public class AttributeListArrayAttribute extends DataValue {
 	}
 
 	/**
-	 * Gibt die Anzahl der Attributlisten in diesem Array zurück.
+	 * Gibt die Anzahl der Attributlisten in diesem Array zurÃ¼ck.
 	 *
 	 * @return Anzahl der Attributlisten
 	 */
@@ -135,8 +141,8 @@ public class AttributeListArrayAttribute extends DataValue {
 	}
 
 	/**
-	 * Diese Methode prüft auf Gleichheit eines Objektes, dass dieser Klasse entstammt. Die Prüfung erfolgt von "grob" nach "fein". Nach einer
-	 * <code>null</code>-Referenzabfrage wird die Instanceof methode aufgerufen, abschließend wird der Inhalt des Objektes geprüft.
+	 * Diese Methode prÃ¼ft auf Gleichheit eines Objektes, dass dieser Klasse entstammt. Die PrÃ¼fung erfolgt von "grob" nach "fein". Nach einer
+	 * <code>null</code>-Referenzabfrage wird die Instanceof methode aufgerufen, abschlieÃŸend wird der Inhalt des Objektes geprÃ¼ft.
 	 *
 	 * @param obj Referenzobjekt
 	 *
@@ -154,7 +160,7 @@ public class AttributeListArrayAttribute extends DataValue {
 	}
 
 	/**
-	 * Kopiert die Werte in der Attributsliste und gibt die Kopie zurück.
+	 * Kopiert die Werte in der Attributsliste und gibt die Kopie zurÃ¼ck.
 	 *
 	 * @return Kopie der Werte in der Attributsliste
 	 */

@@ -2,13 +2,13 @@
  * Copyright 2010 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -17,42 +17,53 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.main;
 
-import de.bsvrz.pat.sysbed.plugins.api.settings.SettingsData;
-import de.bsvrz.pat.sysbed.plugins.api.ExternalModule;
-import de.bsvrz.pat.sysbed.preselection.lists.PreselectionLists;
 import de.bsvrz.dav.daf.main.ClientDavInterface;
 import de.bsvrz.dav.daf.main.config.Aspect;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dav.daf.main.config.SystemObjectType;
+import de.bsvrz.pat.sysbed.plugins.api.ExternalModule;
+import de.bsvrz.pat.sysbed.plugins.api.settings.SettingsData;
+import de.bsvrz.pat.sysbed.preselection.lists.PreselectionLists;
 import de.bsvrz.pat.sysbed.preselection.lists.PreselectionListsListener;
 import de.bsvrz.pat.sysbed.preselection.panel.PreselectionPanel;
 import de.bsvrz.pat.sysbed.preselection.tree.TreeNodeObject;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.prefs.BackingStoreException;
 
 /**
  * Diese Klasse erstellt das Fenster der Anwendung mit der {@link de.bsvrz.pat.sysbed.preselection.panel.PreselectionPanel Datenauswahl}, beliebigen {@link de.bsvrz.pat.sysbed.plugins.api.ExternalModule Modulen} und dem Panel,
  * welches die Einstellungen der Module verwaltet.
- * <p/>
- * Damit die Module auch mit der Applikation kommunizieren können, implementiert diese Klasse das {@link ApplicationInterface}.
+ * <p>
+ * Damit die Module auch mit der Applikation kommunizieren kÃ¶nnen, implementiert diese Klasse das {@link ApplicationInterface}.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 12436 $
+ * @version $Revision$
  */
 public class GenericTestMonitorApplication implements ApplicationInterface {
 
@@ -65,13 +76,13 @@ public class GenericTestMonitorApplication implements ApplicationInterface {
 	/** das Panel, worauf die Module angeordnet sind */
 	private final JPanel _modulePanel;
 
-	/** speichert die Bildschirmgröße */
+	/** speichert die BildschirmgrÃ¶ÃŸe */
 	private final Dimension _screenSize;
 
 	/** speichert den PreselectionPanel */
 	private final PreselectionPanel _preselectionPanel;
 
-	/** speichert die ArgumentListe, die beim Aufruf der Applikation übergeben wurde */
+	/** speichert die ArgumentListe, die beim Aufruf der Applikation Ã¼bergeben wurde */
 	private List _argumentList;
 
 	/** das Panel, worauf das Logo angeordnet ist */
@@ -95,8 +106,8 @@ public class GenericTestMonitorApplication implements ApplicationInterface {
 
 
 	/**
-	 * Konstruktor. Die Applikation erhält eine {@link de.bsvrz.dav.daf.main.ClientDavInterface Verbindung zum Datenverteiler} und den für den {@link de.bsvrz.pat.sysbed.preselection.tree.PreselectionTree Filterbaum}
-	 * benötigten Parameter zur Spezifizierung der Vorauswahl, bestehend aus System- und {@link de.bsvrz.pat.sysbed.preselection.tree.TreeNodeObject Knotenobjekten}.
+	 * Konstruktor. Die Applikation erhÃ¤lt eine {@link de.bsvrz.dav.daf.main.ClientDavInterface Verbindung zum Datenverteiler} und den fÃ¼r den {@link de.bsvrz.pat.sysbed.preselection.tree.PreselectionTree Filterbaum}
+	 * benÃ¶tigten Parameter zur Spezifizierung der Vorauswahl, bestehend aus System- und {@link de.bsvrz.pat.sysbed.preselection.tree.TreeNodeObject Knotenobjekten}.
 	 *
 	 * @param title      der Titel des Fensters
 	 * @param connection Verbindung zum Datenverteiler
@@ -109,9 +120,7 @@ public class GenericTestMonitorApplication implements ApplicationInterface {
 		_screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 		_frame = new JFrame();
-		String address = connection.getClientDavParameters().getDavCommunicationAddress();
-		int port = connection.getClientDavParameters().getDavCommunicationSubAddress();
-		_frame.setTitle(title + " - " + address + ":" + port);
+		_frame.setTitle(getTitle(title, connection));
 		_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		_frame.addWindowListener(
 				new WindowAdapter() {
@@ -155,8 +164,15 @@ public class GenericTestMonitorApplication implements ApplicationInterface {
 		pane.add(_splitPane, BorderLayout.CENTER);
 	}
 
+	public static String getTitle(final String title, final ClientDavInterface connection) {
+		if(connection == null) return title;
+		String address = connection.getClientDavParameters().getDavCommunicationAddress();
+		int port = connection.getClientDavParameters().getDavCommunicationSubAddress();
+		return title + " - " + address + ":" + port;
+	}
+
 	/**
-	 * Mit dieser Methode wird ein {@link ExternalModule Modul} zur Applikation hinzugefügt.
+	 * Mit dieser Methode wird ein {@link ExternalModule Modul} zur Applikation hinzugefÃ¼gt.
 	 *
 	 * @param module ein Modul
 	 */
@@ -172,13 +188,13 @@ public class GenericTestMonitorApplication implements ApplicationInterface {
 		_frame.validate();
 	}
 
-	/** Fügt zwischen die Buttons, mit denen die Module gestartet werden können, einen optischen Abstandshalter ein. */
+	/** FÃ¼gt zwischen die Buttons, mit denen die Module gestartet werden kÃ¶nnen, einen optischen Abstandshalter ein. */
 	public void addSeparator() {
 		_modulePanel.add(Box.createVerticalStrut(15));
 	}
 
 	/**
-	 * Fügt über die Buttons, mit denen die Module gestartet werden können, ein Logo ein.
+	 * FÃ¼gt Ã¼ber die Buttons, mit denen die Module gestartet werden kÃ¶nnen, ein Logo ein.
 	 *
 	 * @param icon das Logo
 	 */
@@ -192,7 +208,7 @@ public class GenericTestMonitorApplication implements ApplicationInterface {
 		_logoPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 	}
 
-	/** Stellt die Anwendung dar und lädt die Einstellungen aus den Preferences. */
+	/** Stellt die Anwendung dar und lÃ¤dt die Einstellungen aus den Preferences. */
 	public void start() {
 		_frame.pack();
 		_frame.setLocation((_screenSize.width - _frame.getSize().width) / 2, (_screenSize.height - _frame.getSize().height) / 2);
@@ -206,7 +222,7 @@ public class GenericTestMonitorApplication implements ApplicationInterface {
 	}
 
 	/**
-	 * Gibt die Verbindung zum Datenverteiler zurück.
+	 * Gibt die Verbindung zum Datenverteiler zurÃ¼ck.
 	 *
 	 * @return die Verbindung zum Datenverteiler
 	 */
@@ -215,7 +231,7 @@ public class GenericTestMonitorApplication implements ApplicationInterface {
 	}
 
 	/**
-	 * Nimmt die Einstellungsdaten der Module entgegen und übergibt sie an das Panel, welches die Einstellungen verwaltet.
+	 * Nimmt die Einstellungsdaten der Module entgegen und Ã¼bergibt sie an das Panel, welches die Einstellungen verwaltet.
 	 *
 	 * @param settingsData die Einstellungsdaten
 	 */
@@ -224,7 +240,7 @@ public class GenericTestMonitorApplication implements ApplicationInterface {
 	}
 
 	/**
-	 * Gibt die Argumente zurück, die beim Aufruf der <code>main</code>-Methode übergeben wurden.
+	 * Gibt die Argumente zurÃ¼ck, die beim Aufruf der <code>main</code>-Methode Ã¼bergeben wurden.
 	 *
 	 * @return die Liste der Argumente
 	 */
@@ -242,7 +258,7 @@ public class GenericTestMonitorApplication implements ApplicationInterface {
 	}
 
 	/**
-	 * Gibt die Parameter für die Vorauswahl (Baum) zurück. Die Collection enthält Systemobjekte und Knotenobjekte. Anhand der Objekte wird der Baum für die
+	 * Gibt die Parameter fÃ¼r die Vorauswahl (Baum) zurÃ¼ck. Die Collection enthÃ¤lt Systemobjekte und Knotenobjekte. Anhand der Objekte wird der Baum fÃ¼r die
 	 * Vorauswahl erzeugt.
 	 *
 	 * @return die Sammlung von System- und Knotenobjekten
@@ -252,7 +268,7 @@ public class GenericTestMonitorApplication implements ApplicationInterface {
 	}
 
 	/**
-	 * Ermittelt anhand des Modulnamens das zugehörige Objekt und gibt es zurück.
+	 * Ermittelt anhand des Modulnamens das zugehÃ¶rige Objekt und gibt es zurÃ¼ck.
 	 *
 	 * @param moduleName der Name des gesuchten Moduls
 	 *
@@ -263,7 +279,7 @@ public class GenericTestMonitorApplication implements ApplicationInterface {
 	}
 
 	/**
-	 * Fügt ein weiteres Modul in die Liste der Applikation ein.
+	 * FÃ¼gt ein weiteres Modul in die Liste der Applikation ein.
 	 *
 	 * @param externalModule neues Modul
 	 */
@@ -276,8 +292,8 @@ public class GenericTestMonitorApplication implements ApplicationInterface {
 	}
 
 	/**
-	 * Diese Klasse erstellt für ein {@link ExternalModule Modul} einen Button für die Applikation. Der Button erhält vom Modul einen Text und einen Tooltip.
-	 * Weiterhin wird das Modul über Änderungen in der {@link PreselectionLists PreselectionList} informiert.
+	 * Diese Klasse erstellt fÃ¼r ein {@link ExternalModule Modul} einen Button fÃ¼r die Applikation. Der Button erhÃ¤lt vom Modul einen Text und einen Tooltip.
+	 * Weiterhin wird das Modul Ã¼ber Ã„nderungen in der {@link PreselectionLists PreselectionList} informiert.
 	 */
 	private class ModuleButton extends JButton implements PreselectionListsListener {
 
@@ -311,9 +327,9 @@ public class GenericTestMonitorApplication implements ApplicationInterface {
 		}
 
 		/**
-		 * Verarbeitet die in der {@link de.bsvrz.pat.sysbed.preselection.lists.PreselectionLists PreselectionList} ausgewählten Elemente.
+		 * Verarbeitet die in der {@link de.bsvrz.pat.sysbed.preselection.lists.PreselectionLists PreselectionList} ausgewÃ¤hlten Elemente.
 		 *
-		 * @param preselectionLists die Auswahllisten für die Datenidentifikation
+		 * @param preselectionLists die Auswahllisten fÃ¼r die Datenidentifikation
 		 */
 		public void listSelectionChanged(final PreselectionLists preselectionLists) {
 			_preselectionLists = preselectionLists;

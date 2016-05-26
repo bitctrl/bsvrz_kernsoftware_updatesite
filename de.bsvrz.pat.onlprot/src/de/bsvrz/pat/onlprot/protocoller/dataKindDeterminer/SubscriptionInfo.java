@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2003 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2003 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.onlprot.
  * 
- * de.bsvrz.pat.onlprot is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.onlprot is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.onlprot is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.onlprot; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.onlprot.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 
@@ -37,17 +43,17 @@ import java.util.List;
  */
 public class SubscriptionInfo {
 
-	/** Untere Grenze des Wertebereichs, in dem die Intervalll‰nge zuf‰llig variiert
+	/** Untere Grenze des Wertebereichs, in dem die Intervalll√§nge zuf√§llig variiert
 	 * wird.
 	 */
 	private final long						intervalLowerBound;
-	/** Obere Grenze des Wertebereichs, in dem die Intervalll‰nge zuf‰llig variiert
+	/** Obere Grenze des Wertebereichs, in dem die Intervalll√§nge zuf√§llig variiert
 	 * wird.
 	 */
 	private final long						intervalUpperBound;
-	/** Z‰hler f¸r die Anzahl der gesendeten Intervalle */
+	/** Z√§hler f√ºr die Anzahl der gesendeten Intervalle */
 	private int								intervalCount;
-	/** Streuungsgrad f¸r das Versenden der Datentelegramme in einem Intervall */
+	/** Streuungsgrad f√ºr das Versenden der Datentelegramme in einem Intervall */
 	private final int						spread;
 	/** Zeitstempel-Option: Gibt an, ob der in der Datei vorgefundene Zeitstempel
 	 * verwendet wird oder die Daten in die Jetztzeit verschoben werden
@@ -87,8 +93,8 @@ public class SubscriptionInfo {
 	 * 								Anmeldungsobjekts
 	 * @param dataSpec String mit der Spezifikation der Daten des
 	 * 								Anmeldungsobjekts
-	 * @param intervalLowerBound Untere Grenze des Wertebereichs, in dem die Intervalll‰nge variiert wird
-	 * @param intervalUpperBound Obere Grenze des Wertebereichs, in dem die Intervalll‰nge variiert wird
+	 * @param intervalLowerBound Untere Grenze des Wertebereichs, in dem die Intervalll√§nge variiert wird
+	 * @param intervalUpperBound Obere Grenze des Wertebereichs, in dem die Intervalll√§nge variiert wird
 	 */
 	SubscriptionInfo(long intervalLowerBound, long intervalUpperBound,
 					 int intervalCount, int spread,  int timeStampOption,
@@ -106,7 +112,7 @@ public class SubscriptionInfo {
 
 	/**
 	 * Erzeugt ein neues Objekt der Klasse <code>SubscriptionInfo</code> mit
-	 * Empf‰ngerinformationen
+	 * Empf√§ngerinformationen
 	 *
 	 * @param	role		String mit der Rolle des Anmeldungsobjekts
 	 * @param	options		{@link ReceiveOptions} des Anmeldungsobjekts
@@ -135,7 +141,7 @@ public class SubscriptionInfo {
 	}
 
 	/**
-	 * Gibt die untere Grenze des Intervallbereichs zur¸ck
+	 * Gibt die untere Grenze des Intervallbereichs zur√ºck
 	 *
 	 * @return	long mit der unteren Grenze des Intervallbereichs
 	 */
@@ -144,7 +150,7 @@ public class SubscriptionInfo {
 	}
 
 	/**
-	 * Gibt die Anzahl der zu sendenden Zykel zur¸ck
+	 * Gibt die Anzahl der zu sendenden Zykel zur√ºck
 	 *
 	 * @return	int mit der Anzahl der zu sendenden Zyklen
 	 */
@@ -153,7 +159,7 @@ public class SubscriptionInfo {
 	}
 
 	/**
-	 * Gibt die obere Grenze des Intervallbereichs zur¸ck
+	 * Gibt die obere Grenze des Intervallbereichs zur√ºck
 	 *
 	 * @return	long mit der oberen Grenze des Intervallbereichs
 	 */
@@ -162,7 +168,7 @@ public class SubscriptionInfo {
 	}
 
 	/**
-	 * Gibt die anzumeldenden Objekte zur¸ck
+	 * Gibt die anzumeldenden Objekte zur√ºck
 	 *
 	 * @return	List mit den Objekten
 	 */
@@ -171,7 +177,7 @@ public class SubscriptionInfo {
 	}
 
 	/**
-	 * Gibt die Objektspezifikation zur¸ck
+	 * Gibt die Objektspezifikation zur√ºck
 	 *
 	 * @return	String	mit der Objektspezifikation
 	 */
@@ -180,7 +186,7 @@ public class SubscriptionInfo {
 	}
 
 	/**
-	 * Gibt die Optionen des Anmeldungsobjekts zur¸ck
+	 * Gibt die Optionen des Anmeldungsobjekts zur√ºck
 	 *
 	 * @return	{@link ReceiveOptions} des Anmeldungsobjekts
 	 */
@@ -189,9 +195,9 @@ public class SubscriptionInfo {
 	}
 
 	/**
-	 * Gibt eine zuf‰llige Intervalll‰nge im eingestellten Bereich zur¸ck
+	 * Gibt eine zuf√§llige Intervalll√§nge im eingestellten Bereich zur√ºck
 	 *
-	 * @return	long mit einer Intervalll‰nge, die zwischen
+	 * @return	long mit einer Intervalll√§nge, die zwischen
 	 *			{@link #intervalLowerBound} und {@link #intervalUpperBound} liegt
 	 */
 	public long getRandomInterval() {
@@ -200,21 +206,21 @@ public class SubscriptionInfo {
 	}
 
 	/**
-	 * Gibt die Rolle des Anmeldungsobjekts zur¸ck
+	 * Gibt die Rolle des Anmeldungsobjekts zur√ºck
 	 *
 	 * @return	{@link ReceiverRole} des Anmeldungsobjekts
 	 */
 	public ReceiverRole getReceiverRole() {
 		if (role.equals("Senke")) {
 			return ReceiverRole.drain();
-		} else if (role.equals("Empf‰nger")) {
+		} else if (role.equals("Empf√§nger")) {
 			return ReceiverRole.receiver();
 		}
-		throw new IllegalArgumentException("Empf‰nger-Rolle existiert nicht");
+		throw new IllegalArgumentException("Empf√§nger-Rolle existiert nicht");
 	}
 
 	/**
-	 * Gibt die Rolle des Anmeldungsobjekts zur¸ck
+	 * Gibt die Rolle des Anmeldungsobjekts zur√ºck
 	 *
 	 * @return	{@link SenderRole} des Anmeldungsobjekts
 	 */
@@ -229,7 +235,7 @@ public class SubscriptionInfo {
 
 	/**
 	 * Gibt die Datenspezifikationen dieses Anmeldungsobjekts in einem Feld
-	 * zur¸ck. Diese bestehen aus den drei Teilen Attributgruppe, Aspekt und
+	 * zur√ºck. Diese bestehen aus den drei Teilen Attributgruppe, Aspekt und
 	 * Simulationsvariante.
 	 *
 	 * @param	separator	String: das zu verwendende Trennzeichen. Die
@@ -244,7 +250,7 @@ public class SubscriptionInfo {
 	}
 
 	/**
-	 * Gibt die Objekte dieses Anmeldungsobjekts in einem Feld zur¸ck
+	 * Gibt die Objekte dieses Anmeldungsobjekts in einem Feld zur√ºck
 	 *
 	 * @param	separator	String: das zu verwendende Trennzeichen. Die
 	 *						Zeichenkette wird als Liste durch
@@ -257,16 +263,16 @@ public class SubscriptionInfo {
 	}
 
 	/**
-	 * Gibt die Streuung zur¸ck.
+	 * Gibt die Streuung zur√ºck.
 	 *
-	 * @return	long, welches die Streuung enth‰lt
+	 * @return	long, welches die Streuung enth√§lt
 	 */
 	public int getSpread() {
 		return spread;
 	}
 
 	/**
-	 * Gibt die Zeitstempel-Option des Anmeldungsobjekts zur¸ck
+	 * Gibt die Zeitstempel-Option des Anmeldungsobjekts zur√ºck
 	 *
 	 * @return	int mit Zeitstempel-Option des Anmeldungsobjekts
 	 */
@@ -282,7 +288,7 @@ public class SubscriptionInfo {
 		intervalCount = intervalCount + 1;
 	}
 
-	/** Tr‰gt Datenbeschreibungen ein
+	/** Tr√§gt Datenbeschreibungen ein
 	 * @param dd DataDescription mit den einzutragenden
 	 * 					Datenbeschreibungen
 	 */

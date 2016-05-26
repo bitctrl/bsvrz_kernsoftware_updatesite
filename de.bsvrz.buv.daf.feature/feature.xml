@@ -2,7 +2,7 @@
 <feature
       id="de.bsvrz.buv.daf.feature"
       label="%featureName"
-      version="3.6.5.qualifier"
+      version="3.7.4.qualifier"
       provider-name="%featureProvider">
 
    <description>
@@ -18,14 +18,28 @@
    </license>
 
    <requires>
-      <import plugin="de.bsvrz.sys.funclib.debug" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="de.bsvrz.sys.funclib.commandLineArgs" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="de.bsvrz.sys.funclib.timeout" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="de.bsvrz.sys.funclib.filelock" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="de.bsvrz.sys.funclib.crypt" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="de.bsvrz.sys.funclib.hexdump" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="de.bsvrz.sys.funclib.concurrent" version="3.5.0" match="greaterOrEqual"/>
       <import plugin="de.bsvrz.dav.daf" version="3.5.0" match="compatible"/>
+      <import plugin="de.bsvrz.sys.funclib.debug" version="3.7.4" match="compatible"/>
+      <import plugin="de.bsvrz.sys.funclib.commandLineArgs" version="3.7.4" match="compatible"/>
+      <import plugin="de.bsvrz.sys.funclib.timeout" version="3.7.4" match="compatible"/>
+      <import plugin="de.bsvrz.sys.funclib.filelock" version="3.7.4" match="compatible"/>
+      <import plugin="de.bsvrz.sys.funclib.crypt" version="3.7.4" match="compatible"/>
+      <import plugin="de.bsvrz.sys.funclib.hexdump" version="3.7.4" match="compatible"/>
+      <import plugin="de.bsvrz.sys.funclib.concurrent" version="3.7.4" match="compatible"/>
+      <import plugin="de.bsvrz.dav.daf" version="3.7.4" match="compatible"/>
+      <import plugin="de.bsvrz.sys.funclib.xmlSupport" version="3.7.4" match="compatible"/>
+      <import plugin="de.bsvrz.sys.funclib.application" version="3.7.4" match="compatible"/>
+      <import plugin="de.bsvrz.sys.funclib.operatingMessage" version="3.7.4" match="compatible"/>
+      <import plugin="de.bsvrz.sys.funclib.asyncReceiver" version="3.7.4" match="compatible"/>
+      <import plugin="de.bsvrz.sys.funclib.dataSerializer" version="3.7.4" match="compatible"/>
+      <import plugin="de.bsvrz.sys.funclib.communicationStreams" version="3.7.4" match="compatible"/>
+      <import plugin="de.bsvrz.pat.onlprot" version="3.7.4" match="compatible"/>
+      <import plugin="de.bsvrz.sys.funclib.configObjectAcquisition" version="3.7.4" match="compatible"/>
+      <import plugin="de.bsvrz.sys.funclib.consoleProcessFrame" version="3.7.4" match="compatible"/>
+      <import plugin="de.bsvrz.pat.datgen" version="3.7.4" match="compatible"/>
+      <import plugin="de.bsvrz.pat.sysprot" version="3.7.4" match="compatible"/>
+      <import plugin="de.bsvrz.sys.funclib.dataIdentificationSettings" version="3.7.4" match="compatible"/>
+      <import plugin="org.eclipse.core.runtime"/>
    </requires>
 
    <plugin
@@ -172,5 +186,19 @@
          download-size="0"
          install-size="0"
          version="0.0.0"/>
+
+   <plugin
+         id="de.kappich.sys.funclib.json"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.bsvrz.sys.funclib.kappich"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>

@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.sys.funclib.losb.
  * 
- * de.bsvrz.sys.funclib.losb is free software; you can redistribute it and/or modify
+ * de.bsvrz.sys.funclib.losb is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.losb is distributed in the hope that it will be useful,
@@ -15,28 +15,34 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.sys.funclib.losb; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.losb.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.losb.util.cmdinterface;
 
 /**
- * Kommando das nicht im Men¸ angezeigt wird. Darf nur in der obersten Men¸ebene hinter allen "sichtbaren" Eintr‰gen verwendet werden.
+ * Kommando das nicht im Men√º angezeigt wird. Darf nur in der obersten Men√ºebene hinter allen "sichtbaren" Eintr√§gen verwendet werden.
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 6420 $ / $Date: 2009-03-10 23:19:01 +0100 (Tue, 10 Mar 2009) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public abstract class HiddenCommand extends Command {
 
 	private int index = 0;
 
 	/**
-	 * Kommando f¸r {@link CmdInterpreter}
+	 * Kommando f√ºr {@link CmdInterpreter}
 	 *
 	 * @param desc  die Beschreibung
-	 * @param index Index des Kommandos. Muss eindeutig sein. Es sollte eine Zahl > 100 gew‰hlt werden, damit es zu keinen ‹berschneidungen mit den ¸brigen
+	 * @param index Index des Kommandos. Muss eindeutig sein. Es sollte eine Zahl > 100 gew√§hlt werden, damit es zu keinen √úberschneidungen mit den √ºbrigen
 	 *              Kommandos kommt.
 	 */
 	public HiddenCommand(String desc, int index) {

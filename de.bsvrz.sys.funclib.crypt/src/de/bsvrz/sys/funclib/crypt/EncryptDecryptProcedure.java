@@ -6,7 +6,7 @@
  * 
  * de.bsvrz.sys.funclib.crypt is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.crypt is distributed in the hope that it will be useful,
@@ -15,17 +15,23 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.crypt; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.crypt; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.crypt;
 
 /**
- * Mögliche Verfahren, mit denen verschlüsselt und/oder entschlüsselt werden kann
+ * MÃ¶gliche Verfahren, mit denen verschlÃ¼sselt und/oder entschlÃ¼sselt werden kann
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5010 $
+ * @version $Revision$
  */
 public enum EncryptDecryptProcedure {
 	PBEWithMD5AndDES("PBEWithMD5AndDES"),
@@ -46,7 +52,7 @@ public enum EncryptDecryptProcedure {
 	}
 
 	/**
-	 * @return Gibt den Namen eines Verfahrens, mit dem verschlüsselt oder entschlüsselt werden kann, zurück
+	 * @return Gibt den Namen eines Verfahrens, mit dem verschlÃ¼sselt oder entschlÃ¼sselt werden kann, zurÃ¼ck
 	 */
 	public String getName() {
 		return _name;

@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2006 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -37,11 +43,11 @@ import java.io.ByteArrayInputStream;
  * Implementierung des Interfaces von Eigenschaften von Wertebereichen.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 8550 $ / $Date: 2011-01-06 10:48:12 +0100 (Thu, 06 Jan 2011) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigIntegerValueRange extends ConfigConfigurationObject implements IntegerValueRange {
 	/**
-	 * DebugLogger für Debug-Ausgaben
+	 * DebugLogger fÃ¼r Debug-Ausgaben
 	 */
 	private static final Debug _debug = Debug.getLogger();
 
@@ -51,10 +57,10 @@ public class ConfigIntegerValueRange extends ConfigConfigurationObject implement
 	private IntegerValueRangeValues _values;
 
 	/**
-	 * Konstruktor für einen Wertebereich eines {@link de.bsvrz.dav.daf.main.config.IntegerAttributeType Ganzzahl-Attribut-Typs}.
+	 * Konstruktor fÃ¼r einen Wertebereich eines {@link de.bsvrz.dav.daf.main.config.IntegerAttributeType Ganzzahl-Attribut-Typs}.
 	 *
 	 * @param configurationArea der Konfigurationsbereich dieses Wertebereichs
-	 * @param systemObjectInfo  das korrespondierende Objekt für die Dateioperationen dieses Wertebereichs
+	 * @param systemObjectInfo  das korrespondierende Objekt fÃ¼r die Dateioperationen dieses Wertebereichs
 	 */
 	public ConfigIntegerValueRange(ConfigurationArea configurationArea, SystemObjectInformationInterface systemObjectInfo) {
 		super(configurationArea, systemObjectInfo);
@@ -77,7 +83,7 @@ public class ConfigIntegerValueRange extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Gibt das Objekt zurück, welches die Eigenschaften dieses Wertebereichs enthält. Existiert es noch nicht, so wird es erzeugt indem der entsprechende
+	 * Gibt das Objekt zurÃ¼ck, welches die Eigenschaften dieses Wertebereichs enthÃ¤lt. Existiert es noch nicht, so wird es erzeugt indem der entsprechende
 	 * konfigurierende Datensatz ausgelesen wird.
 	 *
 	 * @return die Eigenschaften dieses Wertebereichs
@@ -90,8 +96,8 @@ public class ConfigIntegerValueRange extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Wird aufgerufen, wenn das Objekt verändert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zurücksetzen. Erbende Klassen müssen diese
-	 * Funktion überschreiben, wenn sie Daten cachen.
+	 * Wird aufgerufen, wenn das Objekt verÃ¤ndert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zurÃ¼cksetzen. Erbende Klassen mÃ¼ssen diese
+	 * Funktion Ã¼berschreiben, wenn sie Daten cachen.
 	 */
 	@Override
 	synchronized void invalidateCache() {
@@ -100,8 +106,8 @@ public class ConfigIntegerValueRange extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Diese Klasse liest die Informationen für diesen Wertebereich mit Hilfe des Deserializers direkt aus dem Byte-Array des konfigurierenden Datensatzes aus und
-	 * verwendet nicht die Methode {@link de.bsvrz.dav.daf.main.config.SystemObject#getConfigurationData}, da dort Informationen benötigt werden, die hier erst zur Verfügung gestellt werden.
+	 * Diese Klasse liest die Informationen fÃ¼r diesen Wertebereich mit Hilfe des Deserializers direkt aus dem Byte-Array des konfigurierenden Datensatzes aus und
+	 * verwendet nicht die Methode {@link de.bsvrz.dav.daf.main.config.SystemObject#getConfigurationData}, da dort Informationen benÃ¶tigt werden, die hier erst zur VerfÃ¼gung gestellt werden.
 	 */
 	private class IntegerValueRangeValues {
 		/**
@@ -115,12 +121,12 @@ public class ConfigIntegerValueRange extends ConfigConfigurationObject implement
 		private long _maximum;
 
 		/**
-		 * der Skalierungsfaktur für die internen Werte, um externe Werte zu erhalten
+		 * der Skalierungsfaktur fÃ¼r die internen Werte, um externe Werte zu erhalten
 		 */
 		private double _conversionFactor;
 
 		/**
-		 * die Maßeinheit von Werten dieses Bereichs
+		 * die MaÃŸeinheit von Werten dieses Bereichs
 		 */
 		private String _unit;
 
@@ -140,9 +146,9 @@ public class ConfigIntegerValueRange extends ConfigConfigurationObject implement
 				_minimum = deserializer.readLong();
 				_maximum = deserializer.readLong();
 				_conversionFactor = deserializer.readDouble();
-				_unit = deserializer.readString(64);	 // Länge des Strings steht im Datenkatalog att.einheit in kb.metaModellGlobal
+				_unit = deserializer.readString(64);	 // LÃ¤nge des Strings steht im Datenkatalog att.einheit in kb.metaModellGlobal
 
-				in.close();	// Stream schließen
+				in.close();	// Stream schlieÃŸen
 			} catch (Exception ex) {
 				final String errorMessage = "Die WerteBereichsEigenschaften des Wertebereichs " + getNameOrPidOrId() + " konnten nicht ermittelt werden";
 				_debug.error(errorMessage, ex);
@@ -151,7 +157,7 @@ public class ConfigIntegerValueRange extends ConfigConfigurationObject implement
 		}
 
 		/**
-		 * Gibt das Minimum des Wertebereichs zurück.
+		 * Gibt das Minimum des Wertebereichs zurÃ¼ck.
 		 *
 		 * @return das Minimum des Wertebereichs
 		 */
@@ -160,7 +166,7 @@ public class ConfigIntegerValueRange extends ConfigConfigurationObject implement
 		}
 
 		/**
-		 * Gibt das Maximum des Wertebereichs zurück.
+		 * Gibt das Maximum des Wertebereichs zurÃ¼ck.
 		 *
 		 * @return das Maximum des Wertebereichs
 		 */
@@ -169,7 +175,7 @@ public class ConfigIntegerValueRange extends ConfigConfigurationObject implement
 		}
 
 		/**
-		 * Gibt des Skalierungsfaktor für die inneren Werte zurück.
+		 * Gibt des Skalierungsfaktor fÃ¼r die inneren Werte zurÃ¼ck.
 		 *
 		 * @return der Skalierungsfaktor dieses Wertebereichs
 		 */
@@ -178,9 +184,9 @@ public class ConfigIntegerValueRange extends ConfigConfigurationObject implement
 		}
 
 		/**
-		 * Gibt die Maßeinheit von Werten dieses Bereichs zurück.
+		 * Gibt die MaÃŸeinheit von Werten dieses Bereichs zurÃ¼ck.
 		 *
-		 * @return die Maßeinheit von Werten dieses Bereichs
+		 * @return die MaÃŸeinheit von Werten dieses Bereichs
 		 */
 		public String getUnit() {
 			return _unit;

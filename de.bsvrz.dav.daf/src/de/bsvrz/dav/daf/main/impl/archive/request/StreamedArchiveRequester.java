@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.archive.request;
@@ -31,48 +37,48 @@ import de.bsvrz.sys.funclib.timeout.TimeoutTimer;
 import java.util.*;
 
 /**
- * Die Objekte dieser Klasse verwalten alle Arten von Anfragen an das Archivsystem, gleichzeitig werden auch alle Antworten vom Archivsystem, die für die
+ * Die Objekte dieser Klasse verwalten alle Arten von Anfragen an das Archivsystem, gleichzeitig werden auch alle Antworten vom Archivsystem, die fÃ¼r die
  * Applikation bestimmt sind, entgegen genommen und in entsprechende Objekte umgewandelt (der Datensatz wird von einem Objekt der Klasse {@link
- * StreamedRequestManager} empfangen, aber an den richtigen StreamedArchiveRequester weitergeleitet). Für jede anfragende Applikation wird ein solches Objekt
+ * StreamedRequestManager} empfangen, aber an den richtigen StreamedArchiveRequester weitergeleitet). FÃ¼r jede anfragende Applikation wird ein solches Objekt
  * erzeugt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11925 $
+ * @version $Revision$
  */
 public class StreamedArchiveRequester implements ArchiveRequestManager {
 
 	/** Stellt die Verbindung zum Archiv dar. Hier werden Steuerungs/Nutzdaten angefragt und empfangen. */
 	private final ClientDavInterface _connection;
 
-	/** Diese Variable wird benutzt um zu prüfen ob es einen Abnehmer für Archivanfragen gibt. Den Kommentar im Konstruktor beachten. */
+	/** Diese Variable wird benutzt um zu prÃ¼fen ob es einen Abnehmer fÃ¼r Archivanfragen gibt. Den Kommentar im Konstruktor beachten. */
 	private byte _state = ClientSenderInterface.STOP_SENDING;
 
-	/** Diese Objekt für <code>synchronized()</code> benötigt, es sperrt den Zugriff auf die Variable _state. */
+	/** Diese Objekt fÃ¼r <code>synchronized()</code> benÃ¶tigt, es sperrt den Zugriff auf die Variable _state. */
 	private final Byte _lockState = new Byte(_state);
 
-	/** Jede Anfrage erhält einen eigene Index. Somit können Antworten des Archivs, die auch diesen Index enthalten, genau dem Empfänger zugeordnet werden. */
+	/** Jede Anfrage erhÃ¤lt einen eigene Index. Somit kÃ¶nnen Antworten des Archivs, die auch diesen Index enthalten, genau dem EmpfÃ¤nger zugeordnet werden. */
 	private int _indexOfRequest = 0;
 
 	/**
-	 * Hier sind alle Anfragen gespeichert, als Key wird der Index der Anfrage benutzt und das Archiv von dem die Daten angefordert werden. Zu jeder Anfrage gehört
+	 * Hier sind alle Anfragen gespeichert, als Key wird der Index der Anfrage benutzt und das Archiv von dem die Daten angefordert werden. Zu jeder Anfrage gehÃ¶rt
 	 * ein eindeutiger Index.
 	 */
 	private final Map _requests;
 
 	/**
-	 * Diese Variable bestimmt die Größe des Empfangspuffers (StreamDemultiplexer). Die Größe wird in Bytes angegben. Der Wert "0" ist der default Wert. Das
-	 * bedeutet, dass das Archiv die Größe des Empfangspuffers festlegt. Der Defaultwert ist in der Konfiguration gespeichert und wird dort vom Archiv angefordert.
+	 * Diese Variable bestimmt die GrÃ¶ÃŸe des Empfangspuffers (StreamDemultiplexer). Die GrÃ¶ÃŸe wird in Bytes angegben. Der Wert "0" ist der default Wert. Das
+	 * bedeutet, dass das Archiv die GrÃ¶ÃŸe des Empfangspuffers festlegt. Der Defaultwert ist in der Konfiguration gespeichert und wird dort vom Archiv angefordert.
 	 * Soll ein anderer Wert benutzt werden, so kann dieser mit {@link #setReceiveBufferSize} gesetzt werden.
 	 */
 	private int _receiveBufferSize = 0;
 
-	/** Für welches Archivsystem ist dieser Manager. */
+	/** FÃ¼r welches Archivsystem ist dieser Manager. */
 	private final SystemObject _archiveSystem;
 
 	private final Date _timeOutArchiveRequest;
 
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static Debug _debug = Debug.getLogger();
 
 	private ClientSender _clientSender;
@@ -84,18 +90,18 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 
 	private final SubscriptionArchiveOnlineDataManager _subscriptionArchiveOnlineDataManager;
 
-	/** Speichert alle Listener, die benachrichtigt werden, wenn das Archivsystem nicht mehr über den DaV zu erreichen ist */
+	/** Speichert alle Listener, die benachrichtigt werden, wenn das Archivsystem nicht mehr Ã¼ber den DaV zu erreichen ist */
 	private final List<ArchiveAvailabilityListener> _listener = new ArrayList<ArchiveAvailabilityListener>();
 
 	private boolean _gotDataRequest;
 
 	/**
-	 * Dieser Konstruktor erzeugt ein StreamedArchiveRequester Objekt und meldet sich gleichzeitig auf der übergebenen Verbindung als Sender für Anfragen an. Die
-	 * Anfragen werden an das Archiv geschickt, das ebenfalls übergeben wird. Die Anfragen enthalten einmal die Archivanfragen und als zweites Tickets, die dem
-	 * Archiv erlauben weitere Datensätze zu verschicken.
+	 * Dieser Konstruktor erzeugt ein StreamedArchiveRequester Objekt und meldet sich gleichzeitig auf der Ã¼bergebenen Verbindung als Sender fÃ¼r Anfragen an. Die
+	 * Anfragen werden an das Archiv geschickt, das ebenfalls Ã¼bergeben wird. Die Anfragen enthalten einmal die Archivanfragen und als zweites Tickets, die dem
+	 * Archiv erlauben weitere DatensÃ¤tze zu verschicken.
 	 *
-	 * @param archiveConnection Eine Verbindung auf der Datensätze verschickt werden sollen
-	 * @param archiveSystem     Das Archiv, für das die Datensätze bestimmt sind
+	 * @param archiveConnection Eine Verbindung auf der DatensÃ¤tze verschickt werden sollen
+	 * @param archiveSystem     Das Archiv, fÃ¼r das die DatensÃ¤tze bestimmt sind
 	 */
 	public StreamedArchiveRequester(
 			ClientDavInterface archiveConnection, int timeOutArchiveRequest, SystemObject archiveSystem, short defaultSimulationVariant) {
@@ -104,7 +110,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		_requests = Collections.synchronizedMap(new HashMap());
 
 		// Legt den Zeitpunkt fest, bis zu dem maximal auf eine Verbidnung zum Archivsystem gewartet wird.
-		// Wird dieser Zeitpunkt überschritten, so liefert die Methode isConnectionOk immer false zurück, wenn
+		// Wird dieser Zeitpunkt Ã¼berschritten, so liefert die Methode isConnectionOk immer false zurÃ¼ck, wenn
 		// keine Verbidnung besteht, es wird nicht gewartet.
 		_timeOutArchiveRequest = new Date(System.currentTimeMillis() + timeOutArchiveRequest);
 		_defaultSimulationVariant = defaultSimulationVariant;
@@ -119,7 +125,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 			final AttributeGroup attributeGroup;
 			attributeGroup = configuration.getAttributeGroup("atg.archivAnfrageSchnittstelle");
 
-			// In diesem Aspekt stehen die Anfragen/Tickets der Empfängerapplikation, diese müssen gesendet werden
+			// In diesem Aspekt stehen die Anfragen/Tickets der EmpfÃ¤ngerapplikation, diese mÃ¼ssen gesendet werden
 			final Aspect aspectSender = configuration.getAspect("asp.anfrage");
 
 			final short simulationVariant = 0;
@@ -137,20 +143,20 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 			oneSubscriptionPerSendData.printStackTrace();
 		}
 
-		// Objekt, das Anmeldungen auf Online+Archivdaten zuläßt erzeugen
+		// Objekt, das Anmeldungen auf Online+Archivdaten zulÃ¤ÃŸt erzeugen
 		_subscriptionArchiveOnlineDataManager = new SubscriptionArchiveOnlineDataManager(this, _connection);
 	}
 
 	/**
-	 * Diese Methode stellt eine Anfrage an das Archiv. Da eine Liste mit Objekten, die angefragt werden sollen, zur Verfügung gestellt wird, werden auch soviele
-	 * Streams bereitgestellt, wie die Liste Einträge hat.
+	 * Diese Methode stellt eine Anfrage an das Archiv. Da eine Liste mit Objekten, die angefragt werden sollen, zur VerfÃ¼gung gestellt wird, werden auch soviele
+	 * Streams bereitgestellt, wie die Liste EintrÃ¤ge hat.
 	 *
-	 * @param priority Mit welcher Priorität soll die Anfrage beantwortet werden (hohe, mittlere, niedrige Priorität)
-	 * @param specs    Eine Liste von Objekten, die alle Informationen enthalten, die zur Bearbeitung der Archivanfrage nötig sind. Für jedes Objekt der Liste wird
-	 *                 ein Stream bereitgestellt, der die geforderten Informationen enthält.Wird eine leere Liste übergeben, wird das Objekt, das die Antwort auf
-	 *                 diese Anfrage enthält, ein Array mit Streams zurückgegbene, das ebenfalls leer ist.
+	 * @param priority Mit welcher PrioritÃ¤t soll die Anfrage beantwortet werden (hohe, mittlere, niedrige PrioritÃ¤t)
+	 * @param specs    Eine Liste von Objekten, die alle Informationen enthalten, die zur Bearbeitung der Archivanfrage nÃ¶tig sind. FÃ¼r jedes Objekt der Liste wird
+	 *                 ein Stream bereitgestellt, der die geforderten Informationen enthÃ¤lt.Wird eine leere Liste Ã¼bergeben, wird das Objekt, das die Antwort auf
+	 *                 diese Anfrage enthÃ¤lt, ein Array mit Streams zurÃ¼ckgegbene, das ebenfalls leer ist.
 	 *
-	 * @return Ein Objekt, das die Möglichkeit bietet zu prüfen ob die Anfrage erfolgreich war oder ob die Anfrage fehlgeschlagen ist. War die Anfrage erfolgreich,
+	 * @return Ein Objekt, das die MÃ¶glichkeit bietet zu prÃ¼fen ob die Anfrage erfolgreich war oder ob die Anfrage fehlgeschlagen ist. War die Anfrage erfolgreich,
 	 *         so kann das Objekt die Streams zur weiteren Bearbeitung weitergeben. War die Liste <code>specs</code> leer, ist das Array, das die Streams
 	 *         darstellt, ebenfalls leer.
 	 *
@@ -159,13 +165,13 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	public ArchiveDataQueryResult request(ArchiveQueryPriority priority, List<ArchiveDataSpecification> specs) throws IllegalStateException {
 
 		if(specs != null && specs.size() > 0) {
-			// Am Anfang wird geprüft, ob das Archivsystem verfügbar ist, nur wenn eine Verbidnung besteht wird die
-			// Anfrage überhaupt bearbeitet
+			// Am Anfang wird geprÃ¼ft, ob das Archivsystem verfÃ¼gbar ist, nur wenn eine Verbidnung besteht wird die
+			// Anfrage Ã¼berhaupt bearbeitet
 			try {
 				if(isConnectionOk(_timeOutArchiveRequest) == false) {
 					_debug.warning(
 							"Die Applikation: " + _connection.getLocalApplicationObject().getNameOrPidOrId() + " will eine Archivanfrage beim Archivsystem: "
-							+ _archiveSystem.getNameOrPidOrId() + " stellen, bekommt aber keine Rückmeldung vom Archivsystem. Die Archivanfrage wird verworfen."
+							+ _archiveSystem.getNameOrPidOrId() + " stellen, bekommt aber keine RÃ¼ckmeldung vom Archivsystem. Die Archivanfrage wird verworfen."
 					);
 					throw new IllegalStateException("Das Archivsystem " + _archiveSystem.getNameOrPidOrId() + " kann nicht erreicht werden");
 				}
@@ -174,8 +180,8 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 				e.printStackTrace();
 			}
 
-			// über diese ID ist jede Archivanfrage eindeutig zu identifizieren
-			// Als Key wird ein laufender Index und das Archiv (für das die Anfrage ist) genommen
+			// Ã¼ber diese ID ist jede Archivanfrage eindeutig zu identifizieren
+			// Als Key wird ein laufender Index und das Archiv (fÃ¼r das die Anfrage ist) genommen
 			final int indexOfRequest;
 			synchronized(this) {
 				indexOfRequest = _indexOfRequest;
@@ -188,11 +194,11 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		}
 		else {
 			if(specs == null) {
-				// Es wurde <code>null</code> übergeben
+				// Es wurde <code>null</code> Ã¼bergeben
 				throw new IllegalArgumentException("Die Liste, die eine Archivanfrage spezifiziert, war null");
 			}
 			else {
-				// Die Liste enthält keine Elemente, also ein Array der Größe 0 zurückgeben
+				// Die Liste enthÃ¤lt keine Elemente, also ein Array der GrÃ¶ÃŸe 0 zurÃ¼ckgeben
 				return getEmptyResult();
 			}
 		}
@@ -257,7 +263,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		}
 		SystemObject[] objects = tmp.toArray(new SystemObject[tmp.size()]);
 
-		// Objekte nach Gültigkeit sortieren
+		// Objekte nach GÃ¼ltigkeit sortieren
 		Arrays.sort(objects, new Comparator<SystemObject>() {
 			@Override
 			public int compare(final SystemObject o1, final SystemObject o2) {
@@ -283,7 +289,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 			return getEmptyResult();
 		}
 		Query archiveQuery = new Query(archiveQueryID, priority, specs, _receiveBufferSize, this, _defaultSimulationVariant);
-		// Die Anfrage speichern, sobald Daten für diese Anfrage kommen, kann die Archivanfrage über ihren Index
+		// Die Anfrage speichern, sobald Daten fÃ¼r diese Anfrage kommen, kann die Archivanfrage Ã¼ber ihren Index
 		// identifiziert werden. Der Index wird mit der Nachricht versandt.
 		_requests.put(archiveQuery.getArchiveRequestID(), archiveQuery);
 
@@ -309,13 +315,13 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	}
 
 	/**
-	 * Diese Methode stellt eine Anfrage an das Archiv. Da nur ein Objekt angefragt wird, steht auch nur ein Stream zur Verfügung, der Daten über das Objekt
-	 * übermittelt
+	 * Diese Methode stellt eine Anfrage an das Archiv. Da nur ein Objekt angefragt wird, steht auch nur ein Stream zur VerfÃ¼gung, der Daten Ã¼ber das Objekt
+	 * Ã¼bermittelt
 	 *
-	 * @param priority Mit welcher Priorität soll die Anfrage beantwortet werden (hohe, mittlere, niedrige Priorität)
-	 * @param spec     Ein Objekt, das alle Informationen enthält, die zur Bearbeitung der Archivanfrage nötig sind.
+	 * @param priority Mit welcher PrioritÃ¤t soll die Anfrage beantwortet werden (hohe, mittlere, niedrige PrioritÃ¤t)
+	 * @param spec     Ein Objekt, das alle Informationen enthÃ¤lt, die zur Bearbeitung der Archivanfrage nÃ¶tig sind.
 	 *
-	 * @return Ein Objekt, das die Möglichekit bietet zu prüfen ob die Anfrage erfolgreich war oder ob die Anfrage fehlgeschlagen ist. War die Anfrage erfolgreich,
+	 * @return Ein Objekt, das die MÃ¶glichekit bietet zu prÃ¼fen ob die Anfrage erfolgreich war oder ob die Anfrage fehlgeschlagen ist. War die Anfrage erfolgreich,
 	 *         so kann das Objekt die Streams zur weiteren Bearbeitung weitergeben.
 	 *
 	 * @throws IllegalStateException Das Archiv, an das die Anfrage gestellt wurde, kann nicht erreicht werden, die Anfrage wird verworfen.
@@ -330,7 +336,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	}
 
 	/**
-	 * Die Puffergröße (in Byte) des Empfängers auf einen anderen Wert als den default Wert setzen. Der default Wert wird vom Archiv aus der Konfiguration
+	 * Die PuffergrÃ¶ÃŸe (in Byte) des EmpfÃ¤ngers auf einen anderen Wert als den default Wert setzen. Der default Wert wird vom Archiv aus der Konfiguration
 	 * ermittelt.
 	 *
 	 * @param numberOfBytes
@@ -340,8 +346,8 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	}
 
 	/**
-	 * Diese Methode liefert zu einem gegebenen Index, der zu einer Archivanfrage gehört, die dazugehörige Archivanfrage. Der Index der Archivanfrage steht in der
-	 * Antwort einer Archivanfrage, somit kann die Antwort einer Archivanfrage zugeordnet werden. Die Anfrage wird über ein <code>int</code> identifiziert. Dieses
+	 * Diese Methode liefert zu einem gegebenen Index, der zu einer Archivanfrage gehÃ¶rt, die dazugehÃ¶rige Archivanfrage. Der Index der Archivanfrage steht in der
+	 * Antwort einer Archivanfrage, somit kann die Antwort einer Archivanfrage zugeordnet werden. Die Anfrage wird Ã¼ber ein <code>int</code> identifiziert. Dieses
 	 * int wird dann intern in ein <code>Integer</code> umgewandelt.
 	 *
 	 * @param indexOfQuery     Index der Archivanfrage
@@ -360,7 +366,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	/**
 	 * Diese Methode entfernt eine Archivauftrag aus der Hashtable.
 	 *
-	 * @param key key, der zu einem Archivauftrag (delete, restore, save, Archivinformationsanfrage, Archivanfrage) gehört, der entfernt werden soll
+	 * @param key key, der zu einem Archivauftrag (delete, restore, save, Archivinformationsanfrage, Archivanfrage) gehÃ¶rt, der entfernt werden soll
 	 */
 	void removeRequest(Object key) {
 
@@ -389,14 +395,14 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 				break;
 			}
 			case 3: {
-				// Ein Paket vom Typ "StreamDaten". Dies sind Nutzdaten, die für eine bestimmte Archivanfrage gedacht sind.
+				// Ein Paket vom Typ "StreamDaten". Dies sind Nutzdaten, die fÃ¼r eine bestimmte Archivanfrage gedacht sind.
 				archiveDataResponse(data);
 				break;
 			}
 			case 4: {
-				// Ein Paket vom Typ "StreamSteuerung" wurde empfangen. Diese Pakete enthalten für gewöhnlich
-				// Ticktes, die für den StreamMultiplexer gedacht sind. Also sind diese für
-				// für Archivanfragen gar nicht zu gebrauchen, da diese Tickets verschicken.
+				// Ein Paket vom Typ "StreamSteuerung" wurde empfangen. Diese Pakete enthalten fÃ¼r gewÃ¶hnlich
+				// Ticktes, die fÃ¼r den StreamMultiplexer gedacht sind. Also sind diese fÃ¼r
+				// fÃ¼r Archivanfragen gar nicht zu gebrauchen, da diese Tickets verschicken.
 				throw new IllegalArgumentException(
 						"Ein StreamedArchiveRequester hat ein Ticket empfangen. In einer Archivanfrage"
 						+ "arbeitet aber ein StreamDemultiplexer und kein StreamMultiplexer."
@@ -423,18 +429,18 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 			}
 			case 14: {
 
-				// Die Antwort Nummer 14 wird für 2 Auftragstypen benötigt.
-				// Einmal als Antwort für einen Auftrag, der den Löschzeipunkt verschieben soll
-				// und einmal als Antwort für einen Löschauftrag, der sich auf verschiedene
+				// Die Antwort Nummer 14 wird fÃ¼r 2 Auftragstypen benÃ¶tigt.
+				// Einmal als Antwort fÃ¼r einen Auftrag, der den LÃ¶schzeipunkt verschieben soll
+				// und einmal als Antwort fÃ¼r einen LÃ¶schauftrag, der sich auf verschiedene
 				// Zeitbereiche bezieht.
 
-				// Für welche Archivanfrage ist das Paket
+				// FÃ¼r welche Archivanfrage ist das Paket
 				final int indexOfRequest = data.getUnscaledValue("anfrageIndex").intValue();
 
 				// Welches Archiv hat die Daten verschickt
 				final SystemObject archiveReference = data.getReferenceValue("absender").getSystemObject();
 
-				// Der Schlüssel zu dem Objekt
+				// Der SchlÃ¼ssel zu dem Objekt
 				ArchiveQueryID hashObject = new ArchiveQueryID(indexOfRequest, archiveReference);
 
 				if(_requests.get(hashObject) instanceof IncreaseDeleteTime) {
@@ -474,7 +480,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	 */
 	private void intitiateArchiveQueryResponse(Data data) {
 
-		// Für welche Archivanfrage ist das Paket
+		// FÃ¼r welche Archivanfrage ist das Paket
 		final int indexOfRequest = data.getUnscaledValue("anfrageIndex").intValue();
 
 		// Welches Archiv hat die Daten verschickt
@@ -487,7 +493,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 			return;
 		}
 
-		assert query != null : "Index der Anfrage: " + indexOfRequest + " ;Objekt, das zu der Anfrage gehört: " + archiveReference;
+		assert query != null : "Index der Anfrage: " + indexOfRequest + " ;Objekt, das zu der Anfrage gehÃ¶rt: " + archiveReference;
 
 		// aus den Daten das byte-Array anfordern. In dem Array sind die Informationen, ob die Anfrage geklappt,
 		// kodiert.
@@ -498,14 +504,14 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	}
 
 	/**
-	 * Diese Klasse wird von der Implementation des StreamDemultixplexerDirector benötigt. Es verschickt das Ticket an das Archiv. Das Archiv wird das Ticket an
+	 * Diese Klasse wird von der Implementation des StreamDemultixplexerDirector benÃ¶tigt. Es verschickt das Ticket an das Archiv. Das Archiv wird das Ticket an
 	 * den StreamMultiplexer weiterreichen.
 	 *
 	 * @param archiveRequest Mit diesem Objekt kann die Archivanfrage eindeutig identifiziert werden
-	 * @param ticket         Ein byte-Array, das kodiert das Ticket für den StreamMultiplexer der Senderapplikation enthält
+	 * @param ticket         Ein byte-Array, das kodiert das Ticket fÃ¼r den StreamMultiplexer der Senderapplikation enthÃ¤lt
 	 *
 	 * @throws DataNotSubscribedException   Es sollen Daten ohne Anmeldung auf die Daten verschickt werden
-	 * @throws SendSubscriptionNotConfirmed Es liegt keine positive Sendesteuerung vom Datenverteiler für die zu versendenden Daten vor
+	 * @throws SendSubscriptionNotConfirmed Es liegt keine positive Sendesteuerung vom Datenverteiler fÃ¼r die zu versendenden Daten vor
 	 */
 	void sendTicketToArchive(ArchiveQueryID archiveRequest, byte[] ticket) throws DataNotSubscribedException, SendSubscriptionNotConfirmed, DataModelException {
 
@@ -514,13 +520,13 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	}
 
 	/**
-	 * Diese Methode leitet die Nutzdaten, die für eine bestimmte Archivanfrage gedacht sind, weiter.
+	 * Diese Methode leitet die Nutzdaten, die fÃ¼r eine bestimmte Archivanfrage gedacht sind, weiter.
 	 *
 	 * @param data Nutzdaten, die vom Archiv geschickt wurden
 	 */
 	void archiveDataResponse(Data data) {
 
-		// Für welche Archivanfrage ist das Paket
+		// FÃ¼r welche Archivanfrage ist das Paket
 		final int indexOfRequest = data.getUnscaledValue("anfrageIndex").intValue();
 		// Von welchem Archiv sind die Daten
 		final SystemObject archiveReference = data.getReferenceValue("absender").getSystemObject();
@@ -531,26 +537,26 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 			query.archiveDataResponse(data.getUnscaledArray("daten").getByteArray());
 		}
 		else {
-			// Der Empfänger der Daten wollte diese Daten gar nicht mehr haben (er hat die Streams abgebrochen)
-			// trotzdem kam noch ein Paket für ihn, dieses kann verworfen werden
+			// Der EmpfÃ¤nger der Daten wollte diese Daten gar nicht mehr haben (er hat die Streams abgebrochen)
+			// trotzdem kam noch ein Paket fÃ¼r ihn, dieses kann verworfen werden
 			_debug.info(
-					"Es kam ein Paket für eine Applikation, die dieses Paket nicht mehr haben wollte: Von: " + archiveReference.getNameOrPidOrId()
+					"Es kam ein Paket fÃ¼r eine Applikation, die dieses Paket nicht mehr haben wollte: Von: " + archiveReference.getNameOrPidOrId()
 					+ " ,Index der Anfrage: " + indexOfRequest
 			);
 		}
 	}
 
 	/**
-	 * Diese Methode erzeugt einen Datensatz, der zum Archiv geschickt werden kann. Die Attributgruppe und der Aspekt sind fest gesetzt. Die Attribute können über
+	 * Diese Methode erzeugt einen Datensatz, der zum Archiv geschickt werden kann. Die Attributgruppe und der Aspekt sind fest gesetzt. Die Attribute kÃ¶nnen Ã¼ber
 	 * die Parameter festgelegt werden.
-	 * <p/>
+	 * <p>
 	 *
-	 * @param archiveRequest Ein Object, das den Index der Anfrage und eine Referenz auf die anfragende Applikation enthält
+	 * @param archiveRequest Ein Object, das den Index der Anfrage und eine Referenz auf die anfragende Applikation enthÃ¤lt
 	 * @param messageType    Von welchem Typ ist das Paket
-	 * @param dataArray      Hier können zusätzliche Daten codiert werden
+	 * @param dataArray      Hier kÃ¶nnen zusÃ¤tzliche Daten codiert werden
 	 *
-	 * @throws DataNotSubscribedException   Senden von Datensätzen ohne entsprechende Sendeanmeldung
-	 * @throws SendSubscriptionNotConfirmed Es liegt keine positive Sendesteuerung vom Datenverteiler für die zu versendenden Daten vor
+	 * @throws DataNotSubscribedException   Senden von DatensÃ¤tzen ohne entsprechende Sendeanmeldung
+	 * @throws SendSubscriptionNotConfirmed Es liegt keine positive Sendesteuerung vom Datenverteiler fÃ¼r die zu versendenden Daten vor
 	 * @throws IllegalStateException        Die Verbindng zum Archive wurde abgebrochen, gleichzeitig wird versucht Datenpakete an das Archiv zu verschicken
 	 */
 	void createArchivRequestResultData(ArchiveQueryID archiveRequest, int messageType, byte[] dataArray)
@@ -565,8 +571,8 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 
 		DataDescription dataDescription = new DataDescription(atg, aspectTicket);
 
-		// Dieses Ticket wird physich über den DaV verschickt und auf der "Empfänger"seite ausgepackt
-		// (der Empfänger ist das Archiv)
+		// Dieses Ticket wird physich Ã¼ber den DaV verschickt und auf der "EmpfÃ¤nger"seite ausgepackt
+		// (der EmpfÃ¤nger ist das Archiv)
 		Data requestData = _connection.createData(dataDescription.getAttributeGroup());
 
 		// Der Index der Anfrage
@@ -584,18 +590,18 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		if(dataArray != null) {
 			// Es gibt ein Array
 
-			requestData.getUnscaledArray("daten").set(dataArray); // Array in Daten einfügen
+			requestData.getUnscaledArray("daten").set(dataArray); // Array in Daten einfÃ¼gen
 		}
 
 		if(!requestData.isDefined()){
-			throw new DataModelException("Das verwendete Datenmodell unterstützt diese Anfrage nicht. kb.systemModellGlobal aktualisieren.");
+			throw new DataModelException("Das verwendete Datenmodell unterstÃ¼tzt diese Anfrage nicht. kb.systemModellGlobal aktualisieren.");
 		}
 
 		ResultData result = new ResultData(_archiveSystem, dataDescription, System.currentTimeMillis(), requestData);
 
 		synchronized(_lockState) {
 			if(_state != 0) {
-				// Es gibt keinen Empfänger für den Datensatz, somit ist das Archiv nicht mehr zu erreichen.
+				// Es gibt keinen EmpfÃ¤nger fÃ¼r den Datensatz, somit ist das Archiv nicht mehr zu erreichen.
 				// Das kann normalerweise nicht passieren, der Benutzer muss benachrichtigt werden.
 				connectionLost();
 			}
@@ -617,8 +623,8 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	}
 
 	/**
-	 * Diese Methode prüft, ob gesendet werden darf. Ist die Sendesteuerung negativ, wird eine Zeitspanne gewartet, ist die Sendesteuerung dann noch immer negativ,
-	 * wird false zurückgeliefert.
+	 * Diese Methode prÃ¼ft, ob gesendet werden darf. Ist die Sendesteuerung negativ, wird eine Zeitspanne gewartet, ist die Sendesteuerung dann noch immer negativ,
+	 * wird false zurÃ¼ckgeliefert.
 	 *
 	 * @param timeOut Zeitpunkt, bis zu dem gewartet wird, um eine Verbindung aufzubauen
 	 *
@@ -627,14 +633,14 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	private boolean isConnectionOk(Date timeOut) throws InterruptedException {
 		synchronized(_lockState) {
 			final TimeoutTimer timer = new TimeoutTimer(timeOut);
-			// Solange die Sendesteuerung nicht auf positiv geändert wurde oder aber der Timer ist
+			// Solange die Sendesteuerung nicht auf positiv geÃ¤ndert wurde oder aber der Timer ist
 			// abgelaufen, wird nichts gemacht.
 			while(_state != ClientSenderInterface.START_SENDING && timer.isTimeExpired() == false) {
 				_debug.fine(
-						"Die Applikation wartet, bis das Archiv bereit ist Anfragen/Aufträge . Applikation: " + _connection.getLocalApplicationObject()
+						"Die Applikation wartet, bis das Archiv bereit ist Anfragen/AuftrÃ¤ge . Applikation: " + _connection.getLocalApplicationObject()
 						+ " Archiv: " + _archiveSystem
 				);
-				// Falls "0" zurückgegeben wird, würde der Thread für immer schlafen
+				// Falls "0" zurÃ¼ckgegeben wird, wÃ¼rde der Thread fÃ¼r immer schlafen
 				_lockState.wait(timer.getRemainingTime() + 1);
 			}
 
@@ -662,7 +668,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	}
 
 	/**
-	 * Diese Methode meldet die Archivapplikation als Sender von Archivanfragen/Tickets/Archivaufgaben an. Diese Methode wird gewöhnlich nur im Konstruktor
+	 * Diese Methode meldet die Archivapplikation als Sender von Archivanfragen/Tickets/Archivaufgaben an. Diese Methode wird gewÃ¶hnlich nur im Konstruktor
 	 * aufgerufen, kann im Konstruktor keine Verbidnung aufgebaut werden, wird bei jedem Methodenaufruf versucht eine Verbindung aufzubauen
 	 */
 	private void subscribeSender() {
@@ -670,13 +676,13 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	}
 
 	/**
-	 * Diese innerClass implementiert das ClientSenderInterface und wird im StreamedArchiveRequester benötigt um ein ClientDavConnection Objekt zu erzeugen. Über
+	 * Diese innerClass implementiert das ClientSenderInterface und wird im StreamedArchiveRequester benÃ¶tigt um ein ClientDavConnection Objekt zu erzeugen. Ãœber
 	 * diese connection werden dann Tickets und Archivanfragen verschickt.
 	 */
 	final class ClientSender implements ClientSenderInterface {
 
 		/**
-		 * Diese Methode implementiert eine Methode des Interfaces ClientSenderInterface. Der Datenverteiler benutzt diese Methode, um eventuelle Änderungen
+		 * Diese Methode implementiert eine Methode des Interfaces ClientSenderInterface. Der Datenverteiler benutzt diese Methode, um eventuelle Ã„nderungen
 		 * anzuzeigen, die sich auf den Datensatz beziehen, den das StreamedArchiveRquester Objekt verschicken will (Tickets/Archivanfragen).
 		 *
 		 * @param object          Welches Objekt
@@ -685,21 +691,21 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		 */
 		public void dataRequest(SystemObject object, DataDescription dataDescription, byte state) {
 			synchronized(_lockState) {
-				_debug.info("StreamedArchiveRequester: state ändert sich von: " + _state + " auf: " + state);
+				_debug.info("StreamedArchiveRequester: state Ã¤ndert sich von: " + _state + " auf: " + state);
 				_gotDataRequest = true;
 				if((_state == ClientSenderInterface.START_SENDING) && (state != ClientSenderInterface.START_SENDING)) {
 					// Es durfte vorher gesendet werden, also ist gerade die Verbindung zum Archiv verloren gegangen
 					_state = state;
-					// Dieser Methodenaufruf erzeugt nur eine Textmeldung, kann aber für andere Dinge benutzt werden, falls
-					// dies nötig sein sollte.
+					// Dieser Methodenaufruf erzeugt nur eine Textmeldung, kann aber fÃ¼r andere Dinge benutzt werden, falls
+					// dies nÃ¶tig sein sollte.
 					connectionLost();
-					// Änderung des Verbindungsstatus, alle Listener benachrichtigen
+					// Ã„nderung des Verbindungsstatus, alle Listener benachrichtigen
 					adviseListener();
 				}
 				else {
 					_state = state;
 					adviseListener();
-					// Es werden alle Thread benachrichtigt, die darauf warten Datensätze für diese Archivanfrage zu verschicken.
+					// Es werden alle Thread benachrichtigt, die darauf warten DatensÃ¤tze fÃ¼r diese Archivanfrage zu verschicken.
 					_debug.fine("Neuer status der Query: " + _state);
 					_lockState.notifyAll();
 				}
@@ -707,13 +713,13 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		}
 
 		/**
-		 * Diese Methode legt fest, ob die Applikation informiert werden will, wenn es eine Änderung bei den Empfängern der Datensätze gibt, die die Applikation
+		 * Diese Methode legt fest, ob die Applikation informiert werden will, wenn es eine Ã„nderung bei den EmpfÃ¤ngern der DatensÃ¤tze gibt, die die Applikation
 		 * versendet. Die Methode {@link #dataRequest} wird nicht aufgerufen, wenn "false" als Antwort geliefert wird.
 		 *
 		 * @param object          Welches Objekt ist betroffen
 		 * @param dataDescription Welche DataDescription
 		 *
-		 * @return true = bei Änderungen wird die Applikation benachrichtigt, false = keine Benachrichtigung bei Änderungen
+		 * @return true = bei Ã„nderungen wird die Applikation benachrichtigt, false = keine Benachrichtigung bei Ã„nderungen
 		 */
 		public boolean isRequestSupported(SystemObject object, DataDescription dataDescription) {
 			return true;
@@ -721,12 +727,12 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	}
 
 	/**
-	 * Start einer Archivinformationsanfrage an das Archivsystem. Diese Methode liefert ein Objekt zurück, über das asynchron auf das Ergebnis der
+	 * Start einer Archivinformationsanfrage an das Archivsystem. Diese Methode liefert ein Objekt zurÃ¼ck, Ã¼ber das asynchron auf das Ergebnis der
 	 * Archivinformationsanfrage zugegriffen werden kann..
 	 *
-	 * @param spec Spezifikation der Archivdaten zu denen Information gewünscht werden.
+	 * @param spec Spezifikation der Archivdaten zu denen Information gewÃ¼nscht werden.
 	 *
-	 * @return Ergebnisobjekt über das asynchron auf die gewünschten Informationen zugegriffen werden kann.
+	 * @return Ergebnisobjekt Ã¼ber das asynchron auf die gewÃ¼nschten Informationen zugegriffen werden kann.
 	 */
 	public ArchiveInfoQueryResult requestInfo(ArchiveDataSpecification spec) {
 		if(spec == null) throw new IllegalArgumentException("Parameter spec ist null");
@@ -750,12 +756,12 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	}
 
 	/**
-	 * Start einer Archivinformationsanfrage an das Archivsystem. Diese Methode liefert ein Objekt zurück, über das asynchron auf das Ergebnis der
+	 * Start einer Archivinformationsanfrage an das Archivsystem. Diese Methode liefert ein Objekt zurÃ¼ck, Ã¼ber das asynchron auf das Ergebnis der
 	 * Archivinformationsanfrage zugegriffen werden kann..
 	 *
-	 * @param specs Liste mit Spezifikationen der Archivdaten zu denen Information gewünscht werden
+	 * @param specs Liste mit Spezifikationen der Archivdaten zu denen Information gewÃ¼nscht werden
 	 *
-	 * @return Ergebnisobjekt über das asynchron auf die gewünschten Informationen zugegriffen werden kann.
+	 * @return Ergebnisobjekt Ã¼ber das asynchron auf die gewÃ¼nschten Informationen zugegriffen werden kann.
 	 */
 	public ArchiveInfoQueryResult requestInfo(List<ArchiveDataSpecification> specs) {
 		if(specs == null) throw new IllegalArgumentException("Parameter specs ist null");
@@ -780,7 +786,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		RequestInfo requestInfo = new RequestInfo(specs, archiveQueryID, this, _defaultSimulationVariant);
 
 		_debug.finest(
-				"Eine Archivanfrage (requestInfo) wird in einer Hashtable gespeichert. Schlüssel: IndexAnfrage: "
+				"Eine Archivanfrage (requestInfo) wird in einer Hashtable gespeichert. SchlÃ¼ssel: IndexAnfrage: "
 				+ requestInfo.getArchiveRequestID().getIndexOfRequest() + " Archiv: " + requestInfo.getArchiveRequestID().getObjectReference()
 		);
 		_requests.put(requestInfo.getArchiveRequestID(), requestInfo);
@@ -795,7 +801,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	 * @param data Archivantwort auf einen Archivinformationsanfrage
 	 */
 	private void requestInfoResponse(Data data) {
-		// Für welche Archivanfrage ist das Paket
+		// FÃ¼r welche Archivanfrage ist das Paket
 		final int indexOfRequest = data.getUnscaledValue("anfrageIndex").intValue();
 
 		// Welches Archiv hat die Daten verschickt
@@ -809,7 +815,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		}
 		requestInfo.archiveResponse(data);
 
-		// Die Antwort wurde übermittelt, es wird für diesen Auftrag keine Antwort mehr kommen.
+		// Die Antwort wurde Ã¼bermittelt, es wird fÃ¼r diesen Auftrag keine Antwort mehr kommen.
 		// Den Auftrag entfernen
 		removeRequest(hashObject);
 	}
@@ -836,7 +842,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		RequestNumQueries requestNumQueries = new RequestNumQueries(archiveQueryID, this, _defaultSimulationVariant);
 
 		_debug.finest(
-				"Eine Archivanfrage (requestNumQueries) wird in einer Hashtable gespeichert. Schlüssel: IndexAnfrage: "
+				"Eine Archivanfrage (requestNumQueries) wird in einer Hashtable gespeichert. SchlÃ¼ssel: IndexAnfrage: "
 						+ requestNumQueries.getArchiveRequestID().getIndexOfRequest() + " Archiv: " + requestNumQueries.getArchiveRequestID()
 						.getObjectReference()
 		);
@@ -852,7 +858,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	 * @param data Archivantwort auf einen Archivinformationsanfrage
 	 */
 	private void requestNumQueriesResponse(Data data) {
-		// Für welche Archivanfrage ist das Paket
+		// FÃ¼r welche Archivanfrage ist das Paket
 		final int indexOfRequest = data.getUnscaledValue("anfrageIndex").intValue();
 
 		// Welches Archiv hat die Daten verschickt
@@ -866,7 +872,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		}
 		requestNumQueries.archiveResponse(data);
 
-		// Die Antwort wurde übermittelt, es wird für diesen Auftrag keine Antwort mehr kommen.
+		// Die Antwort wurde Ã¼bermittelt, es wird fÃ¼r diesen Auftrag keine Antwort mehr kommen.
 		// Den Auftrag entfernen
 		removeRequest(hashObject);
 	}
@@ -883,11 +889,11 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		SaveData saveTask = new SaveData(archiveQueryID, this);
 
 		_debug.finest(
-				"Eine Archivanfrage (speichern) wird in einer Hashtable gespeichert. Schlüssel: IndexAnfrage: "
+				"Eine Archivanfrage (speichern) wird in einer Hashtable gespeichert. SchlÃ¼ssel: IndexAnfrage: "
 				+ saveTask.getArchiveRequestID().getIndexOfRequest() + " Archiv: " + saveTask.getArchiveRequestID().getObjectReference()
 		);
 		_requests.put(saveTask.getArchiveRequestID(), saveTask);
-		// Sicherungsuaftrag übertragen
+		// Sicherungsuaftrag Ã¼bertragen
 		saveTask.save();
 		return saveTask;
 	}
@@ -898,21 +904,26 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	 * @param data Archivantwort auf Speicherauftrag
 	 */
 	private void savePersistentDataResponse(Data data) {
-		// Für welche Archivanfrage ist das Paket
+		// FÃ¼r welche Archivanfrage ist das Paket
 		final int indexOfRequest = data.getUnscaledValue("anfrageIndex").intValue();
 
 		// Welches Archiv hat die Daten verschickt
 		final SystemObject archiveReference = data.getReferenceValue("absender").getSystemObject();
 
 		ArchiveQueryID hashObject = new ArchiveQueryID(indexOfRequest, archiveReference);
-		SaveData saveDataResult = (SaveData)_requests.get(hashObject);
+		Object request = _requests.get(hashObject);
+		if(!(request instanceof SaveData)) {
+			_debug.warning("Antwort (bzgl. einer Sicherungsanfrage) vom Archivsystem empfangen:\n" + data + "\n, gefundene aber unpassende Anfrage: " + request);
+			return;
+		}
+		SaveData saveDataResult = (SaveData) request;
 		if(saveDataResult == null) {
 			_debug.warning("Unerwartete Antwort (bzgl. einer Sicherungsanfrage) vom Archivsystem empfangen", data);
 			return;
 		}
 		saveDataResult.archiveResponse(data);
 
-		// Die Antwort wurde übermittelt, es wird für diesen Auftrag keine Antwort mehr kommen.
+		// Die Antwort wurde Ã¼bermittelt, es wird fÃ¼r diesen Auftrag keine Antwort mehr kommen.
 		// Den Auftrag entfernen
 		removeRequest(hashObject);
 	}
@@ -950,7 +961,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	 * @param data Antwort auf den Auftrag zum nachfordern von Daten
 	 */
 	private void requestDataResponse(Data data) {
-		// Für welchen Archivauftrag ist das Paket
+		// FÃ¼r welchen Archivauftrag ist das Paket
 		final int indexOfRequest = data.getUnscaledValue("anfrageIndex").intValue();
 
 		// Welches Archiv hat die Daten verschickt
@@ -965,7 +976,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		}
 		requestDataResult.archiveResponse(data);
 
-		// Die Antwort wurde übermittelt, es wird für diesen Auftrag keine Antwort mehr kommen.
+		// Die Antwort wurde Ã¼bermittelt, es wird fÃ¼r diesen Auftrag keine Antwort mehr kommen.
 		// Den Auftrag entfernen
 		removeRequest(hashObject);
 	}
@@ -976,7 +987,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	 *
 	 * @param requiredData Zeitbereiche, die wieder in den direkten Zugriff des Archivsystems gebracht werden sollen
 	 *
-	 * @return Ergebnisobjekt über das asynchron auf die gewünschten Informationen zugegriffen werden kann.
+	 * @return Ergebnisobjekt Ã¼ber das asynchron auf die gewÃ¼nschten Informationen zugegriffen werden kann.
 	 */
 	public ArchiveQueryResult restorePersistentData(List<ArchiveInformationResult> requiredData) {
 
@@ -990,17 +1001,17 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		RestoreData restoreTask = new RestoreData(archiveQueryID, requiredData, this, _defaultSimulationVariant);
 
 		_debug.finest(
-				"Eine Archivanfrage (restore) wird in einer Hashtable gespeichert. Schlüssel: IndexAnfrage: "
+				"Eine Archivanfrage (restore) wird in einer Hashtable gespeichert. SchlÃ¼ssel: IndexAnfrage: "
 				+ restoreTask.getArchiveRequestID().getIndexOfRequest() + " Archiv: " + restoreTask.getArchiveRequestID().getObjectReference()
 		);
 		_requests.put(restoreTask.getArchiveRequestID(), restoreTask);
-		// Sicherungsuaftrag übertragen
+		// Sicherungsuaftrag Ã¼bertragen
 		restoreTask.restore();
 		return restoreTask;
 	}
 
 	private void restoreDataResponse(Data data) {
-		// Für welche Archivanfrage ist das Paket
+		// FÃ¼r welche Archivanfrage ist das Paket
 		final int indexOfRequest = data.getUnscaledValue("anfrageIndex").intValue();
 
 		// Welches Archiv hat die Daten verschickt
@@ -1014,18 +1025,18 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		}
 		restoreDataResult.archiveResponse(data);
 
-		// Die Antwort wurde übermittelt, es wird für diesen Auftrag keine Antwort mehr kommen.
+		// Die Antwort wurde Ã¼bermittelt, es wird fÃ¼r diesen Auftrag keine Antwort mehr kommen.
 		// Den Auftrag entfernen
 		removeRequest(hashObject);
 	}
 
 
 	/**
-	 * Diese Methode beauftragt das Archivsystem alle Daten, die zu einer bestimmten Simulationsvariante gehören, zu löschen.
+	 * Diese Methode beauftragt das Archivsystem alle Daten, die zu einer bestimmten Simulationsvariante gehÃ¶ren, zu lÃ¶schen.
 	 *
 	 * @param simulationVariant Simulationsvariante von der alle Daten aus dem Archivsystem entfernt werden sollen
 	 *
-	 * @return Ergebnisobjekt über das asynchron auf die gewünschten Informationen zugegriffen werden kann.
+	 * @return Ergebnisobjekt Ã¼ber das asynchron auf die gewÃ¼nschten Informationen zugegriffen werden kann.
 	 */
 	public ArchiveQueryResult deleteDataSimulationVariant(short simulationVariant) {
 
@@ -1040,22 +1051,22 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		DeleteSimulationVariant deleteTask = new DeleteSimulationVariant(simulationVariant, archiveQueryID, this);
 
 		_debug.finest(
-				"Eine Archivanfrage (löschen) wird in einer Hashtable gespeichert. Schlüssel: IndexAnfrage: "
+				"Eine Archivanfrage (lÃ¶schen) wird in einer Hashtable gespeichert. SchlÃ¼ssel: IndexAnfrage: "
 				+ deleteTask.getArchiveRequestID().getIndexOfRequest() + " Archiv: " + deleteTask.getArchiveRequestID().getObjectReference()
 		);
 		_requests.put(deleteTask.getArchiveRequestID(), deleteTask);
-		// Sicherungsuaftrag übertragen
+		// Sicherungsuaftrag Ã¼bertragen
 		deleteTask.deleteSimulationVariant();
 		return deleteTask;
 	}
 
 	/**
-	 * Diese Methode wird aufgerufen, wenn eine Antwort auf einen Löschauftrag vorliegt. Die Antwort wird an den Auftraggeber weitergeleitet.
+	 * Diese Methode wird aufgerufen, wenn eine Antwort auf einen LÃ¶schauftrag vorliegt. Die Antwort wird an den Auftraggeber weitergeleitet.
 	 *
 	 * @param data Archivantwort auf Speicherauftrag
 	 */
 	private void deletePersistentDataResponse(Data data) {
-		// Für welche Archivanfrage ist das Paket
+		// FÃ¼r welche Archivanfrage ist das Paket
 		final int indexOfRequest = data.getUnscaledValue("anfrageIndex").intValue();
 
 		// Welches Archiv hat die Daten verschickt
@@ -1064,12 +1075,12 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		ArchiveQueryID hashObject = new ArchiveQueryID(indexOfRequest, archiveReference);
 		DeleteSimulationVariant deleteDataResult = (DeleteSimulationVariant)_requests.get(hashObject);
 		if(deleteDataResult == null) {
-			_debug.warning("Unerwartete Antwort (bzgl. eines Löschauftrags für eine Simulationsvariante) vom Archivsystem empfangen", data);
+			_debug.warning("Unerwartete Antwort (bzgl. eines LÃ¶schauftrags fÃ¼r eine Simulationsvariante) vom Archivsystem empfangen", data);
 			return;
 		}
 		deleteDataResult.archiveResponse(data);
 
-		// Die Antwort wurde übermittelt, es wird für diesen Auftrag keine Antwort mehr kommen.
+		// Die Antwort wurde Ã¼bermittelt, es wird fÃ¼r diesen Auftrag keine Antwort mehr kommen.
 		// Den Auftrag entfernen
 		removeRequest(hashObject);
 	}
@@ -1087,17 +1098,17 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		IncreaseDeleteTime setNewDeleteTime = new IncreaseDeleteTime(archiveQueryID, requiredData, timePeriod, this, _defaultSimulationVariant);
 
 		_debug.finest(
-				"Eine Archivanfrage (Löschzeitpunkt verschieben) wird in einer Hashtable gespeichert. Schlüssel: IndexAnfrage: "
+				"Eine Archivanfrage (LÃ¶schzeitpunkt verschieben) wird in einer Hashtable gespeichert. SchlÃ¼ssel: IndexAnfrage: "
 				+ setNewDeleteTime.getArchiveRequestID().getIndexOfRequest() + " Archiv: " + setNewDeleteTime.getArchiveRequestID().getObjectReference()
 		);
 		_requests.put(setNewDeleteTime.getArchiveRequestID(), setNewDeleteTime);
-		// Sicherungsuaftrag übertragen
+		// Sicherungsuaftrag Ã¼bertragen
 		setNewDeleteTime.increaseDeleteTime();
 		return setNewDeleteTime;
 	}
 
 	private void increaseDeleteTimeResponse(Data data) {
-		// Für welche Archivanfrage ist das Paket
+		// FÃ¼r welche Archivanfrage ist das Paket
 		final int indexOfRequest = data.getUnscaledValue("anfrageIndex").intValue();
 
 		// Welches Archiv hat die Daten verschickt
@@ -1106,12 +1117,12 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		ArchiveQueryID hashObject = new ArchiveQueryID(indexOfRequest, archiveReference);
 		IncreaseDeleteTime setDeleteTimeResult = (IncreaseDeleteTime)_requests.get(hashObject);
 		if(setDeleteTimeResult == null) {
-			_debug.warning("Unerwartete Antwort (bzgl. eines Löschzeitverlängerungsauftrag) vom Archivsystem empfangen", data);
+			_debug.warning("Unerwartete Antwort (bzgl. eines LÃ¶schzeitverlÃ¤ngerungsauftrag) vom Archivsystem empfangen", data);
 			return;
 		}
 		setDeleteTimeResult.archiveResponse(data);
 
-		// Die Antwort wurde übermittelt, es wird für diesen Auftrag keine Antwort mehr kommen.
+		// Die Antwort wurde Ã¼bermittelt, es wird fÃ¼r diesen Auftrag keine Antwort mehr kommen.
 		// Den Auftrag entfernen
 		removeRequest(hashObject);
 	}
@@ -1130,17 +1141,17 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		DeleteData deleteData = new DeleteData(archiveQueryID, dataDisposedToDelete, deleteImmediately, this, _defaultSimulationVariant);
 
 		_debug.finest(
-				"Eine Archivanfrage (Löschzeitpunkt verschieben) wird in einer Hashtable gespeichert. Schlüssel: IndexAnfrage: "
+				"Eine Archivanfrage (LÃ¶schzeitpunkt verschieben) wird in einer Hashtable gespeichert. SchlÃ¼ssel: IndexAnfrage: "
 				+ deleteData.getArchiveRequestID().getIndexOfRequest() + " Archiv: " + deleteData.getArchiveRequestID().getObjectReference()
 		);
 		_requests.put(deleteData.getArchiveRequestID(), deleteData);
-		// Sicherungsuaftrag übertragen
+		// Sicherungsuaftrag Ã¼bertragen
 		deleteData.increaseDeleteTime();
 		return deleteData;
 	}
 
 	private void deleteDataResponse(Data data) {
-		// Für welche Archivanfrage ist das Paket
+		// FÃ¼r welche Archivanfrage ist das Paket
 		final int indexOfRequest = data.getUnscaledValue("anfrageIndex").intValue();
 
 		// Welches Archiv hat die Daten verschickt
@@ -1149,12 +1160,12 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		ArchiveQueryID hashObject = new ArchiveQueryID(indexOfRequest, archiveReference);
 		DeleteData deleteDataResult = (DeleteData)_requests.get(hashObject);
 		if(deleteDataResult == null) {
-			_debug.warning("Unerwartete Antwort (bzgl. eines Löschauftrags) vom Archivsystem empfangen", data);
+			_debug.warning("Unerwartete Antwort (bzgl. eines LÃ¶schauftrags) vom Archivsystem empfangen", data);
 			return;
 		}
 		deleteDataResult.archiveResponse(data);
 
-		// Die Antwort wurde übermittelt, es wird für diesen Auftrag keine Antwort mehr kommen.
+		// Die Antwort wurde Ã¼bermittelt, es wird fÃ¼r diesen Auftrag keine Antwort mehr kommen.
 		// Den Auftrag entfernen
 		removeRequest(hashObject);
 	}
@@ -1172,11 +1183,11 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		ArchiveAlignment alignmentTask = new ArchiveAlignment(volumeIdTypB, archiveQueryID, this);
 
 		_debug.finest(
-				"Eine Archivanfrage (Archivverwaltungsinformationen anpassen) wird in einer Hashtable gespeichert. Schlüssel: IndexAnfrage: "
+				"Eine Archivanfrage (Archivverwaltungsinformationen anpassen) wird in einer Hashtable gespeichert. SchlÃ¼ssel: IndexAnfrage: "
 				+ alignmentTask.getArchiveRequestID().getIndexOfRequest() + " Archiv: " + alignmentTask.getArchiveRequestID().getObjectReference()
 		);
 		_requests.put(alignmentTask.getArchiveRequestID(), alignmentTask);
-		// Sicherungsuaftrag übertragen
+		// Sicherungsuaftrag Ã¼bertragen
 		alignmentTask.archiveAlignment();
 		return alignmentTask;
 	}
@@ -1213,7 +1224,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		}
 	}
 
-	/** Diese Methode benachrichtigt alle Listener, dass sich der Verbindungszustand zum Archivsystem geändert hat. */
+	/** Diese Methode benachrichtigt alle Listener, dass sich der Verbindungszustand zum Archivsystem geÃ¤ndert hat. */
 	private void adviseListener() {
 		synchronized(_listener) {
 			for(int nr = 0; nr < _listener.size(); nr++) {
@@ -1224,7 +1235,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 	}
 
 	private void archiveFileSaverAlignmentResponse(Data data) {
-		// Für welche Archivanfrage ist das Paket
+		// FÃ¼r welche Archivanfrage ist das Paket
 		final int indexOfRequest = data.getUnscaledValue("anfrageIndex").intValue();
 
 		// Welches Archiv hat die Daten verschickt
@@ -1238,7 +1249,7 @@ public class StreamedArchiveRequester implements ArchiveRequestManager {
 		}
 		alignmentTaskResult.archiveResponse(data);
 
-		// Die Antwort wurde übermittelt, es wird für diesen Auftrag keine Antwort mehr kommen.
+		// Die Antwort wurde Ã¼bermittelt, es wird fÃ¼r diesen Auftrag keine Antwort mehr kommen.
 		// Den Auftrag entfernen
 		removeRequest(hashObject);
 	}

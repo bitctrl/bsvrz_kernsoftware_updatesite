@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.xmlFile.properties;
@@ -27,7 +33,7 @@ import de.bsvrz.dav.daf.main.config.SystemObjectInfo;
  * Klasse, die ein konfigurationsObjekt aus der K2S.DTD abbildet.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5091 $
+ * @version $Revision$
  */
 public class ConfigurationConfigurationObject extends ConfigurationObjectProperties {
 
@@ -49,7 +55,7 @@ public class ConfigurationConfigurationObject extends ConfigurationObjectPropert
 	}
 
 	/**
-	 * Diese Methode gibt Elemente vom Typ datensatz und objektMenge (siehe K2S.DTD) zurück.
+	 * Diese Methode gibt Elemente vom Typ datensatz und objektMenge (siehe K2S.DTD) zurÃ¼ck.
 	 *
 	 * @return Objekte vom Typ ConfigurationObjectSet und ConfigurationDataset
 	 */
@@ -58,7 +64,7 @@ public class ConfigurationConfigurationObject extends ConfigurationObjectPropert
 	}
 
 	/**
-	 * Diese Methode gibt die Default-Parameter dieses Objekts zurück.
+	 * Diese Methode gibt die Default-Parameter dieses Objekts zurÃ¼ck.
 	 *
 	 * @return die Default-Parameter dieses Objekts
 	 */

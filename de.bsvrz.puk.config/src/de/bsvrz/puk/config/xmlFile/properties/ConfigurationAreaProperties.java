@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.xmlFile.properties;
@@ -27,11 +33,11 @@ import de.bsvrz.puk.config.configFile.datamodel.ConfigurationAreaUnversionedChan
 import java.util.*;
 
 /**
- * Konfigurationsbereich, der aus einer XML-Versorgungsdatei erzeugt wurde. Das Objekt enthält den Konfigurationsverantwortlichen und die eingelesenen Objekte.
+ * Konfigurationsbereich, der aus einer XML-Versorgungsdatei erzeugt wurde. Das Objekt enthÃ¤lt den Konfigurationsverantwortlichen und die eingelesenen Objekte.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 11583 $ / $Date: 2013-08-22 15:59:25 +0200 (Thu, 22 Aug 2013) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigurationAreaProperties extends ConfigurationObjectProperties {
 
@@ -39,10 +45,10 @@ public class ConfigurationAreaProperties extends ConfigurationObjectProperties {
 
 	private List<SystemObjectProperties> _objectProperties;
 
-	/** Speichert alle gemachten Konfigurationsänderungen. Sind keine vorhanden, so ist die Größe des Arrays 0. */
+	/** Speichert alle gemachten KonfigurationsÃ¤nderungen. Sind keine vorhanden, so ist die GrÃ¶ÃŸe des Arrays 0. */
 	private ConfigurationAreaChangeInformation[] _configurationAreaChangeInformation = new ConfigurationAreaChangeInformation[0];
 
-	/** Alle Abhängigkeiten des Bereichs oder <code>null</code>, falls für diesen Bereich noch keine Abhängigkeiten geprüft wurden. */
+	/** Alle AbhÃ¤ngigkeiten des Bereichs oder <code>null</code>, falls fÃ¼r diesen Bereich noch keine AbhÃ¤ngigkeiten geprÃ¼ft wurden. */
 	private final Collection<ConfigurationAreaDependency> _areaDependencies;
 	private Collection<ConfigurationAreaUnversionedChange> _unversionedChanges;
 
@@ -68,8 +74,8 @@ public class ConfigurationAreaProperties extends ConfigurationObjectProperties {
 	 * @param authorityPid
 	 * @param info
 	 * @param objectProperties
-	 * @param areaDependencies  Abhängigkeiten des Konfigurationsbereichs zu anderen Bereichen. Wurden die Abhängigkeiten noch nicht geprüft, so wird
-	 *                         <code>null</code> übergeben.
+	 * @param areaDependencies  AbhÃ¤ngigkeiten des Konfigurationsbereichs zu anderen Bereichen. Wurden die AbhÃ¤ngigkeiten noch nicht geprÃ¼ft, so wird
+	 *                         <code>null</code> Ã¼bergeben.
 	 */
 	public ConfigurationAreaProperties(
 			String name,
@@ -85,7 +91,7 @@ public class ConfigurationAreaProperties extends ConfigurationObjectProperties {
 		_areaDependencies = areaDependencies;
 	}
 
-	/** @return Elemente "konfigurationsAenderung", siehe K2S.DTD. Sind keine Elemente vorhanden, so besitzt das Array die Größe 0. */
+	/** @return Elemente "konfigurationsAenderung", siehe K2S.DTD. Sind keine Elemente vorhanden, so besitzt das Array die GrÃ¶ÃŸe 0. */
 	public ConfigurationAreaChangeInformation[] getConfigurationAreaChangeInformation() {
 		return _configurationAreaChangeInformation;
 	}
@@ -109,7 +115,7 @@ public class ConfigurationAreaProperties extends ConfigurationObjectProperties {
 
 	/**
 	 * @param objectProperties Liste von Objekten, die aus einer XML-Versorgungsdatei eingelesen wurden. Sind keine Objekte vorhanden, so wird eine leere Liste
-	 *                         übergeben
+	 *                         Ã¼bergeben
 	 */
 	public void setObjectProperties(List<SystemObjectProperties> objectProperties) {
 		_objectProperties = objectProperties;
@@ -126,25 +132,25 @@ public class ConfigurationAreaProperties extends ConfigurationObjectProperties {
 
 
 	/**
-	 * Gibt alle Abhängigkeiten des Bereichs zurück, die im Konsturktor übergeben wurden.
+	 * Gibt alle AbhÃ¤ngigkeiten des Bereichs zurÃ¼ck, die im Konsturktor Ã¼bergeben wurden.
 	 *
-	 * @return Alle Abhängigkeiten, wurden die Abhängigkeiten noch nicht geprüft, so wird <code>null</code> zurückgegeben.
+	 * @return Alle AbhÃ¤ngigkeiten, wurden die AbhÃ¤ngigkeiten noch nicht geprÃ¼ft, so wird <code>null</code> zurÃ¼ckgegeben.
 	 */
 	public Collection<ConfigurationAreaDependency> getAreaDependencies() {
 		return _areaDependencies;
 	}
 
 	/**
-	 * Gibt alle unversionierten Änderungen des Konfigurationsbereichs zurück
-	 * @return unversionierte Änderungen
+	 * Gibt alle unversionierten Ã„nderungen des Konfigurationsbereichs zurÃ¼ck
+	 * @return unversionierte Ã„nderungen
 	 */
 	public Collection<ConfigurationAreaUnversionedChange> getUnversionedChanges() {
 		return _unversionedChanges;
 	}
 
 	/**
-	 * Setzt alle unversionierte Änderungen des Konfigurationsbereichs
-	 * @param unversionedChanges alle unversionierte Änderungen
+	 * Setzt alle unversionierte Ã„nderungen des Konfigurationsbereichs
+	 * @param unversionedChanges alle unversionierte Ã„nderungen
 	 */
 	public void setUnversionedChanges(final Collection<ConfigurationAreaUnversionedChange> unversionedChanges) {
 		_unversionedChanges = unversionedChanges;

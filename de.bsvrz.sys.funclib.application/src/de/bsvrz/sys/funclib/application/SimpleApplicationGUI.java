@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.sys.funclib.application.
  * 
  * de.bsvrz.sys.funclib.application is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.application is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.application; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.application; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.application;
@@ -32,31 +38,31 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Diese abstrakte Klasse stellt eine grafische Benutzeroberfläche zum ausführen
- * von Klassen zur Verfügung. Die Klasse stellt ein Menu und ein Fenster, das
- * Fehler und Logs darstellt, zur Verfügung. Das Menu erlaubt dem Benutzer die
+ * Diese abstrakte Klasse stellt eine grafische BenutzeroberflÃ¤che zum ausfÃ¼hren
+ * von Klassen zur VerfÃ¼gung. Die Klasse stellt ein Menu und ein Fenster, das
+ * Fehler und Logs darstellt, zur VerfÃ¼gung. Das Menu erlaubt dem Benutzer die
  * Logs zu speichern und das Programm zu beenden. Der Benutzer kann eigene
- * Fenster in die Oberfläche integrieren, indem er Methoden dieser Klasse
- * überschreibt, falls er die Klassen nicht überschreibt wird ein
- * Standardfenster zur Verfügung gestellt.
- * <p/>
- * Der Benutzer kann mehrere Aufrufparamter übergeben, die ausgewertet werden:
- * <br> -gui= ja/nein (soll die grafische Benutzeroberfläche angezeigt
- * werden)<br> -prozessname= Klasse, die ausgeführt werden soll<br>
+ * Fenster in die OberflÃ¤che integrieren, indem er Methoden dieser Klasse
+ * Ã¼berschreibt, falls er die Klassen nicht Ã¼berschreibt wird ein
+ * Standardfenster zur VerfÃ¼gung gestellt.
+ * <p>
+ * Der Benutzer kann mehrere Aufrufparamter Ã¼bergeben, die ausgewertet werden:
+ * <br> -gui= ja/nein (soll die grafische BenutzeroberflÃ¤che angezeigt
+ * werden)<br> -prozessname= Klasse, die ausgefÃ¼hrt werden soll<br>
  * -arbeitsverzeichnis= Arbeitsverzeichnis, das genutzt werden soll<br>
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5005 $
+ * @version $Revision$
  */
 public abstract class SimpleApplicationGUI {
 
 	/**
-	 * Font für Logs
+	 * Font fÃ¼r Logs
 	 */
 	final static Font _font = new Font("Monospaced", Font.PLAIN, 11);
 
 	/**
-	 * Panel, das alle Componenten enthält, die angezeigt werden sollen
+	 * Panel, das alle Componenten enthÃ¤lt, die angezeigt werden sollen
 	 */
 	private final JFrame _mainFrame = new JFrame();
 
@@ -66,7 +72,7 @@ public abstract class SimpleApplicationGUI {
 	private final JMenuBar _menuBar = new JMenuBar();
 
 	/**
-	 * Dieses Panel wird vom Benutzer zur Verfügung gestellt
+	 * Dieses Panel wird vom Benutzer zur VerfÃ¼gung gestellt
 	 */
 	private JPanel _userPanel = null;
 
@@ -87,7 +93,7 @@ public abstract class SimpleApplicationGUI {
 	private JTextArea _errorTextArea = new JTextArea();
 
 	/**
-	 * Prozess, der das Script ausführt
+	 * Prozess, der das Script ausfÃ¼hrt
 	 */
 	private Process _process = null;
 
@@ -103,12 +109,12 @@ public abstract class SimpleApplicationGUI {
 
 	private final String _saveErrorLogText = "Fehlerausgabe speichern";
 	private final String _saveDebugLogText = "Standardausgabe speichern";
-	private final String _clearErrorLogText = "Fehlerausgabe löschen";
-	private final String _clearDebugLogText = "Standardausgabe löschen";
+	private final String _clearErrorLogText = "Fehlerausgabe lÃ¶schen";
+	private final String _clearDebugLogText = "Standardausgabe lÃ¶schen";
 	private final String _endText = "Beenden";
 
 	/**
-	 * Speichert das zuletzt gewählte Verzeichnis in einem FileChooser
+	 * Speichert das zuletzt gewÃ¤hlte Verzeichnis in einem FileChooser
 	 */
 	private File _fileChooserDirectory = null;
 
@@ -139,7 +145,7 @@ public abstract class SimpleApplicationGUI {
 	final String _standardUserPanelButtonName = "Prozess stoppen und neu starten";
 
 	/**
-	 * Argumentliste, die in der start-Methode übergeben wurde, es fehlen die
+	 * Argumentliste, die in der start-Methode Ã¼bergeben wurde, es fehlen die
 	 * Argumente:<br> -gui<br> -prozessname<br> -arbeitsverzeichnis<br>
 	 */
 	private String[] _modifiedArgumentlist;
@@ -229,7 +235,7 @@ public abstract class SimpleApplicationGUI {
 			}
 		});
 
-		// Menueinträge erzeugen
+		// MenueintrÃ¤ge erzeugen
 		final JMenu file = new JMenu("Datei");
 		file.setMnemonic(KeyEvent.VK_D);
 		final JMenuItem endProgramm = new JMenuItem(_endText);
@@ -263,17 +269,17 @@ public abstract class SimpleApplicationGUI {
 		logs.add(clearError);
 		_menuBar.add(logs);
 
-		// Menu einfügen
+		// Menu einfÃ¼gen
 		_mainFrame.setJMenuBar(_menuBar);
 	}
 
 	/**
-	 * Diese Methode erzeugt einen Prozess, der ausgeführt wird. Alle Ausgaben
-	 * werden in der Oberfläche dargestellt. Falls bereits ein Prozess existiert,
+	 * Diese Methode erzeugt einen Prozess, der ausgefÃ¼hrt wird. Alle Ausgaben
+	 * werden in der OberflÃ¤che dargestellt. Falls bereits ein Prozess existiert,
 	 * wird dieser abgebrochen {@link #endProcess}  und ein neuer Prozess erzeugt.
-	 * Der neue Prozess benutzt die übergebenen Parameter.
+	 * Der neue Prozess benutzt die Ã¼bergebenen Parameter.
 	 *
-	 * @param arguments        Übergabeparameter, die benutzt werden sollen oder
+	 * @param arguments        Ãœbergabeparameter, die benutzt werden sollen oder
 	 *                         null
 	 * @param environment      Umgebungsvariablen oder null
 	 * @param workingDirectory Arbeitsverzeichnis oder null
@@ -283,8 +289,8 @@ public abstract class SimpleApplicationGUI {
 	public final void processScript(String[] arguments, String[] environment, File workingDirectory) throws IOException {
 
 		// Die Klasse/Argumente/Umgebungsvariablen/Arbeitsverzeichnis werden gespeichert, falls der Prozess mit dem Standardpanel
-		// neu gestartet werden soll. Wird ein Panel des Benutzers benutzt, werden diese Variablen nicht benötigt, da
-		// das Panel des Benutzers dafür sorgen muss, dass die richtigen Argumente übergeben werden.
+		// neu gestartet werden soll. Wird ein Panel des Benutzers benutzt, werden diese Variablen nicht benÃ¶tigt, da
+		// das Panel des Benutzers dafÃ¼r sorgen muss, dass die richtigen Argumente Ã¼bergeben werden.
 		_processArguments = arguments;
 		_processEnvironment = environment;
 		_processWorkingDirectory = workingDirectory;
@@ -311,12 +317,12 @@ public abstract class SimpleApplicationGUI {
 		//		attributeString.append("Klasse: " + _className + "\n");
 		//
 		//		if (arguments != null) {
-		//			attributeString.append("Liste der übergebenen Argumente: " + "\n");
+		//			attributeString.append("Liste der Ã¼bergebenen Argumente: " + "\n");
 		//			for (int nr = 0; nr < commandArray.length; nr++) {
 		//				attributeString.append(commandArray[nr] + "\n");
 		//			}
 		//		} else {
-		//			attributeString.append("Liste der übergebenen Argumente ist leer" + "\n");
+		//			attributeString.append("Liste der Ã¼bergebenen Argumente ist leer" + "\n");
 		//		}
 		//
 		//		if (environment != null) {
@@ -341,7 +347,7 @@ public abstract class SimpleApplicationGUI {
 		//		_debugTextArea.append(attributeString.toString());
 
 		if (_process != null) {
-			// Derzeit läuft bereits ein Prozess, dieser wird abgebrochen
+			// Derzeit lÃ¤uft bereits ein Prozess, dieser wird abgebrochen
 			endProcess();
 			_errorThread.interrupt();
 			_debugThread.interrupt();
@@ -350,7 +356,7 @@ public abstract class SimpleApplicationGUI {
 			_errorThread = new Thread(new StreamReaderThread(_errorTextArea, _process.getErrorStream()));
 			_debugThread = new Thread(new StreamReaderThread(_debugTextArea, _process.getInputStream()));
 
-			// Die Threads für die Ausgabe werden gestartet (dies ist jetzt nötig, da die Oberfläche bereits
+			// Die Threads fÃ¼r die Ausgabe werden gestartet (dies ist jetzt nÃ¶tig, da die OberflÃ¤che bereits
 			// gestartet wurde)
 			_errorThread.start();
 			_debugThread.start();
@@ -359,7 +365,7 @@ public abstract class SimpleApplicationGUI {
 			_process = Runtime.getRuntime().exec(commandArray, environment, workingDirectory);
 			_errorThread = new Thread(new StreamReaderThread(_errorTextArea, _process.getErrorStream()));
 			_debugThread = new Thread(new StreamReaderThread(_debugTextArea, _process.getInputStream()));
-			// Die Threads für die Ausgabe werden mit der Erstellung der Oberfläche gestartet
+			// Die Threads fÃ¼r die Ausgabe werden mit der Erstellung der OberflÃ¤che gestartet
 			_debugThread.start();
 			_errorThread.start();
 		}
@@ -372,15 +378,15 @@ public abstract class SimpleApplicationGUI {
 	}
 
 	/**
-	 * Diese Methode wertet die übergebenen Argumente aus und zeigt falls gewünscht
-	 * die Oberfläche an. Der zu startende Prozess kann entweder sofort gestartet
-	 * werden oder aber erst später. Falls der Prozess nicht sofort gestartet wird,
+	 * Diese Methode wertet die Ã¼bergebenen Argumente aus und zeigt falls gewÃ¼nscht
+	 * die OberflÃ¤che an. Der zu startende Prozess kann entweder sofort gestartet
+	 * werden oder aber erst spÃ¤ter. Falls der Prozess nicht sofort gestartet wird,
 	 * weil zum Beispiel auf eine Eingabe des Benutzer gewartet wird, muss der
 	 * Prozess durch den Aufruf {@link #processScript} gestartet werden.
 	 *
 	 * @param args         Argumente, mit denen der Prozess gestartet werden soll.
 	 *                     Die Argumente enthalten ausserdem die Information, ob
-	 *                     die Oberfläche angezeigt werden soll oder nicht
+	 *                     die OberflÃ¤che angezeigt werden soll oder nicht
 	 * @param startProcess true = Der in den Argumenten festgelegte Prozess wird
 	 *                     sofort gestartet; false = Der in den Argumenten
 	 *                     festgelegte Prozess wird nicht gestartet und muss mit
@@ -417,17 +423,17 @@ public abstract class SimpleApplicationGUI {
 			workingDirectory = new File(argumentList.fetchArgument("-arbeitsverzeichnis").asString());
 		}
 
-		// Soll die Oberfläche angezeigt werden (dies wird so gemacht da ein if (argumentList.fetchArgument("-gui=").booleanValue()))
+		// Soll die OberflÃ¤che angezeigt werden (dies wird so gemacht da ein if (argumentList.fetchArgument("-gui=").booleanValue()))
 		// zwar funktioniert hat, aber das Argument nicht aus der Liste entfernt wurde !
 		final boolean showGUI = argumentList.fetchArgument("-gui=").booleanValue();
 
-		// Es wurden alle Daten ausgelesen, die benötigt werden um einen Prozess zu starten.
-		// Da beim rausfiltern der Argumente die ursprüngeliche Argumenteliste verändert wurde (es gibt
-		// nun Einträge die <code>null</code> sind, wird diese Liste bereinigt.
+		// Es wurden alle Daten ausgelesen, die benÃ¶tigt werden um einen Prozess zu starten.
+		// Da beim rausfiltern der Argumente die ursprÃ¼ngeliche Argumenteliste verÃ¤ndert wurde (es gibt
+		// nun EintrÃ¤ge die <code>null</code> sind, wird diese Liste bereinigt.
 		_modifiedArgumentlist = cleanedArgumentArray(args);
 
 		if (showGUI) {
-			// Die Oberfläche soll angezeigt werden
+			// Die OberflÃ¤che soll angezeigt werden
 
 			if (startProcess) {
 				// Den Prozess starten
@@ -446,7 +452,7 @@ public abstract class SimpleApplicationGUI {
 
 		}
 		else {
-			// Die Oberfläche soll nicht angezeigt werden
+			// Die OberflÃ¤che soll nicht angezeigt werden
 
 			if (startProcess) {
 				// Der Prozess soll sofort gestartet werden
@@ -458,9 +464,9 @@ public abstract class SimpleApplicationGUI {
 				}
 			}
 			else {
-				final String infoMessage = "Es soll keine Oberfläche angezeigt werden und der in den Parametern " +
-				        "festgelegte Prozess wird nicht gestartet. Es besteht keine Möglichkeit den Prozess nachträglich " +
-				        "zu starten ! Bitte starten Sie den Prozess direkt, falls sie keine GUI sehen möchten.";
+				final String infoMessage = "Es soll keine OberflÃ¤che angezeigt werden und der in den Parametern " +
+				        "festgelegte Prozess wird nicht gestartet. Es besteht keine MÃ¶glichkeit den Prozess nachtrÃ¤glich " +
+				        "zu starten ! Bitte starten Sie den Prozess direkt, falls sie keine GUI sehen mÃ¶chten.";
 				JOptionPane.showMessageDialog(null, infoMessage, "Prozess wird auf Wunsch des Benutzers nicht gestartet", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
@@ -487,19 +493,19 @@ public abstract class SimpleApplicationGUI {
 		_debugTextArea.setFont(_font);
 		_errorTextArea.setFont(_font);
 
-		// Split für die beiden Logs
+		// Split fÃ¼r die beiden Logs
 		final JSplitPane logSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(_debugTextArea), new JScrollPane(_errorTextArea));
 		logSplit.setOneTouchExpandable(true);
 		logSplit.setContinuousLayout(true);
 		logSplit.setDividerLocation(200);
 
-		// Split der das UserPanel und die Logs enthält
+		// Split der das UserPanel und die Logs enthÃ¤lt
 		final JSplitPane userPanelLogPanelSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, _userPanel, logSplit);
 		userPanelLogPanelSplit.setOneTouchExpandable(true);
 		userPanelLogPanelSplit.setContinuousLayout(true);
 		userPanelLogPanelSplit.setDividerLocation(_userPanel.getPreferredSize().height);
 
-		// Split, der die Legende und UserPanel+Logs enthält
+		// Split, der die Legende und UserPanel+Logs enthÃ¤lt
 		_legendPanel = createLegendPanel();
 
 		final JSplitPane legendPanelAndRest = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, _legendPanel, userPanelLogPanelSplit);
@@ -508,22 +514,22 @@ public abstract class SimpleApplicationGUI {
 
 		_mainFrame.getContentPane().add(legendPanelAndRest);
 
-		_mainFrame.setTitle("K2S Prozessüberwachung: " + _className);
+		_mainFrame.setTitle("K2S ProzessÃ¼berwachung: " + _className);
 		_mainFrame.setSize(new Dimension(800, 600));
 		_mainFrame.setVisible(true);
 	}
 
 	/**
-	 * Dieses Panel wird auf der linken Seite der Oberfläche dargestellt. Wird
-	 * diese Methode nicht überschrieben wird ein Standartpanel erzeugt.
+	 * Dieses Panel wird auf der linken Seite der OberflÃ¤che dargestellt. Wird
+	 * diese Methode nicht Ã¼berschrieben wird ein Standartpanel erzeugt.
 	 *
-	 * @return Panel, das auf der linken Seite der Oberfläche dargestellt wird
+	 * @return Panel, das auf der linken Seite der OberflÃ¤che dargestellt wird
 	 */
 	public JPanel createLegendPanel() {
 		JPanel legendPanel = new JPanel(new BorderLayout());
 
 		final Image k2sImage = new ImageIcon(SimpleApplicationGUI.class.getResource("K2S-LogoGross.png")).getImage();
-		// Das neue Seitenverhältnis des Logos berechnen
+		// Das neue SeitenverhÃ¤ltnis des Logos berechnen
 		final int k2sHigh = 100;
 		final ImageIcon k2sLogo = new ImageIcon(k2sImage.getScaledInstance(((k2sHigh * new ImageIcon(k2sImage).getIconWidth()) / new ImageIcon(k2sImage).getIconHeight()), k2sHigh, Image.SCALE_AREA_AVERAGING));
 
@@ -535,7 +541,7 @@ public abstract class SimpleApplicationGUI {
 
 	/**
 	 * Diese Methode wird aufgerufen, wenn der Benutzer kein eigenes Panel benutzen
-	 * möchte. Es wird das K2S Logo angezeigt und ein Button um den Prozess neu zu
+	 * mÃ¶chte. Es wird das K2S Logo angezeigt und ein Button um den Prozess neu zu
 	 * starten.
 	 *
 	 * @return Standard Panel, Funktionen s.o.
@@ -544,13 +550,13 @@ public abstract class SimpleApplicationGUI {
 		final JPanel standardPanel = new JPanel(new BorderLayout());
 
 		final Image k2sImage = new ImageIcon(SimpleApplicationGUI.class.getResource("K2S-LogoGross.png")).getImage();
-		// Das neue Seitenverhältnis des Logos berechnen
+		// Das neue SeitenverhÃ¤ltnis des Logos berechnen
 		final int k2sHigh = 200;
 		final ImageIcon k2sLogo = new ImageIcon(k2sImage.getScaledInstance(((k2sHigh * new ImageIcon(k2sImage).getIconWidth()) / new ImageIcon(k2sImage).getIconHeight()), k2sHigh, Image.SCALE_AREA_AVERAGING));
 
 		standardPanel.add(new JLabel(k2sLogo), BorderLayout.CENTER);
 
-		// Knopf erzeugen und in das Panel einfügen
+		// Knopf erzeugen und in das Panel einfÃ¼gen
 		final JButton button = new JButton(_standardUserPanelButtonName);
 
 		ActionListener actionProcCmd = new ActionListener() {
@@ -580,12 +586,12 @@ public abstract class SimpleApplicationGUI {
 	}
 
 	/**
-	 * Diese Methode gibt ein Array mit neuen Menueinträgen zurück. Diese Einträge
-	 * werden dann später in das bestehende Menu eingefügt. Die Menueinträge müssen
+	 * Diese Methode gibt ein Array mit neuen MenueintrÃ¤gen zurÃ¼ck. Diese EintrÃ¤ge
+	 * werden dann spÃ¤ter in das bestehende Menu eingefÃ¼gt. Die MenueintrÃ¤ge mÃ¼ssen
 	 * komplett implementiert sein (Aktions, Shortcuts, usw.) da sie lediglich
-	 * eingefügt und nicht mehr modifiziert werden.
+	 * eingefÃ¼gt und nicht mehr modifiziert werden.
 	 *
-	 * @return Menueinträge, die in ein bestehendes Menu eingefügt werden sollen
+	 * @return MenueintrÃ¤ge, die in ein bestehendes Menu eingefÃ¼gt werden sollen
 	 */
 	public JMenu[] newMenuEntries() {
 		return new JMenu[0];
@@ -593,11 +599,11 @@ public abstract class SimpleApplicationGUI {
 
 	private JMenu createHelpMenuEntry() {
 
-		// Überschrift des Menus
+		// Ãœberschrift des Menus
 		final String helpMenuName = "Hilfe";
-		// Einträge im Menu
+		// EintrÃ¤ge im Menu
 		final String helpItemName = "Hilfe...";
-		final String aboutItemName = "Über";
+		final String aboutItemName = "Ãœber";
 
 		final JMenu newMenu = new JMenu(helpMenuName);
 
@@ -660,7 +666,7 @@ public abstract class SimpleApplicationGUI {
 	}
 
 	/**
-	 * Diese Methode zeigt ein "Über" Fenster als JFrame.
+	 * Diese Methode zeigt ein "Ãœber" Fenster als JFrame.
 	 */
 	public void showAboutBox() {
 		final JFrame aboutMainframe = new JFrame();
@@ -670,12 +676,12 @@ public abstract class SimpleApplicationGUI {
 		// Dies wird gleichzeitig der Titel des Fensters
 		final String productName = "";
 
-		final String aboutText = "<HTML><small>Copyright 2005 Kappich+Kniß Systemberatung Aachen (K2S) <br> <b> ALL RIGHTS RESERVED </b></small></HTML>";
+		final String aboutText = "<HTML><small>Copyright 2005 Kappich+KniÃŸ Systemberatung Aachen (K2S) <br> <b> ALL RIGHTS RESERVED </b></small></HTML>";
 
 		final Image k2sImage = new ImageIcon(SimpleApplicationGUI.class.getResource("K2S-LogoGross.png")).getImage();
-		// Das neue Seitenverhältnis des Logos berechnen
+		// Das neue SeitenverhÃ¤ltnis des Logos berechnen
 
-		// Höhe des Bildes, die Breite wird angepaßt
+		// HÃ¶he des Bildes, die Breite wird angepaÃŸt
 		final int k2sHigh = 100;
 		final ImageIcon k2sLogo = new ImageIcon(k2sImage.getScaledInstance(((k2sHigh * new ImageIcon(k2sImage).getIconWidth()) / new ImageIcon(k2sImage).getIconHeight()), k2sHigh, Image.SCALE_AREA_AVERAGING));
 
@@ -720,11 +726,11 @@ public abstract class SimpleApplicationGUI {
 	}
 
 	/**
-	 * Der Aufruf dieser Methode gibt den Prozess zurück, der derzeit ausgeführt
+	 * Der Aufruf dieser Methode gibt den Prozess zurÃ¼ck, der derzeit ausgefÃ¼hrt
 	 * wird. Wurde noch kein Prozess gestartet, wird <code>null</code>
-	 * zurückgegeben.
+	 * zurÃ¼ckgegeben.
 	 *
-	 * @return Prozess, der ausgeführt wird oder <code>null</code> falls noch kein
+	 * @return Prozess, der ausgefÃ¼hrt wird oder <code>null</code> falls noch kein
 	 *         Prozess gestartet wurde
 	 */
 	public final Process getProcess() {
@@ -733,7 +739,7 @@ public abstract class SimpleApplicationGUI {
 
 	/**
 	 * Diese Methode wird aufgerufen, falls ein Prozess beendet werden soll. Falls
-	 * diese Methode überschrieben werden soll, muss zuerst der aktuelle Prozess
+	 * diese Methode Ã¼berschrieben werden soll, muss zuerst der aktuelle Prozess
 	 * mit {@link #getProcess} angefordert werden um das Objekt des aktuellen
 	 * Prozzeses zu erhalten.
 	 */
@@ -745,8 +751,8 @@ public abstract class SimpleApplicationGUI {
 	}
 
 	/**
-	 * Diese Methode speichert einen übergebenen String in eine Datei, die
-	 * ebenfalls übergeben wird
+	 * Diese Methode speichert einen Ã¼bergebenen String in eine Datei, die
+	 * ebenfalls Ã¼bergeben wird
 	 *
 	 * @param file Datei, in die geschrieben werden soll
 	 * @param log  Text, der geschrieben werden soll
@@ -765,13 +771,13 @@ public abstract class SimpleApplicationGUI {
 	}
 
 	/**
-	 * Diese Methode gibt eine überarbeitete Argumentliste zurück. Die überarbeitet
+	 * Diese Methode gibt eine Ã¼berarbeitete Argumentliste zurÃ¼ck. Die Ã¼berarbeitet
 	 * Argumentliste ist dabei aus der Argumentliste entstanden, die in der Methode
-	 * {@link #start} übergeben wurde. Es wurden folgende Argumente entfernt:<br>
+	 * {@link #start} Ã¼bergeben wurde. Es wurden folgende Argumente entfernt:<br>
 	 * -gui<br> -prozessname<br> -arbeitsverzeichnis<br> Falls ein Prozess diese
 	 * Argumentliste mit {@link de.bsvrz.sys.funclib.commandLineArgs.ArgumentList#fetchArgument} bearbeitet,
-	 * werden die Elemente aus der Liste entfernt und nicht wieder eingefügt, auch
-	 * die enstehenden <code>null</code> Einträge bleiben in dieser Argumentliste
+	 * werden die Elemente aus der Liste entfernt und nicht wieder eingefÃ¼gt, auch
+	 * die enstehenden <code>null</code> EintrÃ¤ge bleiben in dieser Argumentliste
 	 * bestehen!
 	 *
 	 * @return modifizierte Argumentliste
@@ -781,13 +787,13 @@ public abstract class SimpleApplicationGUI {
 	}
 
 	/**
-	 * Diese Methode filtert aus einer Argumentenliste alle Einträge heraus, die
-	 * <code>null</code> sind und gibt ein bereinigtes Array zurück.
+	 * Diese Methode filtert aus einer Argumentenliste alle EintrÃ¤ge heraus, die
+	 * <code>null</code> sind und gibt ein bereinigtes Array zurÃ¼ck.
 	 *
-	 * @param argumentList Array mit Argumenten, es können ebenfalls Einträge
+	 * @param argumentList Array mit Argumenten, es kÃ¶nnen ebenfalls EintrÃ¤ge
 	 *                     <code>null</code> sein
 	 *
-	 * @return Array mit Argumenten, es gibt keine Einträge, die <code>null</code>
+	 * @return Array mit Argumenten, es gibt keine EintrÃ¤ge, die <code>null</code>
 	 *         sind
 	 */
 	private String[] cleanedArgumentArray(final String[] argumentList) {
@@ -802,7 +808,7 @@ public abstract class SimpleApplicationGUI {
 	}
 
 	/**
-	 * Diese Klasse stellt einen Stream in einem dafür vorgesehenem Fenster dar.
+	 * Diese Klasse stellt einen Stream in einem dafÃ¼r vorgesehenem Fenster dar.
 	 */
 	private static final class StreamReaderThread implements Runnable {
 
@@ -849,16 +855,16 @@ public abstract class SimpleApplicationGUI {
 					int selectionStart = _textPane.getSelectionStart();
 					int selectionEnd = _textPane.getSelectionEnd();
 					if (textLength > MAX_TEXT_LENGTH) {
-						// Zuviel Text => obere Hälfte löschen
+						// Zuviel Text => obere HÃ¤lfte lÃ¶schen
 						final int deleteLength = textLength / 2;
 						_textPane.select(0, deleteLength);
-						_textPane.replaceSelection("(Anfang gelöscht)...");
+						_textPane.replaceSelection("(Anfang gelÃ¶scht)...");
 						final int newLength = _textPane.getDocument().getLength();
 						final int deletedLength = textLength - newLength;
 						selectionStart -= deletedLength;
 						selectionEnd -= deletedLength;
 						textLength = newLength;
-						// wenn Selektion im gelöschten Bereich lag, dann Selektion auf Ende setzen
+						// wenn Selektion im gelÃ¶schten Bereich lag, dann Selektion auf Ende setzen
 						if (selectionStart < 0 || selectionEnd < 0) {
 							selectionStart = textLength;
 							selectionEnd = textLength;

@@ -1,12 +1,12 @@
 /*
  * Copyright 2008 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config.request;
@@ -33,10 +39,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Mit Hilfe dieses Interfaces können Anfragen an die Konfiguration gestellt werden.
+ * Mit Hilfe dieses Interfaces kÃ¶nnen Anfragen an die Konfiguration gestellt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13228 $
+ * @version $Revision$
  */
 public interface ConfigurationRequester {
 
@@ -48,37 +54,37 @@ public interface ConfigurationRequester {
 	void init(long localApplicationId) throws CommunicationError;
 
 	/**
-	 * Liefert die System-Objekte mit den angegebenen PIDs zurück.
+	 * Liefert die System-Objekte mit den angegebenen PIDs zurÃ¼ck.
 	 *
 	 * @param pid Die permanente ID des System-Objekts (oder mehrere Pids)
 	 *
-	 * @return Liste mit den gewüschten Systemobjekten in der Reihenfolge der übergebenen PIDs. Objekte, die nicht gefunden wurden, werden als null-Werte zurückgegeben. 
+	 * @return Liste mit den gewÃ¼schten Systemobjekten in der Reihenfolge der Ã¼bergebenen PIDs. Objekte, die nicht gefunden wurden, werden als null-Werte zurÃ¼ckgegeben. 
 	 *
 	 * @throws RequestException Wenn bei der Kommunikation mit der Konfiguration Fehler aufgetreten sind.
 	 */
 	public List<SystemObject> getObjects(String... pid) throws RequestException;
 
 	/**
-	 * Liefert die System-Objekte mit den angegebenen Objekt-IDs zurück.
+	 * Liefert die System-Objekte mit den angegebenen Objekt-IDs zurÃ¼ck.
 	 *
-	 * @param id Die Objekt-ID des System-Objekts (oder mehrere IDs für mehrere Objekte)
+	 * @param id Die Objekt-ID des System-Objekts (oder mehrere IDs fÃ¼r mehrere Objekte)
 	 *
-	 * @return Liste mit den gewüschten Systemobjekten in der Reihenfolge der übergebenen IDs. Objekte, die nicht gefunden wurden, werden als null-Werte zurückgegeben.
+	 * @return Liste mit den gewÃ¼schten Systemobjekten in der Reihenfolge der Ã¼bergebenen IDs. Objekte, die nicht gefunden wurden, werden als null-Werte zurÃ¼ckgegeben.
 	 *
 	 * @throws RequestException Wenn bei der Kommunikation mit der Konfiguration Fehler aufgetreten sind.
 	 */
 	public List<SystemObject> getObjects(long... id) throws RequestException;
 
 	/**
-	 * Liefert alle Elemente einer Dynamischen Menge. Durch Angabe der Start- und Endzeitpunkte kann eine Periode angegeben werden, in der die Elemente gültig
-	 * gewesen sein müssen. Sind die beiden Zeitpunkte identisch, dann werden die Elemente zurückgegeben, die zum angegebenen Zeitpunkt gültig waren bzw. sind. Mit
-	 * dem letzten Parameter kann angegeben werden, ob die Elemente während des gesamten Zeitraumes gültig gewesen sein müssen oder ob sie innerhalb des Zeitraumes
-	 * wenigstens einmal gültig gewesen sein mussten.
+	 * Liefert alle Elemente einer Dynamischen Menge. Durch Angabe der Start- und Endzeitpunkte kann eine Periode angegeben werden, in der die Elemente gÃ¼ltig
+	 * gewesen sein mÃ¼ssen. Sind die beiden Zeitpunkte identisch, dann werden die Elemente zurÃ¼ckgegeben, die zum angegebenen Zeitpunkt gÃ¼ltig waren bzw. sind. Mit
+	 * dem letzten Parameter kann angegeben werden, ob die Elemente wÃ¤hrend des gesamten Zeitraumes gÃ¼ltig gewesen sein mÃ¼ssen oder ob sie innerhalb des Zeitraumes
+	 * wenigstens einmal gÃ¼ltig gewesen sein mussten.
 	 *
 	 * @param set                     die Dynamische Menge
 	 * @param startTime               Startzeitpunkt des zu betrachtenden Zeitraumes
 	 * @param endTime                 Endzeitpunkt des zu betrachtenden Zeitraumes
-	 * @param validDuringEntirePeriod ob die Elemente während des gesamten Zeitraumes gültig gewesen sein müssen
+	 * @param validDuringEntirePeriod ob die Elemente wÃ¤hrend des gesamten Zeitraumes gÃ¼ltig gewesen sein mÃ¼ssen
 	 *
 	 * @return die geforderten Elemente der Dynamischen Menge
 	 *
@@ -87,13 +93,13 @@ public interface ConfigurationRequester {
 	public SystemObject[] getElements(MutableSet set, long startTime, long endTime, boolean validDuringEntirePeriod) throws RequestException;
 
 	/**
-	 * Mittels dieser Methode lassen sich Mengen verändern. Es können Elemente hinzugefügt und/oder entfernt werden.
+	 * Mittels dieser Methode lassen sich Mengen verÃ¤ndern. Es kÃ¶nnen Elemente hinzugefÃ¼gt und/oder entfernt werden.
 	 *
-	 * @param set            Menge, in der Elemente hinzugefügt und/oder gelöscht werden können
-	 * @param addElements    Elemente, die der Menge hinzugefügt werden sollen. Sollen keine Elemente hinzugefügt werden, muss <code>null</code> übergeben werden.
-	 * @param removeElements Elemente, die aus der Menge entfernt werden sollen. Sollen keine Elemente entfernt werden, muss <code>null</code> übergeben werden.
+	 * @param set            Menge, in der Elemente hinzugefÃ¼gt und/oder gelÃ¶scht werden kÃ¶nnen
+	 * @param addElements    Elemente, die der Menge hinzugefÃ¼gt werden sollen. Sollen keine Elemente hinzugefÃ¼gt werden, muss <code>null</code> Ã¼bergeben werden.
+	 * @param removeElements Elemente, die aus der Menge entfernt werden sollen. Sollen keine Elemente entfernt werden, muss <code>null</code> Ã¼bergeben werden.
 	 *
-	 * @throws ConfigurationChangeException Wenn eines der übergebenen Objekte nicht in die Menge aufgenommen werden konnte und noch nicht in der Menge enthalten
+	 * @throws ConfigurationChangeException Wenn eines der Ã¼bergebenen Objekte nicht in die Menge aufgenommen werden konnte und noch nicht in der Menge enthalten
 	 *                                      war.
 	 * @throws RequestException             Wenn bei der Kommunikation mit der Konfiguration Fehler aufgetreten sind.
 	 */
@@ -103,13 +109,13 @@ public interface ConfigurationRequester {
 	 * Meldet die Dynamische Menge bei der Konfiguration an, um sie immer auf dem neuesten Stand zu halten.
 	 *
 	 * @param set  die Dynamische Menge
-	 * @param time Zeitpunkt, ab wann die Dynamische Menge auf Änderungen angemeldet werden soll.
+	 * @param time Zeitpunkt, ab wann die Dynamische Menge auf Ã„nderungen angemeldet werden soll.
 	 * @throws RequestException Wenn Fehler beim Versand des Telegramms oder bei der Verarbeitung der entsprechenden Antwort aufgetreten sind.
 	 */
 	public void subscribe(MutableSet set, long time) throws RequestException;
 
 	/**
-	 * Meldet die Dynamische Menge bei der Konfiguration auf Änderungen wieder ab.
+	 * Meldet die Dynamische Menge bei der Konfiguration auf Ã„nderungen wieder ab.
 	 *
 	 * @param set die Dynamische Menge
 	 * @throws RequestException Wenn Fehler beim Versand des Telegramms oder bei der Verarbeitung der entsprechenden Antwort aufgetreten sind.
@@ -117,13 +123,13 @@ public interface ConfigurationRequester {
 	public void unsubscribe(MutableSet set) throws RequestException;
 
 	/**
-	 * Liefert für die angegebenen Systemobjekte jeweils einen konfigurierenden Datensatz der angegebenen Attributgruppenverwendung zurück.
+	 * Liefert fÃ¼r die angegebenen Systemobjekte jeweils einen konfigurierenden Datensatz der angegebenen Attributgruppenverwendung zurÃ¼ck.
 	 *
-	 * @param systemObject        Array mit Systemobjekten für die Datensätze abgefragt werden sollen.
+	 * @param systemObject        Array mit Systemobjekten fÃ¼r die DatensÃ¤tze abgefragt werden sollen.
 	 * @param attributeGroupUsage Attributgruppenverwendung, die Attributgruppe und Aspekt des Datensatzes festlegt.
 	 *
-	 * @return Array das für jedes angefragte Systemobjekt einen entsprechenden konfigurierenden Datensatz enthält. Ein Datensatz ist entweder ein Byte-Array das
-	 *         mit der Serialisiererversion 2 erzeugt wurde, oder null, wenn für das jeweilige Systemobjekt kein Datensatz existiert.
+	 * @return Array das fÃ¼r jedes angefragte Systemobjekt einen entsprechenden konfigurierenden Datensatz enthÃ¤lt. Ein Datensatz ist entweder ein Byte-Array das
+	 *         mit der Serialisiererversion 2 erzeugt wurde, oder null, wenn fÃ¼r das jeweilige Systemobjekt kein Datensatz existiert.
 	 *
 	 * @throws RequestException Wenn bei der Kommunikation mit der Konfiguration Fehler aufgetreten sind.
 	 * @see de.bsvrz.sys.funclib.dataSerializer.SerializingFactory
@@ -134,111 +140,111 @@ public interface ConfigurationRequester {
 	 * Legt an einem Objekt einen konfigurierenden Datensatz fest.
 	 *
 	 * @param attributeGroupUsage Attributgruppenverwendung
-	 * @param systemObject        Objekt, für das der konfigurierende Datensatz gedacht ist
-	 * @param data                Datensatz, der mit einem Serialisierer(Version2) in ein byte-Array zerlegt wurde. Soll ein Datensatz gelöscht werden, wird ein
-	 *                            byte-Array der Größe 0 übergeben.
+	 * @param systemObject        Objekt, fÃ¼r das der konfigurierende Datensatz gedacht ist
+	 * @param data                Datensatz, der mit einem Serialisierer(Version2) in ein byte-Array zerlegt wurde. Soll ein Datensatz gelÃ¶scht werden, wird ein
+	 *                            byte-Array der GrÃ¶ÃŸe 0 Ã¼bergeben.
 	 *
-	 * @throws ConfigurationChangeException Die Konfiguration konnte den Datensatz nicht dem übergebenen Systemobjekt hinzufügen/entfernen. Ein Grund wäre zum
-	 *                                      Beispiel, dass der Konfigurationsverantwortliche nicht die Rechte besitzt Datensätze an dem Objekt zu ändern.
-	 * @throws RequestException             Fehler bei der Übertragung. Entweder konnte der Auftrag nicht verschickt werden oder die Antwort der Konfiguration
-	 *                                      konnte nicht entschlüsselt werden.
+	 * @throws ConfigurationChangeException Die Konfiguration konnte den Datensatz nicht dem Ã¼bergebenen Systemobjekt hinzufÃ¼gen/entfernen. Ein Grund wÃ¤re zum
+	 *                                      Beispiel, dass der Konfigurationsverantwortliche nicht die Rechte besitzt DatensÃ¤tze an dem Objekt zu Ã¤ndern.
+	 * @throws RequestException             Fehler bei der Ãœbertragung. Entweder konnte der Auftrag nicht verschickt werden oder die Antwort der Konfiguration
+	 *                                      konnte nicht entschlÃ¼sselt werden.
 	 */
 	public void setConfigurationData(AttributeGroupUsage attributeGroupUsage, SystemObject systemObject, byte[] data)
 			throws ConfigurationChangeException, RequestException;
 
 	/**
-	 * Beauftragt die Konfiguration ein Einmal-Passwort zu erzeugen. Der Auftrag muss verschlüsselt übertragen werden, das Passwort des Auftraggebers
-	 * <code>ordererPassword</code> wird zum verschlüsseln der Nachricht benutzt und darf nicht übertragen werden. In der verschlüsselten Nachricht ist ausserdem
+	 * Beauftragt die Konfiguration ein Einmal-Passwort zu erzeugen. Der Auftrag muss verschlÃ¼sselt Ã¼bertragen werden, das Passwort des Auftraggebers
+	 * <code>ordererPassword</code> wird zum verschlÃ¼sseln der Nachricht benutzt und darf nicht Ã¼bertragen werden. In der verschlÃ¼sselten Nachricht ist ausserdem
 	 * ein Zufallstext enthalten, der von der Konfiguration angefordert werden muss.
-	 * <p/>
-	 * Damit dieser Auftrag ausgeführt werden kann, muss der Auftraggeber <code>orderer</code> besondere Rechte besitzen. Besitzt der Auftraggeber diese Rechte
-	 * nicht, wird der Auftrag zwar zur Konfiguration übertragen, dort aber nicht ausgeführt.
+	 * <p>
+	 * Damit dieser Auftrag ausgefÃ¼hrt werden kann, muss der Auftraggeber <code>orderer</code> besondere Rechte besitzen. Besitzt der Auftraggeber diese Rechte
+	 * nicht, wird der Auftrag zwar zur Konfiguration Ã¼bertragen, dort aber nicht ausgefÃ¼hrt.
 	 *
 	 * @param orderer               Benutzername des Auftraggebers
-	 * @param ordererPassword       Passwort des Auftraggebers, dies wird zum verschlüsseln benutzt und darf nicht mit übertragen werden
-	 * @param username              Benutzername, dem ein Einmal-Passwort hinzugefügt werden soll. Der Name ist zu verschlüsseln.
-	 * @param singleServingPassword Einmal-Passwort das dem Benutzer, der mit <code>username</code> identifiziert wird, hinzugefügt wird. Das Einmal-Passwort darf
-	 *                              nur verschlüsselt übertragen werden
+	 * @param ordererPassword       Passwort des Auftraggebers, dies wird zum verschlÃ¼sseln benutzt und darf nicht mit Ã¼bertragen werden
+	 * @param username              Benutzername, dem ein Einmal-Passwort hinzugefÃ¼gt werden soll. Der Name ist zu verschlÃ¼sseln.
+	 * @param singleServingPassword Einmal-Passwort das dem Benutzer, der mit <code>username</code> identifiziert wird, hinzugefÃ¼gt wird. Das Einmal-Passwort darf
+	 *                              nur verschlÃ¼sselt Ã¼bertragen werden
 	 *
-	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationTaskException Die Konfiguration kann den Auftrag nicht ausführen, weil die übergebenen Parameter falsch sind. So kann der Auftraggeber
-	 *                                    zum Beispiel nicht die nötigen Rechte besitzen ein Einmal-Passwort anzulegen oder das Passwort existiert bereits, usw..
-	 *                                    Wird der Auftrag mit den richtigen Parametern übertragen, wird die Konfiguration ihn ausführen.
+	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationTaskException Die Konfiguration kann den Auftrag nicht ausfÃ¼hren, weil die Ã¼bergebenen Parameter falsch sind. So kann der Auftraggeber
+	 *                                    zum Beispiel nicht die nÃ¶tigen Rechte besitzen ein Einmal-Passwort anzulegen oder das Passwort existiert bereits, usw..
+	 *                                    Wird der Auftrag mit den richtigen Parametern Ã¼bertragen, wird die Konfiguration ihn ausfÃ¼hren.
 	 */
 	public void createSingleServingPassword(String orderer, String ordererPassword, String username, String singleServingPassword)
 			throws ConfigurationTaskException;
 
 	/**
-	 * Ermittelt die Anzahl der noch vorhandenen, gültigen Einmal-Passwörter. Jeder Benutzer kann diese Anzahl für seinen eigenen Account ermitteln,
+	 * Ermittelt die Anzahl der noch vorhandenen, gÃ¼ltigen Einmal-PasswÃ¶rter. Jeder Benutzer kann diese Anzahl fÃ¼r seinen eigenen Account ermitteln,
 	 * ansonsten sind Admin-Rechte notwendig.
 	 *
 	 * @param orderer               Benutzername des Auftraggebers
-	 * @param ordererPassword       Passwort des Auftraggebers, dies wird zum verschlüsseln benutzt und darf nicht mit übertragen werden
-	 * @param username              Benutzername, dessen Einmalpasswörter geprüft werden sollen.
+	 * @param ordererPassword       Passwort des Auftraggebers, dies wird zum verschlÃ¼sseln benutzt und darf nicht mit Ã¼bertragen werden
+	 * @param username              Benutzername, dessen EinmalpasswÃ¶rter geprÃ¼ft werden sollen.
 	 *
-	 * @return Anzahl der noch vorhandenen, gültigen Einmal-Passwörter
+	 * @return Anzahl der noch vorhandenen, gÃ¼ltigen Einmal-PasswÃ¶rter
 	 * 
-	 * @throws ConfigurationTaskException Die Konfiguration kann den Auftrag nicht ausführen.
+	 * @throws ConfigurationTaskException Die Konfiguration kann den Auftrag nicht ausfÃ¼hren.
 	 */
 	public int getSingleServingPasswordCount(String orderer, String ordererPassword, String username) throws ConfigurationTaskException;
 
 	/**
-	 * Löscht alle Einmalpasswörter für einen angegebenen Benutzer. Es ist jedem Benutzer
-	 * gestattet die Passwörter seines eigenen Accounts zu löschen. Soll ein fremdes Benutzerkonto geändert werden, sind Admin-Rechte nötig.
+	 * LÃ¶scht alle EinmalpasswÃ¶rter fÃ¼r einen angegebenen Benutzer. Es ist jedem Benutzer
+	 * gestattet die PasswÃ¶rter seines eigenen Accounts zu lÃ¶schen. Soll ein fremdes Benutzerkonto geÃ¤ndert werden, sind Admin-Rechte nÃ¶tig.
 	 *
 	 * @param orderer         Benutzername des Auftraggebers
-	 * @param ordererPassword Passwort des Auftraggebers, dies wird zum verschlüsseln benutzt und darf nicht mit übertragen werden
-	 * @param username        Benutzername, dessen Einmalpasswörter gelöscht werden sollen.
+	 * @param ordererPassword Passwort des Auftraggebers, dies wird zum verschlÃ¼sseln benutzt und darf nicht mit Ã¼bertragen werden
+	 * @param username        Benutzername, dessen EinmalpasswÃ¶rter gelÃ¶scht werden sollen.
 	 *
-	 * @throws ConfigurationTaskException Die Konfiguration kann den Auftrag nicht ausführen.
+	 * @throws ConfigurationTaskException Die Konfiguration kann den Auftrag nicht ausfÃ¼hren.
 	 */
 	public void clearSingleServingPasswords(String orderer, String ordererPassword, String username) throws ConfigurationTaskException;
 
 	/**
-	 * Beauftragt die Konfiguration ein neues Benutzerkonto anzulegen. Zu einem Benutzerkonto gehören ein Benutzername, ein Passwort und die Rechte des Benutzers.
-	 * Alle Informationen, die zu einem Benutzerkonto gehören, sind mit dem Passwort des Auftraggebers zu verschlüsseln und verschlüsselt zu übertragen. Das
-	 * Passwort des Auftraggebers wird nicht übertragen.
-	 * <p/>
+	 * Beauftragt die Konfiguration ein neues Benutzerkonto anzulegen. Zu einem Benutzerkonto gehÃ¶ren ein Benutzername, ein Passwort und die Rechte des Benutzers.
+	 * Alle Informationen, die zu einem Benutzerkonto gehÃ¶ren, sind mit dem Passwort des Auftraggebers zu verschlÃ¼sseln und verschlÃ¼sselt zu Ã¼bertragen. Das
+	 * Passwort des Auftraggebers wird nicht Ã¼bertragen.
+	 * <p>
 	 * Ein neuer Benutzer kann nur durch einen Benutzer angelegt werden, der bestimmte Rechte besitzt. Besitzt der Benutzer diese Rechte nicht, wird der Auftrag
-	 * zur Konfiguration übertragen und dort abgelehnt.
+	 * zur Konfiguration Ã¼bertragen und dort abgelehnt.
 	 *
 	 * @param orderer              Benutzername des Auftraggebers
-	 * @param ordererPassword      Passwort des Auftraggebers. Das Passwort wird nicht übertragen.
+	 * @param ordererPassword      Passwort des Auftraggebers. Das Passwort wird nicht Ã¼bertragen.
 	 * @param newUsername          Benutzername des neuen Benutzers
-	 * @param newUserPid           Pid des neuen Benutzers. Wird der Leerstring ("") übergeben, wird dem Benutzer keine explizite Pid zugewiesen
+	 * @param newUserPid           Pid des neuen Benutzers. Wird der Leerstring ("") Ã¼bergeben, wird dem Benutzer keine explizite Pid zugewiesen
 	 * @param newPassword          Passwort des neuen Benutzers
 	 * @param adminRights          true = Der Benutzer besitzt spezielle Rechte; false = Der Benutzer besitzt keine speziellen Rechte
 	 * @param pidConfigurationArea Pid des Konfigurationsbereichs, in dem der neue Benutzer angelegt werden soll
 	 *
-	 * @throws ConfigurationTaskException Die Konfiguration kann den Auftrag nicht ausführen, weil die übergebenen Parameter falsch sind. So kann der Auftraggeber
-	 *                                    zum Beispiel nicht die nötigen Rechte besitzen einen neuen Benutzer anzulegen. Wird der Auftrag mit den richtigen
-	 *                                    Parametern übertragen, wird die Konfiguration ihn ausführen.
+	 * @throws ConfigurationTaskException Die Konfiguration kann den Auftrag nicht ausfÃ¼hren, weil die Ã¼bergebenen Parameter falsch sind. So kann der Auftraggeber
+	 *                                    zum Beispiel nicht die nÃ¶tigen Rechte besitzen einen neuen Benutzer anzulegen. Wird der Auftrag mit den richtigen
+	 *                                    Parametern Ã¼bertragen, wird die Konfiguration ihn ausfÃ¼hren.
 	 */
 	public void createNewUser(
 			String orderer, String ordererPassword, String newUsername, String newUserPid, String newPassword, boolean adminRights, String pidConfigurationArea
 	) throws ConfigurationTaskException;
 
 	/**
-	 * Beauftragt die Konfiguration ein neues Benutzerkonto anzulegen. Zu einem Benutzerkonto gehören ein Benutzername, ein Passwort und die Rechte des
+	 * Beauftragt die Konfiguration ein neues Benutzerkonto anzulegen. Zu einem Benutzerkonto gehÃ¶ren ein Benutzername, ein Passwort und die Rechte des
 	 * Benutzers.
-	 * <p/>
+	 * <p>
 	 * Ein neuer Benutzer kann nur durch einen Benutzer angelegt werden, der die Rechte eines Administrators besitzt. Besitzt der Benutzer diese Rechte nicht,
-	 * wird der Auftrag zur Konfiguration übertragen und dort abgelehnt.
+	 * wird der Auftrag zur Konfiguration Ã¼bertragen und dort abgelehnt.
 	 *
 	 * @param orderer              Benutzername des Auftraggebers.
 	 * @param ordererPassword      Passwort des Auftraggebers.
 	 * @param newUsername          Benutzername des neuen Benutzers.
-	 * @param newUserPid           Pid des neuen Benutzers. Wird der Leerstring ("") übergeben, wird dem Benutzer keine explizite Pid zugewiesen.
+	 * @param newUserPid           Pid des neuen Benutzers. Wird der Leerstring ("") Ã¼bergeben, wird dem Benutzer keine explizite Pid zugewiesen.
 	 * @param newPassword          Passwort des neuen Benutzers.
 	 * @param adminRights          <code>true</code>, wenn der neue Benutzer die Rechte eines Administrators besitzen soll; <code>false</code>, wenn der Benutzer
 	 *                             keine speziellen Rechte besitzen soll.
 	 * @param pidConfigurationArea Pid des Konfigurationsbereichs, in dem der neue Benutzer angelegt werden soll.
-	 * @param data                 Konfigurierende Datensätze mit den dazugehörigen Attributgruppenverwendungen, die für das neue Benutzer-Objekt gespeichert
-	 *                             werden sollen. Wird null übergeben, werden keine Konfigurationsdaten angelegt.
+	 * @param data                 Konfigurierende DatensÃ¤tze mit den dazugehÃ¶rigen Attributgruppenverwendungen, die fÃ¼r das neue Benutzer-Objekt gespeichert
+	 *                             werden sollen. Wird null Ã¼bergeben, werden keine Konfigurationsdaten angelegt.
 	 * @see ConfigurationArea#createDynamicObject(de.bsvrz.dav.daf.main.config.DynamicObjectType, String, String, java.util.Collection)
 	 *
 	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationTaskException
-	 *          Die Konfiguration kann den Auftrag nicht ausführen, weil die übergebenen Parameter falsch sind. So kann der Auftraggeber zum Beispiel nicht die
-	 *          nötigen Rechte besitzen einen neuen Benutzer anzulegen.
+	 *          Die Konfiguration kann den Auftrag nicht ausfÃ¼hren, weil die Ã¼bergebenen Parameter falsch sind. So kann der Auftraggeber zum Beispiel nicht die
+	 *          nÃ¶tigen Rechte besitzen einen neuen Benutzer anzulegen.
 	 */
 	public void createNewUser(
 			String orderer,
@@ -251,117 +257,117 @@ public interface ConfigurationRequester {
 			Collection<DataAndATGUsageInformation> data) throws ConfigurationTaskException;
 
 	/**
-	 * Beauftragt die Konfiguration ein Benutzerkonto zu löschen. Alle Informationen, die zu einem Benutzerkonto gehören, sind mit dem Passwort des
-	 * Auftraggebers zu verschlüsseln und verschlüsselt zu übertragen.
-	 * <p/>
-	 * Ein Benutzerkonto kann nur durch einen Benutzer gelöscht werden, der die Rechte eines Administrators besitzt.
+	 * Beauftragt die Konfiguration ein Benutzerkonto zu lÃ¶schen. Alle Informationen, die zu einem Benutzerkonto gehÃ¶ren, sind mit dem Passwort des
+	 * Auftraggebers zu verschlÃ¼sseln und verschlÃ¼sselt zu Ã¼bertragen.
+	 * <p>
+	 * Ein Benutzerkonto kann nur durch einen Benutzer gelÃ¶scht werden, der die Rechte eines Administrators besitzt.
 	 *
 	 * @param orderer              Benutzername des Auftraggebers.
 	 * @param ordererPassword      Passwort des Auftraggebers.
-	 * @param userToDelete         Benutzername des zu löschenden Benutzers.
+	 * @param userToDelete         Benutzername des zu lÃ¶schenden Benutzers.
 	 *
 	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationTaskException
-	 *          Die Konfiguration kann den Auftrag nicht ausführen.
+	 *          Die Konfiguration kann den Auftrag nicht ausfÃ¼hren.
 	 */
 	public void deleteUser(
 			String orderer, String ordererPassword, String userToDelete) throws ConfigurationTaskException;
 
 	/**
-	 * Prüft, ob ein angegebener Benutzer Admin-Rechte besitzt. Jeder Benutzer kann diese Aktion ausführen. Zur verschlüsselten Übertragung
-	 * des Vorgangs ist dennoch die Angabe eines gültigen Benutzernamens und Passworts notwendig.
+	 * PrÃ¼ft, ob ein angegebener Benutzer Admin-Rechte besitzt. Jeder Benutzer kann diese Aktion ausfÃ¼hren. Zur verschlÃ¼sselten Ãœbertragung
+	 * des Vorgangs ist dennoch die Angabe eines gÃ¼ltigen Benutzernamens und Passworts notwendig.
 	 *
 	 * @param orderer              Benutzername des Auftraggebers.
 	 * @param ordererPassword      Passwort des Auftraggebers.
-	 * @param username             Name des zu prüfenden Benutzers
+	 * @param username             Name des zu prÃ¼fenden Benutzers
 	 *
 	 * @return true falls der Benutzer Admin-Rechte hat
 	 *
 	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationTaskException
-	 *          Die Konfiguration kann den Auftrag nicht ausführen.
+	 *          Die Konfiguration kann den Auftrag nicht ausfÃ¼hren.
 	 */
 	public boolean isUserAdmin(String orderer, String ordererPassword, String username) throws ConfigurationTaskException;
 
 	/**
-	 * Prüft, ob ein angegebener Benutzername gültig ist, d.h. ob er ein zugeordnetes Systemobjekt und einen Eintrag in der Benutzerverwaltung.xml hat. Jeder
-	 * Benutzer kann diese Aktion ausführen. Zur (verschlüsselten) Übertragung des Vorgangs ist dennoch die Angabe eines gültigen Benutzernamens und Passworts
-	 * notwendig. Mit dieser Funktion kann geprüft werden, ob die Benutzernamen, die {@link #subscribeUserChangeListener(de.bsvrz.dav.daf.main.config.MutableCollectionChangeListener)
-	 * } liefert, tatsächlichen zu einem gültigen Benutzer gehören, da subscribeUserChangeListener nur die Systemobjekte berücksichtigt.
+	 * PrÃ¼ft, ob ein angegebener Benutzername gÃ¼ltig ist, d.h. ob er ein zugeordnetes Systemobjekt und einen Eintrag in der Benutzerverwaltung.xml hat. Jeder
+	 * Benutzer kann diese Aktion ausfÃ¼hren. Zur (verschlÃ¼sselten) Ãœbertragung des Vorgangs ist dennoch die Angabe eines gÃ¼ltigen Benutzernamens und Passworts
+	 * notwendig. Mit dieser Funktion kann geprÃ¼ft werden, ob die Benutzernamen, die {@link #subscribeUserChangeListener(de.bsvrz.dav.daf.main.config.MutableCollectionChangeListener)
+	 * } liefert, tatsÃ¤chlichen zu einem gÃ¼ltigen Benutzer gehÃ¶ren, da subscribeUserChangeListener nur die Systemobjekte berÃ¼cksichtigt.
 	 *
 	 * @param orderer         Benutzername des Auftraggebers.
 	 * @param ordererPassword Passwort des Auftraggebers.
-	 * @param username        Name des zu prüfenden Benutzers
+	 * @param username        Name des zu prÃ¼fenden Benutzers
 	 *
 	 * @return true falls der Benutzer in der Konfiguration gespeichert ist
 	 *
 	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationTaskException
-	 *          Die Konfiguration kann den Auftrag nicht ausführen.
+	 *          Die Konfiguration kann den Auftrag nicht ausfÃ¼hren.
 	 */
 	public boolean isUserValid(String orderer, String ordererPassword, String username) throws ConfigurationTaskException;
 
 	/**
-	 * Erstellt einen Listener der Änderungen an den Benutzern überwacht und eine aktuelle Liste aller Benutzer zurückgibt
-	 * @param listener Objekt, an das Rückmeldungen gesendet werden sollen. <code>null</code>, wenn nur die Liste der aktuellen Benutzer geholt werden soll.
-	 * @return Liste der aktuell vorhandenen Benutzer. Es ist eventuell ratsam, mit isUserValid zu prüfen, ob die Benutzer tatsächlich in der
-	 * Benutzerverwaltung.xml abgelegt sind, da hier nur die Systemobjekte berücksichtigt werden.
+	 * Erstellt einen Listener der Ã„nderungen an den Benutzern Ã¼berwacht und eine aktuelle Liste aller Benutzer zurÃ¼ckgibt
+	 * @param listener Objekt, an das RÃ¼ckmeldungen gesendet werden sollen. <code>null</code>, wenn nur die Liste der aktuellen Benutzer geholt werden soll.
+	 * @return Liste der aktuell vorhandenen Benutzer. Es ist eventuell ratsam, mit isUserValid zu prÃ¼fen, ob die Benutzer tatsÃ¤chlich in der
+	 * Benutzerverwaltung.xml abgelegt sind, da hier nur die Systemobjekte berÃ¼cksichtigt werden.
 	 */
 	public List<SystemObject> subscribeUserChangeListener(MutableCollectionChangeListener listener);
 
 	/**
 	 * Entfernt den mit subscribeUserChangeListener erstellten Listener
-	 * @param listener Objekt, and das keien Rückmeldungen mehr gesendet werden sollen.
+	 * @param listener Objekt, and das keien RÃ¼ckmeldungen mehr gesendet werden sollen.
 	 */
 	void unsubscribeUserChangeListener(MutableCollectionChangeListener listener);
 
 	/**
-	 * Beauftragt die Konfiguration die Rechte eines Benutzers zu ändern. Es wird mit dem Passwort des Benutzers, der den Auftrag erteilt, eine verschlüsselte
-	 * Nachricht erzeugt, die den Benutzernamen des Benutzers enthält dessen Rechte geändert werden sollen und die neuen Rechte des Benutzers. Das Passwort des
-	 * Auftraggebers wird nicht übertragen.
-	 * <p/>
-	 * Nur ein Benutzer mit speziellen Rechten darf die Rechte anderer Benutzer ändern. Besitzt ein Benutzer diese Rechte nicht wird der Auftrag an die
+	 * Beauftragt die Konfiguration die Rechte eines Benutzers zu Ã¤ndern. Es wird mit dem Passwort des Benutzers, der den Auftrag erteilt, eine verschlÃ¼sselte
+	 * Nachricht erzeugt, die den Benutzernamen des Benutzers enthÃ¤lt dessen Rechte geÃ¤ndert werden sollen und die neuen Rechte des Benutzers. Das Passwort des
+	 * Auftraggebers wird nicht Ã¼bertragen.
+	 * <p>
+	 * Nur ein Benutzer mit speziellen Rechten darf die Rechte anderer Benutzer Ã¤ndern. Besitzt ein Benutzer diese Rechte nicht wird der Auftrag an die
 	 * Konfiguration verschickt und dort von der Konfiguration abgelehnt.
 	 *
-	 * @param orderer         Auftraggeber, der die Rechte eines Benuters ändern möchte
-	 * @param ordererPassword Passwort des Auftraggebers. Das Passwort wird nicht übertragen
-	 * @param user            Benutzer, dessen Rechte geändert werden sollen
-	 * @param adminRights     true = Der Benutzer, der mit <code>user</code> identifiziert wird, erhält spezielle Rechte; false = Der Benutzer der mit
-	 *                        <code>user</code> identifiziert wird, erhält normale Rechte
+	 * @param orderer         Auftraggeber, der die Rechte eines Benuters Ã¤ndern mÃ¶chte
+	 * @param ordererPassword Passwort des Auftraggebers. Das Passwort wird nicht Ã¼bertragen
+	 * @param user            Benutzer, dessen Rechte geÃ¤ndert werden sollen
+	 * @param adminRights     true = Der Benutzer, der mit <code>user</code> identifiziert wird, erhÃ¤lt spezielle Rechte; false = Der Benutzer der mit
+	 *                        <code>user</code> identifiziert wird, erhÃ¤lt normale Rechte
 	 *
-	 * @throws ConfigurationTaskException Die Konfiguration kann den Auftrag nicht ausführen, weil die übergebenen Parameter falsch sind. So kann der Auftraggeber
-	 *                                    zum Beispiel nicht die nötigen Rechte besitzen die Rechte eines anderen Benutzers zu ändern. Wird der Auftrag mit den
-	 *                                    richtigen Parametern übertragen, wird die Konfiguration ihn ausführen.
+	 * @throws ConfigurationTaskException Die Konfiguration kann den Auftrag nicht ausfÃ¼hren, weil die Ã¼bergebenen Parameter falsch sind. So kann der Auftraggeber
+	 *                                    zum Beispiel nicht die nÃ¶tigen Rechte besitzen die Rechte eines anderen Benutzers zu Ã¤ndern. Wird der Auftrag mit den
+	 *                                    richtigen Parametern Ã¼bertragen, wird die Konfiguration ihn ausfÃ¼hren.
 	 */
 	public void changeUserRights(String orderer, String ordererPassword, String user, boolean adminRights) throws ConfigurationTaskException;
 
 	/**
-	 * Beauftragt die Konfiguration das Passwort eines Benutzers zu ändern. Diese Methode kann von jedem Benutzer aufgerufen werden. Es ist jedem Benutzer
-	 * gestattet das Passwort seines Benutzerkontos zu ändern. Soll das Passwort eines fremden Benutzerkontos geändert werden, sind spezielle Rechte nötig.
-	 * <p/>
-	 * Der Benutzername des Benutzerkontos, das geändert werden soll, und das neue Passwort sind verschlüsselt zu übertragen. Als Schlüssel wird das
+	 * Beauftragt die Konfiguration das Passwort eines Benutzers zu Ã¤ndern. Diese Methode kann von jedem Benutzer aufgerufen werden. Es ist jedem Benutzer
+	 * gestattet das Passwort seines Benutzerkontos zu Ã¤ndern. Soll das Passwort eines fremden Benutzerkontos geÃ¤ndert werden, sind spezielle Rechte nÃ¶tig.
+	 * <p>
+	 * Der Benutzername des Benutzerkontos, das geÃ¤ndert werden soll, und das neue Passwort sind verschlÃ¼sselt zu Ã¼bertragen. Als SchlÃ¼ssel wird das
 	 * Benutzerpasswort <code>ordererPassword</code> des Auftraggebers <code>orderer</code> benutzt. Das Passwort <code>ordererPassword</code> darf nicht
-	 * übertragen werden.
+	 * Ã¼bertragen werden.
 	 *
 	 * @param orderer         Benutzername des Auftraggebers
-	 * @param ordererPassword derzeit gültiges Passwort, falls der Benutzername <code>orderer</code> und <code>user</code> identisch sind. Sind die Parameter nicht
-	 *                        identisch, muss der Benutzer, der mit <code>orderer</code> identifiziert wird, spezielle Rechte besitzen und sein Passwort übergeben
-	 * @param user            Benutzername des Benutzerkontos, dessen Passwort geändert werden soll
+	 * @param ordererPassword derzeit gÃ¼ltiges Passwort, falls der Benutzername <code>orderer</code> und <code>user</code> identisch sind. Sind die Parameter nicht
+	 *                        identisch, muss der Benutzer, der mit <code>orderer</code> identifiziert wird, spezielle Rechte besitzen und sein Passwort Ã¼bergeben
+	 * @param user            Benutzername des Benutzerkontos, dessen Passwort geÃ¤ndert werden soll
 	 * @param newUserPassword Neues Passwort des Benutzers, der mit <code>user</code> identifiziert wurde
 	 *
-	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationTaskException Die Konfiguration kann den Auftrag nicht ausführen, weil die übergebenen Parameter falsch sind. So kann der Auftraggeber
-	 *                                    zum Beispiel nicht die nötigen Rechte besitzen das Passwort eines anderen Benutzers zu ändern oder das Passwort zum
-	 *                                    ändern ist falsch. Wird der Auftrag mit den richtigen Parametern übertragen, wird die Konfiguration ihn ausführen.
+	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationTaskException Die Konfiguration kann den Auftrag nicht ausfÃ¼hren, weil die Ã¼bergebenen Parameter falsch sind. So kann der Auftraggeber
+	 *                                    zum Beispiel nicht die nÃ¶tigen Rechte besitzen das Passwort eines anderen Benutzers zu Ã¤ndern oder das Passwort zum
+	 *                                    Ã¤ndern ist falsch. Wird der Auftrag mit den richtigen Parametern Ã¼bertragen, wird die Konfiguration ihn ausfÃ¼hren.
 	 */
 	public void changeUserPassword(String orderer, String ordererPassword, String user, String newUserPassword) throws ConfigurationTaskException;
 
 	/**
-	 * Die Implementierung dieser Methode beauftragt die Konfiguration alle Konfigurationsbereiche einer Konsistenzprüfung zu unterziehen (siehe TPuK1-138). Diese
-	 * Methode kann unabhängig von der Aktivierung {@link #activateConfigurationAreas} oder Freigabe {@link #releaseConfigurationAreasForTransfer} stattfinden.
+	 * Die Implementierung dieser Methode beauftragt die Konfiguration alle Konfigurationsbereiche einer KonsistenzprÃ¼fung zu unterziehen (siehe TPuK1-138). Diese
+	 * Methode kann unabhÃ¤ngig von der Aktivierung {@link #activateConfigurationAreas} oder Freigabe {@link #releaseConfigurationAreasForTransfer} stattfinden.
 	 *
-	 * @param configurationAreas Definiert alle Konfigurationsbereiche, die einer Konsistenzprüfung unterzogen werden sollen. Der Bereich wird über seine Pid
-	 *                           identifiziert, zusätzlich wird die Version angegeben in der der Konfigurationsbereich geprüft werden soll. Alle Bereiche der
-	 *                           Konfiguration, die nicht angegeben werden, werden in die Prüfung einbezogen und zwar mit ihrer aktuellen Version und müssen somit
+	 * @param configurationAreas Definiert alle Konfigurationsbereiche, die einer KonsistenzprÃ¼fung unterzogen werden sollen. Der Bereich wird Ã¼ber seine Pid
+	 *                           identifiziert, zusÃ¤tzlich wird die Version angegeben in der der Konfigurationsbereich geprÃ¼ft werden soll. Alle Bereiche der
+	 *                           Konfiguration, die nicht angegeben werden, werden in die PrÃ¼fung einbezogen und zwar mit ihrer aktuellen Version und mÃ¼ssen somit
 	 *                           nicht expliziet angegeben werden.
 	 *
-	 * @return Ergebnis der Konsistenzprüfung
+	 * @return Ergebnis der KonsistenzprÃ¼fung
 	 *
 	 * @throws RequestException Es ist zu einem Kommunikationsfehler bei der Anfrage gekommen.
 	 */
@@ -369,53 +375,53 @@ public interface ConfigurationRequester {
 
 	/**
 	 * Die Implementierung dieser Methode beauftragt die Konfiguration die angebenen Konfigurationsbereiche zu aktivieren (siehe TPuK1-142). Vor der Aktivierung
-	 * wird automatisch eine Konsistenzprüfung durchgeführt. Die Bereiche dürfen nur aktiviert werden, wenn weder lokale noch Interferenzfehler aufgetreten sind.
-	 * <p/>
-	 * Verlief die Konsistenzprüfung positiv(weder lokale noch Interferenzfehler), wird beim nächsten Neustart der Konfiguration jeder angegebene
+	 * wird automatisch eine KonsistenzprÃ¼fung durchgefÃ¼hrt. Die Bereiche dÃ¼rfen nur aktiviert werden, wenn weder lokale noch Interferenzfehler aufgetreten sind.
+	 * <p>
+	 * Verlief die KonsistenzprÃ¼fung positiv(weder lokale noch Interferenzfehler), wird beim nÃ¤chsten Neustart der Konfiguration jeder angegebene
 	 * Konfigurationsbereich mit der angegebenen Version gestartet.
-	 * <p/>
-	 * Verlief die Konsistenzprüfung negativ, wird keiner der angegebenen Konfigurationsbereiche aktiviert.
-	 * <p/>
-	 * Die Implementierung muss dabei berücksichtigen, dass nur Konfigurationsbereiche aktiviert werden dürfen, für die die Konfigurations auch verantwortlich
+	 * <p>
+	 * Verlief die KonsistenzprÃ¼fung negativ, wird keiner der angegebenen Konfigurationsbereiche aktiviert.
+	 * <p>
+	 * Die Implementierung muss dabei berÃ¼cksichtigen, dass nur Konfigurationsbereiche aktiviert werden dÃ¼rfen, fÃ¼r die die Konfigurations auch verantwortlich
 	 * (Konfiguration ist Konfigurationsverantwortlicher des Bereichs) ist oder aber Konfigurationsbereiche die zur Aktivierung durch andere
 	 * Konfigurationsverantwortliche freigegeben sind.
-	 * <p/>
-	 * Die Version, in der ein Konfigurationsbereich aktiviert werden soll, muss größer sein als die derzeit aktuelle Version in der der Konfigurationsbereich
-	 * läuft.
+	 * <p>
+	 * Die Version, in der ein Konfigurationsbereich aktiviert werden soll, muss grÃ¶ÃŸer sein als die derzeit aktuelle Version in der der Konfigurationsbereich
+	 * lÃ¤uft.
 	 *
 	 * @param configurationAreas Konfigurationsbereiche, die in der jeweiligen Version aktiviert werden sollen
 	 *
-	 * @return Ergebnis der Konsistenzprüfung. Die Bereiche werden nur aktiviert, wenn es weder zu einem lokalen noch zu einem Interferenzfehler gekommen ist
+	 * @return Ergebnis der KonsistenzprÃ¼fung. Die Bereiche werden nur aktiviert, wenn es weder zu einem lokalen noch zu einem Interferenzfehler gekommen ist
 	 *
 	 * @throws RequestException             Es ist zu einem Kommunikationsfehler bei der Anfrage gekommen.
-	 * @throws ConfigurationChangeException Falls mindestens ein Konfigurationsbereich nicht aktiviert werden konnte. <br>Folgende Gründe können die Ursache sein:
+	 * @throws ConfigurationChangeException Falls mindestens ein Konfigurationsbereich nicht aktiviert werden konnte. <br>Folgende GrÃ¼nde kÃ¶nnen die Ursache sein:
 	 *                                      <br> Die Konfiguration wollte einen Konfigurationsbereich in einer Version aktivieren, die noch nicht zur Aktivierung
-	 *                                      freigegeben war und für den sie nicht der Konfigurationsverantwortliche ist.<br> Ein Konfigurationsbereich läuft in
-	 *                                      einer höheren Version, als die Version in der er aktiviert werden soll.
+	 *                                      freigegeben war und fÃ¼r den sie nicht der Konfigurationsverantwortliche ist.<br> Ein Konfigurationsbereich lÃ¤uft in
+	 *                                      einer hÃ¶heren Version, als die Version in der er aktiviert werden soll.
 	 */
 	public ConsistencyCheckResultInterface activateConfigurationAreas(Collection<ConfigAreaAndVersion> configurationAreas)
 			throws RequestException, ConfigurationChangeException;
 
 	/**
-	 * Die Implementierung dieser Methode beauftragt die Konfiguration die angebenen Konfigurationsbereiche in den Status "Freigabe zur Übernahme" zu überführen
-	 * (siehe TPuK1-143). Bevor die angegebenen Bereiche freigegeben werden, wird automatisch eine Konsistenzprüfung durchgeführt.
-	 * <p/>
-	 * Verlief die Konsistenzprüfung positiv(keine lokalen Fehler), werden die angegebenen Konfigurationsbereiche mit der angegebenen Version freigegeben.
-	 * <p/>
-	 * Verlief die Konsistenzprüfung negativ, wird keiner der angegebenen Konfigurationsbereiche freigegeben.
-	 * <p/>
-	 * Die Implementierung muss prüfen ob die Version, in der der Bereich zur Übernahme freigegeben wird, größer als die "aktuelle" Version, die zur Übernahme
+	 * Die Implementierung dieser Methode beauftragt die Konfiguration die angebenen Konfigurationsbereiche in den Status "Freigabe zur Ãœbernahme" zu Ã¼berfÃ¼hren
+	 * (siehe TPuK1-143). Bevor die angegebenen Bereiche freigegeben werden, wird automatisch eine KonsistenzprÃ¼fung durchgefÃ¼hrt.
+	 * <p>
+	 * Verlief die KonsistenzprÃ¼fung positiv(keine lokalen Fehler), werden die angegebenen Konfigurationsbereiche mit der angegebenen Version freigegeben.
+	 * <p>
+	 * Verlief die KonsistenzprÃ¼fung negativ, wird keiner der angegebenen Konfigurationsbereiche freigegeben.
+	 * <p>
+	 * Die Implementierung muss prÃ¼fen ob die Version, in der der Bereich zur Ãœbernahme freigegeben wird, grÃ¶ÃŸer als die "aktuelle" Version, die zur Ãœbernahme
 	 * freigegeben wurde, ist.
 	 *
 	 * @param configurationAreas Konfigurationsbereiche, die in der jeweiligen Version freigegeben werden sollen
 	 *
-	 * @return Ergebnis der Konsistenzprüfung. Die Konfigurationsbereiche werden nur freigegeben, wenn kein lokaler Fehler aufgetreten ist.
+	 * @return Ergebnis der KonsistenzprÃ¼fung. Die Konfigurationsbereiche werden nur freigegeben, wenn kein lokaler Fehler aufgetreten ist.
 	 *
 	 * @throws RequestException             Es ist zu einem Kommunikationsfehler bei der Anfrage gekommen.
-	 * @throws ConfigurationChangeException Falls mindestens ein Konfigurationsbereich nicht zur Übernahme freigegeben werden konnte. <br>Folgende Gründe können
-	 *                                      die Ursache sein:<br> Die Konfiguration war nicht der Konfigurationsverantwortliche für alle angegebenen Bereiche.<br>
-	 *                                      Die aktuelle Version, in der ein Bereich bereits zur Übernahme freigegeben wurde, ist größer als die Version, in der
-	 *                                      der Bereich freigegeben werden soll.<br>Der Datensatz, der die Versionsnummer speichert konnte nicht verändert oder
+	 * @throws ConfigurationChangeException Falls mindestens ein Konfigurationsbereich nicht zur Ãœbernahme freigegeben werden konnte. <br>Folgende GrÃ¼nde kÃ¶nnen
+	 *                                      die Ursache sein:<br> Die Konfiguration war nicht der Konfigurationsverantwortliche fÃ¼r alle angegebenen Bereiche.<br>
+	 *                                      Die aktuelle Version, in der ein Bereich bereits zur Ãœbernahme freigegeben wurde, ist grÃ¶ÃŸer als die Version, in der
+	 *                                      der Bereich freigegeben werden soll.<br>Der Datensatz, der die Versionsnummer speichert konnte nicht verÃ¤ndert oder
 	 *                                      geschrieben werden.
 	 */
 	public ConsistencyCheckResultInterface releaseConfigurationAreasForTransfer(Collection<ConfigAreaAndVersion> configurationAreas)
@@ -423,61 +429,61 @@ public interface ConfigurationRequester {
 
 	/**
 	 * Die Implementierung dieser Methode beauftragt die Konfiguration die angegebenen Konfigurationsbereiche in den Status "Freigabe zur Aktivierung" zu
-	 * überführen. Dadurch können andere Konfigurationen die Konfigurationsbereiche übernehmen und diese lokal aktivieren.
-	 * <p/>
-	 * Es findet keine Konsistenzprüfung statt, da ein Konfigurationsbereich nur dann für andere zur Aktivierung freigegeben werden darf, wenn er bereits lokal
+	 * Ã¼berfÃ¼hren. Dadurch kÃ¶nnen andere Konfigurationen die Konfigurationsbereiche Ã¼bernehmen und diese lokal aktivieren.
+	 * <p>
+	 * Es findet keine KonsistenzprÃ¼fung statt, da ein Konfigurationsbereich nur dann fÃ¼r andere zur Aktivierung freigegeben werden darf, wenn er bereits lokal
 	 * aktiviert {@link #activateConfigurationAreas} wurde.
-	 * <p/>
+	 * <p>
 	 * Es werden entweder alle angegebenen Konfigurationsbereiche in der jeweils geforderten Version aktiviert oder keiner.
 	 *
-	 * @param configurationAreas Konfigurationsbereiche, die in der jeweiligen Version für andere Konfigurationen freigegeben werden sollen
+	 * @param configurationAreas Konfigurationsbereiche, die in der jeweiligen Version fÃ¼r andere Konfigurationen freigegeben werden sollen
 	 *
 	 * @throws RequestException             Es ist zu einem Kommunikationsfehler bei der Anfrage gekommen.
-	 * @throws ConfigurationChangeException Falls mindestens ein Konfigurationsbereich nicht zur Aktivierung freigegeben werden konnte. <br>Folgende Gründe können
+	 * @throws ConfigurationChangeException Falls mindestens ein Konfigurationsbereich nicht zur Aktivierung freigegeben werden konnte. <br>Folgende GrÃ¼nde kÃ¶nnen
 	 *                                      die Ursache sein:<br>Die Konfiguration, die die Konfigurationsbereiche freigeben soll, ist nicht der
-	 *                                      Konfigurationsverantwortliche für den/die Bereich/e.<br>Ein Bereich soll in einer Version freigegeben werden, der noch
+	 *                                      Konfigurationsverantwortliche fÃ¼r den/die Bereich/e.<br>Ein Bereich soll in einer Version freigegeben werden, der noch
 	 *                                      nicht durch den Konfigurationsverantwortlichen der Konfiguration lokal aktiviert wurde {@link
 	 *                                      #activateConfigurationAreas}.<br>Ein Bereich soll in einer Version zur Aktivierung freigegeben werden, der bereits in
-	 *                                      einer höheren Version zur Aktivierung freigegeben wurde.<br>Der Datensatz, der die Versionsnummer speichert konnte
-	 *                                      nicht verändert oder geschrieben werden.
+	 *                                      einer hÃ¶heren Version zur Aktivierung freigegeben wurde.<br>Der Datensatz, der die Versionsnummer speichert konnte
+	 *                                      nicht verÃ¤ndert oder geschrieben werden.
 	 */
 	public void releaseConfigurationAreasForActivation(Collection<ConfigAreaAndVersion> configurationAreas)
 			throws RequestException, ConfigurationChangeException;
 
 	/**
-	 * Beauftragt die Konfiguration die angegebenen Bereiche in den vorgegebenen Version für andere Konfiguraiton zur Aktivierung freizugeben obwohl die Bereiche
+	 * Beauftragt die Konfiguration die angegebenen Bereiche in den vorgegebenen Version fÃ¼r andere Konfiguraiton zur Aktivierung freizugeben obwohl die Bereiche
 	 * durch den Konfigurationsverantwortlichen der Bereiche noch nicht lokal aktiviert wurden.
-	 * <p/>
-	 * Dieses vorgehen ist nur erlaubt, wenn bei der Konsistenzprüfung kein lokaler Fehler auftritt.
+	 * <p>
+	 * Dieses vorgehen ist nur erlaubt, wenn bei der KonsistenzprÃ¼fung kein lokaler Fehler auftritt.
 	 *
-	 * @param configurationAreas Bereiche und die jeweiligen Versionen, die für andere freigegeben werden sollen.
+	 * @param configurationAreas Bereiche und die jeweiligen Versionen, die fÃ¼r andere freigegeben werden sollen.
 	 *
-	 * @return Ergebnis der Konsistensprüfung
+	 * @return Ergebnis der KonsistensprÃ¼fung
 	 *
 	 * @throws RequestException             Es ist zu einem Kommunikationsfehler bei der Anfrage gekommen.
-	 * @throws ConfigurationChangeException Die Konfiguration konnte den Auftrag nicht ausführen (mangelnde Rechte, usw.)
+	 * @throws ConfigurationChangeException Die Konfiguration konnte den Auftrag nicht ausfÃ¼hren (mangelnde Rechte, usw.)
 	 */
 	public ConsistencyCheckResultInterface releaseConfigurationAreasForActivationWithoutCAActivation(Collection<ConfigAreaAndVersion> configurationAreas)
 			throws RequestException, ConfigurationChangeException;
 
 	/**
-	 * Alle Konfigurationsbereichseinträge in der Verwaltungsdatei werden zurückgegeben. Hierbei ist es unerheblich, ob der Bereich bereits aktiviert wurde oder
+	 * Alle KonfigurationsbereichseintrÃ¤ge in der Verwaltungsdatei werden zurÃ¼ckgegeben. Hierbei ist es unerheblich, ob der Bereich bereits aktiviert wurde oder
 	 * noch zu aktivieren ist.
 	 *
-	 * @return Eine Map, deren Schlüssel die Pid des Bereichs und der Wert das Objekt des Konfigurationsbereichs ist.
+	 * @return Eine Map, deren SchlÃ¼ssel die Pid des Bereichs und der Wert das Objekt des Konfigurationsbereichs ist.
 	 *
 	 * @throws RequestException Es ist zu einem Kommunikationsfehler bei der Anfrage gekommen.
 	 */
 	public Map<String, ConfigurationArea> getAllConfigurationAreas() throws RequestException;
 
 	/**
-	 * Die Implementierung dieser Methode legt einen neuen Konfigurationsbereich in der lokalen Konfiguration an. Hierfür wird eine entsprechende
-	 * Konfigurationsdatei angelegt, die initial das Objekt des Konfigurationsbereichs enthält.
-	 * <p/>
-	 * Zusätzlich müssen die konfigurierenden Datensätze für den Konfigurationsverantwortlichen und für die Versionsnummern (aktivierbare und übernehmbare Version)
+	 * Die Implementierung dieser Methode legt einen neuen Konfigurationsbereich in der lokalen Konfiguration an. HierfÃ¼r wird eine entsprechende
+	 * Konfigurationsdatei angelegt, die initial das Objekt des Konfigurationsbereichs enthÃ¤lt.
+	 * <p>
+	 * ZusÃ¤tzlich mÃ¼ssen die konfigurierenden DatensÃ¤tze fÃ¼r den Konfigurationsverantwortlichen und fÃ¼r die Versionsnummern (aktivierbare und Ã¼bernehmbare Version)
 	 * angelegt werden.
-	 * <p/>
-	 * Ein Eintrag in der Verwaltungsdatei wird ebenfalls eingetragen. Er enthält die Pid des Konfigurationsbereichs und die Pfadangabe, wo sich die
+	 * <p>
+	 * Ein Eintrag in der Verwaltungsdatei wird ebenfalls eingetragen. Er enthÃ¤lt die Pid des Konfigurationsbereichs und die Pfadangabe, wo sich die
 	 * Konfigurationsdatei nach Erstellung befindet.
 	 *
 	 * @param name         Name des neuen Konfigurationsbereichs
@@ -493,101 +499,101 @@ public interface ConfigurationRequester {
 
 	/**
 	 * Die Implementierung dieser Methode importiert die Versorgungsdateien der angegebenen Pids vom angegebenen Verzeichnis in die bestehende Konfiguration.
-	 * Dadurch können neue Konfigurationsbereiche angelegt oder bestehende Bereiche verändert werden.
-	 * <p/>
-	 * Versorgungsdateien können auch wieder {@link #exportConfigurationAreas exportiert} werden.
+	 * Dadurch kÃ¶nnen neue Konfigurationsbereiche angelegt oder bestehende Bereiche verÃ¤ndert werden.
+	 * <p>
+	 * Versorgungsdateien kÃ¶nnen auch wieder {@link #exportConfigurationAreas exportiert} werden.
 	 *
 	 * @param importPath            Verzeichnis der Versorgungsdateien
 	 * @param configurationAreaPids Pids der zu importierenden Konfigurationsbereiche
 	 *
 	 * @throws RequestException             Es ist zu einem Kommunikationsfehler bei der Anfrage gekommen.
-	 * @throws ConfigurationChangeException Falls während des Imports Fehler auftreten. Nach Korrektur des Fehlers kann der Import wiederholt werden.
+	 * @throws ConfigurationChangeException Falls wÃ¤hrend des Imports Fehler auftreten. Nach Korrektur des Fehlers kann der Import wiederholt werden.
 	 */
 	public void importConfigurationAreas(File importPath, Collection<String> configurationAreaPids) throws RequestException, ConfigurationChangeException;
 
 	/**
 	 * Die Implementierung dieser Methode exportiert aus der bestehenden Konfiguration die Versorgungsdateien zu den angegebenen Pids in das angegebene
-	 * Verzeichnis. Änderungen können an den Versorgungsdateien vorgenommen und diese wieder {@link #importConfigurationAreas importiert} werden.
+	 * Verzeichnis. Ã„nderungen kÃ¶nnen an den Versorgungsdateien vorgenommen und diese wieder {@link #importConfigurationAreas importiert} werden.
 	 *
 	 * @param exportPath            Verzeichnis der Versorgungsdateien
 	 * @param configurationAreaPids Pids der zu exportierenden Konfigurationsbereiche
 	 *
 	 * @throws RequestException           Es ist zu einem Kommunikationsfehler bei der Anfrage gekommen.
-	 * @throws ConfigurationTaskException Die angegebenen Bereiche konnte nicht exportiert werden. Dies kann mehrere Gründe haben (zu einer Pid wurde kein
+	 * @throws ConfigurationTaskException Die angegebenen Bereiche konnte nicht exportiert werden. Dies kann mehrere GrÃ¼nde haben (zu einer Pid wurde kein
 	 *                                    Konfigurationsbereich gefunden, eine Versorgungsdatei konnte nicht geschrieben werden, usw.).
 	 */
 	public void exportConfigurationAreas(File exportPath, Collection<String> configurationAreaPids) throws RequestException, ConfigurationTaskException;
 
 	/**
 	 * Veranlasst die Konfiguration, die Konfigurationsdateien zu sichern. Diese Funktion wartet auf das Beenden des Vorgangs, erlaubt der
-	 * Konfiguration aber, andere Aufgaben asynchron durchzuführen.
+	 * Konfiguration aber, andere Aufgaben asynchron durchzufÃ¼hren.
 	 *
 	 * @param targetDirectory        Relatives Zielverzeichnis innerhalb des in der Konfiguration (mit dem Parameter -sicherungsVerzeichnis)
 	 *                               festgelegten Sicherungsordners. Wird null oder ein Leerstring angegeben, generiert die Konfiguration aus
 	 *                               aktuellem Datum und Uhrzeit einen neuen Pfadnamen.
 	 * @param configurationAuthority Verantwortlicher, dessen Konfigurationsdateien gesichert werden sollen
 	 * @param callback               Objekt, an das Statusmeldungen gesendet werden
-	 * @return Objekt, das Informationen über das Ergebnis des Sicherungsvorgangs enthält
-	 * @throws ConfigurationTaskException Der Backup-Vorgang konnte nicht durchgeführt werden, beispielsweise weil das Zielverzeichnis falsch
-	 *                                    war. Falls das Sichern einzelner Dateien fehlschlägt wird keine solche Exception geworfen,
-	 *                                    stattdessen findet man innerhalb vom callback eventuelle Fehlschläge und BackupResult.getFailed ist
-	 *                                    größer 0.
-	 * @throws RequestException           Fehler bei der Übertragung der Anfrage oder beim Empfang von Statusmeldungen der Konfiguration.
-	 *                                    Achtung: Man kann nicht zwingend darauf schließen, dass der Backupvorgang nicht erfolgreich war, wenn
-	 *                                    eine Exception geworfen wurde. Wenn während des Vorgangs beispielsweise die Verbindung zwischen
+	 * @return Objekt, das Informationen Ã¼ber das Ergebnis des Sicherungsvorgangs enthÃ¤lt
+	 * @throws ConfigurationTaskException Der Backup-Vorgang konnte nicht durchgefÃ¼hrt werden, beispielsweise weil das Zielverzeichnis falsch
+	 *                                    war. Falls das Sichern einzelner Dateien fehlschlÃ¤gt wird keine solche Exception geworfen,
+	 *                                    stattdessen findet man innerhalb vom callback eventuelle FehlschlÃ¤ge und BackupResult.getFailed ist
+	 *                                    grÃ¶ÃŸer 0.
+	 * @throws RequestException           Fehler bei der Ãœbertragung der Anfrage oder beim Empfang von Statusmeldungen der Konfiguration.
+	 *                                    Achtung: Man kann nicht zwingend darauf schlieÃŸen, dass der Backupvorgang nicht erfolgreich war, wenn
+	 *                                    eine Exception geworfen wurde. Wenn wÃ¤hrend des Vorgangs beispielsweise die Verbindung zwischen
 	 *                                    Datenverteiler und Konfiguration abbricht, wird eine Exception geworfen, aber die Konfiguration wird
 	 *                                    den Vorgang vermutlich dennoch korrekt beenden.
 	 */
 	public BackupResult backupConfigurationFiles(String targetDirectory, final ConfigurationAuthority configurationAuthority, BackupProgressCallback callback) throws ConfigurationTaskException, RequestException;
 
 	/**
-	 * Fordert für den angegebenen Bereich die Version an, in der der Bereich aktiv ist.
+	 * Fordert fÃ¼r den angegebenen Bereich die Version an, in der der Bereich aktiv ist.
 	 *
 	 * @param configurationArea Bereich, dessen aktive Version angefordert werden soll
 	 *
 	 * @return Version, in der der Bereich derzeit aktiv ist
 	 *
-	 * @throws RequestException Fehler bei der Datenübertragung
+	 * @throws RequestException Fehler bei der DatenÃ¼bertragung
 	 */
 	public short getActiveVersion(ConfigurationArea configurationArea) throws RequestException;
 
 	/**
-	 * Neue Version eines Bereichs, die weder zur Übernahme freigegeben noch lokal aktiviert ist. Dies ist die in Bearbeitung befindliche Version, auf die sich
-	 * versionierte Konfigurationsänderungen beziehen.
+	 * Neue Version eines Bereichs, die weder zur Ãœbernahme freigegeben noch lokal aktiviert ist. Dies ist die in Bearbeitung befindliche Version, auf die sich
+	 * versionierte KonfigurationsÃ¤nderungen beziehen.
 	 *
-	 * @param configurationArea Bereich für den die Version angefordert werden soll
+	 * @param configurationArea Bereich fÃ¼r den die Version angefordert werden soll
 	 *
 	 * @return Nummer der Version, die sich in Bearbeitung befindet.
 	 *
-	 * @throws RequestException Fehler bei der Datenübertragung
+	 * @throws RequestException Fehler bei der DatenÃ¼bertragung
 	 * @see "TPuK1-103"
 	 */
 	public short getModifiableVersion(ConfigurationArea configurationArea) throws RequestException;
 
 	/**
-	 * Verschickt an eine entfernte Konfiguration einen Anfrage, in der alle Objekte, die zu einer Pid gehören, zurückgegeben werden, die im angegebenen
-	 * Zeitbereich gültig waren.
+	 * Verschickt an eine entfernte Konfiguration einen Anfrage, in der alle Objekte, die zu einer Pid gehÃ¶ren, zurÃ¼ckgegeben werden, die im angegebenen
+	 * Zeitbereich gÃ¼ltig waren.
 	 *
-	 * @param pid       Pid der Objekte, die gültig sein sollen
+	 * @param pid       Pid der Objekte, die gÃ¼ltig sein sollen
 	 * @param startTime Startzeitpunkt
 	 * @param endTime   Endzeitpunkt
 	 *
-	 * @return Alle Objekte, die mit der angegebenen Pid im angegebenen Zeitbereich gültig waren. Sind keine Objekte vorhanden, wird eine leere Collection
-	 *         zurückgegeben.
+	 * @return Alle Objekte, die mit der angegebenen Pid im angegebenen Zeitbereich gÃ¼ltig waren. Sind keine Objekte vorhanden, wird eine leere Collection
+	 *         zurÃ¼ckgegeben.
 	 *
-	 * @throws RequestException Technischer Fehler bei der Übetragung der Anfrage
+	 * @throws RequestException Technischer Fehler bei der Ãœbetragung der Anfrage
 	 */
 	public Collection<SystemObject> getObjects(String pid, long startTime, long endTime) throws RequestException;
 
 	/**
-	 * Stellt eine Anfrage an eine entfernte Konfiguration und gibt die Objekte zurück, die in einem der angegebenen Konfigurationsbereiche sind und deren
+	 * Stellt eine Anfrage an eine entfernte Konfiguration und gibt die Objekte zurÃ¼ck, die in einem der angegebenen Konfigurationsbereiche sind und deren
 	 * Objekttyp in der angegebenen Objekttyp-Menge ist.
 	 *
-	 * @param configurationAreas      Bereiche, die geprüft werden sollen
-	 * @param systemObjectTypes       Objekttypen, die zu berücksichtigen sind
+	 * @param configurationAreas      Bereiche, die geprÃ¼ft werden sollen
+	 * @param systemObjectTypes       Objekttypen, die zu berÃ¼cksichtigen sind
 	 * @param objectTimeSpecification Definiert den zu betrachtenen Zeitbereich
 	 *
-	 * @return Objekte, die unter der festgelegten Bediengungen gültig waren
+	 * @return Objekte, die unter der festgelegten Bediengungen gÃ¼ltig waren
 	 *
 	 * @throws RequestException Technisches Problem bei der Anfrage
 	 */
@@ -598,16 +604,16 @@ public interface ConfigurationRequester {
 	) throws RequestException;
 
 	/**
-	 * Stellt eine Anfrage an eine entferne Konfiguration und fordert die Objekte an, die direkt von den übergebenen Typen abstammen. Die Anfrage bezieht sich
-	 * dabei nicht auf alle Bereiche, sondern nur auf einen bestimmten. Es werden auch nur die übergebenen Typen betrachtet, nicht eventuelle Supertypen, von denen
+	 * Stellt eine Anfrage an eine entferne Konfiguration und fordert die Objekte an, die direkt von den Ã¼bergebenen Typen abstammen. Die Anfrage bezieht sich
+	 * dabei nicht auf alle Bereiche, sondern nur auf einen bestimmten. Es werden auch nur die Ã¼bergebenen Typen betrachtet, nicht eventuelle Supertypen, von denen
 	 * die Typen abgeleitet erben.
 	 *
-	 * @param area              Bereich, in dem Objekte von den übergebenen Typen gesucht werden sollen
-	 * @param systemObjectTypes Typen, von dem die Objekte sein müssen, ableitungen werden nicht berücksichtigt
-	 * @param timeSpecification Zeit, in der die Objekte gültig sein müssen
+	 * @param area              Bereich, in dem Objekte von den Ã¼bergebenen Typen gesucht werden sollen
+	 * @param systemObjectTypes Typen, von dem die Objekte sein mÃ¼ssen, ableitungen werden nicht berÃ¼cksichtigt
+	 * @param timeSpecification Zeit, in der die Objekte gÃ¼ltig sein mÃ¼ssen
 	 *
-	 * @return Alle Objekte eines Konfigurationsbereichs für die oben genannte Parameter übereinstimmen. Sind keine Objekte vorhanden, wird eine leere Collection
-	 *         zurückgegeben.
+	 * @return Alle Objekte eines Konfigurationsbereichs fÃ¼r die oben genannte Parameter Ã¼bereinstimmen. Sind keine Objekte vorhanden, wird eine leere Collection
+	 *         zurÃ¼ckgegeben.
 	 *
 	 * @throws RequestException Technisches Problem bei der Anfrage
 	 */
@@ -628,7 +634,7 @@ public interface ConfigurationRequester {
 	 * @return Objekt, das durch die Konfiguration neu erzeugt wurden
 	 *
 	 * @throws ConfigurationChangeException Die Konfiguration kann das Objekt nicht anlegen
-	 * @throws RequestException             Technisches Problem bei der Übertragung Anfrage
+	 * @throws RequestException             Technisches Problem bei der Ãœbertragung Anfrage
 	 */
 	ConfigurationObject createConfigurationObject(
 			ConfigurationArea configurationArea, ConfigurationObjectType type, String pid, String name, Collection<? extends ObjectSet> sets
@@ -646,7 +652,7 @@ public interface ConfigurationRequester {
 	 * @return Objekt, das durch die Konfiguration neu erzeugt wurde
 	 *
 	 * @throws ConfigurationChangeException Die Konfiguration kann das Objekt nicht anlegen
-	 * @throws RequestException             Technisches Problem bei der Übertragung Anfrage
+	 * @throws RequestException             Technisches Problem bei der Ãœbertragung Anfrage
 	 */
 	DynamicObject createDynamicObject(ConfigurationArea configurationArea, DynamicObjectType type, String pid, String name)
 			throws ConfigurationChangeException, RequestException;
@@ -660,10 +666,10 @@ public interface ConfigurationRequester {
 	 * @param type Typ des neuen Objekts.
 	 * @param pid Pid des neuen Objekts.
 	 * @param name Name des neuen Objekts.
-	 * @param data Datensätze, die am neuen Objekt gespeichert werden sollen.
+	 * @param data DatensÃ¤tze, die am neuen Objekt gespeichert werden sollen.
 	 * @return Objekt, das durch die Konfiguration neu erzeugt wurde
 	 * @throws ConfigurationChangeException Die Konfiguration kann das Objekt nicht anlegen
-	 * @throws RequestException Technisches Problem bei der Übertragung Anfrage
+	 * @throws RequestException Technisches Problem bei der Ãœbertragung Anfrage
 	 */
 	DynamicObject createDynamicObject(
 			ConfigurationArea configurationArea, DynamicObjectType type, String pid, String name, List<DataAndATGUsageInformation> data
@@ -673,66 +679,66 @@ public interface ConfigurationRequester {
 	 * Verschickt an eine entfernte Konfiguration einen Auftrag die Kopie eines Objekts zu erstellen.
 	 *
 	 * @param systemObject   Objekt, von dem eine Kopie erstellt werden soll.
-	 * @param substitutePids Enthält Pids, die durch andere Pids ersetzt werden (Key = zu ersetzende Pid; Value = Pid, die den Key ersetzt)
+	 * @param substitutePids EnthÃ¤lt Pids, die durch andere Pids ersetzt werden (Key = zu ersetzende Pid; Value = Pid, die den Key ersetzt)
 	 *
 	 * @return Kopie
 	 *
 	 * @throws ConfigurationChangeException Falls das Objekt kein freies Objekt ist und das Duplizieren nicht erlaubt ist oder das Duplikat nicht erstellt werden
 	 *                                      konnte.
-	 * @throws RequestException             Technisches Problem bei der Übertragung Anfrage
+	 * @throws RequestException             Technisches Problem bei der Ãœbertragung Anfrage
 	 */
 	SystemObject duplicate(final SystemObject systemObject, final Map<String, String> substitutePids) throws ConfigurationChangeException, RequestException;
 
 	/**
-	 * Beauftragt die Konfiguration alle neuen Objekte eine Konfigurationsbereichs zurückzugeben.
-	 * <p/>
-	 * Ein neues Objekte ist weder ungültig noch gültig.
+	 * Beauftragt die Konfiguration alle neuen Objekte eine Konfigurationsbereichs zurÃ¼ckzugeben.
+	 * <p>
+	 * Ein neues Objekte ist weder ungÃ¼ltig noch gÃ¼ltig.
 	 *
 	 * @param configurationArea Bereich, aus dem alle neuen Objekte angefordert werden sollen
 	 *
-	 * @return Liste, die alle neuen Objekte des angegebenen Bereichs enthält. Ist kein Objekt vorhanden, so wird eine leere Liste zurückgegeben.
+	 * @return Liste, die alle neuen Objekte des angegebenen Bereichs enthÃ¤lt. Ist kein Objekt vorhanden, so wird eine leere Liste zurÃ¼ckgegeben.
 	 *
-	 * @throws RequestException Technisches Problem bei der Übertragung Anfrage
+	 * @throws RequestException Technisches Problem bei der Ãœbertragung Anfrage
 	 */
 	Collection<SystemObject> getNewObjects(final ConfigurationArea configurationArea) throws RequestException;
 
 	/**
-	 * Verschickt eine Anfrage an die Konfigration alle Elemente einer Menge zurückzugeben, die zu einem Zeitpunkt/Zeitbereich aktiv waren.
+	 * Verschickt eine Anfrage an die Konfigration alle Elemente einer Menge zurÃ¼ckzugeben, die zu einem Zeitpunkt/Zeitbereich aktiv waren.
 	 *
 	 * @param set                     Menge, dessen Elemente angefordert werden sollen
 	 * @param objectTimeSpecification Legt fest ob ein Zeitpunkt, eine Zeitdauer/Bereich angefragt werden soll.
 	 *
-	 * @return Alle Elemente, die in dem definierten Zeitbereicht <code>objectTimeSpecification</code>, gültig waren.
+	 * @return Alle Elemente, die in dem definierten Zeitbereicht <code>objectTimeSpecification</code>, gÃ¼ltig waren.
 	 *
-	 * @throws RequestException Technisches Problem bei der Übertragung Anfrage
+	 * @throws RequestException Technisches Problem bei der Ãœbertragung Anfrage
 	 */
 	Collection<SystemObject> getSetElements(ObjectSet set, ObjectTimeSpecification objectTimeSpecification) throws RequestException;
 
 	/**
-	 * Verschickt einen Auftrag an die Konfiguration alle Elemente zurückzugeben, die in der nächsten Version gültig werden.
+	 * Verschickt einen Auftrag an die Konfiguration alle Elemente zurÃ¼ckzugeben, die in der nÃ¤chsten Version gÃ¼ltig werden.
 	 *
 	 * @param set Menge, aus der die Elemente angefordert werden sollen.
 	 *
 	 * @return Elemente
 	 *
-	 * @throws RequestException Technisches Problem bei der Übertragung Anfrage
+	 * @throws RequestException Technisches Problem bei der Ãœbertragung Anfrage
 	 */
 	Collection<SystemObject> getSetElementsInNextVersion(ObjectSet set) throws RequestException;
 
 	/**
-	 * Verschickt einen Auftrag an die Konfiguration alle Elemente einer Menge, die in der angegebenen Version gültig gewesen sind, zurückzugeben.
+	 * Verschickt einen Auftrag an die Konfiguration alle Elemente einer Menge, die in der angegebenen Version gÃ¼ltig gewesen sind, zurÃ¼ckzugeben.
 	 *
 	 * @param set     Menge, aus der die Elemente angefordert werden sollen.
-	 * @param version Version, in der die Elemente gültig gewesen sein müssen.
+	 * @param version Version, in der die Elemente gÃ¼ltig gewesen sein mÃ¼ssen.
 	 *
 	 * @return Elemente
 	 *
-	 * @throws RequestException Technisches Problem bei der Übertragung Anfrage
+	 * @throws RequestException Technisches Problem bei der Ãœbertragung Anfrage
 	 */
 	Collection<SystemObject> getSetElementsInVersion(ObjectSet set, short version) throws RequestException;
 
 	/**
-	 * Verschickt einen Auftrag an die Konfiguration alle Elemente einer Menge zurückzugeben, die im angegebenen Versionsbereich durchgängig gültig gewesen sind.
+	 * Verschickt einen Auftrag an die Konfiguration alle Elemente einer Menge zurÃ¼ckzugeben, die im angegebenen Versionsbereich durchgÃ¤ngig gÃ¼ltig gewesen sind.
 	 *
 	 * @param set         Menge, aus der die Elemente angefordert werden sollen.
 	 * @param fromVersion ab Version
@@ -740,13 +746,13 @@ public interface ConfigurationRequester {
 	 *
 	 * @return Elemente
 	 *
-	 * @throws RequestException Technisches Problem bei der Übertragung Anfrage
+	 * @throws RequestException Technisches Problem bei der Ãœbertragung Anfrage
 	 */
 	Collection<SystemObject> getSetElementsInAllVersions(ObjectSet set, short fromVersion, short toVersion) throws RequestException;
 
 	/**
-	 * Verschickt einen Auftrag an die Konfiguration alle Elemente einer Menge zurückzugeben, die im angegebnen Versionsbereich gültig waren. Dabei können die
-	 * Elemente auch im angegebnen Bereich ungültig geworden sein.
+	 * Verschickt einen Auftrag an die Konfiguration alle Elemente einer Menge zurÃ¼ckzugeben, die im angegebnen Versionsbereich gÃ¼ltig waren. Dabei kÃ¶nnen die
+	 * Elemente auch im angegebnen Bereich ungÃ¼ltig geworden sein.
 	 *
 	 * @param set         Menge, aus der die Elemente angefordert werden sollen.
 	 * @param fromVersion ab Version
@@ -754,33 +760,33 @@ public interface ConfigurationRequester {
 	 *
 	 * @return Elemente
 	 *
-	 * @throws RequestException Technisches Problem bei der Übertragung Anfrage
+	 * @throws RequestException Technisches Problem bei der Ãœbertragung Anfrage
 	 */
 	Collection<SystemObject> getSetElementsInAnyVersions(ObjectSet set, short fromVersion, short toVersion) throws RequestException;
 
 	/**
-	 * @param configurationObject Konfigurationsobjekt, an dem eine Menge gelöscht oder eine neue Menge hinzugefügt werden soll.
-	 * @param set                 Menge, die an dem Objekt gelöscht oder hinzugefügt werden soll.
-	 * @param addSet              true = Die übergebene Menge soll am Objekt hinzugefügt werden; false = Die übergebene Menge soll am Objekt entfernt werden.
+	 * @param configurationObject Konfigurationsobjekt, an dem eine Menge gelÃ¶scht oder eine neue Menge hinzugefÃ¼gt werden soll.
+	 * @param set                 Menge, die an dem Objekt gelÃ¶scht oder hinzugefÃ¼gt werden soll.
+	 * @param addSet              true = Die Ã¼bergebene Menge soll am Objekt hinzugefÃ¼gt werden; false = Die Ã¼bergebene Menge soll am Objekt entfernt werden.
 	 *
-	 * @throws ConfigurationChangeException Die Konfiguration führt den Auftrag nicht aus, weil sie zum Beispiel nicht der Konfigurationsverantwortliche für das zu
-	 *                                      ändernde Objekt ist.
+	 * @throws ConfigurationChangeException Die Konfiguration fÃ¼hrt den Auftrag nicht aus, weil sie zum Beispiel nicht der Konfigurationsverantwortliche fÃ¼r das zu
+	 *                                      Ã¤ndernde Objekt ist.
 	 * @throws RequestException
-	 *                                      Technisches Problem bei der Übertragung Anfrage
+	 *                                      Technisches Problem bei der Ãœbertragung Anfrage
 	 */
 	void editConfigurationSet(ConfigurationObject configurationObject, ObjectSet set, boolean addSet) throws ConfigurationChangeException, RequestException;
 
 	/**
-	 * Setzt den Listener zur Verarbeitung und Verteilung von Aktualisierungsnachrichten bzgl. Änderungen der Elemente von dynamischen Mengen bzw. dynamischen
+	 * Setzt den Listener zur Verarbeitung und Verteilung von Aktualisierungsnachrichten bzgl. Ã„nderungen der Elemente von dynamischen Mengen bzw. dynamischen
 	 * Typen.
 	 * @param notifyingMutableCollectionChangeListener Listener zur Verarbeitung und Verteilung von Aktualisierungsnachrichten.
 	 */
 	void setMutableCollectionChangeListener(final MutableCollectionChangeListener notifyingMutableCollectionChangeListener);
 
 	/**
-	 * Sendet ein Anmeldungstelgramm für Aktualisierungsnachrichten bzgl. Änderungen der Elemente von dynamischen Mengen bzw. dynamischen Typen und nimmt ein
+	 * Sendet ein Anmeldungstelgramm fÃ¼r Aktualisierungsnachrichten bzgl. Ã„nderungen der Elemente von dynamischen Mengen bzw. dynamischen Typen und nimmt ein
 	 * Anworttelegramm mit dem aktuellen Stand der dynamischen Zusammenstellung entgegen.
-	 * @param mutableCollection dynamische Menge oder dynamischer Typ, dessen Änderungen von Interesse sind.
+	 * @param mutableCollection dynamische Menge oder dynamischer Typ, dessen Ã„nderungen von Interesse sind.
 	 * @param simVariant Simulationsvariante unter der die dynamische Menge oder der dynamische Typ betrachtet werden soll.
 	 * @return Aktuelle Elemente der dynamischen Zusammenstellung zum Zeitpunkt der Anmeldung
 	 * @throws RequestException Wenn Fehler beim Versand des Telegramms oder bei der Verarbeitung der entsprechenden Antwort aufgetreten sind.
@@ -788,10 +794,10 @@ public interface ConfigurationRequester {
 	Collection<SystemObject> subscribeMutableCollectionChanges(MutableCollection mutableCollection, short simVariant) throws RequestException;
 
 	/**
-	 * Sendet ein Abmeldungstelgramm zu einer vorher getätigten Anmeldung für Aktualisierungsnachrichten bzgl. Änderungen der Elemente von dynamischen Mengen
+	 * Sendet ein Abmeldungstelgramm zu einer vorher getÃ¤tigten Anmeldung fÃ¼r Aktualisierungsnachrichten bzgl. Ã„nderungen der Elemente von dynamischen Mengen
 	 * bzw. dynamischen Typen.
-	 * @param mutableCollection dynamische Menge oder dynamischer Typ der zugehörigen Anmeldung.
-	 * @param simVariant Simulationsvariante der zugehörigen Anmeldung.
+	 * @param mutableCollection dynamische Menge oder dynamischer Typ der zugehÃ¶rigen Anmeldung.
+	 * @param simVariant Simulationsvariante der zugehÃ¶rigen Anmeldung.
 	 * @throws RequestException Wenn Fehler beim Versand des Telegramms oder bei der Verarbeitung der entsprechenden Antwort aufgetreten sind.
 	 */
 	void unsubscribeMutableCollectionChanges(MutableCollection mutableCollection, short simVariant) throws RequestException;
@@ -801,7 +807,7 @@ public interface ConfigurationRequester {
 	void unsubscribeConfigurationCommunicationChanges(final SystemObject object) throws RequestException;
 
 	/**
-	 * Gibt alle Objekte des angegebenen Typs zurück
+	 * Gibt alle Objekte des angegebenen Typs zurÃ¼ck
 	 * @param type Systemobjekt-Typ
 	 * @return Alle Objekte dieses Typs oder beliebiger Subtypen
 	 * @throws RequestException Fehler bei Verarbeitung des Telegramms
@@ -820,7 +826,7 @@ public interface ConfigurationRequester {
 	 * @return Objekt, das durch die Konfiguration neu erzeugt wurden
 	 *
 	 * @throws ConfigurationChangeException Die Konfiguration kann das Objekt nicht anlegen
-	 * @throws RequestException             Technisches Problem bei der Übertragung Anfrage
+	 * @throws RequestException             Technisches Problem bei der Ãœbertragung Anfrage
 	 */
 	ConfigurationObject createConfigurationObject(ConfigurationObjectType type, String pid, String name, Collection<? extends ObjectSet> sets)
 			throws ConfigurationChangeException, RequestException;
@@ -835,15 +841,15 @@ public interface ConfigurationRequester {
 	 * @param name Name des neuen Objekts.
 	 * @return Objekt, das durch die Konfiguration neu erzeugt wurde
 	 * @throws ConfigurationChangeException Die Konfiguration kann das Objekt nicht anlegen
-	 * @throws RequestException Technisches Problem bei der Übertragung Anfrage
+	 * @throws RequestException Technisches Problem bei der Ãœbertragung Anfrage
 	 */
 	DynamicObject createDynamicObject(DynamicObjectType type, String pid, String name) throws ConfigurationChangeException, RequestException;
 
 	/**
-	 * Verschickt einen Auftrag, ein Objekt zu löschen
+	 * Verschickt einen Auftrag, ein Objekt zu lÃ¶schen
 	 * @param object Objekt
-	 * @throws ConfigurationChangeException Die Konfiguration kann das Objekt nicht löschen
-	 * @throws RequestException Technisches Problem bei der Übertragung Anfrage
+	 * @throws ConfigurationChangeException Die Konfiguration kann das Objekt nicht lÃ¶schen
+	 * @throws RequestException Technisches Problem bei der Ãœbertragung Anfrage
 	 */
 	void invalidate(SystemObject object) throws ConfigurationChangeException, RequestException;
 
@@ -851,7 +857,7 @@ public interface ConfigurationRequester {
 	 * Verschickt einen Auftrag, ein Objekt wiederherzustellen
 	 * @param object Objekt
 	 * @throws ConfigurationChangeException Die Konfiguration kann das Objekt nicht wiederherstellen
-	 * @throws RequestException Technisches Problem bei der Übertragung Anfrage
+	 * @throws RequestException Technisches Problem bei der Ãœbertragung Anfrage
 	 */
 	void revalidate(SystemObject object) throws ConfigurationChangeException, RequestException;
 
@@ -860,7 +866,7 @@ public interface ConfigurationRequester {
 	 * @param object Objekt
 	 * @param name neuer Name
 	 * @throws ConfigurationChangeException Die Konfiguration kann das Objekt nicht umbenennen
-	 * @throws RequestException Technisches Problem bei der Übertragung Anfrage
+	 * @throws RequestException Technisches Problem bei der Ãœbertragung Anfrage
 	 */
 	void setName(SystemObject object, String name) throws ConfigurationChangeException, RequestException;
 }

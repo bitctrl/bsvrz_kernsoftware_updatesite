@@ -1,11 +1,11 @@
 /*
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.archive;
@@ -26,9 +32,9 @@ import de.bsvrz.dav.daf.main.DataState;
  * Datensatz eines Archivdatencontainers im Sinne des Persistenzmoduls.
  * Enthalten sind Datenzeitstempel, Archivzeitstempel, Datensatzindex, Typ des Datensatzes
  * und die Nutzdaten in serialisierter Form.
- * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * @author Kappich+Kni√ü Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 5064 $ / $Date: 2007-09-01 22:25:35 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public final class PersistentContainerData {
 	public static final byte NO_COMPRESSION = 0;
@@ -43,7 +49,7 @@ public final class PersistentContainerData {
 	/**
 	 * Erzeugt einen Datensatz.
 	 * @param timing  Datenzeitstempel, Archivzeitstempel und Datensatzindex des Datensatzes.
-	 * @param dataState  Typ des Datensatzes (Nutzdaten, keine Daten, keine Quelle, potentielle Datenl¸cke etc.).
+	 * @param dataState  Typ des Datensatzes (Nutzdaten, keine Daten, keine Quelle, potentielle Datenl√ºcke etc.).
 	 * @param dataBytes  Byte-Array mit den unkomprimierten, serialisierten Nutzdaten oder <code>null</code> im Falle eines
 	 *                   leerer Datensatzes ohne Nutzdaten.
 	 */
@@ -54,7 +60,7 @@ public final class PersistentContainerData {
 	/**
 	 * Erzeugt einen Datensatz.
 	 * @param timing  Datenzeitstempel, Archivzeitstempel und Datensatzindex des Datensatzes.
-	 * @param dataState  Typ des Datensatzes (Nutzdaten, keine Daten, keine Quelle, potentielle Datenl¸cke etc.).
+	 * @param dataState  Typ des Datensatzes (Nutzdaten, keine Daten, keine Quelle, potentielle Datenl√ºcke etc.).
 	 * @param dataBytes  Byte-Array mit den zu serialisierten Nutzdaten oder <code>null</code> im Falle eines
 	 *                   leerer Datensatzes ohne Nutzdaten.
 	 */
@@ -66,7 +72,7 @@ public final class PersistentContainerData {
 	}
 
 	/**
-	 * Bestimmt den Typ des Datensatzes (Nutzdaten, keine Daten, keine Quelle, potentielle Datenl¸cke etc.).
+	 * Bestimmt den Typ des Datensatzes (Nutzdaten, keine Daten, keine Quelle, potentielle Datenl√ºcke etc.).
 	 * @return Typ des Datensatzes.
 	 */
 	public DataState getDataType() {

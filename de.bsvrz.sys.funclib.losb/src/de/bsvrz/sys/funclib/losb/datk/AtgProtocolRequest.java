@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.sys.funclib.losb.
  * 
- * de.bsvrz.sys.funclib.losb is free software; you can redistribute it and/or modify
+ * de.bsvrz.sys.funclib.losb is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.losb is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.sys.funclib.losb; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.losb.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.losb.datk;
@@ -36,7 +42,7 @@ import java.io.Serializable;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 11423 $ / $Date: 2013-07-22 12:02:01 +0200 (Mon, 22 Jul 2013) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class AtgProtocolRequest {
 
@@ -53,13 +59,13 @@ public class AtgProtocolRequest {
 	public byte[] requestData;
 
 	/**
-	 * Erzeugt ein Data Objekt für die Attributgruppe
+	 * Erzeugt ein Data Objekt fÃ¼r die Attributgruppe
 	 *
 	 * @param dav         Verbindung zum Datenverteiler
 	 * @param sender      Absender
 	 * @param protocolId  Protokoll-Id
 	 * @param opCode      Operationscode
-	 * @param dataRequest Datenteil der Anfrage. Darf <code>null</code> sein. In diesem Fall wird das Feld auf die Länge <code> gesetzt.
+	 * @param dataRequest Datenteil der Anfrage. Darf <code>null</code> sein. In diesem Fall wird das Feld auf die LÃ¤nge <code> gesetzt.
 	 *
 	 * @throws FailureException Falls es zu einem Kommunikationsfehler kommt
 	 * @return Data Objekt
@@ -72,7 +78,7 @@ public class AtgProtocolRequest {
 
 
 	/**
-	 * Erzeugt ein Data Objekt für die Attributgruppe
+	 * Erzeugt ein Data Objekt fÃ¼r die Attributgruppe
 	 *
 	 * @param dav        Verbindung zum Datenverteiler
 	 * @param sender     Absender
@@ -98,7 +104,7 @@ public class AtgProtocolRequest {
 	}
 
 	/**
-	 * Erzeugt ein Data Objekt für die Attributgruppe. Diese Methode ist nicht Threadsafe für das <code>serializer</code> Objekt. Wird es in mehreren Threads
+	 * Erzeugt ein Data Objekt fÃ¼r die Attributgruppe. Diese Methode ist nicht Threadsafe fÃ¼r das <code>serializer</code> Objekt. Wird es in mehreren Threads
 	 * verwendet, so muss der Aufruf dieser Methode synchronisiert werden.
 	 *
 	 * @param dav                Verbindung zum Datenverteiler
@@ -121,7 +127,7 @@ public class AtgProtocolRequest {
 	}
 
 	/**
-	 * Erzeugt ein Data Objekt für die Attributgruppe
+	 * Erzeugt ein Data Objekt fÃ¼r die Attributgruppe
 	 *
 	 * @param dav        Verbindung zum Datenverteiler
 	 * @param sender     Absender
@@ -137,7 +143,7 @@ public class AtgProtocolRequest {
 	}
 
 	/**
-	 * Erzeugt ein Java-Objekt aus den übergebenen Daten.
+	 * Erzeugt ein Java-Objekt aus den Ã¼bergebenen Daten.
 	 *
 	 * @param data Daten.
 	 *

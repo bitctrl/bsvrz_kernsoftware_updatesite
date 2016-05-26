@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel.telegrams;
@@ -29,9 +35,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Nach der erfolgreichen Authentifizierung sendet der Datenverteiler ein AuthenficationAnswer-Telegram zurück
+ * Nach der erfolgreichen Authentifizierung sendet der Datenverteiler ein AuthenficationAnswer-Telegram zurÃ¼ck
  * @author Kappich Systemberatung
- * @version $Revision: 5059 $
+ * @version $Revision$
  */
 public class AuthentificationAnswer extends DataTelegram {
 
@@ -91,7 +97,7 @@ public class AuthentificationAnswer extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die ID des Benutzers zurück.
+	 * Gibt die ID des Benutzers zurÃ¼ck.
 	 *
 	 * @return die ID des Benutzers
 	 */
@@ -100,7 +106,7 @@ public class AuthentificationAnswer extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die ID der Applikation zurück.
+	 * Gibt die ID der Applikation zurÃ¼ck.
 	 *
 	 * @return die ID der Applikation
 	 */
@@ -109,7 +115,7 @@ public class AuthentificationAnswer extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die lokale Konfiguration-ID zurück.
+	 * Gibt die lokale Konfiguration-ID zurÃ¼ck.
 	 *
 	 * @return die lokale Konfiguration-ID
 	 */
@@ -118,7 +124,7 @@ public class AuthentificationAnswer extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die ID des lokalen Datenverteilers zurück.
+	 * Gibt die ID des lokalen Datenverteilers zurÃ¼ck.
 	 *
 	 * @return die ID des lokalen Datenverteilers
 	 */
@@ -175,7 +181,7 @@ public class AuthentificationAnswer extends DataTelegram {
 			length = 1;
 		}
 		if(length != _length) {
-			throw new IOException("Falsche Telegrammlänge");
+			throw new IOException("Falsche TelegrammlÃ¤nge");
 		}
 	}
 }

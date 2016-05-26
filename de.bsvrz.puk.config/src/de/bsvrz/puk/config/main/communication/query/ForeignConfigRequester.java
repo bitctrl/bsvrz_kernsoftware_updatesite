@@ -5,9 +5,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main.communication.query;
@@ -54,11 +60,11 @@ import java.util.concurrent.TimeUnit;
  * TBD RS dokumentieren.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11422 $
+ * @version $Revision$
  */
 public class ForeignConfigRequester {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	private int _requestIndex = 0;
@@ -313,7 +319,7 @@ public class ForeignConfigRequester {
 	public int sendRequest(String messageType, byte[] data, int requestIndex) throws SendSubscriptionNotConfirmed, IllegalStateException {
 		Data requestData = AttributeBaseValueDataFactory.createAdapter(_requestAtg, AttributeHelper.getAttributesValues(_requestAtg));
 
-		// Der Absender des Telegramms ist das Objekt, dass sich als Empfänger auf die Daten angemeldet hat
+		// Der Absender des Telegramms ist das Objekt, dass sich als EmpfÃ¤nger auf die Daten angemeldet hat
 		requestData.getReferenceValue("absender").setSystemObject(_localAuthority);
 
 		requestData.getScaledValue("anfrageIndex").set(requestIndex);
@@ -454,7 +460,7 @@ public class ForeignConfigRequester {
 							);
 							break;
 						case 2:
-							// Konfigurationsobjekte werden hier nicht unterstützt
+							// Konfigurationsobjekte werden hier nicht unterstÃ¼tzt
 							id = deserializer.readLong();
 							typeId = deserializer.readLong();
 							break;
@@ -489,7 +495,7 @@ public class ForeignConfigRequester {
 								configData = configDataDeserializer.readData(dataQueryInfo._queryUsage.getAttributeGroup()).createUnmodifiableCopy();
 							}
 							catch(Exception ex) {
-								final String errorMessage = "Der konfigurierende Datensatz für das fremde Objekt " + dataQueryInfo._object
+								final String errorMessage = "Der konfigurierende Datensatz fÃ¼r das fremde Objekt " + dataQueryInfo._object
 								                            + " und der Attributgruppenverwendung " + dataQueryInfo._queryUsage
 								                            + " konnte nicht deserialisiert werden";
 								_debug.warning(errorMessage, ex);
@@ -531,7 +537,7 @@ public class ForeignConfigRequester {
 					if(telegramType == KindOfUpdateTelegramm.UPDATE_NAME) {
 
 						// Ein Telegramm, das den Namen eines Objekts aktualisiert, hat folgenden Aufbau:
-						// 1) Id des Objekt, dessen Name geändert werden soll (long)
+						// 1) Id des Objekt, dessen Name geÃ¤ndert werden soll (long)
 						// 2) Id des Typs von dem das Objekt ist (long)
 						// 3) Der neue Name (String)
 						final long objectId = deserializer.readLong();
@@ -542,13 +548,13 @@ public class ForeignConfigRequester {
 					}
 					else if(telegramType == KindOfUpdateTelegramm.UPDATE_NOT_VALID_SINCE) {
 
-						// Ein Telegramm, das den Zeitpunkt/Version eines Objekts setzt ab dem es nicht mehr gültig ist, besitzt folgenden Aufbau.
-						// 1) Id des Objekt, dessen Version/Zeitpunkt geändert werden soll (long)
+						// Ein Telegramm, das den Zeitpunkt/Version eines Objekts setzt ab dem es nicht mehr gÃ¼ltig ist, besitzt folgenden Aufbau.
+						// 1) Id des Objekt, dessen Version/Zeitpunkt geÃ¤ndert werden soll (long)
 						// 2) Id des Typs von dem das Objekt ist (long)
 						// 3) Konfiguration oder dynamisches Objekt (byte, 0 = Konfigurationsobjekt)
-						// Der nächste Wert ist abhängig von 3), ist es ein Konfigurationsobjekt, so muss ein short gelesen werden
-						// 4a) Version, ab der das Objekt ungültig werden wird, short
-						// 4b) Zeitpunkt, ab dem das Objekt ungültig geworden ist, long
+						// Der nÃ¤chste Wert ist abhÃ¤ngig von 3), ist es ein Konfigurationsobjekt, so muss ein short gelesen werden
+						// 4a) Version, ab der das Objekt ungÃ¼ltig werden wird, short
+						// 4b) Zeitpunkt, ab dem das Objekt ungÃ¼ltig geworden ist, long
 
 						final long objectId = deserializer.readLong();
 						final long objectTypeId = deserializer.readLong();
@@ -560,7 +566,7 @@ public class ForeignConfigRequester {
 							_foreignObjectManager.updateNotValidSince(objectId, objectTypeId, notValidSince);
 						}
 						else {
-							// Änderungen an Konfigurationsobjekten werden ignoriert
+							// Ã„nderungen an Konfigurationsobjekten werden ignoriert
 						}
 					}
 					else if(telegramType == KindOfUpdateTelegramm.CREATED) {
@@ -609,7 +615,7 @@ public class ForeignConfigRequester {
 			sendRequest("ObjektAnfrageMitId", byteArrayStream.toByteArray());
 		}
 		catch(Exception e) {
-			_debug.warning("ForeignConfigRequester: Fehler beim Versand einer Objektanfrage mit ID für Elemente einer MutableCollection", e);
+			_debug.warning("ForeignConfigRequester: Fehler beim Versand einer Objektanfrage mit ID fÃ¼r Elemente einer MutableCollection", e);
 		}
 	}
 
@@ -661,7 +667,7 @@ public class ForeignConfigRequester {
 				}
 			}
 			catch(Exception e) {
-				_debug.warning("ForeignConfigRequester: Fehler beim Versand einer Datensatzanfrage für Elemente einer MutableCollection", e);
+				_debug.warning("ForeignConfigRequester: Fehler beim Versand einer Datensatzanfrage fÃ¼r Elemente einer MutableCollection", e);
 			}
 		}
 	}
@@ -682,7 +688,7 @@ public class ForeignConfigRequester {
 		final List<ForeignObjectTransferListener> transferListeners;
 		synchronized(_waitingObjectQueries) {
 			transferListeners = _waitingObjectQueries.remove(key);
-//			System.out.println("notifyObjectQueryDone transferlisteners gelöscht: id = " + key + " transferlisteners: " + transferListeners);
+//			System.out.println("notifyObjectQueryDone transferlisteners gelÃ¶scht: id = " + key + " transferlisteners: " + transferListeners);
 		}
 		for(ForeignObjectTransferListener transferListener : transferListeners) {
 			try {

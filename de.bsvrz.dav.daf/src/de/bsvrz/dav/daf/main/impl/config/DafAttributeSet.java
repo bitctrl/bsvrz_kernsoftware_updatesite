@@ -1,13 +1,13 @@
 /*
  * Copyright 2008 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config;
@@ -29,10 +35,10 @@ import de.bsvrz.dav.daf.main.config.ObjectSet;
 import java.util.*;
 
 /**
- * Klasse, die den Zugriff auf Attributmengen seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
+ * Klasse, die den Zugriff auf Attributmengen seitens der Datenverteiler-Applikationsfunktionen ermÃ¶glicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 6096 $
+ * @version $Revision$
  */
 public class DafAttributeSet extends DafConfigurationObject implements AttributeSet {
 
@@ -87,7 +93,7 @@ public class DafAttributeSet extends DafConfigurationObject implements Attribute
 			final ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 			ObjectSet attributesSet = getObjectSet("Attribute");
 
-			// Die Attribute müssen nach ihrem Index sortiert zurückgegeben werden
+			// Die Attribute mÃ¼ssen nach ihrem Index sortiert zurÃ¼ckgegeben werden
 			final List tmp = attributesSet.getElements();
 
 			// Liefert die Sortierung

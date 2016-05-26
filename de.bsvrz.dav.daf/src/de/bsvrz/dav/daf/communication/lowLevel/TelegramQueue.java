@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel;
@@ -23,26 +29,26 @@ package de.bsvrz.dav.daf.communication.lowLevel;
 import java.util.LinkedList;
 
 /**
- * Klasse, die zum gepufferten Austausch von Telegrammen zwischen verschiedenen Threads verwendet werden kann. Die Gesamtgröße der gepufferten Telegramme ist
- * beschränkt. Es werden verschiedene Telegrammprioritäten unterstützt.
- * <p/>
- * Telegramme können mit der Methode {@link #put} gespeichert werden und mit der Methode {@link #take} wieder ausgelesen werden. Die Methoden blockieren, wenn
- * beim Speichern nicht genügend Platz vorhanden ist, bzw., wenn beim Auslesen kein Telegramm mehr zur Verfügung steht. Der Methode {@link #close} dient zum
- * Schließen der Queue. blockiert keine der beiden Methoden mehr.
+ * Klasse, die zum gepufferten Austausch von Telegrammen zwischen verschiedenen Threads verwendet werden kann. Die GesamtgrÃ¶ÃŸe der gepufferten Telegramme ist
+ * beschrÃ¤nkt. Es werden verschiedene TelegrammprioritÃ¤ten unterstÃ¼tzt.
+ * <p>
+ * Telegramme kÃ¶nnen mit der Methode {@link #put} gespeichert werden und mit der Methode {@link #take} wieder ausgelesen werden. Die Methoden blockieren, wenn
+ * beim Speichern nicht genÃ¼gend Platz vorhanden ist, bzw., wenn beim Auslesen kein Telegramm mehr zur VerfÃ¼gung steht. Der Methode {@link #close} dient zum
+ * SchlieÃŸen der Queue. blockiert keine der beiden Methoden mehr.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 12968 $
+ * @version $Revision$
  */
 public class TelegramQueue<Telegram extends QueueableTelegram> {
 
-	/** Maximale Gesamtgröße für zwischengespeicherte Telegramme. */
+	/** Maximale GesamtgrÃ¶ÃŸe fÃ¼r zwischengespeicherte Telegramme. */
 	final private int _capacity;
 
-	/** Gesamtgröße der aktuell zwischengespeicherten Telegramme. */
+	/** GesamtgrÃ¶ÃŸe der aktuell zwischengespeicherten Telegramme. */
 	private int _size;
 
 	/**
-	 * Array, das je mögliche Priorität eine verkettete Liste mit den zwischengespeicherten Telegrammen enthält. Es dient außerdem der Synchronisation von Threads
+	 * Array, das je mÃ¶gliche PrioritÃ¤t eine verkettete Liste mit den zwischengespeicherten Telegrammen enthÃ¤lt. Es dient auÃŸerdem der Synchronisation von Threads
 	 * beim lesenden und schreibenden Zugriff.
 	 */
 	final private LinkedList<Telegram>[] _priorityLists;
@@ -52,13 +58,13 @@ public class TelegramQueue<Telegram extends QueueableTelegram> {
 	/**
 	 * Erzeugt eine neue Queue mit den angegebenen Eigenschaften.
 	 *
-	 * @param capacity        Maximale Gesamtgröße der gepufferten Telegramme.
-	 * @param maximumPriority Maximale von Telegrammen verwendete Priorität.
+	 * @param capacity        Maximale GesamtgrÃ¶ÃŸe der gepufferten Telegramme.
+	 * @param maximumPriority Maximale von Telegrammen verwendete PrioritÃ¤t.
 	 */
 	public TelegramQueue(int capacity, int maximumPriority) {
 		if(capacity <= 0) throw new IllegalArgumentException("capacity muss positiv sein: " + capacity);
 		if(maximumPriority < 0) throw new IllegalArgumentException("maximumPriority darf nicht negativ sein: " + maximumPriority);
-		if(maximumPriority > 127) throw new IllegalArgumentException("maximumPriority darf nicht größer als 127 sein: " + maximumPriority);
+		if(maximumPriority > 127) throw new IllegalArgumentException("maximumPriority darf nicht grÃ¶ÃŸer als 127 sein: " + maximumPriority);
 		_capacity = capacity;
 		_size = 0;
 		_priorityLists = (LinkedList<Telegram>[])new LinkedList[maximumPriority + 1]; // Compiler-Warnung nicht vermeidbar
@@ -68,18 +74,18 @@ public class TelegramQueue<Telegram extends QueueableTelegram> {
 	}
 
 	/**
-	 * Gibt das älteste in der Queue gespeicherte Telegramm mit der höchsten Priorität zurück. Wenn die Queue noch nicht geschlossen wurde, wartet diese Methode,
-	 * bis ein Telegramm in der Queue zur Verfügung steht.
+	 * Gibt das Ã¤lteste in der Queue gespeicherte Telegramm mit der hÃ¶chsten PrioritÃ¤t zurÃ¼ck. Wenn die Queue noch nicht geschlossen wurde, wartet diese Methode,
+	 * bis ein Telegramm in der Queue zur VerfÃ¼gung steht.
 	 *
-	 * @return Nächstes gespeicherte Telegramm mit der höchsten Priorität. Wenn die Queue geschlossen wurde und kein gespeichertes Telegramm mehr verfügbar ist
-	 *         wird <code>null</code> zurückgegeben.
+	 * @return NÃ¤chstes gespeicherte Telegramm mit der hÃ¶chsten PrioritÃ¤t. Wenn die Queue geschlossen wurde und kein gespeichertes Telegramm mehr verfÃ¼gbar ist
+	 *         wird <code>null</code> zurÃ¼ckgegeben.
 	 *
-	 * @throws InterruptedException Wenn der Thread während des Wartens unterbrochen wurde.
+	 * @throws InterruptedException Wenn der Thread wÃ¤hrend des Wartens unterbrochen wurde.
 	 */
 	public Telegram take() throws InterruptedException {
 		synchronized(this) {
 			while(_size == 0) {
-				// Wenn die Queue leer ist und geschlossen wurde, wird null zurückgegeben
+				// Wenn die Queue leer ist und geschlossen wurde, wird null zurÃ¼ckgegeben
 				if(_closed) return null;
 				// Wenn die Queue leer ist und nicht geschlossen wurde, wird gewartet
 				wait();
@@ -94,21 +100,21 @@ public class TelegramQueue<Telegram extends QueueableTelegram> {
 				}
 			}
 		}
-		throw new IllegalStateException("Interner Fehler: Es wurde kein Telegramm gefunden, obwohl die Gesamtgröße " + _size + " ist");
+		throw new IllegalStateException("Interner Fehler: Es wurde kein Telegramm gefunden, obwohl die GesamtgrÃ¶ÃŸe " + _size + " ist");
 	}
 
 	/**
-	 * Speichert das angegebene Telegramm in der Queue. Bei Bedarf wartet diese Methode bis genügend Platz in der Queue für das zu speichernde Telegramm zur
-	 * Verfügung steht.
+	 * Speichert das angegebene Telegramm in der Queue. Bei Bedarf wartet diese Methode bis genÃ¼gend Platz in der Queue fÃ¼r das zu speichernde Telegramm zur
+	 * VerfÃ¼gung steht.
 	 *
 	 * @param telegram Das zu speichernde Telegramm
 	 *
-	 * @throws InterruptedException Wenn der Thread während des Wartens unterbrochen wurde.
+	 * @throws InterruptedException Wenn der Thread wÃ¤hrend des Wartens unterbrochen wurde.
 	 */
 	public void put(Telegram telegram) throws InterruptedException {
 		if(_closed) return;
 		final int length = telegram.getSize();
-		if(length <= 0) throw new IllegalArgumentException("Telegrammlänge muss größer 0 sein, ist aber " + length + ": " + telegram);
+		if(length <= 0) throw new IllegalArgumentException("TelegrammlÃ¤nge muss grÃ¶ÃŸer 0 sein, ist aber " + length + ": " + telegram);
 		final byte priority = telegram.getPriority();
 		synchronized(this) {
 			if(length > _capacity){
@@ -130,18 +136,18 @@ public class TelegramQueue<Telegram extends QueueableTelegram> {
 	}
 
 	/**
-	 * Bestimmt die maximale Gesamtgröße für zwischengespeicherte Telegramme.
+	 * Bestimmt die maximale GesamtgrÃ¶ÃŸe fÃ¼r zwischengespeicherte Telegramme.
 	 *
-	 * @return Maximale Gesamtgröße für zwischengespeicherte Telegramme.
+	 * @return Maximale GesamtgrÃ¶ÃŸe fÃ¼r zwischengespeicherte Telegramme.
 	 */
 	public int getCapacity() {
 		return _capacity;
 	}
 
 	/**
-	 * Bestimmt die Gesamtgröße der aktuell zwischengespeicherten Telegramme.
+	 * Bestimmt die GesamtgrÃ¶ÃŸe der aktuell zwischengespeicherten Telegramme.
 	 *
-	 * @return Gesamtgröße der aktuell zwischengespeicherten Telegramme.
+	 * @return GesamtgrÃ¶ÃŸe der aktuell zwischengespeicherten Telegramme.
 	 */
 	public int getSize() {
 		synchronized(this) {
@@ -151,8 +157,8 @@ public class TelegramQueue<Telegram extends QueueableTelegram> {
 
 
 	/**
-	 * Diese Methode schließt die Verbindung. Danach ignoriert die Methode {@link #put} sämtliche weitere zu speichernde Telegramme und die Methode {@link #take}
-	 * liefert noch alle bisher gespeicherten Telegramme und danach <code>null</code> zurück. Eventuell blockierte Threads werden geweckt.
+	 * Diese Methode schlieÃŸt die Verbindung. Danach ignoriert die Methode {@link #put} sÃ¤mtliche weitere zu speichernde Telegramme und die Methode {@link #take}
+	 * liefert noch alle bisher gespeicherten Telegramme und danach <code>null</code> zurÃ¼ck. Eventuell blockierte Threads werden geweckt.
 	 */
 	public void close() {
 		synchronized(this) {
@@ -162,8 +168,8 @@ public class TelegramQueue<Telegram extends QueueableTelegram> {
 	}
 
 	/**
-	 * Diese Methode schließt die Verbindung und löscht alle noch gespeicherten Telegramme. Danach ignoriert die Methode {@link #put} sämtliche weitere zu
-	 * speichernde Telegramme und die Methode {@link #take} liefert anschließend immer <code>null</code> zurück. Eventuell blockierte Threads werden geweckt.
+	 * Diese Methode schlieÃŸt die Verbindung und lÃ¶scht alle noch gespeicherten Telegramme. Danach ignoriert die Methode {@link #put} sÃ¤mtliche weitere zu
+	 * speichernde Telegramme und die Methode {@link #take} liefert anschlieÃŸend immer <code>null</code> zurÃ¼ck. Eventuell blockierte Threads werden geweckt.
 	 */
 	public void abort() {
 		synchronized(this) {

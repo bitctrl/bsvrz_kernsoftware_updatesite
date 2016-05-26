@@ -1,13 +1,13 @@
 /*
  * Copyright 2008 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config;
@@ -34,23 +40,23 @@ import java.util.Set;
 
 
 /**
- * Klasse, die den Zugriff auf Typen von dynamischen Objekten seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
+ * Klasse, die den Zugriff auf Typen von dynamischen Objekten seitens der Datenverteiler-Applikationsfunktionen ermÃ¶glicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13141 $
+ * @version $Revision$
  */
 public class DafDynamicObjectType extends DafSystemObjectType implements DynamicObjectType {
 
-	/** Alle Listener, die informiert werden müssen, wenn ein neues Objekt angelegt wurde. */
+	/** Alle Listener, die informiert werden mÃ¼ssen, wenn ein neues Objekt angelegt wurde. */
 	private final Set<DynamicObjectCreatedListener> _objectCreatedListener = new HashSet<DynamicObjectCreatedListener>();
 
-	/** Alle Listener, die informatiert werden müssen, wenn sich der Name eines Objekts ändert. */
+	/** Alle Listener, die informatiert werden mÃ¼ssen, wenn sich der Name eines Objekts Ã¤ndert. */
 	private final Set<NameChangeListener> _nameChangedListener = new HashSet<NameChangeListener>();
 
-	/** Alle Listener, die informatiert werden müssen, wenn ein dynamisches Objekt ungültig wurde. */
+	/** Alle Listener, die informatiert werden mÃ¼ssen, wenn ein dynamisches Objekt ungÃ¼ltig wurde. */
 	private final Set<InvalidationListener> _invalidObjectListener = new HashSet<InvalidationListener>();
 
-	/** Objekt zur Verwaltung von Anmeldungen auf Änderungen der Elemente dieses Typs. */
+	/** Objekt zur Verwaltung von Anmeldungen auf Ã„nderungen der Elemente dieses Typs. */
 	private DafMutableCollectionSupport _mutableCollectionSupport = new DafMutableCollectionSupport(this);
 	/**
 	 * Erzeugt ein neues Objekt dessen Eigenschaften im Anschluss mit der read-Methode eingelesen werden sollten.
@@ -163,16 +169,16 @@ public class DafDynamicObjectType extends DafSystemObjectType implements Dynamic
 	/**
 	 * Diese Methode wird aufgerufen, wenn ein dynamisches Objekt erzeugt wurde. Gibt es einen Listener, der informiert werden soll, so wird das neue Objekt von
 	 * der Konfiguration angefordert.
-	 * <p/>
+	 * <p>
 	 * Gibt es keinen Listener, so wird nichts gemacht.
 	 *
 	 * @param objectId Neues Objekt
 	 */
 	void updateObjectCreated(final long objectId) {
-		// Verhindert, dass die Anmeldung eines Listeners und ein Update verzahnt abläuft und der neue Listener nicht informiert wird
+		// Verhindert, dass die Anmeldung eines Listeners und ein Update verzahnt ablÃ¤uft und der neue Listener nicht informiert wird
 		synchronized(_objectCreatedListener) {
 
-			// Die Supertypen informieren. Diese fordern, falls nötig, das neue Objekt an. Da das Objekt nicht geändert wird,
+			// Die Supertypen informieren. Diese fordern, falls nÃ¶tig, das neue Objekt an. Da das Objekt nicht geÃ¤ndert wird,
 			// stellt dies kein Problem dar.
 			final List unknownSuperTyps = getSuperTypes();
 			for(Object unknownSuperTyp : unknownSuperTyps) {
@@ -183,7 +189,7 @@ public class DafDynamicObjectType extends DafSystemObjectType implements Dynamic
 			}
 
 			if(hasCreateListener()) {
-				// Es müssen Listener informiert werden. Das Objekt muss vollständig angefordert werden.
+				// Es mÃ¼ssen Listener informiert werden. Das Objekt muss vollstÃ¤ndig angefordert werden.
 				// Das Objekt anfordern
 				final DafDynamicObject newDynamicObject = (DafDynamicObject)_dataModel.getObject(objectId);
 				if(newDynamicObject != null) {
@@ -226,23 +232,23 @@ public class DafDynamicObjectType extends DafSystemObjectType implements Dynamic
 	}
 
 	/**
-	 * Setze bei einem Objekt die Zeit wann es ungültig wurde und setzt das Objekt auch die Gültigkeit auf "ungültig".
-	 * <p/>
-	 * <p/>
-	 * Dies wird ausgeführt wenn das Objekt im Cache vorhanden ist oder ein Listener auf diese Änderungen angemeldet ist.
-	 * <p/>
-	 * Ist dies nicht der Fall, wird nichts gemacht. (Es gibt niemanden, der sich für die Änderungen interssieren würde)
+	 * Setze bei einem Objekt die Zeit wann es ungÃ¼ltig wurde und setzt das Objekt auch die GÃ¼ltigkeit auf "ungÃ¼ltig".
+	 * <p>
+	 * <p>
+	 * Dies wird ausgefÃ¼hrt wenn das Objekt im Cache vorhanden ist oder ein Listener auf diese Ã„nderungen angemeldet ist.
+	 * <p>
+	 * Ist dies nicht der Fall, wird nichts gemacht. (Es gibt niemanden, der sich fÃ¼r die Ã„nderungen interssieren wÃ¼rde)
 	 *
-	 * @param objectId      Id des Objekts, dessen Status auf ungültig gesetzt werden soll und dessen "Nicht mehr gültig ab" Zeit aktualisiert werden soll.
-	 * @param notValidSince Zeitpunkt, an dem das Objekt ungültig wurde.
+	 * @param objectId      Id des Objekts, dessen Status auf ungÃ¼ltig gesetzt werden soll und dessen "Nicht mehr gÃ¼ltig ab" Zeit aktualisiert werden soll.
+	 * @param notValidSince Zeitpunkt, an dem das Objekt ungÃ¼ltig wurde.
 	 */
 	void updateNotValidSince(final long objectId, final long notValidSince) {
-		// Verhindert, das beim hinzufügen eines Listeners ein Update stattfindet und der neue Listener nicht benachrichtigt wird
+		// Verhindert, das beim hinzufÃ¼gen eines Listeners ein Update stattfindet und der neue Listener nicht benachrichtigt wird
 		synchronized(_invalidObjectListener) {
 
 			final DafDynamicObject setInvalidObject;
 			if(hasInvalidListeners()) {
-				// Es gibt Listener, die auf die Gültigkeit von Objekten dieses Typs angemeldet sind. Das Objekt wird angefordert (und zwar von der Konfiguration, falls es sich nicht im Cache befindet)
+				// Es gibt Listener, die auf die GÃ¼ltigkeit von Objekten dieses Typs angemeldet sind. Das Objekt wird angefordert (und zwar von der Konfiguration, falls es sich nicht im Cache befindet)
 				setInvalidObject = (DafDynamicObject)_dataModel.getObject(objectId);
 			}
 			else {
@@ -255,7 +261,7 @@ public class DafDynamicObjectType extends DafSystemObjectType implements Dynamic
 				}
 			}
 
-			// Das Objekt ist ungültig geworden -> Objekt auf den neusten Stand bringen und die Listener informieren (sind keine Listener angemeldet, wird niemand informiert)
+			// Das Objekt ist ungÃ¼ltig geworden -> Objekt auf den neusten Stand bringen und die Listener informieren (sind keine Listener angemeldet, wird niemand informiert)
 
 			// An dieser Stelle kann ein Supertyp auf das Objekt zugreifen. Dieser Wert wird aber schon vom direkten Typen gesetzt.
 			if(setInvalidObject.getType() == this) {
@@ -263,8 +269,8 @@ public class DafDynamicObjectType extends DafSystemObjectType implements Dynamic
 			}
 			informInvalidListeners(setInvalidObject);
 
-			// Die Supertypen informieren. Dies geschieht erst hier, damit der direkte Typ die Chance hat den ungültig Wert zu setzen.
-			// Tut er das nicht(keine Listener angemeldet, Objekt nicht im Cache), so wird es ein Supertyp machen (falls nötig).
+			// Die Supertypen informieren. Dies geschieht erst hier, damit der direkte Typ die Chance hat den ungÃ¼ltig Wert zu setzen.
+			// Tut er das nicht(keine Listener angemeldet, Objekt nicht im Cache), so wird es ein Supertyp machen (falls nÃ¶tig).
 			final List unknownSuperTyps = getSuperTypes();
 			for(Object unknownSuperTyp : unknownSuperTyps) {
 				if(unknownSuperTyp instanceof DafDynamicObjectType) {
@@ -276,9 +282,9 @@ public class DafDynamicObjectType extends DafSystemObjectType implements Dynamic
 	}
 
 	/**
-	 * Informiert alle angemeldeten Listener, dass ein Objekt ungültig wurde. Sind keine Listener angemeldet, so wird nichts gemacht.
+	 * Informiert alle angemeldeten Listener, dass ein Objekt ungÃ¼ltig wurde. Sind keine Listener angemeldet, so wird nichts gemacht.
 	 *
-	 * @param invalidObject dynamisches Objekt, das ungültig geworden ist.
+	 * @param invalidObject dynamisches Objekt, das ungÃ¼ltig geworden ist.
 	 */
 	private void informInvalidListeners(final DafDynamicObject invalidObject) {
 		final List<InvalidationListener> invalidObjectListenersCopy;
@@ -291,7 +297,7 @@ public class DafDynamicObjectType extends DafSystemObjectType implements Dynamic
 	}
 
 	/**
-	 * Prüft, ob es einen Listener gibt, der für Objekte von diesem Typ informiert werden möchte, falls ein Objekt ungültig wird.
+	 * PrÃ¼ft, ob es einen Listener gibt, der fÃ¼r Objekte von diesem Typ informiert werden mÃ¶chte, falls ein Objekt ungÃ¼ltig wird.
 	 *
 	 * @return true = ja es gibt einen Listener
 	 */
@@ -312,20 +318,20 @@ public class DafDynamicObjectType extends DafSystemObjectType implements Dynamic
 	}
 
 	/**
-	 * Setzt bei einem Objekt den Namen. Dies wird ausgeführt wenn das Objekt im Cache vorhanden ist oder ein Listener darauf angemeldet ist.
-	 * <p/>
-	 * Wenn der Name gesetzt wurde, werden alle Listener, die sich für Namensänderungen des Typs interssieren, informiert.
+	 * Setzt bei einem Objekt den Namen. Dies wird ausgefÃ¼hrt wenn das Objekt im Cache vorhanden ist oder ein Listener darauf angemeldet ist.
+	 * <p>
+	 * Wenn der Name gesetzt wurde, werden alle Listener, die sich fÃ¼r NamensÃ¤nderungen des Typs interssieren, informiert.
 	 *
 	 * @param objectId Id des Objekts, dessen Name aktualisiert werden soll
 	 * @param newName  aktueller Name
 	 */
 	void updateName(final long objectId, final String newName) {
 
-		// Das synchronized verhindert, das ein Listener angemeldet wird während gerade ein update Ausgeführt wird. Der Listener könnte dann nicht informiert werden
+		// Das synchronized verhindert, das ein Listener angemeldet wird wÃ¤hrend gerade ein update AusgefÃ¼hrt wird. Der Listener kÃ¶nnte dann nicht informiert werden
 		synchronized(_nameChangedListener) {
 			final DafDynamicObject changeNameDynamicObject;
 			if(hasNameListeners()) {
-				// Es gibt Listener, die auf Namensänderungen dieses Typs angemeldet sind. Das Objekt wird angefordert (und zwar von der Konfiguration, falls es sich nicht im Cache befindet)
+				// Es gibt Listener, die auf NamensÃ¤nderungen dieses Typs angemeldet sind. Das Objekt wird angefordert (und zwar von der Konfiguration, falls es sich nicht im Cache befindet)
 				changeNameDynamicObject = (DafDynamicObject)_dataModel.getObject(objectId);
 			}
 			else {
@@ -341,14 +347,14 @@ public class DafDynamicObjectType extends DafSystemObjectType implements Dynamic
 			// Den Namen des Objekts auf den neusten Stand bringen und die Listener informieren (sind keine Listener angemeldet, wird niemand informiert)
 
 			// An dieser Stelle kann es sich um einen Supertypen handeln. Der neue Wert wird vom direkten Typen gesetzt. Die Supertypen
-			// müssen den Wert nicht noch einmal setzen
+			// mÃ¼ssen den Wert nicht noch einmal setzen
 			if(changeNameDynamicObject.getType() == this) {
 				changeNameDynamicObject.storeName(newName);
 			}
 
 			informNameListeners(changeNameDynamicObject);
 
-			// Die Supertypen informieren. Dies geschieht erst hier, damit der direkte Typ die Möglichkeit hat den Namen richtig zu setzen.
+			// Die Supertypen informieren. Dies geschieht erst hier, damit der direkte Typ die MÃ¶glichkeit hat den Namen richtig zu setzen.
 			final List unknownSuperTyps = getSuperTypes();
 			for(Object unknownSuperTyp : unknownSuperTyps) {
 				if(unknownSuperTyp instanceof DafDynamicObjectType) {
@@ -359,7 +365,7 @@ public class DafDynamicObjectType extends DafSystemObjectType implements Dynamic
 		}
 	}
 
-	/** @return true = Es gibt Listener, die auf Namensänderungen angemeldet sind */
+	/** @return true = Es gibt Listener, die auf NamensÃ¤nderungen angemeldet sind */
 	private boolean hasNameListeners() {
 		final int numerOfListeners;
 		synchronized(_nameChangedListener) {
@@ -377,10 +383,10 @@ public class DafDynamicObjectType extends DafSystemObjectType implements Dynamic
 	}
 
 	/**
-	 * Informiert alle Listener, die auf Namensänderungen dieses Typs angemeldet sind, dass sich der Name eines Objekt geändert hat. Sind keine Listener
+	 * Informiert alle Listener, die auf NamensÃ¤nderungen dieses Typs angemeldet sind, dass sich der Name eines Objekt geÃ¤ndert hat. Sind keine Listener
 	 * angemeldet, wird nichts gemacht.
 	 *
-	 * @param dynamicObjectWithNewName Objekt, dessen Name geändert wurde
+	 * @param dynamicObjectWithNewName Objekt, dessen Name geÃ¤ndert wurde
 	 */
 	private void informNameListeners(final DafDynamicObject dynamicObjectWithNewName) {
 		final List<NameChangeListener> nameChangeListenersCopy;
@@ -405,9 +411,9 @@ public class DafDynamicObjectType extends DafSystemObjectType implements Dynamic
 	}
 
 	/**
-	 * Leitet die Aktualisierungsnachrichten bzgl. Änderungen von dynamischen Mengen und dynamischen Typen an das entsprechende Verwaltungsobjekt weiter.
-	 * @param simVariant Simulationsvariante der Änderung
-	 * @param addedElements Hinzugefügte Elemente der dynamischen Zusammenstellung
+	 * Leitet die Aktualisierungsnachrichten bzgl. Ã„nderungen von dynamischen Mengen und dynamischen Typen an das entsprechende Verwaltungsobjekt weiter.
+	 * @param simVariant Simulationsvariante der Ã„nderung
+	 * @param addedElements HinzugefÃ¼gte Elemente der dynamischen Zusammenstellung
 	 * @param removedElements Entfernte Elemente der dynamischen Zusammenstellung
 	 */
 	public void collectionChanged(final short simVariant, final List<SystemObject> addedElements, final List<SystemObject> removedElements) {

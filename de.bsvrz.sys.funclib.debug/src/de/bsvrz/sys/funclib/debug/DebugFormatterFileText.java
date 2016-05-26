@@ -1,11 +1,11 @@
 /*
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.sys.funclib.debug.
  * 
  * de.bsvrz.sys.funclib.debug is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.debug is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.debug; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.debug; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.debug;
@@ -27,12 +33,12 @@ import java.util.Date;
 import java.util.logging.*;
 
 /**
- * Gibt die DebugMeldungen als Text aus. Die Ausgabe erfolgt in der folgenden Form (Bespiel f¸r Ausgaben in
+ * Gibt die DebugMeldungen als Text aus. Die Ausgabe erfolgt in der folgenden Form (Bespiel f√ºr Ausgaben in
  * Verschiedenen Leveln und mit mehrzeiligen Meldungstexten): <PRE><CODE> ------- 18.09.2003
  * 16:58:22,960:+0200(TID:......) ---------------------- STATUS Ausgabedatei angelegt. #000000 18.09.2003
  * 16:58:22,960:+0200(TID:000010) ---------------------- INFO LOGGER :ApplikationName MELDUNG: Aktuelle
  * Debugeinstellungen ---------------------------------------------- Registrierte DebugLogger: global ApplikationName
- * <p/>
+ * <p>
  * Basiseinstellung des Wurzel-DebugLoggers ---------------------------------------------- Name
  * :ApplikationName DebugLevel      :ALL Filter          :null ParentName      :java.util.logging.LogManager$RootLogger@e7b241
  * RCS-Bundle      :null RCS-Bundle-Name :null #000001 18.09.2003 16:58:22,970:+0200(TID:000010) ######################
@@ -48,23 +54,23 @@ import java.util.logging.*;
  * 18.09.2003 16:58:23,070:+0200(TID:000010) .  .  .  .  .  .  .  . DETAIL LOGGER :ApplikationName.hck.debug.TestLogger
  * MELDUNG: hck.debug.TestLogger :Testausgabe in FINEST </CODE></PRE>
  *
- * @author Hans Christian Kniﬂ (HCK)
- * @version $Revision: 5003 $ / $Date: 2007-08-27 21:41:46 +0200 (Mon, 27 Aug 2007) $
+ * @author Hans Christian Kni√ü (HCK)
+ * @version $Revision$ / $Date$
  */
 public class DebugFormatterFileText extends java.util.logging.Formatter {
 
 	/**
-	 * Formatstring f¸r das Ausgabeformat des Zeitstempels. Ausgabe erfolgt mit Datum, Uhrzeit, Millisekunden und
+	 * Formatstring f√ºr das Ausgabeformat des Zeitstempels. Ausgabe erfolgt mit Datum, Uhrzeit, Millisekunden und
 	 * Zeitoffset zur Zeitangabe in UMT.
 	 */
 	private static final DateFormat _absoluteMillisecondsFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss,SSS:Z");
 	/**
-	 * Formatstring mit Angabe f¸r die Formatierung der Zahlenausgaben f¸r die lfd. Nr. der Meldung und die ThreadId.
+	 * Formatstring mit Angabe f√ºr die Formatierung der Zahlenausgaben f√ºr die lfd. Nr. der Meldung und die ThreadId.
 	 */
 	private static final DecimalFormat _numberFormat = new DecimalFormat("000000");
 	/**
-	 * Systemabh‰ngig zur Laufzeit ermittelter String f¸r den Zeilenumbruch. Daduch wird idie Meldungsausgabe
-	 * plattformunabh‰ngig.
+	 * Systemabh√§ngig zur Laufzeit ermittelter String f√ºr den Zeilenumbruch. Daduch wird idie Meldungsausgabe
+	 * plattformunabh√§ngig.
 	 */
 	private static final String NEWLINE = System.getProperty("line.separator");
 	/**
@@ -93,7 +99,7 @@ public class DebugFormatterFileText extends java.util.logging.Formatter {
 	 *
 	 * @param lr LogRecord mit den Informationen einer Meldung.
 	 *
-	 * @return Gibt den als Text formatierten Meldungstext mit den im LogRecord ¸bergebenen Informationen aus.
+	 * @return Gibt den als Text formatierten Meldungstext mit den im LogRecord √ºbergebenen Informationen aus.
 	 */
 	public String format(LogRecord lr) {
 		Date date = new Date(lr.getMillis());
@@ -105,7 +111,7 @@ public class DebugFormatterFileText extends java.util.logging.Formatter {
 		sb.append(" (TID:").append(_numberFormat.format(lr.getThreadID())).append(")");  // ...Thread ID ...
 
 		if (lr.getLevel() == Debug.ERROR) {
-			sb.append(HASH_LINE);														// ... Linie abh‰ngig ...
+			sb.append(HASH_LINE);														// ... Linie abh√§ngig ...
 		}																				// ... vom Level ...
 		else if (lr.getLevel() == Debug.WARNING) {
 			sb.append(DOUBLE_LINE);

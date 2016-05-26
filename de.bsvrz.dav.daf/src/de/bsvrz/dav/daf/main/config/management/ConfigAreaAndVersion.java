@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.config.management;
@@ -23,11 +29,11 @@ package de.bsvrz.dav.daf.main.config.management;
 import de.bsvrz.dav.daf.main.config.ConfigurationArea;
 
 /**
- * Diese Klasse speichert einen Konfigurationsbreich und die Version mit der der Bereich aktiviert/freigegeben/geprüft/usw. werden soll.
+ * Diese Klasse speichert einen Konfigurationsbreich und die Version mit der der Bereich aktiviert/freigegeben/geprÃ¼ft/usw. werden soll.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 5060 $ / $Date: 2007-09-01 15:04:35 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigAreaAndVersion {
 
@@ -38,7 +44,7 @@ public class ConfigAreaAndVersion {
 
 	/**
 	 * @param configArea Pid des Konfigurationsbereichs, auf den sich die Version bezieht
-	 * @param version    Version, mit der der Konfigurationsbereich aktiviert/freigegeben/geprüft, usw. werden soll. Version 0 nimmt einer Sonderrolle ein und kann
+	 * @param version    Version, mit der der Konfigurationsbereich aktiviert/freigegeben/geprÃ¼ft, usw. werden soll. Version 0 nimmt einer Sonderrolle ein und kann
 	 *                   vom jeweiligen Nutzer anders interpretiert werden.
 	 */
 	public ConfigAreaAndVersion(ConfigurationArea configArea, short version) {
@@ -58,7 +64,7 @@ public class ConfigAreaAndVersion {
 	 */
 	public ConfigAreaAndVersion(ConfigurationArea configArea) {
 		if(configArea == null){
-			throw new IllegalArgumentException("Es wurde kein gültiger Bereich sondern null übergeben.");
+			throw new IllegalArgumentException("Es wurde kein gÃ¼ltiger Bereich sondern null Ã¼bergeben.");
 		}
 		_configArea = configArea;
 		_version = 0;
@@ -74,7 +80,7 @@ public class ConfigAreaAndVersion {
 	}
 
 	/**
-	 * Version, mit der der Konfigurationsbereich aktiviert/freigegeben/geprüft werden soll
+	 * Version, mit der der Konfigurationsbereich aktiviert/freigegeben/geprÃ¼ft werden soll
 	 *
 	 * @return Version des Bereichs. Der Wert 0 ist als "nimm die richtige" Version zu interpretieren. Der Benutzer hat explizit keine Version angegeben.
 	 */

@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.tcpCommunication;
@@ -35,7 +41,7 @@ import java.net.Socket;
  * TCP/IP-Implementierung des Interfaces {@link de.bsvrz.dav.daf.communication.lowLevel.ConnectionInterface}.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 9186 $
+ * @version $Revision$
  */
 public class TCP_IP_Communication implements ConnectionInterface {
 
@@ -53,7 +59,7 @@ public class TCP_IP_Communication implements ConnectionInterface {
 	}
 
 	/**
-	 * Erzeugt ein Objekt dieser Klasse und h‰lt eine Referenz auf den ¸bergebenen Socket fest. Dieser Konstruktor wird von der Server-Seite benutzt.
+	 * Erzeugt ein Objekt dieser Klasse und h√§lt eine Referenz auf den √ºbergebenen Socket fest. Dieser Konstruktor wird von der Server-Seite benutzt.
 	 *
 	 * @param socket ein Socket
 	 */
@@ -63,6 +69,9 @@ public class TCP_IP_Communication implements ConnectionInterface {
 
 	public void connect(String mainAdress, int subAdressNumber) throws ConnectionException {
 		try {
+			
+
+
 			_socket = new Socket(InetAddress.getByName(mainAdress), subAdressNumber);
 			_debug.info("TCP-Verbindung aktiv  aufgebaut, " + _socket.getLocalSocketAddress() + " --> " + _socket.getRemoteSocketAddress());
 		}
@@ -77,12 +86,12 @@ public class TCP_IP_Communication implements ConnectionInterface {
 			throw new ConnectionException(error);
 		}
 		catch(java.net.ConnectException ex) {
-			String error = "Fehler beim Verbindungsaufbau: Verbindung zum Rechner " + mainAdress + " auf TCP-Port " + subAdressNumber + " nicht mˆglich";
+			String error = "Fehler beim Verbindungsaufbau: Verbindung zum Rechner " + mainAdress + " auf TCP-Port " + subAdressNumber + " nicht m√∂glich";
 			_debug.error(error);
 			throw new ConnectionException(error);
 		}
 		catch(IllegalArgumentException ex) {
-			String error = "Fehler beim Verbindungsaufbau zum Rechner " + mainAdress + " auf TCP-Port " + subAdressNumber + ": Ung¸ltiges Argument";
+			String error = "Fehler beim Verbindungsaufbau zum Rechner " + mainAdress + " auf TCP-Port " + subAdressNumber + ": Ung√ºltiges Argument";
 			_debug.error(error);
 			throw new ConnectionException(error);
 		}
@@ -96,6 +105,12 @@ public class TCP_IP_Communication implements ConnectionInterface {
 		try {
 			final Socket mySocket = _socket;
 			if(mySocket != null) {
+//				try {
+//					Thread.sleep(1000);
+//				}
+//				catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
 				_debug.info("TCP-Verbindung wird terminiert,  " + mySocket.getLocalSocketAddress() + " -|- " + mySocket.getRemoteSocketAddress());
 				mySocket.shutdownInput();
 				mySocket.shutdownOutput();

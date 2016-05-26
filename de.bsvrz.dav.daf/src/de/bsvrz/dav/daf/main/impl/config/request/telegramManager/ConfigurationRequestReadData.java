@@ -6,7 +6,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config.request.telegramManager;
@@ -47,13 +53,13 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Ermöglicht es, Anfragen an die Konfiguration zu stellen. Die Anfragen sind dabei "nur lesend", es werden also keine Daten der Konfiguration geändert.
- * <p/>
+ * ErmÃ¶glicht es, Anfragen an die Konfiguration zu stellen. Die Anfragen sind dabei "nur lesend", es werden also keine Daten der Konfiguration geÃ¤ndert.
+ * <p>
  * Das Objekt verwaltet unter anderem auch Anfragen auf dynamische Mengen. Es kann ein Listener angemeldet werden, der benachrichtigt wird, sobald sich eine
- * dynamische Menge ändert. Die Anmeldung und Verwaltung der Listener wird durch diese Klasse übernommen.
+ * dynamische Menge Ã¤ndert. Die Anmeldung und Verwaltung der Listener wird durch diese Klasse Ã¼bernommen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 6352 $
+ * @version $Revision$
  */
 public class ConfigurationRequestReadData extends AbstractSenderReceiverCommunication implements SenderReceiverCommunication {
 
@@ -70,17 +76,17 @@ public class ConfigurationRequestReadData extends AbstractSenderReceiverCommunic
 	private final DataModel _localConfiguration;
 
 	/**
-	 * Die Konfiguration verschickt alle Änderungen von Objekten an alle Applikationen. Diese Änderungspakete werden an dieses Objekt weitergereicht.
-	 * <p/>
-	 * Dieses Objekt hält die Objekte aktuell, ist die Variable <code>null</code> so werden die Pakete mit aktuelleren Objekten verworfen.
+	 * Die Konfiguration verschickt alle Ã„nderungen von Objekten an alle Applikationen. Diese Ã„nderungspakete werden an dieses Objekt weitergereicht.
+	 * <p>
+	 * Dieses Objekt hÃ¤lt die Objekte aktuell, ist die Variable <code>null</code> so werden die Pakete mit aktuelleren Objekten verworfen.
 	 */
 	private UpdateDynamicObjects _updateDynamicObjects = null;
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	/**
-	 * Listener zur Verarbeitung und Verteilung von Aktualisierungsnachrichten bzgl. Änderungen der Elemente von dynamischen Mengen bzw. dynamischen Typen
+	 * Listener zur Verarbeitung und Verteilung von Aktualisierungsnachrichten bzgl. Ã„nderungen der Elemente von dynamischen Mengen bzw. dynamischen Typen
 	 */
 	private MutableCollectionChangeListener _notifyingMutableCollectionChangeListener = null;
 
@@ -100,22 +106,22 @@ public class ConfigurationRequestReadData extends AbstractSenderReceiverCommunic
 
 		_localConfiguration = localConfiguration;
 
-		// Es sollen spezielle Telegramme in dieser Klasse verarbeitet werden. Dieser gibt Änderungen
+		// Es sollen spezielle Telegramme in dieser Klasse verarbeitet werden. Dieser gibt Ã„nderungen
 		// an alle weiter, die sich als Listener angemeldet haben.
 		AsynchronousAnswerReceiver asynchronousAnswerReceiver = new AsynchronousAnswerReceiver();
 		Thread asynchronousAnswerReceiverThread = new Thread(asynchronousAnswerReceiver, "DynamicChangeReceiver");
 		asynchronousAnswerReceiverThread.setDaemon(true);
 		asynchronousAnswerReceiverThread.start();
 
-		// Sender und Empfänger anmelden
+		// Sender und EmpfÃ¤nger anmelden
 		init(_requestAtg, _requestAspect, _responseAtg, _responseAspect, asynchronousAnswerReceiver);
 	}
 
 	/**
-	 * Setz ein Objekt, mit dem dynamische Objekte auf Meta-Seite auf dem aktuellen Stand gehalten werden können. Wird dieser Setter nicht aufgerufen, so werden
+	 * Setz ein Objekt, mit dem dynamische Objekte auf Meta-Seite auf dem aktuellen Stand gehalten werden kÃ¶nnen. Wird dieser Setter nicht aufgerufen, so werden
 	 * alle Telegramme, die neuere Versionen von Objekten enthalten, verworfen.
 	 *
-	 * @param updateDynamicObjects Objekt, über das dynamische Objekte aktuell gehalten werden
+	 * @param updateDynamicObjects Objekt, Ã¼ber das dynamische Objekte aktuell gehalten werden
 	 */
 	public void setDynamicObjectUpdater(final UpdateDynamicObjects updateDynamicObjects) {
 		_updateDynamicObjects = updateDynamicObjects;
@@ -129,7 +135,7 @@ public class ConfigurationRequestReadData extends AbstractSenderReceiverCommunic
 
 		public boolean messageReceived(Data data) {
 			final String messageType = data.getTextValue("nachrichtenTyp").getValueText();
-			// Was für eine Nachricht ist angekommen ?
+			// Was fÃ¼r eine Nachricht ist angekommen ?
 			if(("DynamischeMengeAktualisierung".equals(messageType))
 			   || ("Objektaktualisierung").equals(messageType)
 			   || ("DynamischeKollektionAktualisierung").equals(messageType)
@@ -155,7 +161,7 @@ public class ConfigurationRequestReadData extends AbstractSenderReceiverCommunic
 		/**
 		 * Aktualisiert die entsprechende dynamische Menge.
 		 *
-		 * @param data Das übermittelte Data von der Konfiguration.
+		 * @param data Das Ã¼bermittelte Data von der Konfiguration.
 		 */
 		private void actualizeMutableSet(Data data) {
 			try {
@@ -183,7 +189,7 @@ public class ConfigurationRequestReadData extends AbstractSenderReceiverCommunic
 		/**
 		 * Aktualisiert die Elemente einer dynamischen Menge oder eines dynamischen Typs.
 		 *
-		 * @param data Das übermittelte Data von der Konfiguration.
+		 * @param data Das Ã¼bermittelte Data von der Konfiguration.
 		 */
 		private void actualizeMutableCollection(Data data) {
 			try {
@@ -219,9 +225,9 @@ public class ConfigurationRequestReadData extends AbstractSenderReceiverCommunic
 		}
 
 		/**
-		 * Aktualisiert den Kommunikationszustand für fremdverwaltete dynamische Mengen und Objekte.
+		 * Aktualisiert den Kommunikationszustand fÃ¼r fremdverwaltete dynamische Mengen und Objekte.
 		 *
-		 * @param data Das übermittelte Data von der Konfiguration.
+		 * @param data Das Ã¼bermittelte Data von der Konfiguration.
 		 */
 		private void actualizeConfigurationCommunicationState(Data data) {
 			try {
@@ -237,7 +243,7 @@ public class ConfigurationRequestReadData extends AbstractSenderReceiverCommunic
 					dafDynamicObject.configurationCommunicationChange(communicationState);
 				}
 				else {
-					_debug.warning("KommunikationszustandAktualisierung für " + systemObject + " kann nicht verarbeitet werden");
+					_debug.warning("KommunikationszustandAktualisierung fÃ¼r " + systemObject + " kann nicht verarbeitet werden");
 				}
 			}
 			catch(Exception ex) {
@@ -246,10 +252,10 @@ public class ConfigurationRequestReadData extends AbstractSenderReceiverCommunic
 		}
 
 		/**
-		 * Ein Objekt wurde auf Seiten der Konfiguration verändert und die Konfiguration benachrichtigt alle Applikationen. Die Applikationen müssen nun ihre Daten
+		 * Ein Objekt wurde auf Seiten der Konfiguration verÃ¤ndert und die Konfiguration benachrichtigt alle Applikationen. Die Applikationen mÃ¼ssen nun ihre Daten
 		 * auf den neusten Stand bringen.
 		 *
-		 * @param data Aktuelle Daten für ein Objekt
+		 * @param data Aktuelle Daten fÃ¼r ein Objekt
 		 */
 		private void actualizeObject(final Data data) {
 			// Falls es ein Objekt zum aktualisieren von Objekten gibt wird das Telegramm verarbeitet, sonst wird es verworfen.
@@ -261,7 +267,7 @@ public class ConfigurationRequestReadData extends AbstractSenderReceiverCommunic
 					if(telegramType == KindOfUpdateTelegramm.UPDATE_NAME) {
 
 						// Ein Telegramm, das den Namen eines Objekts aktualisiert, hat folgenden Aufbau:
-						// 1) Id des Objekt, dessen Name geändert werden soll (long)
+						// 1) Id des Objekt, dessen Name geÃ¤ndert werden soll (long)
 						// 2) Id des Typs von dem das Objekt ist (long)
 						// 3) Der neue Name (String)
 						final long objectId = deserializer.readLong();
@@ -272,13 +278,13 @@ public class ConfigurationRequestReadData extends AbstractSenderReceiverCommunic
 					}
 					else if(telegramType == KindOfUpdateTelegramm.UPDATE_NOT_VALID_SINCE) {
 
-						// Ein Telegramm, das den Zeitpunkt/Version eines Objekts setzt ab dem es nicht mehr gültig ist, besitzt folgenden Aufbau.
-						// 1) Id des Objekt, dessen Version/Zeitpunkt geändert werden soll (long)
+						// Ein Telegramm, das den Zeitpunkt/Version eines Objekts setzt ab dem es nicht mehr gÃ¼ltig ist, besitzt folgenden Aufbau.
+						// 1) Id des Objekt, dessen Version/Zeitpunkt geÃ¤ndert werden soll (long)
 						// 2) Id des Typs von dem das Objekt ist (long)
 						// 3) Konfiguration oder dynamisches Objekt (byte, 0 = Konfigurationsobjekt)
-						// Der nächste Wert ist abhängig von 3), ist es ein Konfigurationsobjekt, so muss ein short gelesen werden
-						// 4a) Version, ab der das Objekt ungültig werden wird, short
-						// 4b) Zeitpunkt, ab dem das Objekt ungültig geworden ist, long
+						// Der nÃ¤chste Wert ist abhÃ¤ngig von 3), ist es ein Konfigurationsobjekt, so muss ein short gelesen werden
+						// 4a) Version, ab der das Objekt ungÃ¼ltig werden wird, short
+						// 4b) Zeitpunkt, ab dem das Objekt ungÃ¼ltig geworden ist, long
 
 						final long objectId = deserializer.readLong();
 						final long objectTypeId = deserializer.readLong();
@@ -290,7 +296,7 @@ public class ConfigurationRequestReadData extends AbstractSenderReceiverCommunic
 							_updateDynamicObjects.updateNotValidSince(objectId, objectTypeId, notValidSince);
 						}
 						else {
-							// Konfigurationsobjekte werden noch nicht unterstützt
+							// Konfigurationsobjekte werden noch nicht unterstÃ¼tzt
 						}
 					}
 					else if(telegramType == KindOfUpdateTelegramm.CREATED) {
@@ -342,7 +348,7 @@ public class ConfigurationRequestReadData extends AbstractSenderReceiverCommunic
 
 		public void run() {
 			_debug.fine(
-					"UpdateRunnable wird gestartet für " + _responseAspect + " " + _responseAtg
+					"UpdateRunnable wird gestartet fÃ¼r " + _responseAspect + " " + _responseAtg
 					+ " Nachrichtentyp: DynamischeMengeAktualisierung/ObjektAktualisierung"
 			);
 			while(true) {
@@ -352,7 +358,7 @@ public class ConfigurationRequestReadData extends AbstractSenderReceiverCommunic
 						_debug.fine("UpdateRunnable wird gestoppt " + _responseAspect + " " + _responseAtg);
 						return;
 					}
-					// Prüfen, was benachrichtigt werden muss
+					// PrÃ¼fen, was benachrichtigt werden muss
 					final String messageType = data.getTextValue("nachrichtenTyp").getValueText();
 					if("DynamischeMengeAktualisierung".equals(messageType)) {
 						actualizeMutableSet(data);

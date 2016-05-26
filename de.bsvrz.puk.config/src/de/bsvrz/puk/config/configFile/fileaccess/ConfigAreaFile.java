@@ -3,13 +3,13 @@
  * Copyright 2008 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -18,8 +18,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.fileaccess;
@@ -45,11 +51,11 @@ import java.util.zip.InflaterOutputStream;
  * Diese Klasse stellt eine Konfigurationsbereichsdatei dar und speichert alle Objekte des Bereichs mit Historie.
  *
  * @author Achim Wullenkord (AW), Kappich Systemberatung
- * @version $Revision: 13217 $ / $Date: 2015-03-03 11:11:03 +0100 (Tue, 03 Mar 2015) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	/** Wo befindet sich die Datei */
@@ -61,10 +67,10 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	/** aktive Version, die aus der Datei gelesen wurde. */
 	private short _activeVersionFile = -1;  
 
-	/** Speichert die Version, die als nächstes gültig wird. Die Variable wird mit einer Setter gesetzt. */
+	/** Speichert die Version, die als nÃ¤chstes gÃ¼ltig wird. Die Variable wird mit einer Setter gesetzt. */
 	private short _nextActiveVersion = -1;
 
-	/** nächste aktive Version, die aus der Datei eingelesen wurde. */
+	/** nÃ¤chste aktive Version, die aus der Datei eingelesen wurde. */
 	private short _nextActiveVersionFile = -1; 
 
 	/** Mit dieser Version werden alle Daten in der Daten serialisiert. */
@@ -72,60 +78,60 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 	/**
 	 * Speichert, wo der Header endet. Diese Information wird gebraucht, da alle Angaben zur Position in der Datei relativ zum Ende des Header sind. Addiert man
-	 * die beiden Werte, so erhält man die abslute Position in der Datei.
-	 * <p/>
+	 * die beiden Werte, so erhÃ¤lt man die abslute Position in der Datei.
+	 * <p>
 	 * Die gespeicherte Position zeigt auf den ersten Wert, der nach dem Header gespeichert ist.
 	 */
 	private long _headerEnd;
 
 	/**
-	 * Speichert zu jedem Block, in dem ungültige Objekte gespeichert sind, ein Objekt ab, das die Position des Blocks (relativ zum Headerende) in der Datei
-	 * enthält und einen Zeitstempel (wann wurde diese Version gültig), der sich auf den Block bezieht. Als Key dient die Versionsnummer. Sind keine Elemente
+	 * Speichert zu jedem Block, in dem ungÃ¼ltige Objekte gespeichert sind, ein Objekt ab, das die Position des Blocks (relativ zum Headerende) in der Datei
+	 * enthÃ¤lt und einen Zeitstempel (wann wurde diese Version gÃ¼ltig), der sich auf den Block bezieht. Als Key dient die Versionsnummer. Sind keine Elemente
 	 * vorhanden, so wurde noch kein Block angelegt. Wenn die Datei neu erzeugt wird, ist dies der Fall. Der erste Block entsteht nach der ersten Reorganisation,
-	 * nach dem die aktuelle Version erhöht wurde.
-	 * <p/>
+	 * nach dem die aktuelle Version erhÃ¶ht wurde.
+	 * <p>
 	 * WARNUNG: Beim Zugriff mit .get() muss der Key auf short gecastet werden (.get((short) XXX)) !!!
-	 * <p/>
-	 * Diese Informationen werden für die Reorganisation gebraucht, bei einem Neustart wird aus diesen Informationen die Map
+	 * <p>
+	 * Diese Informationen werden fÃ¼r die Reorganisation gebraucht, bei einem Neustart wird aus diesen Informationen die Map
 	 * _configurationAuthorityVersionActivationTime rekonstruiert.
-	 * <p/>
-	 * Es sind zwei Maps nötig, da die _oldObjectBlocks-Map speichert wie weit die Reorganisation gekommen ist und die Map
-	 * _configurationAuthorityVersionActivationTime wird im Konstruktor gesetzt und wird dann die nächste gültige Vesion enthalten und ist dadurch um mindestens
-	 * eine Version größer als jede Version die _oldObjectBlocks speichert.
-	 * <p/>
+	 * <p>
+	 * Es sind zwei Maps nÃ¶tig, da die _oldObjectBlocks-Map speichert wie weit die Reorganisation gekommen ist und die Map
+	 * _configurationAuthorityVersionActivationTime wird im Konstruktor gesetzt und wird dann die nÃ¤chste gÃ¼ltige Vesion enthalten und ist dadurch um mindestens
+	 * eine Version grÃ¶ÃŸer als jede Version die _oldObjectBlocks speichert.
+	 * <p>
 	 * Findet kein Versionswechsel statt, sind die Version/Zeitstempel Paare in _oldObjectBlocks und _configurationAuthorityVersionActivationTime identisch.
 	 */
 	private final Map<Short, OldBlockInformations> _oldObjectBlocks;
 
 	/**
-	 * synchronisierte Map, die den Aktivierungszeitpunkt jeder Version speichert. Als Key dient die Version, als value wird der Zeitpunkt zurückgegbeen, an dem
+	 * synchronisierte Map, die den Aktivierungszeitpunkt jeder Version speichert. Als Key dient die Version, als value wird der Zeitpunkt zurÃ¼ckgegbeen, an dem
 	 * das Konfigurationsverantwortliche die Version aktiviert hat. Siehe auch Kommentar _oldObjectBlocks.
-	 * <p/>
+	 * <p>
 	 * WARNUNG: Beim Zugriff mit .get() muss der Key auf short gecastet werden (.get((short) XXX)) !!!
 	 */
 	private final Map<Short, Long> _configurationAuthorityVersionActivationTime;
 
 	/**
 	 * Array mit den globalen Aktivierungszeiten der Versionen dieses Bereichs. Am Index 0 ist die Zeit 0 eingetragen. Die Aktivierungszeit der Version n ist am
-	 * Index n eingetragen. Bei nicht aktivierten Zwischenversionen wird die Zeit der nächsten Aktivierung eingetragen. Der größte verwendete Index entspricht
-	 * der größten aktivierten Version.
+	 * Index n eingetragen. Bei nicht aktivierten Zwischenversionen wird die Zeit der nÃ¤chsten Aktivierung eingetragen. Der grÃ¶ÃŸte verwendete Index entspricht
+	 * der grÃ¶ÃŸten aktivierten Version.
 	 */
 	private long[] _globalActivationTimes;
 
 	/**
-	 * Speichert die nächste ungültige Version. Es ist die größte Version aus _oldObjectBlocks plus 1. Ist noch kein Block vorhanden, so ist die "nächste"
-	 * ungültige Version, Version 2 (Version 1 ist die erste mögliche gültige Version)
+	 * Speichert die nÃ¤chste ungÃ¼ltige Version. Es ist die grÃ¶ÃŸte Version aus _oldObjectBlocks plus 1. Ist noch kein Block vorhanden, so ist die "nÃ¤chste"
+	 * ungÃ¼ltige Version, Version 2 (Version 1 ist die erste mÃ¶gliche gÃ¼ltige Version)
 	 */
 	private short _nextInvalidBlockVersion = 2;
 
-	/** relative Position des Blocks, der alle ungültigen dynamischen Objekte enthält, die nach einer Reorganisation in diesem Block geschrieben wurden. */
+	/** relative Position des Blocks, der alle ungÃ¼ltigen dynamischen Objekte enthÃ¤lt, die nach einer Reorganisation in diesem Block geschrieben wurden. */
 	private long _startOldDynamicObjects = 0;
 
-	/** relative Position des Index, der die Id´s verwaltet. */
+	/** relative Position des Index, der die IdÅ½s verwaltet. */
 	private long _startIdIndex = 0;
 
 	/**
-	 * relative Position des Index, der die hashCodes der Pid´s verwaltet verwaltet. (-1 bedeutet, dass dieser Wert nicht aus dem Header ausgelesen werden konnte
+	 * relative Position des Index, der die hashCodes der PidÅ½s verwaltet verwaltet. (-1 bedeutet, dass dieser Wert nicht aus dem Header ausgelesen werden konnte
 	 * oder beim erzeugen des Headers nicht bekannt war (Datei erzeugen))
 	 */
 	private long _startPidHashCodeIndex = 0;
@@ -145,39 +151,39 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	/** Pid des Konfigurationsbereichs */
 	private String _configurationAreaPid = null;
 
-	/** letzter Zeitpunkt, an dem ein dynamisches Objekt geändert wurde. Der Wert -1 zeigt an, dass dieser Wert noch unbekannt ist. */
+	/** letzter Zeitpunkt, an dem ein dynamisches Objekt geÃ¤ndert wurde. Der Wert -1 zeigt an, dass dieser Wert noch unbekannt ist. */
 	private long _dynamicObjectChanged = -1;
 
-	/** letzter Zeitpunkt, an dem ein Konfigurationsobjekt geändert wurde. Der Wert -1 zeigt an, dass dieser Wert noch unbekannt ist. */
+	/** letzter Zeitpunkt, an dem ein Konfigurationsobjekt geÃ¤ndert wurde. Der Wert -1 zeigt an, dass dieser Wert noch unbekannt ist. */
 	private long _configurationObjectChanged = -1;
 
-	/** letzter Zeitpunkt, an dem ein konfigurierender Datensatz geändert wurde. Der Wert -1 zeigt an, dass dieser Wert noch unbekannt ist. */
+	/** letzter Zeitpunkt, an dem ein konfigurierender Datensatz geÃ¤ndert wurde. Der Wert -1 zeigt an, dass dieser Wert noch unbekannt ist. */
 	private long _configurationDataChanged = -1;
 
 	/**
 	 * In dieser Menge werden alle dynamischen Objekte und Konfigurationsobjekte gespeichert, die modifiziert wurden und die aus diesem Grund noch in der Datei zu
-	 * speichern sind. Die Objekte tragen sich selbständig mit {@link #objectModified} in die Liste ein.
+	 * speichern sind. Die Objekte tragen sich selbstÃ¤ndig mit {@link #objectModified} in die Liste ein.
 	 */
 	private final Set<SystemObjectInformationInterface> _modifiedObjects = new HashSet<SystemObjectInformationInterface>();
 
 	/**
-	 * Speichert alle (dynamisch und Konf.) aktuellen Objekte, als Schlüssel dient die Id.
-	 * <p/>
+	 * Speichert alle (dynamisch und Konf.) aktuellen Objekte, als SchlÃ¼ssel dient die Id.
+	 * <p>
 	 * WARNUNG: Beim Zugriff mit .get() muss der Key auf long gecastet werden (.get((long) XXX)) !!!
 	 */
 	private final Map<Long, SystemObjectInformationInterface> _actualObjects = new HashMap<Long, SystemObjectInformationInterface>();
 
 	/**
-	 * Speichert alle Objekte, die in Zukunft aktuell werden, als Schlüssel dient die Id.
-	 * <p/>
+	 * Speichert alle Objekte, die in Zukunft aktuell werden, als SchlÃ¼ssel dient die Id.
+	 * <p>
 	 * WARNUNG: Beim Zugriff mit .get() muss der Key auf long gecastet werden (.get((long) XXX)) !!!
 	 */
 	private final Map<Long, SystemObjectInformationInterface> _newObjects = new HashMap<Long, SystemObjectInformationInterface>();
 
 	/**
-	 * Speichert alle ungültig markierte Objekte, die sich in der Mischmenge befinden. Schlüssel = Id, Value = Objekte mit dem das ungültige Objekt angefordert
+	 * Speichert alle ungÃ¼ltig markierte Objekte, die sich in der Mischmenge befinden. SchlÃ¼ssel = Id, Value = Objekte mit dem das ungÃ¼ltige Objekt angefordert
 	 * werden kann.
-	 * <p/>
+	 * <p>
 	 * WARNUNG: Beim Zugriff mit .get() muss der Key auf long gecastet werden (.get((long) XXX)) !!!
 	 */
 	private final Map<Long, ObjectReference> _oldObjectsId = new HashMap<Long, ObjectReference>();
@@ -185,65 +191,65 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	/**
 	 * Speichert zu einer Pid (Key = HashCode Integer), alle Dateipositionen der alten Objekte, die sich in der Mischmenge befinden. Bei einer Reorganisation
 	 * werden die Listen der Map um die Objekte bereinigt, die in einen nGa oder in den dyn nGa gespeichert werden.
-	 * <p/>
+	 * <p>
 	 * WARNUNG: Beim Zugriff mit .get() muss der Key auf integer gecastet werden (.get((integer) XXX)) !!!
 	 */
 	private final Map<Integer, Set<FilePointer>> _oldObjectsPid = new HashMap<Integer, Set<FilePointer>>();
 
 	/**
-	 * Alle Änderungen an einem dynamischen Objekt oder an einem Konfigurationsobjekt, die den Zustand von "gültig" auf "ungültig" setzen oder ein Objekt
-	 * hinzufügen müssen an dieses Objekt gemeldet werden
+	 * Alle Ã„nderungen an einem dynamischen Objekt oder an einem Konfigurationsobjekt, die den Zustand von "gÃ¼ltig" auf "ungÃ¼ltig" setzen oder ein Objekt
+	 * hinzufÃ¼gen mÃ¼ssen an dieses Objekt gemeldet werden
 	 */
 	private final ConfigFileManager _fileManager;
 
 	/**
 	 * Wird angefordert, wenn die Reorganisation der Datei statt findet. Die Sperre wird ebenfalls angefordert, wenn alte Objekte angefordert werden oder ein
-	 * dynamisches Objekt als ungültig deklariert wird, die sich im Speicher befinden. Dieser Moment ist kritisch, da zu diesem Zeitpunkt eine Reorganisation
-	 * stattfinden kann und sich damit die Dateipositionen ändern und die Objekte sogar komplett aus dem Speicher gelöscht werden. Neue alte Objekte können aber
+	 * dynamisches Objekt als ungÃ¼ltig deklariert wird, die sich im Speicher befinden. Dieser Moment ist kritisch, da zu diesem Zeitpunkt eine Reorganisation
+	 * stattfinden kann und sich damit die Dateipositionen Ã¤ndern und die Objekte sogar komplett aus dem Speicher gelÃ¶scht werden. Neue alte Objekte kÃ¶nnen aber
 	 * ohne Probleme abgelegt werden, da sich die Reorgansation merkt, welche Objekte modifiziert wurden.
 	 */
 	private final Object _restructureLock = new Object();
 
 	/**
-	 * Stellt das Objekt dar, das den Konfigurationsbereich repräsentiert. Das Objekt wird entweder beim laden der Mischmenge über die Pid des
+	 * Stellt das Objekt dar, das den Konfigurationsbereich reprÃ¤sentiert. Das Objekt wird entweder beim laden der Mischmenge Ã¼ber die Pid des
 	 * Konfigurationsbereichs gefunden oder es wird ein neuer Bereich angelegt. Dann wird das Objekt erst mit {@link #createConfigurationObject} erzeugt, auch in
-	 * diesem Fall wird das Objekt über die Pid identifiziert.
+	 * diesem Fall wird das Objekt Ã¼ber die Pid identifiziert.
 	 */
 	private ConfigurationObjectInfo _configAreaObject;
 
 	/**
 	 * Synchronisierte Map, die zu jeder Version den lokalen Aktivierungszeitpunkt speichert. Als Key dient die Versionsnummer, als value wird der
-	 * Aktivierungszeitpunkt zurückgegeben.
-	 * <p/>
+	 * Aktivierungszeitpunkt zurÃ¼ckgegeben.
+	 * <p>
 	 * WARNUNG: Beim Zugriff mit .get() muss der Key auf short gecastet werden (.get((short) XXX)) !!!
 	 */
 	private final Map<Short, Long> _localVersionActivationTime = Collections.synchronizedMap(new HashMap<Short, Long>());
 
 	/**
 	 * Array mit den lokalen Aktivierungszeiten der Versionen dieses Bereichs. Am Index 0 ist die Zeit 0 eingetragen. Die Aktivierungszeit der Version n ist am
-	 * Index n eingetragen. Bei nicht aktivierten Zwischenversionen wird die Zeit der nächsten Aktivierung eingetragen. Der größte verwendete Index entspricht
-	 * der größten aktivierten Version.
+	 * Index n eingetragen. Bei nicht aktivierten Zwischenversionen wird die Zeit der nÃ¤chsten Aktivierung eingetragen. Der grÃ¶ÃŸte verwendete Index entspricht
+	 * der grÃ¶ÃŸten aktivierten Version.
 	 */
 	private long[] _localActivationTimes;
 
 	/**
-	 * Speichert die größte Id, die im Konfigurationsbereich vergeben wurde. Der Wert wird beim laden des Konfigurationsbereichs erzeugt, in dem beim laden der
-	 * Mischmenge die Id der Objekte geprüft wird, zusätzlich muss der letzte Wert des Index (Id) betrachtet werden. Der Index enthält alle Id´s aller Objekte, die
+	 * Speichert die grÃ¶ÃŸte Id, die im Konfigurationsbereich vergeben wurde. Der Wert wird beim laden des Konfigurationsbereichs erzeugt, in dem beim laden der
+	 * Mischmenge die Id der Objekte geprÃ¼ft wird, zusÃ¤tzlich muss der letzte Wert des Index (Id) betrachtet werden. Der Index enthÃ¤lt alle IdÅ½s aller Objekte, die
 	 * sich in den nGa Bereichen bzw. dem dynamischen nGa Bereich befinden.
-	 * <p/>
+	 * <p>
 	 * Der Wert 0 bedeutet, dass noch kein Konfigurationsobjekt oder dynamisches Objekt im Konfigurationsbereich abgelegt wurde.
 	 */
 	private long _greatestId = 0;
 
 	/**
-	 * Speichert zu allen TypeId's die aktuellen Objekte. Als Schlüssel dient die TypeId, als Value wird eine Liste mit allen Objekten zurückgegeben, die aktuell
-	 * sind und deren TypeId mit dem Schlüssel übereinstimmt.
+	 * Speichert zu allen TypeId's die aktuellen Objekte. Als SchlÃ¼ssel dient die TypeId, als Value wird eine Liste mit allen Objekten zurÃ¼ckgegeben, die aktuell
+	 * sind und deren TypeId mit dem SchlÃ¼ssel Ã¼bereinstimmt.
 	 */
 	private final Map<Long, List<SystemObjectInformationInterface>> _actualObjectsTypeId = new HashMap<Long, List<SystemObjectInformationInterface>>();
 
 	/**
-	 * Speichert zu allen TypeId's die alten Objekte. Als Schlüssel dient die TypeId, als Value wird eine Liste mit allen Objekten zurückgegeben. Die Objekte
-	 * beinhalten ob das Objekt dynamisch oder konfigurierend ist und die Version bzw. Zeitpunkt an dem das Objekt gültig geworden ist. Als letztes ein Objekte,
+	 * Speichert zu allen TypeId's die alten Objekte. Als SchlÃ¼ssel dient die TypeId, als Value wird eine Liste mit allen Objekten zurÃ¼ckgegeben. Die Objekte
+	 * beinhalten ob das Objekt dynamisch oder konfigurierend ist und die Version bzw. Zeitpunkt an dem das Objekt gÃ¼ltig geworden ist. Als letztes ein Objekte,
 	 * mit dem das Objekt wieder rekonstruiert werden kann.
 	 */
 	private final Map<Long, List<OldObjectTypeIdInfo>> _oldObjectsTypeId = new HashMap<Long, List<OldObjectTypeIdInfo>>();
@@ -256,27 +262,27 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	private final FileLock _areaFileLock;
 
 	/**
-	 * Objekte, die im ersten Durchlauf als löschbar markiert wurden. Weitere Referenzen auf diese Objekte sind nicht erlaubt.
-	 * Es ist allerdings möglich (wenn auch Unwahrscheinlich), dass Objekte zwischen ermittlung der nicht mehr
-	 * Referenzierbaren Objekte und dem Eintragen in dieses Set plötzlich wieder referenziert wurden.
-	 * Daher dürfen diese Objekte nicht endgültig gelöscht werden.
-	 * Ist das Objekt auch im zweiten Durchlauf als löschbar markiert, wird es in _objectsPendingDeletion kopiert.
+	 * Objekte, die im ersten Durchlauf als lÃ¶schbar markiert wurden. Weitere Referenzen auf diese Objekte sind nicht erlaubt.
+	 * Es ist allerdings mÃ¶glich (wenn auch Unwahrscheinlich), dass Objekte zwischen ermittlung der nicht mehr
+	 * Referenzierbaren Objekte und dem Eintragen in dieses Set plÃ¶tzlich wieder referenziert wurden.
+	 * Daher dÃ¼rfen diese Objekte nicht endgÃ¼ltig gelÃ¶scht werden.
+	 * Ist das Objekt auch im zweiten Durchlauf als lÃ¶schbar markiert, wird es in _objectsPendingDeletion kopiert.
 	 */
 	private final Set<Long> _objectsLockedForDeletion = new HashSet<Long>();
 
 	/**
-	 * Objekte, die zwei Durchläufe hintereinander als löschbar erkannt wurden. Alle Objekte in diesem Set
-	 * werden sicher nicht mehr referenziert und können endgültig gelöscht werden.
+	 * Objekte, die zwei DurchlÃ¤ufe hintereinander als lÃ¶schbar erkannt wurden. Alle Objekte in diesem Set
+	 * werden sicher nicht mehr referenziert und kÃ¶nnen endgÃ¼ltig gelÃ¶scht werden.
 	 */
 	private final Set<Long> _objectsPendingDeletion = new HashSet<Long>();
 
 	/**
-	 * Dieser Konstruktor wird benutzt, wenn eine Datei für einen Konfigurationsbereich bereits existiert.
+	 * Dieser Konstruktor wird benutzt, wenn eine Datei fÃ¼r einen Konfigurationsbereich bereits existiert.
 	 *
 	 * @param configAreaFile             Datei, in der der Konfigurationsberich gespeichert ist
 	 * @param activeVersion              aktive Version mit der der Konfigurationsbereich gestartet wird
 	 * @param configFileManager          Objekt, das alle Konfigurationsbereiche verwaltet
-	 * @param localActivatedVersionTimes Liste, die zu jeder Version, die lokal aktiviert wurde, den Zeitpunkt enthält, wann die Version aktiviert wurde
+	 * @param localActivatedVersionTimes Liste, die zu jeder Version, die lokal aktiviert wurde, den Zeitpunkt enthÃ¤lt, wann die Version aktiviert wurde
 	 */
 	public ConfigAreaFile(File configAreaFile, short activeVersion, ConfigFileManager configFileManager, List<VersionInfo> localActivatedVersionTimes)
 			throws IOException {
@@ -297,7 +303,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 				}
 				else {
 					throw new IllegalStateException(
-							"Die übergebene Liste enthält zu einer Version zwei Zeitpunkte, zu denen die Version gültig wurde. Version: " + versionInfo
+							"Die Ã¼bergebene Liste enthÃ¤lt zu einer Version zwei Zeitpunkte, zu denen die Version gÃ¼ltig wurde. Version: " + versionInfo
 									.getVersion()
 					);
 				}
@@ -344,19 +350,19 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			throw e;
 		}
 
-		// Löschindex lesen und Objekte löschen, sofern vorhanden
+		// LÃ¶schindex lesen und Objekte lÃ¶schen, sofern vorhanden
 		_objectsLockedForDeletion.addAll(readIdIndex("0"));
 		_objectsPendingDeletion.addAll(readIdIndex("1"));
 	}
 
 	/**
-	 * Schreibt eine ID-Index-Datei, die die zum Löschen vorgemerkten IDs enthält.
+	 * Schreibt eine ID-Index-Datei, die die zum LÃ¶schen vorgemerkten IDs enthÃ¤lt.
 	 * Der Dateiaufbau ist wie folgt:
-	 * Int: Anzahl Einträge
-	 * Long[]: Einträge
-	 * Long: HashCode der Einträge zur Prüfung der Dateiintegrität
+	 * Int: Anzahl EintrÃ¤ge
+	 * Long[]: EintrÃ¤ge
+	 * Long: HashCode der EintrÃ¤ge zur PrÃ¼fung der DateiintegritÃ¤t
 	 * @param indexFileName Suffix oder Name des Index. Aktuell werden zwei Indizes verwendet, da Objekte im ersten Index
-	 *                      noch in ausnahmefällen Referenziert werden können
+	 *                      noch in ausnahmefÃ¤llen Referenziert werden kÃ¶nnen
 	 * @return Liste mit gelesenen IDs
 	 * @throws IOException falls Dateinhalt nicht stimmt oder ein fehler beim Lesen auftrat
 	 */
@@ -397,10 +403,10 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	private void writeIdIndex(final String indexFileName, Collection<Long> values) throws IOException {
 		File f = getIndexFileName(indexFileName);
 		if(values.isEmpty()){
-			// Wenn keine Einträge zu schreiben sind, Datei einfach nicht anlegen/löschen
+			// Wenn keine EintrÃ¤ge zu schreiben sind, Datei einfach nicht anlegen/lÃ¶schen
 			if(f.exists()){
 				if(!f.delete()){
-					_debug.error("Index kann nicht gelöscht werden", f);
+					_debug.error("Index kann nicht gelÃ¶scht werden", f);
 				}
 			}
 			return;
@@ -435,11 +441,11 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	 * @param activationTimeMap Map mit der globalen oder lokalen Zuordnung von aktivierten Versionen zum jeweiligen Zeitpunkt
 	 *
 	 * @return Array mit den Aktivierungszeiten der Versionen dieses Bereichs. Am Index 0 ist die Zeit 0 eingetragen. Die Aktivierungszeit der Version n ist am
-	 *         Index n eingetragen. Bei nicht aktivierten Zwischenversionen wird die Zeit der nächsten Aktivierung eingetragen. Der größte verwendete Index
-	 *         entspricht der größten aktivierten Version.
+	 *         Index n eingetragen. Bei nicht aktivierten Zwischenversionen wird die Zeit der nÃ¤chsten Aktivierung eingetragen. Der grÃ¶ÃŸte verwendete Index
+	 *         entspricht der grÃ¶ÃŸten aktivierten Version.
 	 */
 	private long[] getActivationTimeArray(final Map<Short, Long> activationTimeMap) {
-		// Schleife zur Bestimmung der größten aktivierten Version
+		// Schleife zur Bestimmung der grÃ¶ÃŸten aktivierten Version
 		int maximumVersion = 0;
 		for(Short version : activationTimeMap.keySet()) {
 			if(maximumVersion < version) maximumVersion = version;
@@ -473,7 +479,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	 * @param configAreaFile    Datei, in der die Objekte gespeichert werden
 	 * @param pid               Pid des Konfigurationsbereichs
 	 * @param activeVersion     aktuelle Version
-	 * @param serializerVersion Version, mit der alle Daten in der Datei serialisiert werden müssen. Alle Daten, die
+	 * @param serializerVersion Version, mit der alle Daten in der Datei serialisiert werden mÃ¼ssen. Alle Daten, die
 	 * @param configFileManager
 	 */
 	public ConfigAreaFile(File configAreaFile, String pid, short activeVersion, int serializerVersion, ConfigFileManager configFileManager) throws IOException {
@@ -530,7 +536,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Methode, die das Objekt, das den Konfigurationsbereich darstellt, zurück gibt.
+	 * Methode, die das Objekt, das den Konfigurationsbereich darstellt, zurÃ¼ck gibt.
 	 *
 	 * @return Objekt oder <code>null</code>, wenn der Bereich gerade erzeugt wurde.
 	 */
@@ -547,31 +553,31 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			synchronized(_configAreaFile) {
 				final BufferedRandomAccessFile file = new BufferedRandomAccessFile(_configAreaFile, "rw");
 
-				// finally für close der Datei
+				// finally fÃ¼r close der Datei
 				try {
 					while(_modifiedObjects.size() > 0) {
 
 						// Liste sperren, in der alle Objekte stehen, die noch zu speichern sind
 						final SystemObjectInformationInterface modifiedObject;
-						// Das synch muss an dieser Stelle sein, da ein Objekt, das geändert wird, sich auf sich selbst
-						// synchronisiert und dann die Sperre für _modifiedObjects anfordert.
+						// Das synch muss an dieser Stelle sein, da ein Objekt, das geÃ¤ndert wird, sich auf sich selbst
+						// synchronisiert und dann die Sperre fÃ¼r _modifiedObjects anfordert.
 
 						// Ist das Objekt dann bereits in der _modifiedObjects Liste, blockiert es beim Versuch sich
-						// erneut einzutragen. Wird nun hier ebenfalls die gesamte Zeit die Sperre für _modifiedObjects
-						// gehalten, dann wird beim Speichern die Sperre für das Objekt angefordert.
+						// erneut einzutragen. Wird nun hier ebenfalls die gesamte Zeit die Sperre fÃ¼r _modifiedObjects
+						// gehalten, dann wird beim Speichern die Sperre fÃ¼r das Objekt angefordert.
 
-						// Folgende Situation würde sich ergeben:
-						// Diese Methode hält die Sperre für _modifiedObjects und will die Sperre für das Objekt(zum Speichern).
-						// Das Objekt will die Sperre für _modifiedObjects(um sich zum speichern einzutragen) und hält die Sperre für das Objekt.
-						// Es gäbe einen Deadlock.
+						// Folgende Situation wÃ¼rde sich ergeben:
+						// Diese Methode hÃ¤lt die Sperre fÃ¼r _modifiedObjects und will die Sperre fÃ¼r das Objekt(zum Speichern).
+						// Das Objekt will die Sperre fÃ¼r _modifiedObjects(um sich zum speichern einzutragen) und hÃ¤lt die Sperre fÃ¼r das Objekt.
+						// Es gÃ¤be einen Deadlock.
 						synchronized(_modifiedObjects) {
 							// Es gibt noch ein Objekt
 							modifiedObject = _modifiedObjects.iterator().next();
 							_modifiedObjects.remove(modifiedObject);
 						} // synch auf Menge
 
-						// Was für ein Objekt liegt vor ?
-						// Auf das Objekt muss nicht synchronisiert werden, das übernimmt die Methode,
+						// Was fÃ¼r ein Objekt liegt vor ?
+						// Auf das Objekt muss nicht synchronisiert werden, das Ã¼bernimmt die Methode,
 						// die das Objekt schreibt.
 
 						if(modifiedObject instanceof ConfigurationObjectInformation) {
@@ -593,7 +599,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			} // synch Restrukturierung
 		} // synch auf Datei
 
-		// Indexdateien fürs endgültoge Löschen schreiben
+		// Indexdateien fÃ¼rs endgÃ¼ltoge LÃ¶schen schreiben
 		synchronized(_objectsPendingDeletion) {
 			writeIdIndex("0", _objectsLockedForDeletion);
 			writeIdIndex("1", _objectsPendingDeletion);
@@ -664,8 +670,8 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Speicher ein dynamisches Objekt in die Datei des Konfigurationsbereichs. Diese Methode wird benötigt, wenn ein dynamisches Objekt auf "Invalid" gesetzt
-	 * werden. Für Konfigurationsobjekte ist dies nicht nötig, da diese bis zum beenden der Konfiguration im Speicher bleiben.
+	 * Speicher ein dynamisches Objekt in die Datei des Konfigurationsbereichs. Diese Methode wird benÃ¶tigt, wenn ein dynamisches Objekt auf "Invalid" gesetzt
+	 * werden. FÃ¼r Konfigurationsobjekte ist dies nicht nÃ¶tig, da diese bis zum beenden der Konfiguration im Speicher bleiben.
 	 *
 	 * @param object zu speicherndes Objekts
 	 */
@@ -694,11 +700,11 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	) {
 
 //		if (objectID < _greatestId) {
-//			throw new IllegalArgumentException("Die Id des Objekts ist kleiner als die größte Id des Konfigrationsbereichs, Id Konfigurationsbereich " + _greatestId + " Id des Objekts " + objectID + " Konfigurationsbereich " + _configAreaFile);
+//			throw new IllegalArgumentException("Die Id des Objekts ist kleiner als die grÃ¶ÃŸte Id des Konfigrationsbereichs, Id Konfigurationsbereich " + _greatestId + " Id des Objekts " + objectID + " Konfigurationsbereich " + _configAreaFile);
 //		}
 
 		// anlegen des Objekts im Speicher
-		// Ob das Objekt auch in der Datei gespeichert werden muss, hängt vom PersistenceMode ab.
+		// Ob das Objekt auch in der Datei gespeichert werden muss, hÃ¤ngt vom PersistenceMode ab.
 		boolean savePersistence;
 
 		if(persistenceMode == DynamicObjectType.PersistenceMode.PERSISTENT_AND_INVALID_ON_RESTART
@@ -715,10 +721,10 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 		final DynamicObjectInformation newDynamicObjectInformation = new DynamicObjectInformation(
 				objectID, pid, typeID, name, simulationVariant, System.currentTimeMillis(), this, savePersistence, persistenceMode
 		);
-		// Dynamische Objekte sind sofort gültig
+		// Dynamische Objekte sind sofort gÃ¼ltig
 		putActualObject(newDynamicObjectInformation);
 		putActualObjectTypeId(newDynamicObjectInformation);
-		// Wenn es sich um ein Objekt für eine Simulation handelt, muss es in die entsprechende Datenstruktur eingefügt werden
+		// Wenn es sich um ein Objekt fÃ¼r eine Simulation handelt, muss es in die entsprechende Datenstruktur eingefÃ¼gt werden
 		if(simulationVariant > 0) {
 			_fileManager.putSimulationObject(newDynamicObjectInformation);
 		}
@@ -726,7 +732,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			_fileManager.newObjectCreated(newDynamicObjectInformation);
 		}
 
-		// Das Objekt konnte erzeugt werden, also gibt es vielleicht eine neue größte Id.
+		// Das Objekt konnte erzeugt werden, also gibt es vielleicht eine neue grÃ¶ÃŸte Id.
 		// (Wenn der Converter benutzt wird sind die Id's nicht unbedingt streng monoton steigend, darum die Abfrage)
 		if(getRunningNumber(objectID) > _greatestId) {
 			_greatestId = getRunningNumber(objectID);
@@ -738,25 +744,25 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	@Override
 	public ConfigurationObjectInfo createConfigurationObject(long objectID, long typeID, String pid, String name) {
 //		if (objectID < _greatestId) {
-//			throw new IllegalArgumentException("Die Id des Objekts ist kleiner als die größte Id des Konfigrationsbereichs, Id Konfigurationsbereich " + _greatestId + " Id des Objekts " + objectID + " Konfigurationsbereich " + _configAreaFile);
+//			throw new IllegalArgumentException("Die Id des Objekts ist kleiner als die grÃ¶ÃŸte Id des Konfigrationsbereichs, Id Konfigurationsbereich " + _greatestId + " Id des Objekts " + objectID + " Konfigurationsbereich " + _configAreaFile);
 //		}
 
 		if(_nextActiveVersion > 0) {
 			final ConfigurationObjectInformation newConfigurationObjectInformation = new ConfigurationObjectInformation(
 					this, objectID, pid, typeID, name, _nextActiveVersion, true
 			);
-			// Konf. Objekte sind erst in Zukunft mit der nächsten Version gültig
+			// Konf. Objekte sind erst in Zukunft mit der nÃ¤chsten Version gÃ¼ltig
 			putNewObject(newConfigurationObjectInformation);
 			_fileManager.newObjectCreated(newConfigurationObjectInformation);
 
 			// Der Konfigurationsverantwortliche wurde ist noch unbekannt (bei der Erzeugung der Datei, als Beispiel)
 			// und wird mit create erzeugt. Wurde der Konfigurationsverantwortliche schon gesetzt (geschieht beim einlesen der
-			// Datei und stellt den Normalfall dar) kann er nicht mit einem "create" überschrieben werden.
+			// Datei und stellt den Normalfall dar) kann er nicht mit einem "create" Ã¼berschrieben werden.
 			if(_configAreaObject == null && newConfigurationObjectInformation.getPid().equals(_configurationAreaPid)) {
 				_configAreaObject = newConfigurationObjectInformation;
 			}
 
-			// Das Objekt konnte erzeugt werden, also gibt es vielleicht eine neue größte Id.
+			// Das Objekt konnte erzeugt werden, also gibt es vielleicht eine neue grÃ¶ÃŸte Id.
 			// (Wenn der Converter benutzt wird sind die Id's nicht unbedingt streng monoton steigend, darum die Abfrage)
 			if(getRunningNumber(objectID) > _greatestId) {
 				_greatestId = getRunningNumber(objectID);
@@ -764,7 +770,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			return newConfigurationObjectInformation;
 		}
 		else {
-			throw new IllegalStateException("Es wurde keine Version festgelegt, mit der das Objekt gültig werden soll");
+			throw new IllegalStateException("Es wurde keine Version festgelegt, mit der das Objekt gÃ¼ltig werden soll");
 		}
 	}
 
@@ -821,32 +827,32 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			long startTime, long endTime, ConfigurationAreaTime kindOfTime, TimeSpecificationType timeSpecificationType, Collection<Long> typeIds
 	) {
 		try {
-			// Da für jedes Objekt, das aus der Datei geladen wird, geprüft werden muss ob es in der Collection typeIds
-			// vorhanden ist, wird dafür ein HashSet benutzt. Die HashSet ermöglicht den Zugriff in O(1) auf eine Id.
-			// Die Collection wird mit der "contains" Methode lineare Zeit O(n) benötigen.
+			// Da fÃ¼r jedes Objekt, das aus der Datei geladen wird, geprÃ¼ft werden muss ob es in der Collection typeIds
+			// vorhanden ist, wird dafÃ¼r ein HashSet benutzt. Die HashSet ermÃ¶glicht den Zugriff in O(1) auf eine Id.
+			// Die Collection wird mit der "contains" Methode lineare Zeit O(n) benÃ¶tigen.
 
-			// Speichert die geforderten TypeIds und ermöglicht den schnellen Zugriff mittels der TypeId
+			// Speichert die geforderten TypeIds und ermÃ¶glicht den schnellen Zugriff mittels der TypeId
 			final Set<Long> typeIdsSet = new HashSet<Long>(typeIds);
 
-			// Speichert die Objekte, die zur Lösung gehören
+			// Speichert die Objekte, die zur LÃ¶sung gehÃ¶ren
 			final List<SystemObjectInformationInterface> results = new LinkedList<SystemObjectInformationInterface>();
 
 			// Wenn restrukturiert wird darf nicht gesucht werden, da auf Objekte zugegriffen wird, die durch
-			// eine Restrukturierung verschoben werden würden
+			// eine Restrukturierung verschoben werden wÃ¼rden
 			synchronized(_restructureLock) {
-				// Es finden lesende Dateizugriffe statt. Die Objekte dürfen nicht verschoben werden
+				// Es finden lesende Dateizugriffe statt. Die Objekte dÃ¼rfen nicht verschoben werden
 				synchronized(_configAreaFile) {
 // *********************************************************************************************************************
 					// Version ermitteln, die zum geforderten Startzeipunkt aktiv war
 
-					// Version, die zum geforderten Startzeitpunkt gültig war
+					// Version, die zum geforderten Startzeitpunkt gÃ¼ltig war
 					final short firstOldVersion = getActiveVersion(startTime, kindOfTime);
-					// Version, die zum geforderten Endzeitpunkt gültige Version
+					// Version, die zum geforderten Endzeitpunkt gÃ¼ltige Version
 					final short lastOldVersion = getActiveVersion(endTime, kindOfTime);
 
 
 // *********************************************************************************************************************
-					// die aktuellen prüfen, ob diese vielleicht auch schon gültig waren
+					// die aktuellen prÃ¼fen, ob diese vielleicht auch schon gÃ¼ltig waren
 					for(final Long typeId : typeIdsSet) {
 						// Objekte anfordern, die die geforderte TypeId besitzen
 						final List<SystemObjectInformationInterface> objectsForTypeId = _actualObjectsTypeId.get(typeId);
@@ -855,11 +861,11 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 							// Es gibt Objekte
 							for(final SystemObjectInformationInterface systemObjectInfo : objectsForTypeId) {
-								// Objekt, das die gewünschte TypeId besitzt
-								//Prüfen, ob das Objekt zur Lösung gehört
+								// Objekt, das die gewÃ¼nschte TypeId besitzt
+								//PrÃ¼fen, ob das Objekt zur LÃ¶sung gehÃ¶rt
 
 								if(objectValid(systemObjectInfo, startTime, endTime, kindOfTime, timeSpecificationType)) {
-									// Das Objekt war gültig
+									// Das Objekt war gÃ¼ltig
 									results.add(systemObjectInfo);
 								}
 
@@ -869,11 +875,11 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 
 // *********************************************************************************************************************
-					// Die alten Objekt der Mischmenge prüfen
+					// Die alten Objekt der Mischmenge prÃ¼fen
 
 					BufferedRandomAccessFile file = new BufferedRandomAccessFile(_configAreaFile, "r");
 
-					// Map mit alten TypeId Objekten anfragen und alle Objekte nehmen, deren Version bzw. Zeit paßt (gültig ab)
+					// Map mit alten TypeId Objekten anfragen und alle Objekte nehmen, deren Version bzw. Zeit paÃŸt (gÃ¼ltig ab)
 					for(final Long typeId : typeIdsSet) {
 						// betrachtete TypeId
 						final List<OldObjectTypeIdInfo> oldObjectsForTypeId = _oldObjectsTypeId.get(typeId);
@@ -892,23 +898,23 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 // *********************************************************************************************************************
 					// nGa Bereiche durchlaufen (Version wurde schon ermittelt)
-					// Die Startversion wurde ermittelt, jetzt müssen alle nGa Bereiche nach dieser Version geladen werden.
+					// Die Startversion wurde ermittelt, jetzt mÃ¼ssen alle nGa Bereiche nach dieser Version geladen werden.
 					// Es wird bei jedem Objekt nur die TypeId und Zeit/Version betrachtet. War das Objekt im
-					// geforderten Zeitraum gültig, dann wird es geladen.
+					// geforderten Zeitraum gÃ¼ltig, dann wird es geladen.
 
-					// try/finally für close der Datei
+					// try/finally fÃ¼r close der Datei
 					try {
-						// Gestartet wird beim dem ersten NGA-Block, in dem ungültige Objekte der ersten gewünschten Version enthalten sind (deshalb +1 )
+						// Gestartet wird beim dem ersten NGA-Block, in dem ungÃ¼ltige Objekte der ersten gewÃ¼nschten Version enthalten sind (deshalb +1 )
 						// Version, in der ein ngaBlock gesucht wird
 						short ngaBlockVersion = (short)(firstOldVersion + 1);
 
-						// An dieser Stelle kann muss eins beachtet werden: in dem nGa-Block, der zu der Version gehört
-						// müssen sich nicht unbedingt Elemente befinden. Dies wird mit einer -1 gekennzeichnet.
-						// Ist dies der Fall, dann muss der nächste nGa-Block betrachtet werden (wenn die Version paßt).
+						// An dieser Stelle kann muss eins beachtet werden: in dem nGa-Block, der zu der Version gehÃ¶rt
+						// mÃ¼ssen sich nicht unbedingt Elemente befinden. Dies wird mit einer -1 gekennzeichnet.
+						// Ist dies der Fall, dann muss der nÃ¤chste nGa-Block betrachtet werden (wenn die Version paÃŸt).
 						// Der gerade beschriebene Fall tritt auf, wenn ein Bereich aktiviert wird, aber kein Objekt
-						// in der alten Version ungültig geworden ist.
+						// in der alten Version ungÃ¼ltig geworden ist.
 
-						// nGa Block, von dem Daten gelesen werden müssen (relative Position zum Header).
+						// nGa Block, von dem Daten gelesen werden mÃ¼ssen (relative Position zum Header).
 						// Dieser Wert wird nur benutzt, wenn auch ein sinnvoller Wert gefunden wurde.
 						long relativeBlockOffset = Long.MIN_VALUE;
 
@@ -916,15 +922,15 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 						boolean offsetFound = false;
 
 						while(_oldObjectBlocks.containsKey(ngaBlockVersion)) {
-							// Prüfen ob dieser nGaBlock benutzt werden kann.
-							// Es muss geprüft werden, ob die Objekte des Blocks in der geforderten Zeit gültig waren
+							// PrÃ¼fen ob dieser nGaBlock benutzt werden kann.
+							// Es muss geprÃ¼ft werden, ob die Objekte des Blocks in der geforderten Zeit gÃ¼ltig waren
 							final OldBlockInformations nGaBlockInformations = _oldObjectBlocks.get(ngaBlockVersion);
 							if(nGaBlockInformations.getFilePosition() >= 0) {
 								relativeBlockOffset = nGaBlockInformations.getFilePosition();
 								offsetFound = true;
 								break;
 							}
-							// Den nächsten Bereich betrachten
+							// Den nÃ¤chsten Bereich betrachten
 							ngaBlockVersion++;
 						}
 
@@ -932,24 +938,24 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 							// Auf den ersten nGa Block positionieren
 							file.seek((relativeBlockOffset + _headerEnd));
 
-							// Es müssen solange Daten gelesen werden, bis der dynamische nGa-Bereich erreicht wird
+							// Es mÃ¼ssen solange Daten gelesen werden, bis der dynamische nGa-Bereich erreicht wird
 							final long oldConfigurationObjectsBlocks = (_startOldDynamicObjects + _headerEnd);
 
-							// Solange Daten aus den nGa-Blöcken lesen, bis alle nGa geprüft wurden
+							// Solange Daten aus den nGa-BlÃ¶cken lesen, bis alle nGa geprÃ¼ft wurden
 							while(file.getFilePointer() < oldConfigurationObjectsBlocks) {
 
-								// speichert die Dateiposition des Objekts. Diese Position wird später
+								// speichert die Dateiposition des Objekts. Diese Position wird spÃ¤ter
 								// am Objekt gespeichert
 								final long startObjectFileDescriptor = file.getFilePointer();
 
-								// Länge des Blocks einlesen
+								// LÃ¤nge des Blocks einlesen
 								final int sizeOfObject = file.readInt();
 
 								// Id des Objekts einlesen
 								final long objectId = file.readLong();
 
 								if(objectId > 0) {
-									// Es ist ein Objekt und keine Lücke
+									// Es ist ein Objekt und keine LÃ¼cke
 
 									final int pidHashCode = file.readInt();
 
@@ -964,14 +970,14 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 									firstInvalidVersion = file.readShort();
 									firstValidVersion = file.readShort();
-									// Wenn das Objekt im angegebenen Zeitraum gültig war und der Typ des Objekt paßt, dann wurde ein Element gefunden
+									// Wenn das Objekt im angegebenen Zeitraum gÃ¼ltig war und der Typ des Objekt paÃŸt, dann wurde ein Element gefunden
 									final OldObjectTypeIdInfo oldObject = new OldObjectTypeIdInfo(
 											firstValidVersion, firstInvalidVersion, true, FilePointer.fromAbsolutePosition(startObjectFileDescriptor, this)
 									);
 									if(objectValid(
 											oldObject, startTime, endTime, kindOfTime, timeSpecificationType
 									) && typeIdsSet.contains(new Long(typeId))) {
-										// Das Objekt ist im angegebenen Bereich gültig, also kann es geladen werden
+										// Das Objekt ist im angegebenen Bereich gÃ¼ltig, also kann es geladen werden
 										results.add(
 												readObjectFromFile(
 														startObjectFileDescriptor,
@@ -986,21 +992,21 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 										);
 									}
 									else {
-										// Das Objekt gehört nicht zu den gesuchten TypeId's, also muss das
-										// nächste Objekt betrachtet werden
+										// Das Objekt gehÃ¶rt nicht zu den gesuchten TypeId's, also muss das
+										// nÃ¤chste Objekt betrachtet werden
 
-										// Die Länge bezieht sich auf das gesamte Objekt, ohne die Länge selber.
-										// Also ist die nächste Länge bei
-										// "aktuelle Position + Länge - 8 (Id) - 4 (pidHashCode) - 8 (typeId) - 1 (objectType) - 2(firstInvalid) - 2 (firstValid)
+										// Die LÃ¤nge bezieht sich auf das gesamte Objekt, ohne die LÃ¤nge selber.
+										// Also ist die nÃ¤chste LÃ¤nge bei
+										// "aktuelle Position + LÃ¤nge - 8 (Id) - 4 (pidHashCode) - 8 (typeId) - 1 (objectType) - 2(firstInvalid) - 2 (firstValid)
 
-										// Die anderen Werte müssen abgezogen werden, weil sie bereits eingelesen wurden
+										// Die anderen Werte mÃ¼ssen abgezogen werden, weil sie bereits eingelesen wurden
 										file.seek(file.getFilePointer() + sizeOfObject - 8 - 4 - 8 - 1 - 2 - 2);
 									}
 								}
 								else {
-									// Dieser Fall darf nicht auftreten, da es in einem nGa Block keine Lücke gibt
+									// Dieser Fall darf nicht auftreten, da es in einem nGa Block keine LÃ¼cke gibt
 									throw new IllegalStateException(
-											"Lücke im nGa-Bereich gefunden, Bereich: " + _configurationAreaPid + " Position: " + file.getFilePointer()
+											"LÃ¼cke im nGa-Bereich gefunden, Bereich: " + _configurationAreaPid + " Position: " + file.getFilePointer()
 													+ " falsche ObjektId: " + objectId
 									);
 								}
@@ -1015,23 +1021,23 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 						// Auf den dyn nGa-Bereich positionieren
 						file.seek(_startOldDynamicObjects + _headerEnd);
 
-						// Es müssen bis zum Beginn des Id-Index Daten gelesen werden
+						// Es mÃ¼ssen bis zum Beginn des Id-Index Daten gelesen werden
 						final long oldDynamicObjectsEnd = (_startIdIndex + _headerEnd);
 
 						while(file.getFilePointer() < oldDynamicObjectsEnd) {
 
-							// speichert die Dateiposition des Objekts. Diese Position wird später
+							// speichert die Dateiposition des Objekts. Diese Position wird spÃ¤ter
 							// am Objekt gespeichert
 							final long startObjectFileDescriptor = file.getFilePointer();
 
-							// Länge des Blocks einlesen
+							// LÃ¤nge des Blocks einlesen
 							final int sizeOfObject = file.readInt();
 
 							// Id des Objekts einlesen
 							final long objectId = file.readLong();
 
 							if(objectId > 0) {
-								// Es ist ein Objekt und keine Lücke
+								// Es ist ein Objekt und keine LÃ¼cke
 
 								final int pidHashCode = file.readInt();
 
@@ -1047,14 +1053,14 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 								firstInvalidTime = file.readLong();
 								firstValidTime = file.readLong();
 
-								// Objekt war gültig und der Typ des Objekts passt
+								// Objekt war gÃ¼ltig und der Typ des Objekts passt
 								final OldObjectTypeIdInfo oldDynamicObject = new OldObjectTypeIdInfo(
 										firstValidTime, firstInvalidTime, false, FilePointer.fromAbsolutePosition(startObjectFileDescriptor, this)
 								);
 								if(objectValid(
 										oldDynamicObject, startTime, endTime, kindOfTime, timeSpecificationType
 								) && typeIdsSet.contains(new Long(typeId))) {
-									// Das Objekt ist im angegebenen Bereich gültig, also kann es geladen werden
+									// Das Objekt ist im angegebenen Bereich gÃ¼ltig, also kann es geladen werden
 									results.add(
 											readObjectFromFile(
 													startObjectFileDescriptor,
@@ -1069,14 +1075,14 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 									);
 								}
 								else {
-									// Das Objekt gehört nicht zu den gesuchten TypeId's, also muss das
-									// nächste Objekt betrachtet werden
+									// Das Objekt gehÃ¶rt nicht zu den gesuchten TypeId's, also muss das
+									// nÃ¤chste Objekt betrachtet werden
 
-									// Die Länge bezieht sich auf das gesamte Objekt, ohne die Länge selber.
-									// Also ist die nächste Länge bei
-									// "aktuelle Position + Länge - 8 (Id) - 4 (pidHashCode) - 8 (typeId) - 1 (objectType) - 8(firstInvalid) - 8(firstValid)
+									// Die LÃ¤nge bezieht sich auf das gesamte Objekt, ohne die LÃ¤nge selber.
+									// Also ist die nÃ¤chste LÃ¤nge bei
+									// "aktuelle Position + LÃ¤nge - 8 (Id) - 4 (pidHashCode) - 8 (typeId) - 1 (objectType) - 8(firstInvalid) - 8(firstValid)
 
-									// Die anderen Werte müssen abgezogen werden, weil sie bereits eingelesen wurden
+									// Die anderen Werte mÃ¼ssen abgezogen werden, weil sie bereits eingelesen wurden
 									file.seek(file.getFilePointer() + sizeOfObject - 8 - 4 - 8 - 1 - 8 - 8);
 								}
 							}
@@ -1091,7 +1097,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 					}
 // *********************************************************************************************************************
 
-					// gefundene Objekt zurückgeben
+					// gefundene Objekt zurÃ¼ckgeben
 					return results.toArray(new SystemObjectInformationInterface[results.size()]);
 				} // synch(file)
 			} // synch(restructure)
@@ -1111,8 +1117,8 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Diese Methode prüft ob folgende Gleichung wahr ist:
-	 * <p/>
+	 * Diese Methode prÃ¼ft ob folgende Gleichung wahr ist:
+	 * <p>
 	 * start <= middle <= end
 	 *
 	 * @return true = Die oben angegebene Gleichung ist wahr
@@ -1120,7 +1126,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	private boolean isValueAtTheMiddle(final long start, final long middle, final long end) {
 
 		if((start <= middle) && (middle <= end)) {
-			// Objekt war/ist im angegebenen Zeitraum gültig
+			// Objekt war/ist im angegebenen Zeitraum gÃ¼ltig
 			return true;
 		}
 		else {
@@ -1129,7 +1135,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Gibt zu einem Zeitpunkt die Version zurück, die aktiv war.
+	 * Gibt zu einem Zeitpunkt die Version zurÃ¼ck, die aktiv war.
 	 *
 	 * @param startTime  Zeitpunkt, zu dem die Version aktiv gewesen sein muss
 	 * @param kindOfTime Soll die Aktivierungszeit des Konfigurationsverantwortlichen oder die lokale Aktivierung zur Berechnung der Version benutzt werden
@@ -1149,7 +1155,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			unsortedVersions = _localVersionActivationTime.keySet();
 		}
 
-		// Enthält alle Versionen in sortierter Reihenfolge
+		// EnthÃ¤lt alle Versionen in sortierter Reihenfolge
 		final Short sortedVersions[];
 		sortedVersions = unsortedVersions.toArray(new Short[unsortedVersions.size()]);
 
@@ -1162,7 +1168,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			// obere Zeitgrenze
 			final long end;
 
-			// Version, die gerade geprüft wird ob sie zu dem übergebenen Zeitpunkt aktiv war.
+			// Version, die gerade geprÃ¼ft wird ob sie zu dem Ã¼bergebenen Zeitpunkt aktiv war.
 			final short consideredVersion = sortedVersions[nr];
 
 			if(kindOfTime == ConfigurationAreaTime.GLOBAL_ACTIVATION_TIME) {
@@ -1172,7 +1178,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 				start = _localVersionActivationTime.get(consideredVersion);
 			}
 
-			// Prüfen, ob es noch eine nächste Version gibt
+			// PrÃ¼fen, ob es noch eine nÃ¤chste Version gibt
 			if((nr + 1) < sortedVersions.length) {
 				if(kindOfTime == ConfigurationAreaTime.GLOBAL_ACTIVATION_TIME) {
 					end = _configurationAuthorityVersionActivationTime.get(sortedVersions[nr + 1]);
@@ -1182,20 +1188,20 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 				}
 			}
 			else {
-				// Es gibt keinen übernächste Version mehr
+				// Es gibt keinen Ã¼bernÃ¤chste Version mehr
 				end = Long.MAX_VALUE;
 			}
 
-			// 1) Wenn sich der übergebene Zeitpunkt zwischen start und end befindet, dann wurde die Version gefunden, die zu diesem Zeitpunkt
+			// 1) Wenn sich der Ã¼bergebene Zeitpunkt zwischen start und end befindet, dann wurde die Version gefunden, die zu diesem Zeitpunkt
 			// aktiv war.
-			// 2) Ist der übergebene Zeitpunkt kleiner als der start-Wert, wurde die aktive Version gefunden
+			// 2) Ist der Ã¼bergebene Zeitpunkt kleiner als der start-Wert, wurde die aktive Version gefunden
 
 			if(isValueAtTheMiddle(start, startTime, end) || (startTime <= start)) {
 				return consideredVersion;
 			}
 		} // for
 
-		// Es gibt keine Version, die zum geforderten Zeitpunkt gültig gewesen ist
+		// Es gibt keine Version, die zum geforderten Zeitpunkt gÃ¼ltig gewesen ist
 		return -1;
 	}
 
@@ -1214,9 +1220,9 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Iteriert über alle Objekte in diesem Bereich.
+	 * Iteriert Ã¼ber alle Objekte in diesem Bereich.
 	 *
-	 * @param consumer Java-8-Style Consumer, an den jedes gefundene Objekt übergeben wird
+	 * @param consumer Java-8-Style Consumer, an den jedes gefundene Objekt Ã¼bergeben wird
 	 */
 	@Override
 	public void forEach(Consumer<? super SystemObjectInformationInterface> consumer) {
@@ -1230,9 +1236,9 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Iteriert über alle Konfigurationsobjekte in den NGA-Blöcken in diesem Bereich.
+	 * Iteriert Ã¼ber alle Konfigurationsobjekte in den NGA-BlÃ¶cken in diesem Bereich.
 	 *
-	 * @param consumer Java-8-Style Consumer, an den jedes gefundene Objekt übergeben wird
+	 * @param consumer Java-8-Style Consumer, an den jedes gefundene Objekt Ã¼bergeben wird
 	 */
 	@Override
 	public void forEachOldConfigurationObject(final Consumer<? super ConfigurationObjectInfo> consumer) {
@@ -1244,7 +1250,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 					consumer.accept(objectInfo);
 				}
 				else {
-					throw new IllegalStateException("NGA-Block enthält dynamische Objekte");
+					throw new IllegalStateException("NGA-Block enthÃ¤lt dynamische Objekte");
 				}
 			}
 		};
@@ -1252,9 +1258,9 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Iteriert über alle dynamischen Objekte im NGDyn-Block in diesem Bereich.
+	 * Iteriert Ã¼ber alle dynamischen Objekte im NGDyn-Block in diesem Bereich.
 	 *
-	 * @param consumer Java-8-Style Consumer, an den jedes gefundene Objekt übergeben wird
+	 * @param consumer Java-8-Style Consumer, an den jedes gefundene Objekt Ã¼bergeben wird
 	 */
 	@Override
 	public void forEachOldDynamicObject(final Consumer<? super DynamicObjectInfo> consumer) {
@@ -1266,7 +1272,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 					consumer.accept(objectInfo);
 				}
 				else {
-					throw new IllegalStateException("NGDyn-Block enthält Konfigurationsobjekte");
+					throw new IllegalStateException("NGDyn-Block enthÃ¤lt Konfigurationsobjekte");
 				}
 			}
 		};
@@ -1274,9 +1280,9 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Iteriert über alle Objekte in der Mischmenge in diesem Bereich.
+	 * Iteriert Ã¼ber alle Objekte in der Mischmenge in diesem Bereich.
 	 *
-	 * @param consumer Java-8-Style Consumer, an den jedes gefundene Objekt übergeben wird
+	 * @param consumer Java-8-Style Consumer, an den jedes gefundene Objekt Ã¼bergeben wird
 	 */
 	@Override
 	public void forEachMixedObject(Consumer<? super SystemObjectInformationInterface> consumer) {
@@ -1289,7 +1295,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 				synchronized(_configAreaFile) {
 					BufferedRandomAccessFile file = new BufferedRandomAccessFile(_configAreaFile, "r");
 
-					// try/finally für close der Datei
+					// try/finally fÃ¼r close der Datei
 					try {
 						file.seek(startOffset);
 						while(file.getFilePointer() < endOffset) {
@@ -1297,7 +1303,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 							BinaryObject binaryObject = BinaryObject.fromDataInput(file);
 							SystemObjectInformationInterface systemObjectInfo = binaryObject.toSystemObjectInfo(this, file.getFilePointer());
 							if(systemObjectInfo != null){
-								// Falls keine Lücke
+								// Falls keine LÃ¼cke
 								consumer.accept(systemObjectInfo);
 							}
 						}// while
@@ -1314,7 +1320,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Schreibt einen Header in die übergebene Datei. Der FileDescriptor wird auf Position 0 gesetzt und steht am Ende des Schreibvorgangs am Ende des Headers.
+	 * Schreibt einen Header in die Ã¼bergebene Datei. Der FileDescriptor wird auf Position 0 gesetzt und steht am Ende des Schreibvorgangs am Ende des Headers.
 	 *
 	 * @param file
 	 *
@@ -1325,25 +1331,25 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			// Der Header wird an den Beginn der Datei geschrieben
 			file.seek(0);
 
-			// Die Headerlänge ist unbekannt, also wird als Platzhalter eine -1 geschrieben
+			// Die HeaderlÃ¤nge ist unbekannt, also wird als Platzhalter eine -1 geschrieben
 			file.writeInt(-1);
 
 			// Kennung 1 speichern
 			file.writeShort(1);
-			// Länge der Kennung, 4 Bytes
+			// LÃ¤nge der Kennung, 4 Bytes
 			file.writeShort(4);
 			// aktive Version
 			file.writeShort(_activeVersion);
-			// größte Version
+			// grÃ¶ÃŸte Version
 			file.writeShort(_activeVersion + 1);
 
-			// Kennung 2, alle nGa Blöcke.
+			// Kennung 2, alle nGa BlÃ¶cke.
 			if(_oldObjectBlocks.size() > 0) {
 				file.writeShort(2);
 				// Platzbedarf speichern
 				file.writeShort(_oldObjectBlocks.size() * (8 * 2 + 2));
 
-				// Schlüssel sortieren
+				// SchlÃ¼ssel sortieren
 				final Short[] oldVersions = _oldObjectBlocks.keySet().toArray(new Short[_oldObjectBlocks.keySet().size()]);
 				Arrays.sort(oldVersions);
 
@@ -1360,12 +1366,12 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 				}
 			}
 			else {
-				// Es gibt noch keine nGa-Blöcke, die Kennung wird trotzdem geschrieben.
-				// Also hat auch ein Header, der keine nGa-Blöcke besitzt schon die richtige Größe.
-				// Wird die Kennung nicht geschrieben, dann fehlen 4 Bytes (2 Bytes für die Kennung, 2 Bytes für die Länge) und
-				// dieser Fall muss extra erkannt werden. So hat der Header ohne nGa sofort die richtige Länge.
+				// Es gibt noch keine nGa-BlÃ¶cke, die Kennung wird trotzdem geschrieben.
+				// Also hat auch ein Header, der keine nGa-BlÃ¶cke besitzt schon die richtige GrÃ¶ÃŸe.
+				// Wird die Kennung nicht geschrieben, dann fehlen 4 Bytes (2 Bytes fÃ¼r die Kennung, 2 Bytes fÃ¼r die LÃ¤nge) und
+				// dieser Fall muss extra erkannt werden. So hat der Header ohne nGa sofort die richtige LÃ¤nge.
 				file.writeShort(2);
-				// Platzbedarf speichern. Es gibt keine Blöcke
+				// Platzbedarf speichern. Es gibt keine BlÃ¶cke
 				file.writeShort(0);
 			}
 			// Kennung 3, nGa dynamische Objekte
@@ -1394,7 +1400,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 			// Kennung 7, Index Pid
 			file.writeShort(7);
-			// Die Pid des Konfigurationsbereichs ist Variable, also muss die Länge berechnet werden
+			// Die Pid des Konfigurationsbereichs ist Variable, also muss die LÃ¤nge berechnet werden
 			byte pidAsBytes[] = _configurationAreaPid.getBytes("ISO-8859-1");
 			file.writeShort(1 + pidAsBytes.length);
 
@@ -1423,23 +1429,23 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 			file.writeInt(_serializerVersion);
 
-			// Länge des Headers schreiben
+			// LÃ¤nge des Headers schreiben
 			final long headerEnd = file.getFilePointer();
 			file.seek(0);
-			// Der Intergerwert, der die Länge des Headers darstellt,
-			// zählt nicht zu länge des Headers und wird darum abgezogen
+			// Der Intergerwert, der die LÃ¤nge des Headers darstellt,
+			// zÃ¤hlt nicht zu lÃ¤nge des Headers und wird darum abgezogen
 			file.writeInt((int)(headerEnd - 4));
 			file.seek(headerEnd);
 		}
 	}
 
 	/**
-	 * Lädt alle "aktuellen" und in "Zukunft aktuellen" Objekte. Objekte die ungültig sind, aber sich noch in der Mischobjektmenge befinden, werden nur Teilweise
+	 * LÃ¤dt alle "aktuellen" und in "Zukunft aktuellen" Objekte. Objekte die ungÃ¼ltig sind, aber sich noch in der Mischobjektmenge befinden, werden nur Teilweise
 	 * (ID, Pid-HashCode, Dateiposition) geladen.
-	 * <p/>
-	 * Soll der Bereich in einer anderen als der aktuellen Version geladen werden, dann müssen ebenfalls die nGa-Bereiche betrachtet werden.
+	 * <p>
+	 * Soll der Bereich in einer anderen als der aktuellen Version geladen werden, dann mÃ¼ssen ebenfalls die nGa-Bereiche betrachtet werden.
 	 *
-	 * @return Collecetion, die alle Objekte der Mischmenge enthält (entweder ganz, oder nur als ID-Pid-Dateiposition Kombination) und Objekte aus den
+	 * @return Collecetion, die alle Objekte der Mischmenge enthÃ¤lt (entweder ganz, oder nur als ID-Pid-Dateiposition Kombination) und Objekte aus den
 	 *         entsprechende nGa-Bereichen (enthalten Sind Objekte der Typen
 	 *         {@link de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformationInterface}
 	 *         und
@@ -1451,32 +1457,32 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	public Collection<Object> getMixedObjectSetObjects() {
 
 		try {
-			// Es müssen alle Objekte der Mischobjektmenge zurückgegeben werden.
+			// Es mÃ¼ssen alle Objekte der Mischobjektmenge zurÃ¼ckgegeben werden.
 
 			final List<Object> mixedObjects = new ArrayList<Object>();
 
 			synchronized(_configAreaFile) {
 
 				// Beschreibt ab welcher Position Daten eingelesen werden.
-				// Wenn die aktiver Version, die im Konstruktor übergeben wurde, in der Map _oldObjectBlocks
-				// zu finden ist, dann müssen zuerst diese Objekte geladen werden und zwar bis zum dyn nGa Block.
+				// Wenn die aktiver Version, die im Konstruktor Ã¼bergeben wurde, in der Map _oldObjectBlocks
+				// zu finden ist, dann mÃ¼ssen zuerst diese Objekte geladen werden und zwar bis zum dyn nGa Block.
 				// Erst danach wird die Mischmenge geladen.
 
 				final long startingPosition;
 
 				if(_oldObjectBlocks.containsKey(_activeVersion)) {
-					// Es gibt mindestens einen nGa Block, der Objekte enthält, die geladen werden müssen.
+					// Es gibt mindestens einen nGa Block, der Objekte enthÃ¤lt, die geladen werden mÃ¼ssen.
 					// Die relative Position des Blocks anfordern.
 					// Die relative Position eines Blocks kann eine -1 enthalten. Dies bedeutet, dass es zu diesem Block
-					// keine Objekte gibt, der Block kann also "übersprungen" werden.
-					// Es werden solange Blöcke übersprungen, bis eine relative Startposition gefunden wurde oder
-					// es keine Blöcke mehr gibt, in diesem Fall kann direkt die Mischmenge geladen werden.
+					// keine Objekte gibt, der Block kann also "Ã¼bersprungen" werden.
+					// Es werden solange BlÃ¶cke Ã¼bersprungen, bis eine relative Startposition gefunden wurde oder
+					// es keine BlÃ¶cke mehr gibt, in diesem Fall kann direkt die Mischmenge geladen werden.
 
 					// Als Default auf die Mischmenge, wenn dieser Wert nicht neu gesetzt werden kann, dann wird direkt
 					// die Mischmenge geladen
 					long relativeStart = _startMixedSet;
 
-					// Bestimmt die nächste Version, die von der aktiven Version aus betrachtet wird und die altive
+					// Bestimmt die nÃ¤chste Version, die von der aktiven Version aus betrachtet wird und die altive
 					// Version besitzt keinen nGa Block
 					short versionOffset = 0;
 
@@ -1487,14 +1493,14 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 //						System.out.println("Block Offset, relativ: " + blockOffset);
 
 						if(blockOffset >= 0) {
-							// Es gibt einen nGa Block für die Version
+							// Es gibt einen nGa Block fÃ¼r die Version
 							relativeStart = blockOffset;
 							// Der Start wurde gefunden, also kann die Schleife verlassen werden
 //							System.out.println("Es muss ein nGa-Block geladen werden, absolute Position: " + (relativeStart + _headerEnd) + " relative Position: " + relativeStart + " Version des Blocks: " + (_activeVersion + versionOffset));
 							break;
 						}
 						else {
-							// Die Version enthält keine Daten, also wird die nächste betrachtet
+							// Die Version enthÃ¤lt keine Daten, also wird die nÃ¤chste betrachtet
 							versionOffset++;
 						}
 					}
@@ -1506,20 +1512,20 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 //					System.out.println("Es kann die Mischmenge geladen werden, absolute Position: " + startingPosition);
 				}
 
-				// Datei öffnen
+				// Datei Ã¶ffnen
 				final BufferedRandomAccessFile file = new BufferedRandomAccessFile(_configAreaFile, "r");
 
 				try {
-					// Als erstes muss der Index-Id geprüft werden, um die größte Id der alten Objekte
+					// Als erstes muss der Index-Id geprÃ¼ft werden, um die grÃ¶ÃŸte Id der alten Objekte
 					// zu finden.
 					if(_startIdIndex > 0) {
 						// Es gibt einen Id-Index
 						file.seek((_startPidHashCodeIndex + _headerEnd) - 8 - 8);
-						// größte Id der alten Objekte einlesen
+						// grÃ¶ÃŸte Id der alten Objekte einlesen
 						_greatestId = getRunningNumber(file.readLong());
 					}
 
-					// finally für close der Datei
+					// finally fÃ¼r close der Datei
 
 					// Datei auf den Anfang der Mischmenge postieren
 					file.seek(startingPosition);
@@ -1531,29 +1537,29 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 					boolean configAreaObjectFound = false;
 					while(file.getFilePointer() < fileSize) {
 
-						// Wenn alle nGa Blöcke geladen wurden, dann steht der FileDescriptor auf dem Anfang des
-						// dyn nGa Blocks, dann müssen die Objekte aus der Mischmenge geladen werden.
-						// Dazu wird der dyn nGa Block der Id Index und der Pid-HashCode Index übersprungen.
+						// Wenn alle nGa BlÃ¶cke geladen wurden, dann steht der FileDescriptor auf dem Anfang des
+						// dyn nGa Blocks, dann mÃ¼ssen die Objekte aus der Mischmenge geladen werden.
+						// Dazu wird der dyn nGa Block der Id Index und der Pid-HashCode Index Ã¼bersprungen.
 						if(file.getFilePointer() == (_startOldDynamicObjects + _headerEnd)) {
 //							System.out.println("Sprung zur Mischmenge, aktuelle Position, absolut: " + file.getFilePointer() + " neue Position: " + (_startMixedSet + _headerEnd));
 							// Es wurde bis zum dyn nGa gelesen
 							file.seek(_startMixedSet + _headerEnd);
 						}
 
-						// speichert die Dateiposition des Objekts. Diese Position wird später
+						// speichert die Dateiposition des Objekts. Diese Position wird spÃ¤ter
 						// am Objekt gespeichert
 						final long startObjectFileDescriptor = file.getFilePointer();
 
-						// Länge des Blocks einlesen
+						// LÃ¤nge des Blocks einlesen
 						final int sizeOfObject = file.readInt();
 
 						// Id des Objekts einlesen
 						final long objectId = file.readLong();
 
 						if(objectId > 0) {
-							// Es ist ein Objekt und keine Lücke
+							// Es ist ein Objekt und keine LÃ¼cke
 
-							// Ist die Id des gelesenen Objekts größer als die bisher gespeicherte Id
+							// Ist die Id des gelesenen Objekts grÃ¶ÃŸer als die bisher gespeicherte Id
 							if(getRunningNumber(objectId) > _greatestId) {
 								_greatestId = getRunningNumber(objectId);
 							}
@@ -1577,15 +1583,15 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 //								System.out.println("Id: " + objectId + " aktuelle Version: " + _activeVersion + " firstInvalid: " + firstInvalid + " firstValid " + firstValid + " absolute Position: " + startObjectFileDescriptor);
 
 								if((firstInvalid <= _activeVersion) && (firstInvalid > 0)) {
-									// Die Version, mit der das Objekt ungültig wird, ist kleiner gleich der aktuellen Version.
-									// Also ist das Objekt jetzt ungültig, dies gilt nur unter der Vorrausetzung, dass
-									// die Version größer 0 ist (0 bedeutet, der Wert wurde noch nicht gesetzt)
+									// Die Version, mit der das Objekt ungÃ¼ltig wird, ist kleiner gleich der aktuellen Version.
+									// Also ist das Objekt jetzt ungÃ¼ltig, dies gilt nur unter der Vorrausetzung, dass
+									// die Version grÃ¶ÃŸer 0 ist (0 bedeutet, der Wert wurde noch nicht gesetzt)
 
 									OldObject oldObject = new OldObject(objectId, pidHashCode, FilePointer.fromAbsolutePosition(startObjectFileDescriptor, this), this);
 									mixedObjects.add(oldObject);
 									putOldObject(oldObject);
 
-									// Objekt in Map für typeId Suche aufnehmen, dies ist ein "ungültig" markiertes Objekts
+									// Objekt in Map fÃ¼r typeId Suche aufnehmen, dies ist ein "ungÃ¼ltig" markiertes Objekts
 									putOldObjectTypeId(typeId, firstValid, firstInvalid, true, FilePointer.fromAbsolutePosition(startObjectFileDescriptor, this));
 
 									final long newDestination = startObjectFileDescriptor + 4 + sizeOfObject;
@@ -1594,29 +1600,29 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 								}
 								else {
 									// Das Objekt ist aktuell oder wird in der Zukunft aktuell, also alle Informationen laden.
-									// Der pidHashCode muss nicht übergeben werden, da das Objekt als ganzes geladen wird und somit zur Verfügung steht
+									// Der pidHashCode muss nicht Ã¼bergeben werden, da das Objekt als ganzes geladen wird und somit zur VerfÃ¼gung steht
 									final SystemObjectInformationInterface configurationObject = readObjectFromFile(
 											startObjectFileDescriptor, sizeOfObject, objectId, typeId, firstInvalid, firstValid, objectType, file
 									);
 
 									// Es muss das Objekt, das den Konfigurationsbereich darstellt gefunden werden.
-									// Es gibt 2 Fälle:
-									// 1) Es gibt ein Objekt, das in der aktuellen Version gültig ist und den Konfigurationsbereich darstellt (Normalfall)
-									// 2) Es gibt nur Objekte, die in der Zukunft gültig sind und den Konfigurationsbereich darstellen.
+									// Es gibt 2 FÃ¤lle:
+									// 1) Es gibt ein Objekt, das in der aktuellen Version gÃ¼ltig ist und den Konfigurationsbereich darstellt (Normalfall)
+									// 2) Es gibt nur Objekte, die in der Zukunft gÃ¼ltig sind und den Konfigurationsbereich darstellen.
 
-									// In Fall 1) wird das Objekt genommen, dessen Version in der aktuellen Version gültig ist
+									// In Fall 1) wird das Objekt genommen, dessen Version in der aktuellen Version gÃ¼ltig ist
 
 									// In Fall 2) wurde der Konfigurationsbereich gerade erzeugt und das Objekt, das den Konf.bereich darstellt,
-									// ist erst in der nächsten Version gültig (es ist ja ein Konfigurtionsobjekt).
-									// In diesem Fall wird das Objekt genommen, das den größten Wert bei "gültig ab" besitzt.
+									// ist erst in der nÃ¤chsten Version gÃ¼ltig (es ist ja ein Konfigurtionsobjekt).
+									// In diesem Fall wird das Objekt genommen, das den grÃ¶ÃŸten Wert bei "gÃ¼ltig ab" besitzt.
 
-									// Das Objekt, das den Konfigurationsbereich darstellt, wird über die Pid identifiziert
+									// Das Objekt, das den Konfigurationsbereich darstellt, wird Ã¼ber die Pid identifiziert
 									if((!configAreaObjectFound) && (configurationObject.getPid().equals(_configurationAreaPid))) {
-										// Das Objekt muss noch gültig sein (egal wann es gültig wird)
+										// Das Objekt muss noch gÃ¼ltig sein (egal wann es gÃ¼ltig wird)
 										if((firstInvalid == 0) || (firstInvalid > _activeVersion)) {
 											if(_configAreaObject == null) {
-												// Das erste Objekt, dass passt wird genommen. Es muss nur gültig sein oder
-												// in der Zukunft gültig werden (kein altes Objekt)
+												// Das erste Objekt, dass passt wird genommen. Es muss nur gÃ¼ltig sein oder
+												// in der Zukunft gÃ¼ltig werden (kein altes Objekt)
 												_configAreaObject = (ConfigurationObjectInfo)configurationObject;
 											}
 											else {
@@ -1625,15 +1631,15 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 												// Fall 1)
 												if(isValueAtTheMiddle(0, firstValid, _activeVersion)) {
-													// Das Objekt ist jetzt gültig, also wurde das gesuchte Objekt gefunden
+													// Das Objekt ist jetzt gÃ¼ltig, also wurde das gesuchte Objekt gefunden
 													// und es muss nicht weiter gesucht werden
 													_configAreaObject = (ConfigurationObjectInfo)configurationObject;
 													configAreaObjectFound = true;
 												}
 												else {
-													// Das Objekt ist erst in Zukunft gültig. Fall 2)
+													// Das Objekt ist erst in Zukunft gÃ¼ltig. Fall 2)
 													if(_configAreaObject.getFirstValidVersion() < firstValid) {
-														// Das betrachtete Objekt wird später gültig, als das bisher gefundene.
+														// Das betrachtete Objekt wird spÃ¤ter gÃ¼ltig, als das bisher gefundene.
 														_configAreaObject = (ConfigurationObjectInfo)configurationObject;
 													}
 												}
@@ -1644,10 +1650,10 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 									mixedObjects.add(configurationObject);
 									putUnknownObject(configurationObject);
 
-									// Für die TypeId-Suche werden nur aktuelle Objekte benötigt.
-									// Objekte die erst in der Zukunft gültig werden, werden nicht betrachtet
+									// FÃ¼r die TypeId-Suche werden nur aktuelle Objekte benÃ¶tigt.
+									// Objekte die erst in der Zukunft gÃ¼ltig werden, werden nicht betrachtet
 									if(firstValid <= _activeVersion) {
-										// Das Objekt ist derzeit gültig
+										// Das Objekt ist derzeit gÃ¼ltig
 										putActualObjectTypeId(configurationObject);
 									}
 								}
@@ -1657,30 +1663,30 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 								firstInvalid = file.readLong();
 								firstValid = file.readLong();
 
-								// Das vollständige dynamische Objekt wird in den Speicher geladen.
+								// Das vollstÃ¤ndige dynamische Objekt wird in den Speicher geladen.
 
 								
 
 
-								// Der pidHashCode muss nicht übergeben werden, da das Objekt als ganzes geladen wird und somit zur Verfügung steht
+								// Der pidHashCode muss nicht Ã¼bergeben werden, da das Objekt als ganzes geladen wird und somit zur VerfÃ¼gung steht
 								final SystemObjectInformationInterface dynamicObject = readObjectFromFile(
 										startObjectFileDescriptor, sizeOfObject, objectId, typeId, firstInvalid, firstValid, objectType, file
 								);
 
-								// Datenstruktur des FileManager mit dem dynamischen Objekt für Simulationen laden
+								// Datenstruktur des FileManager mit dem dynamischen Objekt fÃ¼r Simulationen laden
 								_fileManager.putSimulationObject((DynamicObjectInformation)dynamicObject);
 
 								if((firstInvalid > 0)) {
-									// Der Invalid Wert ist gesetzt, also ist das Objekt ungültig (ein dyn Objekt wird sofort ungütlig, nicht in
+									// Der Invalid Wert ist gesetzt, also ist das Objekt ungÃ¼ltig (ein dyn Objekt wird sofort ungÃ¼tlig, nicht in
 									// der Zukunft)
 									OldObject oldObject = new OldObject(objectId, pidHashCode, ((DynamicObjectInformation) dynamicObject).getLastFilePosition(), this);
 									mixedObjects.add(oldObject);
 									putOldObject(oldObject);
 
-									// In die Liste für TypeId's aufnehmen (false, da es sich um ein dynamisches Objekt handelt)
+									// In die Liste fÃ¼r TypeId's aufnehmen (false, da es sich um ein dynamisches Objekt handelt)
 									putOldObjectTypeId(typeId, firstValid, firstInvalid, false, FilePointer.fromAbsolutePosition(startObjectFileDescriptor, this));
 
-									// Den fileDescriptor auf den nächsten Datensatz setzen.
+									// Den fileDescriptor auf den nÃ¤chsten Datensatz setzen.
 									
 
 
@@ -1688,8 +1694,8 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 								}
 								else {
-									// Das Objekt ist aktuell. es gibt kein dyn Objekt, das in der Zukunft gültig wird, dyn Objekt sind
-									// immer sofort gültig.
+									// Das Objekt ist aktuell. es gibt kein dyn Objekt, das in der Zukunft gÃ¼ltig wird, dyn Objekt sind
+									// immer sofort gÃ¼ltig.
 
 									mixedObjects.add(dynamicObject);
 									putUnknownObject(dynamicObject);
@@ -1698,10 +1704,10 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 							}
 						}
 						else {
-//							System.out.println("Lücke: " + startObjectFileDescriptor + " negative Id: " + objectId);
-							// Eine Lücke, der filePointer muss verschoben werden.
-							// Die Länge bezieht sich auf das gesamte Objekt, ohne die Länge selber.
-							// Also ist die nächste Länge bei "aktuelle Position + Länge - 8.
+//							System.out.println("LÃ¼cke: " + startObjectFileDescriptor + " negative Id: " + objectId);
+							// Eine LÃ¼cke, der filePointer muss verschoben werden.
+							// Die LÃ¤nge bezieht sich auf das gesamte Objekt, ohne die LÃ¤nge selber.
+							// Also ist die nÃ¤chste LÃ¤nge bei "aktuelle Position + LÃ¤nge - 8.
 							// - 8, weil die Id bereits gelesen wurde und das ist ein Long.
 							file.seek(file.getFilePointer() + sizeOfObject - 8);
 						}
@@ -1726,7 +1732,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Legt ein dynamisches Objekt oder ein Konfigurationsobjekt in die entsprechende Datenstruktur für aktuelle oder in Zukunft gültige Objekte ab.
+	 * Legt ein dynamisches Objekt oder ein Konfigurationsobjekt in die entsprechende Datenstruktur fÃ¼r aktuelle oder in Zukunft gÃ¼ltige Objekte ab.
 	 *
 	 * @param unknownObject Objekt, das eingetragen werden soll
 	 */
@@ -1739,17 +1745,17 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 				putActualObject(object);
 			}
 			else {
-				// Das Objekt ist erst in Zukunft gültig
+				// Das Objekt ist erst in Zukunft gÃ¼ltig
 				putNewObject(object);
 			}
 		}
 		else if(unknownObject instanceof DynamicObjectInformation) {
 			final DynamicObjectInformation object = (DynamicObjectInformation)unknownObject;
 			if(object.getFirstInvalidTime() == 0) {
-				// Wenn der Wert gesetzt wäre, dann wäre das Objekt bereits ungültig
+				// Wenn der Wert gesetzt wÃ¤re, dann wÃ¤re das Objekt bereits ungÃ¼ltig
 				putActualObject(object);
 			}
-			// Den Fall, dass ein dynamisches Objekt in der Zukunft gültig wird, gibt es nicht
+			// Den Fall, dass ein dynamisches Objekt in der Zukunft gÃ¼ltig wird, gibt es nicht
 		}
 		else {
 			_debug.warning("Unbekanntes Objekt: " + unknownObject.getClass());
@@ -1757,11 +1763,11 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Fügt ein als "ungültig" markiertes Objekt in alle interenen Datenstrukturen hinzu, die für einen schnellen Zugriff auf ungültige Objekte benötigt werden.
-	 * <p/>
-	 * Alle Objekte, die übergeben werden, sind auch in der Datei enthalten, transiente Objekte können mit dieser Methode nicht abgebildet werden.
+	 * FÃ¼gt ein als "ungÃ¼ltig" markiertes Objekt in alle interenen Datenstrukturen hinzu, die fÃ¼r einen schnellen Zugriff auf ungÃ¼ltige Objekte benÃ¶tigt werden.
+	 * <p>
+	 * Alle Objekte, die Ã¼bergeben werden, sind auch in der Datei enthalten, transiente Objekte kÃ¶nnen mit dieser Methode nicht abgebildet werden.
 	 *
-	 * @param oldObject Objekt, das Id, PidHashCode und die Dateipostion enthält. Das configAreaFileObjekt wird nicht benötigt.
+	 * @param oldObject Objekt, das Id, PidHashCode und die Dateipostion enthÃ¤lt. Das configAreaFileObjekt wird nicht benÃ¶tigt.
 	 */
 	private void putOldObject(OldObject oldObject) {
 		synchronized(_oldObjectsId) {
@@ -1773,7 +1779,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			Set<FilePointer> filePositions = _oldObjectsPid.get(oldObject.getPidHashCode());
 
 			if(filePositions != null) {
-				// Es gibt eine Liste, also Dateipostion einfügen
+				// Es gibt eine Liste, also Dateipostion einfÃ¼gen
 				filePositions.add(oldObject.getFilePosition());
 			}
 			else {
@@ -1781,14 +1787,14 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 				filePositions = new HashSet<FilePointer>();
 				filePositions.add(oldObject.getFilePosition());
 
-				// Die neue Liste in die Map einfügen
+				// Die neue Liste in die Map einfÃ¼gen
 				_oldObjectsPid.put(oldObject.getPidHashCode(), filePositions);
 			}
 		}
 	}
 
 	/**
-	 * Fügt das Objekt zu allen Datenstrukturen hinzu, die für den schnellen Zugriff auf "in Zukunft gültige" Objekte benötigt werden
+	 * FÃ¼gt das Objekt zu allen Datenstrukturen hinzu, die fÃ¼r den schnellen Zugriff auf "in Zukunft gÃ¼ltige" Objekte benÃ¶tigt werden
 	 *
 	 * @param newObjekt Objekt, das in die Datenstruktur aufgenommen werden soll
 	 */
@@ -1799,8 +1805,8 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Diese Methode entfernt ein Objekt, das in zukünftigen Versionen gültig werden soll aus allen Datenstrukturen (auch dem ConfigFileManager), die den schnellen
-	 * Zugriff auf diese Art von Objekten ermöglichen.
+	 * Diese Methode entfernt ein Objekt, das in zukÃ¼nftigen Versionen gÃ¼ltig werden soll aus allen Datenstrukturen (auch dem ConfigFileManager), die den schnellen
+	 * Zugriff auf diese Art von Objekten ermÃ¶glichen.
 	 *
 	 * @param newObject Objekt, das aus allen Datenstrukturen entfernt werden soll.
 	 */
@@ -1812,15 +1818,15 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Entfernt ein dynamisches Objekt aus alle Datenstrukturen(auch ConfigFileManager). Es wird nicht aus der Datei gelöscht.
-	 * Dient zum Löschen der dynamischen Objekte beim Beenden einer Simulation und zum permanenten Löschen von nicht mehr
-	 * benötigten, historischen Objekten.
+	 * Entfernt ein dynamisches Objekt aus alle Datenstrukturen(auch ConfigFileManager). Es wird nicht aus der Datei gelÃ¶scht.
+	 * Dient zum LÃ¶schen der dynamischen Objekte beim Beenden einer Simulation und zum permanenten LÃ¶schen von nicht mehr
+	 * benÃ¶tigten, historischen Objekten.
 	 *
 	 * @param dynamicObjectInfo Objekt, das entfernt werden soll
 	 */
 	void deleteDynamicObject(DynamicObjectInformation dynamicObjectInfo) {
 
-		// Dynamische Objekte können aktuell oder alt sein. Aus diesen Datenstrukturen werden die Elemente entfernt.
+		// Dynamische Objekte kÃ¶nnen aktuell oder alt sein. Aus diesen Datenstrukturen werden die Elemente entfernt.
 		if(_actualObjects.containsKey(dynamicObjectInfo.getID())) {
 			synchronized(_actualObjects) {
 				_actualObjects.remove(dynamicObjectInfo.getID());
@@ -1848,12 +1854,12 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			}
 		}
 
-		// Beim Filemanager aufräumen, falls es sich um ein gültiges Simulationsabjekt handelt
+		// Beim Filemanager aufrÃ¤umen, falls es sich um ein gÃ¼ltiges Simulationsabjekt handelt
 		_fileManager.removeDynamicSimulationObject(dynamicObjectInfo);
 	}
 
 	/**
-	 * Fügt das Objekt zu allen Datenstrukturen hinzu, die für den schnellen Zugriff(mit Id) auf aktuelle Objekte benötigt werden
+	 * FÃ¼gt das Objekt zu allen Datenstrukturen hinzu, die fÃ¼r den schnellen Zugriff(mit Id) auf aktuelle Objekte benÃ¶tigt werden
 	 *
 	 * @param actualObjekt
 	 */
@@ -1883,11 +1889,11 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Speichert alle benötigten Ladeinforamtionen zu einem Objekt in der Map, die alle alten Objekte verwaltet.
+	 * Speichert alle benÃ¶tigten Ladeinforamtionen zu einem Objekt in der Map, die alle alten Objekte verwaltet.
 	 *
-	 * @param typeId               TypeId des Objekt, das nicht vollständig geladen wurde
-	 * @param firstValid           Zeitpunkt oder Version mit der das Objekt gültig wurde
-	 * @param firstInvalid         Zeitpunkt oder Version mit der das Objekt ungültig wurde
+	 * @param typeId               TypeId des Objekt, das nicht vollstÃ¤ndig geladen wurde
+	 * @param firstValid           Zeitpunkt oder Version mit der das Objekt gÃ¼ltig wurde
+	 * @param firstInvalid         Zeitpunkt oder Version mit der das Objekt ungÃ¼ltig wurde
 	 * @param configurationObject  true = Es handelt sich um ein Konfigurationsobjekt (firstValid wird als Version interpretiert); false = Es handelt sich um ein
 	 *                             dynamisches Objekt (firstValid wird als Zeitpunkt interpertiert)
 	 * @param objectReference Objekt zum anfordert des Objekts (Datei oder Speicher)
@@ -1900,7 +1906,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			final ObjectReference objectReference
 	) {
 		synchronized(_oldObjectsTypeId) {
-//			System.out.println("Füge Ladeinformationen hinzu: typeId " + typeId + " confObjekt: " + configurationObject + " absoluteDateipoistion: " + absoluteFilePosition);
+//			System.out.println("FÃ¼ge Ladeinformationen hinzu: typeId " + typeId + " confObjekt: " + configurationObject + " absoluteDateipoistion: " + absoluteFilePosition);
 			final List<OldObjectTypeIdInfo> typeIdInfoList;
 
 			if(_oldObjectsTypeId.containsKey(typeId)) {
@@ -1944,49 +1950,49 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	public List<SystemObjectInformationInterface> getObjects(String pid, long startTime, long endTime, ConfigurationAreaTime kindOfTime, final short simulationVariant) {
 
 		try {
-			// Speichert alle Objekte, für die die Parameter übereinstimmen
+			// Speichert alle Objekte, fÃ¼r die die Parameter Ã¼bereinstimmen
 			final List<SystemObjectInformationInterface> results = new ArrayList<SystemObjectInformationInterface>();
 
-			// Können aktuelle Objekte betroffen sein ? Wenn nicht, wird null zurückgegeben.
-			// Achtung, das zurückgegebene Objekt kann in einem beliebigen Bereich sein, es muss
+			// KÃ¶nnen aktuelle Objekte betroffen sein ? Wenn nicht, wird null zurÃ¼ckgegeben.
+			// Achtung, das zurÃ¼ckgegebene Objekt kann in einem beliebigen Bereich sein, es muss
 			// nicht unbedingt dieser Bereich sein !! Wenn es nicht in diesem Bereich liegt, kann es ignoriert werden.
 			final SystemObjectInformationInterface actualSystemObjectInfo = _fileManager.getActiveObject(pid);
 
 			if(actualSystemObjectInfo != null) {
 				// befindet sich das Objekt in diesem Bereich ?
 				if(_actualObjects.containsKey(actualSystemObjectInfo.getID())) {
-					// Das aktuelle Objekt ist Teil von diesem Bereich, also prüfen ob es im gefordeten Zeitbereich gültig ist.
+					// Das aktuelle Objekt ist Teil von diesem Bereich, also prÃ¼fen ob es im gefordeten Zeitbereich gÃ¼ltig ist.
 					if(objectValid(actualSystemObjectInfo, startTime, endTime, kindOfTime, TimeSpecificationType.VALID_IN_PERIOD)) {
-						// Das Objekt ist im Zeibereich gültig
+						// Das Objekt ist im Zeibereich gÃ¼ltig
 						results.add(actualSystemObjectInfo);
 					}
 				}
 			}
 
-			// Wenn Simulationen berücksichtigt werden sollen, diese durchsuchen
+			// Wenn Simulationen berÃ¼cksichtigt werden sollen, diese durchsuchen
 
 			final SystemObjectInformationInterface simulationObjectInfo = _fileManager.getSimulationObject(pid, simulationVariant);
 
 			if(simulationObjectInfo != null) {
 				// befindet sich das Objekt in diesem Bereich ?
 				if(_actualObjects.containsKey(simulationObjectInfo.getID())) {
-					// Das aktuelle Objekt ist Teil von diesem Bereich, also prüfen ob es im gefordeten Zeitbereich gültig ist.
+					// Das aktuelle Objekt ist Teil von diesem Bereich, also prÃ¼fen ob es im gefordeten Zeitbereich gÃ¼ltig ist.
 					if(objectValid(simulationObjectInfo, startTime, endTime, kindOfTime, TimeSpecificationType.VALID_IN_PERIOD)) {
-						// Das Objekt ist im Zeibereich gültig
+						// Das Objekt ist im Zeibereich gÃ¼ltig
 						results.add(simulationObjectInfo);
 					}
 				}
 			}
 
-			// als ungültig markierte Objekte prüfen
+			// als ungÃ¼ltig markierte Objekte prÃ¼fen
 			final List<SystemObjectInformationInterface> binarySearchResult;
 			binarySearchResult = binarySearch(pid.hashCode(), false);
 
 			if(binarySearchResult != null) {
 				for(final SystemObjectInformationInterface systemObjectInfo : binarySearchResult) {
-					// Pid muss noch einmal überprüft werden da bisher nur HashCode abgefragt wurde
+					// Pid muss noch einmal Ã¼berprÃ¼ft werden da bisher nur HashCode abgefragt wurde
 					if(pid.equals(systemObjectInfo.getPid())) {
-						// Paßt die Zeit
+						// PaÃŸt die Zeit
 						if(objectValid(systemObjectInfo, startTime, endTime, kindOfTime, TimeSpecificationType.VALID_IN_PERIOD)) {
 							results.add(systemObjectInfo);
 						}
@@ -2003,20 +2009,20 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Diese Methode prüft, ob ein Objekte im angegebenen Zeitraum gültig war/ist.
+	 * Diese Methode prÃ¼ft, ob ein Objekte im angegebenen Zeitraum gÃ¼ltig war/ist.
 	 *
-	 * @param objectInfo            Objekt, das geprüft werden soll
-	 * @param queryIntervalStart             Startzeitpunkt ab dem ein Objekte gültig sein muss
-	 * @param queryIntervalEnd               Endzeitpunkt, bis zu dem ein Objekt gültig geworden sein muss
-	 * @param kindOfTime            Zeit des Konfigurationsverantwortlichen oder die lokale Zeit zu der eine Version gültig geworden ist
-	 * @param timeSpecificationType Gibt an, ab wann ein Objekt als "gültig" deklariert werden darf. Es gibt 2 Fälle: Fall 1) Das Objekt muss im angegebnen Bereich
-	 *                              irgendwann gültig gewesen sein (Darf aber auch in dem Bereich ungültig geworden sein). Fall 2) Das Objekt muss im gesamten
-	 *                              Zeitbereich gültig gewesen sein, die entspricht TimeSpecificationType.VALID_DURING_PERIOD
+	 * @param objectInfo            Objekt, das geprÃ¼ft werden soll
+	 * @param queryIntervalStart             Startzeitpunkt ab dem ein Objekte gÃ¼ltig sein muss
+	 * @param queryIntervalEnd               Endzeitpunkt, bis zu dem ein Objekt gÃ¼ltig geworden sein muss
+	 * @param kindOfTime            Zeit des Konfigurationsverantwortlichen oder die lokale Zeit zu der eine Version gÃ¼ltig geworden ist
+	 * @param timeSpecificationType Gibt an, ab wann ein Objekt als "gÃ¼ltig" deklariert werden darf. Es gibt 2 FÃ¤lle: Fall 1) Das Objekt muss im angegebnen Bereich
+	 *                              irgendwann gÃ¼ltig gewesen sein (Darf aber auch in dem Bereich ungÃ¼ltig geworden sein). Fall 2) Das Objekt muss im gesamten
+	 *                              Zeitbereich gÃ¼ltig gewesen sein, die entspricht TimeSpecificationType.VALID_DURING_PERIOD
 	 *
-	 * @return true = das Objekt war in dem angegebenen Zeitbereich gültig; false = das Objekt war im angegebenen Zeitbereich nicht gültig
+	 * @return true = das Objekt war in dem angegebenen Zeitbereich gÃ¼ltig; false = das Objekt war im angegebenen Zeitbereich nicht gÃ¼ltig
 	 */
 	boolean objectValid(Object objectInfo, long queryIntervalStart, long queryIntervalEnd, ConfigurationAreaTime kindOfTime, TimeSpecificationType timeSpecificationType) {
-		// Die Klasse ist im Package sichtbar, damit ein JUnit-Test die Methode prüfen kann
+		// Die Klasse ist im Package sichtbar, damit ein JUnit-Test die Methode prÃ¼fen kann
 
 		long[] activationTimes;
 		if(kindOfTime == ConfigurationAreaTime.GLOBAL_ACTIVATION_TIME) {
@@ -2029,9 +2035,9 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			throw new IllegalArgumentException("Unbekannte Zeit/Version Zuweisung " + kindOfTime);
 		}
 
-		// Zeitpunkt, an dem das Objekt gültig wurde
+		// Zeitpunkt, an dem das Objekt gÃ¼ltig wurde
 		final long objectValidSince;
-		// Zeitpunkt, an dem das Objekt ungültig wurde.
+		// Zeitpunkt, an dem das Objekt ungÃ¼ltig wurde.
 		long objectInvalidSince;
 
 		if((objectInfo instanceof ConfigurationObjectInfo)) {
@@ -2045,7 +2051,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			objectInvalidSince = dynObject.getFirstInvalidTime();
 		}
 		else {
-			// Das Objekt kann ein Konfigurationsobjekt sein oder ein dynamisches Objekt. In beiden Fällen ist das Objekt nur teilweise im Speicher vorhanden
+			// Das Objekt kann ein Konfigurationsobjekt sein oder ein dynamisches Objekt. In beiden FÃ¤llen ist das Objekt nur teilweise im Speicher vorhanden
 			final OldObjectTypeIdInfo oldObjectTypeIdInfo = (OldObjectTypeIdInfo)objectInfo;
 			if(oldObjectTypeIdInfo.isConfigurationObject()) {
 				objectValidSince = getActivationTime((short)oldObjectTypeIdInfo.getFirstValid(), activationTimes);
@@ -2059,11 +2065,11 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			}
 		}
 
-		// (objectValidSince == 0) bedeutet, dass dieses Objekt noch immer gültig ist
+		// (objectValidSince == 0) bedeutet, dass dieses Objekt noch immer gÃ¼ltig ist
 		if(objectInvalidSince == 0) objectInvalidSince = Long.MAX_VALUE;
 
 		if(TimeSpecificationType.VALID_DURING_PERIOD == timeSpecificationType) {
-			// Das Objekt muss im gesamten Zeitraum gültig gewesen sein
+			// Das Objekt muss im gesamten Zeitraum gÃ¼ltig gewesen sein
 			return objectValidSince <= queryIntervalStart && queryIntervalEnd <= objectInvalidSince;
 		}
 		else {
@@ -2078,7 +2084,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Lädt ein Objekt aus einer Datei
+	 * LÃ¤dt ein Objekt aus einer Datei
 	 *
 	 * @param filePosition Position in der Datei, an der das Objekt beginnt
 	 *
@@ -2090,7 +2096,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	SystemObjectInformation loadObjectFromFile(FilePointer filePosition) throws IOException, NoSuchVersionException {
 		synchronized(_configAreaFile) {
 			final BufferedRandomAccessFile file = new BufferedRandomAccessFile(_configAreaFile, "r");
-			// try für finally und close
+			// try fÃ¼r finally und close
 			try {
 				file.seek(filePosition.getAbsoluteFilePosition());
 
@@ -2098,7 +2104,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 				SystemObjectInformationInterface systemObjectInfo = binaryObject.toSystemObjectInfo(this, file.getFilePointer());
 
 				if(systemObjectInfo != null) {
-					// Position speichern, an der das nächste Objekt geladen werden kann
+					// Position speichern, an der das nÃ¤chste Objekt geladen werden kann
 					return (SystemObjectInformation) systemObjectInfo;
 				}
 				return null;
@@ -2110,16 +2116,16 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Lädt ein Objekt aus einer Datei und setzt im Objekt fileIterator die Position, an der das nächste Objekt gefunden werden kann (relative Position bezogen auf
+	 * LÃ¤dt ein Objekt aus einer Datei und setzt im Objekt fileIterator die Position, an der das nÃ¤chste Objekt gefunden werden kann (relative Position bezogen auf
 	 * den Header).
 	 *
 	 * @param filePosition Position in der Datei, an der das Objekt beginnt
-	 * @param fileIterator Objekt, an dem die Position des nächsten zu ladenden Objekts gespeichert wird. Wird <code>null</code> übergeben, so wird die Psoition
-	 *                     des nächsten Objekts nicht gesetzt. Wird eine -1 gesetzt,so gibt es kein nächstes Objekt mehr
+	 * @param fileIterator Objekt, an dem die Position des nÃ¤chsten zu ladenden Objekts gespeichert wird. Wird <code>null</code> Ã¼bergeben, so wird die Psoition
+	 *                     des nÃ¤chsten Objekts nicht gesetzt. Wird eine -1 gesetzt,so gibt es kein nÃ¤chstes Objekt mehr
 	 *
-	 * @return Objekt, das aus der Datei erzeugt wurde oder null falls sich dort eine Lücke befindet
+	 * @return Objekt, das aus der Datei erzeugt wurde oder null falls sich dort eine LÃ¼cke befindet
 	 *
-	 * @deprecated Diese Methode öffnet und schießt ein neues {@link BufferedRandomAccessFile}. Auf Performancegründen sollte für das Laden von mehreren Objekten
+	 * @deprecated Diese Methode Ã¶ffnet und schieÃŸt ein neues {@link BufferedRandomAccessFile}. Auf PerformancegrÃ¼nden sollte fÃ¼r das Laden von mehreren Objekten
 	 * immer dasselbe BufferedFile-Objekt verwendet werden. Einzige benutzung ist aktuell der {@link de.bsvrz.puk.config.configFile.fileaccess.ConfigAreaFile.FileIterator},
 	 * der ebenfalls nicht mehr benutzt wird und deprecated ist.
 	 *
@@ -2133,7 +2139,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			final BufferedRandomAccessFile file = new BufferedRandomAccessFile(_configAreaFile, "r");
 
 
-			// try für finally und close
+			// try fÃ¼r finally und close
 			try {
 				return loadObjectFromFile(file, filePosition, fileIterator);
 			}
@@ -2151,15 +2157,15 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 		SystemObjectInformationInterface systemObjectInfo = binaryObject.toSystemObjectInfo(this, file.getFilePointer());
 
 		if(systemObjectInfo != null) {
-			// Position speichern, an der das nächste Objekt geladen werden kann
+			// Position speichern, an der das nÃ¤chste Objekt geladen werden kann
 			if(fileIterator != null) {
-				// Sobald der Id-Index beginnt, wird eine -1 zurückgegeben
+				// Sobald der Id-Index beginnt, wird eine -1 zurÃ¼ckgegeben
 				if(file.getFilePointer() < (_startIdIndex + _headerEnd)) {
-					// Es können noch Daten gelesen werden
+					// Es kÃ¶nnen noch Daten gelesen werden
 					fileIterator.setRelativePosition((file.getFilePointer() - _headerEnd));
 				}
 				else {
-					// Es gibt keinen nächsten Datensatz mehr
+					// Es gibt keinen nÃ¤chsten Datensatz mehr
 					fileIterator.setRelativePosition(-1);
 				}
 			}
@@ -2169,15 +2175,15 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Lädt ein dynamischen Objekt oder ein Konfigurationsobjekt aus der Datei des Konfigurationsbereichs. Die Datei, die übergeben wird, steht mit ihrem
+	 * LÃ¤dt ein dynamischen Objekt oder ein Konfigurationsobjekt aus der Datei des Konfigurationsbereichs. Die Datei, die Ã¼bergeben wird, steht mit ihrem
 	 * fileDescriptor entweder auf der Simulationsvariante (bei dynamischen Objekten) oder auf den gepackten Daten (bei Konfigurationsobjekten).
 	 *
 	 * @param filePosition Position in der Datei, an der das Objekt gespeichert ist
-	 * @param objectsize   Gesamtegröße des Objekts (einschließlich der schon geladenen Daten)
+	 * @param objectsize   GesamtegrÃ¶ÃŸe des Objekts (einschlieÃŸlich der schon geladenen Daten)
 	 * @param id           Id des Objekts
 	 * @param typeId       Id des Types des Objekts
-	 * @param firstInvalid Version oder Zeitpunkt, an dem das Objekt ungültig wurde/wird
-	 * @param firstValid   Version oder Zeitpunkt, an dem das Objekt gültig wird/wurde
+	 * @param firstInvalid Version oder Zeitpunkt, an dem das Objekt ungÃ¼ltig wurde/wird
+	 * @param firstValid   Version oder Zeitpunkt, an dem das Objekt gÃ¼ltig wird/wurde
 	 * @param objecttype   0 = Konfigurationsobjekt, Valid und Invalid sind als Versionen zu interpretieren; 1 = dynamisches Objekt, Valid und Invalid sind als
 	 *                     Zeitpunkte zu interpretieren
 	 * @param file         Datei, aus der das Objekt gelesen werden soll, der fileDescriptor steht bei dynamsichen Objekten auf der Simulationsvariante, bei
@@ -2199,12 +2205,12 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			BufferedRandomAccessFile file
 	) throws IOException, NoSuchVersionException {
 
-		// Das Objekt wird geladen, es wird dafür gesorgt, dass es sich nicht sofort wieder speichern will
+		// Das Objekt wird geladen, es wird dafÃ¼r gesorgt, dass es sich nicht sofort wieder speichern will
 		synchronized(_configAreaFile) {
 			if(objecttype == 0) {
 				// Konfigurationsobjekt
 
-				// Der vordere Teil ist konstant, also kann die Länge der gepackten Daten berechnet werden.
+				// Der vordere Teil ist konstant, also kann die LÃ¤nge der gepackten Daten berechnet werden.
 				// id, pidHash, typeId, type(Konf oder dynamische), Version, Version abziehen
 				final int sizeOfPackedData = objectsize - 8 - 4 - 8 - 1 - 2 - 2;
 				final byte packedBytes[] = new byte[sizeOfPackedData];
@@ -2217,7 +2223,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 				// steht sofort auf dem Wert
 				final short simulationVariant = file.readShort();
 
-				// Der vordere Teil ist konstant, also kann die Länge der gepackten Daten berechnet werden.
+				// Der vordere Teil ist konstant, also kann die LÃ¤nge der gepackten Daten berechnet werden.
 				// id, pidHash, typeId, type(Konf oder dynamisch), Zeitstempel, Zeitstempel, Simulationsvariante abziehen
 				final int sizeOfPackedData = objectsize - 8 - 4 - 8 - 1 - 8 - 8 - 2;
 				final byte packedBytes[] = new byte[sizeOfPackedData];
@@ -2235,26 +2241,26 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Speichert ein Objekt ans Ende der übergebenen Datei.
-	 * <p/>
+	 * Speichert ein Objekt ans Ende der Ã¼bergebenen Datei.
+	 * <p>
 	 * Die Datei wird nach dem Schreibzugriff nicht geschlossen und die neue Dateiposition wird am Objekt vermerkt.
 	 *
 	 * @param dynamicObject      Objekt, das gesichert werden soll
 	 * @param file               Datei, in der das Objekt gespeichert werden soll. Das Objekt wird ans Ende der Datei geschrieben
-	 * @param declareGap         true = (Normalfall) Das Objekt wird gespeichert, es existiert aber noch eine ältere Version des Objekts in der Datei und diese
-	 *                           wird als Lücke deklariert (ID wird auf 0 gesetzt); false = (Anlegen einer neuen Konfigurationsbereichsdatei oder bei
-	 *                           Reorganisation) Das Objekt wird in der Datei gespeichert (es wird keine Lücke erzeugt). Dies ist aber die erste Version des
-	 *                           Objekts in der Datei und somit gibt es auch keinen Vorgänger der als Lücke deklariert werden soll
+	 * @param declareGap         true = (Normalfall) Das Objekt wird gespeichert, es existiert aber noch eine Ã¤ltere Version des Objekts in der Datei und diese
+	 *                           wird als LÃ¼cke deklariert (ID wird auf 0 gesetzt); false = (Anlegen einer neuen Konfigurationsbereichsdatei oder bei
+	 *                           Reorganisation) Das Objekt wird in der Datei gespeichert (es wird keine LÃ¼cke erzeugt). Dies ist aber die erste Version des
+	 *                           Objekts in der Datei und somit gibt es auch keinen VorgÃ¤nger der als LÃ¼cke deklariert werden soll
 	 * @param setNewFilePosition true = (Normalfall) Das Objekt wird in der Datei gespeichert und die neue Position in der Datei wird am Objekt, das sich im
 	 *                           Speicher befindet, gespeichert; false = Das Objekt wird in der Datei gespeichert, aber die neue Dateiposition wird nicht am Objekt
-	 *                           gespeichert sondern muss nachträglich am Objekt, das sich im Speicher befindet, gesetzt werden. Ein Beispiel wäre die
+	 *                           gespeichert sondern muss nachtrÃ¤glich am Objekt, das sich im Speicher befindet, gesetzt werden. Ein Beispiel wÃ¤re die
 	 *                           Reorganisation. Das Objekt wird in der neue Datei gespeichert, aber die Dateiposition wird am Objekt im Speicher erst dann
 	 *                           gesetzt, wenn die Reorganisation erfolgreich abgeschlossen werden konnte.
 	 *
 	 * @return Position in der Datei, an der das Objekt gespeichert wurde
 	 *
 	 * @throws IOException           Fehler beim schreiben in die Datei, Teile des Datensatzes wurden bereits geschrieben
-	 * @throws IllegalStateException Fehler beim sammeln der Daten, die Datei wurde noch nicht verändert
+	 * @throws IllegalStateException Fehler beim sammeln der Daten, die Datei wurde noch nicht verÃ¤ndert
 	 */
 	private long writeDynamicObjectToFile(DynamicObjectInformation dynamicObject, final BufferedRandomAccessFile file, boolean declareGap, boolean setNewFilePosition)
 			throws IOException, IllegalStateException {
@@ -2272,10 +2278,10 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			serializer = SerializingFactory.createSerializer(_serializerVersion, out);
 
 			synchronized(dynamicObject) {
-				// Das Objekt ist derzeit für alle Zugriffe gesperrt, also werden alle Informationen angefordert.
-				// So ist sichergestellt, das sie sich nach freigabe des Objekts nicht ändern.
-				// Daten die sich nicht mehr ändern werden ebenfalls lokal gespeichert, damit sie nicht beim
-				// schreiben angefordert werden müssen und dabei eventuell blockieren und somit die ganze Datei sperren.
+				// Das Objekt ist derzeit fÃ¼r alle Zugriffe gesperrt, also werden alle Informationen angefordert.
+				// So ist sichergestellt, das sie sich nach freigabe des Objekts nicht Ã¤ndern.
+				// Daten die sich nicht mehr Ã¤ndern werden ebenfalls lokal gespeichert, damit sie nicht beim
+				// schreiben angefordert werden mÃ¼ssen und dabei eventuell blockieren und somit die ganze Datei sperren.
 
 				id = dynamicObject.getID();
 				pidHashCode = dynamicObject.getPid().hashCode();
@@ -2284,22 +2290,22 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 				firstValidTime = dynamicObject.getFirstValidTime();
 				simulationVariant = dynamicObject.getSimulationVariant();
 
-				// Als nächstes werden die Daten des SystemObjects bearbeitet (alles, bis auf die Id wird eingetragen)
+				// Als nÃ¤chstes werden die Daten des SystemObjects bearbeitet (alles, bis auf die Id wird eingetragen)
 				writeSystemObjectWithoutIdAndTypeId(dynamicObject, serializer);
 			} // synch
 
 			// Im Serializer liegen nun alle Daten, die geschrieben werden sollen, diese als Byte-Array anfordern
-			// und packen. Danach ist die Länge des Objekts bekannt.
+			// und packen. Danach ist die LÃ¤nge des Objekts bekannt.
 			packedData = zip(out.toByteArray());
 		}
 		catch(Exception e) {
 			_debug.error("Id: " + dynamicObject.getID() + " Serialisiererversion: " + _serializerVersion, e);
 			throw new IllegalStateException(
-					"Die Daten eines dynamischen Objekts können nicht serialisiert werden, das Objekt wird nicht gespeichert: Id" + dynamicObject.getID()
+					"Die Daten eines dynamischen Objekts kÃ¶nnen nicht serialisiert werden, das Objekt wird nicht gespeichert: Id" + dynamicObject.getID()
 			);
 		}
 
-		// Die Länge kann berechnet werden
+		// Die LÃ¤nge kann berechnet werden
 		// Id + HashCode + TypeId + (dyn oder konf) + Zeitstempel + Zeitstempel + Simulationsvariante + gepackte Daten
 		final int dynamicObjectSize = 8 + 4 + 8 + 1 + 8 + 8 + 2 + packedData.length;
 
@@ -2309,17 +2315,17 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			// Die neue Dateiposition speichern, nach erfolgreichen schreiben wird die Position am Objekt vermerkt
 			final long newObjectFilePosition = file.length();
 
-			// filedescriptor positionieren, nötig, weil der Descriptor nicht am Ender der Datei stehen muss, auch wenn
-			// vorher ein Objekt geschrieben wurde (das alte Objekt wurde als Lücke markiert, also steht der FD mitten in der Datei)
+			// filedescriptor positionieren, nÃ¶tig, weil der Descriptor nicht am Ender der Datei stehen muss, auch wenn
+			// vorher ein Objekt geschrieben wurde (das alte Objekt wurde als LÃ¼cke markiert, also steht der FD mitten in der Datei)
 			file.seek(newObjectFilePosition);
 
-			// Länge der Daten, int
+			// LÃ¤nge der Daten, int
 			// Id, long
 			// hashCode der Pid, int
 			// typeId des Objekts, long
 			// Kennzeichnung dynamisches Objekt (1), byte
-			// Zeitstempel nicht mehr gültig ab, long
-			// Zeitstempel gültig ab, long
+			// Zeitstempel nicht mehr gÃ¼ltig ab, long
+			// Zeitstempel gÃ¼ltig ab, long
 			// Simulationsvariante, short
 
 			file.writeInt(dynamicObjectSize);
@@ -2331,22 +2337,22 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			file.writeLong(firstValidTime);
 			file.writeShort(simulationVariant);
 
-			// Jetzt können die gepackten Daten gespeichert werden.
-			// Die Anzahl Bytes, die zu diesem Array gehören, können beim einlesen des Daten aus der Länge
+			// Jetzt kÃ¶nnen die gepackten Daten gespeichert werden.
+			// Die Anzahl Bytes, die zu diesem Array gehÃ¶ren, kÃ¶nnen beim einlesen des Daten aus der LÃ¤nge
 			// des gesamten Objekts berechnet werden, da der ungepackte Teil konstant ist.
 			file.write(packedData);
 
-			// Soll eine Lücke erzeugt werden
+			// Soll eine LÃ¼cke erzeugt werden
 			FilePointer filePosition = dynamicObject.getLastFilePosition();
 			if(declareGap && filePosition != null) {
-				// Die Vorgängerversion in der Datei als Lücke deklarieren (ID auf 0)
+				// Die VorgÃ¤ngerversion in der Datei als LÃ¼cke deklarieren (ID auf 0)
 				declareObjectAsAGap(filePosition, file);
 			}
 			if(setNewFilePosition) {
 				// Das Objekt wurde gespeichert, also muss die neue Dateiposition am Objekt, das sich im Speicher befindet,
 				// neu gesetzt werden.
 				if(filePosition != null) {
-					// Pointer weiterverwenden, damit bestehende Cache-Einträge (z.B. im ConfigFileManager) umgebogen werden
+					// Pointer weiterverwenden, damit bestehende Cache-EintrÃ¤ge (z.B. im ConfigFileManager) umgebogen werden
 					filePosition.setAbsoluteFilePosition(newObjectFilePosition);
 				}
 				else {
@@ -2359,25 +2365,25 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Speichert ein Objekt ans Ende der übergebenen Datei. Die Datei wird nach dem Schreibzugriff nicht geschlossen. Die Dateiposition wird am Objekt
+	 * Speichert ein Objekt ans Ende der Ã¼bergebenen Datei. Die Datei wird nach dem Schreibzugriff nicht geschlossen. Die Dateiposition wird am Objekt
 	 * aktualisiert.
 	 *
 	 * @param configurationObject Objekt, das gespeichert werden soll
 	 * @param file                Datei, in der das Objekt gespeichert werden soll.
-	 * @param declareGap          true = (Normalfall) Das Objekt wird gespeichert, es existiert aber noch eine ältere Version des Objekts in der Datei und diese
-	 *                            wird als Lücke deklariert (ID wird auf 0 gesetzt); false = (Anlegen einer neuen Konfigurationsbereichsdatei oder bei
-	 *                            Reorganisation) Das Objekt wird in der Datei gespeichert (es wird keine Lücke erzeugt). Dies ist aber die erste Version des
-	 *                            Objekts in der Datei und somit gibt es auch keinen Vorgänger der als Lücke deklariert werden soll
+	 * @param declareGap          true = (Normalfall) Das Objekt wird gespeichert, es existiert aber noch eine Ã¤ltere Version des Objekts in der Datei und diese
+	 *                            wird als LÃ¼cke deklariert (ID wird auf 0 gesetzt); false = (Anlegen einer neuen Konfigurationsbereichsdatei oder bei
+	 *                            Reorganisation) Das Objekt wird in der Datei gespeichert (es wird keine LÃ¼cke erzeugt). Dies ist aber die erste Version des
+	 *                            Objekts in der Datei und somit gibt es auch keinen VorgÃ¤nger der als LÃ¼cke deklariert werden soll
 	 * @param setNewFilePosition  true = (Normalfall) Das Objekt wird in der Datei gespeichert und die neue Position in der Datei wird am Objekt, das sich im
 	 *                            Speicher befindet, gespeichert; false = Das Objekt wird in der Datei gespeichert, aber die neue Dateiposition wird nicht am
-	 *                            Objekt gespeichert sondern muss nachträglich am Objekt, das sich im Speicher befindet, gesetzt werden. Ein Beispiel wäre die
+	 *                            Objekt gespeichert sondern muss nachtrÃ¤glich am Objekt, das sich im Speicher befindet, gesetzt werden. Ein Beispiel wÃ¤re die
 	 *                            Reorganisation. Das Objekt wird in der neue Datei gespeichert, aber die Dateiposition wird am Objekt im Speicher erst dann
 	 *                            gesetzt, wenn die Reorganisation erfolgreich abgeschlossen werden konnte.
 	 *
 	 * @return Position in der Datei, an der das Objekt gespeichert wurde
 	 *
 	 * @throws IOException           Fehler beim schreiben in die Datei, Teile des Datensatzes wurden bereits geschrieben
-	 * @throws IllegalStateException Fehler beim sammeln der Daten, die Datei wurde noch nicht verändert
+	 * @throws IllegalStateException Fehler beim sammeln der Daten, die Datei wurde noch nicht verÃ¤ndert
 	 */
 	private long writeConfigurationObjectToFile(
 			ConfigurationObjectInformation configurationObject, final BufferedRandomAccessFile file, boolean declareGap, boolean setNewFilePosition
@@ -2396,10 +2402,10 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			serializer = SerializingFactory.createSerializer(_serializerVersion, out);
 
 			synchronized(configurationObject) {
-				// Das Objekt ist derzeit für alle Zugriffe gesperrt, also werden alle Informationen angefordert.
-				// So ist sichergestellt, das sie sich nach freigabe des Objekts nicht ändern.
-				// Daten die sich nicht mehr ändern werden ebenfalls lokal gespeichert, damit sie nicht beim
-				// schreiben angefordert werden müssen und dabei eventuell blockieren und somit die ganze Datei sperren.
+				// Das Objekt ist derzeit fÃ¼r alle Zugriffe gesperrt, also werden alle Informationen angefordert.
+				// So ist sichergestellt, das sie sich nach freigabe des Objekts nicht Ã¤ndern.
+				// Daten die sich nicht mehr Ã¤ndern werden ebenfalls lokal gespeichert, damit sie nicht beim
+				// schreiben angefordert werden mÃ¼ssen und dabei eventuell blockieren und somit die ganze Datei sperren.
 
 				id = configurationObject.getID();
 				pidHashCode = configurationObject.getPid().hashCode();
@@ -2407,17 +2413,17 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 				firstInvalidVersion = configurationObject.getFirstInvalidVersion();
 				firstValidVersion = configurationObject.getFirstValidVersion();
 
-				// Die Version, in der ein Objekt gültig werden soll, muss Größer 0 sein.
+				// Die Version, in der ein Objekt gÃ¼ltig werden soll, muss GrÃ¶ÃŸer 0 sein.
 				if(firstValidVersion <= 0) {
 					throw new IllegalStateException(
-							"Ein Konfigurationsobjekt " + configurationObject.getPid() + " ist in einer Version kleiner 1 gültig. Dies ist nicht erlaubt."
+							"Ein Konfigurationsobjekt " + configurationObject.getPid() + " ist in einer Version kleiner 1 gÃ¼ltig. Dies ist nicht erlaubt."
 					);
 				}
 
-				// Als nächstes werden die Daten des SystemObjects bearbeitet (alles, bis auf die Id wird eingetragen)
+				// Als nÃ¤chstes werden die Daten des SystemObjects bearbeitet (alles, bis auf die Id wird eingetragen)
 				writeSystemObjectWithoutIdAndTypeId(configurationObject, serializer);
 
-				// Alle Daten, die speziell für ein Konfigurationsbjekt sind und noch fehlen
+				// Alle Daten, die speziell fÃ¼r ein Konfigurationsbjekt sind und noch fehlen
 
 				// Mengen des Konfigurationsobjekts
 				// Anzahl Mengen, short
@@ -2452,17 +2458,17 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			} // synch
 
 			// Im Serializer liegen nun alle Daten, die geschrieben werden sollen, diese als Byte-Array anfordern
-			// und packen. Danach ist die Länge des Objekts bekannt.
+			// und packen. Danach ist die LÃ¤nge des Objekts bekannt.
 			packedData = zip(out.toByteArray());
 		}
 		catch(Exception e) {
 			_debug.error("Id: " + configurationObject.getID() + " Serialisiererversion: " + _serializerVersion, e);
 			throw new IllegalStateException(
-					"Die Daten eines dynamischen Objekts können nicht serialisiert werden, das Objekt wird nicht gespeichert: Id" + configurationObject.getID()
+					"Die Daten eines dynamischen Objekts kÃ¶nnen nicht serialisiert werden, das Objekt wird nicht gespeichert: Id" + configurationObject.getID()
 			);
 		}
 
-		// Die Länge kann berechnet werden
+		// Die LÃ¤nge kann berechnet werden
 		// Id + HashCode + typeId + (dyn oder konf) + Version + Version + gepackte Daten
 		final int dynamicObjectSize = 8 + 4 + 8 + 1 + 2 + 2 + packedData.length;
 
@@ -2472,17 +2478,17 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			// Die neue Dateiposition speichern, nach erfolgreichen schreiben wird die Position am Objekt vermerkt
 			final long newObjectFilePosition = file.length();
 
-			// filedescriptor positionieren, nötig, weil der Descriptor nicht am Ender der Datei stehen muss, auch wenn
-			// vorher ein Objekt geschrieben wurde (das alte Objekt wurde als Lücke markiert, also steht der FD mitten in der Datei)
+			// filedescriptor positionieren, nÃ¶tig, weil der Descriptor nicht am Ender der Datei stehen muss, auch wenn
+			// vorher ein Objekt geschrieben wurde (das alte Objekt wurde als LÃ¼cke markiert, also steht der FD mitten in der Datei)
 			file.seek(newObjectFilePosition);
 
-			// Länge der Daten, int
+			// LÃ¤nge der Daten, int
 			// Id, long
 			// hashCode der Pid, int
 			// typeId des Objekts
 			// Kennzeichnung Konfigurationsobjekt(0), byte
-			// Version nicht mehr gültig ab, short
-			// Version gültig ab, short
+			// Version nicht mehr gÃ¼ltig ab, short
+			// Version gÃ¼ltig ab, short
 
 			file.writeInt(dynamicObjectSize);
 			file.writeLong(id);
@@ -2492,14 +2498,14 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			file.writeShort(firstInvalidVersion);
 			file.writeShort(firstValidVersion);
 
-			// Jetzt können die gepackten Daten gespeichert werden.
-			// Die anzahl Bytes, die zu diesem Array gehören, können beim einlesen des Daten aus der Länge
+			// Jetzt kÃ¶nnen die gepackten Daten gespeichert werden.
+			// Die anzahl Bytes, die zu diesem Array gehÃ¶ren, kÃ¶nnen beim einlesen des Daten aus der LÃ¤nge
 			// des gesamten Objekts berechnet werden, da der ungepackte Teil konstant ist.
 			file.write(packedData);
 
-			// Soll eine Lücke erzeugt werden
+			// Soll eine LÃ¼cke erzeugt werden
 			if(declareGap) {
-				// Die Vorgängerversion in der Datei als Lücke deklarieren (ID auf 0)
+				// Die VorgÃ¤ngerversion in der Datei als LÃ¼cke deklarieren (ID auf 0)
 				final FilePointer lastFilePosition = configurationObject.getLastFilePosition();
 				declareObjectAsAGap(lastFilePosition, file);
 			}
@@ -2514,20 +2520,20 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Setzt die Id eines Objekts auf 0 und erklärt es somit als Lücke. Es gibt keinen unterschied zwischen dynamischen Objekten und Konfigurationsobjekten
-	 *  @param filePosition Position des Objekts (Länge des Objekts).
+	 * Setzt die Id eines Objekts auf 0 und erklÃ¤rt es somit als LÃ¼cke. Es gibt keinen unterschied zwischen dynamischen Objekten und Konfigurationsobjekten
+	 *  @param filePosition Position des Objekts (LÃ¤nge des Objekts).
 	 * @param file         Dateiobjekt, mit dem auf die Platte zugegriffen werden kann
 	 */
 	private void declareObjectAsAGap(final FilePointer filePosition, BufferedRandomAccessFile file) throws IOException {
-//		System.out.println("Lücke einfügen, Dateiposition: " + filePosition);
+//		System.out.println("LÃ¼cke einfÃ¼gen, Dateiposition: " + filePosition);
 		if(filePosition == null){
 			return;
 		}
 		synchronized(_configAreaFile) {
-			// Die Id des Datensatzes steht nach der Länge, die Länge ist ein Integer, also kann dieser Übersprungen werden
+			// Die Id des Datensatzes steht nach der LÃ¤nge, die LÃ¤nge ist ein Integer, also kann dieser Ãœbersprungen werden
 			file.seek(filePosition.getAbsoluteFilePosition() + 4);
-			// Der Zeiger steht auf der Id des Datensatzes, diese wird nun mit einer 0 überschrieben und somit als
-			// Lücke deklariert
+			// Der Zeiger steht auf der Id des Datensatzes, diese wird nun mit einer 0 Ã¼berschrieben und somit als
+			// LÃ¼cke deklariert
 			file.writeLong(0);
 		}
 	}
@@ -2545,12 +2551,12 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			}
 		}
 		catch(IOException e) {
-			_debug.warning("Fehler beim Löschen eines Konfigurationsobjekts", e);
+			_debug.warning("Fehler beim LÃ¶schen eines Konfigurationsobjekts", e);
 		}
 	}
 
 	/**
-	 * Packt ein Byte-Array mit dem Packer "ZIP" und gibt die Daten gepackt zurück
+	 * Packt ein Byte-Array mit dem Packer "ZIP" und gibt die Daten gepackt zurÃ¼ck
 	 *
 	 * @param data ungepackte Daten
 	 *
@@ -2581,16 +2587,16 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Speichert die Pid, den Namen des SystemObjects und alle konfigurierenden Datensätze .
+	 * Speichert die Pid, den Namen des SystemObjects und alle konfigurierenden DatensÃ¤tze .
 	 *
 	 * @param object     Objekt, von dem nur gewissen Teile gespeichert werden
-	 * @param serializer Byte-Strom, in den die Daten eingefügt werden
+	 * @param serializer Byte-Strom, in den die Daten eingefÃ¼gt werden
 	 */
 	private void writeSystemObjectWithoutIdAndTypeId(final SystemObjectInformationInterface object, Serializer serializer) throws IOException {
 
 		// Pid, byte,String
 		// Name, byte, String
-		// konfigurierende Datensätze (Erklärung weiter unten)
+		// konfigurierende DatensÃ¤tze (ErklÃ¤rung weiter unten)
 
 		// Pid anfordern
 		final String pid = object.getPid();
@@ -2618,18 +2624,18 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 		}
 //		serializer.writeString(name, name.length());
 
-		// konfigurierende Datensätze speichern
+		// konfigurierende DatensÃ¤tze speichern
 
-		// Anzahl Datensätze, int
+		// Anzahl DatensÃ¤tze, int
 		// je Datensatz:
 		//		Atg-Verwendung, long
-		//		Länge des serialisierten Datensatzes, int
+		//		LÃ¤nge des serialisierten Datensatzes, int
 		//		Datensatz als Byte-Array
 
-		// Id's der konfigurierenden Datensätze anfordern
+		// Id's der konfigurierenden DatensÃ¤tze anfordern
 		final long configDataSetIds[] = object.getConfigurationsDataAttributeGroupUsageIds();
 
-		// Anzahl Datensätze ist nun bekannt
+		// Anzahl DatensÃ¤tze ist nun bekannt
 		serializer.writeInt(configDataSetIds.length);
 
 
@@ -2638,7 +2644,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 			// Atg-Verwendung
 			serializer.writeLong(atgUserId);
-			// Länge des serialisierten Datensatzes
+			// LÃ¤nge des serialisierten Datensatzes
 			serializer.writeInt(dataSet.length);
 			// Den serialisierten Datensatz schreiben
 			serializer.writeBytes(dataSet);
@@ -2651,14 +2657,14 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 
 	/**
-	 * Diese Methode wird von einem Objekt aufgerufen, wenn Informationen des Objekts geändert wurden. Das gesamte Objekt wird persistent gespeichert, sobald die
+	 * Diese Methode wird von einem Objekt aufgerufen, wenn Informationen des Objekts geÃ¤ndert wurden. Das gesamte Objekt wird persistent gespeichert, sobald die
 	 * Methode {@link ConfigurationFileManager#saveConfigurationAreaFiles()} aufgerufen wird. Die Methode kann mehrfach vom selben Objekt aufgerufen werden, es
 	 * wird nur einmal gespeichert.
-	 * <p/>
-	 * Es muss außerdem geprüft werden, ob das Objekt Auswirkungen auf die drei Zeitstempel _dynamicObjectChanged,_configurationDataChanged,_configurationObjectChanged
+	 * <p>
+	 * Es muss auÃŸerdem geprÃ¼ft werden, ob das Objekt Auswirkungen auf die drei Zeitstempel _dynamicObjectChanged,_configurationDataChanged,_configurationObjectChanged
 	 * hat (siehe TPuK1-51).
 	 *
-	 * @param modifiedObject dynamisches Objekt oder Konfigurationsobjekt, dessen Informationen geändert wurden und das somit persistent in der Datei des
+	 * @param modifiedObject dynamisches Objekt oder Konfigurationsobjekt, dessen Informationen geÃ¤ndert wurden und das somit persistent in der Datei des
 	 *                       Konfigurationsbereichs gespeichert werden muss
 	 */
 	void objectModified(SystemObjectInformationInterface modifiedObject) {
@@ -2681,16 +2687,16 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Diese Methode wird aufgerufen, wenn ein dynamisches Objekt auf "ungültig" gesetzt wird. Die Methode wird vom Objekt selber aufgerufen und aktualisiert alle
-	 * Datenstrukturen, die das Objekt als "gültig" führen. Konfigurationsobjekte müssen nicht beachtet werden, da diese erst in der "nächsten" Version
-	 * ungültig/gültig werden. Dies wird beim einlesen der Datei erkannt und die Datenstrukturen werden sofort richtig angelegt. Die Methode ist blockierend, wenn
+	 * Diese Methode wird aufgerufen, wenn ein dynamisches Objekt auf "ungÃ¼ltig" gesetzt wird. Die Methode wird vom Objekt selber aufgerufen und aktualisiert alle
+	 * Datenstrukturen, die das Objekt als "gÃ¼ltig" fÃ¼hren. Konfigurationsobjekte mÃ¼ssen nicht beachtet werden, da diese erst in der "nÃ¤chsten" Version
+	 * ungÃ¼ltig/gÃ¼ltig werden. Dies wird beim einlesen der Datei erkannt und die Datenstrukturen werden sofort richtig angelegt. Die Methode ist blockierend, wenn
 	 * eine Reorganisation stattfindet.
 	 *
-	 * @param invalidObject Objekt, das "ungültig" geworden ist
+	 * @param invalidObject Objekt, das "ungÃ¼ltig" geworden ist
 	 */
 	void setDynamicObjectInvalid(DynamicObjectInformation invalidObject) {
 		synchronized(_restructureLock) {
-			// Das Objekt aus alle Datenstrukturen entfernen, in denen es als gültig gespeichert ist
+			// Das Objekt aus alle Datenstrukturen entfernen, in denen es als gÃ¼ltig gespeichert ist
 			synchronized(_actualObjects) {
 				_actualObjects.remove(invalidObject.getID());
 			}
@@ -2710,13 +2716,13 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			FilePointer lastFilePosition = invalidObject.getLastFilePosition();
 			if(lastFilePosition != null) {
 				// null bei transienten Objekten. In dem Fall kann hier nichts eingetragen werden.
-				// Man könnte in Zukunft in _oldObjectsPid ObjectReference-s eintragen statt FilePointer. 
+				// Man kÃ¶nnte in Zukunft in _oldObjectsPid ObjectReference-s eintragen statt FilePointer. 
 				
 				synchronized(_oldObjectsPid) {
 					Set<FilePointer> filePositions = _oldObjectsPid.get(invalidObject.getPidHashCode());
 
 					if(filePositions != null) {
-						// Es gibt eine Liste, also Dateipostion einfügen
+						// Es gibt eine Liste, also Dateipostion einfÃ¼gen
 						filePositions.add(lastFilePosition);
 					}
 					else {
@@ -2724,7 +2730,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 						filePositions = new HashSet<FilePointer>();
 						filePositions.add(lastFilePosition);
 
-						// Die neue Liste in die Map einfügen
+						// Die neue Liste in die Map einfÃ¼gen
 						_oldObjectsPid.put(invalidObject.getPidHashCode(), filePositions);
 					}
 				}
@@ -2747,7 +2753,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 				);
 			}
 
-			// Maps des FileManagers aufräumen
+			// Maps des FileManagers aufrÃ¤umen
 			_fileManager.setDynamicObjectInvalid(invalidObject);
 		} // synch
 	}
@@ -2772,27 +2778,27 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			boolean restructureNeeded = false;
 			final Set<Short> localKeys = _localVersionActivationTime.keySet();
 			for(final Short localKey : localKeys) {
-				// In der alten Liste prüfen, ob der Wert vorhanden ist
+				// In der alten Liste prÃ¼fen, ob der Wert vorhanden ist
 				if(!_configurationAuthorityVersionActivationTime.containsKey(localKey)) {
-					// Neues Version/Zeitpunkt Paar einfügen
+					// Neues Version/Zeitpunkt Paar einfÃ¼gen
 					_configurationAuthorityVersionActivationTime.put(localKey, _localVersionActivationTime.get(localKey));
 					_globalActivationTimes = getActivationTimeArray(_configurationAuthorityVersionActivationTime);
 					restructureNeeded = true;
 				}
 				else {
-					// Diese Überprüfung braucht nicht stattfinden, kann aber auf Fehler und manuelle Änderungen in der Verwaltungsdatei hinweisen, wenn
-					// die übergebenen Werte nicht mit den gespeicherten übereinstimmen
+					// Diese ÃœberprÃ¼fung braucht nicht stattfinden, kann aber auf Fehler und manuelle Ã„nderungen in der Verwaltungsdatei hinweisen, wenn
+					// die Ã¼bergebenen Werte nicht mit den gespeicherten Ã¼bereinstimmen
 					final long oldValue = _configurationAuthorityVersionActivationTime.get(localKey);
 					final long newValue = _localVersionActivationTime.get(localKey);
 
 					if(oldValue != newValue) {
-						// Die Werte stimmen nicht überein
+						// Die Werte stimmen nicht Ã¼berein
 						DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss,SSS");
 						String oldDateString = dateFormat.format(oldValue);
 						String newDateString = dateFormat.format(newValue);
 						_debug.info(
-								"Der gespeicherte Aktivierungszeitpunkt (" + oldDateString + ") des Bereichs " + _configAreaFile + " für die Version "
-										+ localKey + " stimmt nicht mit dem Aktivierungszeitpunkt in der Verwaltungsdatei (" + newDateString + ") überein."
+								"Der gespeicherte Aktivierungszeitpunkt (" + oldDateString + ") des Bereichs " + _configAreaFile + " fÃ¼r die Version "
+										+ localKey + " stimmt nicht mit dem Aktivierungszeitpunkt in der Verwaltungsdatei (" + newDateString + ") Ã¼berein."
 						);
 					}
 				}
@@ -2826,7 +2832,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			throw new IOException(e);
 		}
 		catch(RuntimeException e) {
-			// Unschön, aber es werden z.B. IllegalArgumentExceoptions geworfen, die hier besser abgefangen werden
+			// UnschÃ¶n, aber es werden z.B. IllegalArgumentExceoptions geworfen, die hier besser abgefangen werden
 			throw new IOException(e);
 		}
 	}
@@ -2834,8 +2840,8 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	private void restructureMain(RestructureMode mode) throws IOException, NoSuchVersionException {
 		// Alle Zugriffe auf alte Objekte, die sich im Speicher befinden, sperren
 		synchronized(_restructureLock) {
-			// Datei sperren, so werden mögliche Dateizugriffe solange blockiert, bis die neue Datei zur Verfügung steht.
-			// Die Dateizugriffe werden dann sofort auf der neuen(reorganisierten) Datei durchgeführt.
+			// Datei sperren, so werden mÃ¶gliche Dateizugriffe solange blockiert, bis die neue Datei zur VerfÃ¼gung steht.
+			// Die Dateizugriffe werden dann sofort auf der neuen(reorganisierten) Datei durchgefÃ¼hrt.
 			synchronized(_configAreaFile) {
 
 				if(_actualObjects.size() == 0) {
@@ -2844,20 +2850,20 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 					assert _actualObjects.size() > 0;
 				}
 
-				// Alle Dateioperationen verändern nicht die Objekte, die sich im Speicher befinden.
+				// Alle Dateioperationen verÃ¤ndern nicht die Objekte, die sich im Speicher befinden.
 				// Erst wenn die Reorganisation erfolgreich beendet wurde, werden die Objekte im Speicher
-				// auf die neue Situation angepaßt und aus den HashMap's entfernt und die aktuellen/zukünftig aktuellen
+				// auf die neue Situation angepaÃŸt und aus den HashMap's entfernt und die aktuellen/zukÃ¼nftig aktuellen
 				// Objekte auf die neue Dateiposition gesetzt.
 				// Kommt es zu einem Fehler bei der Reorganisation, wird die neue fehlerhaft reorganisierte Datei umbenannt
 				// (damit sie analysiert werden kann) und es wird auf der alten Datei weitergearbeitet.
-				// Damit dieses Verfahren durchgeführt werden kann, müssen alle Schritte der Reorganisation "protokolliert"
-				// werden. Im RestructureInfo werden deswegen die Dateipositionen aller gültigen bzw. neuen Objekte der Mischmenge
-				// gemerkt, sodass diese bei Bedarf im laufenden Betrieb aktualisiert werden können.
+				// Damit dieses Verfahren durchgefÃ¼hrt werden kann, mÃ¼ssen alle Schritte der Reorganisation "protokolliert"
+				// werden. Im RestructureInfo werden deswegen die Dateipositionen aller gÃ¼ltigen bzw. neuen Objekte der Mischmenge
+				// gemerkt, sodass diese bei Bedarf im laufenden Betrieb aktualisiert werden kÃ¶nnen.
 				RestructureInfo restructureInfo;
 
 				BufferedRandomAccessFile oldConfigAreaFile = new BufferedRandomAccessFile(_configAreaFile, "r");
 
-				// Alle Daten, die sich geändert haben, speichern
+				// Alle Daten, die sich geÃ¤ndert haben, speichern
 				flush();
 
 				// Die neue Datei, in der der Konfigurationsbereich reorganisiert wird
@@ -2875,7 +2881,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 				}
 
 				// Wenn das Restrukturieren geklappt hat, die alte Datei durch die neue Datei ersetzen
-				// Vorher auf jeden Fall beide Dateien schließen (finally-Block oben)!
+				// Vorher auf jeden Fall beide Dateien schlieÃŸen (finally-Block oben)!
 				swapFiles(restructureInfo, configAreaNewName);
 
 			} // synch(datei)
@@ -2887,7 +2893,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 		final String originalFileName = _configAreaFile.getAbsolutePath();
 		final File oldConfigFile = new File(originalFileName);
 
-		// gibt es von einer vorherigen Reorganisation noch ein old-File, wenn ja, löschen
+		// gibt es von einer vorherigen Reorganisation noch ein old-File, wenn ja, lÃ¶schen
 		final File lastRestructureOldFile = new File(originalFileName + "Old");
 		if(lastRestructureOldFile.exists()) {
 			lastRestructureOldFile.delete();
@@ -2944,18 +2950,18 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 		}
 		updateHeaderPositions(restructureInfo);
 
-		// In der Map _oldObjectsId sind alle Objekte gespeichert, die als ungültig markiert sind
-		// und die sich in der Mischmenge befinden. Das gleiche gilt für die Map _oldObjectsPid
-		// Diese Maps müssen nun um die Objekte bereinigt werden, die in die nGa Bereiche oder in den
+		// In der Map _oldObjectsId sind alle Objekte gespeichert, die als ungÃ¼ltig markiert sind
+		// und die sich in der Mischmenge befinden. Das gleiche gilt fÃ¼r die Map _oldObjectsPid
+		// Diese Maps mÃ¼ssen nun um die Objekte bereinigt werden, die in die nGa Bereiche oder in den
 		// dyn nGa Bereich gespeichert wurden.
 
 		// In dem Objekt, das alle ConfigFiles verwaltet wird ebenfalls eine Map mit Id's
-		// für die alten Objekte geführt, diese muss ebenfalls entfernt werden
+		// fÃ¼r die alten Objekte gefÃ¼hrt, diese muss ebenfalls entfernt werden
 		synchronized(_oldObjectsId) {
 			Iterator<Map.Entry<Long, ObjectReference>> iterator = _oldObjectsId.entrySet().iterator();
 			while(iterator.hasNext()) {
 				final Map.Entry<Long, ObjectReference> entry = iterator.next();
-				// Transiente, gelöschte Objekte beibehalten
+				// Transiente, gelÃ¶schte Objekte beibehalten
 				if(entry.getValue() instanceof FilePointer) {
 					_fileManager.removeObject(entry.getKey());
 					iterator.remove();
@@ -2979,7 +2985,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 
 	/**
-	 * Führt eigentliche Restrukturierung aus
+	 * FÃ¼hrt eigentliche Restrukturierung aus
 	 * @param oldConfigAreaFile
 	 * @param newConfigAreaFile
 	 * @param mode
@@ -2992,7 +2998,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 		// Ende des Header
 		final long newAbsoluteEndHeader;
-		// relative Anfangsposition der Menge, die alle alten dynamischen Objekte enthält
+		// relative Anfangsposition der Menge, die alle alten dynamischen Objekte enthÃ¤lt
 		final long newRelativeDynObjectArea;
 		// relative Anfangsposition des Id Indizes
 		final long newRelativeIdIndex;
@@ -3001,57 +3007,57 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 		// relative Anfangsposition der Mischobjektmenge
 		final long newRelativeMixedSet;
 
-		// Es existiert ein Index nach Id. In diesem Index sind alle Objekte nach Id einsortiert, zusätzlich
+		// Es existiert ein Index nach Id. In diesem Index sind alle Objekte nach Id einsortiert, zusÃ¤tzlich
 		// ist die relative Dateiposition zum Header gespeichert.
-		// Damit dieser Index später aufgebaut werden
+		// Damit dieser Index spÃ¤ter aufgebaut werden
 		// kann, wird jedes Objekt, das umkopiert wird, in einer Liste gespeichert.
-		// Später werden auch die dynamischen Objekte in diese Liste eingetragen
+		// SpÃ¤ter werden auch die dynamischen Objekte in diese Liste eingetragen
 		final List<SortObject> newIdIndex = new ArrayList<SortObject>();
 
 		// Es existiert ein Index, in dem sich alle alten Objekte (aus ngA und dynamisch nGa) befinden.
 		// Es wird der HashCode der Pid benutzt, als Ergebnis wird eine Liste mit relativen Dateipotionen
 		// geliefert. Mit den Dateipositionen kann das "passende" Objekt zu der Pid geladen werden.
 		// In dieser Map werden alle Objekte eingetragen, die in die Menge nGa oder dyn nGa eingetragen werden sollen.
-		// Als Key dient der HashCode der Pid. Rückgabe ist eine Liste, in der Liste sind alle Dateipositionen (relativ) aller Objekte enthalten,
-		// die ebenfalls den HashCoder der Pid besitzen (wie der Schlüssel)
+		// Als Key dient der HashCode der Pid. RÃ¼ckgabe ist eine Liste, in der Liste sind alle Dateipositionen (relativ) aller Objekte enthalten,
+		// die ebenfalls den HashCoder der Pid besitzen (wie der SchlÃ¼ssel)
 		final Map<Integer, SortObjectPid> newPidIndex = new HashMap<Integer, SortObjectPid>();
 
 
-		// Einen Pre-Header erzeugen, die relative Dateiposition der neuen nGa Blöcke ist noch unbekannt, dadurch
+		// Einen Pre-Header erzeugen, die relative Dateiposition der neuen nGa BlÃ¶cke ist noch unbekannt, dadurch
 		// sind auch die anderen relativen Positionen noch unbekannt. Es wird lediglich Platz reserviert.
 		// Falls ein neuer nGa-Block keine Elemente besitzt, wird dieser als relative Dateipostion eine -1 bekommen.
 
-		// Der neue Header setzt sich aus dem alten Header und den neuen nGa Blöcken zusammen.
-		// Der Header wächst also wegen der neuen nGa Blöcken.
+		// Der neue Header setzt sich aus dem alten Header und den neuen nGa BlÃ¶cken zusammen.
+		// Der Header wÃ¤chst also wegen der neuen nGa BlÃ¶cken.
 		// Jeder neue nGa Block, wird mit zwei Longs und einem Short abgebildet.
-		// Es gibt soviele neue Blöcke, wie es Versionen zwischen dem letzten erzeugten nGa Block (Reorganisation)
+		// Es gibt soviele neue BlÃ¶cke, wie es Versionen zwischen dem letzten erzeugten nGa Block (Reorganisation)
 		// und der jetzigen Version gibt.
 		// Die Variable _nextInvalidBlockVersion speichert die erste Version des nGa Blocks, der bei der Reorganisation
 		// geschrieben werden muss.
 
-		// Anzahl nGa Blöcke, die eingefügt werden müssen
+		// Anzahl nGa BlÃ¶cke, die eingefÃ¼gt werden mÃ¼ssen
 		final int numberOfNewOldBlocks;
 		if(_nextInvalidBlockVersion > _activeVersion) {
 			// Das ist immer dann der Fall, wenn es keinen "neuen" alten Block gibt.
 			// zb. beim Neustart des Systems, oder wenn gerade eine Reorganisation stattgefunden hat, aber
-			// es gibt keine Konfigurationsobjekte für einen neuen alten Block.
+			// es gibt keine Konfigurationsobjekte fÃ¼r einen neuen alten Block.
 			numberOfNewOldBlocks = 0;
 		}
 		else {
-			// Wieviele nGa Blöcke müssen eingefügt werden ? Soviele, wie Versionen fehlen, bis zur aktuellen Version
-			// und zwar einschließlich der aktuellen Version (diese Objekte sind in der derzeit aktuellen Version
-			// ungültig geworden), darum +1
+			// Wieviele nGa BlÃ¶cke mÃ¼ssen eingefÃ¼gt werden ? Soviele, wie Versionen fehlen, bis zur aktuellen Version
+			// und zwar einschlieÃŸlich der aktuellen Version (diese Objekte sind in der derzeit aktuellen Version
+			// ungÃ¼ltig geworden), darum +1
 			numberOfNewOldBlocks = (_activeVersion - _nextInvalidBlockVersion) + 1;
 		}
 
 		if(numberOfNewOldBlocks != 0 && mode == RestructureMode.DynamicObjectRestructure){
-			// Beim Restrukturieren der dynamischen Objekte im laufenden Betrieb dürfen keine neuen Blöcke angelegt werden
-			throw new IllegalArgumentException("Nach der Aktivierung muss eine vollständige Restrukturierung erfolgen");
+			// Beim Restrukturieren der dynamischen Objekte im laufenden Betrieb dÃ¼rfen keine neuen BlÃ¶cke angelegt werden
+			throw new IllegalArgumentException("Nach der Aktivierung muss eine vollstÃ¤ndige Restrukturierung erfolgen");
 		}
 
-		// Speichert die Größe des neuen Headers
-		// Die größe des alten Headers setzt sich aus seiner (Endeposition in der Datei) - (Länge des Headers, Integer) zusammen
-		// Das Stück des neuen Headers ist um 2 Longs und einem Short pro nGa Bereich größer
+		// Speichert die GrÃ¶ÃŸe des neuen Headers
+		// Die grÃ¶ÃŸe des alten Headers setzt sich aus seiner (Endeposition in der Datei) - (LÃ¤nge des Headers, Integer) zusammen
+		// Das StÃ¼ck des neuen Headers ist um 2 Longs und einem Short pro nGa Bereich grÃ¶ÃŸer
 		final int headerSizeNewFileArea = (int)(_headerEnd - 4 + numberOfNewOldBlocks * (2 * 8 + 2));
 
 		// In die neue Konfigurationsbereichsdatei einen Pre-Header schreiben
@@ -3066,29 +3072,29 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 		newAbsoluteEndHeader = newConfigAreaFile.getFilePointer();
 
 		//*********************************************************************************************************
-		// Nach dem Pre-Header die alten nGa-Blöcke speichern
+		// Nach dem Pre-Header die alten nGa-BlÃ¶cke speichern
 
 		// Anfang der Daten suchen
 		final long startOldObjectBlocks;
 
-		// es wird davon ausgegangen, dass die NGA-Blöcke (sofern vorhanden) direkt nach dem Header anfangen (vgl. writeHeader)
+		// es wird davon ausgegangen, dass die NGA-BlÃ¶cke (sofern vorhanden) direkt nach dem Header anfangen (vgl. writeHeader)
 		startOldObjectBlocks = _headerEnd;
 
 		oldConfigAreaFile.seek(startOldObjectBlocks);
 
 		assert headerSizeNewFileArea + 4 == newAbsoluteEndHeader;
 
-		// Objekte der bisherigen Nga-Blöcke (für Config-objekte) in neue Datei kopieren
+		// Objekte der bisherigen Nga-BlÃ¶cke (fÃ¼r Config-objekte) in neue Datei kopieren
 		switch(mode){
 			case DeleteObjectsPermanently:
 			case FullRestructure: // fallthrough
-				// Bei einer vollen Restrukturierung eventuelle Lücken füllen.
-				// Lücken ggf. füllen (es sollte keine Lücken geben, außer bei Konfigurationsdateien wo gelöschte Objekte wieder modifiziert wurden)
-				// (Fehler in frühen Konfigurationsversionen)
+				// Bei einer vollen Restrukturierung eventuelle LÃ¼cken fÃ¼llen.
+				// LÃ¼cken ggf. fÃ¼llen (es sollte keine LÃ¼cken geben, auÃŸer bei Konfigurationsdateien wo gelÃ¶schte Objekte wieder modifiziert wurden)
+				// (Fehler in frÃ¼hen Konfigurationsversionen)
 				copyObjectsRemoveGaps(oldConfigAreaFile, newConfigAreaFile, (_startOldDynamicObjects + _headerEnd), newIdIndex, newPidIndex, 0, newAbsoluteEndHeader);
 				break;
 			case DynamicObjectRestructure:
-				// bei der Restrukturierung im laufenden Betrieb keine Lücken füllen, damit die Dateipositionen gleich bleibem
+				// bei der Restrukturierung im laufenden Betrieb keine LÃ¼cken fÃ¼llen, damit die Dateipositionen gleich bleibem
 				copyObjectsPreserveGaps(oldConfigAreaFile, newConfigAreaFile, (_startOldDynamicObjects + _headerEnd), newIdIndex, newPidIndex, 0, newAbsoluteEndHeader);
 				break;
 		}
@@ -3096,26 +3102,26 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 		//*********************************************************************************************************
 
 		short consideredOldVersion = _nextInvalidBlockVersion;
-		// Es werden alle nGa Blöcke erzeugt, die es bis zur jetzigen Version gibt.
+		// Es werden alle nGa BlÃ¶cke erzeugt, die es bis zur jetzigen Version gibt.
 		_nextInvalidBlockVersion = (short)(_activeVersion + 1);
 
 		synchronized(_oldObjectsId) {
-			// ungültige Objekte können auch in der aktiven Version sein, darum <=
+			// ungÃ¼ltige Objekte kÃ¶nnen auch in der aktiven Version sein, darum <=
 			while(consideredOldVersion <= _activeVersion) {
 
 				Long[] keysLong = _oldObjectsId.keySet().toArray(new Long[_oldObjectsId.keySet().size()]);
 				// Es wird ein neuer nGa Bereich erzeugt
 
-				// boolean ob ein Element zu dem Block hinzugefügt wurde. wenn ja, dann dateipostion in map
+				// boolean ob ein Element zu dem Block hinzugefÃ¼gt wurde. wenn ja, dann dateipostion in map
 				// speichern, wenn nein -1 als dateiposition
-				// Wenn in einen nGa Bereich keine ungültigen Objekte angelegt werden können, dann bleibt diese
+				// Wenn in einen nGa Bereich keine ungÃ¼ltigen Objekte angelegt werden kÃ¶nnen, dann bleibt diese
 				// Variable false und als relative Startposition des Blocks wird eine -1 eingetragen
 				boolean blockHasElements = false;
 
 				// Speichert den relativen Beginn des potentiellen Blocks, der geschrieben werden soll
 				final long relativeBlockPosition = (newConfigAreaFile.getFilePointer() - newAbsoluteEndHeader);
 
-				// Speichert den Zeitpunkt, zu dem die Version gültig wurde
+				// Speichert den Zeitpunkt, zu dem die Version gÃ¼ltig wurde
 				final long blockTimeStamp;
 				if(_configurationAuthorityVersionActivationTime.containsKey(consideredOldVersion)) {
 					blockTimeStamp = _configurationAuthorityVersionActivationTime.get(consideredOldVersion);
@@ -3144,20 +3150,20 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 						if(oldConfigObject.getFirstInvalidVersion() == consideredOldVersion) {
 							// Da in der neuen Datei muss ebenfalls ein Id Index angelegt werden muss, muss
-							// die neue endgültige relative Position im nGa Bereich des Datensatzes gespeichert werden.
-							// Die relative Adresse wird als negativer Wert gespeichert, dies ermöglicht bei Indexzugriffen
+							// die neue endgÃ¼ltige relative Position im nGa Bereich des Datensatzes gespeichert werden.
+							// Die relative Adresse wird als negativer Wert gespeichert, dies ermÃ¶glicht bei Indexzugriffen
 							// sofort zu erkennen, ob das Objekt ein Konfigurationsobjekt oder ein dynamisches Objekt
 							// gefunden wurde.
 							// Die negative relative Position bezieht sich auf das Headerende, da es sich
 							// um ein Konfigurationsobjekt handelt.
 							// - 4 weil Header bei Byte 4 beginnt
-							// (Es muss sowohl die header-Länge, als auch der Offset des HEaders abgezogen werden)
+							// (Es muss sowohl die header-LÃ¤nge, als auch der Offset des HEaders abgezogen werden)
 							final long newRelativeObjectPosition = getRelativeFilePositionForInvalidConfigObject(
 									(4 + headerSizeNewFileArea), newConfigAreaFile.getFilePointer()
 							);
 							addToIndizes(newIdIndex, newPidIndex, oldConfigObject, newRelativeObjectPosition);
 
-							// Das Objekt muss in den Bereich eingefügt werden. Es muss keine Lücke deklariert werden
+							// Das Objekt muss in den Bereich eingefÃ¼gt werden. Es muss keine LÃ¼cke deklariert werden
 							// auch die Dateiposition muss nicht gespeichert werden.
 							writeConfigurationObjectToFile(oldConfigObject, newConfigAreaFile, false, false);
 							// Da ein Objekt in den nGa Bereich geschrieben wurde, muss die relative Position
@@ -3167,7 +3173,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 					}
 				} // for
 				if(blockHasElements) {
-					// Es wurden ungültige Objekte in den nGa-Bereich eingetragen
+					// Es wurden ungÃ¼ltige Objekte in den nGa-Bereich eingetragen
 					_oldObjectBlocks.put(consideredOldVersion, new OldBlockInformations(relativeBlockPosition, blockTimeStamp));
 				}
 				else {
@@ -3176,7 +3182,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 					_oldObjectBlocks.put(consideredOldVersion, new OldBlockInformations((long)-1, blockTimeStamp));
 				}
 
-				// Es wurden alle Objekte betrachtet, also die nächste veraltet Version prüfen
+				// Es wurden alle Objekte betrachtet, also die nÃ¤chste veraltet Version prÃ¼fen
 				consideredOldVersion++;
 			} // while
 		} // synch
@@ -3191,45 +3197,45 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 		// Die alten dynamischen Objekte aus der Datei umkopieren
 		oldConfigAreaFile.seek(_startOldDynamicObjects + _headerEnd);
 
-		// Diese Variable speichert die neue absolute Startposition des Bereichs, der aller ungütligen dynamischen Objekte
-		// in der neuen Konfigurationsbereichsdatei enthält
+		// Diese Variable speichert die neue absolute Startposition des Bereichs, der aller ungÃ¼tligen dynamischen Objekte
+		// in der neuen Konfigurationsbereichsdatei enthÃ¤lt
 		final long absoluteStartNewDynamicArea = newConfigAreaFile.getFilePointer();
 
-		// Durch das endgültige Löschen von historischen dynamischen Objekten können sich hier Lücken ergeben,
-		// daher hier diese Lücken weglassen
+		// Durch das endgÃ¼ltige LÃ¶schen von historischen dynamischen Objekten kÃ¶nnen sich hier LÃ¼cken ergeben,
+		// daher hier diese LÃ¼cken weglassen
 
 		// Objekte des bisherigen DynNga-Blocks in neue Datei kopieren
 		switch(mode) {
 			case DynamicObjectRestructure:
-				// Keine Lücken füllen, damit Dateipositionen gleich bleiben
+				// Keine LÃ¼cken fÃ¼llen, damit Dateipositionen gleich bleiben
 				copyObjectsPreserveGaps(oldConfigAreaFile, newConfigAreaFile, (_startIdIndex + _headerEnd), newIdIndex, newPidIndex, absoluteStartNewDynamicArea, (4 + headerSizeNewFileArea));
 				break;
 			case FullRestructure:
-				// Lücken ggf. füllen (es sollte keine Lücken geben, außer bei Konfigurationsdateien wo gelöschte Objekte wieder modifiziert wurden)
-				// (Fehler in frühen Konfigurationsversionen)
+				// LÃ¼cken ggf. fÃ¼llen (es sollte keine LÃ¼cken geben, auÃŸer bei Konfigurationsdateien wo gelÃ¶schte Objekte wieder modifiziert wurden)
+				// (Fehler in frÃ¼hen Konfigurationsversionen)
 				copyObjectsRemoveGaps(oldConfigAreaFile, newConfigAreaFile, (_startIdIndex + _headerEnd), newIdIndex, newPidIndex, absoluteStartNewDynamicArea, (4 + headerSizeNewFileArea));
 				break;
 			case DeleteObjectsPermanently:
-				// hier werden die eigentlichen Löschungen vorgenommen
+				// hier werden die eigentlichen LÃ¶schungen vorgenommen
 				copyObjectsRemoveGapsAndDeleteObjects(oldConfigAreaFile, newConfigAreaFile, (_startIdIndex + _headerEnd), newIdIndex, newPidIndex, absoluteStartNewDynamicArea, (4 + headerSizeNewFileArea));
 				break;
 		}
 
 
-		// Die dynamischen Objekte der Mischmenge, die ungültig sind, speichern.
-		// Diese müssen aufsteigend nach Invalid-Time sortiert werden
+		// Die dynamischen Objekte der Mischmenge, die ungÃ¼ltig sind, speichern.
+		// Diese mÃ¼ssen aufsteigend nach Invalid-Time sortiert werden
 
 		// Alle dynamischen Objekte, die in Frage kommen, sind in der Map _oldObjectsId gespeichert
 
-		// Array, das zu allen dynamischen Objekten den Zeitstempel enthält, wann das Objekt ungültig geworden ist
-		// und die absolute Position in der Datei um das Objekt später zu laden.
+		// Array, das zu allen dynamischen Objekten den Zeitstempel enthÃ¤lt, wann das Objekt ungÃ¼ltig geworden ist
+		// und die absolute Position in der Datei um das Objekt spÃ¤ter zu laden.
 
 		final List<SortObject> dynamicObjects = new ArrayList<SortObject>();
 
 		synchronized(_oldObjectsId) {
 			final Long[] keysLong = _oldObjectsId.keySet().toArray(new Long[_oldObjectsId.keySet().size()]);
 
-			// Liste, in der die Objekte gespeichert werden, diese wird später in ein Array umgewandelt
+			// Liste, in der die Objekte gespeichert werden, diese wird spÃ¤ter in ein Array umgewandelt
 
 			for(Long idOldObject : keysLong) {
 				ObjectReference reference = _oldObjectsId.get(idOldObject);
@@ -3243,13 +3249,13 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 						if(dynObject.getObjectId() == 0){
 							// Das sollte nicht passieren!
-							throw new IOException("Ungültiges dynamisches Objekt an Dateiposition " + filePosition);
+							throw new IOException("UngÃ¼ltiges dynamisches Objekt an Dateiposition " + filePosition);
 						}
 
 						if(mode == RestructureMode.DeleteObjectsPermanently
 								&& dynObject.getFirstInvalid() != 0
 								&& _objectsPendingDeletion.contains(dynObject.getObjectId())){
-							// Dynamisches Objekt kann auch schon hier gelöscht werden
+							// Dynamisches Objekt kann auch schon hier gelÃ¶scht werden
 							// (einfach nicht im NgDyn-Block speichern)
 							continue;
 						}
@@ -3264,50 +3270,50 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 		Collections.sort(dynamicObjects);
 
-		// Array liegt sortiert vor, also können die dynamischen Objekte in den Bereich geschrieben werden
+		// Array liegt sortiert vor, also kÃ¶nnen die dynamischen Objekte in den Bereich geschrieben werden
 
 		for(final SortObject dynamicSortObject : dynamicObjects) {
 			oldConfigAreaFile.seek(dynamicSortObject.getFilePosition());
 
-			// Hier werden die Objekte ein zweites mal gelesen, im Speicher halten (beim SortObject) wäre die Alternative.
-			// Hier müsste man zwischen Performance und Speicherverbrauch abwägen.
+			// Hier werden die Objekte ein zweites mal gelesen, im Speicher halten (beim SortObject) wÃ¤re die Alternative.
+			// Hier mÃ¼sste man zwischen Performance und Speicherverbrauch abwÃ¤gen.
 			final BinaryDynamicObject oldDynObject = (BinaryDynamicObject) BinaryObject.fromDataInput(oldConfigAreaFile);
 
-			// Wie auch bei den alten Konfigurationsobjekten, müssen die dynamischen Objekte
+			// Wie auch bei den alten Konfigurationsobjekten, mÃ¼ssen die dynamischen Objekte
 			// in den Id Index eingetragen werden
 
 			// Die relative Position der Objekte bezieht sich auf den Beginn des dynamischen Bereichs, nicht auf
 			// das Headerende. Der Wert wird als positive Zahl gespeichert (Konfigurationsobjekte als negativ, s.o.)
 			// Da die Konfigurationsobjekte mit den negativen Zahlen und die dynamischen Objekte
-			// mit den positven Zahlen, muss festgelegt werden, zu welchem Bereich die "0" gehört.
-			// Die "0" gehört zu den nGa Objekten gehört somit zu den negativen Werten.
-			// Also wird jeder relative Position um eins erhöht (aus 0, wird eine +1 und somit wird diese Zahl
+			// mit den positven Zahlen, muss festgelegt werden, zu welchem Bereich die "0" gehÃ¶rt.
+			// Die "0" gehÃ¶rt zu den nGa Objekten gehÃ¶rt somit zu den negativen Werten.
+			// Also wird jeder relative Position um eins erhÃ¶ht (aus 0, wird eine +1 und somit wird diese Zahl
 			// im Zusammenhang mit dynamischen Objekten niemals im Index vergeben), wenn das Objekt
-			// später geladen werden muss, kann an dem positiven Wert erkannt werden, dass es sich
+			// spÃ¤ter geladen werden muss, kann an dem positiven Wert erkannt werden, dass es sich
 			// um ein dynamisches Objekt handelt und die +1 kann wieder abgezogen werden.
 			final long newRelativeObjectPosition = getRelativeFilePositionForInvalidDynamicObject(absoluteStartNewDynamicArea, newConfigAreaFile.getFilePointer());
 
 			addToIndizes(newIdIndex, newPidIndex, oldDynObject, newRelativeObjectPosition);
 			restructureInfo.rememberFilePosition(dynamicSortObject.getFilePosition(), newConfigAreaFile.getFilePointer());
 
-			// Objekt in der neuen Datei schreiben. Es muss keine Lücke deklariert werden und die
+			// Objekt in der neuen Datei schreiben. Es muss keine LÃ¼cke deklariert werden und die
 			// Dateiposition am Objekt ist egal
 			oldDynObject.write(newConfigAreaFile);
 		}
 
-		// Der aktualisierte "ungültige" dynamische Block wurde erzeugt
+		// Der aktualisierte "ungÃ¼ltige" dynamische Block wurde erzeugt
 		//*********************************************************************************************************
 
-		// Den alten Index (Id) einlesen und die neues Objekte aus den nGa Blöcken + neue dyn Objekte
+		// Den alten Index (Id) einlesen und die neues Objekte aus den nGa BlÃ¶cken + neue dyn Objekte
 		// nach Id einsortieren (Id + relative Dateipostion zum Header)
 
 		newRelativeIdIndex = newConfigAreaFile.getFilePointer() - newAbsoluteEndHeader;
 
 		// Der alte Index liegt bereits sortiert in der Datei vor.
-		// Also wird die Liste, die die neuen Id's enthält, sortiert (nun liegen beide sortiert vor).
+		// Also wird die Liste, die die neuen Id's enthÃ¤lt, sortiert (nun liegen beide sortiert vor).
 		// Jetzt wird der erste Wert aus der Datei eingelesen (dies ist der kleinste Wert) und mit
 		// dem ersten Wert der Liste verglichen. Der kleinere von beiden wird geschrieben. Dann wird
-		// der nächste Wert betrachtet, usw (wie Mergesort).
+		// der nÃ¤chste Wert betrachtet, usw (wie Mergesort).
 
 		final SortObject[] newOldObjectSortedArray = newIdIndex.toArray(new SortObject[newIdIndex.size()]);
 		Arrays.sort(newOldObjectSortedArray);
@@ -3318,7 +3324,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 		// Objekt, das gerade aus dem Array newOldObjectSortedArray betrachtet wird
 		int actualIdMergeObject = 0;
 
-		// Falls true, dann muss das nächste Objekt geholt werden, da das letzte Objekt gespeichert wurde
+		// Falls true, dann muss das nÃ¤chste Objekt geholt werden, da das letzte Objekt gespeichert wurde
 
 		while(actualIdMergeObject < newOldObjectSortedArray.length) {
 			// Es gibt noch Daten und der alte Wert wurde einsortiert
@@ -3329,21 +3335,21 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			newConfigAreaFile.writeLong(newOldIdObject.getValue());
 			// Relative Dateiposition
 			newConfigAreaFile.writeLong(newOldIdObject.getFilePosition());
-			// nächsten Wert anfordern
+			// nÃ¤chsten Wert anfordern
 		}
 
 		// Alle Id's sind geschrieben
 		//*********************************************************************************************************
-		// Pid Index, ebenfalls die nGa Blöcke und neue dyn Objekte einfügen
+		// Pid Index, ebenfalls die nGa BlÃ¶cke und neue dyn Objekte einfÃ¼gen
 		// (hashCode Pid und relatve Dateipostion, Achtung pro PidHash kann es mehrer Dateipositionen geben)
 
 		newRelativePidIndex = newConfigAreaFile.getFilePointer() - newAbsoluteEndHeader;
 
-		// Es steht eine Map zur Verfügung (newPidIndex), die alle neuen Elemente enthält, die in die dynamische nGa Menge
-		// einsortiert werden sollen. Dafür wird ein Array erstellt, in dem alle Objekte nach ihrer
+		// Es steht eine Map zur VerfÃ¼gung (newPidIndex), die alle neuen Elemente enthÃ¤lt, die in die dynamische nGa Menge
+		// einsortiert werden sollen. DafÃ¼r wird ein Array erstellt, in dem alle Objekte nach ihrer
 		// Pid (HashCode) sortiert vorlieren. Dieses Array wird dann in die alten Daten eingemischt.
 
-		// Jeder Eintrag hat eine feste Länge und besteht aus Pid HashCode und der relativen Position
+		// Jeder Eintrag hat eine feste LÃ¤nge und besteht aus Pid HashCode und der relativen Position
 		// in der Datei.
 		// Nachteil, gibt es zu einer Pid 10 Objekte, so wird die Pid 10 mal gespeichert
 
@@ -3357,7 +3363,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 		// Objekt, das gerade aus dem Array newOldObjectsPidSortedArray betrachtet wird
 		int actualPidMergeObject = 0;
 
-		// Falls true, dann muss das nächste Objekt geholt werden, da das letzte Objekt gespeichert wurde
+		// Falls true, dann muss das nÃ¤chste Objekt geholt werden, da das letzte Objekt gespeichert wurde
 
 		while(actualPidMergeObject < newOldObjectsPidSortedArray.length) {
 			SortObjectPid newOldPidObject = newOldObjectsPidSortedArray[actualPidMergeObject];
@@ -3374,7 +3380,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 		//*********************************************************************************************************
 
-		// Die aktuellen und zukünftig aktuellen in die Mischmenge schreiben
+		// Die aktuellen und zukÃ¼nftig aktuellen in die Mischmenge schreiben
 
 		newRelativeMixedSet = newConfigAreaFile.getFilePointer() - newAbsoluteEndHeader;
 
@@ -3401,7 +3407,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	private void writeCurrentObjects(final BufferedRandomAccessFile newConfigAreaFile, final RestructureInfo restructureInfo, final Map<Long, SystemObjectInformationInterface> objectMap) throws IOException {
-		// Diese Methode wird einmal für _allObjects und einmal für _newObjects aufgerufen. Die Synchronisation darauf ist OK.
+		// Diese Methode wird einmal fÃ¼r _allObjects und einmal fÃ¼r _newObjects aufgerufen. Die Synchronisation darauf ist OK.
 		//noinspection SynchronizationOnLocalVariableOrMethodParameter
 		synchronized(objectMap) {
 			for(SystemObjectInformationInterface systemObjectInfo : objectMap.values()) {
@@ -3414,17 +3420,17 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 					if(systemObjectInfo instanceof ConfigurationObjectInformation) {
 						ConfigurationObjectInformation configurationObjectInformation = (ConfigurationObjectInformation) systemObjectInfo;
-						// Da das Objekt neu in eine Datei geschrieben wird, muss keine Lücke eingefügt werden. Die
+						// Da das Objekt neu in eine Datei geschrieben wird, muss keine LÃ¼cke eingefÃ¼gt werden. Die
 						// neue Speicherposition darf nicht an dem Objekt gespeichert werden, sondern erst wenn
 						// die Reorganisation abgeschlossen ist.
-						// Den Speicherort merken, damit er nachträglich gesetzt werden kann.
+						// Den Speicherort merken, damit er nachtrÃ¤glich gesetzt werden kann.
 						final long newPosition = writeConfigurationObjectToFile(configurationObjectInformation, newConfigAreaFile, false, false);
 						restructureInfo.rememberFilePosition(filePosition, newPosition);
 					}
 					else if(systemObjectInfo instanceof DynamicObjectInformation) {
 						DynamicObjectInformation dynamicObjectInformation = (DynamicObjectInformation) systemObjectInfo;
-						// Da das Objekt neu in eine Datei geschrieben wird, muss keine Lücke eingefügt werden.
-						// Die neue Dateiposition darf nicht an dem Objekt gespeichert werden, sondern muss nachträglich gesetzt
+						// Da das Objekt neu in eine Datei geschrieben wird, muss keine LÃ¼cke eingefÃ¼gt werden.
+						// Die neue Dateiposition darf nicht an dem Objekt gespeichert werden, sondern muss nachtrÃ¤glich gesetzt
 						// werden.
 						final long newPosition = writeDynamicObjectToFile(dynamicObjectInformation, newConfigAreaFile, false, false);
 						restructureInfo.rememberFilePosition(filePosition, newPosition);
@@ -3438,15 +3444,15 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Kopiert Objekte zwecks Restrukturierung von einer Datei in eine andere. Diese Methode kopiert alle Lücken mit
+	 * Kopiert Objekte zwecks Restrukturierung von einer Datei in eine andere. Diese Methode kopiert alle LÃ¼cken mit
 	 * und schreibt daher die exakt gleiche Menge an Bytes, die sie auch liest.
 	 * @param fromFile von-Datei
 	 * @param toFile ziel-Datei
 	 * @param endPos bis zu welcher Position (exklusiv) aus on-datei gelesen werden soll
 	 * @param newIdIndex ID-index, der gebildet werden soll
 	 * @param newPidIndex PID-Index, der gebildet werden soll
-	 * @param absoluteDynamicAreaOffset Absoluter Offset des NgDyn-Bereichs (für Pointer der Indizes)
-	 * @param headerEnd  Absoluter Offset des Headerendes (für Pointer der Indizes)
+	 * @param absoluteDynamicAreaOffset Absoluter Offset des NgDyn-Bereichs (fÃ¼r Pointer der Indizes)
+	 * @param headerEnd  Absoluter Offset des Headerendes (fÃ¼r Pointer der Indizes)
 	 * @throws IOException
 	 */
 	private void copyObjectsPreserveGaps(final BufferedRandomAccessFile fromFile, final BufferedRandomAccessFile toFile, final long endPos, final List<SortObject> newIdIndex, final Map<Integer, SortObjectPid> newPidIndex, final long absoluteDynamicAreaOffset, final long headerEnd) throws IOException {
@@ -3462,15 +3468,15 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Kopiert Objekte zwecks Restrukturierung von einer Datei in eine andere. Diese Methode ignoriert alle Lücken und sorgt so dafür,
-	 * dass möglicherweise weniger Bytes geschreiben werden, als gelesen werden.
+	 * Kopiert Objekte zwecks Restrukturierung von einer Datei in eine andere. Diese Methode ignoriert alle LÃ¼cken und sorgt so dafÃ¼r,
+	 * dass mÃ¶glicherweise weniger Bytes geschreiben werden, als gelesen werden.
 	 * @param fromFile von-Datei
 	 * @param toFile ziel-Datei
 	 * @param endPos bis zu welcher Position (exklusiv) aus on-datei gelesen werden soll
 	 * @param newIdIndex ID-index, der gebildet werden soll
 	 * @param newPidIndex PID-Index, der gebildet werden soll
-	 * @param absoluteDynamicAreaOffset Absoluter Offset des NgDyn-Bereichs (für Pointer der Indizes)
-	 * @param headerEnd  Absoluter Offset des Headerendes (für Pointer der Indizes)
+	 * @param absoluteDynamicAreaOffset Absoluter Offset des NgDyn-Bereichs (fÃ¼r Pointer der Indizes)
+	 * @param headerEnd  Absoluter Offset des Headerendes (fÃ¼r Pointer der Indizes)
 	 * @throws IOException
 	 */
 	private void copyObjectsRemoveGaps(final BufferedRandomAccessFile fromFile, final BufferedRandomAccessFile toFile, final long endPos, final List<SortObject> newIdIndex, final Map<Integer, SortObjectPid> newPidIndex, final long absoluteDynamicAreaOffset, final long headerEnd) throws IOException {
@@ -3484,16 +3490,16 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Kopiert Objekte zwecks Restrukturierung von einer Datei in eine andere. Diese Methode ignoriert alle Lücken und alle zu löschenden
+	 * Kopiert Objekte zwecks Restrukturierung von einer Datei in eine andere. Diese Methode ignoriert alle LÃ¼cken und alle zu lÃ¶schenden
 	 * dynamischen Objekte
-	 * und sorgt so dafür, dass möglicherweise weniger Bytes geschreiben werden, als gelesen werden.
+	 * und sorgt so dafÃ¼r, dass mÃ¶glicherweise weniger Bytes geschreiben werden, als gelesen werden.
 	 * @param fromFile von-Datei
 	 * @param toFile ziel-Datei
 	 * @param endPos bis zu welcher Position (exklusiv) aus on-datei gelesen werden soll
 	 * @param newIdIndex ID-index, der gebildet werden soll
 	 * @param newPidIndex PID-Index, der gebildet werden soll
-	 * @param absoluteDynamicAreaOffset Absoluter Offset des NgDyn-Bereichs (für Pointer der Indizes)
-	 * @param headerEnd  Absoluter Offset des Headerendes (für Pointer der Indizes)
+	 * @param absoluteDynamicAreaOffset Absoluter Offset des NgDyn-Bereichs (fÃ¼r Pointer der Indizes)
+	 * @param headerEnd  Absoluter Offset des Headerendes (fÃ¼r Pointer der Indizes)
 	 * @throws IOException
 	 */
 	private void copyObjectsRemoveGapsAndDeleteObjects(final BufferedRandomAccessFile fromFile, final BufferedRandomAccessFile toFile, final long endPos, final List<SortObject> newIdIndex, final Map<Integer, SortObjectPid> newPidIndex, final long absoluteDynamicAreaOffset, final long headerEnd) throws IOException {
@@ -3501,14 +3507,14 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			BinaryObject binaryObject = BinaryObject.fromDataInput(fromFile);
 			if(binaryObject != null && binaryObject.getObjectId() != 0) {
 				if(_objectsPendingDeletion.contains(binaryObject.getObjectId())) {
-					// Dieses Objekt soll gelöscht werden
-					// Sicherheitshalber noch einmal überprüfen, dass das Objekt wirklich gelöscht werden darf
-					// Es könnte sein, dass jemand an den Indexdateien rumgespielt hat und jetzt Konfigurationobjekte löschen will...
+					// Dieses Objekt soll gelÃ¶scht werden
+					// Sicherheitshalber noch einmal Ã¼berprÃ¼fen, dass das Objekt wirklich gelÃ¶scht werden darf
+					// Es kÃ¶nnte sein, dass jemand an den Indexdateien rumgespielt hat und jetzt Konfigurationobjekte lÃ¶schen will...
 					if(!(binaryObject instanceof BinaryDynamicObject)){
-						throw new IOException("Es sollte ein Konfigurationsobjekt endgültig gelöscht werden");
+						throw new IOException("Es sollte ein Konfigurationsobjekt endgÃ¼ltig gelÃ¶scht werden");
 					}
 					if(((BinaryDynamicObject) binaryObject).getFirstInvalid() == 0){
-						throw new IOException("Es sollte ein gültiges Objekt endgültig gelöscht werden");
+						throw new IOException("Es sollte ein gÃ¼ltiges Objekt endgÃ¼ltig gelÃ¶scht werden");
 					}
 					continue;
 				}
@@ -3551,7 +3557,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			filePositions.putFilePosition(filePosition);
 		}
 		else {
-			// Es gibt noch kein Objekt, also einfügen
+			// Es gibt noch kein Objekt, also einfÃ¼gen
 			SortObjectPid filePositions = new SortObjectPid(objectInformation.getPidHashCode());
 			filePositions.putFilePosition(filePosition);
 			pidIndex.put(objectInformation.getPidHashCode(), filePositions);
@@ -3572,7 +3578,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			filePositions.putFilePosition(filePosition);
 		}
 		else {
-			// Es gibt noch kein Objekt, also einfügen
+			// Es gibt noch kein Objekt, also einfÃ¼gen
 			SortObjectPid filePositions = new SortObjectPid(hashCode);
 			filePositions.putFilePosition(filePosition);
 			pidIndex.put(hashCode, filePositions);
@@ -3580,16 +3586,16 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Diese Methode sucht zu einem Value alle Objekte, die als ungültig markiert sind. Der Parameter value wird dabei unterschiedlich interpretiert und zwar in
-	 * Abhängigkeit vom Parameter searchId. Ist searchId = true, so wird der Parameter value als Id eines Objekts betrachtet. Die Methode sucht dann ein als
-	 * ungültig markiertes Objekt, dessen Id gleich dem übergebenen Parameter value entspricht. Ist der Parameter searchId = false, so wird der Wert als HashCode
-	 * einer Pid interpretiert. Da eine Pid nicht bijektiv auf ein Integer abgebildet werden kann, muss die Liste später noch überprüft werden, ob die Objekte auch
-	 * wirklich mit der Pid übereinstimmen.
+	 * Diese Methode sucht zu einem Value alle Objekte, die als ungÃ¼ltig markiert sind. Der Parameter value wird dabei unterschiedlich interpretiert und zwar in
+	 * AbhÃ¤ngigkeit vom Parameter searchId. Ist searchId = true, so wird der Parameter value als Id eines Objekts betrachtet. Die Methode sucht dann ein als
+	 * ungÃ¼ltig markiertes Objekt, dessen Id gleich dem Ã¼bergebenen Parameter value entspricht. Ist der Parameter searchId = false, so wird der Wert als HashCode
+	 * einer Pid interpretiert. Da eine Pid nicht bijektiv auf ein Integer abgebildet werden kann, muss die Liste spÃ¤ter noch Ã¼berprÃ¼ft werden, ob die Objekte auch
+	 * wirklich mit der Pid Ã¼bereinstimmen.
 	 *
 	 * @param value    Id oder Pid, nach der die Objekte gesucht werden sollen
 	 * @param searchId true = value wird als Id interpretiert; false = value wird als HashCode einer Pid interpretiert (siehe Methodenbeschreibung!)
 	 *
-	 * @return Liste, die die geforderten Objekte enthält. Bei einer Anfrage nach Id, ist nur ein Element in dieser Liste. Es wird <code>null</code> zurückgegeben,
+	 * @return Liste, die die geforderten Objekte enthÃ¤lt. Bei einer Anfrage nach Id, ist nur ein Element in dieser Liste. Es wird <code>null</code> zurÃ¼ckgegeben,
 	 *         falls kein Objekt gefunden werden konnte
 	 *
 	 * @throws IllegalStateException Zu einer Id wurden zwei Elemente gefunden
@@ -3601,7 +3607,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 				BufferedRandomAccessFile file = new BufferedRandomAccessFile(_configAreaFile, "r");
 
-				// Try/finally für close der Datei
+				// Try/finally fÃ¼r close der Datei
 				try {
 					return binarySearch(file, value, searchId);
 				}
@@ -3616,7 +3622,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 		// Liste, die alle Objekte speichert, die dem geforderten value entsprechen
 		final List<SystemObjectInformationInterface> searchResult = new ArrayList<SystemObjectInformationInterface>();
 
-		// Die gesuchten Objekte können sich in der Mischmenge oder in den nGa Bereichen oder im dyn. nGa Bereich befinden.
+		// Die gesuchten Objekte kÃ¶nnen sich in der Mischmenge oder in den nGa Bereichen oder im dyn. nGa Bereich befinden.
 
 		// mit Id suchen
 		if(searchId) {
@@ -3644,7 +3650,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			// Es soll nach einer Pid gesucht werden, diese kann sich im Mischbreich befinden
 			// und in den nGa-Bereichen, dem dyn nGa-Bereich
 
-			// Mischbreich prüfen
+			// Mischbreich prÃ¼fen
 
 			final Set<FilePointer> filePositions;
 			final boolean positionFound;
@@ -3671,32 +3677,32 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 		}
 
 		// An dieser Stelle wurde Mischobjektmenge abgearbeitet. Falls nach Id gesucht wurde, wurde diese nicht
-		// gefunden, sonst wäre die Methode bereits mit "return" verlassen worden. Falls nach der Pid gefragt wurde
+		// gefunden, sonst wÃ¤re die Methode bereits mit "return" verlassen worden. Falls nach der Pid gefragt wurde
 		// so kann in der Ergebnisliste bereits ein Wert vorhanden sein. Es kann aber sein, dass sich in den nGa-Bereichen
 		// dem nGa-Bereich weitere Objekte befinden.
 
 		// Nun muss entweder der Id oder der Pid Index benutzt werden
 
-		// Als erstes muss geprüft werden, ob es den benötigten Index überhaupt gibt. Dieser Fall kann
+		// Als erstes muss geprÃ¼ft werden, ob es den benÃ¶tigten Index Ã¼berhaupt gibt. Dieser Fall kann
 		// auftreten, wenn es noch zu keiner Reorganisation gekommen ist und es somit keine
 		// nGa Bereiche bzw. den dyn. nGa Bereich noch nicht gibt.
 		// Falls es keine Reorganisation gegeben hat, dann stehen die Elemente im Speicher und wurden bereits
 		// gefunden, siehe oben.
 
-		// Wird true, falls der benötigte Index(Id oder Pid) nach einer Reorganisation angelegt wurde
+		// Wird true, falls der benÃ¶tigte Index(Id oder Pid) nach einer Reorganisation angelegt wurde
 		boolean indexExist = false;
 
 		if(searchId) {
 			// Der Index nach Id muss vorhanden sein
 			if(_startIdIndex < _startPidHashCodeIndex) {
-				// Der start des Id-Index ist kleiner als der Start des Pid-Index, also müssen
+				// Der start des Id-Index ist kleiner als der Start des Pid-Index, also mÃ¼ssen
 				// in diesem Zwischenraum Daten stehen.
 				indexExist = true;
 			}
 		}
 		else {
 			if(_startPidHashCodeIndex < _startMixedSet) {
-				// Nach dem Pid Index kommt die Mischmenge, im Zwischenraum müsen also
+				// Nach dem Pid Index kommt die Mischmenge, im Zwischenraum mÃ¼sen also
 				// Daten stehen
 				indexExist = true;
 			}
@@ -3706,10 +3712,10 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 		if(indexExist) {
 			// Erste Eintrag im Index (Id oder Pid)
 			long minimum;
-			// In dieser Variablen steht später die Dateipostion an der das Paar "Id, relative Dateipostion" (Id Anfrage) steht
+			// In dieser Variablen steht spÃ¤ter die Dateipostion an der das Paar "Id, relative Dateipostion" (Id Anfrage) steht
 			long middle = -1;
 
-			// In dieser Variablen steht später die Dateipostion an der das Paar "Pid-HashCode, relative Dateipostion" (Pid Anfrage) steht.
+			// In dieser Variablen steht spÃ¤ter die Dateipostion an der das Paar "Pid-HashCode, relative Dateipostion" (Pid Anfrage) steht.
 			long helperPid = -1;
 
 			// Letzter Eintrag im Index (Id oder Pid)
@@ -3735,22 +3741,22 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 			// Der Algorithmus sucht nach dem Parameter value. Sind mehrere Objekte vorhanden, die dem value entsprechen
 			// wird solange weitergesucht, bis das erste Objekt gefunden wurde, das dem value entspricht.
-			// Alle Objekte, die nach dem Objekt gespeichert wurden, entsprechem dem value oder sind größer.
-			// Dies ist für die Pid wichtig, da für jedes Objekt mit der gleichen Pid ein Eintrag gemacht wird.
+			// Alle Objekte, die nach dem Objekt gespeichert wurden, entsprechem dem value oder sind grÃ¶ÃŸer.
+			// Dies ist fÃ¼r die Pid wichtig, da fÃ¼r jedes Objekt mit der gleichen Pid ein Eintrag gemacht wird.
 			while(minimum < maximum) {
 //							System.out.println("Start-while: min: " + minimum + " middle: " + middle + " max: " + maximum);
 
 				// Speichert den Wert, des aus dem Index (Id oder Pid) geladen wurden
 				final long valueFromIndex;
 				// Neue Mitte ausrechnen. Dies entspricht einer Dateiposition.
-				// Der nächste Wert setzt sich im Id Index anderes zusammen, als bei einem
+				// Der nÃ¤chste Wert setzt sich im Id Index anderes zusammen, als bei einem
 				// Pid Index. Nach dem die Mitte gefunden wurde, wird der Wert aus dem entsprechenden Index
 				// eingelesen.
 				if(searchId) {
 					// Wieviele Paare (Long,Long (Id,Relative Position) sind zwischem Min und Max.
 					final long numberOfPairs = (maximum - minimum) / 16;
 
-					// Die hälfte der Paare und dann pro paar 16 Byte (2 Longs) dazurechnen. Dieser Wert muss zum Min.
+					// Die hÃ¤lfte der Paare und dann pro paar 16 Byte (2 Longs) dazurechnen. Dieser Wert muss zum Min.
 					// gerechnet werden um die Mitte zu erhalten.
 					final long newMinOffset = (numberOfPairs / 2) * 16;
 					middle = minimum + newMinOffset;
@@ -3762,7 +3768,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 					// Wieviele Paare (int,Long (HashCode der Pid,Relative Position) sind zwischem Min und Max.
 					final long numberOfPairs = (maximum - minimum) / 12;
 
-					// Die hälfte der Paare und dann pro paar 12 Byte (ein Integer und ein Long) dazurechnen. Dieser Wert muss zum Min.
+					// Die hÃ¤lfte der Paare und dann pro paar 12 Byte (ein Integer und ein Long) dazurechnen. Dieser Wert muss zum Min.
 					// gerechnet werden um die Mitte zu erhalten.
 					final long newMinOffset = (numberOfPairs / 2) * 12;
 					middle = minimum + newMinOffset;
@@ -3771,8 +3777,8 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 					valueFromIndex = file.readInt();
 				}
 
-				// Die Id oder der HashCode der Pid steht nun zur Verfügung
-//							System.out.println("Binäre Suche: middle: " + valueFromIndex + " gesucht: " + value);
+				// Die Id oder der HashCode der Pid steht nun zur VerfÃ¼gung
+//							System.out.println("BinÃ¤re Suche: middle: " + valueFromIndex + " gesucht: " + value);
 				if(value <= valueFromIndex) {
 					maximum = middle;
 					if(value == valueFromIndex) {
@@ -3781,7 +3787,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 						// Bei der Suche nach der Pid muss weiter gesucht werden, da es mehrere
 						// Objekte zu einer Pid geben kann.
 						resultFound = true;
-//									System.out.println("*****Binäre suche findet das gesuchte Objekt*****");
+//									System.out.println("*****BinÃ¤re suche findet das gesuchte Objekt*****");
 
 						if(searchId) {
 							// Id suche endet, die Position im Index steht in middle
@@ -3797,7 +3803,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 					}
 				}
 				else {
-					// das nächste Element ist ein Paar, das entweder aus Long,Long oder aus Int,Long besteht.
+					// das nÃ¤chste Element ist ein Paar, das entweder aus Long,Long oder aus Int,Long besteht.
 					if(searchId) {
 						minimum = middle + 8 + 8;
 					}
@@ -3811,7 +3817,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			if(resultFound) {
 
 				// Es wurde mindestens ein Objekt gefunden (bei der Id darf es nur ein Objekt sein, bei
-				// der Pid können es mehrere sein)
+				// der Pid kÃ¶nnen es mehrere sein)
 				if(searchId) {
 
 					// Den filePointer auf die Stelle setzen, wo das erste Objekt steht
@@ -3829,7 +3835,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 					searchResult.add(idObject);
 					assert idObject.getID() == checkId : "Dateiposition: " + position + " Datei: " + _configAreaFile + " gesuchte Id: " + value
 							+ " gefundene Id: " + idObject.getID();
-					// Liste mit dem Objekt zurückgeben
+					// Liste mit dem Objekt zurÃ¼ckgeben
 					return searchResult;
 				}
 				else {
@@ -3837,9 +3843,9 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 					// Auf den richtigen Index springen, dieser steht im Gegensatz zu Id-Suche in dieser Variablen
 					file.seek(helperPid);
 
-					// Es werden Objekte für die Pid benötigt. Für eine Pid kann es mehrer Objekte geben.
-					// Es müssen alle Objekte aus dem Pid-Index eingelesen werden, deren Pid-HashCode mit
-					// dem übergebenen Code übereinstimmen.
+					// Es werden Objekte fÃ¼r die Pid benÃ¶tigt. FÃ¼r eine Pid kann es mehrer Objekte geben.
+					// Es mÃ¼ssen alle Objekte aus dem Pid-Index eingelesen werden, deren Pid-HashCode mit
+					// dem Ã¼bergebenen Code Ã¼bereinstimmen.
 
 					// wird true, wenn das letzte Objekt aus dem Pid-Index geladen wurden, dessen hashCode stimmt
 					boolean lastPidObjectRead = false;
@@ -3885,7 +3891,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 
 	/**
-	 * Gibt die Pid des Konfigurationsbereichs zurück.
+	 * Gibt die Pid des Konfigurationsbereichs zurÃ¼ck.
 	 *
 	 * @return Pid des Konfigurationsbereichs
 	 */
@@ -3903,7 +3909,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 		synchronized(_objectsPendingDeletion) {
 			for(final Long dynamicObjectInfo : objectsToDelete) {
 				if(_objectsLockedForDeletion.contains(dynamicObjectInfo)) {
-					// Objekt kann endgültig gelöscht werden
+					// Objekt kann endgÃ¼ltig gelÃ¶scht werden
 					_objectsPendingDeletion.add(dynamicObjectInfo);
 				}
 			}
@@ -3916,11 +3922,11 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 
 	/**
-	 * Löscht die für das Löschen vorgemerkten dynamischen Objekte vollständig und permanent. Die übergebenen Objekte sollten bereits einige Zeit
-	 * gelöscht sein und sich im NgaDyn-Block befinden. Es sollte keine Referenzen auf diese Objekte geben.
+	 * LÃ¶scht die fÃ¼r das LÃ¶schen vorgemerkten dynamischen Objekte vollstÃ¤ndig und permanent. Die Ã¼bergebenen Objekte sollten bereits einige Zeit
+	 * gelÃ¶scht sein und sich im NgaDyn-Block befinden. Es sollte keine Referenzen auf diese Objekte geben.
 	 *
-	 * Da sich dadurch die Positionen von nicht-Gültigen Objekten in der Datei ändern können,
-	 * können Objekte im Speicher durch diesen Vorgang unbrauchbar werden. Daher muss nach dem Aufruf dieser Methode
+	 * Da sich dadurch die Positionen von nicht-GÃ¼ltigen Objekten in der Datei Ã¤ndern kÃ¶nnen,
+	 * kÃ¶nnen Objekte im Speicher durch diesen Vorgang unbrauchbar werden. Daher muss nach dem Aufruf dieser Methode
 	 * das Datenmodell neu initialisiert werden oder alternativ die Methode zu einem Zeitpunkt aufgerufen werden, wenn noch keine
 	 * alten Objekte im Speicher sind.
 	 */
@@ -3930,13 +3936,13 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			synchronized(_configAreaFile) {
 				synchronized(_objectsPendingDeletion) {
 					if (_objectsPendingDeletion.size() > 0) {
-						_debug.info("Lösche " + _objectsPendingDeletion.size() + " alte dynamische Objekte aus Konfigurationsbereich", getConfigAreaPid());
+						_debug.info("LÃ¶sche " + _objectsPendingDeletion.size() + " alte dynamische Objekte aus Konfigurationsbereich", getConfigAreaPid());
 						try {
 							restructure(RestructureMode.DeleteObjectsPermanently);
 							_objectsPendingDeletion.clear();
 						}
 						catch(IOException e) {
-							_debug.error("Fehler beim endgültigen Löschen im Bereich " + _configAreaFile, e);
+							_debug.error("Fehler beim endgÃ¼ltigen LÃ¶schen im Bereich " + _configAreaFile, e);
 						}
 					}
 				}
@@ -3994,7 +4000,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 //	}
 
 	/**
-	 * Wird aufgerufen, wenn ein dynamisches Objekt ungültig wird.
+	 * Wird aufgerufen, wenn ein dynamisches Objekt ungÃ¼ltig wird.
 	 * Falls das Objekt bereits
 	 * @param object
 	 */
@@ -4008,7 +4014,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 				else {
 					final BufferedRandomAccessFile file = new BufferedRandomAccessFile(_configAreaFile, "rw");
 					try {
-						// Größe(4) + ID(8) + Hashcode(4) + Typ(8) + Kennung(1)
+						// GrÃ¶ÃŸe(4) + ID(8) + Hashcode(4) + Typ(8) + Kennung(1)
 						file.seek(filePosition.getAbsoluteFilePosition() + 4 + 8 + 4 + 8 + 1);
 						file.writeLong(object.getFirstInvalidTime());
 					}
@@ -4026,9 +4032,9 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Führt eine volle Restrukturierugn aus
+	 * FÃ¼hrt eine volle Restrukturierugn aus
 	 * @return true falls erfolgreich sonst false
-	 * @deprecated Bitte Mode-Parameter übergeben um die Art der Restrukturierung anzugeben.
+	 * @deprecated Bitte Mode-Parameter Ã¼bergeben um die Art der Restrukturierung anzugeben.
 	 */
 	@Deprecated
 	public boolean restructure() {
@@ -4037,11 +4043,11 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 			return true;
 		}
 		catch(IOException e) {
-			// Fängt alle Fehler ab, kommt es zu einem Fehler, wird die Reorganisation unterbrochen und der
+			// FÃ¤ngt alle Fehler ab, kommt es zu einem Fehler, wird die Reorganisation unterbrochen und der
 			// Ursprungszustand bleibt erhalten
 			_debug.error(
 					"Fehler bei der Reorganisation " + _configAreaFile + " Pid " + _configurationAreaPid
-							+ " . Die Reorganisation wurde abgebrochen, es wird ohne Änderung in der Ursprungsdate normal weitergearbeitet.", e
+							+ " . Die Reorganisation wurde abgebrochen, es wird ohne Ã„nderung in der Ursprungsdate normal weitergearbeitet.", e
 			);
 			return false;
 		}
@@ -4050,7 +4056,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	/**
 	 * Diese Klasse wird mehrfach mit unterschiedlichen Aufgaben benutzt. Es wird aber immer in einem Array benutzt um eine Sortierung des Array nach dem Value des
 	 * Objekts zu erzeugen. Der Value kann dabei ein Zeitstempel oder eine Id sein. <br> Diese Klasse speichert den Zeitstempel, wann ein dynamisches Objekt
-	 * ungültig geworden ist und die Position an dem das Objekt in der Datei gespeichert wurde. <br> Diese Klasse speichert die Id und die Dateiposition von
+	 * ungÃ¼ltig geworden ist und die Position an dem das Objekt in der Datei gespeichert wurde. <br> Diese Klasse speichert die Id und die Dateiposition von
 	 * beliebigen Objekten.
 	 */
 	private final static class SortObject implements Comparable<SortObject> {
@@ -4119,7 +4125,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 		/** HashCode, der die Pid abbildet */
 		private final int _pidHashCode;
 
-		/** @param pidHashCode HashCode einer Pid, dieser Wert wird bei einer Sortierung als Kriterium gewählt */
+		/** @param pidHashCode HashCode einer Pid, dieser Wert wird bei einer Sortierung als Kriterium gewÃ¤hlt */
 		public SortObjectPid(int pidHashCode) {
 			_pidHashCode = pidHashCode;
 		}
@@ -4161,7 +4167,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Ein Objekt, das als "ungültig" markiert ist enthält den HashCode der Pid und die Id des Objekts. Damit das Objekt später, falls nötig, geladen werden kann,
+	 * Ein Objekt, das als "ungÃ¼ltig" markiert ist enthÃ¤lt den HashCode der Pid und die Id des Objekts. Damit das Objekt spÃ¤ter, falls nÃ¶tig, geladen werden kann,
 	 * befindet sich ebenfalls die Dateiposition und ein Objekt zum einladen der Daten am Objekt
 	 */
 	final static class OldObject {
@@ -4181,7 +4187,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 		 * @param id
 		 * @param pidHashCode
 		 * @param filePosition   Position in der Datei, an der das Objekt gespeichert wurde
-		 * @param configAreaFile Objekt, über das das als "ungültig" markierte Objekt geladen werden kann
+		 * @param configAreaFile Objekt, Ã¼ber das das als "ungÃ¼ltig" markierte Objekt geladen werden kann
 		 */
 		public OldObject(long id, int pidHashCode, FilePointer filePosition, ConfigAreaFile configAreaFile) {
 			_id = id;
@@ -4208,7 +4214,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 		public String toString() {
 			final StringBuilder out = new StringBuilder();
-			out.append("Ungültig markiertes Objekt:" + "\n");
+			out.append("UngÃ¼ltig markiertes Objekt:" + "\n");
 			out.append("Id : ").append(getId()).append("\n");
 			out.append("Pid, hashCode: ").append(getPidHashCode()).append("\n");
 			// out.append("Datei: " + getConfigAreaFile() + "\n");
@@ -4224,8 +4230,8 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Diese Klasse speichert die Dateiposition eines Blocks, der Konfigurationsobjekte enthält, die ungültig sind und durch eine Reorganisation verschoben wurden
-	 * und sich nicht mehr in der Mischobjektmenge befinden. Als zusätzliche Informatione speicher die Klasse einen Zeitstempel, der zu dem Block gehört.
+	 * Diese Klasse speichert die Dateiposition eines Blocks, der Konfigurationsobjekte enthÃ¤lt, die ungÃ¼ltig sind und durch eine Reorganisation verschoben wurden
+	 * und sich nicht mehr in der Mischobjektmenge befinden. Als zusÃ¤tzliche Informatione speicher die Klasse einen Zeitstempel, der zu dem Block gehÃ¶rt.
 	 */
 	public final static class OldBlockInformations {
 
@@ -4255,25 +4261,25 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Diese Klasse speichert alle Inforamtionen, die benötigt werden um ein Objekt, das sich in der Mischmenge befindet aber nicht komplett in den Speicher
+	 * Diese Klasse speichert alle Inforamtionen, die benÃ¶tigt werden um ein Objekt, das sich in der Mischmenge befindet aber nicht komplett in den Speicher
 	 * geladen wurde, eventuell nachzuladen falls es gebraucht wird. Bei transienten Objekte wird das gesamte Objekt gespeichert.
-	 * <p/>
-	 * Bei der Suche nach der Type Id wird bei alten Objekten immer ein Zeitbereich angegeben, in dem das Objekt gültig gewesen sein muss. Also wird entweder der
-	 * Zeitpunkt an dem das Objekt gültig wurde gespeichert (bei dynamischen Objekten) oder aber die Version mit der das Objekt gültig wurde.
-	 * <p/>
+	 * <p>
+	 * Bei der Suche nach der Type Id wird bei alten Objekten immer ein Zeitbereich angegeben, in dem das Objekt gÃ¼ltig gewesen sein muss. Also wird entweder der
+	 * Zeitpunkt an dem das Objekt gÃ¼ltig wurde gespeichert (bei dynamischen Objekten) oder aber die Version mit der das Objekt gÃ¼ltig wurde.
+	 * <p>
 	 * Es wird ebenfalls ein Boolean gespeichert, der angibt ob das Objekt ein Konfigurationsobjekt oder ein dynamisches Objekt ist.
-	 * <p/>
-	 * Als letztes wird die absolute Position des Objekts in der Datei gespeichert, damit es falls nötig geladen werden kann.
+	 * <p>
+	 * Als letztes wird die absolute Position des Objekts in der Datei gespeichert, damit es falls nÃ¶tig geladen werden kann.
 	 */
 	private final static class OldObjectTypeIdInfo {
 
 		/**
-		 * Bei einem Konfigurationsobjekt steht hier die Version, mit der das Objekt gültig wurde. Bei einem dynamischen Objekt ist es der Zeitpunkt, an dem das
-		 * Objekt gültig wurde.
+		 * Bei einem Konfigurationsobjekt steht hier die Version, mit der das Objekt gÃ¼ltig wurde. Bei einem dynamischen Objekt ist es der Zeitpunkt, an dem das
+		 * Objekt gÃ¼ltig wurde.
 		 */
 		private final long _firstValid;
 
-		/** Zeitpunkt/Version, an dem das Objekt ungültig werden soll/geworden ist (0 bedeutet, dass dieser Zeitpunkt unbekannt ist) */
+		/** Zeitpunkt/Version, an dem das Objekt ungÃ¼ltig werden soll/geworden ist (0 bedeutet, dass dieser Zeitpunkt unbekannt ist) */
 		private final long _firstInvalid;
 
 		/** true = es handelt sich um ein Konfigurationsobjekt; false = das Objekt ist ein dynamisches Objekt */
@@ -4282,12 +4288,12 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 		private final ObjectReference _objectReference;
 
 		/**
-		 * @param firstValid           Bei Konfigurationsobjekten die Version, mit der das Objekt gültig wurde. Bei einem dynamischen Objekt, der Zeitpunkt an dem das
-		 *                             Objekt gültig wurde.
-		 * @param firstInvalidVersion  Bei Konfigurationsobjekten die Version, mit der das Objekt ungültig wurde. Bei einem dynamischen Objekt, der Zeitpunkt an dem
-		 *                             das Objekt ungültig wurde. Der Wert 0 bedeutet in beiden Fällen, dass die Version, in der das Objekt ungültig wird, noch
+		 * @param firstValid           Bei Konfigurationsobjekten die Version, mit der das Objekt gÃ¼ltig wurde. Bei einem dynamischen Objekt, der Zeitpunkt an dem das
+		 *                             Objekt gÃ¼ltig wurde.
+		 * @param firstInvalidVersion  Bei Konfigurationsobjekten die Version, mit der das Objekt ungÃ¼ltig wurde. Bei einem dynamischen Objekt, der Zeitpunkt an dem
+		 *                             das Objekt ungÃ¼ltig wurde. Der Wert 0 bedeutet in beiden FÃ¤llen, dass die Version, in der das Objekt ungÃ¼ltig wird, noch
 		 *                             unbekannt ist.
-		 * @param configurationObject  Variable wird benötigt um den Paramter firstValid auszuwerten. true = Es ist ein Konfigurationsobjekt; false = es ist ein
+		 * @param configurationObject  Variable wird benÃ¶tigt um den Paramter firstValid auszuwerten. true = Es ist ein Konfigurationsobjekt; false = es ist ein
 		 *                             dynamisches Objekt
 		 * @param objectReference Objekt, mit dem das Objekt aus der Datei rekonstruiert werden kann, bzw direkt aus dem Speicher geholt wird.
 		 */
@@ -4325,13 +4331,13 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 	/**
-	 * Lädt das Objekt aus der Datei oder holt es aus dem Speicher (transiente Objekte).
+	 * LÃ¤dt das Objekt aus der Datei oder holt es aus dem Speicher (transiente Objekte).
 	 *
 	 * @return s.o.
 	 *
 	 * @throws NoSuchVersionException
 	 * @throws IOException
-	 * @param file BufferedFile, das die Konfigurationsdatei enthält. Falls null wird eine neue Datei geöffnet.
+	 * @param file BufferedFile, das die Konfigurationsdatei enthÃ¤lt. Falls null wird eine neue Datei geÃ¶ffnet.
 	 *                   (Performanceproblem beim wiederholten Laden von vielen Objekten!)
 	 *
 	 */
@@ -4351,22 +4357,22 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 	}
 
 
-	/** Diese Klasse stellt einen Iterator zur Verfügung, der alle Objekte eines Konfigurationsbereichs zur Verfügung stellt. */
+	/** Diese Klasse stellt einen Iterator zur VerfÃ¼gung, der alle Objekte eines Konfigurationsbereichs zur VerfÃ¼gung stellt. */
 	private final class FileIterator implements Iterator<SystemObjectInformationInterface> {
 
 		/**
-		 * Speichert die relative Position des Datensatzes, der als nächstes aus der Datei gelesen werden muss. Die absolute Position setzt sich auf der relativen
+		 * Speichert die relative Position des Datensatzes, der als nÃ¤chstes aus der Datei gelesen werden muss. Die absolute Position setzt sich auf der relativen
 		 * Position + _headerEnd zusammen. Der Wert -1 bedeutet, dass es keine weiteren Objekte mehr gibt, die in der Datei gespeichert sind.
 		 */
 		private long _relativePosition = -1;
 
-		/** absolute Position eines als "ungültig" markierten Objekts, das sich in der Mischmenge befindet. */
+		/** absolute Position eines als "ungÃ¼ltig" markierten Objekts, das sich in der Mischmenge befindet. */
 		private final Iterator<ObjectReference> _oldObjectsIterator = _oldObjectsId.values().iterator();
 
-		/** Iterator über alle aktuellen Objekte, die sich im Speicher befinden */
+		/** Iterator Ã¼ber alle aktuellen Objekte, die sich im Speicher befinden */
 		private final Iterator<SystemObjectInformationInterface> _actualObjectsIterator = _actualObjects.values().iterator();
 
-		/** Iterator über alle zukünftig aktuellen Objekte, die sich im Speicher befinden */
+		/** Iterator Ã¼ber alle zukÃ¼nftig aktuellen Objekte, die sich im Speicher befinden */
 		private final Iterator<SystemObjectInformationInterface> _newObjectsIterator = _newObjects.values().iterator();
 
 		public FileIterator() {
@@ -4379,16 +4385,16 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 
 		@Override
 		synchronized public boolean hasNext() {
-			// Gibt es noch Elemente, die aus der Datei geladen werden können
+			// Gibt es noch Elemente, die aus der Datei geladen werden kÃ¶nnen
 			if(_relativePosition > 0) return true;
-			// Gibt es noch Elemente, die ungültig sind und in der Mischmenge vorhanden sind
+			// Gibt es noch Elemente, die ungÃ¼ltig sind und in der Mischmenge vorhanden sind
 			if(_oldObjectsIterator.hasNext()) return true;
-			// Gibt es noch aktuelle Objekte, die zurückgegeben werden können
+			// Gibt es noch aktuelle Objekte, die zurÃ¼ckgegeben werden kÃ¶nnen
 			if(_actualObjectsIterator.hasNext()) return true;
-			// Gibt es noch zukünftig aktuelle Objekte, die zurückgegeben werden können
+			// Gibt es noch zukÃ¼nftig aktuelle Objekte, die zurÃ¼ckgegeben werden kÃ¶nnen
 			if(_newObjectsIterator.hasNext()) return true;
 
-			// Es wurde kein true zurückgegeben, also wurden alle Objekte zurückgegeben
+			// Es wurde kein true zurÃ¼ckgegeben, also wurden alle Objekte zurÃ¼ckgegeben
 			return false;
 		}
 
@@ -4398,7 +4404,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 				synchronized(_configAreaFile) {
 
 					if(_relativePosition >= 0) {
-						// Es gibt noch Objekte, die aus der Datei geladen werden können.
+						// Es gibt noch Objekte, die aus der Datei geladen werden kÃ¶nnen.
 						// Wenn das Objekt geladen wird, wird auch _relativePosition durch den setter gesetzt.
 
 						try {
@@ -4427,7 +4433,7 @@ public class ConfigAreaFile implements ConfigurationAreaFile, HeaderInfo {
 						return _newObjectsIterator.next();
 					}
 
-					// Es wurden alle Objekte zurückgegeben
+					// Es wurden alle Objekte zurÃ¼ckgegeben
 					throw new NoSuchElementException();
 				}
 			}

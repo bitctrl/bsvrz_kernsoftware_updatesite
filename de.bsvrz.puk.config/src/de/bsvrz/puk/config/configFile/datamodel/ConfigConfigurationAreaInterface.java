@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -25,21 +31,21 @@ import de.bsvrz.dav.daf.main.config.ConfigurationArea;
 import java.util.*;
 
 /**
- * Interface zum Zugriff auf interne Informationen bzgl. der Abh‰ngigkeitspr¸fung, das f¸r automatisierte Tests benˆtigt wird.
+ * Interface zum Zugriff auf interne Informationen bzgl. der Abh√§ngigkeitspr√ºfung, das f√ºr automatisierte Tests ben√∂tigt wird.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5831 $
+ * @version $Revision$
  */
 public interface ConfigConfigurationAreaInterface extends ConfigurationArea {
 	/**
-	 * Gibt alle Abh‰ngigkeiten des Bereichs zu anderen Konfigurationsbereichen zur¸ck.
+	 * Gibt alle Abh√§ngigkeiten des Bereichs zu anderen Konfigurationsbereichen zur√ºck.
 	 *
-	 * @return Abh‰ngigkeiten des Bereich oder eine leere Collection, falls keine Abh‰ngigkeiten bestehen.
+	 * @return Abh√§ngigkeiten des Bereich oder eine leere Collection, falls keine Abh√§ngigkeiten bestehen.
 	 */
 	public Collection<ConfigurationAreaDependency> getDependencyFromOtherConfigurationAreas();
 
 	/**
-	 * @return <code>true</code>, wenn der Bereich bereits auf Abh‰ngigkeiten gepr¸ft wurde; <code>false</code>, wenn der Bereich nicht auf Abh‰ngigkeiten gepr¸ft
+	 * @return <code>true</code>, wenn der Bereich bereits auf Abh√§ngigkeiten gepr√ºft wurde; <code>false</code>, wenn der Bereich nicht auf Abh√§ngigkeiten gepr√ºft
 	 *         wurde.
 	 */
 	boolean dependenciesChecked();

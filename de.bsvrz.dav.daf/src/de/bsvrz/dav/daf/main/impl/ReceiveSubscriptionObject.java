@@ -1,13 +1,13 @@
 /*
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl;
@@ -33,7 +39,7 @@ import java.util.*;
 
 /**
  * @author Kappich Systemberatung
- * @version $Revision: 8527 $
+ * @version $Revision$
  */
 public class ReceiveSubscriptionObject {
 
@@ -53,11 +59,11 @@ public class ReceiveSubscriptionObject {
 	private boolean actualDataAvaillable;
 
 	/**
-	 * @param _receiverSubscription Dieses Objekt wird in die Liste der Empfangsanmeldungen hinzugefügt (an erster Stelle). Des Weiteren werden die Information
+	 * @param _receiverSubscription Dieses Objekt wird in die Liste der Empfangsanmeldungen hinzugefÃ¼gt (an erster Stelle). Des Weiteren werden die Information
 	 *                              <code>BaseSubscriptionInfo</code>, <code>getReceiveSubscriptionInfo</code>, <code>TimeInCache</code> aus dem Objekt
 	 *                              gespeichert.
 	 *
-	 * @throws IllegalArgumentException Der übergebene Parameter war <code>null</code>
+	 * @throws IllegalArgumentException Der Ã¼bergebene Parameter war <code>null</code>
 	 */
 	public ReceiveSubscriptionObject(ReceiverSubscription _receiverSubscription, CollectingReceiverManager receiverManager) {
 		if(_receiverSubscription == null) {
@@ -77,7 +83,7 @@ public class ReceiveSubscriptionObject {
 	}
 
 	/**
-	 * Gibt die Basisanmeldeinformationen dieses Objekts zurück. Dieser Wert wird indirekt im Konstruktor übergeben.
+	 * Gibt die Basisanmeldeinformationen dieses Objekts zurÃ¼ck. Dieser Wert wird indirekt im Konstruktor Ã¼bergeben.
 	 *
 	 * @return Basisanmeldeinformationen
 	 */
@@ -86,16 +92,16 @@ public class ReceiveSubscriptionObject {
 	}
 
 	/**
-	 * Gibt die Liste der Empfangsanmeldungen zurück
+	 * Gibt die Liste der Empfangsanmeldungen zurÃ¼ck
 	 *
-	 * @return Liste der Empfangsanmeldungen. Sind keine Empfangsanmeldungen vorhanden, so wird eine leere Liste zurückgegeben.
+	 * @return Liste der Empfangsanmeldungen. Sind keine Empfangsanmeldungen vorhanden, so wird eine leere Liste zurÃ¼ckgegeben.
 	 */
 	public final List<ReceiverSubscription> getReceiverSubscriptionList() {
 		return receiverSubscriptionList;
 	}
 
 	/**
-	 * Gibt die Empfangsanmeldeinformation zurück, die beim Datenverteiler angemeldet ist.
+	 * Gibt die Empfangsanmeldeinformation zurÃ¼ck, die beim Datenverteiler angemeldet ist.
 	 *
 	 * @return Empfangsanmeldeinformationen oder <code>null</code>falls keine weiteren Anmeldungen bestehen
 	 *
@@ -106,7 +112,7 @@ public class ReceiveSubscriptionObject {
 	}
 
 	/**
-	 * Verweilzeit im Cache für Datensätze dieser Anmeldung.
+	 * Verweilzeit im Cache fÃ¼r DatensÃ¤tze dieser Anmeldung.
 	 *
 	 * @return s.o.
 	 */
@@ -133,19 +139,19 @@ public class ReceiveSubscriptionObject {
 	}
 
 	/**
-	 * Aktuallisiert dieses Objekt. Wenn die gegebene Anmeldung nicht existiert, dann wird sie zur Anmeldeliste hinzugefügt. Wenn sie existiert, dann wird sie
+	 * Aktuallisiert dieses Objekt. Wenn die gegebene Anmeldung nicht existiert, dann wird sie zur Anmeldeliste hinzugefÃ¼gt. Wenn sie existiert, dann wird sie
 	 * aktuallisiert.
 	 *
-	 * @param _receiverSubscription Dieses Objekt wird entweder zur Anmeldeliste hinzugefügt (falls noch keine Anmeldung besteht) oder die Informationen der
+	 * @param _receiverSubscription Dieses Objekt wird entweder zur Anmeldeliste hinzugefÃ¼gt (falls noch keine Anmeldung besteht) oder die Informationen der
 	 *                              bestehenden Anmeldung wird aktualisiert.
 	 *
-	 * @return true = Wenn durch die Aktuallisierung eine Änderung der Informationen, die beim Datenverteiler angemeldet wurden, durchgeführt wurde; false = sonst
+	 * @return true = Wenn durch die Aktuallisierung eine Ã„nderung der Informationen, die beim Datenverteiler angemeldet wurden, durchgefÃ¼hrt wurde; false = sonst
 	 */
 	public final synchronized boolean addSubscription(ReceiverSubscription _receiverSubscription, CollectingReceiverManager receiverManager) {
 		boolean changed = false;
 		ReceiveSubscriptionInfo _receiveSubscriptionInfo = _receiverSubscription.getReceiveSubscriptionInfo();
 		if(_receiveSubscriptionInfo == null) {
-			throw new IllegalArgumentException("Übergabeparameter ist leer oder inconsistent");
+			throw new IllegalArgumentException("Ãœbergabeparameter ist leer oder inconsistent");
 		}
 		// Schonmal beim Datenverteiler gemeldet?
 		if(receiveSubscriptionInfo == null) {
@@ -158,7 +164,7 @@ public class ReceiveSubscriptionObject {
 				changed = receiveSubscriptionInfo.updateSubscriptionInfo(_receiveSubscriptionInfo);
 			}
 			catch(IllegalStateException e) {
-				throw new IllegalStateException(e.getLocalizedMessage() + ". Empfangsanmeldung für " + _receiverSubscription.getSystemObject() + ":" + _receiverSubscription.getDataDescription(), e);
+				throw new IllegalStateException(e.getLocalizedMessage() + ". Empfangsanmeldung fÃ¼r " + _receiverSubscription.getSystemObject() + ":" + _receiverSubscription.getDataDescription(), e);
 			}
 		}
 		// Schonmal von der gleiche Teilapplikation gemeldet?
@@ -184,11 +190,11 @@ public class ReceiveSubscriptionObject {
 	}
 
 	/**
-	 * Gibt zugehörige Empfängeranmeldung zum übergebenen Objekt zurück.
+	 * Gibt zugehÃ¶rige EmpfÃ¤ngeranmeldung zum Ã¼bergebenen Objekt zurÃ¼ck.
 	 *
 	 * @param client Objekt, zu dem die <code>ReceiverSubscription</code> gesucht werden soll
 	 *
-	 * @return ReceiverSubscription oder <code>null</code>, falls es zu dem übergebenen Objekt keine <code>ReceiverSubscription</code> gibt.
+	 * @return ReceiverSubscription oder <code>null</code>, falls es zu dem Ã¼bergebenen Objekt keine <code>ReceiverSubscription</code> gibt.
 	 */
 	private final ReceiverSubscription getSubscription(ClientReceiverInterface client) {
 		synchronized(receiverSubscriptionList) {
@@ -206,17 +212,17 @@ public class ReceiveSubscriptionObject {
 	}
 
 	/**
-	 * Entfernt eine Anmeldung als Empfänger.
+	 * Entfernt eine Anmeldung als EmpfÃ¤nger.
 	 *
-	 * @param receiver Objekt, über das die Empfangsanmeldung identifiziert wird, die entfernt werden soll.
+	 * @param receiver Objekt, Ã¼ber das die Empfangsanmeldung identifiziert wird, die entfernt werden soll.
 	 *
 	 * @return true = Wenn die Anmeldung entfernt werden konnte; false = sonst
 	 *
-	 * @throws IllegalArgumentException Wird geworfen, wenn der übergebene Parameter <code>null</code> ist.
+	 * @throws IllegalArgumentException Wird geworfen, wenn der Ã¼bergebene Parameter <code>null</code> ist.
 	 */
 	public final synchronized boolean removeSubscription(ClientReceiverInterface receiver, CollectingReceiverManager receiverManager) {
 		if(receiver == null) {
-			throw new IllegalArgumentException("Übergabeparameter ist leer oder inkonsistent");
+			throw new IllegalArgumentException("Ãœbergabeparameter ist leer oder inkonsistent");
 		}
 
 		boolean foundReceiver = false;
@@ -272,10 +278,10 @@ public class ReceiveSubscriptionObject {
 	}
 
 	/**
-	 * Prüft ob {@link #getReceiveSubscriptionInfo()} ein Objekt ungleich <code>null</code> zurück gibt.
+	 * PrÃ¼ft ob {@link #getReceiveSubscriptionInfo()} ein Objekt ungleich <code>null</code> zurÃ¼ck gibt.
 	 * Ist ein Objekt vorhanden, so kann dies zum abmelden beim Datenverteiler benutzt werden.
 	 *
-	 * @return true = {@link #getReceiveSubscriptionInfo()} wird ein Objekt zurück geben; false = {@link #getReceiveSubscriptionInfo()} gibt <code>null</code> zurück
+	 * @return true = {@link #getReceiveSubscriptionInfo()} wird ein Objekt zurÃ¼ck geben; false = {@link #getReceiveSubscriptionInfo()} gibt <code>null</code> zurÃ¼ck
 	 */
 	public final boolean isValidSubscription() {
 		return receiveSubscriptionInfo != null;

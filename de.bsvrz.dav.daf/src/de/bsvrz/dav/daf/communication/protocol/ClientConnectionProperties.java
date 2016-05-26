@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.protocol;
@@ -28,10 +34,10 @@ import de.bsvrz.dav.daf.main.ConnectionException;
 import de.bsvrz.dav.daf.main.InitialisationNotCompleteException;
 
 /**
- * Diese Klasse enthält die Eigenschaften, die benötigt werden, um eine Verbindung zum Datenverteiler aufzubauen.
+ * Diese Klasse enthÃ¤lt die Eigenschaften, die benÃ¶tigt werden, um eine Verbindung zum Datenverteiler aufzubauen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 12968 $
+ * @version $Revision$
  */
 public class ClientConnectionProperties extends ConnectionProperties {
 
@@ -50,10 +56,10 @@ public class ClientConnectionProperties extends ConnectionProperties {
 	/** Die Kommunikationssubadresse */
 	private int _subAddress;
 
-	/** Enthält die Parameter für die Kommunikation zwischen Applikation und Datenverteiler. */
+	/** EnthÃ¤lt die Parameter fÃ¼r die Kommunikation zwischen Applikation und Datenverteiler. */
 	private CommunicationParameters _communicationParameters;
 
-	/** Enthält den via Aufrufparameter von Start/Stopp vorgegebenen Inkarnationsnamen oder <code>""</code>, falls das Aufrufargument nicht angegeben wurde. */
+	/** EnthÃ¤lt den via Aufrufparameter von Start/Stopp vorgegebenen Inkarnationsnamen oder <code>""</code>, falls das Aufrufargument nicht angegeben wurde. */
 	private final String _incarnationName;
 
 	public ClientConnectionProperties(ClientDavParameters clientDavParameters) throws ConnectionException {
@@ -119,16 +125,16 @@ public class ClientConnectionProperties extends ConnectionProperties {
 	}
 
 	/**
-	 * Gibt die Parameter für die Kommunikation zwischen Applikation und Datenverteiler zurück.
+	 * Gibt die Parameter fÃ¼r die Kommunikation zwischen Applikation und Datenverteiler zurÃ¼ck.
 	 *
-	 * @return die Parameter für die Kommunikation zwischen Applikation und Datenverteiler
+	 * @return die Parameter fÃ¼r die Kommunikation zwischen Applikation und Datenverteiler
 	 */
 	public CommunicationParameters getCommunicationParameters() {
 		return _communicationParameters;
 	}
 
 	/**
-	 * Gibt den Namen der Applikation zurück.
+	 * Gibt den Namen der Applikation zurÃ¼ck.
 	 *
 	 * @return der Name der Applikation
 	 */
@@ -155,7 +161,7 @@ public class ClientConnectionProperties extends ConnectionProperties {
 	}
 
 	/**
-	 * Gibt den Typ der Applikation zurück.
+	 * Gibt den Typ der Applikation zurÃ¼ck.
 	 *
 	 * @return Typ der Applikation
 	 */
@@ -173,7 +179,7 @@ public class ClientConnectionProperties extends ConnectionProperties {
 	}
 
 	/**
-	 * Gibt die Pid der Konfiguration zurück.
+	 * Gibt die Pid der Konfiguration zurÃ¼ck.
 	 *
 	 * @return die Pid der Konfiguration
 	 */
@@ -191,7 +197,7 @@ public class ClientConnectionProperties extends ConnectionProperties {
 	}
 
 	/**
-	 * Gibt die Kommunikationsadresse des Datenverteilers zurück.
+	 * Gibt die Kommunikationsadresse des Datenverteilers zurÃ¼ck.
 	 *
 	 * @return die Kommunikationsadresse
 	 */
@@ -209,7 +215,7 @@ public class ClientConnectionProperties extends ConnectionProperties {
 	}
 
 	/**
-	 * Gibt die Kommunikationssubadresse des Datenverteilers zurück.
+	 * Gibt die Kommunikationssubadresse des Datenverteilers zurÃ¼ck.
 	 *
 	 * @return die Kommunikationssubadresse
 	 */

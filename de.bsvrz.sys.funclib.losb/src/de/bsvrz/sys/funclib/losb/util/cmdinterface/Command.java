@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.sys.funclib.losb.
  * 
- * de.bsvrz.sys.funclib.losb is free software; you can redistribute it and/or modify
+ * de.bsvrz.sys.funclib.losb is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.losb is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.sys.funclib.losb; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.losb.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.losb.util.cmdinterface;
@@ -25,11 +31,11 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 
 /**
- * Abstrakte Klasse für Kommandos des {@link de.bsvrz.sys.funclib.losb.util.cmdinterface.CmdInterpreter}
+ * Abstrakte Klasse fÃ¼r Kommandos des {@link de.bsvrz.sys.funclib.losb.util.cmdinterface.CmdInterpreter}
  *
  * @author beck et al. projects GmbH
- * @author Thomas Müller
- * @version $Revision: 6420 $ / $Date: 2009-03-10 23:19:01 +0100 (Tue, 10 Mar 2009) $ / ($Author: rs $)
+ * @author Thomas MÃ¼ller
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public abstract class Command {
 
@@ -44,7 +50,7 @@ public abstract class Command {
 	private BufferedWriter out;
 
 	/**
-	 * Kommando für {@link CmdInterpreter}
+	 * Kommando fÃ¼r {@link CmdInterpreter}
 	 *
 	 * @param desc die Beschreibung
 	 * @param help der Hilfetext
@@ -55,7 +61,7 @@ public abstract class Command {
 	}
 
 	/**
-	 * Reader und Writer für Ein- und Ausgabefunktionen des Kommandos setzen
+	 * Reader und Writer fÃ¼r Ein- und Ausgabefunktionen des Kommandos setzen
 	 *
 	 * @param in  Eingabe-Reader
 	 * @param out Ausgabe-Writer
@@ -66,25 +72,25 @@ public abstract class Command {
 	}
 
 	/**
-	 * Eltern-Menü für Kommando lesen
+	 * Eltern-MenÃ¼ fÃ¼r Kommando lesen
 	 *
-	 * @return Eltern-Menü
+	 * @return Eltern-MenÃ¼
 	 */
 	public CmdMenu getParent() {
 		return this.parentNode;
 	}
 
 	/**
-	 * Eltern-Menü für Kommando setzen
+	 * Eltern-MenÃ¼ fÃ¼r Kommando setzen
 	 *
-	 * @param parent das Eltern-Menü
+	 * @param parent das Eltern-MenÃ¼
 	 */
 	public void setParent(CmdMenu parent) {
 		this.parentNode = parent;
 		setIndex();
 	}
 
-	/** Index des Kommandos setzen (abhängig vom Eltern-Menü und Geschwister-Einträgen) */
+	/** Index des Kommandos setzen (abhÃ¤ngig vom Eltern-MenÃ¼ und Geschwister-EintrÃ¤gen) */
 	public void setIndex() {
 		this.index = this.parentNode.getSubMenues().size() + this.parentNode.getCommands().size() - this.parentNode.getNumHiddenCommands();
 	}
@@ -92,7 +98,7 @@ public abstract class Command {
 	/**
 	 * Index des Kommandos auslesen
 	 *
-	 * @return Index (immer eindeutig in einem Menü)
+	 * @return Index (immer eindeutig in einem MenÃ¼)
 	 */
 	public int getIndex() {
 		return this.index;
@@ -117,7 +123,7 @@ public abstract class Command {
 	}
 
 	/**
-	 * Beschreibung setzen (wird im Menü in eckigen Klammern angezeigt)
+	 * Beschreibung setzen (wird im MenÃ¼ in eckigen Klammern angezeigt)
 	 *
 	 * @param desc Beschreibung
 	 */
@@ -135,7 +141,7 @@ public abstract class Command {
 	}
 
 	/**
-	 * Benutzereingabe in einem Kommando (Abbruch bei Überschreitung des Server-Timeout)
+	 * Benutzereingabe in einem Kommando (Abbruch bei Ãœberschreitung des Server-Timeout)
 	 *
 	 * @return userinput Benutzereingabe
 	 */
@@ -172,7 +178,7 @@ public abstract class Command {
 
 
 	/**
-	 * Methode muss von einer implementierenden Klasse gefüllt werden
+	 * Methode muss von einer implementierenden Klasse gefÃ¼llt werden
 	 *
 	 * @throws Exception meist bei Server-Timeout (wird im {@link CmdInterpreter} abgefangen)
 	 */

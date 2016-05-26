@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.sys.funclib.losb.
  * 
- * de.bsvrz.sys.funclib.losb is free software; you can redistribute it and/or modify
+ * de.bsvrz.sys.funclib.losb is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.losb is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.sys.funclib.losb; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.losb.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.losb.datk;
@@ -26,7 +32,7 @@ package de.bsvrz.sys.funclib.losb.datk;
  *
  * @author beck et al. projects GmbH
  * @author Thomas Schaefer
- * @version $Revision: 11353 $ / $Date: 2013-06-25 16:12:23 +0200 (Tue, 25 Jun 2013) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class MessageType {
 
@@ -69,7 +75,7 @@ public class MessageType {
 	/** Auftrag zur Aenderung des Loeschzeitpunkts. */
 	public static final int DELETION_TIME = 13;
 
-	/** Ergebnis eines Auftrags zur Aenderung des Löschzeitpunkts. */
+	/** Ergebnis eines Auftrags zur Aenderung des LÃ¶schzeitpunkts. */
 	public static final int DELETION_TIME_RESULT = 14;
 
 	/** Auftrag zum Abgleich der Verwaltungsinformationen mit einem Medium von Typ "B". */
@@ -84,15 +90,15 @@ public class MessageType {
 	/** Ergebnis des Nachforderns. */
 	public static final int REQUEST_DID_RESULT = 18;
 
-	/** Nachforderungsauftrag für Datenidentifikationen der automatischen Nachforderung */
+	/** Nachforderungsauftrag fÃ¼r Datenidentifikationen der automatischen Nachforderung */
 	public static final int REQUEST_AUTOM = 19;
 
 	/** Ergebnis Nachforderungsauftrag */
 	public static final int REQUEST_AUTOM_RESULT = 20;
 
-	/** Anfrage Anzahl Aufträge pro Applikation */
+	/** Anfrage Anzahl AuftrÃ¤ge pro Applikation */
 	public static final int NUM_QUERIES_INFO = 21;
 
-	/** Ergebnis Anzahl Aufträge pro Applikation */
+	/** Ergebnis Anzahl AuftrÃ¤ge pro Applikation */
 	public static final int NUM_QUERIES_INFO_RESULT = 22;
 }

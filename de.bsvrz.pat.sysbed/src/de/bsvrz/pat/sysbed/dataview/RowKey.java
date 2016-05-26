@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.pat.sysbed.dataview;
 
@@ -24,14 +30,14 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
- * Die Klasse kapselt ein Objektreferenz für einen Datensatz bzw eine Zeile in der
+ * Die Klasse kapselt ein Objektreferenz fÃ¼r einen Datensatz bzw eine Zeile in der
  * visuellen Darstellung. Da das DataViewFrame bzw das DataViewPanel immer nur die
- * Swing-Komponenten vorhält, die sich im sichtbaren Bereich befinden, braucht man
- * diese Objektreferenzen um sich etwa selektierte Zeilen außerhalb des sichtbaren
- * Bereichs zu merken. Die Klasse ist ähnlich zu CellKey aufgebaut, nur viel einfacher.
+ * Swing-Komponenten vorhÃ¤lt, die sich im sichtbaren Bereich befinden, braucht man
+ * diese Objektreferenzen um sich etwa selektierte Zeilen auÃŸerhalb des sichtbaren
+ * Bereichs zu merken. Die Klasse ist Ã¤hnlich zu CellKey aufgebaut, nur viel einfacher.
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 11925 $
+ * @version $Revision$
  *
  */
 public class RowKey {
@@ -49,10 +55,10 @@ public class RowKey {
 	private static Integer _nextInternalIdForPid = 1;
 	
 	/**
-	 * Konstruktor zum Anlegen eines Schlüssels
+	 * Konstruktor zum Anlegen eines SchlÃ¼ssels
 	 * 
 	 * @param rowKey
-	 *            Schlüssel
+	 *            SchlÃ¼ssel
 	 */
 	public RowKey( String rowKey) {
 		String[] split = SEPARATOR_PATTERN.split( rowKey);
@@ -71,7 +77,7 @@ public class RowKey {
 	}
 
 	/**
-	 * Gibt den Datensatzindex zurück.
+	 * Gibt den Datensatzindex zurÃ¼ck.
 	 * 
      * @return den Datensatzindex
      */
@@ -80,7 +86,7 @@ public class RowKey {
     }
 
     /**
-     * Gibt die PID des Datensatzes zurück.
+     * Gibt die PID des Datensatzes zurÃ¼ck.
      * 
      * @return die PID des Datensatzes
      */
@@ -107,7 +113,7 @@ public class RowKey {
     }
 
 	/**
-	 * Gibt das Trennzeichen aus der String-Darstellung zurück.
+	 * Gibt das Trennzeichen aus der String-Darstellung zurÃ¼ck.
 	 * 
      * @return das Trennzeichen aus der String-Darstellung
      */

@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.sys.funclib.application.
  * 
  * de.bsvrz.sys.funclib.application is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.application is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.application; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.application; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.application;
@@ -42,15 +48,15 @@ import java.util.prefs.Preferences;
 
 /**
  * Diese abstrakte Klasse ist eine Beispielimplementierung des Interfaces {@link GUIApplication}. Durch Aufruf der Methode {@link #connect} wird ein
- * Login-Dialog dargestellt, wo die TCP/IP-Adresse zum Datenverteiler, Benutzername und Passwort eingegeben werden müssen. Die letzten 20 erfolgreichen
+ * Login-Dialog dargestellt, wo die TCP/IP-Adresse zum Datenverteiler, Benutzername und Passwort eingegeben werden mÃ¼ssen. Die letzten 20 erfolgreichen
  * Login-Versuche werden lokal auf dem Rechner gespeichert.
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 13225 $
+ * @version $Revision$
  */
 public abstract class AbstractGUIApplication implements GUIApplication {
 	
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 	
 	private JDialog _dialog;
@@ -68,11 +74,11 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 		_dialog = createDialog(getApplicationName());
 		
 		if(isDavConnected()) {
-			_debug.finest("OK-Button gedrückt.");
+			_debug.finest("OK-Button gedrÃ¼ckt.");
 			return getConnection();
 		}
 		else {
-			_debug.finest("Beenden-Button gedrückt.");
+			_debug.finest("Beenden-Button gedrÃ¼ckt.");
 			System.exit(0);
 			return null;
 		}
@@ -158,7 +164,7 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 		gridBagLayout.setConstraints(passwordField, gbc);
 		inputPanel.add(passwordField);
 		
-		// OK- und Beenden-Schaltfläche einfügen
+		// OK- und Beenden-SchaltflÃ¤che einfÃ¼gen
 		final JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
 		final JButton okButton = new JButton("OK");
@@ -199,7 +205,7 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 						
 						ClientDavParameters parameters;
 						try{
-							// Kopie erstellen, damit das der ClientDavConnection übergebene Objekt nicht später geändert wird (verursacht Warnung)
+							// Kopie erstellen, damit das der ClientDavConnection Ã¼bergebene Objekt nicht spÃ¤ter geÃ¤ndert wird (verursacht Warnung)
 							parameters = _parameters.clone();
 						}
 						catch(Throwable ignored) {
@@ -208,7 +214,7 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 						}
 						
 						connection = new ClientDavConnection(parameters);
-						// Fertigmeldung für SWE Start/Stop wird explizit übernommen
+						// Fertigmeldung fÃ¼r SWE Start/Stop wird explizit Ã¼bernommen
 						connection.enableExplicitApplicationReadyMessage();
 						
 						connection.connect();
@@ -238,7 +244,7 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 					}
 					_dialog.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 					
-					// wenn die Verbindung zum Datenverteiler hergestellt werden konnte und die Login-Daten stimmen, wird die Verbindung zurückgegeben
+					// wenn die Verbindung zum Datenverteiler hergestellt werden konnte und die Login-Daten stimmen, wird die Verbindung zurÃ¼ckgegeben
 					if(connection != null) {
 						setConnection(connection);
 						_preferencesModel.addSelectedConnection();
@@ -289,7 +295,7 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 	}
 	
 	/**
-	 * Dies ist eine Hilfsmethode, die für den GridBagLayout-Manager benötigt wird. Sie vereinfacht die Angabe der wesentlichen Constraints des Layout-Managers.
+	 * Dies ist eine Hilfsmethode, die fÃ¼r den GridBagLayout-Manager benÃ¶tigt wird. Sie vereinfacht die Angabe der wesentlichen Constraints des Layout-Managers.
 	 * 
 	 * @param x
 	 *            x-Position
@@ -300,7 +306,7 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 	 * @param height
 	 *            Anzahl Zeilen, die die Komponente benutzen soll
 	 * 
-	 * @return Die Constraints für den Layout-Manager.
+	 * @return Die Constraints fÃ¼r den Layout-Manager.
 	 */
 	private static GridBagConstraints makegbc(int x, int y, int width, int height) {
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -381,8 +387,8 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 		private String _selectedPort = "8083";
 		
 		/**
-		 * Konstruktor liest alle relevanten Einträge in den Preferences ein und setzt den Wert, der in der ComboBox direkt zu sehen ist. In den Listen stehen
-		 * die Werte, die über die ComboBoxen ausgewählt werden können.
+		 * Konstruktor liest alle relevanten EintrÃ¤ge in den Preferences ein und setzt den Wert, der in der ComboBox direkt zu sehen ist. In den Listen stehen
+		 * die Werte, die Ã¼ber die ComboBoxen ausgewÃ¤hlt werden kÃ¶nnen.
 		 * 
 		 * @param preferencesRoot
 		 * @param numberOfIpsToStore
@@ -390,7 +396,7 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 		public PreferencesModel(Preferences preferencesRoot, int numberOfIpsToStore) {
 			_preferencesRoot = preferencesRoot;
 			_numberOfIpsToStore = numberOfIpsToStore;
-			// gibt es Einträge in den Preferences zu IP und Port ? Wenn nein -> Default-Werte localhost:8083
+			// gibt es EintrÃ¤ge in den Preferences zu IP und Port ? Wenn nein -> Default-Werte localhost:8083
 			try {
 				String[] children = _preferencesRoot.childrenNames();
 				if(children.length > 0) { // es gibt abgespeicherte Werte
@@ -412,7 +418,7 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 			}
 			
 			/**
-			 * Falls sich etwas an den Knoten ändert, muss die Liste ggf. auch geändert werden.
+			 * Falls sich etwas an den Knoten Ã¤ndert, muss die Liste ggf. auch geÃ¤ndert werden.
 			 */
 			_preferencesRoot.addNodeChangeListener(new NodeChangeListener() {
 				public void childAdded(NodeChangeEvent evt) {
@@ -445,8 +451,8 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 		
 		/**
 		 * Erstellt anhand der Felder <code>_selectedIp</code> und <code>_selectedPort</code> einen neuen IP/Port-Eintrag in den Einstellungen. Unterhalb von
-		 * <code>_preferencesRoot</code> werden neue Knoten angelegt, deren Bezeichnung bei <code>"2000000000"</code> beginnt. Für jeden weiteren Eintrag wird dort
-		 * eins heruntergezählt. Sind mehr Knoten vorhanden, als <code>_numberOfIpsToStore</code> festlegt, wird der älteste Eintrag (der mit der höchsten Nummer)
+		 * <code>_preferencesRoot</code> werden neue Knoten angelegt, deren Bezeichnung bei <code>"2000000000"</code> beginnt. FÃ¼r jeden weiteren Eintrag wird dort
+		 * eins heruntergezÃ¤hlt. Sind mehr Knoten vorhanden, als <code>_numberOfIpsToStore</code> festlegt, wird der Ã¤lteste Eintrag (der mit der hÃ¶chsten Nummer)
 		 * entfernt.
 		 */
 		public void addSelectedConnection() {
@@ -456,12 +462,12 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 				String[] children = _preferencesRoot.childrenNames();
 
 				if(children.length > 0) {
-					//Falls der letzte Eintrag bereits die aktuellen Daten enthält, ist nichts zu tun
+					//Falls der letzte Eintrag bereits die aktuellen Daten enthÃ¤lt, ist nichts zu tun
 					Preferences childPrefs = _preferencesRoot.node(getNewestEntry(children));
 					if(childPrefs.get("ip", "").equals(_selectedIp) && childPrefs.get("port", "").equals(_selectedPort)) {
 						return;
 					}
-					// ist der neue Eintrag bereits (irgendwo anders) vorhanden -> alten Eintrag löschen
+					// ist der neue Eintrag bereits (irgendwo anders) vorhanden -> alten Eintrag lÃ¶schen
 					for(int i = 0; i < children.length; i++) {
 						String child = children[i];
 						childPrefs = _preferencesRoot.node(child);
@@ -489,7 +495,7 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 				// Neue Knoten-Nummer ermitteln
 				String newNode = String.valueOf(nextNumber);
 
-				// Nummer links mit Nullen auffüllen
+				// Nummer links mit Nullen auffÃ¼llen
 				final String padding = ZEROS.substring(0, ZEROS.length() - newNode.length());
 				newNode = padding + newNode;
 
@@ -501,7 +507,7 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 				// Kindknoten neu einlesen
 				children = _preferencesRoot.childrenNames();
 
-				// Anzahl der Einträge begrenzen, älteste Einträge löschen
+				// Anzahl der EintrÃ¤ge begrenzen, Ã¤lteste EintrÃ¤ge lÃ¶schen
 				while(children.length > _numberOfIpsToStore) {
 					final String oldestChild = getOldestEntry(children);
 					_preferencesRoot.node(oldestChild).removeNode();
@@ -511,11 +517,11 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 				}
 			}
 			catch(BackingStoreException ex) {
-				_debug.warning("Überzählige IP-Adressen konnten nicht gelöscht werden", ex);
+				_debug.warning("ÃœberzÃ¤hlige IP-Adressen konnten nicht gelÃ¶scht werden", ex);
 			}
 		}
 
-		/** Gibt den neuesten Eintrag aus einem children-Array zurück. Hilfsfunktion von addSelectedConnection.
+		/** Gibt den neuesten Eintrag aus einem children-Array zurÃ¼ck. Hilfsfunktion von addSelectedConnection.
 		 *
  		 * @param children Ein Array der Form <code>{"2000000000","1999999999","1999999998"}</code>
 		 * @return den niedrigsten Wert im Array. Zum Beispiel <code>"1999999998"</code>
@@ -529,10 +535,10 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 			return newestChild;
 		}
 
-		/** Gibt den ältesten Eintrag aus einem children-Array zurück. Hilfsfunktion von addSelectedConnection.
+		/** Gibt den Ã¤ltesten Eintrag aus einem children-Array zurÃ¼ck. Hilfsfunktion von addSelectedConnection.
 		 *
  		 * @param children Ein Array der Form <code>{"2000000000","1999999999","1999999998"}</code>
-		 * @return den höchsten Wert im Array. Zum Beispiel <code>"2000000000"</code>
+		 * @return den hÃ¶chsten Wert im Array. Zum Beispiel <code>"2000000000"</code>
 		 */
 		private String getOldestEntry(final String[] children) {
 			String oldestChild = children[0];
@@ -544,7 +550,7 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 		}
 		
 		/**
-		 * Gibt die Anzahl der IPs zurück.
+		 * Gibt die Anzahl der IPs zurÃ¼ck.
 		 * 
 		 * @return die Anzahl der IPs
 		 */
@@ -557,7 +563,7 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 		}
 		
 		/**
-		 * Gibt die IP an einer bestimmten Position zurück.
+		 * Gibt die IP an einer bestimmten Position zurÃ¼ck.
 		 * 
 		 * @param index
 		 *            die Position
@@ -573,10 +579,10 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 		}
 		
 		/**
-		 * Setzt die IP, die ausgewählt wurde, bzw. eingegeben wurde und bestimmt auch die zugehörigen Ports.
+		 * Setzt die IP, die ausgewÃ¤hlt wurde, bzw. eingegeben wurde und bestimmt auch die zugehÃ¶rigen Ports.
 		 * 
 		 * @param selectedIp
-		 *            die ausgewählte IP
+		 *            die ausgewÃ¤hlte IP
 		 */
 		public void setSelectedIp(String selectedIp) {
 			_selectedIp = selectedIp;
@@ -584,23 +590,23 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 		}
 		
 		/**
-		 * Gibt die ausgewählte IP zurück.
+		 * Gibt die ausgewÃ¤hlte IP zurÃ¼ck.
 		 * 
-		 * @return die ausgewählte IP
+		 * @return die ausgewÃ¤hlte IP
 		 */
 		public String getSelectedIp() {
 			return _selectedIp;
 		}
 		
 		/**
-		 * Gibt die Anzahl der Ports zurück.
+		 * Gibt die Anzahl der Ports zurÃ¼ck.
 		 * 
 		 * @return die Anzahl der Ports
 		 */
 		public int getPortSize() {
 			int numberOfRelevantPorts = 0;
 			try {
-				// Anzahl Ports anhand der ausgewählten IP ermitteln
+				// Anzahl Ports anhand der ausgewÃ¤hlten IP ermitteln
 				String[] children = _preferencesRoot.childrenNames();
 				for(int i = 0; i < children.length; i++) {
 					String child = children[i];
@@ -611,13 +617,13 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 				}
 			}
 			catch(BackingStoreException ex) {
-				_debug.warning("Anzahl der Ports, die zur ausgewählten IP-Adresse gehören, konnte nicht ermittelt werden", ex);
+				_debug.warning("Anzahl der Ports, die zur ausgewÃ¤hlten IP-Adresse gehÃ¶ren, konnte nicht ermittelt werden", ex);
 			}
 			return numberOfRelevantPorts;
 		}
 		
 		/**
-		 * Gibt den Port an einer bestimmten Position in der ComboBox zurück.
+		 * Gibt den Port an einer bestimmten Position in der ComboBox zurÃ¼ck.
 		 * 
 		 * @param index
 		 *            die Position
@@ -639,25 +645,25 @@ public abstract class AbstractGUIApplication implements GUIApplication {
 				return portList.get(index);
 			}
 			catch(BackingStoreException ex) {
-				_debug.warning("Portnummer zum Index " + index + " konnte nicht ermittelt werden. Es wird '8083' zurückgegeben", ex);
+				_debug.warning("Portnummer zum Index " + index + " konnte nicht ermittelt werden. Es wird '8083' zurÃ¼ckgegeben", ex);
 				return "8083";
 			}
 		}
 		
 		/**
-		 * Setzt den ausgewählten oder editierten Port.
+		 * Setzt den ausgewÃ¤hlten oder editierten Port.
 		 * 
 		 * @param selectedPort
-		 *            der ausgewählte Port
+		 *            der ausgewÃ¤hlte Port
 		 */
 		public void setSelectedPort(String selectedPort) {
 			_selectedPort = selectedPort;
 		}
 		
 		/**
-		 * Gibt den ausgewählten Port zurück.
+		 * Gibt den ausgewÃ¤hlten Port zurÃ¼ck.
 		 * 
-		 * @return der ausgewählte Port
+		 * @return der ausgewÃ¤hlte Port
 		 */
 		public String getSelectedPort() {
 			return _selectedPort;

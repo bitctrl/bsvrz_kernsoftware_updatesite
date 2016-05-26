@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.util;
@@ -25,11 +31,11 @@ import java.util.*;
 
 /**
  * Klasse, die zu einem Key mehrere Values zuordnen kann. Unter jedem Key wird ein Set gespeichert, sodass pro Key das
- * gleiche Objekt maximal einmal gespeichert wird. Dies kann durch den Optionalen useSet-parameter geändert werden,
+ * gleiche Objekt maximal einmal gespeichert wird. Dies kann durch den Optionalen useSet-parameter geÃ¤ndert werden,
  * wodurch dann eine Liste verwendet wird.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 12328 $
+ * @version $Revision$
  */
 @SuppressWarnings({"unchecked"})
 public class HashBagMap<K, V> implements Serializable {
@@ -42,15 +48,15 @@ public class HashBagMap<K, V> implements Serializable {
 	private final boolean _useSet;
 
 	/**
-	 * Erstellt eine HashBagMap, die zu einem Key mehrere Values speichert, und für die Speicherung der Values ein
+	 * Erstellt eine HashBagMap, die zu einem Key mehrere Values speichert, und fÃ¼r die Speicherung der Values ein
 	 * {@link Set} verwendet, sodass pro Key jedes Objekt nur einmal gespeichert wird.
 	 */
 	public HashBagMap() {
 		this(8, true);
 	}
 	/**
-	 * Erstellt eine HashBagMap, die zu einem Key mehrere Values speichert. Über den useSet-parameter kann festgelegt werden,
-	 * ob für die Speicherung der Values intern ein Set (keine doppelten Values pro Key) oder eine Liste (doppelte Values pro Key möglich,
+	 * Erstellt eine HashBagMap, die zu einem Key mehrere Values speichert. Ãœber den useSet-parameter kann festgelegt werden,
+	 * ob fÃ¼r die Speicherung der Values intern ein Set (keine doppelten Values pro Key) oder eine Liste (doppelte Values pro Key mÃ¶glich,
 	 * ggf. etwas speichersparender) verwendet wird.
 	 *
 	 * @param useSet ob ein Set verwendet werden soll
@@ -60,20 +66,20 @@ public class HashBagMap<K, V> implements Serializable {
 	}
 
 	/**
-	 * Erstellt eine HashBagMap, die zu einem Key mehrere Values speichert, und für die Speicherung der Values ein
+	 * Erstellt eine HashBagMap, die zu einem Key mehrere Values speichert, und fÃ¼r die Speicherung der Values ein
 	 * {@link Set} verwendet, sodass pro Key jedes Objekt nur einmal gespeichert wird.
-	 * @param initialCapacity Initiale Key-Kapazität
+	 * @param initialCapacity Initiale Key-KapazitÃ¤t
 	 */
 	public HashBagMap(final int initialCapacity) {
 		this(initialCapacity, true);
 	}
 	/**
-	 * Erstellt eine HashBagMap, die zu einem Key mehrere Values speichert. Über den useSet-parameter kann festgelegt werden,
-	 * ob für die Speicherung der Values intern ein Set (keine doppelten Values pro Key) oder eine Liste (doppelte Values pro Key möglich,
+	 * Erstellt eine HashBagMap, die zu einem Key mehrere Values speichert. Ãœber den useSet-parameter kann festgelegt werden,
+	 * ob fÃ¼r die Speicherung der Values intern ein Set (keine doppelten Values pro Key) oder eine Liste (doppelte Values pro Key mÃ¶glich,
 	 * ggf. etwas speichersparender) verwendet wird.
 	 *
 	 * @param useSet ob ein Set verwendet werden soll
-	 * @param initialCapacity Initiale Key-Kapazität
+	 * @param initialCapacity Initiale Key-KapazitÃ¤t
 	 */
 	public HashBagMap(final int initialCapacity, boolean useSet) {
 		_useSet = useSet;
@@ -81,7 +87,7 @@ public class HashBagMap<K, V> implements Serializable {
 	}
 
 	/**
-	 * Gibt die Anzahl der gespeicherten Werte (Values) zurück
+	 * Gibt die Anzahl der gespeicherten Werte (Values) zurÃ¼ck
 	 * @return die Anzahl der gespeicherten Werte (Values)
 	 */
 	public int size() {
@@ -89,7 +95,7 @@ public class HashBagMap<K, V> implements Serializable {
 	}
 
 	/**
-	 * Gibt true zurück, wenn keine Werte gespeichert sind
+	 * Gibt true zurÃ¼ck, wenn keine Werte gespeichert sind
 	 *
 	 * @return true, wenn keine Werte gespeichert sind
 	 */
@@ -102,7 +108,7 @@ public class HashBagMap<K, V> implements Serializable {
 	}
 
 	/**
-	 * Gibt <tt>true</tt> zurück, wenn ein Objekt vom Typ Map.Entry enthalten ist, also hier dem Entry-Key mindestens das Entry-Value zugeordnet ist.
+	 * Gibt <tt>true</tt> zurÃ¼ck, wenn ein Objekt vom Typ Map.Entry enthalten ist, also hier dem Entry-Key mindestens das Entry-Value zugeordnet ist.
 	 * @return <tt>true</tt>, wenn ein Objekt vom Typ Map.Entry enthalten ist, sonst <tt>false</tt>
 	 */
 	public boolean contains(final Object o) {
@@ -115,7 +121,7 @@ public class HashBagMap<K, V> implements Serializable {
 	}
 
 	/**
-	 * Fügt einen Entry hinzu. Shortcut für add(entry.getKey(), entry.getValue()).
+	 * FÃ¼gt einen Entry hinzu. Shortcut fÃ¼r add(entry.getKey(), entry.getValue()).
 	 * @param entry Entry
 	 * @return siehe {@link #add(Object, Object)}
 	 */
@@ -125,7 +131,7 @@ public class HashBagMap<K, V> implements Serializable {
 
 	/**
 	 * Entfernt ein Map.Entry<K, V> aus der HashBagMap. Entspricht remove(entry.getKey(), entry.getValue). Tut nichts und gibt false
-	 * zurück, falls o kein Map.Entry ist.
+	 * zurÃ¼ck, falls o kein Map.Entry ist.
 	 */
 	private boolean remove(final Object o) {
 		if(o instanceof Map.Entry) {
@@ -136,10 +142,10 @@ public class HashBagMap<K, V> implements Serializable {
 	}
 
 	/**
-	 * Gibt true zurück, wenn die Klasse zu diesem Key mindestens einen Wert enthält
+	 * Gibt true zurÃ¼ck, wenn die Klasse zu diesem Key mindestens einen Wert enthÃ¤lt
 	 *
 	 * @param key Key
-	 * @return true wenn die Klasse zu diesem key mindestens einen Wert enthält
+	 * @return true wenn die Klasse zu diesem key mindestens einen Wert enthÃ¤lt
 	 */
 	public boolean containsKey(final Object key) {
 		final Collection<V> v = _backingHashMap.get(key);
@@ -147,7 +153,7 @@ public class HashBagMap<K, V> implements Serializable {
 	}
 
 	/**
-	 * Gibt true zurück, wenn dieser Wert mindestens einmal einem Key zugeordnet wurde
+	 * Gibt true zurÃ¼ck, wenn dieser Wert mindestens einmal einem Key zugeordnet wurde
 	 *
 	 * @param value Wert
 	 * @return true, wenn dieser Wert mindestens einmal einem Key zugeordnet wurde
@@ -157,7 +163,7 @@ public class HashBagMap<K, V> implements Serializable {
 	}
 
 	/**
-	 * Gibt die Collection mit Objekten zurück, die hinter diesem Key liegen
+	 * Gibt die Collection mit Objekten zurÃ¼ck, die hinter diesem Key liegen
 	 *
 	 * @param key Key
 	 * @return Liste mit Objekten
@@ -167,11 +173,11 @@ public class HashBagMap<K, V> implements Serializable {
 	}
 
 	/**
-	 * Fügt einem Key einen Wert hinzu
+	 * FÃ¼gt einem Key einen Wert hinzu
 	 *
 	 * @param key   Key
 	 * @param value Wert
-	 * @return true wenn die Collection verändert wurde
+	 * @return true wenn die Collection verÃ¤ndert wurde
 	 */
 	public boolean add(final K key, final V value) {
 		final Collection<V> v = _backingHashMap.get(key);
@@ -187,11 +193,11 @@ public class HashBagMap<K, V> implements Serializable {
 	}
 
 	/**
-	 * Fügt einem Key mehrere Werte hinzu
+	 * FÃ¼gt einem Key mehrere Werte hinzu
 	 *
 	 * @param key   Key
 	 * @param value Werte
-	 * @return true wenn die Collection verändert wurde
+	 * @return true wenn die Collection verÃ¤ndert wurde
 	 */
 	public boolean addAll(final K key, final Collection<? extends V> value) {
 		if(value.size() == 0) return false;
@@ -253,7 +259,7 @@ public class HashBagMap<K, V> implements Serializable {
 	}
 
 	/**
-	 * Löscht einen Eintrag
+	 * LÃ¶scht einen Eintrag
 	 *
 	 * @param key   Key
 	 * @param value Wert
@@ -270,7 +276,7 @@ public class HashBagMap<K, V> implements Serializable {
 	}
 
 	/**
-	 * Löscht alle Einträge eines Keys
+	 * LÃ¶scht alle EintrÃ¤ge eines Keys
 	 *
 	 * @param key Key
 	 * @return true falls ein Wert entfernt wurde
@@ -288,20 +294,20 @@ public class HashBagMap<K, V> implements Serializable {
 	}
 
 	/**
-	 * Gibt ein Set über die Keys zurück
+	 * Gibt ein Set Ã¼ber die Keys zurÃ¼ck
 	 *
-	 * @return ein Set über die Keys
+	 * @return ein Set Ã¼ber die Keys
 	 */
 	public Set<K> keySet() {
 		return _backingHashMap.keySet();
 	}
 
 	/**
-	 * Gibt eine Liste über alle values zurück. Änderungen an der zurückgegeben Collection haben keine Auswirkungen auf die
-	 * HashBagMap. Einträge, die mehreren Keys zugeordnet sind werden mehrfach zurückgegeben. Die Reihenfolge der
-	 * Listeneinträge ist nicht definiert.
+	 * Gibt eine Liste Ã¼ber alle values zurÃ¼ck. Ã„nderungen an der zurÃ¼ckgegeben Collection haben keine Auswirkungen auf die
+	 * HashBagMap. EintrÃ¤ge, die mehreren Keys zugeordnet sind werden mehrfach zurÃ¼ckgegeben. Die Reihenfolge der
+	 * ListeneintrÃ¤ge ist nicht definiert.
 	 *
-	 * @return eine Liste über alle values
+	 * @return eine Liste Ã¼ber alle values
 	 */
 	public List<V> values() {
 		final List<V> c = new ArrayList<V>(_backingHashMap.size() * 8);
@@ -312,10 +318,10 @@ public class HashBagMap<K, V> implements Serializable {
 	}
 
 	/**
-	 * Gibt ein Set über alle values zurück. Änderungen an der zurückgegeben Collection haben keine Auswirkungen auf die
+	 * Gibt ein Set Ã¼ber alle values zurÃ¼ck. Ã„nderungen an der zurÃ¼ckgegeben Collection haben keine Auswirkungen auf die
 	 * HashBagMap.
 	 *
-	 * @return eine Liste über alle values
+	 * @return eine Liste Ã¼ber alle values
 	 */
 	public Set<V> valueSet() {
 		final Set<V> c = new HashSet<V>(_backingHashMap.size() * 8);
@@ -326,9 +332,9 @@ public class HashBagMap<K, V> implements Serializable {
 	}
 
 	/**
-	 * Gibt ein Set über alle Einträge zurück
+	 * Gibt ein Set Ã¼ber alle EintrÃ¤ge zurÃ¼ck
 	 *
-	 * @return ein Set über alle Einträge
+	 * @return ein Set Ã¼ber alle EintrÃ¤ge
 	 */
 	public Set<Map.Entry<K, Collection<V>>> entrySet() {
 		return new EntrySet();

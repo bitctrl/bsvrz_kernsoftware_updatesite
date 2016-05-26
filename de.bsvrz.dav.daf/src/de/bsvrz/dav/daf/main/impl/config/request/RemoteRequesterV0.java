@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config.request;
@@ -37,7 +43,7 @@ import java.util.concurrent.TimeUnit;
  * RemoteRequester
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13194 $
+ * @version $Revision$
  */
 public class RemoteRequesterV0 extends RemoteRequester {
 
@@ -86,11 +92,11 @@ public class RemoteRequesterV0 extends RemoteRequester {
 	}
 
 	/**
-	 * Lädt ein Systemobjekt durch entsprechende Konfigurationsanfragen aus der Konfiguration.
+	 * LÃ¤dt ein Systemobjekt durch entsprechende Konfigurationsanfragen aus der Konfiguration.
 	 *
-	 * @param id ID des gewünschen Objekts.
+	 * @param id ID des gewÃ¼nschen Objekts.
 	 *
-	 * @return Gewünschtes Systemobjekt
+	 * @return GewÃ¼nschtes Systemobjekt
 	 */
 	public List<SystemObject> getObjects(long... ids) {
 		DafSystemObject systemObject = null;
@@ -202,10 +208,10 @@ public class RemoteRequesterV0 extends RemoteRequester {
 	}
 
 	/**
-	 * Liefert eine Liste mit allen Systemobjekten eines Typs zurück. Zu beachten ist, das auch Objekte eines Typs, der diesen Typ erweitert, zurückgegeben
+	 * Liefert eine Liste mit allen Systemobjekten eines Typs zurÃ¼ck. Zu beachten ist, das auch Objekte eines Typs, der diesen Typ erweitert, zurÃ¼ckgegeben
 	 * werden.
 	 *
-	 * @param type Typ der gewünschten Systemobjekte
+	 * @param type Typ der gewÃ¼nschten Systemobjekte
 	 *
 	 * @return Liste von {@link DafSystemObject System-Objekten}
 	 */
@@ -389,13 +395,13 @@ public class RemoteRequesterV0 extends RemoteRequester {
 
 
 	/**
-	 * Löscht das Objekt, indem es ungültig gemacht wird. Dynamische System-Objekte werden sofort ungültig. Bereits gültige konfigurierende System-Objekte werden
-	 * mit Aktivierung der nächsten Konfigurationsversion ungültig. Für historische Anfragen bleiben ungültige Objekte nach wie vor existent. Konfigurierende
-	 * System-Objekte, die noch nie gültig waren werden durch diese Methode gelöscht und sind nicht mehr zugreifbar.
+	 * LÃ¶scht das Objekt, indem es ungÃ¼ltig gemacht wird. Dynamische System-Objekte werden sofort ungÃ¼ltig. Bereits gÃ¼ltige konfigurierende System-Objekte werden
+	 * mit Aktivierung der nÃ¤chsten Konfigurationsversion ungÃ¼ltig. FÃ¼r historische Anfragen bleiben ungÃ¼ltige Objekte nach wie vor existent. Konfigurierende
+	 * System-Objekte, die noch nie gÃ¼ltig waren werden durch diese Methode gelÃ¶scht und sind nicht mehr zugreifbar.
 	 *
-	 * @param object Objekt, dass gelöscht bzw. ungültig gesetzt werden soll.
+	 * @param object Objekt, dass gelÃ¶scht bzw. ungÃ¼ltig gesetzt werden soll.
 	 *
-	 * @return <code>true</code>, falls das Objekt gelöscht bzw. ungültig gesetzt wurde; <code>false</code> wenn die Operation nicht durchgeführt werden konnte.
+	 * @return <code>true</code>, falls das Objekt gelÃ¶scht bzw. ungÃ¼ltig gesetzt wurde; <code>false</code> wenn die Operation nicht durchgefÃ¼hrt werden konnte.
 	 */
 	@Override
 	public final void invalidate(SystemObject object) throws ConfigurationChangeException {
@@ -438,12 +444,12 @@ public class RemoteRequesterV0 extends RemoteRequester {
 											return;
 										}
 										else {
-											throw new ConfigurationChangeException("Das Objekt konnte nicht gelöscht werden");
+											throw new ConfigurationChangeException("Das Objekt konnte nicht gelÃ¶scht werden");
 										}
 									}
 								}
 								catch(ClassCastException ex) {
-									throw new ConfigurationChangeException("Das Objekt konnte nicht gelöscht werden", ex);
+									throw new ConfigurationChangeException("Das Objekt konnte nicht gelÃ¶scht werden", ex);
 								}
 							}
 						}
@@ -501,7 +507,7 @@ public class RemoteRequesterV0 extends RemoteRequester {
 			try {
 				if(isDynamic(_object)) _invalidationCountDown.await(500, TimeUnit.MILLISECONDS);
 			} catch (InterruptedException e) {
-				// InterruptedException führt zum sofortigen Ende der Methode
+				// InterruptedException fÃ¼hrt zum sofortigen Ende der Methode
 			}
 		}
 
@@ -511,13 +517,13 @@ public class RemoteRequesterV0 extends RemoteRequester {
 	}
 
 	/**
-	 * Macht ein bereits als ungültig markiertes Objekt wieder gültig. Wenn ein Konfigurationsobjekt mit der Methode {@link DafSystemObject#invalidate} für eine
-	 * zukünftige Konfigurationsversion als ungültig markiert wurde und diese Konfigurationsversion noch nicht aktiviert wurde, dann kann das Objekt durch Aufruf
-	 * dieser Methode wieder gültig gemacht werden.
+	 * Macht ein bereits als ungÃ¼ltig markiertes Objekt wieder gÃ¼ltig. Wenn ein Konfigurationsobjekt mit der Methode {@link DafSystemObject#invalidate} fÃ¼r eine
+	 * zukÃ¼nftige Konfigurationsversion als ungÃ¼ltig markiert wurde und diese Konfigurationsversion noch nicht aktiviert wurde, dann kann das Objekt durch Aufruf
+	 * dieser Methode wieder gÃ¼ltig gemacht werden.
 	 *
-	 * @param object Objekt, dass wieder gültig gemacht werden soll.
+	 * @param object Objekt, dass wieder gÃ¼ltig gemacht werden soll.
 	 *
-	 * @return <code>true</code>, falls das Objekt wieder gültig gemacht werden konnte; <code>false</code> wenn die Operation nicht durchgeführt werden konnte.
+	 * @return <code>true</code>, falls das Objekt wieder gÃ¼ltig gemacht werden konnte; <code>false</code> wenn die Operation nicht durchgefÃ¼hrt werden konnte.
 	 */
 	@Override
 	public final void revalidate(SystemObject object) throws ConfigurationChangeException {
@@ -553,12 +559,12 @@ public class RemoteRequesterV0 extends RemoteRequester {
 										return;
 									}
 									else {
-										throw new ConfigurationChangeException("Das Objekt konnte nicth gültig gesetzt werden");
+										throw new ConfigurationChangeException("Das Objekt konnte nicth gÃ¼ltig gesetzt werden");
 									}
 								}
 							}
 							catch(ClassCastException ex) {
-								throw new ConfigurationChangeException("Das Objekt konnte nicth gültig gesetzt werden", ex);
+								throw new ConfigurationChangeException("Das Objekt konnte nicth gÃ¼ltig gesetzt werden", ex);
 							}
 						}
 					}
@@ -579,7 +585,7 @@ public class RemoteRequesterV0 extends RemoteRequester {
 	 * @param object Systemobjekt, das umbenannt werden soll.
 	 * @param name   Neuer Name des Objekts. Der leere String ("") wird als "kein Name" interpretiert.
 	 *
-	 * @return <code>true</code>, falls der Name geändert werden konnte; <code>false</code> wenn die Operation nicht durchgeführt werden konnte.
+	 * @return <code>true</code>, falls der Name geÃ¤ndert werden konnte; <code>false</code> wenn die Operation nicht durchgefÃ¼hrt werden konnte.
 	 *
 	 * @see DafSystemObjectType#isNameOfObjectsPermanent
 	 */

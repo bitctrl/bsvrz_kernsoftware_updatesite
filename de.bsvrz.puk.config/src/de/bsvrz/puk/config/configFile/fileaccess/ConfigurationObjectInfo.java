@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,23 +14,29 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.puk.config.configFile.fileaccess;
 
 
 /**
- * Dieses Interface stellt für Konfigurationsobjekte Informationen zur Verfügung.
+ * Dieses Interface stellt fÃ¼r Konfigurationsobjekte Informationen zur VerfÃ¼gung.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
  * @author Stephan Homeyer (sth)
- * @version $Revision: 5074 $ / $Date: 2007-09-02 14:19:12 +0200 (Sun, 02 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public interface ConfigurationObjectInfo extends SystemObjectInformationInterface {
 	/**
-	 * Diese Methode gibt an, mit welcher Version des Konfigurationsbereichs das Konfigurationsobjekt gültig werden
+	 * Diese Methode gibt an, mit welcher Version des Konfigurationsbereichs das Konfigurationsobjekt gÃ¼ltig werden
 	 * soll/sollte.
 	 *
 	 * @return s.o
@@ -38,60 +44,60 @@ public interface ConfigurationObjectInfo extends SystemObjectInformationInterfac
 	short getFirstValidVersion();
 
 	/**
-	 * Diese Methode gibt an, mit welcher Version des Konfigurationsbereichs das Konfigurationsobjekt ungültig werden
+	 * Diese Methode gibt an, mit welcher Version des Konfigurationsbereichs das Konfigurationsobjekt ungÃ¼ltig werden
 	 * soll/sollte. Der Wert "0" zeigt an, dass dieser Wert noch unbekannt ist und das das Objekt auf eine unbestimmte Zeit
-	 * gültig bleibt.
+	 * gÃ¼ltig bleibt.
 	 *
 	 * @return s.o
 	 */
 	short getFirstInvalidVersion();
 
 	/**
-	 * Das Konfigurationsobjekt wird mit der nächsten Version des Konfigurationsbereichs ungültig. Ist das Objekt
-	 * in der aktuellen Version noch nicht gültig so wird es nicht auf ungültig gesetzt, sondern gelöscht.
+	 * Das Konfigurationsobjekt wird mit der nÃ¤chsten Version des Konfigurationsbereichs ungÃ¼ltig. Ist das Objekt
+	 * in der aktuellen Version noch nicht gÃ¼ltig so wird es nicht auf ungÃ¼ltig gesetzt, sondern gelÃ¶scht.
 	 *
 	 * @see #revalidate
 	 */
 	void invalidate();
 
 	/**
-	 * Solange der Konfigurationsbereich noch nicht in eine neue Version überführt wurde, kann ein Konfigurationsobjekt,
-	 * welches auf ungültig gesetzt wurde, mit dieser Methode wieder auf gültig gesetzt werden.
+	 * Solange der Konfigurationsbereich noch nicht in eine neue Version Ã¼berfÃ¼hrt wurde, kann ein Konfigurationsobjekt,
+	 * welches auf ungÃ¼ltig gesetzt wurde, mit dieser Methode wieder auf gÃ¼ltig gesetzt werden.
 	 *
 	 * @see #invalidate
 	 */
 	void revalidate();
 
 	/**
-	 * Diese Methode gibt die Id´s aller Mengen zurück, die an dem Konfigurationsobjekt gespeichert sind.
+	 * Diese Methode gibt die IdÅ½s aller Mengen zurÃ¼ck, die an dem Konfigurationsobjekt gespeichert sind.
 	 *
 	 * @return s.o.
 	 */
 	long[] getObjectSetIds();
 
 	/**
-	 * Diese Methode fügt eine leere Menge an ein Konfigurationsobjekt hinzu.
+	 * Diese Methode fÃ¼gt eine leere Menge an ein Konfigurationsobjekt hinzu.
 	 *
-	 * @param setId Id der Menge, die zu dem Konfigurationsobjekt hinzugefügt werden soll
+	 * @param setId Id der Menge, die zu dem Konfigurationsobjekt hinzugefÃ¼gt werden soll
 	 * @throws IllegalStateException Eine Menge mit der Id existiert bereits an diesem Objekt
 	 */
 	void addObjectSetId(long setId) throws IllegalStateException;
 
 	/**
-	 * Diese Methode gibt zu einer Menge, die zu diesem Konfigurationsobjekt gehört, alle Id´s der jeweiligen Objekte zurück, die sich in
+	 * Diese Methode gibt zu einer Menge, die zu diesem Konfigurationsobjekt gehÃ¶rt, alle IdÅ½s der jeweiligen Objekte zurÃ¼ck, die sich in
 	 * der Menge befinden.
 	 *
-	 * @param setId Menge, die zu dem Konigurationsobjekt gehört
+	 * @param setId Menge, die zu dem Konigurationsobjekt gehÃ¶rt
 	 * @return Objekte, die in der Menge gespeichert sind, die mit der <code>setId</code> identifiziert wurde
 	 * @throws IllegalArgumentException Es gibt zu der Id keine Menge
 	 */
 	long[] getObjectSetObjects(long setId) throws IllegalArgumentException;
 
 	/**
-	 * Diese Methode fügt ein Objekt zu einer bestehenden Menge hinzu. Die Menge wird über die Id identifiziert.
+	 * Diese Methode fÃ¼gt ein Objekt zu einer bestehenden Menge hinzu. Die Menge wird Ã¼ber die Id identifiziert.
 	 *
-	 * @param setId    Menge, zu der das Objekt hinzugefügt werden soll
-	 * @param objectId Objekt, das zu der Menge hinzugefügt werden soll
+	 * @param setId    Menge, zu der das Objekt hinzugefÃ¼gt werden soll
+	 * @param objectId Objekt, das zu der Menge hinzugefÃ¼gt werden soll
 	 * @throws IllegalArgumentException Die Menge existiert nicht an dem Konfigurationsobjekt
 	 * @throws IllegalStateException Ein Objekt mit der Id existiert bereits in der Menge
 	 */

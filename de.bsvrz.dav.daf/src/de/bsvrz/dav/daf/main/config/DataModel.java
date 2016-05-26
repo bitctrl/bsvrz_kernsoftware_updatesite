@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.config;
@@ -29,12 +35,12 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Schnittstelle zum Zugriff auf Objekte und Eigenschaften eines Datenmodells. Der Zugriff auf die Objekte des Datenmodells wird in der Schnittstelle über
+ * Schnittstelle zum Zugriff auf Objekte und Eigenschaften eines Datenmodells. Der Zugriff auf die Objekte des Datenmodells wird in der Schnittstelle Ã¼ber
  * sogenannte Stellvertreterobjekte realisiert. Stellvertreterobjekte sind Objekte im Sinne der eingesetzten Programmiersprache und damit Elemente von Klassen.
- * System-Objekte und die zugehörigen Stellvertreterobjekte werden im Folgenden synonym verwendet. Die Klassen, die den Zugriff auf die Objekte ermöglichen,
- * können je nach Typ des jeweiligen Objekts unterschiedlich sein. Alle Objekte des Datenmodells müssen die {@link SystemObject Schnittstellenklasse für
+ * System-Objekte und die zugehÃ¶rigen Stellvertreterobjekte werden im Folgenden synonym verwendet. Die Klassen, die den Zugriff auf die Objekte ermÃ¶glichen,
+ * kÃ¶nnen je nach Typ des jeweiligen Objekts unterschiedlich sein. Alle Objekte des Datenmodells mÃ¼ssen die {@link SystemObject Schnittstellenklasse fÃ¼r
  * System-Objekte} implementieren. Der Zugriff auf folgende Typen des Metamodells und des System-Datenmodells wird durch die jeweils angegebenen
- * Schnittstellenklassen ermöglicht. <table cellpadding="2" cellspacing="2" border="1"> <tr> <th>        Objekt-Typ                                    </th>
+ * Schnittstellenklassen ermÃ¶glicht. <table cellpadding="2" cellspacing="2" border="1"> <tr> <th>        Objekt-Typ                                    </th>
  * <th> Schnittstellenklasse </th></tr> <tr><td>        typ.konfigurationsObjekt </td> <td>{@link ConfigurationObject }</td></tr> <tr><td> typ.dynamischesObjekt
  * </td> <td>{@link		DynamicObject }</td></tr> <tr><td> typ.typ </td> <td>{@link SystemObjectType					   }<br/> {@link ConfigurationObjectType }</td></tr>
  * <tr><td> typ.attributgruppe </td> <td>{@link AttributeGroup }</td></tr> <tr><td> typ.aspekt </td> <td>{@link		Aspect }</td></tr> <tr><td> typ.attribut </td>
@@ -51,74 +57,74 @@ import java.util.List;
  *
  * @author Roland Schmitz (rs), Kappich Systemberatung
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 13194 $ / $Date: 2015-02-24 10:36:34 +0100 (Tue, 24 Feb 2015) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 
 
 public interface DataModel extends ObjectLookup {
 
 	/**
-	 * Liefert die konfigurierenden Datensätze einer Attributgruppe für mehrere Objekte zurück. Als Aspekt wird dabei <code>asp.eigenschaften</code> angenommen.
-	 * Die zurückgelieferten Datensätze werden auch lokal zwischengespeichert und können mit der Methode {@link SystemObject#getConfigurationData} ohne weitere
+	 * Liefert die konfigurierenden DatensÃ¤tze einer Attributgruppe fÃ¼r mehrere Objekte zurÃ¼ck. Als Aspekt wird dabei <code>asp.eigenschaften</code> angenommen.
+	 * Die zurÃ¼ckgelieferten DatensÃ¤tze werden auch lokal zwischengespeichert und kÃ¶nnen mit der Methode {@link SystemObject#getConfigurationData} ohne weitere
 	 * Konfigurationsanfrage abgefragt werden. Die Methode kann somit zur Minimierung der Anzahl von Konfigurationsanfragen und den damit verbundenen
-	 * Verzögerungszeiten eingesetzt werden.
+	 * VerzÃ¶gerungszeiten eingesetzt werden.
 	 *
-	 * @param objects {@link SystemObject Systemobjekte} der gewünschten konfigurierenden Datensätze.
-	 * @param atg     Attributgruppe der gewünschten Datensätze.
+	 * @param objects {@link SystemObject Systemobjekte} der gewÃ¼nschten konfigurierenden DatensÃ¤tze.
+	 * @param atg     Attributgruppe der gewÃ¼nschten DatensÃ¤tze.
 	 *
-	 * @return Array mit den gewünschten konfigurierenden Datensätzen. Das Array enthält für jedes Element des Parameters <code>objects</code> einen
+	 * @return Array mit den gewÃ¼nschten konfigurierenden DatensÃ¤tzen. Das Array enthÃ¤lt fÃ¼r jedes Element des Parameters <code>objects</code> einen
 	 *         korrespondierender konfigurierender Datensatz oder <code>null</code>, wenn das Objekt keinen Datensatz der angegebenen Attributgruppe-Aspekt
 	 *         Kombination hat.
 	 */
 	public Data[] getConfigurationData(Collection<SystemObject> objects, AttributeGroup atg);
 
 	/**
-	 * Liefert die konfigurierenden Datensätze einer Attributgruppe und eines Aspekts für mehrere Objekte zurück. Die zurückgelieferten Datensätze werden auch
-	 * lokal zwischengespeichert und können mit der Methode {@link SystemObject#getConfigurationData} ohne weitere Konfigurationsanfrage abgefragt werden. Die
-	 * Methode kann somit zur Minimierung der Anzahl von Konfigurationsanfragen und den damit verbundenen Verzögerungszeiten eingesetzt werden.
+	 * Liefert die konfigurierenden DatensÃ¤tze einer Attributgruppe und eines Aspekts fÃ¼r mehrere Objekte zurÃ¼ck. Die zurÃ¼ckgelieferten DatensÃ¤tze werden auch
+	 * lokal zwischengespeichert und kÃ¶nnen mit der Methode {@link SystemObject#getConfigurationData} ohne weitere Konfigurationsanfrage abgefragt werden. Die
+	 * Methode kann somit zur Minimierung der Anzahl von Konfigurationsanfragen und den damit verbundenen VerzÃ¶gerungszeiten eingesetzt werden.
 	 *
-	 * @param objects Liste der {@link SystemObject Systemobjekte} der gewünschten konfigurierenden Datensätze.
-	 * @param atg     Attributgruppe der gewünschten Datensätze.
-	 * @param asp     Aspekt der gewünschten Datensätze.
+	 * @param objects Liste der {@link SystemObject Systemobjekte} der gewÃ¼nschten konfigurierenden DatensÃ¤tze.
+	 * @param atg     Attributgruppe der gewÃ¼nschten DatensÃ¤tze.
+	 * @param asp     Aspekt der gewÃ¼nschten DatensÃ¤tze.
 	 *
-	 * @return Array mit den gewünschten konfigurierenden Datensätzen. Das Array enthält für jedes Element des Parameters <code>objects</code> einen
+	 * @return Array mit den gewÃ¼nschten konfigurierenden DatensÃ¤tzen. Das Array enthÃ¤lt fÃ¼r jedes Element des Parameters <code>objects</code> einen
 	 *         korrespondierender konfigurierender Datensatz oder <code>null</code>, wenn das Objekt keinen Datensatz der angegebenen Attributgruppe-Aspekt
 	 *         Kombination hat.
 	 */
 	public Data[] getConfigurationData(Collection<SystemObject> objects, AttributeGroup atg, Aspect asp);
 
 	/**
-	 * Liefert die konfigurierenden Datensätze einer Attributgruppe für mehrere Objekte zurück. Als Aspekt wird dabei <code>asp.eigenschaften</code> angenommen.
-	 * Die zurückgelieferten Datensätze werden auch lokal zwischengespeichert und können mit der Methode {@link SystemObject#getConfigurationData} ohne weitere
+	 * Liefert die konfigurierenden DatensÃ¤tze einer Attributgruppe fÃ¼r mehrere Objekte zurÃ¼ck. Als Aspekt wird dabei <code>asp.eigenschaften</code> angenommen.
+	 * Die zurÃ¼ckgelieferten DatensÃ¤tze werden auch lokal zwischengespeichert und kÃ¶nnen mit der Methode {@link SystemObject#getConfigurationData} ohne weitere
 	 * Konfigurationsanfrage abgefragt werden. Die Methode kann somit zur Minimierung der Anzahl von Konfigurationsanfragen und den damit verbundenen
-	 * Verzögerungszeiten eingesetzt werden.
+	 * VerzÃ¶gerungszeiten eingesetzt werden.
 	 *
-	 * @param objects Array mit den {@link SystemObject Systemobjekten} der gewünschten konfigurierenden Datensätze.
-	 * @param atg     Attributgruppe der gewünschten Datensätze.
+	 * @param objects Array mit den {@link SystemObject Systemobjekten} der gewÃ¼nschten konfigurierenden DatensÃ¤tze.
+	 * @param atg     Attributgruppe der gewÃ¼nschten DatensÃ¤tze.
 	 *
-	 * @return Array mit den gewünschten konfigurierenden Datensätzen. Das Array enthält für jedes Element des Parameters <code>objects</code> einen
+	 * @return Array mit den gewÃ¼nschten konfigurierenden DatensÃ¤tzen. Das Array enthÃ¤lt fÃ¼r jedes Element des Parameters <code>objects</code> einen
 	 *         korrespondierender konfigurierender Datensatz oder <code>null</code>, wenn das Objekt keinen Datensatz der angegebenen Attributgruppe-Aspekt
 	 *         Kombination hat.
 	 */
 	public Data[] getConfigurationData(SystemObject[] objects, AttributeGroup atg);
 
 	/**
-	 * Liefert die konfigurierenden Datensätze einer Attributgruppe und eines Aspekts für mehrere Objekte zurück. Die zurückgelieferten Datensätze werden auch
-	 * lokal zwischengespeichert und können mit der Methode {@link SystemObject#getConfigurationData} ohne weitere Konfigurationsanfrage abgefragt werden. Die
-	 * Methode kann somit zur Minimierung der Anzahl von Konfigurationsanfragen und den damit verbundenen Verzögerungszeiten eingesetzt werden.
+	 * Liefert die konfigurierenden DatensÃ¤tze einer Attributgruppe und eines Aspekts fÃ¼r mehrere Objekte zurÃ¼ck. Die zurÃ¼ckgelieferten DatensÃ¤tze werden auch
+	 * lokal zwischengespeichert und kÃ¶nnen mit der Methode {@link SystemObject#getConfigurationData} ohne weitere Konfigurationsanfrage abgefragt werden. Die
+	 * Methode kann somit zur Minimierung der Anzahl von Konfigurationsanfragen und den damit verbundenen VerzÃ¶gerungszeiten eingesetzt werden.
 	 *
-	 * @param objects Array mit den {@link SystemObject Systemobjekten} der gewünschten konfigurierenden Datensätze.
-	 * @param atg     Attributgruppe der gewünschten Datensätze.
-	 * @param asp     Aspekt der gewünschten Datensätze.
+	 * @param objects Array mit den {@link SystemObject Systemobjekten} der gewÃ¼nschten konfigurierenden DatensÃ¤tze.
+	 * @param atg     Attributgruppe der gewÃ¼nschten DatensÃ¤tze.
+	 * @param asp     Aspekt der gewÃ¼nschten DatensÃ¤tze.
 	 *
-	 * @return Array mit den gewünschten konfigurierenden Datensätzen. Das Array enthält für jedes Element des Parameters <code>objects</code> einen
+	 * @return Array mit den gewÃ¼nschten konfigurierenden DatensÃ¤tzen. Das Array enthÃ¤lt fÃ¼r jedes Element des Parameters <code>objects</code> einen
 	 *         korrespondierender konfigurierender Datensatz oder <code>null</code>, wenn das Objekt keinen Datensatz der angegebenen Attributgruppe-Aspekt
 	 *         Kombination hat.
 	 */
 	public Data[] getConfigurationData(SystemObject[] objects, AttributeGroup atg, Aspect asp);
 
 	/**
-	 * Gibt die aktive Version des angegebenen Konfigurationsbereichs zurück.
+	 * Gibt die aktive Version des angegebenen Konfigurationsbereichs zurÃ¼ck.
 	 *
 	 * @param configurationArea der Konfigurationsbereich
 	 *
@@ -127,11 +133,11 @@ public interface DataModel extends ObjectLookup {
 	public short getActiveVersion(ConfigurationArea configurationArea);
 
 	/**
-	 * Liefert das System-Objekt mit der angegebenen PID zurück.
+	 * Liefert das System-Objekt mit der angegebenen PID zurÃ¼ck.
 	 *
 	 * @param pid Die permanente ID des System-Objekts
 	 *
-	 * @return Das gewünschte System-Objekt oder <code>null</code>, wenn es kein Objekt mit der angegebenen PID gibt.
+	 * @return Das gewÃ¼nschte System-Objekt oder <code>null</code>, wenn es kein Objekt mit der angegebenen PID gibt.
 	 *
 	 * @see DataModel
 	 *
@@ -140,62 +146,62 @@ public interface DataModel extends ObjectLookup {
 	public SystemObject getObject(String pid);
 
 	/**
-	 * Liefert das System-Objekt mit der angegebenen Objekt-ID zurück.
+	 * Liefert das System-Objekt mit der angegebenen Objekt-ID zurÃ¼ck.
 	 *
 	 * @param id Die Objekt-ID des System-Objekts
 	 *
-	 * @return Das gewünschte System-Objekt oder <code>null</code>, wenn es kein Objekt mit der angegebenen ID gibt.
+	 * @return Das gewÃ¼nschte System-Objekt oder <code>null</code>, wenn es kein Objekt mit der angegebenen ID gibt.
 	 *
 	 * @see DataModel
 	 */
 	public SystemObject getObject(long id);
 
 	/**
-	 * Liefert eine Liste zurück, die zu den angegebenen IDs die zugehörigen System-Objekte enthält.
-	 * Die Reihenfolge der Objekte der Liste entspricht der Reihenfolge der übergebenen IDs.
-	 * Wurde ein Objekt nicht gefunden, enthält die Liste an der entsprechenden Position <code>null</code>.
-	 * <p/>
+	 * Liefert eine Liste zurÃ¼ck, die zu den angegebenen IDs die zugehÃ¶rigen System-Objekte enthÃ¤lt.
+	 * Die Reihenfolge der Objekte der Liste entspricht der Reihenfolge der Ã¼bergebenen IDs.
+	 * Wurde ein Objekt nicht gefunden, enthÃ¤lt die Liste an der entsprechenden Position <code>null</code>.
+	 * <p>
 	 * Diese Methode kann bei der Anfrage nach mehreren IDs schneller sein, als mehrmals {@link #getObject(long)} aufzurufen.
 	 * @param ids Array mit IDs
-	 * @return zugehörige System-Objekte
+	 * @return zugehÃ¶rige System-Objekte
 	 * @see #getObject(long)
 	 */
 	List<SystemObject> getObjects(long... ids);
 
 	/**
-	 * Liefert eine Liste zurück, die zu den angegebenen PIDs die zugehörigen System-Objekte enthält.
-	 * Die Reihenfolge der Objekte der Liste entspricht der Reihenfolge der übergebenen PIDs.
-	 * Wurde ein Objekt nicht gefunden, enthält die Liste an der entsprechenden Position <code>null</code>.
-	 * <p/>
+	 * Liefert eine Liste zurÃ¼ck, die zu den angegebenen PIDs die zugehÃ¶rigen System-Objekte enthÃ¤lt.
+	 * Die Reihenfolge der Objekte der Liste entspricht der Reihenfolge der Ã¼bergebenen PIDs.
+	 * Wurde ein Objekt nicht gefunden, enthÃ¤lt die Liste an der entsprechenden Position <code>null</code>.
+	 * <p>
 	 * Diese Methode kann bei der Anfrage nach mehreren PIDs schneller sein, als mehrmals {@link #getObject(java.lang.String)} aufzurufen.
 	 * @param pids Array mit PIDs
-	 * @return zugehörige System-Objekte
+	 * @return zugehÃ¶rige System-Objekte
 	 * @see #getObject(java.lang.String)
 	 * @throws java.lang.IllegalArgumentException wenn ein Element des Parameters <code>null</code> ist
 	 */
 	List<SystemObject> getObjects(String... pids);
 
 	/**
-	 * Liefert eine Liste zurück, die zu den angegebenen IDs die zugehörigen System-Objekte enthält.
-	 * Die Reihenfolge der Objekte der Liste entspricht der Reihenfolge der übergebenen IDs.
-	 * Wurde ein Objekt nicht gefunden, enthält die Liste an der entsprechenden Position <code>null</code>.
-	 * <p/>
+	 * Liefert eine Liste zurÃ¼ck, die zu den angegebenen IDs die zugehÃ¶rigen System-Objekte enthÃ¤lt.
+	 * Die Reihenfolge der Objekte der Liste entspricht der Reihenfolge der Ã¼bergebenen IDs.
+	 * Wurde ein Objekt nicht gefunden, enthÃ¤lt die Liste an der entsprechenden Position <code>null</code>.
+	 * <p>
 	 * Diese Methode kann bei der Anfrage nach mehreren IDs schneller sein, als mehrmals {@link #getObject(long)} aufzurufen.
 	 * @param ids Liste mit IDs
-	 * @return zugehörige System-Objekte
+	 * @return zugehÃ¶rige System-Objekte
 	 * @see #getObject(long)
 	 * @throws java.lang.IllegalArgumentException wenn ein Element des Parameters <code>null</code> ist
 	 */
 	List<SystemObject> getObjectsById(Collection<Long> ids);
 
 	/**
-	 * Liefert eine Liste zurück, die zu den angegebenen PIDs die zugehörigen System-Objekte enthält.
-	 * Die Reihenfolge der Objekte der Liste entspricht der Reihenfolge der übergebenen PIDs.
-	 * Wurde ein Objekt nicht gefunden, enthält die Liste an der entsprechenden Position <code>null</code>.
-	 * <p/>
+	 * Liefert eine Liste zurÃ¼ck, die zu den angegebenen PIDs die zugehÃ¶rigen System-Objekte enthÃ¤lt.
+	 * Die Reihenfolge der Objekte der Liste entspricht der Reihenfolge der Ã¼bergebenen PIDs.
+	 * Wurde ein Objekt nicht gefunden, enthÃ¤lt die Liste an der entsprechenden Position <code>null</code>.
+	 * <p>
 	 * Diese Methode kann bei der Anfrage nach mehreren PIDs schneller sein, als mehrmals {@link #getObject(java.lang.String)} aufzurufen.
 	 * @param pids Liste mit PIDs
-	 * @return zugehörige System-Objekte
+	 * @return zugehÃ¶rige System-Objekte
 	 * @see #getObject(java.lang.String)
 	 * @throws java.lang.IllegalArgumentException wenn ein Element des Parameters <code>null</code> ist
 	 */
@@ -209,7 +215,7 @@ public interface DataModel extends ObjectLookup {
 	public SystemObjectType getTypeTypeObject();
 
 	/**
-	 * Liefert die Basistypen, also die Typ-Objekte, die keinen anderen Typ erweitern, zurück. Basistypen sind z.B. die Objekte mit den Permanenten IDs
+	 * Liefert die Basistypen, also die Typ-Objekte, die keinen anderen Typ erweitern, zurÃ¼ck. Basistypen sind z.B. die Objekte mit den Permanenten IDs
 	 * "typ.konfigurationsObjekt" und "typ.dynamischesObjekt".
 	 *
 	 * @return Liste mit Typ-Objekten.
@@ -217,51 +223,51 @@ public interface DataModel extends ObjectLookup {
 	public List<SystemObjectType> getBaseTypes();
 
 	/**
-	 * Liefert das Typ-Objekt mit der angegebenen PID zurück.
+	 * Liefert das Typ-Objekt mit der angegebenen PID zurÃ¼ck.
 	 *
 	 * @param pid Die permanente ID des Typ-Objekts
 	 *
-	 * @return Das gewünschte Typ-Objekt oder <code>null</code>, wenn es kein Objekt mit der angegebenen PID gibt.
+	 * @return Das gewÃ¼nschte Typ-Objekt oder <code>null</code>, wenn es kein Objekt mit der angegebenen PID gibt.
 	 * @throws IllegalArgumentException Wenn das Objekt mit der angegebenen Pid kein Typ-Objekt ist.
 	 */
 	public SystemObjectType getType(String pid);
 
 	/**
-	 * Liefert das Mengen-Typ-Objekt mit der angegebenen PID zurück.
+	 * Liefert das Mengen-Typ-Objekt mit der angegebenen PID zurÃ¼ck.
 	 *
 	 * @param pid Die permanente ID des Mengen-Typ-Objekts
 	 *
-	 * @return Das gewünschte Typ-Objekt oder <code>null</code>, wenn es kein Objekt mit der angegebenen PID gibt.
+	 * @return Das gewÃ¼nschte Typ-Objekt oder <code>null</code>, wenn es kein Objekt mit der angegebenen PID gibt.
 	 * @throws IllegalArgumentException Wenn das Objekt mit der angegebenen Pid kein Mengen-Typ-Objekt ist.
 	 */
 	public ObjectSetType getObjectSetType(String pid);
 
 	/**
-	 * Liefert die Attributgruppe mit der angegebenen PID zurück.
+	 * Liefert die Attributgruppe mit der angegebenen PID zurÃ¼ck.
 	 *
 	 * @param pid Die permanente ID der Attributgruppe
 	 *
-	 * @return Die gewünschte Attributgruppe oder <code>null</code>, wenn es kein Objekt mit der gewünschten PID gibt.
+	 * @return Die gewÃ¼nschte Attributgruppe oder <code>null</code>, wenn es kein Objekt mit der gewÃ¼nschten PID gibt.
 	 * @throws IllegalArgumentException Wenn das Objekt mit der angegebenen Pid keine Attributgruppe ist.
 	 */
 	public AttributeGroup getAttributeGroup(String pid);
 
 	/**
-	 * Liefert den Attribut-Typ mit der angegebenen PID zurück.
+	 * Liefert den Attribut-Typ mit der angegebenen PID zurÃ¼ck.
 	 *
 	 * @param pid Die permanente ID des Attribut-Typs
 	 *
-	 * @return Der gewünschte Attribut-Typ oder	<code>null</code>, wenn es kein Objekt mit der angegebenen PID gibt.
+	 * @return Der gewÃ¼nschte Attribut-Typ oder	<code>null</code>, wenn es kein Objekt mit der angegebenen PID gibt.
 	 * @throws IllegalArgumentException Wenn das Objekt mit der angegebenen Pid kein Attributtyp ist.
 	 */
 	public AttributeType getAttributeType(String pid);
 
 	/**
-	 * Liefert den Aspekt mit der angegebenen PID zurück.
+	 * Liefert den Aspekt mit der angegebenen PID zurÃ¼ck.
 	 *
 	 * @param pid Die permanente ID des Aspekts.
 	 *
-	 * @return Der gewünschte Aspekt oder <code>null</code>, wenn es kein Objekt mit der gewünschten PID gibt.
+	 * @return Der gewÃ¼nschte Aspekt oder <code>null</code>, wenn es kein Objekt mit der gewÃ¼nschten PID gibt.
 	 * @throws IllegalArgumentException Wenn das Objekt mit der angegebenen Pid kein Aspekt ist.
 	 */
 	public Aspect getAspect(String pid);
@@ -269,17 +275,17 @@ public interface DataModel extends ObjectLookup {
 	/**
 	 * Bestimmt die Attributgruppenverwendung mit der angegebenen Datenverteiler-Identifizierung.
 	 *
-	 * @param usageIdentification Identifizierung dieser Attributgruppenverwendung bei der Kommunikation über den Datenverteiler.
+	 * @param usageIdentification Identifizierung dieser Attributgruppenverwendung bei der Kommunikation Ã¼ber den Datenverteiler.
 	 *
-	 * @return Zur Identifizierung gehörende Attributgruppenverwendung oder <code>null</code>, wenn es keine Attributgruppenverwendung mit der angegebenen
+	 * @return Zur Identifizierung gehÃ¶rende Attributgruppenverwendung oder <code>null</code>, wenn es keine Attributgruppenverwendung mit der angegebenen
 	 * Identifizierung gibt.
 	 */
 	public AttributeGroupUsage getAttributeGroupUsage(final long usageIdentification);
 
 	/**
-	 * Erzeugt ein neues Konfigurationsobjekt eines vorgegebenen Typs. Optional können auch Name und PID des neuen Objekts vorgegeben werden. Die verantwortliche
+	 * Erzeugt ein neues Konfigurationsobjekt eines vorgegebenen Typs. Optional kÃ¶nnen auch Name und PID des neuen Objekts vorgegeben werden. Die verantwortliche
 	 * Instanz des neuen Objektes kann nicht spezifiziert werden, da sie von der jeweiligen Konfiguration vergeben wird. Das neue Objekt wird erst mit Aktivierung
-	 * der nächsten Konfigurationsversion gültig und im {@link ConfigurationAuthority#getDefaultConfigurationArea() Standard-Konfigurationsbereich} des
+	 * der nÃ¤chsten Konfigurationsversion gÃ¼ltig und im {@link ConfigurationAuthority#getDefaultConfigurationArea() Standard-Konfigurationsbereich} des
 	 * {@link #getConfigurationAuthority() aktuellen KV} erstellt.
 	 *
 	 * @param type Typ des neuen Objekts.
@@ -287,7 +293,7 @@ public interface DataModel extends ObjectLookup {
 	 * @param name Name des neuen Objekts.
 	 * @param sets Liste der Mengen des neuen Objekts oder <code>null</code>, wenn kein Mengen vergeben werden sollen.
 	 *
-	 * @return Stellvertreterobjekt für das neu angelegte Konfigurationsobjekt.
+	 * @return Stellvertreterobjekt fÃ¼r das neu angelegte Konfigurationsobjekt.
 	 *
 	 * @throws ConfigurationChangeException Wenn das Objekt nicht erzeugt werden konnte.
 	 * @see ConfigurationObject
@@ -299,14 +305,14 @@ public interface DataModel extends ObjectLookup {
 	ConfigurationObject createConfigurationObject(ConfigurationObjectType type, String pid, String name, List<? extends ObjectSet> sets) throws ConfigurationChangeException;
 
 	/**
-	 * Erzeugt ein neues dynamisches System-Objekt eines vorgegebenen Typs. Optional können auch Name und PID des neuen Objekts vorgegeben werden. Das neue Objekt
-	 * wird sofort gültig und im {@link ConfigurationAuthority#getDefaultConfigurationArea() Standard-Konfigurationsbereich} des {@link #getConfigurationAuthority() aktuellen KV} erstellt.
+	 * Erzeugt ein neues dynamisches System-Objekt eines vorgegebenen Typs. Optional kÃ¶nnen auch Name und PID des neuen Objekts vorgegeben werden. Das neue Objekt
+	 * wird sofort gÃ¼ltig und im {@link ConfigurationAuthority#getDefaultConfigurationArea() Standard-Konfigurationsbereich} des {@link #getConfigurationAuthority() aktuellen KV} erstellt.
 	 *
 	 * @param type Typ des neuen Objekts
 	 * @param pid  PID des neuen Objekts.
 	 * @param name Name des neuen Objekts.
 	 *
-	 * @return Stellvertreterobjekt für das neu angelegte dynamische Objekt.
+	 * @return Stellvertreterobjekt fÃ¼r das neu angelegte dynamische Objekt.
 	 *
 	 * @throws ConfigurationChangeException Wenn das Objekt nicht erzeugt werden konnte.
 	 * @see SystemObject
@@ -340,85 +346,85 @@ public interface DataModel extends ObjectLookup {
 	public String getConfigurationAuthorityPid();
 
 	/**
-	 * Gibt die Objekte zurück, die zu der angegebenen Pid in dem angegebenen Zeitraum gültig waren.
+	 * Gibt die Objekte zurÃ¼ck, die zu der angegebenen Pid in dem angegebenen Zeitraum gÃ¼ltig waren.
 	 *
-	 * @param pid       die Pid der gewünschten Objekte
+	 * @param pid       die Pid der gewÃ¼nschten Objekte
 	 * @param startTime der zu betachtende Startzeitpunkt des Anfragezeitraums
 	 * @param endTime   der zu betrachtende Endzeitpunkt des Anfragezeitraums
 	 *
-	 * @return Die Objekte, die zu der angegebenen Pid in dem angegebenen Zeitraum gültig waren.
+	 * @return Die Objekte, die zu der angegebenen Pid in dem angegebenen Zeitraum gÃ¼ltig waren.
 	 */
 	public Collection<SystemObject> getObjects(String pid, long startTime, long endTime);
 
 	/**
-	 * Gibt die Objekte zurück, die in einem der angegebenen Konfigurationsbereiche sind und deren Objekttyp in der angegebenen Objekttyp-Menge ist.
+	 * Gibt die Objekte zurÃ¼ck, die in einem der angegebenen Konfigurationsbereiche sind und deren Objekttyp in der angegebenen Objekttyp-Menge ist.
 	 *
-	 * @param configurationAreas      Konfigurationsbereiche, die zu berücksichtigen sind. Wird <code>null</code> übergeben, so gilt dies als Wildcard und alle
+	 * @param configurationAreas      Konfigurationsbereiche, die zu berÃ¼cksichtigen sind. Wird <code>null</code> Ã¼bergeben, so gilt dies als Wildcard und alle
 	 *                                Konfigurationsbereiche werden betrachtet.
-	 * @param systemObjectTypes       Objekttypen, die zu berücksichtigen sind. Wird <code>null</code> übergeben, so gilt dies als Wildcard und alle Objekttypen
+	 * @param systemObjectTypes       Objekttypen, die zu berÃ¼cksichtigen sind. Wird <code>null</code> Ã¼bergeben, so gilt dies als Wildcard und alle Objekttypen
 	 *                                werden betrachtet.
-	 * @param objectTimeSpecification Gibt den Gültigkeitsbereich der geforderten Objekte an.
+	 * @param objectTimeSpecification Gibt den GÃ¼ltigkeitsbereich der geforderten Objekte an.
 	 *
-	 * @return Die gewünschten System-Objekte oder eine leere Collection, falls es keine passenden Objekte gibt.
+	 * @return Die gewÃ¼nschten System-Objekte oder eine leere Collection, falls es keine passenden Objekte gibt.
 	 */
 	public Collection<SystemObject> getObjects(
 			Collection<ConfigurationArea> configurationAreas, Collection<SystemObjectType> systemObjectTypes, ObjectTimeSpecification objectTimeSpecification
 	);
 
 	/**
-	 * Gibt ein Objekt zurück, mit dem die Benutzer der Konfiguration verwaltet werden können.
+	 * Gibt ein Objekt zurÃ¼ck, mit dem die Benutzer der Konfiguration verwaltet werden kÃ¶nnen.
 	 *
 	 * @return Objekt zur Benutzerverwaltung.  
 	 *  */
 	public UserAdministration getUserAdministration();
 
 	/**
-	 * Veranlasst die Konfiguration, alle Konfigurationsdateien zu sichern. Diese Funktion wartet auf das Beenden des Vorgangs. Wird der Auftrag über den
-	 * Datenverteiler ausgeführt (DafDataModel) kann die Konfiguration andere Anfragen parallel ausführen. Wird die Funktion lokal ausgeführt (ConfigDataModel),
-	 * kann es möglicherweise sinnvoll sein, die Funktion in einem eigenen Thread auszuführen.
+	 * Veranlasst die Konfiguration, alle Konfigurationsdateien zu sichern. Diese Funktion wartet auf das Beenden des Vorgangs. Wird der Auftrag Ã¼ber den
+	 * Datenverteiler ausgefÃ¼hrt (DafDataModel) kann die Konfiguration andere Anfragen parallel ausfÃ¼hren. Wird die Funktion lokal ausgefÃ¼hrt (ConfigDataModel),
+	 * kann es mÃ¶glicherweise sinnvoll sein, die Funktion in einem eigenen Thread auszufÃ¼hren.
 	 *
 	 * @param targetDirectory Relatives Zielverzeichnis innerhalb des in der Konfiguration (mit dem Parameter -sicherungsVerzeichnis) festgelegten
 	 *                        Sicherungsordners. Wird null oder ein Leerstring angegeben, generiert die Konfiguration aus aktuellem Datum und Uhrzeit einen neuen
 	 *                        Pfadnamen. Falls das {@link de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel} direkt benutzt wird und mit {@link
 	 *                        de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel#setBackupBaseDirectory(java.io.File) } noch keine Zielverzeichnis angelegt
-	 *                        wurde, kann auch ein absoluter Pfadname angegeben werden. Ein relativer Pfadname würde dann relativ zum Arbeitsverzeichnis
+	 *                        wurde, kann auch ein absoluter Pfadname angegeben werden. Ein relativer Pfadname wÃ¼rde dann relativ zum Arbeitsverzeichnis
 	 *                        interpretiert.
-	 * @param callback        Objekt, an das Statusmeldungen gesendet werden oder null, falls keine Rückmeldungen gewünscht sind
+	 * @param callback        Objekt, an das Statusmeldungen gesendet werden oder null, falls keine RÃ¼ckmeldungen gewÃ¼nscht sind
 	 *
-	 * @return Objekt, das Informationen über das Ergebnis des Sicherungsvorgangs enthält
+	 * @return Objekt, das Informationen Ã¼ber das Ergebnis des Sicherungsvorgangs enthÃ¤lt
 	 *
-	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationTaskException Der Backup-Vorgang konnte nicht durchgeführt werden, beispielsweise weil das Zielverzeichnis falsch war. Falls das
-	 *                                    Sichern einzelner Dateien fehlschlägt wird keine solche Exception geworfen, stattdessen findet man innerhalb vom callback
-	 *                                    eventuelle Fehlschläge und BackupResult.getFailed ist größer 0.
-	 * @throws de.bsvrz.dav.daf.main.impl.config.request.RequestException           Fehler bei der Übertragung der Anfrage oder beim Empfang von Statusmeldungen der Konfiguration. Achtung: Man kann nicht
-	 *                                    zwingend darauf schließen, dass der Backupvorgang nicht erfolgreich war, wenn eine Exception geworfen wurde. Wenn während
+	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationTaskException Der Backup-Vorgang konnte nicht durchgefÃ¼hrt werden, beispielsweise weil das Zielverzeichnis falsch war. Falls das
+	 *                                    Sichern einzelner Dateien fehlschlÃ¤gt wird keine solche Exception geworfen, stattdessen findet man innerhalb vom callback
+	 *                                    eventuelle FehlschlÃ¤ge und BackupResult.getFailed ist grÃ¶ÃŸer 0.
+	 * @throws de.bsvrz.dav.daf.main.impl.config.request.RequestException           Fehler bei der Ãœbertragung der Anfrage oder beim Empfang von Statusmeldungen der Konfiguration. Achtung: Man kann nicht
+	 *                                    zwingend darauf schlieÃŸen, dass der Backupvorgang nicht erfolgreich war, wenn eine Exception geworfen wurde. Wenn wÃ¤hrend
 	 *                                    des Vorgangs beispielsweise die Verbindung zwischen Datenverteiler und Konfiguration abbricht, wird eine Exception
 	 *                                    geworfen, aber die Konfiguration wird den Vorgang vermutlich dennoch korrekt beenden.
 	 */
 	BackupResult backupConfigurationFiles(String targetDirectory, BackupProgressCallback callback) throws ConfigurationTaskException, RequestException;
 
 	/**
-	 * Veranlasst die Konfiguration, ausgewählte Konfigurationsdateien zu sichern. Diese Funktion wartet auf das Beenden des Vorgangs. Wird der Auftrag über den
-	 * Datenverteiler ausgeführt (DafDataModel) kann die Konfiguration andere Anfragen parallel ausführen. Wird die Funktion lokal ausgeführt (ConfigDataModel),
-	 * kann es möglicherweise sinnvoll sein, die Funktion in einem eigenen Thread auszuführen.
+	 * Veranlasst die Konfiguration, ausgewÃ¤hlte Konfigurationsdateien zu sichern. Diese Funktion wartet auf das Beenden des Vorgangs. Wird der Auftrag Ã¼ber den
+	 * Datenverteiler ausgefÃ¼hrt (DafDataModel) kann die Konfiguration andere Anfragen parallel ausfÃ¼hren. Wird die Funktion lokal ausgefÃ¼hrt (ConfigDataModel),
+	 * kann es mÃ¶glicherweise sinnvoll sein, die Funktion in einem eigenen Thread auszufÃ¼hren.
 	 *
 	 * @param targetDirectory Relatives Zielverzeichnis innerhalb des in der Konfiguration (mit dem Parameter -sicherungsVerzeichnis) festgelegten
 	 *                        Sicherungsordners. Wird null oder ein Leerstring angegeben, generiert die Konfiguration aus aktuellem Datum und Uhrzeit einen neuen
 	 *                        Pfadnamen. Falls das {@link de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel} direkt benutzt wird und mit {@link
 	 *                        de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel#setBackupBaseDirectory(java.io.File) } noch keine Zielverzeichnis angelegt
-	 *                        wurde, kann auch ein absoluter Pfadname angegeben werden. Ein relativer Pfadname würde dann relativ zum Arbeitsverzeichnis
+	 *                        wurde, kann auch ein absoluter Pfadname angegeben werden. Ein relativer Pfadname wÃ¼rde dann relativ zum Arbeitsverzeichnis
 	 *                        interpretiert.
 	 * @param configurationAuthority  Konfigurationsverantwortlicher, dessen Konfigurations-Dateien gesichert werden sollen. Falls null werden
 	 *                                alle Dateien gesichert.
-	 * @param callback        Objekt, an das Statusmeldungen gesendet werden oder null, falls keine Rückmeldungen gewünscht sind
+	 * @param callback        Objekt, an das Statusmeldungen gesendet werden oder null, falls keine RÃ¼ckmeldungen gewÃ¼nscht sind
 	 *
-	 * @return Objekt, das Informationen über das Ergebnis des Sicherungsvorgangs enthält
+	 * @return Objekt, das Informationen Ã¼ber das Ergebnis des Sicherungsvorgangs enthÃ¤lt
 	 *
-	 * @throws ConfigurationTaskException Der Backup-Vorgang konnte nicht durchgeführt werden, beispielsweise weil das Zielverzeichnis falsch war. Falls das
-	 *                                    Sichern einzelner Dateien fehlschlägt wird keine solche Exception geworfen, stattdessen findet man innerhalb vom callback
-	 *                                    eventuelle Fehlschläge und BackupResult.getFailed ist größer 0.
-	 * @throws RequestException           Fehler bei der Übertragung der Anfrage oder beim Empfang von Statusmeldungen der Konfiguration. Achtung: Man kann nicht
-	 *                                    zwingend darauf schließen, dass der Backupvorgang nicht erfolgreich war, wenn eine Exception geworfen wurde. Wenn während
+	 * @throws ConfigurationTaskException Der Backup-Vorgang konnte nicht durchgefÃ¼hrt werden, beispielsweise weil das Zielverzeichnis falsch war. Falls das
+	 *                                    Sichern einzelner Dateien fehlschlÃ¤gt wird keine solche Exception geworfen, stattdessen findet man innerhalb vom callback
+	 *                                    eventuelle FehlschlÃ¤ge und BackupResult.getFailed ist grÃ¶ÃŸer 0.
+	 * @throws RequestException           Fehler bei der Ãœbertragung der Anfrage oder beim Empfang von Statusmeldungen der Konfiguration. Achtung: Man kann nicht
+	 *                                    zwingend darauf schlieÃŸen, dass der Backupvorgang nicht erfolgreich war, wenn eine Exception geworfen wurde. Wenn wÃ¤hrend
 	 *                                    des Vorgangs beispielsweise die Verbindung zwischen Datenverteiler und Konfiguration abbricht, wird eine Exception
 	 *                                    geworfen, aber die Konfiguration wird den Vorgang vermutlich dennoch korrekt beenden.
 	 */

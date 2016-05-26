@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.sys.funclib.dataIdentificationSettings.
  * 
  * de.bsvrz.sys.funclib.dataIdentificationSettings is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.dataIdentificationSettings is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.dataIdentificationSettings; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.dataIdentificationSettings; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.dataIdentificationSettings;
@@ -24,22 +30,22 @@ package de.bsvrz.sys.funclib.dataIdentificationSettings;
 import de.bsvrz.dav.daf.main.Data;
 
 /**
- * Schnittstelle für Beobachter der Parametersätze mit Einstellungen die sich auf Datenidentifikationen beziehen.
- * Derartige Parametersätze werden z.B. zur Steuerung des Archivverhaltens (atg.archiv) und der Parametrierung
+ * Schnittstelle fÃ¼r Beobachter der ParametersÃ¤tze mit Einstellungen die sich auf Datenidentifikationen beziehen.
+ * Derartige ParametersÃ¤tze werden z.B. zur Steuerung des Archivverhaltens (atg.archiv) und der Parametrierung
  * (atg.parametrierung) eingesetzt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
+ * @version $Revision$
  */
 public interface UpdateListener {
 	/**
-	 * Wird bei Änderung des Parameters für jede Datenidentifikation aufgerufen für die es einen Eintrag gab oder gibt.
+	 * Wird bei Ã„nderung des Parameters fÃ¼r jede Datenidentifikation aufgerufen fÃ¼r die es einen Eintrag gab oder gibt.
 	 *
 	 * @param dataIdentification Betroffene Datenidentifikation.
-	 * @param oldSettings        Zur Datenidentifikation gehörende Einstellungen vor der Änderung oder <code>null</code>
-	 *                           wenn es vor der Änderung keinen spezifischen Eintrag gab.
-	 * @param newSettings        Zur Datenidentifikation gehörende Einstellungen nach der Änderung oder <code>null</code>
-	 *                           wenn es nach der Änderung keinen spezifischen Eintrag mehr gibt.
+	 * @param oldSettings        Zur Datenidentifikation gehÃ¶rende Einstellungen vor der Ã„nderung oder <code>null</code>
+	 *                           wenn es vor der Ã„nderung keinen spezifischen Eintrag gab.
+	 * @param newSettings        Zur Datenidentifikation gehÃ¶rende Einstellungen nach der Ã„nderung oder <code>null</code>
+	 *                           wenn es nach der Ã„nderung keinen spezifischen Eintrag mehr gibt.
 	 */
 	void update(DataIdentification dataIdentification, Data oldSettings, Data newSettings);
 }

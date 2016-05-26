@@ -1,13 +1,13 @@
 /*
  * Copyright 2008 by Kappich Systemberatung, Aachen
- * Copyright 2006 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * Copyright 2006 by beck et al. projects GmbH
  * 
  * This file is part of de.bsvrz.pat.sysprot.
  * 
- * de.bsvrz.pat.sysprot is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysprot is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysprot is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysprot; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysprot.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.pat.sysprot.main;
 
@@ -58,7 +64,7 @@ import java.util.*;
  *   XML Protokollierer -protModul=de.bsvrz.pat.onlprot.standardProtocolModule.StandardProtocoller -ausgabe=xml
  *   Daten Protokollierer -protModul=de.bsvrz.pat.onlprot.standardProtocolModule.StandardProtocoller -ausgabe=daten
  *   Kopf Protokollierer -protModul=de.bsvrz.pat.onlprot.standardProtocolModule.StandardProtocoller -ausgabe=kopf
- *   Protokollierer für zeilenweise Ausgabe -protModul=vrz3.export.prot.FlatProtocoller
+ *   Protokollierer fÃ¼r zeilenweise Ausgabe -protModul=vrz3.export.prot.FlatProtocoller
  */
 public class SystemProtocoller implements StandardApplication {
     /**
@@ -80,18 +86,18 @@ public class SystemProtocoller implements StandardApplication {
     /**
      * Startet die Applikation
      *
-     * @param args Die Übergebenen Argumente als String-Array
+     * @param args Die Ãœbergebenen Argumente als String-Array
      */
     public static void main(String[] args) {
         StandardApplicationRunner.run(new SystemProtocoller(args), args);
-        System.exit(0); // Sonst bleiben Threads übrig...
+        System.exit(0); // Sonst bleiben Threads Ã¼brig...
     }
 
 
     /**
      * Konstruktor
      *
-     * @param originalArguments die unveränderten Aufrufargumente
+     * @param originalArguments die unverÃ¤nderten Aufrufargumente
      */
     public SystemProtocoller(String[] originalArguments) {
         this.originalArguments = new String[originalArguments.length];
@@ -144,7 +150,7 @@ public class SystemProtocoller implements StandardApplication {
         ArchiveRequestOption archiveRequestOption = ArchiveRequestOption.NORMAL;
         ArchiveDataStream[] archiveDataStream = null;
 
-        // Prüfen, ob Archiv da ist
+        // PrÃ¼fen, ob Archiv da ist
         try {
             for (int i = 1; i <= ARC_MAX_WAIT; i++) {
                 if (!archive.isArchiveAvailable()) {
@@ -192,7 +198,7 @@ public class SystemProtocoller implements StandardApplication {
 		            ads.setQueryWithPid();
 	            }
 	            catch(NoSuchMethodError e){
-		            System.err.println("Archivanfrage kann historische Objekte nicht berücksichtigen, bitte DAF-Bibliothek aktualisieren.");
+		            System.err.println("Archivanfrage kann historische Objekte nicht berÃ¼cksichtigen, bitte DAF-Bibliothek aktualisieren.");
 	            }
 	            archiveDataSpecifications.add(ads);
             }

@@ -2,13 +2,13 @@
  * Copyright 2008 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung, Aachen
- * Copyright 2006 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -17,8 +17,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -34,11 +40,11 @@ import java.util.Set;
  * Implementierung des Interfaces {@link DynamicObject} auf Seiten der Konfiguration.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13103 $
+ * @version $Revision$
  */
 public class ConfigDynamicObject extends ConfigSystemObject implements DynamicObject {
 
-	/** Objekt f¸r den synchronen Zugriff auf den {@link #_listeners Listener} */
+	/** Objekt f√ºr den synchronen Zugriff auf den {@link #_listeners Listener} */
 	private final Object _lockObject = new Object();
 
 	/** Sammelt alle angemeldeten Listener-Objekte. */
@@ -65,15 +71,15 @@ public class ConfigDynamicObject extends ConfigSystemObject implements DynamicOb
 	public boolean isValid() {
 		long currentTime = System.currentTimeMillis();
 		if(getValidSince() > currentTime) {
-			// Objekt wird erst zu einem sp‰teren Zeitpunkt g¸ltig
+			// Objekt wird erst zu einem sp√§teren Zeitpunkt g√ºltig
 			return false;
 		}
 		final long notValidSince = getNotValidSince();
 		if(notValidSince != 0 && notValidSince <= currentTime) {
-			// Objekt wurde bereits ung¸ltig
+			// Objekt wurde bereits ung√ºltig
 			return false;
 		}
-		// Objekt ist g¸ltig und wurde noch nicht auf ung¸ltig gesetzt oder wird erst zu einem sp‰teren Zeitpunkt ung¸ltig
+		// Objekt ist g√ºltig und wurde noch nicht auf ung√ºltig gesetzt oder wird erst zu einem sp√§teren Zeitpunkt ung√ºltig
 		return true;
 	}
 
@@ -95,7 +101,7 @@ public class ConfigDynamicObject extends ConfigSystemObject implements DynamicOb
 
 	/**
 	 * Alle angemeldeten Listener werden benachrichtigt, sobald dieses dynamische Objekt {@link de.bsvrz.dav.daf.main.config.SystemObject#invalidate
-	 * ung¸ltig} gemacht wird.
+	 * ung√ºltig} gemacht wird.
 	 */
 	void informListeners() {
 		synchronized(_lockObject) {
@@ -107,7 +113,7 @@ public class ConfigDynamicObject extends ConfigSystemObject implements DynamicOb
 	}
 
 	/**
-	 * Diese Methode gibt die Simulationsvariante des dynamischen Objekts zur¸ck.
+	 * Diese Methode gibt die Simulationsvariante des dynamischen Objekts zur√ºck.
 	 *
 	 * @return die Simulationsvariante dieses Objekts
 	 */
@@ -116,10 +122,10 @@ public class ConfigDynamicObject extends ConfigSystemObject implements DynamicOb
 	}
 
 	/**
-	 * Gibt ein ObjectLookup zur¸ck, das f¸r die Auflˆsung von Referenzen in Konfigurationsdaten benutzt wird,
-	 * Dies ist ¸blicherweise einfach das ConfigDataModel (siehe {@link #getDataModel()}), f¸r Simulationen muss
-	 * aber die Simulationsvariante dieses Objekts zur Auflˆsung der Referenzen verwendet werden, deswegen wird diese Methode von
-	 * dynamischen Objekten ¸berschrieben.
+	 * Gibt ein ObjectLookup zur√ºck, das f√ºr die Aufl√∂sung von Referenzen in Konfigurationsdaten benutzt wird,
+	 * Dies ist √ºblicherweise einfach das ConfigDataModel (siehe {@link #getDataModel()}), f√ºr Simulationen muss
+	 * aber die Simulationsvariante dieses Objekts zur Aufl√∂sung der Referenzen verwendet werden, deswegen wird diese Methode von
+	 * dynamischen Objekten √ºberschrieben.
 	 * @return ObjectLookup
 	 */
 	@Override
@@ -133,7 +139,7 @@ public class ConfigDynamicObject extends ConfigSystemObject implements DynamicOb
 	}
 
 	public void invalidate() throws ConfigurationChangeException {
-		super.invalidate(); // pr¸fen, ob gelˆscht werden darf
+		super.invalidate(); // pr√ºfen, ob gel√∂scht werden darf
 
 		long oldNotValidSince = getNotValidSince();
 		((DynamicObjectInfo)_systemObjectInfo).setInvalid();
@@ -142,7 +148,7 @@ public class ConfigDynamicObject extends ConfigSystemObject implements DynamicOb
 			getConfigurationArea().setTimeOfLastChanges(ConfigConfigurationArea.KindOfLastChange.DynamicObject);
 		}
 		informListeners(); // alle InvalidationListener des Objekts werden benachrichtigt
-		// Alle Listener des Typs informieren, dass ein Objekt ung¸ltig geworden ist
+		// Alle Listener des Typs informieren, dass ein Objekt ung√ºltig geworden ist
 		((ConfigDynamicObjectType)getType()).informInvalidationListener(this);
 	}
 

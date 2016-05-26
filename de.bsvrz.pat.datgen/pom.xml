@@ -13,7 +13,7 @@
 	
 	<groupId>de.bsvrz.pat</groupId>
 	<artifactId>de.bsvrz.pat.datgen</artifactId>
-	<version>3.6.5-SNAPSHOT</version>
+	<version>3.7.4-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 
 </project>

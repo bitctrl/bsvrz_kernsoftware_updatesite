@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.sys.funclib.losb.
  * 
- * de.bsvrz.sys.funclib.losb is free software; you can redistribute it and/or modify
+ * de.bsvrz.sys.funclib.losb is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.losb is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.sys.funclib.losb; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.losb.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.losb.datk;
@@ -31,7 +37,7 @@ import java.util.*;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 8432 $ / $Date: 2010-12-13 11:31:48 +0100 (Mon, 13 Dec 2010) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class AtlMeta implements Serializable {
 
@@ -47,7 +53,7 @@ public class AtlMeta implements Serializable {
 
 
 	/**
-	 * Erzeugt ein Stellvertreter Objekt für diese Attributliste
+	 * Erzeugt ein Stellvertreter Objekt fÃ¼r diese Attributliste
 	 *
 	 * @param atlbase      Attributliste {@link PidScript#atlBase}
 	 * @param atlDetail    Attributliste {@link PidScript#atlDetailInformation}
@@ -67,7 +73,7 @@ public class AtlMeta implements Serializable {
 	}
 
 	/**
-	 * Trägt die Werte dieses Objekts in das Daten-Objekt ein.
+	 * TrÃ¤gt die Werte dieses Objekts in das Daten-Objekt ein.
 	 *
 	 * @param data Ziel der Eintragung.
 	 */
@@ -91,7 +97,7 @@ public class AtlMeta implements Serializable {
 	}
 
 	/**
-	 * Erzeugt ein Java-Objekt aus den übergebenen Daten. Es kann eine {@link java.util.NoSuchElementException}geworfen werden.
+	 * Erzeugt ein Java-Objekt aus den Ã¼bergebenen Daten. Es kann eine {@link java.util.NoSuchElementException}geworfen werden.
 	 *
 	 * @param data Daten.
 	 *
@@ -121,9 +127,9 @@ public class AtlMeta implements Serializable {
 	}
 
 	/**
-	 * Übernimmt die Informationen aus dem übergebenen Meta-Objekt.
+	 * Ãœbernimmt die Informationen aus dem Ã¼bergebenen Meta-Objekt.
 	 *
-	 * @param meta Informationen über ein Skript
+	 * @param meta Informationen Ã¼ber ein Skript
 	 */
 	public void set(final AtlMeta meta) {
 		this.atlBase = meta.atlBase;

@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.sys.funclib.concurrent.
  * 
  * de.bsvrz.sys.funclib.concurrent is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.concurrent is distributed in the hope that it will be useful,
@@ -15,22 +15,28 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.concurrent; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.concurrent; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.concurrent;
 
 /**
- * Queue zum Austausch von Nachrichten zwischen Threads. Mit der Methode {@link #put} kˆnnen beliebige Objekte
+ * Queue zum Austausch von Nachrichten zwischen Threads. Mit der Methode {@link #put} k√∂nnen beliebige Objekte
  * (Nachrichten) in die Queue eingetragen (gesendet) werden und i.a. von einem anderen Thread mit den Methode {@link
  * #take} aus der Queue entnommen (empfangen) werden. Die Anzahl der Nachrichten in der Queue ist
- * beschr‰nkt. Die Nachrichten werden in der Reihenfolge empfangen in der sie versendet wurden (first in first
- * out, FIFO). Gesendete Nachrichten stehen erst dann empfangsseitig zur Verf¸gung, wenn die halbe Kapizit‰t der Queue
+ * beschr√§nkt. Die Nachrichten werden in der Reihenfolge empfangen in der sie versendet wurden (first in first
+ * out, FIFO). Gesendete Nachrichten stehen erst dann empfangsseitig zur Verf√ºgung, wenn die halbe Kapizit√§t der Queue
  * erreicht ist oder die Methode {@link #flush} aufgerufen wurde.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5006 $
+ * @version $Revision$
  */
 public class BufferedQueue<E> {
 
@@ -79,12 +85,12 @@ public class BufferedQueue<E> {
 	}
 
 	/**
-	 * Empf‰ngt und entfernt eine Nachricht aus der Queue. Wenn die Queue leer ist, dann wartet die Methode, bis eine
+	 * Empf√§ngt und entfernt eine Nachricht aus der Queue. Wenn die Queue leer ist, dann wartet die Methode, bis eine
 	 * Nachricht in die Queue gesendet wurde. Wenn mehrere Nachrichten in der Queue vorhanden sind, wird die Nachricht
 	 * empfangen und entfernt, die als erstes in die Queue gesendet wurde.
 	 *
 	 * @return Empfangene Nachricht.
-	 * @throws InterruptedException Wenn der Thread unterbrochen wurde w‰hrend auf Nachrichten gewartet wurde.
+	 * @throws InterruptedException Wenn der Thread unterbrochen wurde w√§hrend auf Nachrichten gewartet wurde.
 	 */
 	public E take() throws InterruptedException {
 		if(_takeIndex == _takeLimit) {

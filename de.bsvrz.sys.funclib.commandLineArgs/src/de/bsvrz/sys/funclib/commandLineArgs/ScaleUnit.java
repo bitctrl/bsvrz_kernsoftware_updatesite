@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.sys.funclib.commandLineArgs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.commandLineArgs is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.commandLineArgs; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.commandLineArgs; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.commandLineArgs;
@@ -27,7 +33,7 @@ import java.lang.String;
  * TBD kommentieren
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11174 $
+ * @version $Revision$
  */
 public class ScaleUnit {
 
@@ -41,7 +47,7 @@ public class ScaleUnit {
 	 * @return
 	 */
 	public static long getScaleFactorBinary(final String scaleUnit) {
-		if(scaleUnit == null) throw new IllegalArgumentException("Ihre Präfix-Angabe ist ungültig. " + scaleUnit);
+		if(scaleUnit == null) throw new IllegalArgumentException("Ihre PrÃ¤fix-Angabe ist ungÃ¼ltig. " + scaleUnit);
 		if(scaleUnit.length() == 0) return 1;
 		switch(scaleUnit.toLowerCase().charAt(0)) {
 			case 'k':
@@ -57,7 +63,7 @@ public class ScaleUnit {
 			case 'e':
 				return (1024l * 1024l * 1024l * 1024l * 1024l * 1024l);
 			default:
-				throw new IllegalScaleUnitException("Ihre Angabe ist keine gültige Einheit! " + scaleUnit);
+				throw new IllegalScaleUnitException("Ihre Angabe ist keine gÃ¼ltige Einheit! " + scaleUnit);
 		}
 	}
 
@@ -69,7 +75,7 @@ public class ScaleUnit {
 	 * @return
 	 */
 	public static long getScaleFactorDecimal(final String scaleUnit) {
-		if(scaleUnit == null) throw new IllegalArgumentException("Ihre Präfix-Angabe ist ungültig. " + scaleUnit);
+		if(scaleUnit == null) throw new IllegalArgumentException("Ihre PrÃ¤fix-Angabe ist ungÃ¼ltig. " + scaleUnit);
 		if(scaleUnit.length() == 0) return 1;
 		switch(scaleUnit.toLowerCase().charAt(0)) {
 			case 'h':
@@ -87,7 +93,7 @@ public class ScaleUnit {
 			case 'e':
 				return (1000l * 1000l * 1000l * 1000l * 1000l * 1000l);
 			default:
-				throw new IllegalScaleUnitException("Ihre Angabe ist keine gültige Einheit! " + scaleUnit);
+				throw new IllegalScaleUnitException("Ihre Angabe ist keine gÃ¼ltige Einheit! " + scaleUnit);
 		}
 	}
 
@@ -99,7 +105,7 @@ public class ScaleUnit {
 	 * @return
 	 */
 	public static double getScaleFactorDecimalFloatingPoint(final String scaleUnit){
-		if(scaleUnit == null) throw new IllegalArgumentException("Ihre Präfix-Angabe ist ungültig. " + scaleUnit);
+		if(scaleUnit == null) throw new IllegalArgumentException("Ihre PrÃ¤fix-Angabe ist ungÃ¼ltig. " + scaleUnit);
 		if(scaleUnit.length() == 0) return 1;
 		switch(scaleUnit.toLowerCase().charAt(0)) {
 			case 'd':
@@ -121,7 +127,7 @@ public class ScaleUnit {
 			case 'z':
 				return 0.000000000000000000001;
 			default:
-				throw new IllegalScaleUnitException("Ihre Angabe ist keine gültige Einheit! " + scaleUnit);
+				throw new IllegalScaleUnitException("Ihre Angabe ist keine gÃ¼ltige Einheit! " + scaleUnit);
 		}
 	}
 

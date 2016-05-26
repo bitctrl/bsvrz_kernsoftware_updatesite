@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.sys.funclib.debug.
  * 
  * de.bsvrz.sys.funclib.debug is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.debug is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.debug; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.debug; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.debug.gui;
@@ -35,7 +41,7 @@ public class LoggingFrame extends JFrame implements TreeSelectionListener, ItemL
     Logger myLogger = null;
 
     public LoggingFrame() {
-        // Logging f¸r DIESE Klasse aufsetzen
+        // Logging f√ºr DIESE Klasse aufsetzen
         myLogger = Logger.getLogger(this.getClass().getPackage().getName());
         myLogger.setLevel(Level.ALL);
         myLogger.fine("Initialisiere den Log-Frame");
@@ -189,7 +195,7 @@ public class LoggingFrame extends JFrame implements TreeSelectionListener, ItemL
         });
 
         close.setMnemonic('S');
-        close.setText("Schlieﬂen");
+        close.setText("Schlie√üen");
         close.setActionCommand("close");
         close.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -258,7 +264,7 @@ public class LoggingFrame extends JFrame implements TreeSelectionListener, ItemL
                     // neuen Knoten. Daher wird er jetzt an diesem Index
                     // angelegt.
                     if (content.getName().compareTo(parts[i]) > 0) {
-                        myLogger.fine("Logger wird in Liste eingef¸gt");
+                        myLogger.fine("Logger wird in Liste eingef√ºgt");
                         childNode = createNode(parts, i);
                         currentNode.insert(childNode, j);
                         currentNode = childNode;
@@ -266,7 +272,7 @@ public class LoggingFrame extends JFrame implements TreeSelectionListener, ItemL
                         break;
                     }
                     else if (content.getName().equals(parts[i])) {
-                        myLogger.fine("Pfad f¸r Logger existiert bereits");
+                        myLogger.fine("Pfad f√ºr Logger existiert bereits");
                         checkNode(parts, i, childNode);
                         currentNode = childNode;
                         setFlag = true;
@@ -276,7 +282,7 @@ public class LoggingFrame extends JFrame implements TreeSelectionListener, ItemL
 
                 // Noch hier? Dann muss der Knoten angelegt werden
                 if (!setFlag) {
-                    myLogger.fine("Logger wird an Liste angeh‰ngt");
+                    myLogger.fine("Logger wird an Liste angeh√§ngt");
                     childNode = createNode(parts, i);
                     currentNode.add(childNode);
                     currentNode = childNode;
@@ -315,7 +321,7 @@ public class LoggingFrame extends JFrame implements TreeSelectionListener, ItemL
     }
 
     public void valueChanged(TreeSelectionEvent evt) {
-        // Die Combobox mit den Leveln wird evtl. ver‰ndert. Das wollen wir aber nicht wissen.
+        // Die Combobox mit den Leveln wird evtl. ver√§ndert. Das wollen wir aber nicht wissen.
         inputLevel.removeItemListener(this);
 
         DefaultMutableTreeNode node = (DefaultMutableTreeNode)evt.getPath().getLastPathComponent();
@@ -346,12 +352,12 @@ public class LoggingFrame extends JFrame implements TreeSelectionListener, ItemL
             model.removeAllElements();
         }
 
-        // Jetzt wieder Nachrichten von der Combobox abhˆren
+        // Jetzt wieder Nachrichten von der Combobox abh√∂ren
         inputLevel.addItemListener(this);
     }
 
     public void itemStateChanged(ItemEvent evt) {
-        // Wenn nur eine Auswahl r¸ckg‰ngig gemacht wurde, interessiert uns das nicht.
+        // Wenn nur eine Auswahl r√ºckg√§ngig gemacht wurde, interessiert uns das nicht.
         if (evt.getStateChange() == ItemEvent.DESELECTED)
             return;
         Object newLevel = evt.getItem();

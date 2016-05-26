@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main;
@@ -37,12 +43,12 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Parameter für die Datenverteiler-Applikationsfunktionen. Diese Klasse implementiert die Schnittstelle DatenverteilerApplikationsfunktionen-Starter. Beim
+ * Parameter fÃ¼r die Datenverteiler-Applikationsfunktionen. Diese Klasse implementiert die Schnittstelle DatenverteilerApplikationsfunktionen-Starter. Beim
  * Erzeugen eines Objekts dieser Klasse werden die Parameter auf die in den Aufrufargumenten der Applikation angegebenen Werte bzw. auf die festgelegten
- * Default-Werte gesetzt. Einzelne Parameter können mit den entsprechenden Zugriffsmethoden gesetzt und abgefragt werden.
+ * Default-Werte gesetzt. Einzelne Parameter kÃ¶nnen mit den entsprechenden Zugriffsmethoden gesetzt und abgefragt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13225 $
+ * @version $Revision$
  * @verweis sst.DatenverteilerApplikationsfunktionen-Starter Schnittstellenbeschreibung
  */
 public class ClientDavParameters implements Cloneable{
@@ -51,66 +57,66 @@ public class ClientDavParameters implements Cloneable{
 	static private final Debug _debug = Debug.getLogger();
 
 	/**
-	 * Aufrufargument zur Einstellung der Puffergrößen. Mit diesem Aufrufargument müssen drei durch Doppelpunkt getrennte Zahlen angegeben werden:
-	 * <p/>
+	 * Aufrufargument zur Einstellung der PuffergrÃ¶ÃŸen. Mit diesem Aufrufargument mÃ¼ssen drei durch Doppelpunkt getrennte Zahlen angegeben werden:
+	 * <p>
 	 * <code>-puffer=sendepuffer:empfangspuffer:auslieferungspuffer</code>
-	 * <p/>
-	 * Alle Angaben sind als Anzahl von Bytes zu verstehen. <code>sendepuffer</code> und <code>empfangspuffer</code> spezifizieren die Größe der Puffer, die bei
+	 * <p>
+	 * Alle Angaben sind als Anzahl von Bytes zu verstehen. <code>sendepuffer</code> und <code>empfangspuffer</code> spezifizieren die GrÃ¶ÃŸe der Puffer, die bei
 	 * der Datenverteilerkommunikation zur Zwischenspeicherung von zu sendenden bzw. empfangenen Telegrammen verwendet werden. <code>auslieferungspuffer</code>
-	 * spezifiziert die Größe des Auslieferungspuffers, der zur Zwischenspeicherung von an die Applikation auszuliefernden Datensätzen verwendet wird.
+	 * spezifiziert die GrÃ¶ÃŸe des Auslieferungspuffers, der zur Zwischenspeicherung von an die Applikation auszuliefernden DatensÃ¤tzen verwendet wird.
 	 */
 	private static final String BUFFER_KEY = "-puffer";
 
 	/**
-	 * Aufrufargument mit dem Inkarnationsname der von Start/Stopp vorgegeben wird, um eine eindeutige Zuordnung zwischen gestartetem Prozeß und dem
+	 * Aufrufargument mit dem Inkarnationsname der von Start/Stopp vorgegeben wird, um eine eindeutige Zuordnung zwischen gestartetem ProzeÃŸ und dem
 	 * entsprechenden Applikationsobjekt herzustellen.
 	 */
 	private static final String INCARNATION_KEY = "-inkarnationsName=";
 
-	/** Parameter Schlüssel */
+	/** Parameter SchlÃ¼ssel */
 	private static final String ADDRESS_SUBADDRESS_KEY = "-datenverteiler=";
 
-	/** Parameter Schlüssel */
+	/** Parameter SchlÃ¼ssel */
 	private static final String CONFIGURATION_PID_KEY = "-konfigurationsBereich=";
 
-	/** Parameter Schlüssel */
+	/** Parameter SchlÃ¼ssel */
 	private static final String CONFIGURATION_PATH_KEY = "-lokaleSpeicherungKonfiguration=";
 
-	/** Parameter Schlüssel */
+	/** Parameter SchlÃ¼ssel */
 	private static final String USER_NAME_KEY = "-benutzer=";
 
-	/** Parameter Schlüssel */
+	/** Parameter SchlÃ¼ssel */
 	private static final String AUTHENTIFICATION_FILE_KEY = "-authentifizierung=";
 
-	/** Parameter Schlüssel */
+	/** Parameter SchlÃ¼ssel */
 	private static final String AUTHENTIFICATION_PROCESS_KEY = "-authentifizierungsVerfahren=";
 
-	/** Parameter Schlüssel */
+	/** Parameter SchlÃ¼ssel */
 	private static final String SEND_KEEP_ALIVE_TIMEOUT_KEY = "-timeoutSendeKeepAlive=";
 
-	/** Parameter Schlüssel */
+	/** Parameter SchlÃ¼ssel */
 	private static final String RECEIVE_KEEP_ALIVE_TIMEOUT_KEY = "-timeoutEmpfangeKeepAlive=";
 
-	/** Parameter Schlüssel */
+	/** Parameter SchlÃ¼ssel */
 	private static final String ASPECT_REDIRECTION_KEY = "-aspekt=";
 
-	/** Parameter Schlüssel */
+	/** Parameter SchlÃ¼ssel */
 	private static final String SIMULATION_VARIANT_KEY = "-simVariante=";
 
-	/** Parameter Schlüssel */
+	/** Parameter SchlÃ¼ssel */
 	private static final String FLOW_CONTROL_PARAMETERS_KEY = "-durchsatzPruefung=";
 
-	/** Parameter Schlüssel */
+	/** Parameter SchlÃ¼ssel */
 	private static final String PARAMETER_SEPARATOR = ":";
 
-	/** Parameter Schlüssel */
+	/** Parameter SchlÃ¼ssel */
 	private static final String TEST_CONNECTION_KEY = "-anmeldungFuerTestzwecke=";
 
 	/** Die Ressourcen des Clients. */
 	private ResourceBundle _resourceBundle = ResourceBundle.getBundle("de.bsvrz.dav.daf.main.impl.clientResourceBundle", Locale.getDefault());
 
 	///////////////////////////////////////////////////////////
-	/// Übergabeparameter der main Methode der Applikation ///
+	/// Ãœbergabeparameter der main Methode der Applikation ///
 	///////////////////////////////////////////////////////////
 
 	/** Datenverteiler-Adresse */
@@ -131,17 +137,17 @@ public class ClientDavParameters implements Cloneable{
 	/** die Subadresse des Datenverteilers */
 	private int _subAddress;
 
-	/** Die Standardmäßig zu verwendende Simulationsvariante. Wenn die Methode nicht aufgerufen wird, wird die Variante <code>0</code> benutzt. */
+	/** Die StandardmÃ¤ÃŸig zu verwendende Simulationsvariante. Wenn die Methode nicht aufgerufen wird, wird die Variante <code>0</code> benutzt. */
 	private short _simulationVariant;
 
-	/** Tabelle der Informationen über Umleitungen der Aspekte */
+	/** Tabelle der Informationen Ã¼ber Umleitungen der Aspekte */
 	private Hashtable<AttributeGroupAspectObject, AttributeGroupAspectObject> _aspectToSubstituteTable = new Hashtable<AttributeGroupAspectObject, AttributeGroupAspectObject>();
 
-	/** Tabelle der Informationen über Umleitungen der Aspekte */
+	/** Tabelle der Informationen Ã¼ber Umleitungen der Aspekte */
 	private Hashtable<AttributeGroupAspectObject, AttributeGroupAspectObject> _substituteToAspectTable = new Hashtable<AttributeGroupAspectObject, AttributeGroupAspectObject>();
 
 	////////////////////////////////////////////////////////////////
-	/// Parameter, die von der Applikation gesetzt werden können ///
+	/// Parameter, die von der Applikation gesetzt werden kÃ¶nnen ///
 	////////////////////////////////////////////////////////////////
 
 	/** Der Applikationsname (Default: Testapplikation) */
@@ -160,14 +166,14 @@ public class ClientDavParameters implements Cloneable{
 	/** Der Name des Kommunikationsprotokolls (Default: TCP-IP) */
 	private String _lowLevelCommunicationName;
 
-	/** Die Größe des Sendepuffers in Bytes, der bei der Kommunikation mit dem Datenverteiler eingesetzt wird. */
+	/** Die GrÃ¶ÃŸe des Sendepuffers in Bytes, der bei der Kommunikation mit dem Datenverteiler eingesetzt wird. */
 	private int _outputBufferSize = 1000000;
 
-	/** Die Größe des Empfangspuffers in Bytes, der bei der Kommunikation mit dem Datenverteiler eingesetzt wird. */
+	/** Die GrÃ¶ÃŸe des Empfangspuffers in Bytes, der bei der Kommunikation mit dem Datenverteiler eingesetzt wird. */
 	private int _inputBufferSize = 1000000;
 
 	/**
-	 * Die Größe des Auslieferungspuffers in Bytes, der zur Zwischenspeicherung von Datensätzen genutzt wird, die an einen Empfänger der Applikation versendet
+	 * Die GrÃ¶ÃŸe des Auslieferungspuffers in Bytes, der zur Zwischenspeicherung von DatensÃ¤tzen genutzt wird, die an einen EmpfÃ¤nger der Applikation versendet
 	 * werden sollen.
 	 *
 	 * @see ClientReceiverInterface#update(ResultData[])
@@ -175,60 +181,60 @@ public class ClientDavParameters implements Cloneable{
 	private int _deliveryBufferSize = 2500000;
 
 	/**
-	 * Die Verzögerungszeit zur Übertragung von gepufferten und zu versendenden Telegrammen. Die Übertragung der gesammelten Daten im Sendepuffer findet erst
+	 * Die VerzÃ¶gerungszeit zur Ãœbertragung von gepufferten und zu versendenden Telegrammen. Die Ãœbertragung der gesammelten Daten im Sendepuffer findet erst
 	 * statt, wenn die hier angegebene Zeit lang keine Daten mehr in der Puffer geschrieben wurden oder der Sendepuffer voll ist.
 	 */
 	private long _communicationSendFlushDelay;
 
-	/** Die maximale Größe von Datentelegrammen. */
+	/** Die maximale GrÃ¶ÃŸe von Datentelegrammen. */
 	private int _maxTelegramSize;
 
 	/**
-	 * Speichert, ob die Verbindung zu Testzwecken aufgebaut wird. true bedeutet "Ja" und bestimmte Tests, die normalerweise die Anmeldung verhindern würden,
-	 * werden nicht durchgeführt; false bedeutet "nein".
-	 * <p/>
+	 * Speichert, ob die Verbindung zu Testzwecken aufgebaut wird. true bedeutet "Ja" und bestimmte Tests, die normalerweise die Anmeldung verhindern wÃ¼rden,
+	 * werden nicht durchgefÃ¼hrt; false bedeutet "nein".
+	 * <p>
 	 * Der default-Wert ist "nein".
 	 */
 	private boolean _connectionForTests = false;
 
-	/** Enthält die Parameter für die Kommunikation zwischen Applikation und Datenverteiler. */
+	/** EnthÃ¤lt die Parameter fÃ¼r die Kommunikation zwischen Applikation und Datenverteiler. */
 	private CommunicationParameters _communicationParameters;
 
-	/** Enthält den via Aufrufparameter von Start/Stopp vorgegebenen Inkarnationsnamen oder <code>""</code>, falls das Aufrufargument nicht angegeben wurde. */
+	/** EnthÃ¤lt den via Aufrufparameter von Start/Stopp vorgegebenen Inkarnationsnamen oder <code>""</code>, falls das Aufrufargument nicht angegeben wurde. */
 	private final String _incarnationName;
 
-	/** Enthält den Namen der Applikation, der im Namen der lokalen Cache-Datei für Konfigurationsdaten verwendet werden soll. Der Applikationsname kann mit
-	 * dem Aufrufparameter -lokaleSpeicherungKonfiguration=pfadname:applikationsname von außen vorgegeben werden.
+	/** EnthÃ¤lt den Namen der Applikation, der im Namen der lokalen Cache-Datei fÃ¼r Konfigurationsdaten verwendet werden soll. Der Applikationsname kann mit
+	 * dem Aufrufparameter -lokaleSpeicherungKonfiguration=pfadname:applikationsname von auÃŸen vorgegeben werden.
 	 * Wenn das Aufrufargument -lokaleSpeicherungKonfiguration nicht benutzt wurde oder im angegebenen Argument kein mit Doppelpunkt getrennter Name angegeben
-	 * wurde, dann enthält dieses Field den Wert <code>null</code>.
+	 * wurde, dann enthÃ¤lt dieses Field den Wert <code>null</code>.
 	 */
 	private String _applicationNameForLocalConfigurationCache = null;
 
 	/**
-	 * Bestimmt, ob eine zusätzliche Datenverteilerverbindung für Konfigurationsanfragen benutzt werden soll
+	 * Bestimmt, ob eine zusÃ¤tzliche Datenverteilerverbindung fÃ¼r Konfigurationsanfragen benutzt werden soll
 	 * (false, wenn _isSecondConnection == true)
 	 */
 	private boolean _useSecondConnection = false;
 
 	/**
-	 * Bestimmt, ob dies die Parameter für die zweite Datenverteilerverbindung für Konfigurationsanfragen darstellt
+	 * Bestimmt, ob dies die Parameter fÃ¼r die zweite Datenverteilerverbindung fÃ¼r Konfigurationsanfragen darstellt
 	 */
 	private boolean _isSecondConnection = false;
 
 	/**
-	 * Falls eine zweite Verbindung für Konfigurationsanfragen verwendet wird: Anteil der zweiten Verbindung
-	 * an der Gesamtpuffergröße
+	 * Falls eine zweite Verbindung fÃ¼r Konfigurationsanfragen verwendet wird: Anteil der zweiten Verbindung
+	 * an der GesamtpuffergrÃ¶ÃŸe
 	 */
 	private double _secondaryConnectionBufferRatio = 0.01;
 
 	/**
-	 * True falls das Objekt schreibgeschützt ist. Die ClientDavConnection erstellt eine schreibgeschütze Kopie
-	 * dieses Objekts damit Parameter wie Simulationsvariante nicht im laufenden Betrieb geändert werden können
+	 * True falls das Objekt schreibgeschÃ¼tzt ist. Die ClientDavConnection erstellt eine schreibgeschÃ¼tze Kopie
+	 * dieses Objekts damit Parameter wie Simulationsvariante nicht im laufenden Betrieb geÃ¤ndert werden kÃ¶nnen
 	 */
 	private boolean _readonly = false;
 
 	/**
-	 * Erzeugt einen neuen Parametersatz mit Defaultwerten für die einzelnen Parameter.
+	 * Erzeugt einen neuen Parametersatz mit Defaultwerten fÃ¼r die einzelnen Parameter.
 	 *
 	 * @throws MissingParameterException Bei formalen Fehlern beim Lesen der Defaultwerte.
 	 */
@@ -264,29 +270,29 @@ public class ClientDavParameters implements Cloneable{
 			tmp = _resourceBundle.getString("Datenverteiler-Subadresse");
 			_subAddress = Integer.parseInt(tmp);
 			if(_subAddress < 0) {
-				throw new MissingParameterException("Die Subadresse muss grösser gleich 0 sein");
+				throw new MissingParameterException("Die Subadresse muss grÃ¶sser gleich 0 sein");
 			}
 
 			long sendKeepAliveTimeout = Long.parseLong(_resourceBundle.getString("Keepalive-Sendezeitgrenze"));
 			if(sendKeepAliveTimeout < 1000) {
-				throw new MissingParameterException("Timeouts müssen grösser gleich als 1 Sekunde sein");
+				throw new MissingParameterException("Timeouts mÃ¼ssen grÃ¶sser gleich als 1 Sekunde sein");
 			}
 			_communicationParameters.setSendKeepAliveTimeout(sendKeepAliveTimeout);
 
 			long receiveKeepAliveTimeout = Long.parseLong(_resourceBundle.getString("Keepalive-Empfangszeitgrenze"));
 			if(receiveKeepAliveTimeout < 1000) {
-				throw new MissingParameterException("Timeouts müssen grösser gleich als 1 Sekunde sein");
+				throw new MissingParameterException("Timeouts mÃ¼ssen grÃ¶sser gleich als 1 Sekunde sein");
 			}
 			_communicationParameters.setReceiveKeepAliveTimeout(receiveKeepAliveTimeout);
 
 			try {
-				tmp = _resourceBundle.getString("Sendepuffergrösse");
+				tmp = _resourceBundle.getString("SendepuffergrÃ¶sse");
 				_outputBufferSize = Integer.parseInt(tmp);
 			}
 			catch(MissingResourceException ignore) {
 			}
 			try {
-				tmp = _resourceBundle.getString("Empfangspuffergrösse");
+				tmp = _resourceBundle.getString("EmpfangspuffergrÃ¶sse");
 				_inputBufferSize = Integer.parseInt(tmp);
 			}
 			catch(MissingResourceException ignore) {
@@ -294,24 +300,24 @@ public class ClientDavParameters implements Cloneable{
 			tmp = _resourceBundle.getString("SimulationVariante");
 			_simulationVariant = Short.parseShort(tmp);
 			if(_simulationVariant < 0) {
-				throw new MissingParameterException("Die Simulationsvariante muss grösser gleich 0 sein");
+				throw new MissingParameterException("Die Simulationsvariante muss grÃ¶sser gleich 0 sein");
 			}
-			tmp = _resourceBundle.getString("SendeVerzögerung");
+			tmp = _resourceBundle.getString("SendeVerzÃ¶gerung");
 			_communicationSendFlushDelay = Long.parseLong(tmp);
 			if(_communicationSendFlushDelay > 0) {
 				CommunicationConstant.MAX_SEND_DELAY_TIME = _communicationSendFlushDelay;
 			}
-			tmp = _resourceBundle.getString("MaxTelegrammGrösse");
+			tmp = _resourceBundle.getString("MaxTelegrammGrÃ¶sse");
 			_maxTelegramSize = Integer.parseInt(tmp);
 			if(_maxTelegramSize > 0) {
 				CommunicationConstant.MAX_SPLIT_THRESHOLD = _maxTelegramSize;
 			}
 			else {
-				throw new MissingParameterException("Die maximale Telegramlänge muss grösser 0 sein");
+				throw new MissingParameterException("Die maximale TelegramlÃ¤nge muss grÃ¶sser 0 sein");
 			}
-			float throughputControlSendBufferFactor = Integer.parseInt(_resourceBundle.getString("PufferFüllGrad")) * 0.01f;
+			float throughputControlSendBufferFactor = Integer.parseInt(_resourceBundle.getString("PufferFÃ¼llGrad")) * 0.01f;
 			_communicationParameters.setThroughputControlSendBufferFactor(throughputControlSendBufferFactor);
-			int throughputControlInterval = Integer.parseInt(_resourceBundle.getString("PrüfIntervall")) * 1000;
+			int throughputControlInterval = Integer.parseInt(_resourceBundle.getString("PrÃ¼fIntervall")) * 1000;
 			_communicationParameters.setThroughputControlInterval(throughputControlInterval);
 			int minimumThroughput = Integer.parseInt(_resourceBundle.getString("MindestDurchsatz"));
 			_communicationParameters.setMinimumThroughput(minimumThroughput);
@@ -328,13 +334,13 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Erzeugt einen neuen Parametersatz mit Defaultwerten für die einzelnen Parameter und setzt die in den übergebenen Aufrufargumenten angegebenen Parameter mit
+	 * Erzeugt einen neuen Parametersatz mit Defaultwerten fÃ¼r die einzelnen Parameter und setzt die in den Ã¼bergebenen Aufrufargumenten angegebenen Parameter mit
 	 * den jeweils angegebenen Werten. Der Konstruktor implementiert die Starterschnittstelle der Datenverteilerapplikationsfunktionen. Bekannte Aufrufargumente
-	 * werden nach der Umsetzung auf <code>null</code> gesetzt, um der Applikation zu signalisieren, daß diese Argumente bereits interpretiert wurden. Unbekannte
+	 * werden nach der Umsetzung auf <code>null</code> gesetzt, um der Applikation zu signalisieren, daÃŸ diese Argumente bereits interpretiert wurden. Unbekannte
 	 * Aufrufargumente werden ignoriert. Es ist Aufgabe der Applikation die verbleibenden Argumente zu interpretieren, bzw. eine ensprechende Fehlermeldung zu
-	 * erzeugen, wenn die Argumente nicht interpretiert werden können.
+	 * erzeugen, wenn die Argumente nicht interpretiert werden kÃ¶nnen.
 	 *
-	 * @param argumentList Argumentliste mit den beim Programmstart übergebenen Aufrufargumenten.
+	 * @param argumentList Argumentliste mit den beim Programmstart Ã¼bergebenen Aufrufargumenten.
 	 *
 	 * @throws MissingParameterException Bei formalen Fehlern beim Lesen der Aufrufargumente oder der Defaultwerte.
 	 */
@@ -343,13 +349,13 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Gibt an, ob die Verbindung für Testzwecken aufgebaut werden soll.
-	 * <p/>
-	 * Wird die Verbindung für Testzwecken aufgebaut, so können zum Beispiel Anmeldungen stattfinden, die mit einer normalen Verbindung nicht möglich sind.
-	 * <p/>
-	 * Wurde dieser Wert nicht gesetzt (im Konstruktor oder über den Setter) so wird immer <code>false</code> zurückgegeben.
+	 * Gibt an, ob die Verbindung fÃ¼r Testzwecken aufgebaut werden soll.
+	 * <p>
+	 * Wird die Verbindung fÃ¼r Testzwecken aufgebaut, so kÃ¶nnen zum Beispiel Anmeldungen stattfinden, die mit einer normalen Verbindung nicht mÃ¶glich sind.
+	 * <p>
+	 * Wurde dieser Wert nicht gesetzt (im Konstruktor oder Ã¼ber den Setter) so wird immer <code>false</code> zurÃ¼ckgegeben.
 	 *
-	 * @return true = Die Verbindung soll für Testzwecken aufgebaut werden; false = Es handelt sich um eine normale Verbindung, es werden alle Prüfungen
+	 * @return true = Die Verbindung soll fÃ¼r Testzwecken aufgebaut werden; false = Es handelt sich um eine normale Verbindung, es werden alle PrÃ¼fungen
 	 *         vollzogen.
 	 */
 	public boolean isConnectionForTests() {
@@ -357,9 +363,9 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Legt fest, ob eine Verbindung für Testzwecke aufgebaut werden soll.
+	 * Legt fest, ob eine Verbindung fÃ¼r Testzwecke aufgebaut werden soll.
 	 *
-	 * @param connectionForTests true = Ja, es handelt sich um eine Verbindung, die nur für Testzwecke benutzt wird; false = Es handelt sich um eine normale
+	 * @param connectionForTests true = Ja, es handelt sich um eine Verbindung, die nur fÃ¼r Testzwecke benutzt wird; false = Es handelt sich um eine normale
 	 *                           Verbindung, die zum Datenverteiler aufgebaut werden soll.
 	 *
 	 * @see #isConnectionForTests()
@@ -370,13 +376,13 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Erzeugt einen neuen Parametersatz mit Defaultwerten für die einzelnen Parameter und setzt die in den übergebenen Aufrufargumenten angegebenen Parameter mit
+	 * Erzeugt einen neuen Parametersatz mit Defaultwerten fÃ¼r die einzelnen Parameter und setzt die in den Ã¼bergebenen Aufrufargumenten angegebenen Parameter mit
 	 * den jeweils angegebenen Werten. Der Konstruktor implementiert die Starterschnittstelle der Datenverteilerapplikationsfunktionen. Bekannte Aufrufargumente
-	 * werden nach der Umsetzung auf <code>null</code> gesetzt, um der Applikation zu signalisieren, daß diese Argumente bereits interpretiert wurden. Unbekannte
+	 * werden nach der Umsetzung auf <code>null</code> gesetzt, um der Applikation zu signalisieren, daÃŸ diese Argumente bereits interpretiert wurden. Unbekannte
 	 * Aufrufargumente werden ignoriert. Es ist Aufgabe der Applikation die verbleibenden Argumente zu interpretieren, bzw. eine ensprechende Fehlermeldung zu
-	 * erzeugen, wenn die Argumente nicht interpretiert werden können.
+	 * erzeugen, wenn die Argumente nicht interpretiert werden kÃ¶nnen.
 	 *
-	 * @param startArguments Die beim Programmstart übergebenen Aufrufargumente
+	 * @param startArguments Die beim Programmstart Ã¼bergebenen Aufrufargumente
 	 *
 	 * @throws MissingParameterException Bei formalen Fehlern beim Lesen der Aufrufargumente oder der Defaultwerte.
 	 */
@@ -418,7 +424,7 @@ public class ClientDavParameters implements Cloneable{
 				}
 			}
 			if(_subAddress < 0) {
-				throw new MissingParameterException("Die Subadresse muss grösser gleich 0 sein");
+				throw new MissingParameterException("Die Subadresse muss grÃ¶sser gleich 0 sein");
 			}
 
 			//Configuration PID
@@ -456,7 +462,7 @@ public class ClientDavParameters implements Cloneable{
 					String prefix = "";
 					String value = ArgumentParser.getParameter(parameter, CONFIGURATION_PATH_KEY);
 					if(value.length()>=2) {
-						// Wenn im zweiten Zeichen ein Doppelpunkt steht, dann wird dieser als zum Pfad zugehörig betrachtet damit das mit absoluten Pfadnamen
+						// Wenn im zweiten Zeichen ein Doppelpunkt steht, dann wird dieser als zum Pfad zugehÃ¶rig betrachtet damit das mit absoluten Pfadnamen
 						// unter Windows funktioniert ( C:\xyz... )
 						prefix = value.substring(0,2);
 						value = value.substring(2,value.length());
@@ -521,7 +527,7 @@ public class ClientDavParameters implements Cloneable{
 							}
 							else {
 								throw new MissingParameterException(
-										"Das Einlesen von der Konsole ist nicht möglich"
+										"Das Einlesen von der Konsole ist nicht mÃ¶glich"
 								);
 							}
 						}
@@ -532,7 +538,7 @@ public class ClientDavParameters implements Cloneable{
 								_userPassword = properties.getProperty(_userName);
 								if((_userPassword == null) || (_userPassword.length() == 0)) {
 									throw new MissingParameterException(
-											"Das Passwort für den Benutzer " + _userName + " ist in der Authentifizierungsdatei " + tmp + " nicht vorhanden"
+											"Das Passwort fÃ¼r den Benutzer " + _userName + " ist in der Authentifizierungsdatei " + tmp + " nicht vorhanden"
 									);
 								}
 							}
@@ -556,13 +562,13 @@ public class ClientDavParameters implements Cloneable{
 					_authentificationProcessName = ArgumentParser.getParameter(parameter, AUTHENTIFICATION_PROCESS_KEY);
 					if((_authentificationProcessName == null) || (_authentificationProcessName.length() == 0)) {
 						throw new MissingParameterException(
-								"Der Parameter für die Klasse des Authentifizierungsverfahren muss folgende Formatierung besitzen: -authentifizierungsVerfahren=Zeichenkette"
+								"Der Parameter fÃ¼r die Klasse des Authentifizierungsverfahren muss folgende Formatierung besitzen: -authentifizierungsVerfahren=Zeichenkette"
 						);
 					}
 				}
 				catch(InvalidArgumentException ex) {
 					throw new MissingParameterException(
-							"Der Parameter für die Klasse des Authentifizierungsverfahren muss folgende Formatierung besitzen: -authentifizierungsVerfahren=Zeichenkette"
+							"Der Parameter fÃ¼r die Klasse des Authentifizierungsverfahren muss folgende Formatierung besitzen: -authentifizierungsVerfahren=Zeichenkette"
 					);
 				}
 			}
@@ -603,7 +609,7 @@ public class ClientDavParameters implements Cloneable{
 				}
 			}
 			if(sendKeepAliveTimeout < 1000) {
-				throw new MissingParameterException("Timeouts müssen grösser gleich als 1 Sekunde sein");
+				throw new MissingParameterException("Timeouts mÃ¼ssen grÃ¶sser gleich als 1 Sekunde sein");
 			}
 			_communicationParameters.setSendKeepAliveTimeout(sendKeepAliveTimeout);
 
@@ -635,7 +641,7 @@ public class ClientDavParameters implements Cloneable{
 				}
 			}
 			if(receiveKeepAliveTimeout < 1000) {
-				throw new MissingParameterException("Timeouts müssen grösser gleich als 1 Sekunde sein");
+				throw new MissingParameterException("Timeouts mÃ¼ssen grÃ¶sser gleich als 1 Sekunde sein");
 			}
 			_communicationParameters.setReceiveKeepAliveTimeout(receiveKeepAliveTimeout);
 
@@ -686,18 +692,18 @@ public class ClientDavParameters implements Cloneable{
 				}
 			}
 			if(_simulationVariant < 0) {
-				throw new MissingParameterException("Die Simulationsvariante muss grösser gleich 0 sein");
+				throw new MissingParameterException("Die Simulationsvariante muss grÃ¶sser gleich 0 sein");
 			}
 
-			// Puffergrößen
+			// PuffergrÃ¶ÃŸen
 			try {
-				tmp = _resourceBundle.getString("Sendepuffergrösse");
+				tmp = _resourceBundle.getString("SendepuffergrÃ¶sse");
 				_outputBufferSize = Integer.parseInt(tmp);
 			}
 			catch(MissingResourceException ignore) {
 			}
 			try {
-				tmp = _resourceBundle.getString("Empfangspuffergrösse");
+				tmp = _resourceBundle.getString("EmpfangspuffergrÃ¶sse");
 				_inputBufferSize = Integer.parseInt(tmp);
 			}
 			catch(MissingResourceException ignore) {
@@ -714,7 +720,7 @@ public class ClientDavParameters implements Cloneable{
 				catch(Exception e) {
 					throw new MissingParameterException(
 							"Aufrufargument " + BUFFER_KEY + " sollte folgendes Format haben: " + BUFFER_KEY + "sendepuffer:empfangspuffer:auslieferungspuffer\n"
-							+ "Die Werte spezifizieren jeweils die maximalen Puffergröße als Anzahl von Bytes. " + e
+							+ "Die Werte spezifizieren jeweils die maximalen PuffergrÃ¶ÃŸe als Anzahl von Bytes. " + e
 					);
 				}
 			}
@@ -725,14 +731,14 @@ public class ClientDavParameters implements Cloneable{
 
 			_secondaryConnectionBufferRatio = argumentList.fetchArgument("-zweiteVerbindungPufferAnteil=0.01").doubleValueBetween(0, 1);
 
-			//Durchsatzprüfung
+			//DurchsatzprÃ¼fung
 			float throughputControlSendBufferFactor;
 			int throughputControlInterval;
 			int minimumThroughput;
 			parameter = getParameter(startArguments, FLOW_CONTROL_PARAMETERS_KEY);
 			if(parameter == null) {
-				throughputControlSendBufferFactor = Integer.parseInt(_resourceBundle.getString("PufferFüllGrad")) * 0.01f;
-				throughputControlInterval = Integer.parseInt(_resourceBundle.getString("PrüfIntervall")) * 1000;
+				throughputControlSendBufferFactor = Integer.parseInt(_resourceBundle.getString("PufferFÃ¼llGrad")) * 0.01f;
+				throughputControlInterval = Integer.parseInt(_resourceBundle.getString("PrÃ¼fIntervall")) * 1000;
 				minimumThroughput = Integer.parseInt(_resourceBundle.getString("MindestDurchsatz"));
 			}
 			else {
@@ -774,21 +780,21 @@ public class ClientDavParameters implements Cloneable{
 			catch(ClassNotFoundException ex) {
 				throw new MissingParameterException("Die Kommunikationsverfahrensklasse existiert nicht");
 			}
-			tmp = _resourceBundle.getString("SendeVerzögerung");
+			tmp = _resourceBundle.getString("SendeVerzÃ¶gerung");
 			_communicationSendFlushDelay = Long.parseLong(tmp);
 			if(_communicationSendFlushDelay > 0) {
 				CommunicationConstant.MAX_SEND_DELAY_TIME = _communicationSendFlushDelay;
 			}
-			tmp = _resourceBundle.getString("MaxTelegrammGrösse");
+			tmp = _resourceBundle.getString("MaxTelegrammGrÃ¶sse");
 			_maxTelegramSize = Integer.parseInt(tmp);
 			if(_maxTelegramSize > 0) {
 				CommunicationConstant.MAX_SPLIT_THRESHOLD = _maxTelegramSize;
 			}
 			else {
-				throw new MissingParameterException("Die maximale Telegrammlänge muss grösser 0 sein");
+				throw new MissingParameterException("Die maximale TelegrammlÃ¤nge muss grÃ¶sser 0 sein");
 			}
 
-			// Prüfen, ob die Verbindung im Testmodus aufgebaut werden soll
+			// PrÃ¼fen, ob die Verbindung im Testmodus aufgebaut werden soll
 			parameter = getParameter(startArguments, TEST_CONNECTION_KEY);
 			if(parameter != null) {
 				try {
@@ -810,7 +816,7 @@ public class ClientDavParameters implements Cloneable{
 						// Die Eingabe war weder ja noch nein
 						throw new MissingParameterException(
 								"Der Parameter um eine Verbindung zu Testzwecken anzulegen muss folgende Formatierung besitzen: " + TEST_CONNECTION_KEY
-								+ " ja/nein. Die gemachte Eingabe: " + tmp + " ist ungültig."
+								+ " ja/nein. Die gemachte Eingabe: " + tmp + " ist ungÃ¼ltig."
 						);
 					}
 				}
@@ -828,7 +834,7 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 //	/**
-//	 * Erzeugt einen neuen Parametersatz und setzt die in dem übergebenen Aufrufargument angegebenen Parameter mit den jeweils angegebenen Werten. Der Konstruktor
+//	 * Erzeugt einen neuen Parametersatz und setzt die in dem Ã¼bergebenen Aufrufargument angegebenen Parameter mit den jeweils angegebenen Werten. Der Konstruktor
 //	 * implementiert die Starterschnittstelle der Datenverteilerapplikationsfunktionen.
 //	 *
 //	 * @param serverDavParameters die Parameter des Servers
@@ -855,10 +861,10 @@ public class ClientDavParameters implements Cloneable{
 //			// Das obige deaktivierte InetAddress.getLocalHost() lieferte die lokale IP-Adresse des Netzwerkanschlusses,
 //			// dies machte Probleme, weil beim Abziehen des Netzwerkkabels in manchen Betriebssystemen (Windows)
 //			// das Netzwerkinterface deaktiviert wird und deshalb die interne Verbindung im
-//			// Datenverteiler dann nicht mehr funktioniert. Statt dessen wird jetzt für die interne Verbindung
-//			// das Loopback-Interface mit der festen Adresse 127.0.0.1 benutzt, welches unabhängig von realen
+//			// Datenverteiler dann nicht mehr funktioniert. Statt dessen wird jetzt fÃ¼r die interne Verbindung
+//			// das Loopback-Interface mit der festen Adresse 127.0.0.1 benutzt, welches unabhÃ¤ngig von realen
 //			// Netzwerkinterfaces funktioniert:
-//			_address = "127.0.0.1";  // localhost über loopback
+//			_address = "127.0.0.1";  // localhost Ã¼ber loopback
 //
 //			_subAddress = serverDavParameters.getApplicationConnectionsSubAddress();
 //			_userName = "TransmitterLocalApplication@" + System.currentTimeMillis();
@@ -880,7 +886,7 @@ public class ClientDavParameters implements Cloneable{
 //		}
 //
 //		if(_subAddress < 0) {
-//			throw new MissingParameterException("Die Subadresse muss grösser gleich 0 sein");
+//			throw new MissingParameterException("Die Subadresse muss grÃ¶sser gleich 0 sein");
 //		}
 //
 //		_simulationVariant = 0;
@@ -898,12 +904,12 @@ public class ClientDavParameters implements Cloneable{
 //		_maxTelegramSize = serverDavParameters.getMaxDataTelegramSize();
 //		long receiveKeepAliveTimeout = serverDavParameters.getReceiveKeepAliveTimeout();
 //		if(receiveKeepAliveTimeout < 1000) {
-//			throw new MissingParameterException("Timeouts müssen grösser gleich als 1 Sekunde sein");
+//			throw new MissingParameterException("Timeouts mÃ¼ssen grÃ¶sser gleich als 1 Sekunde sein");
 //		}
 //		_communicationParameters.setReceiveKeepAliveTimeout(receiveKeepAliveTimeout);
 //		long sendKeepAliveTimeout = serverDavParameters.getSendKeepAliveTimeout();
 //		if(sendKeepAliveTimeout < 1000) {
-//			throw new MissingParameterException("Timeouts müssen grösser gleich als 1 Sekunde sein");
+//			throw new MissingParameterException("Timeouts mÃ¼ssen grÃ¶sser gleich als 1 Sekunde sein");
 //		}
 //		_communicationParameters.setSendKeepAliveTimeout(sendKeepAliveTimeout);
 //		_outputBufferSize = serverDavParameters.getCommunicationOutputBufferSize();
@@ -948,11 +954,11 @@ public class ClientDavParameters implements Cloneable{
 	 * @param userPassword Benutzerpasswort
 	 * @param applicationName Applikationsname
 	 * @param authentificationProcessName Klasse, die zur Authentifizierung genutzt werden soll
-	 * @param maxTelegramSize Maximale Telegrammgröße
+	 * @param maxTelegramSize Maximale TelegrammgrÃ¶ÃŸe
 	 * @param receiveKeepAliveTimeout KeepAlive-Timeout beim Empfang von Telegrammen in Millisekunden.
 	 * @param sendKeepAliveTimeout KeepAlive-Timeout beim Versand von Telegrammen in Millisekunden.
-	 * @param outputBufferSize Größe des Sendepuffers in Bytes, der bei der Kommunikation mit dem Datenverteiler eingesetzt wird.
-	 * @param inputBufferSize Größe des Empfangspuffers in Bytes, der bei der Kommunikation mit dem Datenverteiler eingesetzt wird.
+	 * @param outputBufferSize GrÃ¶ÃŸe des Sendepuffers in Bytes, der bei der Kommunikation mit dem Datenverteiler eingesetzt wird.
+	 * @param inputBufferSize GrÃ¶ÃŸe des Empfangspuffers in Bytes, der bei der Kommunikation mit dem Datenverteiler eingesetzt wird.
 	 * @param communicationProtocolName Klassenname des zu verwendenden Kommunikationsprotokolls
 	 * @throws MissingParameterException Bei formalen Fehlern beim Lesen der Aufrufargumente oder der Defaultwerte.
 	 */
@@ -970,7 +976,7 @@ public class ClientDavParameters implements Cloneable{
 		_applicationName = applicationName;
 
 		if(_subAddress < 0) {
-			throw new MissingParameterException("Die Subadresse muss grösser gleich 0 sein");
+			throw new MissingParameterException("Die Subadresse muss grÃ¶sser gleich 0 sein");
 		}
 
 		_simulationVariant = 0;
@@ -987,11 +993,11 @@ public class ClientDavParameters implements Cloneable{
 		}
 		_maxTelegramSize = maxTelegramSize;
 		if(receiveKeepAliveTimeout < 1000) {
-			throw new MissingParameterException("Timeouts müssen grösser gleich als 1 Sekunde sein");
+			throw new MissingParameterException("Timeouts mÃ¼ssen grÃ¶sser gleich als 1 Sekunde sein");
 		}
 		_communicationParameters.setReceiveKeepAliveTimeout(receiveKeepAliveTimeout);
 		if(sendKeepAliveTimeout < 1000) {
-			throw new MissingParameterException("Timeouts müssen grösser gleich als 1 Sekunde sein");
+			throw new MissingParameterException("Timeouts mÃ¼ssen grÃ¶sser gleich als 1 Sekunde sein");
 		}
 		_communicationParameters.setSendKeepAliveTimeout(sendKeepAliveTimeout);
 		_outputBufferSize = outputBufferSize;
@@ -1020,12 +1026,12 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Sucht in den angegebenen Argumenten nach dem Parameter, der mit dem spezifizierten Schlüssel anfängt.
+	 * Sucht in den angegebenen Argumenten nach dem Parameter, der mit dem spezifizierten SchlÃ¼ssel anfÃ¤ngt.
 	 *
-	 * @param arguments enthält die Parameter für den Datenverteiler
-	 * @param key       der Schlüssel
+	 * @param arguments enthÃ¤lt die Parameter fÃ¼r den Datenverteiler
+	 * @param key       der SchlÃ¼ssel
 	 *
-	 * @return Gibt den Parameter zum angegebenen Schlüssel zurück, oder <code>null</code>, wenn der Parameter nicht existiert oder bereits ausgelesen wurde.
+	 * @return Gibt den Parameter zum angegebenen SchlÃ¼ssel zurÃ¼ck, oder <code>null</code>, wenn der Parameter nicht existiert oder bereits ausgelesen wurde.
 	 */
 	private String getParameter(String arguments[], String key) {
 		String parameter = null;
@@ -1047,9 +1053,9 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Bestimmt den Füllgrad des Sendepuffers bei dem die Durchsatzprüfung gestartet wird.
+	 * Bestimmt den FÃ¼llgrad des Sendepuffers bei dem die DurchsatzprÃ¼fung gestartet wird.
 	 *
-	 * @return Füllgrad des Sendepuffers als Wert zwischen 0 und 1.
+	 * @return FÃ¼llgrad des Sendepuffers als Wert zwischen 0 und 1.
 	 *
 	 * @see #getCommunicationParameters()
 	 * @deprecated Wert kann aus den {@link de.bsvrz.dav.daf.communication.lowLevel.CommunicationParameters} gelesen werden.
@@ -1060,9 +1066,9 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Bestimmt den Füllgrad des Sendepuffers bei dem die Durchsatzprüfung gestartet wird.
+	 * Bestimmt den FÃ¼llgrad des Sendepuffers bei dem die DurchsatzprÃ¼fung gestartet wird.
 	 *
-	 * @return Füllgrad des Sendepuffers als Wert zwischen 0 und 1.
+	 * @return FÃ¼llgrad des Sendepuffers als Wert zwischen 0 und 1.
 	 *
 	 * @deprecated Wird durch {@link #getThroughputControlSendBufferFactor} ersetzt.
 	 */
@@ -1072,9 +1078,9 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Definiert den Füllgrad des Sendepuffers bei dem die Durchsatzprüfung gestartet wird.
+	 * Definiert den FÃ¼llgrad des Sendepuffers bei dem die DurchsatzprÃ¼fung gestartet wird.
 	 *
-	 * @param sendBufferFactor Füllgrad des Sendepuffers als Wert zwischen 0 und 1.
+	 * @param sendBufferFactor FÃ¼llgrad des Sendepuffers als Wert zwischen 0 und 1.
 	 *
 	 * @see #getCommunicationParameters()
 	 * @deprecated Wert kann in den {@link de.bsvrz.dav.daf.communication.lowLevel.CommunicationParameters} gesetzt werden.
@@ -1086,9 +1092,9 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Definiert den Füllgrad des Sendepuffers bei dem die Durchsatzprüfung gestartet wird.
+	 * Definiert den FÃ¼llgrad des Sendepuffers bei dem die DurchsatzprÃ¼fung gestartet wird.
 	 *
-	 * @param cacheThresholdPercentage Füllgrad des Sendepuffers als Wert zwischen 0 und 1.
+	 * @param cacheThresholdPercentage FÃ¼llgrad des Sendepuffers als Wert zwischen 0 und 1.
 	 *
 	 * @deprecated Wird durch {@link #setThroughputControlSendBufferFactor} ersetzt.
 	 */
@@ -1099,7 +1105,7 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Bestimmt die Intervalldauer für die Durchsatzmessung bei aktivierter Durchsatzprüfung.
+	 * Bestimmt die Intervalldauer fÃ¼r die Durchsatzmessung bei aktivierter DurchsatzprÃ¼fung.
 	 *
 	 * @return Intervalldauer in Millisekunden.
 	 *
@@ -1112,7 +1118,7 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Bestimmt die Intervalldauer für die Durchsatzmessung bei aktivierter Durchsatzprüfung.
+	 * Bestimmt die Intervalldauer fÃ¼r die Durchsatzmessung bei aktivierter DurchsatzprÃ¼fung.
 	 *
 	 * @return Intervalldauer in Millisekunden.
 	 *
@@ -1124,7 +1130,7 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Setzt die Intervalldauer für die Durchsatzmessung bei aktivierter Durchsatzprüfung.
+	 * Setzt die Intervalldauer fÃ¼r die Durchsatzmessung bei aktivierter DurchsatzprÃ¼fung.
 	 *
 	 * @param interval Intervalldauer in Millisekunden.
 	 *
@@ -1138,7 +1144,7 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Setzt die Intervalldauer für die Durchsatzmessung bei aktivierter Durchsatzprüfung.
+	 * Setzt die Intervalldauer fÃ¼r die Durchsatzmessung bei aktivierter DurchsatzprÃ¼fung.
 	 *
 	 * @param flowControlThresholdTime Intervalldauer in Millisekunden.
 	 *
@@ -1151,7 +1157,7 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Bestimmt den minimal erlaubten Verbindungsdurchsatz bei aktivierter Durchsatzprüfung.
+	 * Bestimmt den minimal erlaubten Verbindungsdurchsatz bei aktivierter DurchsatzprÃ¼fung.
 	 *
 	 * @return Mindestdurchsatz in Byte pro Sekunde.
 	 *
@@ -1176,7 +1182,7 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Setzt den minimal erlaubten Verbindungsdurchsatz bei aktivierter Durchsatzprüfung.
+	 * Setzt den minimal erlaubten Verbindungsdurchsatz bei aktivierter DurchsatzprÃ¼fung.
 	 *
 	 * @param throughput Mindestdurchsatz in Byte pro Sekunde.
 	 *
@@ -1190,7 +1196,7 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Setzt den minimal erlaubten Verbindungsdurchsatz bei aktivierter Durchsatzprüfung.
+	 * Setzt den minimal erlaubten Verbindungsdurchsatz bei aktivierter DurchsatzprÃ¼fung.
 	 *
 	 * @param minConnectionSpeed Mindestdurchsatz in Byte pro Sekunde.
 	 *
@@ -1214,12 +1220,12 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Bestimmt den Namen der Applikation, der im Namen der lokalen Cache-Datei für Konfigurationsdaten verwendet werden soll. Der Applikationsname kann mit
-	 * dem Aufrufparameter -lokaleSpeicherungKonfiguration=pfadname:applikationsname von außen vorgegeben werden.
+	 * Bestimmt den Namen der Applikation, der im Namen der lokalen Cache-Datei fÃ¼r Konfigurationsdaten verwendet werden soll. Der Applikationsname kann mit
+	 * dem Aufrufparameter -lokaleSpeicherungKonfiguration=pfadname:applikationsname von auÃŸen vorgegeben werden.
 	 * Wenn das Aufrufargument -lokaleSpeicherungKonfiguration nicht benutzt wurde oder im angegebenen Argument kein mit Doppelpunkt getrennter Name angegeben
-	 * wurde, dann gibt diese Methode den gleichen Wert zurück, wie die Methode {@link #getApplicationName()}.
+	 * wurde, dann gibt diese Methode den gleichen Wert zurÃ¼ck, wie die Methode {@link #getApplicationName()}.
 	 *
-	 * @return Name der Applikation, der im Namen der lokalen Cache-Datei für Konfigurationsdaten verwendet werden soll.
+	 * @return Name der Applikation, der im Namen der lokalen Cache-Datei fÃ¼r Konfigurationsdaten verwendet werden soll.
 	 */
 	public final String getApplicationNameForLocalConfigurationCache() {
 		return (_applicationNameForLocalConfigurationCache != null) ? _applicationNameForLocalConfigurationCache : getApplicationName();
@@ -1253,7 +1259,7 @@ public class ClientDavParameters implements Cloneable{
 
 	/**
 	 * Setzt den Typ der Applikation. Nach erfolgreicher Authentifizierung der Applikation wird vom Datenverteiler ein Applikations-Objekt erzeugt. Der Typ dieses
-	 * Objekts entspricht dem hier übergebenen Typ. Wenn diese Methode nicht aufgerufen wird, dann wird als Default der Typ "typ.applikation" benutzt.
+	 * Objekts entspricht dem hier Ã¼bergebenen Typ. Wenn diese Methode nicht aufgerufen wird, dann wird als Default der Typ "typ.applikation" benutzt.
 	 *
 	 * @param applicationTypePid PID, die den Typ des zu erzeugenden Applikations-Objekts spezifiziert.
 	 *
@@ -1288,7 +1294,7 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Bestimmt das auf unterster Ebene einzusetzende Kommunikationsprotokoll für die Kommunikation mit dem Datenverteiler.
+	 * Bestimmt das auf unterster Ebene einzusetzende Kommunikationsprotokoll fÃ¼r die Kommunikation mit dem Datenverteiler.
 	 *
 	 * @return Klassenname des Kommunikationsverfahrens.
 	 */
@@ -1309,7 +1315,7 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Bestimmt die Kommunikationsaddresse des Datenverteilers, die für den {@link ClientDavInterface#connect() Verbindungsaufbau} benutzt werden soll.
+	 * Bestimmt die Kommunikationsaddresse des Datenverteilers, die fÃ¼r den {@link ClientDavInterface#connect() Verbindungsaufbau} benutzt werden soll.
 	 *
 	 * @return Kommunikationsadresse des Datenverteilers.
 	 *
@@ -1320,8 +1326,8 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Setzt die Kommunikationsaddresse des Datenverteilers, die für den {@link ClientDavInterface#connect() Verbindungsaufbau} benutzt werden soll. Wenn als
-	 * Kommunikationsprotokoll TCP eingesetzt wird, dann kann hier der Rechnername oder die IP-Addresse des Rechners auf dem der Datenverteiler läuft angegeben
+	 * Setzt die Kommunikationsaddresse des Datenverteilers, die fÃ¼r den {@link ClientDavInterface#connect() Verbindungsaufbau} benutzt werden soll. Wenn als
+	 * Kommunikationsprotokoll TCP eingesetzt wird, dann kann hier der Rechnername oder die IP-Addresse des Rechners auf dem der Datenverteiler lÃ¤uft angegeben
 	 * werden.
 	 *
 	 * @param address Kommunikationsadresse des Datenverteilers (IP-Addresse oder Rechnername bei TCP).
@@ -1334,7 +1340,7 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Bestimmt die Kommunikationssubaddresse des Datenverteilers, die für den {@link ClientDavInterface#connect() Verbindungsaufbau} benutzt werden soll.
+	 * Bestimmt die Kommunikationssubaddresse des Datenverteilers, die fÃ¼r den {@link ClientDavInterface#connect() Verbindungsaufbau} benutzt werden soll.
 	 *
 	 * @return Kommunikationssubadresse des Datenverteilers.
 	 *
@@ -1345,7 +1351,7 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Setzt die Kommunikationssubaddresse des Datenverteilers, die für den {@link ClientDavInterface#connect() Verbindungsaufbau} benutzt werden soll. Wenn als
+	 * Setzt die Kommunikationssubaddresse des Datenverteilers, die fÃ¼r den {@link ClientDavInterface#connect() Verbindungsaufbau} benutzt werden soll. Wenn als
 	 * Kommunikationsprotokoll TCP eingesetzt wird, dann kann hier die TCP-Portnummer, auf der der Datenverteiler Verbindungen entgegennimmt, angegeben werden.
 	 *
 	 * @param subAddress Kommunikationssubadresse des Datenverteilers.
@@ -1445,10 +1451,10 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Bestimmt das Timeout zum Senden von KeepAlive-Telegrammen. Der Wert dient als Vorschlag für die Verhandlung mit dem Datenverteiler, der den zu verwendenden
+	 * Bestimmt das Timeout zum Senden von KeepAlive-Telegrammen. Der Wert dient als Vorschlag fÃ¼r die Verhandlung mit dem Datenverteiler, der den zu verwendenden
 	 * Wert festlegt.
 	 *
-	 * @return Vorschlag für das Timeout zum Senden von KeepAlive-Telegrammen in Millisekunden.
+	 * @return Vorschlag fÃ¼r das Timeout zum Senden von KeepAlive-Telegrammen in Millisekunden.
 	 *
 	 * @see #getCommunicationParameters()
 	 * @deprecated Wert kann aus den {@link de.bsvrz.dav.daf.communication.lowLevel.CommunicationParameters} gelesen werden.
@@ -1459,10 +1465,10 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Setzt das Timeout zum Senden von KeepAlive-Telegrammen. Der Wert dient als Vorschlag für die Verhandlung mit dem Datenverteiler, der den zu verwendenden
+	 * Setzt das Timeout zum Senden von KeepAlive-Telegrammen. Der Wert dient als Vorschlag fÃ¼r die Verhandlung mit dem Datenverteiler, der den zu verwendenden
 	 * Wert festlegt.
 	 *
-	 * @param timeout Vorschlag für das Timeout zum Senden von KeepAlive-Telegrammen in Millisekunden.
+	 * @param timeout Vorschlag fÃ¼r das Timeout zum Senden von KeepAlive-Telegrammen in Millisekunden.
 	 *
 	 * @see #getCommunicationParameters()
 	 * @deprecated Wert kann in den {@link de.bsvrz.dav.daf.communication.lowLevel.CommunicationParameters} gesetzt werden.
@@ -1476,10 +1482,10 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Bestimmt das KeepAlive-Timeout beim Empfang von Telegrammen. Der Wert dient als Vorschlag für die Verhandlung mit dem Datenverteiler, der den zu
+	 * Bestimmt das KeepAlive-Timeout beim Empfang von Telegrammen. Der Wert dient als Vorschlag fÃ¼r die Verhandlung mit dem Datenverteiler, der den zu
 	 * verwendenden Wert festlegt.
 	 *
-	 * @return Vorschlag für das KeepAlive-Timeout beim Empfang von Telegrammen in Millisekunden.
+	 * @return Vorschlag fÃ¼r das KeepAlive-Timeout beim Empfang von Telegrammen in Millisekunden.
 	 *
 	 * @see #getCommunicationParameters()
 	 * @deprecated Wert kann aus den {@link de.bsvrz.dav.daf.communication.lowLevel.CommunicationParameters} gelesen werden.
@@ -1490,10 +1496,10 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Setzt das KeepAlive-Timeout beim Empfang von Telegrammen. Der Wert dient als Vorschlag für die Verhandlung mit dem Datenverteiler, der den zu verwendenden
+	 * Setzt das KeepAlive-Timeout beim Empfang von Telegrammen. Der Wert dient als Vorschlag fÃ¼r die Verhandlung mit dem Datenverteiler, der den zu verwendenden
 	 * Wert festlegt.
 	 *
-	 * @param timeout Vorschlag für das KeepAlive-Timeout beim Empfang von Telegrammen in Millisekunden.
+	 * @param timeout Vorschlag fÃ¼r das KeepAlive-Timeout beim Empfang von Telegrammen in Millisekunden.
 	 *
 	 * @see #getCommunicationParameters()
 	 * @deprecated Wert kann in den {@link de.bsvrz.dav.daf.communication.lowLevel.CommunicationParameters} gesetzt werden.
@@ -1507,7 +1513,7 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Bestimmt die Standardmäßig zu verwendende Simulationsvariante.
+	 * Bestimmt die StandardmÃ¤ÃŸig zu verwendende Simulationsvariante.
 	 *
 	 * @return Zu verwendende Simulationsvariante
 	 *
@@ -1518,7 +1524,7 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Setzt die Standardmäßig zu verwendende Simulationsvariante. Wenn die Methode nicht aufgerufen wird, wird die Variante <code>0</code> benutzt, wenn sie nicht
+	 * Setzt die StandardmÃ¤ÃŸig zu verwendende Simulationsvariante. Wenn die Methode nicht aufgerufen wird, wird die Variante <code>0</code> benutzt, wenn sie nicht
 	 * explizit angegeben wurde.
 	 *
 	 * @param variant Zu verwendende Simulationsvariante.
@@ -1533,9 +1539,9 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Bestimmt die Verzögerungszeit zur Übertragung von gepufferten und zu versendenden Telegrammen.
+	 * Bestimmt die VerzÃ¶gerungszeit zur Ãœbertragung von gepufferten und zu versendenden Telegrammen.
 	 *
-	 * @return Sende-Verzögerungszeit in Millisekunden.
+	 * @return Sende-VerzÃ¶gerungszeit in Millisekunden.
 	 *
 	 * @see #setCommunicationSendFlushDelay
 	 */
@@ -1544,10 +1550,10 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Setzt die Verzögerungszeit zur Übertragung von gepufferten und zu versendenden Telegrammen. Die Übertragung der gesammelten Daten im Sendepuffer findet erst
+	 * Setzt die VerzÃ¶gerungszeit zur Ãœbertragung von gepufferten und zu versendenden Telegrammen. Die Ãœbertragung der gesammelten Daten im Sendepuffer findet erst
 	 * statt, wenn die hier angegebene Zeit lang keine Daten mehr in der Puffer geschrieben wurden oder der Sendepuffer voll ist.
 	 *
-	 * @param delay Sende-Verzögerungszeit in Millisekunden.
+	 * @param delay Sende-VerzÃ¶gerungszeit in Millisekunden.
 	 */
 	public final void setCommunicationSendFlushDelay(long delay) {
 		checkReadonly();
@@ -1557,18 +1563,18 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Bestimmt die Größe des Sendepuffers, der bei der Kommunikation mit dem Datenverteiler eingesetzt wird.
+	 * Bestimmt die GrÃ¶ÃŸe des Sendepuffers, der bei der Kommunikation mit dem Datenverteiler eingesetzt wird.
 	 *
-	 * @return Größe des Sendepuffers in Bytes.
+	 * @return GrÃ¶ÃŸe des Sendepuffers in Bytes.
 	 */
 	public final int getCommunicationOutputBufferSize() {
 		return _outputBufferSize;
 	}
 
 	/**
-	 * Setzt die Größe des Sendepuffers, der bei der Kommunikation mit dem Datenverteiler eingesetzt wird.
+	 * Setzt die GrÃ¶ÃŸe des Sendepuffers, der bei der Kommunikation mit dem Datenverteiler eingesetzt wird.
 	 *
-	 * @param bufferSize Größe des Sendepuffers in Bytes.
+	 * @param bufferSize GrÃ¶ÃŸe des Sendepuffers in Bytes.
 	 */
 	public final void setCommunicationOutputBufferSize(int bufferSize) {
 		checkReadonly();
@@ -1578,18 +1584,18 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Bestimmt die Größe des Empfangspuffers, der bei der Kommunikation mit dem Datenverteiler eingesetzt wird.
+	 * Bestimmt die GrÃ¶ÃŸe des Empfangspuffers, der bei der Kommunikation mit dem Datenverteiler eingesetzt wird.
 	 *
-	 * @return Größe des Empfangspuffers in Bytes.
+	 * @return GrÃ¶ÃŸe des Empfangspuffers in Bytes.
 	 */
 	public final int getCommunicationInputBufferSize() {
 		return _inputBufferSize;
 	}
 
 	/**
-	 * Setzt die Größe des Empfangspuffers, der bei der Kommunikation mit dem Datenverteiler eingesetzt wird.
+	 * Setzt die GrÃ¶ÃŸe des Empfangspuffers, der bei der Kommunikation mit dem Datenverteiler eingesetzt wird.
 	 *
-	 * @param bufferSize Größe des Empfangspuffers in Bytes.
+	 * @param bufferSize GrÃ¶ÃŸe des Empfangspuffers in Bytes.
 	 */
 	public final void setCommunicationInputBufferSize(int bufferSize) {
 		checkReadonly();
@@ -1599,8 +1605,8 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Gibt die Größe der anteiligen Empfangs-Puffergröße zurück, den diese Verbindung benutzt.
-	 * @return Buffergröße in Bytes
+	 * Gibt die GrÃ¶ÃŸe der anteiligen Empfangs-PuffergrÃ¶ÃŸe zurÃ¼ck, den diese Verbindung benutzt.
+	 * @return BuffergrÃ¶ÃŸe in Bytes
 	 */
 	public final int getAdjustedInputBufferSize() {
 		int bufferSize;
@@ -1618,8 +1624,8 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Gibt die Größe der anteiligen Empfangs-Puffergröße zurück, den diese Verbindung benutzt.
-	 * @return Buffergröße in Bytes
+	 * Gibt die GrÃ¶ÃŸe der anteiligen Empfangs-PuffergrÃ¶ÃŸe zurÃ¼ck, den diese Verbindung benutzt.
+	 * @return BuffergrÃ¶ÃŸe in Bytes
 	 */
 	public final int getAdjustedOutputBufferSize() {
 		int bufferSize;
@@ -1637,35 +1643,35 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Gibt den Anteil von den Puffergrößen der zweiten für Konfigurationsanfragen (falls verwendet) zurück
-	 * @return den Anteil  von den Puffergrößen der zweiten für Konfigurationsanfragen (falls verwendet)
+	 * Gibt den Anteil von den PuffergrÃ¶ÃŸen der zweiten fÃ¼r Konfigurationsanfragen (falls verwendet) zurÃ¼ck
+	 * @return den Anteil  von den PuffergrÃ¶ÃŸen der zweiten fÃ¼r Konfigurationsanfragen (falls verwendet)
 	 */
 	public double getSecondaryConnectionBufferRatio() {
 		return _secondaryConnectionBufferRatio;
 	}
 
 	/**
-	 * Setzt den Anteil an den Puffergrößen, den die zweite Verbindung für Konfigurationsanfragen verwendet (falls vorhanden)
-	 * @param secondaryConnectionBufferRatio Anteil zwischen 0.0 und 1.0, der angibt wie groß der Puffer der zweiten Verbidnung im
-	 *                                       Verhältnis zur Gesamtpuffergröße sein soll.
+	 * Setzt den Anteil an den PuffergrÃ¶ÃŸen, den die zweite Verbindung fÃ¼r Konfigurationsanfragen verwendet (falls vorhanden)
+	 * @param secondaryConnectionBufferRatio Anteil zwischen 0.0 und 1.0, der angibt wie groÃŸ der Puffer der zweiten Verbidnung im
+	 *                                       VerhÃ¤ltnis zur GesamtpuffergrÃ¶ÃŸe sein soll.
 	 */
 	public void setSecondaryConnectionBufferRatio(final double secondaryConnectionBufferRatio) {
 		_secondaryConnectionBufferRatio = secondaryConnectionBufferRatio;
 	}
 
 	/**
-	 * Bestimmt die maximale Größe von Datentelegrammen. Größere Telegramme werden in mehrere Telegramme zerlegt.
+	 * Bestimmt die maximale GrÃ¶ÃŸe von Datentelegrammen. GrÃ¶ÃŸere Telegramme werden in mehrere Telegramme zerlegt.
 	 *
-	 * @return Maximale Größe von versendeten Datentelegrammen als Anzahl von Bytes.
+	 * @return Maximale GrÃ¶ÃŸe von versendeten Datentelegrammen als Anzahl von Bytes.
 	 */
 	public final int getMaxDataTelegramSize() {
 		return _maxTelegramSize;
 	}
 
 	/**
-	 * Setzt die maximale Größe von Datentelegrammen. Größere Telegramme werden in mehrere Telegramme zerlegt.
+	 * Setzt die maximale GrÃ¶ÃŸe von Datentelegrammen. GrÃ¶ÃŸere Telegramme werden in mehrere Telegramme zerlegt.
 	 *
-	 * @param maxTelegramSize Maximale Größe von versendeten Datentelegrammen als Anzahl von Bytes.
+	 * @param maxTelegramSize Maximale GrÃ¶ÃŸe von versendeten Datentelegrammen als Anzahl von Bytes.
 	 */
 	public final void setMaxDataTelegramSize(int maxTelegramSize) {
 		checkReadonly();
@@ -1675,9 +1681,9 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Gibt die Parameter für die Kommunikation zwischen Applikation und Datenverteiler zurück.
+	 * Gibt die Parameter fÃ¼r die Kommunikation zwischen Applikation und Datenverteiler zurÃ¼ck.
 	 *
-	 * @return die Parameter für die Kommunikation zwischen Applikation und Datenverteiler
+	 * @return die Parameter fÃ¼r die Kommunikation zwischen Applikation und Datenverteiler
 	 */
 	public CommunicationParameters getCommunicationParameters() {
 		
@@ -1685,16 +1691,16 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Setzt eine Aspektumleitung für eine Kombination von Attributgruppe und Aspekt. Ein von der Applikation angegebener Aspekt beim Anmelden, Lesen, Schreiben
-	 * und Abmelden einer Attributgruppe, wird durch einen anderen Aspekt ersetzt. Damit besteht die Möglichkeit den Datenfluß einer Applikation zu modifizieren
-	 * und damit beispielsweise einen anderen Prozess in eine Bearbeitungskette einzufügen.
+	 * Setzt eine Aspektumleitung fÃ¼r eine Kombination von Attributgruppe und Aspekt. Ein von der Applikation angegebener Aspekt beim Anmelden, Lesen, Schreiben
+	 * und Abmelden einer Attributgruppe, wird durch einen anderen Aspekt ersetzt. Damit besteht die MÃ¶glichkeit den DatenfluÃŸ einer Applikation zu modifizieren
+	 * und damit beispielsweise einen anderen Prozess in eine Bearbeitungskette einzufÃ¼gen.
 	 *
-	 * @param attributeGroupPid   PID der Attributgruppe für die eine Umleitung eingefügt werden soll.
-	 * @param aspectPid           PID des Aspekts für den eine Umleitung eingefügt werden soll.
+	 * @param attributeGroupPid   PID der Attributgruppe fÃ¼r die eine Umleitung eingefÃ¼gt werden soll.
+	 * @param aspectPid           PID des Aspekts fÃ¼r den eine Umleitung eingefÃ¼gt werden soll.
 	 * @param substituteAspectPid PID des statt <code>aspectPid</code> zu verwendenden Aspekts.
 	 */
 	public final void addAspectRedirection(String attributeGroupPid, String aspectPid, String substituteAspectPid) {
-		_debug.info("Aspektumleitung für " + attributeGroupPid + " und " + aspectPid + " --> " + substituteAspectPid);
+		_debug.info("Aspektumleitung fÃ¼r " + attributeGroupPid + " und " + aspectPid + " --> " + substituteAspectPid);
 		if((attributeGroupPid == null) || (aspectPid == null) || (substituteAspectPid == null)) {
 			throw new IllegalArgumentException("Argument ist null");
 		}
@@ -1708,14 +1714,14 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Gibt die Aspektumleitung für eine Kombination von Attributgruppe und Aspekt zurück. Wenn keine entsprechende Aspektumleitung besteht, wird der übergebene
-	 * Original-Aspekt zurückgegeben.
+	 * Gibt die Aspektumleitung fÃ¼r eine Kombination von Attributgruppe und Aspekt zurÃ¼ck. Wenn keine entsprechende Aspektumleitung besteht, wird der Ã¼bergebene
+	 * Original-Aspekt zurÃ¼ckgegeben.
 	 *
 	 * @param attributeGroupPid PID der Attributgruppe.
 	 * @param aspectPid         PID des Original-Aspekts.
 	 *
 	 * @return Pid des Aspekts, der anstelle des angegebenen Aspektes benutzt werden soll. Wenn dieser Aspekt nicht existiert, wird der angegebene Aspekt
-	 *         zurückgegeben.
+	 *         zurÃ¼ckgegeben.
 	 *
 	 * @see #addAspectRedirection
 	 */
@@ -1734,8 +1740,8 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Gibt den Original-Aspekt eines ersetzten Aspekts einer Attributgruppe zurück. Wenn keine entsprechende Aspektumleitung besteht, wird der übergebene Aspekt
-	 * unverändert zurückgegeben.
+	 * Gibt den Original-Aspekt eines ersetzten Aspekts einer Attributgruppe zurÃ¼ck. Wenn keine entsprechende Aspektumleitung besteht, wird der Ã¼bergebene Aspekt
+	 * unverÃ¤ndert zurÃ¼ckgegeben.
 	 *
 	 * @param attributeGroupPid PID der Attributgruppe.
 	 * @param aspectPid         PID des ersetzten Aspekts.
@@ -1761,20 +1767,20 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Liefert die Größe des Auslieferungspuffers, der zur Zwischenspeicherung von Datensätzen genutzt wird, die an einen Empfänger der Applikation versendet
+	 * Liefert die GrÃ¶ÃŸe des Auslieferungspuffers, der zur Zwischenspeicherung von DatensÃ¤tzen genutzt wird, die an einen EmpfÃ¤nger der Applikation versendet
 	 * werden sollen.
 	 *
-	 * @return Größe des Auslieferungspuffers in Bytes.
+	 * @return GrÃ¶ÃŸe des Auslieferungspuffers in Bytes.
 	 */
 	public int getDeliveryBufferSize() {
 		return _deliveryBufferSize;
 	}
 
 	/**
-	 * Setzt die Größe des Auslieferungspuffers, der zur Zwischenspeicherung von Datensätzen genutzt wird, die an einen Empfänger der Applikation versendet werden
+	 * Setzt die GrÃ¶ÃŸe des Auslieferungspuffers, der zur Zwischenspeicherung von DatensÃ¤tzen genutzt wird, die an einen EmpfÃ¤nger der Applikation versendet werden
 	 * sollen.
 	 *
-	 * @param deliveryBufferSize Größe des Auslieferungspuffers in Bytes.
+	 * @param deliveryBufferSize GrÃ¶ÃŸe des Auslieferungspuffers in Bytes.
 	 */
 	public void setDeliveryBufferSize(final int deliveryBufferSize) {
 		checkReadonly();
@@ -1790,16 +1796,16 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Gibt <tt>true</tt> zurück, wenn eine zweite ClientDavConnection für Konfigurationsanfragen benutzt werden soll
-	 * @return <tt>true</tt>, wenn eine zweite ClientDavConnection für Konfigurationsanfragen benutzt werden soll, sonst <tt>false</tt>
+	 * Gibt <tt>true</tt> zurÃ¼ck, wenn eine zweite ClientDavConnection fÃ¼r Konfigurationsanfragen benutzt werden soll
+	 * @return <tt>true</tt>, wenn eine zweite ClientDavConnection fÃ¼r Konfigurationsanfragen benutzt werden soll, sonst <tt>false</tt>
 	 */
 	public boolean getUseSecondConnection() {
 		return _useSecondConnection;
 	}
 
 	/**
-	 * Setzt, ob eine zweite ClientDavConnection für Konfigurationsanfragen benutzt werden soll, sonst false
-	 * @param useSecondConnection ob eine zweite ClientDavConnection für Konfigurationsanfragen benutzt werden
+	 * Setzt, ob eine zweite ClientDavConnection fÃ¼r Konfigurationsanfragen benutzt werden soll, sonst false
+	 * @param useSecondConnection ob eine zweite ClientDavConnection fÃ¼r Konfigurationsanfragen benutzt werden
 	 */
 	public void setUseSecondConnection(final boolean useSecondConnection) {
 		checkReadonly();
@@ -1872,7 +1878,7 @@ public class ClientDavParameters implements Cloneable{
 
 	/**
 	 * Erstellt eine Kopie dieses Objekts
-	 * @param readonly Soll die Kopie schreibgeschützt sein? Erlaubt sowohl das Entfernen als auch das Hinzufügen eines Schreibschutzes.
+	 * @param readonly Soll die Kopie schreibgeschÃ¼tzt sein? Erlaubt sowohl das Entfernen als auch das HinzufÃ¼gen eines Schreibschutzes.
 	 * @return Kopie
 	 */
 	public final ClientDavParameters clone(final boolean readonly) {
@@ -1882,26 +1888,26 @@ public class ClientDavParameters implements Cloneable{
 	}
 
 	/**
-	 * Wirft eine Exception wenn das Objekt schreibgeschützt ist.
+	 * Wirft eine Exception wenn das Objekt schreibgeschÃ¼tzt ist.
 	 *
 	 * @see #clone(boolean)
 	 */
 	private void checkReadonly() {
 		if(_readonly) {
 			if(_useSecondConnection) {
-				throw new IllegalStateException("Es wurde versucht, einen Parameter nach dem Erstellen der ClientDavConnection zu verändern." +
-						                                "Das ist nicht erlaubt, wenn eine zweite Verbindung für Konfigurationsanfragen verwendet wird.");
+				throw new IllegalStateException("Es wurde versucht, einen Parameter nach dem Erstellen der ClientDavConnection zu verÃ¤ndern." +
+						                                "Das ist nicht erlaubt, wenn eine zweite Verbindung fÃ¼r Konfigurationsanfragen verwendet wird.");
 			}
 			else {
-				_debug.warning("Ein Parameter wurde nach dem Erstellen einer ClientDavConnection verändert. Dies kann zu undefiniertem " +
-						               "Verhalten führen und wird in Zukunft möglicherweise verhindert.", new Exception()); // new Exception = Stacktrace ausgeben
+				_debug.warning("Ein Parameter wurde nach dem Erstellen einer ClientDavConnection verÃ¤ndert. Dies kann zu undefiniertem " +
+						               "Verhalten fÃ¼hren und wird in Zukunft mÃ¶glicherweise verhindert.", new Exception()); // new Exception = Stacktrace ausgeben
 			}
 		}
 	}
 
 	/**
-	 * Setzt das Objekt auf "nur lesen". Wird nur für die Übergangszeit benutzt, wenn in der ClientDavConnection keine Kopie erzeugt wird
-	 * um vor eventuellen Änderungen zu warnen.
+	 * Setzt das Objekt auf "nur lesen". Wird nur fÃ¼r die Ãœbergangszeit benutzt, wenn in der ClientDavConnection keine Kopie erzeugt wird
+	 * um vor eventuellen Ã„nderungen zu warnen.
 	 * @param readonly Neuer readonly-Wert
 	 * @see #checkReadonly()
 	 */

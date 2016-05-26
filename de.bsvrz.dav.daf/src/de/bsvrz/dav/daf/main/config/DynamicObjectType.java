@@ -1,12 +1,12 @@
 /*
  * Copyright 2008 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,18 +15,24 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.config;
 
 /**
- * Definiert Gemeinsamkeiten aller dynamischen Objekt-Typen. Dynamische Typen haben die Eigenschaft, daß beim Erzeugen bzw. Löschen von Objekten dieses Typs
- * diese Änderungen sofort gültig werden.
+ * Definiert Gemeinsamkeiten aller dynamischen Objekt-Typen. Dynamische Typen haben die Eigenschaft, daÃŸ beim Erzeugen bzw. LÃ¶schen von Objekten dieses Typs
+ * diese Ã„nderungen sofort gÃ¼ltig werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8551 $
+ * @version $Revision$
  */
 public interface DynamicObjectType extends SystemObjectType, MutableCollection {
 
@@ -41,22 +47,22 @@ public interface DynamicObjectType extends SystemObjectType, MutableCollection {
 	 * Setzt den Persistenzmodus von dynamischen Objekten dieses Typs.
 	 *
 	 * @param mode neuer Persistenzmodus von dynamischen Objekten dieses Typs
-	 * @throws ConfigurationChangeException Fehler bei der Konfigurationsänderung
+	 * @throws ConfigurationChangeException Fehler bei der KonfigurationsÃ¤nderung
 	 */
 	public void setPersistenceMode(PersistenceMode mode) throws ConfigurationChangeException;
 
 	/**
-	 * Fügt einen Listener zu einer Datenstruktur hinzu. Sobald ein neues dynamisches Objekt mit diesem Typ in der Konfiguration erzeugt wird, wird der Listener
+	 * FÃ¼gt einen Listener zu einer Datenstruktur hinzu. Sobald ein neues dynamisches Objekt mit diesem Typ in der Konfiguration erzeugt wird, wird der Listener
 	 * informiert.
-	 * <p/>
-	 * Der mehrfache Aufruf der Methode mit dem identischen Objekt(==) <code>objectCreatedListener</code> fügt das Objekt nur einmal der Datenstruktur hinzu.
+	 * <p>
+	 * Der mehrfache Aufruf der Methode mit dem identischen Objekt(==) <code>objectCreatedListener</code> fÃ¼gt das Objekt nur einmal der Datenstruktur hinzu.
 	 *
 	 * @param objectCreatedListener Objekt, das informiert wird sobald ein dynamisches Objekt mit diesem Typ erzeugt wird.
 	 */
 	public void addObjectCreationListener(DynamicObjectCreatedListener objectCreatedListener);
 
 	/**
-	 * Entfernt den Listener aus der Datenstruktur. Nach Aufruf dieser Methode findet keine Benachrichtigung über neue Objekte mehr statt.
+	 * Entfernt den Listener aus der Datenstruktur. Nach Aufruf dieser Methode findet keine Benachrichtigung Ã¼ber neue Objekte mehr statt.
 	 *
 	 * @param objectCreatedListener Objekt, das aus der Datenstruktur entfernt werden soll.
 	 *
@@ -65,16 +71,16 @@ public interface DynamicObjectType extends SystemObjectType, MutableCollection {
 	public void removeObjectCreationListener(DynamicObjectCreatedListener objectCreatedListener);
 
 	/**
-	 * Fügt einen Listener zu einer Datenstruktur hinzu. Sobald der Name eines dynamischen Objekts dieses Typs geändert wird, wird der Listener informiert.
-	 * <p/>
-	 * Ein mehrfacher Aufruf dieser Methode mit dem selben Objekten fügt das übergene Objekt nur einmal der Datenstruktur hinzu.
+	 * FÃ¼gt einen Listener zu einer Datenstruktur hinzu. Sobald der Name eines dynamischen Objekts dieses Typs geÃ¤ndert wird, wird der Listener informiert.
+	 * <p>
+	 * Ein mehrfacher Aufruf dieser Methode mit dem selben Objekten fÃ¼gt das Ã¼bergene Objekt nur einmal der Datenstruktur hinzu.
 	 *
-	 * @param nameChangeListener Objekt, das informiert wird, sobald der Name eines Objekts von diesem Typ geänder wird.
+	 * @param nameChangeListener Objekt, das informiert wird, sobald der Name eines Objekts von diesem Typ geÃ¤nder wird.
 	 */
 	void addNameChangeListener(NameChangeListener nameChangeListener);
 
 	/**
-	 * Entfernt den Listener aus der Datenstruktur. Das Objekt wird nicht mehr informiert wenn sich der Name eines Objekts von diesem Typ ändert.
+	 * Entfernt den Listener aus der Datenstruktur. Das Objekt wird nicht mehr informiert wenn sich der Name eines Objekts von diesem Typ Ã¤ndert.
 	 *
 	 * @param nameChangeListener Listener, der entfernt wird.
 	 *
@@ -83,23 +89,23 @@ public interface DynamicObjectType extends SystemObjectType, MutableCollection {
 	void removeNameChangeListener(NameChangeListener nameChangeListener);
 
 	/**
-	 * Fügt einen Listener zu einer Datenstruktur hinzu. Sobald ein dynamisches Objekt dieses Typs ungültig wird, wird der Listener informiert.
-	 * <p/>
-	 * Ein mehrfacher Aufruf dieser Methode mit dem selben Objekten fügt das übergene Objekt nur einmal der Datenstruktur hinzu.
+	 * FÃ¼gt einen Listener zu einer Datenstruktur hinzu. Sobald ein dynamisches Objekt dieses Typs ungÃ¼ltig wird, wird der Listener informiert.
+	 * <p>
+	 * Ein mehrfacher Aufruf dieser Methode mit dem selben Objekten fÃ¼gt das Ã¼bergene Objekt nur einmal der Datenstruktur hinzu.
 	 *
-	 * @param invalidationListener Objekt, das informiert wird, sobald ein Objekt des Typs ungültig wird.
+	 * @param invalidationListener Objekt, das informiert wird, sobald ein Objekt des Typs ungÃ¼ltig wird.
 	 */
 	void addInvalidationListener(InvalidationListener invalidationListener);
 
 	/**
-	 * Entfernt den Listener aus der Datenstruktur. Das Objekt wird nicht mehr informiert wenn ein Objekt dieses Typs ungültig wird.
+	 * Entfernt den Listener aus der Datenstruktur. Das Objekt wird nicht mehr informiert wenn ein Objekt dieses Typs ungÃ¼ltig wird.
 	 *
 	 * @param invalidationListener Listener, der entfernt werden soll.
 	 */
 	void removeInvalidationListener(InvalidationListener invalidationListener);
 
 
-	/** Aufzählung für die verschiedenen Persistenzmodi der dynamischen Objekte eines Typs */
+	/** AufzÃ¤hlung fÃ¼r die verschiedenen Persistenzmodi der dynamischen Objekte eines Typs */
 	enum PersistenceMode {
 
 		/** Dynamische Objekte werden nicht persistent gespeichert. */
@@ -108,15 +114,15 @@ public interface DynamicObjectType extends SystemObjectType, MutableCollection {
 		/** Dynamische Objekte werden persistent gespeichert. */
 		PERSISTENT_OBJECTS(2, "persistent"),
 
-		/** Dynamische Objekte werden persistent gespeichert und beim Neustart auf ungültig gesetzt. */
-		PERSISTENT_AND_INVALID_ON_RESTART(3, "persistentUndUngültigNachNeustart");
+		/** Dynamische Objekte werden persistent gespeichert und beim Neustart auf ungÃ¼ltig gesetzt. */
+		PERSISTENT_AND_INVALID_ON_RESTART(3, "persistentUndUngÃ¼ltigNachNeustart");
 
 		private final int _value;
 
 		private final String _name;
 
 		/**
-		 * Gibt den Integer-Wert zurück, durch den die PersistenceMode im Datenmodell repräsentiert wird.
+		 * Gibt den Integer-Wert zurÃ¼ck, durch den die PersistenceMode im Datenmodell reprÃ¤sentiert wird.
 		 * @return Unskalierter Integer-Wert des Attributs im Datenmodell
 		 */
 		public int getIntValue() {
@@ -124,7 +130,7 @@ public interface DynamicObjectType extends SystemObjectType, MutableCollection {
 		}
 
 		/**
-		 * Gibt den Text-Wert zurück, durch den die PersistenceMode im Datenmodell repräsentiert wird.
+		 * Gibt den Text-Wert zurÃ¼ck, durch den die PersistenceMode im Datenmodell reprÃ¤sentiert wird.
 		 * @return Text-Wert des Attributes im Datenmodell
 		 */
 		public String getStatusName() {
@@ -153,7 +159,7 @@ public interface DynamicObjectType extends SystemObjectType, MutableCollection {
 				return PERSISTENT_AND_INVALID_ON_RESTART;
 			}
 			else {
-				throw new IllegalArgumentException("persistenceMode hat einen ungültigen Wert: " + persistenceMode);
+				throw new IllegalArgumentException("persistenceMode hat einen ungÃ¼ltigen Wert: " + persistenceMode);
 			}
 		}
 
@@ -172,18 +178,18 @@ public interface DynamicObjectType extends SystemObjectType, MutableCollection {
 				case 3:
 					return PersistenceMode.PERSISTENT_AND_INVALID_ON_RESTART;
 				default:
-					throw new IllegalArgumentException("persistenceMode hat einen ungültigen Wert: " + persistenceMode);
+					throw new IllegalArgumentException("persistenceMode hat einen ungÃ¼ltigen Wert: " + persistenceMode);
 			}
 		}
 	}
 
-	/** Listener, der eine Methode zur Verfügung stellt, die aufgerufen wird sobald sich der Name eines Objekts ändert. */
+	/** Listener, der eine Methode zur VerfÃ¼gung stellt, die aufgerufen wird sobald sich der Name eines Objekts Ã¤ndert. */
 	public static interface NameChangeListener {
 
 		/**
-		 * Wird aufgerufen, wenn sich der Name eines dynamischen Objekts ändert.
+		 * Wird aufgerufen, wenn sich der Name eines dynamischen Objekts Ã¤ndert.
 		 *
-		 * @param newObject dynamisches Objekte, dessen Name sich geändert hat.
+		 * @param newObject dynamisches Objekte, dessen Name sich geÃ¤ndert hat.
 		 */
 		void nameChanged(DynamicObject newObject);
 	}

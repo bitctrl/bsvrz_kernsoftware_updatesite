@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel.telegrams;
@@ -30,15 +36,15 @@ import java.io.IOException;
 
 
 /**
- * Diese Klasse enth‰lt den Teil eines Datensatzes, der zu gross war um komplett versendet zu werden. Es werden alle Informationen gespeichert um dieses St¸ck
- * des Datensatzes mit den anderen St¸cken zu verbinden um den gesamten Datensatz wieder zusammen zu bauen.
+ * Diese Klasse enth√§lt den Teil eines Datensatzes, der zu gross war um komplett versendet zu werden. Es werden alle Informationen gespeichert um dieses St√ºck
+ * des Datensatzes mit den anderen St√ºcken zu verbinden um den gesamten Datensatz wieder zusammen zu bauen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13173 $
+ * @version $Revision$
  */
 
 public class ApplicationDataTelegram extends DataTelegram implements DataTelegramInterface {
-	/** Objekt f¸r Debugausgaben */
+	/** Objekt f√ºr Debugausgaben */
 	private static Debug _debug = Debug.getLogger();
 
 	/** Der Index dieses Telegramms */
@@ -61,14 +67,14 @@ public class ApplicationDataTelegram extends DataTelegram implements DataTelegra
 
 	/**
 	 * Fehlerkennung der Anwendungsdaten. 0: Daten vorhanden (kein fehler). 1: Quelle vorhanden aber Daten noch nicht lieferbar. 2: Quelle nicht vorhanden. 3:
-	 * Keine Rechte 8: Unzul‰ssige Anmeldung(2 quellen, 2 Senken, 1 Quelle 1 senke und umgekehrt)
+	 * Keine Rechte 8: Unzul√§ssige Anmeldung(2 quellen, 2 Senken, 1 Quelle 1 senke und umgekehrt)
 	 */
 	private byte errorFlag;
 
 	/**
-	 * Indikator zu den einzelnen Attributen der Attributgruppe. Ein Byte steht f¸r 8 Attribute.
+	 * Indikator zu den einzelnen Attributen der Attributgruppe. Ein Byte steht f√ºr 8 Attribute.
 	 *
-	 * @return geseztes Bit heiﬂt: entsprechendes Attribut hat sich ver‰ndert, ungesetztes Bit heiﬂt: entsprechendes Attribut hat sich nicht ver‰ndert
+	 * @return geseztes Bit hei√üt: entsprechendes Attribut hat sich ver√§ndert, ungesetztes Bit hei√üt: entsprechendes Attribut hat sich nicht ver√§ndert
 	 */
 	private byte attributesIndicator[];
 
@@ -85,9 +91,9 @@ public class ApplicationDataTelegram extends DataTelegram implements DataTelegra
 	 * @param _dataNumber           Laufende Nummer des Datensatzes
 	 * @param _delayedDataFlag      Sind die Daten nachgeliefert
 	 * @param _errorFlag            Fehlerkennung der Anwendungsdaten. 0: Daten vorhanden (kein fehler). 1: Quelle vorhanden aber Daten noch nicht lieferbar. 2:
-	 *                              Quelle nicht vorhanden. 3: Keine Rechte 8: Unzul‰ssige Anmeldung(2 quellen, 2 Senken, 1 Quelle 1 senke und umgekehrt)
-	 * @param _attributesIndicator  gibt an ob sich ein Attribut ge‰ndert hat
-	 * @param _priority             Priorit‰t des Telegramms ({@link de.bsvrz.dav.daf.main.impl.CommunicationConstant} )
+	 *                              Quelle nicht vorhanden. 3: Keine Rechte 8: Unzul√§ssige Anmeldung(2 quellen, 2 Senken, 1 Quelle 1 senke und umgekehrt)
+	 * @param _attributesIndicator  gibt an ob sich ein Attribut ge√§ndert hat
+	 * @param _priority             Priorit√§t des Telegramms ({@link de.bsvrz.dav.daf.main.impl.CommunicationConstant} )
 	 * @param _data                 Teil des Datensatzes als Bytestrom
 	 * @param _totalTelegramCount   Anzahl aller Teiltelegramme, in die der gesamte Datensatz zerlegt wurde
 	 * @param _telegramNumber       Index des Teiltelegramms
@@ -132,8 +138,8 @@ public class ApplicationDataTelegram extends DataTelegram implements DataTelegra
 	 * @param _dataNumber           Laufende Nummer des Datensatzes
 	 * @param _delayedDataFlag      Sind die Daten nachgeliefert
 	 * @param _errorFlag            Fehlerkennung der Anwendungsdaten. 0: Daten vorhanden (kein fehler). 1: Quelle vorhanden aber Daten noch nicht lieferbar. 2:
-	 *                              Quelle nicht vorhanden. 3: Keine Rechte 8: Unzul‰ssige Anmeldung(2 quellen, 2 Senken, 1 Quelle 1 senke und umgekehrt)
-	 * @param _attributesIndicator  gibt an ob sich ein Attribut ge‰ndert hat
+	 *                              Quelle nicht vorhanden. 3: Keine Rechte 8: Unzul√§ssige Anmeldung(2 quellen, 2 Senken, 1 Quelle 1 senke und umgekehrt)
+	 * @param _attributesIndicator  gibt an ob sich ein Attribut ge√§ndert hat
 	 * @param _data                 Teil des Datensatzes als Bytestrom
 	 * @param _totalTelegramCount   Anzahl aller Teiltelegramme, in die der gesamte Datensatz zerlegt wurde
 	 * @param _telegramNumber       Index des Teiltelegramms
@@ -173,7 +179,7 @@ public class ApplicationDataTelegram extends DataTelegram implements DataTelegra
 	}
 
 	/**
-	 * Gibt die Basisanmeldeinformationen zur¸ck.
+	 * Gibt die Basisanmeldeinformationen zur√ºck.
 	 *
 	 * @return Basisanmeldeinformationen
 	 */
@@ -182,7 +188,7 @@ public class ApplicationDataTelegram extends DataTelegram implements DataTelegra
 	}
 
 	/**
-	 * Gibt an, Datens‰tze nachgeliefert worden sind. True-> versp‰tet, false-> nicht versp‰tet
+	 * Gibt an, Datens√§tze nachgeliefert worden sind. True-> versp√§tet, false-> nicht versp√§tet
 	 *
 	 * @return True wenn Daten nachgeliefert sind.
 	 */
@@ -191,7 +197,7 @@ public class ApplicationDataTelegram extends DataTelegram implements DataTelegra
 	}
 
 	/**
-	 * Gibt die Laufende Nummer des Datensatzes zurr¸ck.
+	 * Gibt die Laufende Nummer des Datensatzes zurr√ºck.
 	 *
 	 * @return Fortlaufende Nummer
 	 */
@@ -200,7 +206,7 @@ public class ApplicationDataTelegram extends DataTelegram implements DataTelegra
 	}
 
 	/**
-	 * Der Zeitstempel der Datens‰tze.
+	 * Der Zeitstempel der Datens√§tze.
 	 *
 	 * @return Zeitstempel
 	 */
@@ -209,8 +215,8 @@ public class ApplicationDataTelegram extends DataTelegram implements DataTelegra
 	}
 
 	/**
-	 * Gibt die Fehlerinformation zur¸ck. Fehlerkennung der Anwendungsdaten:<br> 0: Daten vorhanden (kein fehler).<br> 1: Quelle vorhanden aber Daten noch nicht
-	 * lieferbar.<br> 2: Quelle nicht vorhanden.<br> 3: Keine Rechte<br> 8: Unzul‰ssige Anmeldung(2 quellen, 2 Senken, 1 Quelle 1 senke und umgekehrt)
+	 * Gibt die Fehlerinformation zur√ºck. Fehlerkennung der Anwendungsdaten:<br> 0: Daten vorhanden (kein fehler).<br> 1: Quelle vorhanden aber Daten noch nicht
+	 * lieferbar.<br> 2: Quelle nicht vorhanden.<br> 3: Keine Rechte<br> 8: Unzul√§ssige Anmeldung(2 quellen, 2 Senken, 1 Quelle 1 senke und umgekehrt)
 	 *
 	 * @return Fehlercode
 	 */
@@ -219,7 +225,7 @@ public class ApplicationDataTelegram extends DataTelegram implements DataTelegra
 	}
 
 	/**
-	 * Gibt den Indikator zu den einzelnen Attributen der Attributgruppe zur¸ck.
+	 * Gibt den Indikator zu den einzelnen Attributen der Attributgruppe zur√ºck.
 	 *
 	 * @return Indikator
 	 */
@@ -230,7 +236,7 @@ public class ApplicationDataTelegram extends DataTelegram implements DataTelegra
 	/**
 	 * Setzt den Indikator auf den neuen Wert.
 	 *
-	 * @param newIndicators enth‰lt Informationen, welche Attribute sich ge‰ndert haben.
+	 * @param newIndicators enth√§lt Informationen, welche Attribute sich ge√§ndert haben.
 	 */
 	public final void setAttributesIndicator(byte newIndicators[]) {
 		int tmp = (newIndicators != null ? newIndicators.length : 0) - (attributesIndicator != null ? attributesIndicator.length : 0);
@@ -241,16 +247,16 @@ public class ApplicationDataTelegram extends DataTelegram implements DataTelegra
 	}
 
 	/**
-	 * Gibt die Gesamtzahl der Teiltelegramme des ursprunglichen Datensatzes zur¸ck.
+	 * Gibt die Gesamtzahl der Teiltelegramme des ursprunglichen Datensatzes zur√ºck.
 	 *
-	 * @return Gesamte L‰nge des Telegramms in Teiltelegrammen
+	 * @return Gesamte L√§nge des Telegramms in Teiltelegrammen
 	 */
 	public final int getTotalTelegramsCount() {
 		return totalTelegramCount;
 	}
 
 	/**
-	 * Gibt die Telegrammnummer dieses Teiltelegramms zur¸ck.
+	 * Gibt die Telegrammnummer dieses Teiltelegramms zur√ºck.
 	 *
 	 * @return Telegrammnummer
 	 */
@@ -259,7 +265,7 @@ public class ApplicationDataTelegram extends DataTelegram implements DataTelegra
 	}
 
 	/**
-	 * Gibt den Bytestrom dieses Telegramms zur¸ck.
+	 * Gibt den Bytestrom dieses Telegramms zur√ºck.
 	 *
 	 * @return Bytestrom
 	 */
@@ -398,7 +404,7 @@ public class ApplicationDataTelegram extends DataTelegram implements DataTelegra
 			length += data.length;
 		}
 		if(length != _length) {
-			throw new IOException("Falsche Telegramml‰nge");
+			throw new IOException("Falsche Telegramml√§nge");
 		}
 		priority = TelegramUtility.getPriority(this);
 		checkConsistency();

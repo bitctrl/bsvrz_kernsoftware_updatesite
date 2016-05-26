@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2006 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -39,11 +45,11 @@ import java.io.ByteArrayInputStream;
  * Implementierung des Intefaces {@link de.bsvrz.dav.daf.main.config.TimeAttributeType} auf Seiten der Konfiguration.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 8550 $ / $Date: 2011-01-06 10:48:12 +0100 (Thu, 06 Jan 2011) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigTimeAttributeType extends ConfigAttributeType implements TimeAttributeType {
 	/**
-	 * DebugLogger für Debug-Ausgaben
+	 * DebugLogger fÃ¼r Debug-Ausgaben
 	 */
 	private static final Debug _debug = Debug.getLogger();
 
@@ -71,7 +77,7 @@ public class ConfigTimeAttributeType extends ConfigAttributeType implements Time
 	}
 
 	/**
-	 * Gibt das Objekt zurück, welches die Eigenschaften dieses AttributTyps enthält. Existiert es noch nicht, so wird es erzeugt und der entsprechende
+	 * Gibt das Objekt zurÃ¼ck, welches die Eigenschaften dieses AttributTyps enthÃ¤lt. Existiert es noch nicht, so wird es erzeugt und der entsprechende
 	 * konfigurierende Datensatz ausgelesen.
 	 *
 	 * @return die Eigenschaften des AttributTyps
@@ -84,8 +90,8 @@ public class ConfigTimeAttributeType extends ConfigAttributeType implements Time
 	}
 
 	/**
-	 * Wird aufgerufen, wenn das Objekt verändert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zurücksetzen. Erbende Klassen müssen diese
-	 * Funktion überschreiben, wenn sie Daten cachen.
+	 * Wird aufgerufen, wenn das Objekt verÃ¤ndert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zurÃ¼cksetzen. Erbende Klassen mÃ¼ssen diese
+	 * Funktion Ã¼berschreiben, wenn sie Daten cachen.
 	 */
 	@Override
 	synchronized void invalidateCache() {
@@ -114,8 +120,8 @@ public class ConfigTimeAttributeType extends ConfigAttributeType implements Time
 	}
 
 	/**
-	 * Diese Klasse liest die Informationen für diesen Attributtypen mit Hilfe des Deserializers direkt aus dem Byte-Array des konfigurierenden Datensatzes aus und
-	 * verwendet nicht die Methode {@link de.bsvrz.dav.daf.main.config.SystemObject#getConfigurationData}, da dort Informationen benötigt werden, die hier erst zur Verfügung gestellt werden.
+	 * Diese Klasse liest die Informationen fÃ¼r diesen Attributtypen mit Hilfe des Deserializers direkt aus dem Byte-Array des konfigurierenden Datensatzes aus und
+	 * verwendet nicht die Methode {@link de.bsvrz.dav.daf.main.config.SystemObject#getConfigurationData}, da dort Informationen benÃ¶tigt werden, die hier erst zur VerfÃ¼gung gestellt werden.
 	 */
 	private class TimeAttributeTypeValues {
 		/**
@@ -124,7 +130,7 @@ public class ConfigTimeAttributeType extends ConfigAttributeType implements Time
 		private boolean _isRelative;
 
 		/**
-		 * die Genauigkeit der zeitlichen Auflösung dieses Zeitstempel-Attribut-Typs
+		 * die Genauigkeit der zeitlichen AuflÃ¶sung dieses Zeitstempel-Attribut-Typs
 		 */
 		private byte _accuracy;
 
@@ -162,9 +168,9 @@ public class ConfigTimeAttributeType extends ConfigAttributeType implements Time
 		}
 
 		/**
-		 * Gibt die Genauigkeit der zeitlichen Auflösung dieses Zeitstempel-Attribut-Typs zurück.
+		 * Gibt die Genauigkeit der zeitlichen AuflÃ¶sung dieses Zeitstempel-Attribut-Typs zurÃ¼ck.
 		 *
-		 * @return die Genauigkeit der zeitlichen Auflösung dieses Zeitstempel-Attribut-Typs
+		 * @return die Genauigkeit der zeitlichen AuflÃ¶sung dieses Zeitstempel-Attribut-Typs
 		 */
 		public byte getAccuracy() {
 			return _accuracy;

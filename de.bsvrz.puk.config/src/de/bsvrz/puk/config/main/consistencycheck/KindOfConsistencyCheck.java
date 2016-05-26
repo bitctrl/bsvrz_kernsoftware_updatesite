@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main.consistencycheck;
@@ -29,9 +35,9 @@ package de.bsvrz.puk.config.main.consistencycheck;
 public enum KindOfConsistencyCheck {
 
 	LOCAL_ACTIVATION("lokale Aktivierung", (byte)0),
-	RELEASE_FOR_TRANSFER("Freigabe zur Übernahme", (byte)1),
+	RELEASE_FOR_TRANSFER("Freigabe zur Ãœbernahme", (byte)1),
 	RELEASE_FOR_ACTIVATION("Freigabe zur Aktivierung", (byte)2),
-	CONSISTENCY_CHECK("Konsistenzprüfung", (byte)3),
+	CONSISTENCY_CHECK("KonsistenzprÃ¼fung", (byte)3),
 	RELEASE_FOR_ACTIVATION_WITHOUT_LOCAL_ACTIVATION("Freigabe zur Aktivierung ohne lokale Aktivierung", (byte)4);
 
 	private final String _name;

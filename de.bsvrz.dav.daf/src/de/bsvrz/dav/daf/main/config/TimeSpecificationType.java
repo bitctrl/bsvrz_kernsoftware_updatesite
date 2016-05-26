@@ -1,11 +1,11 @@
 /*
- * Copyright 2006 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,38 +14,44 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.config;
 
 /**
- * Dieses Enum listet alle möglichen Gültigkeitszeitraum-Typen auf. Er gibt die Art und Weise an, wie der
- * Gültigkeitszeitraum zu betrachten ist.
+ * Dieses Enum listet alle mÃ¶glichen GÃ¼ltigkeitszeitraum-Typen auf. Er gibt die Art und Weise an, wie der
+ * GÃ¼ltigkeitszeitraum zu betrachten ist.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Stephan Homeyer (sth)
- * @version $Revision: 5052 $ / $Date: 2007-08-31 20:02:55 +0200 (Fri, 31 Aug 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public enum TimeSpecificationType {
 	/**
-	 * Für Objekte, die aktuell gültig sind.
+	 * FÃ¼r Objekte, die aktuell gÃ¼ltig sind.
 	 */
 	VALID((short)1),
 
 	/**
-	 * Für Objekte, die zu einem bestimmten Zeitpunkt gültig waren.
+	 * FÃ¼r Objekte, die zu einem bestimmten Zeitpunkt gÃ¼ltig waren.
 	 */
 	VALID_AT_TIME((short)2),
 
 	/**
-	 * Für Objekte, die an mindestens einem Zeitpunkt des angegebenen Zeitbereichs gültig waren.
+	 * FÃ¼r Objekte, die an mindestens einem Zeitpunkt des angegebenen Zeitbereichs gÃ¼ltig waren.
 	 */
 	VALID_IN_PERIOD((short)3),
 
 	/**
-	 * Für Objekte, die während des gesamten Zeitraumes gültig waren.
+	 * FÃ¼r Objekte, die wÃ¤hrend des gesamten Zeitraumes gÃ¼ltig waren.
 	 */
 	VALID_DURING_PERIOD((short)4);
 
@@ -70,7 +76,7 @@ public enum TimeSpecificationType {
 	}
 
 	/**
-	 * Eindeutige Id des Zustands. Diese ID kann benutzt werden um das Objekt zu serialisieren und später wieder zu deserialisieren.
+	 * Eindeutige Id des Zustands. Diese ID kann benutzt werden um das Objekt zu serialisieren und spÃ¤ter wieder zu deserialisieren.
 	 * @return Zahl, die den Zustand eindeutig identifiziert.
 	 */
 	public short getCode() {

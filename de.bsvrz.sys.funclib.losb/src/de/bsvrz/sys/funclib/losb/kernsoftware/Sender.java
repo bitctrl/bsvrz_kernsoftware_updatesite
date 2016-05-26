@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.sys.funclib.losb.
  * 
- * de.bsvrz.sys.funclib.losb is free software; you can redistribute it and/or modify
+ * de.bsvrz.sys.funclib.losb is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.losb is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.sys.funclib.losb; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.losb.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.losb.kernsoftware;
@@ -30,12 +36,12 @@ import de.bsvrz.sys.funclib.losb.messages.ErrorMessage;
 import de.bsvrz.sys.funclib.losb.util.Util;
 
 /**
- * Vereinfacht das Senden von Daten über den Datenverteiler. Im Gegensatz zu {@link de.bsvrz.sys.funclib.losb.kernsoftware.SimpleSender} ist diese Klasse zum
+ * Vereinfacht das Senden von Daten Ã¼ber den Datenverteiler. Im Gegensatz zu {@link de.bsvrz.sys.funclib.losb.kernsoftware.SimpleSender} ist diese Klasse zum
  * Versand von Massendaten gedacht.
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 12870 $ / $Date: 2014-10-08 10:57:06 +0200 (Wed, 08 Oct 2014) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  * @see SubscriptionManager
  */
 public class Sender implements ClientSenderInterface {
@@ -51,7 +57,7 @@ public class Sender implements ClientSenderInterface {
 	/** ATG & ASP */
 	private DataDescription dataDescription;
 
-	/** Empfängerobjekt */
+	/** EmpfÃ¤ngerobjekt */
 	private SystemObject receiver;
 
 	/** Verbindung zum Datenverteiler */
@@ -75,7 +81,7 @@ public class Sender implements ClientSenderInterface {
 	 * Erzeugt einen Sender.
 	 *
 	 * @param dav            Verbindung zum Datenverteiler.
-	 * @param receiver       Empfänger.
+	 * @param receiver       EmpfÃ¤nger.
 	 * @param attributeGroup Attributgruppe.
 	 * @param aspect         Aspekt.
 	 * @param srole          Quelle oder 'einfahcer' Sender.
@@ -112,7 +118,7 @@ public class Sender implements ClientSenderInterface {
 	 * Erzeugt einen einfachen Sender.
 	 *
 	 * @param dav            Verbindung zum Datenverteiler.
-	 * @param sysObj         Empfänger.
+	 * @param sysObj         EmpfÃ¤nger.
 	 * @param attributeGroup Attributgruppe-PID
 	 * @param aspect         Aspekt-PID
 	 *
@@ -127,7 +133,7 @@ public class Sender implements ClientSenderInterface {
 	 * Erzeugt einen einfachen Sender.
 	 *
 	 * @param dav            Verbindung zum Datenverteiler.
-	 * @param sysObj         Pid des Objekts, für das die Anmeldung gilt
+	 * @param sysObj         Pid des Objekts, fÃ¼r das die Anmeldung gilt
 	 * @param attributeGroup Attributgruppe-PID
 	 * @param aspect         Aspekt-PID
 	 *
@@ -147,7 +153,7 @@ public class Sender implements ClientSenderInterface {
 	 * Erzeugt eine Quelle.
 	 *
 	 * @param dav            Verbindung zum Datenverteiler.
-	 * @param sysObj         Objekt für das die Anmeldung gilt.
+	 * @param sysObj         Objekt fÃ¼r das die Anmeldung gilt.
 	 * @param attributeGroup Attributgruppe-PID
 	 * @param aspect         Aspekt-PID
 	 *
@@ -166,7 +172,7 @@ public class Sender implements ClientSenderInterface {
 	/**
 	 * Meldet den Versand von Daten ab.
 	 *
-	 * @return <code>false</code> falls die Abmeldung nicht durchgeführt werden konnte.
+	 * @return <code>false</code> falls die Abmeldung nicht durchgefÃ¼hrt werden konnte.
 	 */
 	public boolean unsubscribe() {
 		try {
@@ -278,7 +284,7 @@ public class Sender implements ClientSenderInterface {
 				while(lastState == NO_SENDCTRL_YET || (waitForPosSendCtrl && !canSend)) wait();
 
 				// Workaround: Bei Dav-Dav-Koppung besteht das Problem, dass zuerst eine negative Sendesteuerung kommt
-				// und kurze Zeit später eine positive. Hier darf nach der ersten negativen Sendesteuerung nicht aufgehört werden
+				// und kurze Zeit spÃ¤ter eine positive. Hier darf nach der ersten negativen Sendesteuerung nicht aufgehÃ¶rt werden
 				// zu warten, sonst kommt keine Kommunikation zustande!
 				if(!canSend) wait(5000);
 				if(canSend) dav.sendData(new ResultData(receiver, dataDescription, dataTime, data, delayed));

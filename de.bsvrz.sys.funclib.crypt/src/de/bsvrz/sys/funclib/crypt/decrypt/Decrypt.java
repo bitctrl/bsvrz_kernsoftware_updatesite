@@ -6,7 +6,7 @@
  * 
  * de.bsvrz.sys.funclib.crypt is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.crypt is distributed in the hope that it will be useful,
@@ -15,26 +15,32 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.crypt; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.crypt; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.crypt.decrypt;
 
 /**
- * Eine Implementierung stellt ein Objekt zur Verfügung, das einen verschlüsselten Text wieder
- * entschlüsselt.
+ * Eine Implementierung stellt ein Objekt zur VerfÃ¼gung, das einen verschlÃ¼sselten Text wieder
+ * entschlÃ¼sselt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5010 $
+ * @version $Revision$
  */
 public interface Decrypt {
 	/**
-	 * Eine Implementierung dieser Methode entschlüsselt einen verschlüsselten Text mit einem bestimmten Verfahren.
-	 * @param encryptedText Text, der verschlüsselt ist und entschlüsselt werden soll
-	 * @param decryptionText Text, der zum entschlüsseln der Daten benutzt werden soll, dieser Text wurde auch zum verschlüsseln benutzt.
-	 * @return Entschlüsselter Text
-	 * @throws Exception Fehler, die beim entschlüsseln aufgetreten sind
+	 * Eine Implementierung dieser Methode entschlÃ¼sselt einen verschlÃ¼sselten Text mit einem bestimmten Verfahren.
+	 * @param encryptedText Text, der verschlÃ¼sselt ist und entschlÃ¼sselt werden soll
+	 * @param decryptionText Text, der zum entschlÃ¼sseln der Daten benutzt werden soll, dieser Text wurde auch zum verschlÃ¼sseln benutzt.
+	 * @return EntschlÃ¼sselter Text
+	 * @throws Exception Fehler, die beim entschlÃ¼sseln aufgetreten sind
 	 * @see de.bsvrz.sys.funclib.crypt.encrypt.Encrypt
 	 */
 	byte[] decrypt(byte[] encryptedText, String decryptionText) throws Exception;

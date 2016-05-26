@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.main.impl.archive.request;
 
@@ -35,13 +41,13 @@ import de.bsvrz.sys.funclib.debug.Debug;
 import de.bsvrz.dav.daf.main.config.ConfigurationException;
 
 /**
- * Diese Klasse stellt ein Objekt zur Verfügung, mit dem ein Archivsystem beauftragt werden kann alle Datensätze,
- * die gespeichert werden dürfen, zu speichern.
+ * Diese Klasse stellt ein Objekt zur VerfÃ¼gung, mit dem ein Archivsystem beauftragt werden kann alle DatensÃ¤tze,
+ * die gespeichert werden dÃ¼rfen, zu speichern.
  * Diese Klasse wird von der Klasse {@link StreamedArchiveRequester} benutzt.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 5064 $ / $Date: 2007-09-01 22:25:35 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class SaveData implements ArchiveQueryResult {
 
@@ -51,7 +57,7 @@ public class SaveData implements ArchiveQueryResult {
 	private final ArchiveQueryID _archiveRequestID;
 
 	/**
-	 * Konnte der Speicherauftrag durchgeführt werden
+	 * Konnte der Speicherauftrag durchgefÃ¼hrt werden
 	 */
 	private boolean _saveSuccessful;
 
@@ -61,7 +67,7 @@ public class SaveData implements ArchiveQueryResult {
 	private String _errorString;
 
 	/**
-	 * DebugLogger für Debug-Ausgaben
+	 * DebugLogger fÃ¼r Debug-Ausgaben
 	 */
 	private static final Debug _debug = Debug.getLogger();
 
@@ -95,7 +101,7 @@ public class SaveData implements ArchiveQueryResult {
 		if (isRequestSuccessful() == false) {
 			return _errorString;
 		} else {
-			return "Die Archivanfrage(löschen) (" + _archiveRequestID.getIndexOfRequest() + ") war erfolgreich";
+			return "Die Archivanfrage(lÃ¶schen) (" + _archiveRequestID.getIndexOfRequest() + ") war erfolgreich";
 		}
 	}
 
@@ -137,8 +143,8 @@ public class SaveData implements ArchiveQueryResult {
 	}
 
 	/**
-	 * Der Aufruf dieser Methode stößt die Sicherungsfunktion des Archivsystems an. Alle Datensätze, die gesichert werden
-	 * können, werden der Sicherung {@link de.bsvrz.dav.daf.main.impl.archive.filesaver.ArchiveFileSaver} übergeben.
+	 * Der Aufruf dieser Methode stÃ¶ÃŸt die Sicherungsfunktion des Archivsystems an. Alle DatensÃ¤tze, die gesichert werden
+	 * kÃ¶nnen, werden der Sicherung {@link de.bsvrz.dav.daf.main.impl.archive.filesaver.ArchiveFileSaver} Ã¼bergeben.
 	 */
 	public void save() {
 

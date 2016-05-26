@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main.simulation;
@@ -32,7 +38,7 @@ import de.bsvrz.sys.funclib.debug.Debug;
  */
 public class NewSimulation implements SimulationStates {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 
@@ -57,7 +63,7 @@ public class NewSimulation implements SimulationStates {
 	}
 
 	public void start() {
-		// unerlaubter Übergang wird behandelt wie der Übergang nach STOP behandelt
+		// unerlaubter Ãœbergang wird behandelt wie der Ãœbergang nach STOP behandelt
 		stop();
 	}
 
@@ -73,19 +79,19 @@ public class NewSimulation implements SimulationStates {
 	}
 
 	public void pause() {
-		// unerlaubter Übergang wird behandelt wie der Übergang nach STOP behandelt
+		// unerlaubter Ãœbergang wird behandelt wie der Ãœbergang nach STOP behandelt
 		stop();
 	}
 
 	public void delete() {
 		try {
 			_util.doDelete();
-			// Die Konfiguration für die Simulation in den Zustand "gelöscht" überführen
+			// Die Konfiguration fÃ¼r die Simulation in den Zustand "gelÃ¶scht" Ã¼berfÃ¼hren
 			_simulationObject.setState(_simulationObject.getDeletedState());
 		}
 		catch(SendSubscriptionNotConfirmed sendSubscriptionNotConfirmed) {
 			sendSubscriptionNotConfirmed.printStackTrace();
-			_debug.error("Beim Wechsel einer neuen Simulation in den Zustand Löschen ist ein unerwarteter Fehler aufgetreten", sendSubscriptionNotConfirmed);
+			_debug.error("Beim Wechsel einer neuen Simulation in den Zustand LÃ¶schen ist ein unerwarteter Fehler aufgetreten", sendSubscriptionNotConfirmed);
 		}
 	}
 
@@ -100,9 +106,9 @@ public class NewSimulation implements SimulationStates {
 	public void removedFromSet() {
 		try {
 			_util.sendNotReady();
-			// Alle Daten der Simulation löschen
+			// Alle Daten der Simulation lÃ¶schen
 			_util.doDelete();
-			// Die Konfiguration für die Simulation in den Zustand "gelöscht" überführen
+			// Die Konfiguration fÃ¼r die Simulation in den Zustand "gelÃ¶scht" Ã¼berfÃ¼hren
 			_simulationObject.setState(_simulationObject.getDeletedState());
 		}
 		catch(SendSubscriptionNotConfirmed sendSubscriptionNotConfirmed) {

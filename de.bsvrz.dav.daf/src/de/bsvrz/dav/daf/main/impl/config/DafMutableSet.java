@@ -1,13 +1,13 @@
 /*
  * Copyright 2008 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config;
@@ -36,31 +42,31 @@ import de.bsvrz.sys.funclib.debug.Debug;
 import java.util.*;
 
 /**
- * Mit dieser Klasse kann auf dynamische Mengen zugegriffen werden. Diesen Mengen können online Elemente hinzugefügt und entfernt, ohne dass eine neue
+ * Mit dieser Klasse kann auf dynamische Mengen zugegriffen werden. Diesen Mengen kÃ¶nnen online Elemente hinzugefÃ¼gt und entfernt, ohne dass eine neue
  * Konfigurationsversion erstellt werden muss.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 6096 $
+ * @version $Revision$
  */
 
 public class DafMutableSet extends DafObjectSet implements MutableSet {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
-	/** Repräsentiert die Konfiguration. */
+	/** ReprÃ¤sentiert die Konfiguration. */
 	private final DafDataModel _configuration;
 
 	/** Hiermit werden Konfigurationsanfragen gestellt. */
 	private ConfigurationRequester _requester = null;
 
-//	/** Speichert alle Beobachter, die an Änderungen der dynamischen Menge interessiert sind. */
+//	/** Speichert alle Beobachter, die an Ã„nderungen der dynamischen Menge interessiert sind. */
 //	private final Set<MutableSetChangeListener> _observer = new HashSet<MutableSetChangeListener>();
 	
-	/**Verwaltet die Listener für die Komunikation mit der Konfiguration */
+	/**Verwaltet die Listener fÃ¼r die Komunikation mit der Konfiguration */
 	DafConfigurationCommunicationListenerSupport _configComSupport;
 
-	/** Objekt zur Verwaltung von Anmeldungen auf Änderungen der Elemente dieses Typs. */
+	/** Objekt zur Verwaltung von Anmeldungen auf Ã„nderungen der Elemente dieses Typs. */
 	private DafMutableCollectionSupport _mutableCollectionSupport = new DafMutableCollectionSupport(this);
 
 	private HashMap<MutableSetChangeListener, MutableCollectionChangeListener> _observer2listener = new HashMap<MutableSetChangeListener, MutableCollectionChangeListener>();
@@ -99,7 +105,7 @@ public class DafMutableSet extends DafObjectSet implements MutableSet {
 	}
 
 	/**
-	 * Gibt die Elemente zurück, die sich aktuell in der dynamischen Menge befinden.
+	 * Gibt die Elemente zurÃ¼ck, die sich aktuell in der dynamischen Menge befinden.
 	 *
 	 * @return die Elemente, die aktuell in der dynamischen Menge sind
 	 */
@@ -110,7 +116,7 @@ public class DafMutableSet extends DafObjectSet implements MutableSet {
 	}
 
 	/**
-	 * Gibt die Elemente zurück, die sich zu einem bestimmten Zeitpunkt in der dynamischen Menge befinden.
+	 * Gibt die Elemente zurÃ¼ck, die sich zu einem bestimmten Zeitpunkt in der dynamischen Menge befinden.
 	 *
 	 * @param time der zu betrachtende Zeitpunkt
 	 *
@@ -121,7 +127,7 @@ public class DafMutableSet extends DafObjectSet implements MutableSet {
 	}
 
 	/**
-	 * Gibt die Elemente zurück, die innerhalb des angegebenen Zeitraumes gültig sind bzw. gültig waren.
+	 * Gibt die Elemente zurÃ¼ck, die innerhalb des angegebenen Zeitraumes gÃ¼ltig sind bzw. gÃ¼ltig waren.
 	 *
 	 * @param startTime Beginn des zu betrachtenden Zeitraumes
 	 * @param endTime   Ende des zu betrachtenden Zeitraumes
@@ -133,23 +139,23 @@ public class DafMutableSet extends DafObjectSet implements MutableSet {
 	}
 
 	/**
-	 * Gibt die Elemente zurück, die während des gesamten Zeitraumes gültig waren.
+	 * Gibt die Elemente zurÃ¼ck, die wÃ¤hrend des gesamten Zeitraumes gÃ¼ltig waren.
 	 *
 	 * @param startTime Beginn des zu betrachtenden Zeitraumes
 	 * @param endTime   Ende des zu betrachtenden Zeitraumes
 	 *
-	 * @return die Elemente, die während des gesamten Zeitraums in der dynamischen Menge waren
+	 * @return die Elemente, die wÃ¤hrend des gesamten Zeitraums in der dynamischen Menge waren
 	 */
 	public List getElementsDuringPeriod(long startTime, long endTime) {
 		return getElements(startTime, endTime, true);
 	}
 
 	/**
-	 * Diese interne Methode führt die Anfrage nach allen Elementen dieser Menge bei der Konfiguration durch.
+	 * Diese interne Methode fÃ¼hrt die Anfrage nach allen Elementen dieser Menge bei der Konfiguration durch.
 	 *
 	 * @param startTime               Beginn des zu betrachtenden Zeitraumes
 	 * @param endTime                 Ende des zu betrachtenden Zeitraumes
-	 * @param validDuringEntirePeriod ob die Elemente während des gesamten Zeitraumes in der Menge waren
+	 * @param validDuringEntirePeriod ob die Elemente wÃ¤hrend des gesamten Zeitraumes in der Menge waren
 	 *
 	 * @return die Elemente in der dynamischen Menge oder eine leere Liste
 	 */
@@ -160,14 +166,14 @@ public class DafMutableSet extends DafObjectSet implements MutableSet {
 			objects = _requester.getElements(this, startTime, endTime, validDuringEntirePeriod);
 		}
 		catch(RequestException ex) {
-			_debug.error("Fehler führt zum Beenden der Verbindung zum Datenverteiler", ex);
+			_debug.error("Fehler fÃ¼hrt zum Beenden der Verbindung zum Datenverteiler", ex);
 			_configuration.getConnection().disconnect(true, ex.getMessage());
 		}
 		return (objects != null ? Arrays.asList(objects) : new LinkedList());
 	}
 
 	/**
-	 * Meldet einen Beobachter an, der informiert wird, falls sich an der dynamischen Menge etwas ändert.
+	 * Meldet einen Beobachter an, der informiert wird, falls sich an der dynamischen Menge etwas Ã¤ndert.
 	 *
 	 * @param observer Der Beobachter
 	 */
@@ -188,15 +194,15 @@ public class DafMutableSet extends DafObjectSet implements MutableSet {
 //		// Observer in Liste eintragen
 //		synchronized(_observer) {
 //			_observer.add(observer);
-//			// Wird ein Beobachter eingetragen, überprüfen, ob diese dynamische Menge schon beim Gegenstück in der Konfiguration angemeldet ist.
+//			// Wird ein Beobachter eingetragen, Ã¼berprÃ¼fen, ob diese dynamische Menge schon beim GegenstÃ¼ck in der Konfiguration angemeldet ist.
 //			if(_observer.size() == 1) {
 //				if(_requester == null) _requester = _configuration.getRequester();
 //				try {
-//					// es wird der aktuelle Zeitpunkt angegeben, da ab diesem Zeitpunkt die Änderungen übermittelt werden sollen
+//					// es wird der aktuelle Zeitpunkt angegeben, da ab diesem Zeitpunkt die Ã„nderungen Ã¼bermittelt werden sollen
 //					_requester.subscribe(this, System.currentTimeMillis());
 //				}
 //				catch(RequestException e) {
-//					final String message = "Kommunikationsproblem bei Anmeldung auf Änderungen der dynamischen Menge " + getName();
+//					final String message = "Kommunikationsproblem bei Anmeldung auf Ã„nderungen der dynamischen Menge " + getName();
 //					_debug.error(message, e);
 //					_configuration.getConnection().disconnect(true, message + " " + e.getMessage());
 //				}
@@ -217,16 +223,16 @@ public class DafMutableSet extends DafObjectSet implements MutableSet {
 		if(listener == null) return;
 		final short simulationVariant = _dataModel.getConnection().getClientDavParameters().getSimulationVariant();
 		removeChangeListener(simulationVariant, listener);
-//		// Observer aus Liste löschen
+//		// Observer aus Liste lÃ¶schen
 //		synchronized(_observer) {
 //			boolean isListenerRemoved = _observer.remove(observer);
-//			// Wird der letzte Beobachter abgemeldet, muss dies beim Gegenstück dieser Menge in der Konfiguration ebenfalls abgemeldet werden.
+//			// Wird der letzte Beobachter abgemeldet, muss dies beim GegenstÃ¼ck dieser Menge in der Konfiguration ebenfalls abgemeldet werden.
 //			if(_observer.isEmpty() && isListenerRemoved) {
 //				try {
 //					_requester.unsubscribe(this);
 //				}
 //				catch(RequestException e) {
-//					final String message = "Kommunikationsproblem bei Abmeldung auf Änderungen der dynamischen Menge " + getName();
+//					final String message = "Kommunikationsproblem bei Abmeldung auf Ã„nderungen der dynamischen Menge " + getName();
 //					_debug.error(message, e);
 //					_configuration.getConnection().disconnect(true, message + " " + e.getMessage());
 //				}
@@ -235,13 +241,13 @@ public class DafMutableSet extends DafObjectSet implements MutableSet {
 	}
 
 	/**
-	 * Erweitert die Menge um ein weiteres Element. Wenn das angegebene Element schon in der Menge enthalten ist, dann wird die Menge nicht verändert. Wenn der Typ
-	 * des angegebenen System-Objekts in der Menge nicht erlaubt ist, wird die Menge nicht verändert und eine Ausnahme generiert. Wenn bei online änderbaren Mengen
-	 * die maximale Anzahl von Objekten bereits erreicht ist, wird die Menge nicht verändert und eine Ausnahme generiert.
+	 * Erweitert die Menge um ein weiteres Element. Wenn das angegebene Element schon in der Menge enthalten ist, dann wird die Menge nicht verÃ¤ndert. Wenn der Typ
+	 * des angegebenen System-Objekts in der Menge nicht erlaubt ist, wird die Menge nicht verÃ¤ndert und eine Ausnahme generiert. Wenn bei online Ã¤nderbaren Mengen
+	 * die maximale Anzahl von Objekten bereits erreicht ist, wird die Menge nicht verÃ¤ndert und eine Ausnahme generiert.
 	 *
-	 * @param object Das System-Objekt, das der Menge hinzugefügt werden soll.
+	 * @param object Das System-Objekt, das der Menge hinzugefÃ¼gt werden soll.
 	 *
-	 * @throws ConfigurationChangeException Wenn eines der übergebenen Objekte nicht in die Menge aufgenommen werden konnte und noch nicht in der Menge enthalten
+	 * @throws ConfigurationChangeException Wenn eines der Ã¼bergebenen Objekte nicht in die Menge aufgenommen werden konnte und noch nicht in der Menge enthalten
 	 *                                      war.
 	 */
 	public void add(SystemObject object) throws ConfigurationChangeException {
@@ -250,24 +256,24 @@ public class DafMutableSet extends DafObjectSet implements MutableSet {
 
 	/**
 	 * Entfernt ein Element der Menge. Wenn das Element nicht in der Menge enthalten ist, wird es ignoriert. Ausnahmen werden generiert, u.a. wenn bei online
-	 * änderbaren Mengen die minimale Anzahl von Objekten bereits erreicht ist. Bei Ausnahmen wird die Menge nicht verändert.
+	 * Ã¤nderbaren Mengen die minimale Anzahl von Objekten bereits erreicht ist. Bei Ausnahmen wird die Menge nicht verÃ¤ndert.
 	 *
 	 * @param object Das System-Objekt, das aus der Menge entfernt werden soll.
 	 *
-	 * @throws ConfigurationChangeException Wenn die minimale Anzahl von Objekten unterschritten werden würde.
+	 * @throws ConfigurationChangeException Wenn die minimale Anzahl von Objekten unterschritten werden wÃ¼rde.
 	 */
 	public void remove(SystemObject object) throws ConfigurationChangeException {
 		remove(new SystemObject[]{object});
 	}
 
 	/**
-	 * Diese Methode informiert alle Beobachter über Veränderungen an der dynamischen Menge.
+	 * Diese Methode informiert alle Beobachter Ã¼ber VerÃ¤nderungen an der dynamischen Menge.
 	 *
-	 * @param addedObjects   Hinzugefügte Elemente
+	 * @param addedObjects   HinzugefÃ¼gte Elemente
 	 * @param removedObjects Entfernte Elemente
 	 */
 	public void update(SystemObject[] addedObjects, SystemObject[] removedObjects) {
-		_debug.warning("Unerwarteter update-Aufruf für Änderungen einer dynamischen Menge");
+		_debug.warning("Unerwarteter update-Aufruf fÃ¼r Ã„nderungen einer dynamischen Menge");
 //		// auf einer Kopie arbeiten, sonst gibt es synch-Probleme
 //		final List<MutableSetChangeListener> observersCopy;
 //		synchronized(_observer) {
@@ -308,9 +314,9 @@ public class DafMutableSet extends DafObjectSet implements MutableSet {
 	}
 
 	/**
-	 * Leitet die Aktualisierungsnachrichten bzgl. Änderungen von dynamischen Mengen und dynamischen Typen an das entsprechende Verwaltungsobjekt weiter.
-	 * @param simVariant Simulationsvariante der Änderung
-	 * @param addedElements Hinzugefügte Elemente der dynamischen Zusammenstellung
+	 * Leitet die Aktualisierungsnachrichten bzgl. Ã„nderungen von dynamischen Mengen und dynamischen Typen an das entsprechende Verwaltungsobjekt weiter.
+	 * @param simVariant Simulationsvariante der Ã„nderung
+	 * @param addedElements HinzugefÃ¼gte Elemente der dynamischen Zusammenstellung
 	 * @param removedElements Entfernte Elemente der dynamischen Zusammenstellung
 	 */
 	public void collectionChanged(final short simVariant, final List<SystemObject> addedElements, final List<SystemObject> removedElements) {

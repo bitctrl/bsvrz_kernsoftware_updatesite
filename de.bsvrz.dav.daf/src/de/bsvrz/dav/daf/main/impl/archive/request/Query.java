@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.archive.request;
@@ -49,11 +55,11 @@ import java.io.InputStream;
 import java.util.*;
 
 /**
- * Diese Klasse stellt alle Methoden zur Verfügung um eine Archivanfrage zu stellen, sie wird der Klasse {@link StreamedArchiveRequester} benutzt.
+ * Diese Klasse stellt alle Methoden zur VerfÃ¼gung um eine Archivanfrage zu stellen, sie wird der Klasse {@link StreamedArchiveRequester} benutzt.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 11918 $ / $Date: 2013-12-19 13:46:47 +0100 (Thu, 19 Dec 2013) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 class Query implements ArchiveDataQueryResult {
 
@@ -63,7 +69,7 @@ class Query implements ArchiveDataQueryResult {
 	private final ArchiveQueryID _archiveRequestID;
 
 	/**
-	 * Hier werden alle streams, die zu einer Archivanfrage gehören, gespeichert. Das Array wird mit null initialisiert, es bekommt erst dann die Streams, sobald
+	 * Hier werden alle streams, die zu einer Archivanfrage gehÃ¶ren, gespeichert. Das Array wird mit null initialisiert, es bekommt erst dann die Streams, sobald
 	 * das Archiv bereit ist Nutzdaten zu verschicken.
 	 */
 	private DataStream _arrayOfStreams[] = null;
@@ -75,7 +81,7 @@ class Query implements ArchiveDataQueryResult {
 
 	private StreamDemultiplexer _streamDemultiplexer;
 
-	/** Wieviele Streams gehören zu der Archivanfrage. Jedes Objekt der Anfrage besitzt einen Stream. */
+	/** Wieviele Streams gehÃ¶ren zu der Archivanfrage. Jedes Objekt der Anfrage besitzt einen Stream. */
 	private final int _numberOfStreams;
 
 	/**
@@ -85,15 +91,15 @@ class Query implements ArchiveDataQueryResult {
 	private int _numberOfFinishedStreams = 0;
 
 	/**
-	 * Diese Variable bestimmt die Größe des Empfangspuffers (StreamDemultiplexer). Die Größe wird in Bytes angegben. Der Wert "0" ist der default Wert. Das
-	 * bedeutet, dass das Archiv die Größe des Empfangspuffers festlegt. Der Defaultwert ist in der Konfiguration gespeichert und wird dort vom Archiv angefordert.
-	 * Soll ein anderer Wert benutzt werden, so kann dieser mit {@link StreamedArchiveRequester#setReceiveBufferSize} gesetzt werden, für diese Anfrage ist der
+	 * Diese Variable bestimmt die GrÃ¶ÃŸe des Empfangspuffers (StreamDemultiplexer). Die GrÃ¶ÃŸe wird in Bytes angegben. Der Wert "0" ist der default Wert. Das
+	 * bedeutet, dass das Archiv die GrÃ¶ÃŸe des Empfangspuffers festlegt. Der Defaultwert ist in der Konfiguration gespeichert und wird dort vom Archiv angefordert.
+	 * Soll ein anderer Wert benutzt werden, so kann dieser mit {@link StreamedArchiveRequester#setReceiveBufferSize} gesetzt werden, fÃ¼r diese Anfrage ist der
 	 * Wert allerdings konstant.
 	 */
 	private final int _receiveBufferSize;
 
 
-	/** Konnte die Anfrage zum Archiv durchgeführt werden */
+	/** Konnte die Anfrage zum Archiv durchgefÃ¼hrt werden */
 	private boolean _requestSuccessful;
 
 	/** Falls es zu einem Fehler gekommen ist, zu welchem. */
@@ -108,7 +114,7 @@ class Query implements ArchiveDataQueryResult {
 	/** Bestimmt den blockingFactor des StreamDemultiplexers. Dieser wird vom Archiv gesetzt (ist in der Antwort des Archivs, auf die Archivanfrage, enthalten) */
 	private int _blockingFactor;
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 
@@ -117,11 +123,11 @@ class Query implements ArchiveDataQueryResult {
 	/**
 	 * Archivanfrage mit einem Objekt
 	 *
-	 * @param archiveRequestID         eindeutige Identifizierung der Anfrage, diese wird benötigt um Archivantworten an das Objekt weiterzuleiten
-	 * @param priority                 Priorität der Anfrage
+	 * @param archiveRequestID         eindeutige Identifizierung der Anfrage, diese wird benÃ¶tigt um Archivantworten an das Objekt weiterzuleiten
+	 * @param priority                 PrioritÃ¤t der Anfrage
 	 * @param spec                     Archivanfrage
-	 * @param receiveBufferSize        Größe des Empfangspuffers (in Byte)
-	 * @param streamedArchiveRequester Objekt über das Archivanfragen verschickt werden können
+	 * @param receiveBufferSize        GrÃ¶ÃŸe des Empfangspuffers (in Byte)
+	 * @param streamedArchiveRequester Objekt Ã¼ber das Archivanfragen verschickt werden kÃ¶nnen
 	 * @param defaultSimulationVariant Falls keine Simulationsvariante gesetzt wurde wird dieser Wert als default benutzt.
 	 */
 	public Query(
@@ -147,11 +153,11 @@ class Query implements ArchiveDataQueryResult {
 	}
 
 	/**
-	 * @param archiveRequestID         eindeutige Identifizierung der Anfrage, diese wird benötigt um Archivantworten an das Objekt weiterzuleiten
-	 * @param priority                 Priorität der Anfrage
+	 * @param archiveRequestID         eindeutige Identifizierung der Anfrage, diese wird benÃ¶tigt um Archivantworten an das Objekt weiterzuleiten
+	 * @param priority                 PrioritÃ¤t der Anfrage
 	 * @param spec                     Archivanfrage
-	 * @param receiveBufferSize        Größe des Empfangspuffers (in Byte)
-	 * @param streamedArchiveRequester Objekt über das Archivanfragen verschickt werden können
+	 * @param receiveBufferSize        GrÃ¶ÃŸe des Empfangspuffers (in Byte)
+	 * @param streamedArchiveRequester Objekt Ã¼ber das Archivanfragen verschickt werden kÃ¶nnen
 	 * @param defaultSimulationVariant Falls keine Simulationsvariante gesetzt wurde wird dieser Wert als default benutzt.
 	 */
 	public Query(
@@ -180,15 +186,15 @@ class Query implements ArchiveDataQueryResult {
 		// Beim Archiv Archivanfrage stellen. Das Archiv muss auf die erste Nachricht erst Antworten, solange wird
 		// jede Methode dieser Klasse blockieren
 		try {
-			// Alle Parameter müssen in einen Datensatz verpackt werden.
-			// Die Priorität und die "spec" werden dabei in einem byte-Array des Datensatzes übertragen.
+			// Alle Parameter mÃ¼ssen in einen Datensatz verpackt werden.
+			// Die PrioritÃ¤t und die "spec" werden dabei in einem byte-Array des Datensatzes Ã¼bertragen.
 			// Die Daten werden mit einem Serializer verpackt und entsprechend auf der Empfangsseite mit einem
 			// Deserializer entpackt. Damit die Daten mit der richtigen Version des Deserializers ausgepackt werden,
 			// wird diese mitgeschickt. Die ersten 4 Bytes des byte-Arrays sind dabei die Versionsnummer
 			// des Serializers und die entsprechende Version muss der Deserializer benutzen.
 			// Die ersten 4 Bytes werden "von Hand" ein/ausgepackt, ohne den Serializer/Deserializer zu benutzen.
-			// (somit ist die Versionsnummer immer unabhängig verfügbar, egal welche Version des Serializer/Deserializer
-			// die Applikation zur Verfügung hat)
+			// (somit ist die Versionsnummer immer unabhÃ¤ngig verfÃ¼gbar, egal welche Version des Serializer/Deserializer
+			// die Applikation zur VerfÃ¼gung hat)
 
 			// Ein byte-Array erzeugen, in dem <code>priority</code> und <code>spec</code> gespeichert sind.
 
@@ -197,14 +203,14 @@ class Query implements ArchiveDataQueryResult {
 
 			try {
 
-				// Das erste int spiegelt die Priorität der Anfrage wieder
+				// Das erste int spiegelt die PrioritÃ¤t der Anfrage wieder
 				serializer.writeInt(_priority.getCode());
 
-				// Als nächstes wird der receiveBufferSize gespeichert, dies ist ein int
+				// Als nÃ¤chstes wird der receiveBufferSize gespeichert, dies ist ein int
 				serializer.writeInt(_receiveBufferSize);
 
-				// Anzahl Einträge der Liste speichern, beim auspacken ist dann bekannt, wie viele Einträge
-				// entpackt werden müssen.
+				// Anzahl EintrÃ¤ge der Liste speichern, beim auspacken ist dann bekannt, wie viele EintrÃ¤ge
+				// entpackt werden mÃ¼ssen.
 				serializer.writeInt(_spec.size());
 
 				// Jede Anfrage, die in der spec-Liste steht, in das byte-Array speichern
@@ -317,8 +323,8 @@ class Query implements ArchiveDataQueryResult {
 						// Dabei tritt ein Sonderfall auf, wenn die Simulationsvariante auf
 						// <code>NO_SIMULATION_VARIANT_SET</code> , dies entspricht einer
 						// <code>-1</code>, gesetzt wurde. In diesem Fall muss der default Wert
-						// für die Simulationsvariante gewählt werden. Der default-Wert wurde im Konstruktor dieser
-						// Klasse übergeben.
+						// fÃ¼r die Simulationsvariante gewÃ¤hlt werden. Der default-Wert wurde im Konstruktor dieser
+						// Klasse Ã¼bergeben.
 						if(dataDescription.getSimulationVariant() != -1) {
 							serializer.writeShort(dataDescription.getSimulationVariant());
 						}
@@ -347,11 +353,11 @@ class Query implements ArchiveDataQueryResult {
 			// Die Versionsnummer des Serializer speichern
 			final int serializerVersion = serializer.getVersion();
 
-			// Ein neues byte-Array anlegen, dieses ist 4 Bytes größer als das alte, da die Version des Serializer
+			// Ein neues byte-Array anlegen, dieses ist 4 Bytes grÃ¶ÃŸer als das alte, da die Version des Serializer
 			// gespeichert werden muss
 			final byte[] dataAndVersion = new byte[data.length + 4];
 
-			// Das höherwärtigste Byte steht in Zelle 0
+			// Das hÃ¶herwÃ¤rtigste Byte steht in Zelle 0
 			dataAndVersion[0] = (byte)((serializerVersion & 0xff000000) >>> 24);
 			dataAndVersion[1] = (byte)((serializerVersion & 0x00ff0000) >>> 16);
 			dataAndVersion[2] = (byte)((serializerVersion & 0x0000ff00) >>> 8);
@@ -375,17 +381,17 @@ class Query implements ArchiveDataQueryResult {
 	}
 
 	/**
-	 * Diese Methode blockiert solange, bis das Archiv auf die erste Archivanfrage geantwortet hat. In der Archivantwort wird dann geklärt, ob das Archiv die
-	 * geforderten Nutzdaten zur Verfügung stellen kann (falls nicht, warum nicht).
+	 * Diese Methode blockiert solange, bis das Archiv auf die erste Archivanfrage geantwortet hat. In der Archivantwort wird dann geklÃ¤rt, ob das Archiv die
+	 * geforderten Nutzdaten zur VerfÃ¼gung stellen kann (falls nicht, warum nicht).
 	 *
 	 * @return true, falls das Archiv die Anfrage bearbeiten kann. false = das Archiv kann die Anfrage nicht bearbeiten, somit steht eine errorMessage zur
-	 *         Verfügung.
+	 *         VerfÃ¼gung.
 	 */
 	public boolean isRequestSuccessful() throws InterruptedException {
 
 		// Diese Frage darf erst beantwortet werden, wenn diese Archivanfrage auch vom Archiv beantwortet wurde.
 		// Also legen wir diese Anfrage solange schlafen, bis diese Antwort kommt.
-		// Die Antwort empfängt der StreamedArchiveRequester, dieser kann auch wieder Zugriff auf dieses Objekt
+		// Die Antwort empfÃ¤ngt der StreamedArchiveRequester, dieser kann auch wieder Zugriff auf dieses Objekt
 		// bekommen und somit alle wartenden aufwecken (also auch diesen Thread, der auf dieses Ereignis wartet).
 
 		synchronized(this) {
@@ -399,7 +405,7 @@ class Query implements ArchiveDataQueryResult {
 
 	public String getErrorMessage() throws InterruptedException {
 
-		// Dieser Methodenaufruf läßt die Anfrage nach den Streams solange warten, bis
+		// Dieser Methodenaufruf lÃ¤ÃŸt die Anfrage nach den Streams solange warten, bis
 		// es zu einer Antwort des Archivs gekommen ist, dass die angeforderten Nutzdaten
 		// vorhanden sind oder das ein Fehler aufgetreten ist.
 		if(isRequestSuccessful() == true) {
@@ -411,16 +417,16 @@ class Query implements ArchiveDataQueryResult {
 	}
 
 	/**
-	 * Diese Methode gibt alle Streams, die zu einer Archivanfrage gehören, zurück. Die geforderten Archivdaten liegen in den Stream bereit und können mit der
+	 * Diese Methode gibt alle Streams, die zu einer Archivanfrage gehÃ¶ren, zurÃ¼ck. Die geforderten Archivdaten liegen in den Stream bereit und kÃ¶nnen mit der
 	 * entsprechenden Methode angefordert werden.
 	 *
-	 * @return Alle Streams, die zu einer Archivanfrage gehören
+	 * @return Alle Streams, die zu einer Archivanfrage gehÃ¶ren
 	 *
 	 * @throws IllegalStateException Die Archivanfrage konnte nicht vom Archiv bearbeitet werden, somit durfte diese Methode nicht aufgerufen werden
 	 */
 	public ArchiveDataStream[] getStreams() throws IllegalStateException, InterruptedException {
 
-		// Dieser Methodenaufruf läßt die Anfrage nach den Streams solange warten, bis
+		// Dieser Methodenaufruf lÃ¤ÃŸt die Anfrage nach den Streams solange warten, bis
 		// es zu einer Antwort des Archivs gekommen ist. Entweder sind die angeforderten Nutzdaten
 		// vorhanden oder es ist ein Fehler aufgetreten ist.
 
@@ -477,7 +483,7 @@ class Query implements ArchiveDataQueryResult {
 				// wartende Threads "befreien" und verhindern, dass andere Threads anfangen zu warten
 				_blocking = false;
 
-				// Nur wenn die Archivanfrage erfolgreich war werden die Streams angelegt und können
+				// Nur wenn die Archivanfrage erfolgreich war werden die Streams angelegt und kÃ¶nnen
 				// angefordert werden.
 				if(_requestSuccessful == true) {
 
@@ -506,9 +512,9 @@ class Query implements ArchiveDataQueryResult {
 	}
 
 	/**
-	 * Diese Methode verwaltet Nutzdaten, die für eine Archivanfrage empfangen wurden.
+	 * Diese Methode verwaltet Nutzdaten, die fÃ¼r eine Archivanfrage empfangen wurden.
 	 *
-	 * @param data Nutzdaten für eine Archivanfrage
+	 * @param data Nutzdaten fÃ¼r eine Archivanfrage
 	 */
 	public void archiveDataResponse(byte[] data) {
 		try {
@@ -521,25 +527,25 @@ class Query implements ArchiveDataQueryResult {
 	}
 
 	/**
-	 * Diese Methode wird von einem Objekt der Klasse Query aufgerufen sobald der Stream des Objekts ein null-Paket empfängt oder die Empfängerapplikation abort
-	 * aufruft. Das null-Paket bedeutet, dass das Archiv für diesen Stream keine Archivdaten mehr zur Verfügung hat. Der Aufruf von abort bedeutet, dass die
-	 * Empfängeraplikation keine Archivdaten für diesen Stream mehr benötigt.
-	 * <p/>
-	 * Sobald alle Streams ein null-Paket empfangen haben oder mit abort beendet wurden, wird das Objekt aus der Hashtable entfernt. TBD name schlecht gewählt, da
-	 * im zweifelsfall die connection abgebaut wird, hier nicht nicht nur gezählt
+	 * Diese Methode wird von einem Objekt der Klasse Query aufgerufen sobald der Stream des Objekts ein null-Paket empfÃ¤ngt oder die EmpfÃ¤ngerapplikation abort
+	 * aufruft. Das null-Paket bedeutet, dass das Archiv fÃ¼r diesen Stream keine Archivdaten mehr zur VerfÃ¼gung hat. Der Aufruf von abort bedeutet, dass die
+	 * EmpfÃ¤ngeraplikation keine Archivdaten fÃ¼r diesen Stream mehr benÃ¶tigt.
+	 * <p>
+	 * Sobald alle Streams ein null-Paket empfangen haben oder mit abort beendet wurden, wird das Objekt aus der Hashtable entfernt. TBD name schlecht gewÃ¤hlt, da
+	 * im zweifelsfall die connection abgebaut wird, hier nicht nicht nur gezÃ¤hlt
 	 */
 	void countFinishedStream() {
 		_numberOfFinishedStreams++;
 
 		if(_numberOfFinishedStreams == _numberOfStreams) {
 			// Das Objekt aus der Hashtable entfernen, der Auftrag ist abgearbeitet und es werden keine Archivantworten
-			// mehr für diese Archivanfrage erwartet.
+			// mehr fÃ¼r diese Archivanfrage erwartet.
 			_streamedArchiveRequester.removeRequest(_archiveRequestID);
 		}
 	}
 
 	/**
-	 * Diese Methode benachrichtigt den StreamDemultiplexer, dass ein Fehler aufgetreten ist und das alle Streams beendet werden müssen. Jeder aufruf der
+	 * Diese Methode benachrichtigt den StreamDemultiplexer, dass ein Fehler aufgetreten ist und das alle Streams beendet werden mÃ¼ssen. Jeder aufruf der
 	 * take-Methode liefert eine entsprechende Exception.
 	 */
 	void killAllStreams() {
@@ -548,7 +554,7 @@ class Query implements ArchiveDataQueryResult {
 
 	private static class DirectorStreamDemultiplexer implements StreamDemultiplexerDirector {
 
-		/** Dieses Objekt wird benötigt um ihm das Ticket zu überreichen, dies wird dann verpackt und verschickt. */
+		/** Dieses Objekt wird benÃ¶tigt um ihm das Ticket zu Ã¼berreichen, dies wird dann verpackt und verschickt. */
 		private final StreamedArchiveRequester _streamedArchiveRequester;
 
 		private final ArchiveQueryID _archiveQueryID;
@@ -598,7 +604,7 @@ class Query implements ArchiveDataQueryResult {
 	}
 
 	/**
-	 * Die Rückgabe identifiziert eine Archivanfrage.
+	 * Die RÃ¼ckgabe identifiziert eine Archivanfrage.
 	 *
 	 * @return Eindeutige Identifikation einer Archivanfrage
 	 */

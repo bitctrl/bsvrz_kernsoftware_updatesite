@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -33,14 +39,14 @@ import java.util.List;
  * realisieren. Diese werden entweder als Konfigurationsdatensatz oder als eigene Datei gespeichert, je nach Implementierung
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13270 $
+ * @version $Revision$
  */
 public abstract class MutableSetStorage {
 
 	private SoftReference<List<MutableElement>> _elements = null;
 
 	/**
-	 * Entfernt überflüssige leere/ungültige Einträge am Ende der Liste der referenzierten Objekte
+	 * Entfernt Ã¼berflÃ¼ssige leere/ungÃ¼ltige EintrÃ¤ge am Ende der Liste der referenzierten Objekte
 	 *
 	 * @param mutableElements Liste mit allen elemente, wird modifiziert
 	 */
@@ -53,7 +59,7 @@ public abstract class MutableSetStorage {
 	}
 
 	/**
-	 * Fügt Objekte zu der Menge hinzu
+	 * FÃ¼gt Objekte zu der Menge hinzu
 	 *
 	 * @param addedElements     Objekte
 	 * @param simulationVariant Simulationsvariante
@@ -69,9 +75,9 @@ public abstract class MutableSetStorage {
 			if(systemObject != null) {
 				boolean added = false;
 
-				// Erste Lücke füllen, sofern vorhanden
+				// Erste LÃ¼cke fÃ¼llen, sofern vorhanden
 				for(; startIndex < mutableElements.size(); startIndex++) {
-					// StartIndex wird weiterverwendet, damit nicht für jedes eingefügte Element von
+					// StartIndex wird weiterverwendet, damit nicht fÃ¼r jedes eingefÃ¼gte Element von
 					// vorne gesucht wird
 					final MutableElement mutableElement = mutableElements.get(startIndex);
 					if(mutableElement.getObject() == null) {
@@ -84,7 +90,7 @@ public abstract class MutableSetStorage {
 					}
 				}
 				if(!added) {
-					// Falls keine Lücke da war, Element am Ende anfügen
+					// Falls keine LÃ¼cke da war, Element am Ende anfÃ¼gen
 					mutableElements.add(new MutableElement(systemObject, time, 0, simulationVariant));
 				}
 			}
@@ -93,7 +99,7 @@ public abstract class MutableSetStorage {
 	}
 
 	/**
-	 * Macht Objektreferenzen in der Menge ungültig
+	 * Macht Objektreferenzen in der Menge ungÃ¼ltig
 	 *
 	 * @param removedElements   Objekte, die nicht mehr in der Menge enthalten sein sollen
 	 * @param simulationVariant Simulationsvariante
@@ -103,7 +109,7 @@ public abstract class MutableSetStorage {
 		List<MutableElement> mutableElements = getMutableElements();
 		long time = System.currentTimeMillis();
 		for(MutableElement mutableElement : mutableElements) {
-			// da Elemente mehrfach in die Menge eingefügt und entfernt werden können, muss auf EndTime == 0 abgefragt werden
+			// da Elemente mehrfach in die Menge eingefÃ¼gt und entfernt werden kÃ¶nnen, muss auf EndTime == 0 abgefragt werden
 			if(removedElements.contains(mutableElement.getObject())
 					&& mutableElement.getSimulationVariant() == simulationVariant
 					&& mutableElement.getEndTime() == 0) {
@@ -114,10 +120,10 @@ public abstract class MutableSetStorage {
 	}
 
 	/**
-	 * Löscht Objekte eienr angegebenen Simulation permanent und vollständig aus dieser Menge (z. B. beim Beenden einer Simulation)
+	 * LÃ¶scht Objekte eienr angegebenen Simulation permanent und vollstÃ¤ndig aus dieser Menge (z. B. beim Beenden einer Simulation)
 	 *
 	 * @param simulationVariant Simulationsvariante
-	 * @return Liste mit gelöschten Objekten
+	 * @return Liste mit gelÃ¶schten Objekten
 	 * @throws ConfigurationChangeException
 	 */
 	public final synchronized List<SystemObject> deleteElements(short simulationVariant) throws ConfigurationChangeException {
@@ -143,7 +149,7 @@ public abstract class MutableSetStorage {
 	}
 
 	/**
-	 * Entfernt alle historischen (ungültigen) Elemente, die vor dem angegebenen Zeitstempel auf ungültig gesetzt wurden
+	 * Entfernt alle historischen (ungÃ¼ltigen) Elemente, die vor dem angegebenen Zeitstempel auf ungÃ¼ltig gesetzt wurden
 	 * @param deletionTime Zeitstempel analog zu System.currentTimeMillis()
 	 */
 	public final synchronized List<SystemObject> deleteElementsOlderThan(long deletionTime) throws ConfigurationChangeException {
@@ -170,27 +176,27 @@ public abstract class MutableSetStorage {
 
 	/**
 	 * Schreibt eine Menge von Mengenelementen in den dahinterliegenden Speicher (etweder Konfigurationsdaten oder externe Datei).
-	 * Die Reihenfolge bzw. der Index der Elemente entspricht dem neuesten Aufruf von readElements(). Es können aber
-	 * Objekte am Ende gelöscht und oder eingefügt werden.
+	 * Die Reihenfolge bzw. der Index der Elemente entspricht dem neuesten Aufruf von readElements(). Es kÃ¶nnen aber
+	 * Objekte am Ende gelÃ¶scht und oder eingefÃ¼gt werden.
 	 * @param mutableElements Liste mit zu schreibenen Elementen
 	 * @throws ConfigurationChangeException
 	 */
 	protected abstract void writeElements(final List<MutableElement> mutableElements) throws ConfigurationChangeException;
 
 	/**
-	 * Gibt alle bisher gespeicherten Elemente (auch ungültige/gelöschte) zurück. Die Elemente sollen in der Reihenfolge zurückgegeben
+	 * Gibt alle bisher gespeicherten Elemente (auch ungÃ¼ltige/gelÃ¶schte) zurÃ¼ck. Die Elemente sollen in der Reihenfolge zurÃ¼ckgegeben
 	 * werden, wie sie in der Datei stehen.
-	 * <p/>
-	 * Die zurückgebenene Liste wird vom Aufrufer ggf. modifiziert, darf also nicht von der implementierenden Klasse gecacht werden.
+	 * <p>
+	 * Die zurÃ¼ckgebenene Liste wird vom Aufrufer ggf. modifiziert, darf also nicht von der implementierenden Klasse gecacht werden.
 	 *
-	 * @return Liste mit allen Elementen des Sets (enthält Objektreferenz, Gültigkeit, Simulationsvariante)
+	 * @return Liste mit allen Elementen des Sets (enthÃ¤lt Objektreferenz, GÃ¼ltigkeit, Simulationsvariante)
 	 */
 	protected abstract List<MutableElement> readElements();
 
 	/**
-	 * Gibt alle aktuell enthaltenen Elemente zurück.
+	 * Gibt alle aktuell enthaltenen Elemente zurÃ¼ck.
 	 *
-	 * @return eine Liste von Elementen mit Zeitstempeln, die die Zugehörigkeitszeiträume repräsentieren
+	 * @return eine Liste von Elementen mit Zeitstempeln, die die ZugehÃ¶rigkeitszeitrÃ¤ume reprÃ¤sentieren
 	 */
 	public final List<MutableElement> getMutableElements() {
 		if(_elements != null) {
@@ -209,8 +215,8 @@ public abstract class MutableSetStorage {
 	}
 
 	/**
-	 * Repräsentiert ein Element der Menge mit dem Zeitstempel, ab dem das Element zur Menge gehört und dem Zeitstempel, ab dem das Element
-	 * nicht mehr zur Menge gehört.
+	 * ReprÃ¤sentiert ein Element der Menge mit dem Zeitstempel, ab dem das Element zur Menge gehÃ¶rt und dem Zeitstempel, ab dem das Element
+	 * nicht mehr zur Menge gehÃ¶rt.
 	 */
 	static class MutableElement implements MutableElementInterface {
 
@@ -222,26 +228,26 @@ public abstract class MutableSetStorage {
 		private SystemObject _object;
 
 		/**
-		 * Zeitstempel, seit dem das Element zur Menge gehört
+		 * Zeitstempel, seit dem das Element zur Menge gehÃ¶rt
 		 */
 		private long _startTime;
 
 		/**
-		 * Zeitstempel, seit dem das Element nicht mehr zur Menge gehört
+		 * Zeitstempel, seit dem das Element nicht mehr zur Menge gehÃ¶rt
 		 */
 		private long _endTime;
 
 		/**
-		 * Simulationsvariante, in welcher das Objekt zur Menge hinzugefügt wurde
+		 * Simulationsvariante, in welcher das Objekt zur Menge hinzugefÃ¼gt wurde
 		 */
 		private short _simulationVariant;
 
 		/**
-		 * Erzeugt ein Objekt für die dynamische Menge.
+		 * Erzeugt ein Objekt fÃ¼r die dynamische Menge.
 		 *
 		 * @param object            das System-Objekt
-		 * @param startTime         Zeitstempel, seit dem das Element zur Menge gehört
-		 * @param endTime           Zeitstempel, seit dem das Element nicht mehr zur Menge gehört
+		 * @param startTime         Zeitstempel, seit dem das Element zur Menge gehÃ¶rt
+		 * @param endTime           Zeitstempel, seit dem das Element nicht mehr zur Menge gehÃ¶rt
 		 * @param simulationVariant Ob das Objekt gespeichert wurde (false = Objekt muss beim Speichern neu geschrieben werden)
 		 */
 		public MutableElement(SystemObject object, long startTime, long endTime, short simulationVariant) {
@@ -252,7 +258,7 @@ public abstract class MutableSetStorage {
 		}
 
 		/**
-		 * Gibt das System-Objekt zurück.
+		 * Gibt das System-Objekt zurÃ¼ck.
 		 *
 		 * @return das System-Objekt
 		 */
@@ -266,9 +272,9 @@ public abstract class MutableSetStorage {
 		}
 
 		/**
-		 * Gibt den Zeitstempel zurück, der angibt, seit wann das Element zur Menge gehört.
+		 * Gibt den Zeitstempel zurÃ¼ck, der angibt, seit wann das Element zur Menge gehÃ¶rt.
 		 *
-		 * @return Zeitstempel, seit dem das Element zur Menge gehört
+		 * @return Zeitstempel, seit dem das Element zur Menge gehÃ¶rt
 		 */
 		@Override
 		public long getStartTime() {
@@ -280,9 +286,9 @@ public abstract class MutableSetStorage {
 		}
 
 		/**
-		 * Gibt den Zeitstempel zurück, der angibt, seit wann das Element nicht mehr zur Menge gehört.
+		 * Gibt den Zeitstempel zurÃ¼ck, der angibt, seit wann das Element nicht mehr zur Menge gehÃ¶rt.
 		 *
-		 * @return Zeitstempel, seit dem das Element nicht mehr zur Menge gehört
+		 * @return Zeitstempel, seit dem das Element nicht mehr zur Menge gehÃ¶rt
 		 */
 		@Override
 		public long getEndTime() {
@@ -290,18 +296,18 @@ public abstract class MutableSetStorage {
 		}
 
 		/**
-		 * Setzt den Zeitstempel, der angibt, seit wann das Element nicht mehr zur Menge gehört.
+		 * Setzt den Zeitstempel, der angibt, seit wann das Element nicht mehr zur Menge gehÃ¶rt.
 		 *
-		 * @param endTime Zeitstempel, seit dem das Element nicht mehr zur Menge gehört
+		 * @param endTime Zeitstempel, seit dem das Element nicht mehr zur Menge gehÃ¶rt
 		 */
 		public void setEndTime(long endTime) {
 			_endTime = endTime;
 		}
 
 		/**
-		 * Gibt die Simulationsvariante dieses Elements zurück, in der das Objekt dieser dynamischen Menge hinzugefügt wurde.
+		 * Gibt die Simulationsvariante dieses Elements zurÃ¼ck, in der das Objekt dieser dynamischen Menge hinzugefÃ¼gt wurde.
 		 *
-		 * @return die Simulationsvariante, in welcher das Objekt der Menge hinzugefügt wurde.
+		 * @return die Simulationsvariante, in welcher das Objekt der Menge hinzugefÃ¼gt wurde.
 		 */
 		@Override
 		public short getSimulationVariant() {

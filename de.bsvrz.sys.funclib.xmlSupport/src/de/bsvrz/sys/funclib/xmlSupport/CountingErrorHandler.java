@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.sys.funclib.xmlSupport.
  * 
  * de.bsvrz.sys.funclib.xmlSupport is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.xmlSupport is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.xmlSupport; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.xmlSupport; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.sys.funclib.xmlSupport;
 
@@ -26,11 +32,11 @@ import org.xml.sax.SAXException;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
- * Implementierung eines ErrorHandlers, der mit XML-Parsern benutzt werden kann, um evtl. auftretende Fehler beim Parsen einer XML-Datei zu z‰hlen und mit
+ * Implementierung eines ErrorHandlers, der mit XML-Parsern benutzt werden kann, um evtl. auftretende Fehler beim Parsen einer XML-Datei zu z√§hlen und mit
  * entsprechenden Debug-Ausgaben zu dokumentieren.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5009 $
+ * @version $Revision$
  */
 public class CountingErrorHandler implements ErrorHandler {
 	private static final Debug _debug = Debug.getLogger();
@@ -41,7 +47,7 @@ public class CountingErrorHandler implements ErrorHandler {
 
 	/**
 	 * Receive notification of a parser warning.
-	 * <p/>
+	 * <p>
 	 * <p>The default implementation does nothing.  Application writers
 	 * may override this method in a subclass to take specific actions
 	 * for each warning, such as inserting the message in a log file or
@@ -61,7 +67,7 @@ public class CountingErrorHandler implements ErrorHandler {
 
 	/**
 	 * Receive notification of a recoverable parser error.
-	 * <p/>
+	 * <p>
 	 * <p>The default implementation does nothing.  Application writers
 	 * may override this method in a subclass to take specific actions
 	 * for each error, such as inserting the message in a log file or
@@ -80,7 +86,7 @@ public class CountingErrorHandler implements ErrorHandler {
 
 	/**
 	 * Report a fatal XML parsing error.
-	 * <p/>
+	 * <p>
 	 * <p>The default implementation throws a SAXParseException.
 	 * Application writers may override this method in a subclass if
 	 * they need to take specific actions for each fatal error (such as

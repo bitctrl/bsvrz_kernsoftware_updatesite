@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.dataRepresentation;
@@ -33,14 +39,14 @@ import java.util.NoSuchElementException;
 
 /**
  * Diese abstrakte Klasse stellt eine Oberklasse von Datentypen dar. Es werden die Methoden des Interfaces <code>data</code> erstmalig implementiert. Je nach
- * Bedarf werden diese wieder in den Subklassen überschrieben.
+ * Bedarf werden diese wieder in den Subklassen Ã¼berschrieben.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13226 $
+ * @version $Revision$
  */
 public abstract class AbstractData implements Data {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	private static final DateFormat _absoluteMillisecondsFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss,SSS");
@@ -57,11 +63,11 @@ public abstract class AbstractData implements Data {
 	}
 
 	public Data createModifiableCopy() {
-		throw new IllegalStateException("getModifiableCopy(): Kopie kann nur von ganzen Datensätzen erzeugt werden, this: " + toString());
+		throw new IllegalStateException("getModifiableCopy(): Kopie kann nur von ganzen DatensÃ¤tzen erzeugt werden, this: " + toString());
 	}
 
 	public Data createUnmodifiableCopy() {
-		throw new IllegalStateException("getUnmodifiableCopy(): Kopie kann nur von ganzen Datensätzen erzeugt werden, this: " + toString());
+		throw new IllegalStateException("getUnmodifiableCopy(): Kopie kann nur von ganzen DatensÃ¤tzen erzeugt werden, this: " + toString());
 	}
 
 	public String toString() {
@@ -188,7 +194,7 @@ public abstract class AbstractData implements Data {
 		}
 
 		public Iterator<Data> iterator() {
-			throw new java.lang.UnsupportedOperationException("Über das Attribut " + getName() + " kann nicht iteriert werden");
+			throw new java.lang.UnsupportedOperationException("Ãœber das Attribut " + getName() + " kann nicht iteriert werden");
 		}
 	}
 
@@ -205,7 +211,7 @@ public abstract class AbstractData implements Data {
 
 		public boolean isDefined() {
 			// Es handelt sich um eine Liste oder ein Array, alle Elemente durchlaufen und
-			// ebenfalls prüfen.
+			// ebenfalls prÃ¼fen.
 			final Iterator iterator = iterator();
 
 			while(iterator.hasNext()) {
@@ -219,8 +225,8 @@ public abstract class AbstractData implements Data {
 
 		public void setToDefault() {
 			// Ist das Objekt ein Array, so muss:
-			// - bei Arrays mit variabler Länge die Länge auf 0 gesetzt werden
-			// - Arrays mit fester Länge werden auf die Länge gesetzt und die Elemente dann initialisiert
+			// - bei Arrays mit variabler LÃ¤nge die LÃ¤nge auf 0 gesetzt werden
+			// - Arrays mit fester LÃ¤nge werden auf die LÃ¤nge gesetzt und die Elemente dann initialisiert
 			if(isArray()) {
 				final Data.Array array = asArray();
 				if(array.isCountVariable()) {
@@ -231,7 +237,7 @@ public abstract class AbstractData implements Data {
 				}
 			}
 
-			// Sowohl bei Arrays als auch bei Listen müssen alle Elemente mit ihrem Defaultwert (oder undefiniert)
+			// Sowohl bei Arrays als auch bei Listen mÃ¼ssen alle Elemente mit ihrem Defaultwert (oder undefiniert)
 			// initialisiert werden.
 
 			final Iterator iterator = iterator();
@@ -353,7 +359,7 @@ public abstract class AbstractData implements Data {
 		}
 
 		public byte byteValue() {
-			throw new UnsupportedOperationException("Attribut  kann nicht im gewüschten Zahlentyp dargestellt werden");
+			throw new UnsupportedOperationException("Attribut  kann nicht im gewÃ¼schten Zahlentyp dargestellt werden");
 		}
 
 		public short shortValue() {
@@ -381,7 +387,7 @@ public abstract class AbstractData implements Data {
 		}
 
 		public void setState(IntegerValueState state) {
-			throw new UnsupportedOperationException("Beim Attribut sind keine Zustände erlaubt");
+			throw new UnsupportedOperationException("Beim Attribut sind keine ZustÃ¤nde erlaubt");
 		}
 
 		public void set(int value) {
@@ -397,7 +403,7 @@ public abstract class AbstractData implements Data {
 		}
 
 		public void set(double value) {
-			throw new UnsupportedOperationException("gewünschte Wertkonvertierung nicht erlaubt");
+			throw new UnsupportedOperationException("gewÃ¼nschte Wertkonvertierung nicht erlaubt");
 		}
 
 		public void setText(String text) {
@@ -422,8 +428,8 @@ public abstract class AbstractData implements Data {
 		protected abstract DataModel getDataModel();
 
 		/**
-		 * Liefert den Wert dieses Referenzattributs als Text zurück. Wenn das referenzierte Objekt eine Pid hat wird diese zurückgegeben, ansonsten wird die Id des
-		 * Objekts zurückgegeben.
+		 * Liefert den Wert dieses Referenzattributs als Text zurÃ¼ck. Wenn das referenzierte Objekt eine Pid hat wird diese zurÃ¼ckgegeben, ansonsten wird die Id des
+		 * Objekts zurÃ¼ckgegeben.
 		 *
 		 * @return pid oder id des referenzierten Objekts als Text.
 		 *
@@ -440,7 +446,7 @@ public abstract class AbstractData implements Data {
 				if(pid != null && !pid.equals("")) return pid;
 			}
 			catch(Exception e) {
-				//Fehler beim Lesen der pid -> weiter mit Rückgabe der id
+				//Fehler beim Lesen der pid -> weiter mit RÃ¼ckgabe der id
 			}
 			try {
 				return String.valueOf(getId());
@@ -452,9 +458,9 @@ public abstract class AbstractData implements Data {
 
 
 		/**
-		 * Liefert Zusatzinformationen zum Wert dieses Referenzattributs. Der zurückgelieferte Text ist als Ergänzung zum Rückgabewert der Methode {@link
-		 * #getValueText} zu verstehen. Das Ergebnis der Methode enthält abhängig vom Ergebnis der Methode {@link #getValueText} den konstanten Text "id" bzw. "pid"
-		 * und zusätzlich den Namen des referenzierten Objekts (wenn vorhanden).
+		 * Liefert Zusatzinformationen zum Wert dieses Referenzattributs. Der zurÃ¼ckgelieferte Text ist als ErgÃ¤nzung zum RÃ¼ckgabewert der Methode {@link
+		 * #getValueText} zu verstehen. Das Ergebnis der Methode enthÃ¤lt abhÃ¤ngig vom Ergebnis der Methode {@link #getValueText} den konstanten Text "id" bzw. "pid"
+		 * und zusÃ¤tzlich den Namen des referenzierten Objekts (wenn vorhanden).
 		 *
 		 * @return Text mit Zusatzinformation zum Wert dieses Referenzattributs.
 		 *
@@ -559,7 +565,7 @@ public abstract class AbstractData implements Data {
 				long id = getId();
 				if(id == 0) return null;
 				SystemObject object = getDataModel().getObject(id);
-				if(object == null) throw new IllegalStateException("Ungültiges Objekt mit id " + id);
+				if(object == null) throw new IllegalStateException("UngÃ¼ltiges Objekt mit id " + id);
 				return object;
 			}
 			catch(Exception e) {
@@ -575,7 +581,7 @@ public abstract class AbstractData implements Data {
 				ReferenceAttributeType referenceAttributeType = (ReferenceAttributeType) attributeType;
 				SystemObjectType referencedObjectType = referenceAttributeType.getReferencedObjectType();
 				if(referencedObjectType == null) {
-					// Es können beliebige Objekte referenziert werden
+					// Es kÃ¶nnen beliebige Objekte referenziert werden
 					return;
 				}
 				if(!object.isOfType(referencedObjectType)){
@@ -591,7 +597,7 @@ public abstract class AbstractData implements Data {
 				systemObject = datamodel.getObject(objectPid);
 				if(systemObject == null) {
 					if(tryToStorePid(objectPid)) {
-						_debug.warning("Eine optionale Referenz auf das Objekt mit der Pid '" + objectPid + "' konnte nicht aufgelöst werden");
+						_debug.warning("Eine optionale Referenz auf das Objekt mit der Pid '" + objectPid + "' konnte nicht aufgelÃ¶st werden");
 						return;
 					}
 					else {
@@ -741,7 +747,7 @@ public abstract class AbstractData implements Data {
 						millis += number;
 					}
 					else {
-						throw new IllegalArgumentException("Ungültige relative Zeitangabe: " + splitted[i]);
+						throw new IllegalArgumentException("UngÃ¼ltige relative Zeitangabe: " + splitted[i]);
 					}
 				}
 				else {
@@ -808,7 +814,7 @@ public abstract class AbstractData implements Data {
 				}
 			}
 			throw new IllegalArgumentException(
-					"Ungültig Zeitangabe '" + text + "' (Unterstützte Formate: 'dd.MM.yy HH:mm:ss,SSS', 'dd.MM.yy HH:mm:ss', 'dd.MM.yy HH:mm', 'dd.MM.yy')"
+					"UngÃ¼ltig Zeitangabe '" + text + "' (UnterstÃ¼tzte Formate: 'dd.MM.yy HH:mm:ss,SSS', 'dd.MM.yy HH:mm:ss', 'dd.MM.yy HH:mm', 'dd.MM.yy')"
 			);
 		}
 

@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main.simulation;
@@ -35,8 +41,8 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
- * Diese Klasse meldet sich als Quelle für die Attributgruppe "atg.simulationsStatusKonfiguration" an und stellt verschiedene Methoden zur Verfügung mit denen
- * festgelegte Datensätze verschickt werden können.
+ * Diese Klasse meldet sich als Quelle fÃ¼r die Attributgruppe "atg.simulationsStatusKonfiguration" an und stellt verschiedene Methoden zur VerfÃ¼gung mit denen
+ * festgelegte DatensÃ¤tze verschickt werden kÃ¶nnen.
  *
  * @author Achim Wullenkord (AW), Kappich Systemberatung
  * @version $Revision:5077 $ / $Date:2007-09-02 14:48:31 +0200 (So, 02 Sep 2007) $ / ($Author:rs $)
@@ -53,13 +59,13 @@ public class SourceSimulationStatus {
 
 	SystemObject _simulationObject;
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	boolean _subscribed = false;
 
 	/**
-	 * Erzeugt das Objekt und meldt sich als Sender für die Attributgruppe "atg.simulationsStatusKonfiguration" als Quelle an.
+	 * Erzeugt das Objekt und meldt sich als Sender fÃ¼r die Attributgruppe "atg.simulationsStatusKonfiguration" als Quelle an.
 	 *
 	 * @param connection        Verbidnung, auf der sich angemeldet wird
 	 * @param simulationObject  Objekt, mit dem der Sender angemeldet wird
@@ -103,11 +109,11 @@ public class SourceSimulationStatus {
 		}
 	}
 
-	/** Verschickt einen Datensatz, der den Empfänger mitteiler, dass das Simulationobjekt gelöscht werden kann (TPuK1-126). */
+	/** Verschickt einen Datensatz, der den EmpfÃ¤nger mitteiler, dass das Simulationobjekt gelÃ¶scht werden kann (TPuK1-126). */
 	public void sendDelete() throws SendSubscriptionNotConfirmed {
 		if(_subscribed) {
 			final Data data = _connection.createData(_dataDescription.getAttributeGroup());
-			data.getUnscaledValue("KonfigurationZustand").setText("gelöscht");
+			data.getUnscaledValue("KonfigurationZustand").setText("gelÃ¶scht");
 			sendData(data);
 		}
 	}

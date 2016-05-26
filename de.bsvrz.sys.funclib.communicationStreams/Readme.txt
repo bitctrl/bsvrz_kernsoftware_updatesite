@@ -1,3 +1,3 @@
-Nur aus Kompatibilitätsgründen erhalten, da eventuell andere Plugins Anhängigkeiten definieren.
+Nur aus KompatibilitÃ¤tsgrÃ¼nden erhalten, da eventuell andere Plugins AnhÃ¤ngigkeiten definieren.
 
 Die Quellen sind in de.bsvrz.dav.daf eingeflossen.

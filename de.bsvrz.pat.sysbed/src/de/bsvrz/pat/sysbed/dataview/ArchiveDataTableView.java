@@ -2,13 +2,13 @@
  * Copyright 2010 by Kappich Systemberatung, Aachen
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -17,8 +17,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.dataview;
@@ -28,20 +34,23 @@ import de.bsvrz.dav.daf.main.DataDescription;
 import de.bsvrz.dav.daf.main.config.Aspect;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.dav.daf.main.config.SystemObject;
+import de.bsvrz.pat.sysbed.main.GenericTestMonitorApplication;
 import de.bsvrz.pat.sysbed.plugins.api.settings.SettingsData;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Erstellt ein Fenster mit der {@link DataViewPanel OnlineTabelle}. Übergebene Daten werden angezeigt.
+ * Erstellt ein Fenster mit der {@link DataViewPanel OnlineTabelle}. Ãœbergebene Daten werden angezeigt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13173 $
+ * @version $Revision$
  * @see #addDataset(DataTableObject)
  */
 public class ArchiveDataTableView implements PrintFrame {
@@ -77,7 +86,7 @@ public class ArchiveDataTableView implements PrintFrame {
 		System.getProperties().put("apple.laf.useScreenMenuBar", "true");
 
 		_unsubscribingJFrame = new UnsubscribingJFrame(connection, settingsData.getObjects(), dataDescription);
-		final JFrame frame = new JFrame("Streambasierte Archivanfrage (Attributgruppe: " + _attributeGroup.getNameOrPidOrId() + ")");
+		final JFrame frame = new JFrame(GenericTestMonitorApplication.getTitle("Streambasierte Archivanfrage (Attributgruppe: " + _attributeGroup.getNameOrPidOrId() + ")", _connection));
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		Container pane = frame.getContentPane();
 		pane.setLayout(new BorderLayout());
@@ -100,8 +109,8 @@ public class ArchiveDataTableView implements PrintFrame {
 	}
 
 	/**
-	 * Ein Konstruktor, der nur das allernötigste liefert; er ist private, weil er nur in initPrintFrame zur Anwendung kommt. Das resultierende Objekt kennt keine
-	 * Dynamik und keine Änderung der Selektion.
+	 * Ein Konstruktor, der nur das allernÃ¶tigste liefert; er ist private, weil er nur in initPrintFrame zur Anwendung kommt. Das resultierende Objekt kennt keine
+	 * Dynamik und keine Ã„nderung der Selektion.
 	 *
 	 * @param connection        die Datenverteiler-Verbindung
 	 * @param attributeGroup    die Attributgruppe
@@ -136,7 +145,7 @@ public class ArchiveDataTableView implements PrintFrame {
 
 
 	/**
-	 * Fügt das DataTableObject am Ende an.
+	 * FÃ¼gt das DataTableObject am Ende an.
 	 *
 	 * @param dataTableObject
 	 */
@@ -145,7 +154,7 @@ public class ArchiveDataTableView implements PrintFrame {
 	}
 
 	/**
-	 * Gibt false zurück, wenn das Fenster geschlossen wurde.
+	 * Gibt false zurÃ¼ck, wenn das Fenster geschlossen wurde.
 	 *
 	 * @return
 	 */

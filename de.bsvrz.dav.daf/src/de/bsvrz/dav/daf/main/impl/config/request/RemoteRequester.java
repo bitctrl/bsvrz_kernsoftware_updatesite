@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config.request;
@@ -59,24 +65,24 @@ class RemoteRequester implements ConfigurationRequester {
 	private EncryptDecryptProcedure _encryptDecryptProcedure = EncryptDecryptProcedure.PBEWithMD5AndDES;
 
 	/**
-	 * Objekt, das Konfigurationsanfragen stellt und die Antwort der Konfigurations verarbeitet und zur Verfügung stellt. Es werden nur Konfigurationsanfragen
+	 * Objekt, das Konfigurationsanfragen stellt und die Antwort der Konfigurations verarbeitet und zur VerfÃ¼gung stellt. Es werden nur Konfigurationsanfragen
 	 * gestellt, die lesenden Zugriff auf die Konfigurations erlauben.
 	 */
 	SenderReceiverCommunication _senderReadConfigObjects;
 
 	/**
-	 * Objekt, das Konfigurationsanfragen erstellt und die Antwort der Konfiguration zur Verfügung stellt. Es werden Konfigurationsanfragen gestellt, die die
-	 * Konfigurations veranlassen Objekt in der Konfiguration zu ändern.
+	 * Objekt, das Konfigurationsanfragen erstellt und die Antwort der Konfiguration zur VerfÃ¼gung stellt. Es werden Konfigurationsanfragen gestellt, die die
+	 * Konfigurations veranlassen Objekt in der Konfiguration zu Ã¤ndern.
 	 */
 	SenderReceiverCommunication _senderWriteConfigObjects;
 
-	/** Objekt, das es ermöglicht die Benutzer einer Konfigurations zu verwalten (Benutzer erstellen, Passwörter ändern, usw.). */
+	/** Objekt, das es ermÃ¶glicht die Benutzer einer Konfigurations zu verwalten (Benutzer erstellen, PasswÃ¶rter Ã¤ndern, usw.). */
 	SenderReceiverCommunication _senderUserAdministration;
 
-	/** Beauftragt die Konfiguration bestimmte Bereiche zu modifizieren/prüfen */
+	/** Beauftragt die Konfiguration bestimmte Bereiche zu modifizieren/prÃ¼fen */
 	SenderReceiverCommunication _senderConfigAreaTask;
 
-	/** Verbidung zum Datenverteiler. Wird benötigt um die Verbindung zum Datenverteiler abzumelden, falls es bei Anfragen zu schweren Fehlern gekommen ist. */
+	/** Verbidung zum Datenverteiler. Wird benÃ¶tigt um die Verbindung zum Datenverteiler abzumelden, falls es bei Anfragen zu schweren Fehlern gekommen ist. */
 	protected final ClientDavInterface _connection;
 
 	private int _systemModelVersion;
@@ -95,12 +101,12 @@ class RemoteRequester implements ConfigurationRequester {
 		SystemObject localApplication = dataModel.getObject(localApplicationId);
 		try {
 
-			// Die Kanäle nehmen automatisch die richtige Simulationsvariante
+			// Die KanÃ¤le nehmen automatisch die richtige Simulationsvariante
 			_senderReadConfigObjects = new ConfigurationRequestReadData(_connection, _configurationAuthority, localApplication, _localConfiguration);
 
 			if(_localConfiguration instanceof UpdateDynamicObjects) {
 				// Aktiviert den Mechanismus mit dem Objekte auf dem aktuellen Stand gehalten werden, wenn die Konfiguration aktuelle
-				// Daten für Objekte verschickt (Namen, nicht mehr gültig ab, usw.)
+				// Daten fÃ¼r Objekte verschickt (Namen, nicht mehr gÃ¼ltig ab, usw.)
 				((ConfigurationRequestReadData)_senderReadConfigObjects).setDynamicObjectUpdater((UpdateDynamicObjects)_localConfiguration);
 			}
 
@@ -110,14 +116,14 @@ class RemoteRequester implements ConfigurationRequester {
 			_senderConfigAreaTask = new ConfigurationRequestArea(_connection, _configurationAuthority, localApplication);
 
 			
-			// Wenn inzwischen die Datenverteilerkommunikation terminiert wurde, bleibt der folgende Aufruf sendDummyQuery() hängen
+			// Wenn inzwischen die Datenverteilerkommunikation terminiert wurde, bleibt der folgende Aufruf sendDummyQuery() hÃ¤ngen
 			// da keine Sendesteuerung stattfindet un der ConnectionListener innerhalb von AbstractSenderReceiverCommunication
 			// nicht in jedem Fall die Trennugn der Verbindung angezeigt hat. (Anmeldung des Listeners erst in den
-			// Konstruktoren von "new ConfigurationRequestReadData" usw. Also hier nochmal prüfen, ob überhaupt verbunden.
+			// Konstruktoren von "new ConfigurationRequestReadData" usw. Also hier nochmal prÃ¼fen, ob Ã¼berhaupt verbunden.
 			if(dataModel instanceof DafDataModel) {
 				DafDataModel dafDataModel = (DafDataModel) dataModel;
 				// hier muss die Methode im DafDataModel benutzt werden, da beispielsweise 
-				// ClientDavConnection.isConnected() == false u.U. erst zu spät gesetzt wird
+				// ClientDavConnection.isConnected() == false u.U. erst zu spÃ¤t gesetzt wird
 				if(dafDataModel.isConnectionClosed()) {
 					throw new CommunicationError("Datenverteilerverbindung verloren");
 				}
@@ -138,7 +144,7 @@ class RemoteRequester implements ConfigurationRequester {
 		}
 		catch(OneSubscriptionPerSendData oneSubscriptionPerSendData) {
 			oneSubscriptionPerSendData.printStackTrace();
-			_debug.error("Anmeldung für Konfigurationsanfragen fehlgeschlagen", oneSubscriptionPerSendData);
+			_debug.error("Anmeldung fÃ¼r Konfigurationsanfragen fehlgeschlagen", oneSubscriptionPerSendData);
 			throw new RuntimeException(oneSubscriptionPerSendData);
 		}
 	}
@@ -192,15 +198,15 @@ class RemoteRequester implements ConfigurationRequester {
 	}
 
 	/**
-	 * Prüft ein Data ob es den richtigen Nachrichtentyp enthält. Ist das Data vom richtigen Typ, wird das Byte-Array des Data´s genommen und einem
-	 * Deserialisierer übergeben.
+	 * PrÃ¼ft ein Data ob es den richtigen Nachrichtentyp enthÃ¤lt. Ist das Data vom richtigen Typ, wird das Byte-Array des DataÅ½s genommen und einem
+	 * Deserialisierer Ã¼bergeben.
 	 *
 	 * @param reply               Antwort der Konfiguration auf einen Konfigurationsanfrage
 	 * @param expectedMessageType Typ des Telegramms, den die Konfiguration verschickt, wenn der Auftrag ohne Probleme bearbeitet werden konnte
 	 *
-	 * @return Objekt, über das Daten ausgelesen werden können
+	 * @return Objekt, Ã¼ber das Daten ausgelesen werden kÃ¶nnen
 	 *
-	 * @throws de.bsvrz.dav.daf.main.impl.config.request.RequestException Technischer Fehler auf Seiten der Konfiguration oder auf Seiten des Clients bei der Übertragung des Auftrags. Dieser Fehler ist
+	 * @throws de.bsvrz.dav.daf.main.impl.config.request.RequestException Technischer Fehler auf Seiten der Konfiguration oder auf Seiten des Clients bei der Ãœbertragung des Auftrags. Dieser Fehler ist
 	 *                          nicht zu beheben.
 	 */
 	Deserializer getMessageDeserializer(Data reply, String expectedMessageType) throws RequestException {
@@ -231,21 +237,21 @@ class RemoteRequester implements ConfigurationRequester {
 	}
 
 	/**
-	 * Prüft ein Data ob es den richtigen Nachrichtentyp enthält. Ist das Data vom richtigen Typ, wird das Byte-Array des Data´s genommen und einem
-	 * Deserialisierer übergeben.
+	 * PrÃ¼ft ein Data ob es den richtigen Nachrichtentyp enthÃ¤lt. Ist das Data vom richtigen Typ, wird das Byte-Array des DataÅ½s genommen und einem
+	 * Deserialisierer Ã¼bergeben.
 	 *
 	 * @param reply               Antwort der Konfiguration auf einen Konfigurationsanfrage
 	 * @param expectedMessageType Typ des Telegramms, den die Konfiguration verschickt, wenn der Auftrag ohne Probleme bearbeitet werden konnte
 	 *
-	 * @return Objekt, über das Daten ausgelesen werden können
+	 * @return Objekt, Ã¼ber das Daten ausgelesen werden kÃ¶nnen
 	 *
-	 * @throws de.bsvrz.dav.daf.main.impl.config.request.RequestException             Technischer Fehler auf Seiten der Konfiguration oder auf Seiten des Clients bei der Übertragung des Auftrags. Dieser
+	 * @throws de.bsvrz.dav.daf.main.impl.config.request.RequestException             Technischer Fehler auf Seiten der Konfiguration oder auf Seiten des Clients bei der Ãœbertragung des Auftrags. Dieser
 	 *                                      Fehler ist nicht zu beheben.
-	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException Der Auftrag wurde von der Konfiguration empfangen, allerdings weigert sich die Konfiguration die Änderung auszuführen.
-	 *                                      Dies kann unterschiedliche Gründe haben (mangelnde Rechte, Randbediengungen nicht erfüllt, usw.), aber in allen Fällen
-	 *                                      können weitere Anfragen gestellt werden.
-	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationTaskException   Der Auftrag wurde von der Konfiguration empfangen, allerdings konnte die Konfiguration den Auftrag nicht ausführen,
-	 *                                      weil bestimmte aufgabenspezifische Randbediengungen nicht erfüllt wurde.
+	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException Der Auftrag wurde von der Konfiguration empfangen, allerdings weigert sich die Konfiguration die Ã„nderung auszufÃ¼hren.
+	 *                                      Dies kann unterschiedliche GrÃ¼nde haben (mangelnde Rechte, Randbediengungen nicht erfÃ¼llt, usw.), aber in allen FÃ¤llen
+	 *                                      kÃ¶nnen weitere Anfragen gestellt werden.
+	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationTaskException   Der Auftrag wurde von der Konfiguration empfangen, allerdings konnte die Konfiguration den Auftrag nicht ausfÃ¼hren,
+	 *                                      weil bestimmte aufgabenspezifische Randbediengungen nicht erfÃ¼llt wurde.
 	 */
 	Deserializer getMessageDeserializer2(Data reply, String expectedMessageType)
 			throws RequestException, ConfigurationTaskException, ConfigurationChangeException {
@@ -270,29 +276,29 @@ class RemoteRequester implements ConfigurationRequester {
 				throw new RequestException("fehlerhafte FehlerAntwort empfangen");
 			}
 		}
-		else if("KonfigurationsänderungVerweigert".equals(messageType)) {
-			// Die Konfiguration verweigert nur den Auftrag, weil diverse Randbediengungen nicht erfüllt sind.
+		else if("KonfigurationsÃ¤nderungVerweigert".equals(messageType)) {
+			// Die Konfiguration verweigert nur den Auftrag, weil diverse Randbediengungen nicht erfÃ¼llt sind.
 			try {
 				final String reason = deserializer.readString();
 				throw new ConfigurationChangeException(reason);
 			}
 			catch(IOException e) {
-				// Die Antwort konnte nicht entschlüsselt werden
+				// Die Antwort konnte nicht entschlÃ¼sselt werden
 				throw new RequestException(
-						"Die Konfiguration verweigert die Ausführung einer Konfigurationsänderung, aber der Grund konnte nicht entschlüsselt werden: " + e
+						"Die Konfiguration verweigert die AusfÃ¼hrung einer KonfigurationsÃ¤nderung, aber der Grund konnte nicht entschlÃ¼sselt werden: " + e
 				);
 			}
 		}
 		else if("KonfigurationsauftragVerweigert".equals(messageType)) {
-			// Die Konfiguration verweigert nur den Auftrag, weil diverse Randbediengungen nicht erfüllt sind.
+			// Die Konfiguration verweigert nur den Auftrag, weil diverse Randbediengungen nicht erfÃ¼llt sind.
 			try {
 				final String reason = deserializer.readString();
 				throw new ConfigurationTaskException(reason);
 			}
 			catch(IOException e) {
-				// Die Antwort konnte nicht entschlüsselt werden
+				// Die Antwort konnte nicht entschlÃ¼sselt werden
 				throw new RequestException(
-						"Die Konfiguration verweigert die Ausführung eines Auftrages, aber der Grund konnte nicht entschlüsselt werden: " + e
+						"Die Konfiguration verweigert die AusfÃ¼hrung eines Auftrages, aber der Grund konnte nicht entschlÃ¼sselt werden: " + e
 				);
 			}
 		}
@@ -371,7 +377,7 @@ class RemoteRequester implements ConfigurationRequester {
 		Deserializer deserializer = getMessageDeserializer(reply, "DynamischeMengeAlleElementeAntwort");
 		SystemObject[] result = null;
 		try {
-			int size = deserializer.readInt();	// Anzahl der Elemente, die ausgelesen werden müssen
+			int size = deserializer.readInt();	// Anzahl der Elemente, die ausgelesen werden mÃ¼ssen
 			result = new SystemObject[size];
 			for(int i = 1; i <= size; i++) {
 				result[i - 1] = deserializer.readObjectReference(_localConfiguration);
@@ -388,7 +394,7 @@ class RemoteRequester implements ConfigurationRequester {
 	) throws RequestException, ConfigurationException, ConfigurationChangeException {
 		int requestIndex;
 
-		// Der erwartete Antworttyp. Bei der Änderung einer dynamischen Menge wird eine andere antwort verschickt als bei der Änderung einer
+		// Der erwartete Antworttyp. Bei der Ã„nderung einer dynamischen Menge wird eine andere antwort verschickt als bei der Ã„nderung einer
 		// konfigurierenden Menge.
 		final String replyType;
 		try {
@@ -417,15 +423,15 @@ class RemoteRequester implements ConfigurationRequester {
 				}
 			}
 
-			// Die Informationen für dynamische und konfigurierende Mengen sind gleich, der Pakettyp entscheidet
-			// darüber wie das Paket auf der Konfigurationsseite behandelt wird.
+			// Die Informationen fÃ¼r dynamische und konfigurierende Mengen sind gleich, der Pakettyp entscheidet
+			// darÃ¼ber wie das Paket auf der Konfigurationsseite behandelt wird.
 
 			if(set instanceof MutableSet) {
-				requestIndex = _senderWriteConfigObjects.sendData("DynamischeMengeElementeÄndern", byteArrayStream.toByteArray());
+				requestIndex = _senderWriteConfigObjects.sendData("DynamischeMengeElementeÃ„ndern", byteArrayStream.toByteArray());
 				replyType = "DynamischeMengeElementeAntwort";
 			}
 			else {
-				requestIndex = _senderWriteConfigObjects.sendData("KonfigurierendeMengeElementeÄndern", byteArrayStream.toByteArray());
+				requestIndex = _senderWriteConfigObjects.sendData("KonfigurierendeMengeElementeÃ„ndern", byteArrayStream.toByteArray());
 				replyType = "KonfigurierendeMengeElementeAntwort";
 			}
 		}
@@ -440,7 +446,7 @@ class RemoteRequester implements ConfigurationRequester {
 			deserializer = getMessageDeserializer2(reply, replyType);
 		}
 		catch(ConfigurationTaskException e) {
-			// Die TaskException wird in eine Change Exception umgewandelt, weil die Konfiguration sich weigert die Konfigurationsdaten zu ändern
+			// Die TaskException wird in eine Change Exception umgewandelt, weil die Konfiguration sich weigert die Konfigurationsdaten zu Ã¤ndern
 			throw new ConfigurationChangeException(e);
 		}
 		try {
@@ -463,7 +469,7 @@ class RemoteRequester implements ConfigurationRequester {
 			serializer.writeObjectReference(set);
 			serializer.writeLong(time);
 
-			// Das Senderobjekt kümmert sich um die Antworten auf die Anmeldung und benachrichtigt die Objekte
+			// Das Senderobjekt kÃ¼mmert sich um die Antworten auf die Anmeldung und benachrichtigt die Objekte
 			_senderReadConfigObjects.sendData("DynamischeMengeBeobachterAnmelden", byteArrayStream.toByteArray(), 0);
 
 		}
@@ -500,7 +506,7 @@ class RemoteRequester implements ConfigurationRequester {
 			serializer.writeObjectReference((SystemObject)mutableCollection);
 			serializer.writeShort(simVariant);
 
-			// Das Senderobjekt kümmert sich um die Antworten auf die Anmeldung und benachrichtigt die Objekte
+			// Das Senderobjekt kÃ¼mmert sich um die Antworten auf die Anmeldung und benachrichtigt die Objekte
 			requestIndex = _senderReadConfigObjects.sendData("DynamischeKollektionAnmeldung", byteArrayStream.toByteArray());
 		}
 		catch(Exception ex) {
@@ -535,7 +541,7 @@ class RemoteRequester implements ConfigurationRequester {
 			serializer.writeObjectReference((SystemObject)mutableCollection);
 			serializer.writeShort(simVariant);
 
-			// Das Senderobjekt kümmert sich um die Antworten auf die Anmeldung und benachrichtigt die Objekte
+			// Das Senderobjekt kÃ¼mmert sich um die Antworten auf die Anmeldung und benachrichtigt die Objekte
 			_senderReadConfigObjects.sendData("DynamischeKollektionAbmeldung", byteArrayStream.toByteArray(), 0);
 		}
 		catch(SendSubscriptionNotConfirmed e) {
@@ -553,7 +559,7 @@ class RemoteRequester implements ConfigurationRequester {
 
 	public int subscribeConfigurationCommunicationChanges(final SystemObject object) throws RequestException {
 		final int requestIndex;
-		ensureSystemModellVersion(19, "Anmeldung auf Änderungen des Kommunikationsstatus kann nicht durchgeführt werden");
+		ensureSystemModellVersion(19, "Anmeldung auf Ã„nderungen des Kommunikationsstatus kann nicht durchgefÃ¼hrt werden");
 		try {
 			ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream(10);
 			Serializer serializer = SerializingFactory.createSerializer(byteArrayStream);
@@ -568,7 +574,7 @@ class RemoteRequester implements ConfigurationRequester {
 
 		Data reply = _senderReadConfigObjects.waitForReply(requestIndex);
 		Deserializer deserializer = null;
-		deserializer = getMessageDeserializer(reply, "KommunikationszustandRückmeldung");
+		deserializer = getMessageDeserializer(reply, "KommunikationszustandRÃ¼ckmeldung");
 		try {
 			final SystemObject receivedSystemObject = deserializer.readObjectReference(_localConfiguration);
 			final int communicationState= deserializer.readByte();
@@ -580,7 +586,7 @@ class RemoteRequester implements ConfigurationRequester {
 	}
 
 	public void unsubscribeConfigurationCommunicationChanges(final SystemObject object) throws RequestException {
-		ensureSystemModellVersion(19, "Abmeldung auf Änderungen des Kommunikationsstatus kann nicht durchgeführt werden");
+		ensureSystemModellVersion(19, "Abmeldung auf Ã„nderungen des Kommunikationsstatus kann nicht durchgefÃ¼hrt werden");
 		try {
 			ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream(10);
 			Serializer serializer = SerializingFactory.createSerializer(byteArrayStream);
@@ -603,13 +609,13 @@ class RemoteRequester implements ConfigurationRequester {
 	}
 
 	/**
-	 * Liefert für die angegebenen Systemobjekte jeweils einen konfigurierenden Datensatz der angegebenen Attributgruppenverwendung zurück.
+	 * Liefert fÃ¼r die angegebenen Systemobjekte jeweils einen konfigurierenden Datensatz der angegebenen Attributgruppenverwendung zurÃ¼ck.
 	 *
-	 * @param systemObject        Array mit Systemobjekten für die Datensätze abgefragt werden sollen.
+	 * @param systemObject        Array mit Systemobjekten fÃ¼r die DatensÃ¤tze abgefragt werden sollen.
 	 * @param attributeGroupUsage Attributgruppenverwendung, die Attributgruppe und Aspekt des Datensatzes festlegt.
 	 *
-	 * @return Array das für jedes angefragte Systemobjekt einen entsprechenden konfigurierenden Datensatz enthält. Ein Datensatz ist entweder ein Byte-Array das
-	 *         mit der Serialisiererversion 2 erzeugt wurde, oder null, wenn für das jeweilige Systemobjekt kein Datensatz existiert.
+	 * @return Array das fÃ¼r jedes angefragte Systemobjekt einen entsprechenden konfigurierenden Datensatz enthÃ¤lt. Ein Datensatz ist entweder ein Byte-Array das
+	 *         mit der Serialisiererversion 2 erzeugt wurde, oder null, wenn fÃ¼r das jeweilige Systemobjekt kein Datensatz existiert.
 	 *
 	 * @throws de.bsvrz.dav.daf.main.impl.config.request.RequestException Wenn bei der Kommunikation mit der Konfiguration Fehler aufgetreten sind.
 	 * @see de.bsvrz.sys.funclib.dataSerializer.SerializingFactory
@@ -662,9 +668,9 @@ class RemoteRequester implements ConfigurationRequester {
 			// Die Daten werden in folgender Reihenfolge geschrieben:
 			// Id der Attributgruppenverwendung, long
 			// Id des Systemobjekts, long
-			// Länge des konfigurienden Datensatzes, int (Länge 0 wird auf der Gegenseite als <code>null</code> interpretiert und führt zum löschen
+			// LÃ¤nge des konfigurienden Datensatzes, int (LÃ¤nge 0 wird auf der Gegenseite als <code>null</code> interpretiert und fÃ¼hrt zum lÃ¶schen
 			// des Datensatzes)
-			// Wenn die Länge des Byte-Arrays größer 0 ist:
+			// Wenn die LÃ¤nge des Byte-Arrays grÃ¶ÃŸer 0 ist:
 			// Datensatz als Byte-Array
 
 			serializer.writeLong(attributeGroupUsage.getId());
@@ -686,26 +692,26 @@ class RemoteRequester implements ConfigurationRequester {
 		// Auf die Antwort warten
 		final Data reply = _senderWriteConfigObjects.waitForReply(requestIndex);
 		// Antwort erhalten - wird jetzt ausgelesen.
-		// Nur der Fehlerfall ist von Interesse. Wurde alles korrekt ausgeführt, wird die Antwort ignoriert.
+		// Nur der Fehlerfall ist von Interesse. Wurde alles korrekt ausgefÃ¼hrt, wird die Antwort ignoriert.
 		// Bei einem Fehler wird die entsprechende Exception geworfen.
 		try {
 			final Deserializer deserializer = getMessageDeserializer2(reply, "KonfigurierendenDatensatzFestlegenAntwort");
 		}
 		catch(ConfigurationTaskException e) {
-			// Diese Exception kann nicht geworfen werden. Da die Konfiguration mit einer ChangedException ablehnen müßte.
-			_debug.error("Unerwarteter Fehler beim Schreiben von konfigurierenden Datensätzen", e);
+			// Diese Exception kann nicht geworfen werden. Da die Konfiguration mit einer ChangedException ablehnen mÃ¼ÃŸte.
+			_debug.error("Unerwarteter Fehler beim Schreiben von konfigurierenden DatensÃ¤tzen", e);
 			throw new ConfigurationChangeException(e);
 		}
 	}
 
 	/**
-	 * Diese Methode verschickt ein Telegramm vom Typ "AuftragBenutzerverwaltung" und wartet anschließend auf die Antwort.
+	 * Diese Methode verschickt ein Telegramm vom Typ "AuftragBenutzerverwaltung" und wartet anschlieÃŸend auf die Antwort.
 	 *
 	 * @param message Nachricht, die verschickt werden soll
 	 *
-	 * @return Statusmeldung oder Antwort der Benutzerverwaltung auf die Anfrage. -1 falls die Anfrage keinen Rückgabewert liefert.
+	 * @return Statusmeldung oder Antwort der Benutzerverwaltung auf die Anfrage. -1 falls die Anfrage keinen RÃ¼ckgabewert liefert.
 	 * 
-	 * @throws de.bsvrz.dav.daf.main.impl.config.request.RequestException Fehler bei der Bearbeitung des Telegramms (Der Benutzer hatte nicht die nötigen Rechte diesen Auftrag zu erteilen, usw.)
+	 * @throws de.bsvrz.dav.daf.main.impl.config.request.RequestException Fehler bei der Bearbeitung des Telegramms (Der Benutzer hatte nicht die nÃ¶tigen Rechte diesen Auftrag zu erteilen, usw.)
 	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationTaskException Fehler bei Bearbeitung des Auftrags auf Konfigurationsseite
 	 */
 	private int sendUserAdministrationTask(final byte[] message) throws RequestException, ConfigurationTaskException {
@@ -727,14 +733,14 @@ class RemoteRequester implements ConfigurationRequester {
 			throw new RequestException(e);
 		}
 		Data reply = _senderUserAdministration.waitForReply(requestIndex);
-		// Diese Methode wirft eine Exception, wenn der Auftrag nicht ausgeführt werden konnte.
-		// Die Antwort (ein Integer), ist für bestimmte Anfragen von Interesse und wird zurückgegeben
+		// Diese Methode wirft eine Exception, wenn der Auftrag nicht ausgefÃ¼hrt werden konnte.
+		// Die Antwort (ein Integer), ist fÃ¼r bestimmte Anfragen von Interesse und wird zurÃ¼ckgegeben
 		try {
 			return getMessageDeserializer2(reply, "AuftragBenutzerverwaltungAntwort").readInt();
 		}
 		catch(IOException e) {
-			// Falls readInt fehlschlägt, sendet die Konfiguration wohl ein leeres Datenpaket als Antwort. Daraus lässt sich schließen,
-			// dass diese noch keine Antworten auf Benutzerverwaltungsaufträge unterstützt und der Rückgabewert daher auf -1 gesetzt werden kann.
+			// Falls readInt fehlschlÃ¤gt, sendet die Konfiguration wohl ein leeres Datenpaket als Antwort. Daraus lÃ¤sst sich schlieÃŸen,
+			// dass diese noch keine Antworten auf BenutzerverwaltungsauftrÃ¤ge unterstÃ¼tzt und der RÃ¼ckgabewert daher auf -1 gesetzt werden kann.
 			return -1;
 		}
 		// Andere Exceptions an aufrufende Funktion weitergeben
@@ -754,12 +760,12 @@ class RemoteRequester implements ConfigurationRequester {
 			throws ConfigurationTaskException {
 
 		try {
-			// Es wird ein Serializer zum serialisieren der übergebenen Parameter benötigt
+			// Es wird ein Serializer zum serialisieren der Ã¼bergebenen Parameter benÃ¶tigt
 			final ByteArrayOutputStream parameters = new ByteArrayOutputStream();
 			final Serializer serializerParameters = SerializingFactory.createSerializer(parameters);
 			serializerParameters.writeString(username);
 			serializerParameters.writeString(singleServingPassword);
-			// Verschlüsselter Auftrag
+			// VerschlÃ¼sselter Auftrag
 			final byte[] encryptedMessage = createTelegramByteArray(1, serializerParameters.getVersion(), parameters.toByteArray(), ordererPassword);
 
 			final ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
@@ -768,10 +774,10 @@ class RemoteRequester implements ConfigurationRequester {
 			// Auftraggeber in Klarschrift
 			serializer.writeString(orderer);
 
-			// Benutztes Verschlüsselungsverfahren in Klarschrift
+			// Benutztes VerschlÃ¼sselungsverfahren in Klarschrift
 			serializer.writeString(_encryptDecryptProcedure.getName());
 
-			// Der verschlüsselte Text
+			// Der verschlÃ¼sselte Text
 			serializer.writeInt(encryptedMessage.length);
 			serializer.writeBytes(encryptedMessage);
 			// Daten verschicken und auf Antwort warten
@@ -779,28 +785,28 @@ class RemoteRequester implements ConfigurationRequester {
 		}
 		catch(IOException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ändern von Einmalpasswörtern", e);
+			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ã„ndern von EinmalpasswÃ¶rtern", e);
 			closeConnectionAndThrowException(e);
 		}
 		catch(RequestException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Senden der Konfigurationsanfrage zum Ändern von Einmalpasswörtern", e);
+			_debug.error("Fehler beim Senden der Konfigurationsanfrage zum Ã„ndern von EinmalpasswÃ¶rtern", e);
 			closeConnectionAndThrowException(e);
 		}
 		catch(NoSuchVersionException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ändern von Einmalpasswörtern", e);
+			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ã„ndern von EinmalpasswÃ¶rtern", e);
 			closeConnectionAndThrowException(e);
 		}
 	}
 
 	public int getSingleServingPasswordCount(final String orderer, final String ordererPassword, final String username) throws ConfigurationTaskException {
 		try {
-			// Es wird ein Serializer zum serialisieren der übergebenen Parameter benötigt
+			// Es wird ein Serializer zum serialisieren der Ã¼bergebenen Parameter benÃ¶tigt
 			final ByteArrayOutputStream parameters = new ByteArrayOutputStream();
 			final Serializer serializerParameters = SerializingFactory.createSerializer(parameters);
 			serializerParameters.writeString(username);
-			// Verschlüsselter Auftrag
+			// VerschlÃ¼sselter Auftrag
 			final byte[] encryptedMessage = createTelegramByteArray(8, serializerParameters.getVersion(), parameters.toByteArray(), ordererPassword);
 
 			final ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
@@ -809,10 +815,10 @@ class RemoteRequester implements ConfigurationRequester {
 			// Auftraggeber in Klarschrift
 			serializer.writeString(orderer);
 
-			// Benutztes Verschlüsselungsverfahren in Klarschrift
+			// Benutztes VerschlÃ¼sselungsverfahren in Klarschrift
 			serializer.writeString(_encryptDecryptProcedure.getName());
 
-			// Der verschlüsselte Text
+			// Der verschlÃ¼sselte Text
 			serializer.writeInt(encryptedMessage.length);
 			serializer.writeBytes(encryptedMessage);
 			// Daten verschicken und auf Antwort warten
@@ -820,17 +826,17 @@ class RemoteRequester implements ConfigurationRequester {
 		}
 		catch(IOException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ändern von Einmalpasswörtern", e);
+			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ã„ndern von EinmalpasswÃ¶rtern", e);
 			closeConnectionAndThrowException(e);
 		}
 		catch(RequestException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Senden der Konfigurationsanfrage zum Ändern von Einmalpasswörtern", e);
+			_debug.error("Fehler beim Senden der Konfigurationsanfrage zum Ã„ndern von EinmalpasswÃ¶rtern", e);
 			closeConnectionAndThrowException(e);
 		}
 		catch(NoSuchVersionException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ändern von Einmalpasswörtern", e);
+			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ã„ndern von EinmalpasswÃ¶rtern", e);
 			closeConnectionAndThrowException(e);
 		}
 		return -1;
@@ -838,11 +844,11 @@ class RemoteRequester implements ConfigurationRequester {
 
 	public void clearSingleServingPasswords(final String orderer, final String ordererPassword, final String username) throws ConfigurationTaskException {
 		try {
-			// Es wird ein Serializer zum serialisieren der übergebenen Parameter benötigt
+			// Es wird ein Serializer zum serialisieren der Ã¼bergebenen Parameter benÃ¶tigt
 			final ByteArrayOutputStream parameters = new ByteArrayOutputStream();
 			final Serializer serializerParameters = SerializingFactory.createSerializer(parameters);
 			serializerParameters.writeString(username);
-			// Verschlüsselter Auftrag
+			// VerschlÃ¼sselter Auftrag
 			final byte[] encryptedMessage = createTelegramByteArray(6, serializerParameters.getVersion(), parameters.toByteArray(), ordererPassword);
 
 			final ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
@@ -851,10 +857,10 @@ class RemoteRequester implements ConfigurationRequester {
 			// Auftraggeber in Klarschrift
 			serializer.writeString(orderer);
 
-			// Benutztes Verschlüsselungsverfahren in Klarschrift
+			// Benutztes VerschlÃ¼sselungsverfahren in Klarschrift
 			serializer.writeString(_encryptDecryptProcedure.getName());
 
-			// Der verschlüsselte Text
+			// Der verschlÃ¼sselte Text
 			serializer.writeInt(encryptedMessage.length);
 			serializer.writeBytes(encryptedMessage);
 			// Daten verschicken und auf Antwort warten
@@ -862,17 +868,17 @@ class RemoteRequester implements ConfigurationRequester {
 		}
 		catch(IOException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ändern von Einmalpasswörtern", e);
+			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ã„ndern von EinmalpasswÃ¶rtern", e);
 			closeConnectionAndThrowException(e);
 		}
 		catch(RequestException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Senden der Konfigurationsanfrage zum Ändern von Einmalpasswörtern", e);
+			_debug.error("Fehler beim Senden der Konfigurationsanfrage zum Ã„ndern von EinmalpasswÃ¶rtern", e);
 			closeConnectionAndThrowException(e);
 		}
 		catch(NoSuchVersionException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ändern von Einmalpasswörtern", e);
+			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ã„ndern von EinmalpasswÃ¶rtern", e);
 			closeConnectionAndThrowException(e);
 		}
 	}
@@ -887,7 +893,7 @@ class RemoteRequester implements ConfigurationRequester {
 			String pidConfigurationArea
 	) throws ConfigurationTaskException {
 		try {
-			// Es wird ein Serializer zum serialisieren der übergebenen Parameter benötigt
+			// Es wird ein Serializer zum serialisieren der Ã¼bergebenen Parameter benÃ¶tigt
 			final ByteArrayOutputStream parameters = new ByteArrayOutputStream();
 			final Serializer serializerParameters = SerializingFactory.createSerializer(parameters);
 			serializerParameters.writeString(newUsername);
@@ -895,7 +901,7 @@ class RemoteRequester implements ConfigurationRequester {
 			serializerParameters.writeString(newPassword);
 			serializerParameters.writeBoolean(adminRights);
 			serializerParameters.writeString(pidConfigurationArea);
-			// Verschlüsselter Auftrag
+			// VerschlÃ¼sselter Auftrag
 			final byte[] encryptedMessage = createTelegramByteArray(2, serializerParameters.getVersion(), parameters.toByteArray(), ordererPassword);
 
 			final ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
@@ -904,10 +910,10 @@ class RemoteRequester implements ConfigurationRequester {
 			// Auftraggeber in Klarschrift
 			serializer.writeString(orderer);
 
-			// Benutztes Verschlüsselungsverfahren in Klarschrift
+			// Benutztes VerschlÃ¼sselungsverfahren in Klarschrift
 			serializer.writeString(_encryptDecryptProcedure.getName());
 
-			// Der verschlüsselte Text
+			// Der verschlÃ¼sselte Text
 			serializer.writeInt(encryptedMessage.length);
 			serializer.writeBytes(encryptedMessage);
 
@@ -933,11 +939,11 @@ class RemoteRequester implements ConfigurationRequester {
 
 	public void deleteUser(final String orderer, final String ordererPassword, final String userToDelete) throws ConfigurationTaskException {
 		try {
-			// Es wird ein Serializer zum serialisieren der übergebenen Parameter benötigt
+			// Es wird ein Serializer zum serialisieren der Ã¼bergebenen Parameter benÃ¶tigt
 			final ByteArrayOutputStream parameters = new ByteArrayOutputStream();
 			final Serializer serializerParameters = SerializingFactory.createSerializer(parameters);
 			serializerParameters.writeString(userToDelete);
-			// Verschlüsselter Auftrag
+			// VerschlÃ¼sselter Auftrag
 			final byte[] encryptedMessage = createTelegramByteArray(5, serializerParameters.getVersion(), parameters.toByteArray(), ordererPassword);
 
 			final ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
@@ -946,10 +952,10 @@ class RemoteRequester implements ConfigurationRequester {
 			// Auftraggeber in Klarschrift
 			serializer.writeString(orderer);
 
-			// Benutztes Verschlüsselungsverfahren in Klarschrift
+			// Benutztes VerschlÃ¼sselungsverfahren in Klarschrift
 			serializer.writeString(_encryptDecryptProcedure.getName());
 
-			// Der verschlüsselte Text
+			// Der verschlÃ¼sselte Text
 			serializer.writeInt(encryptedMessage.length);
 			serializer.writeBytes(encryptedMessage);
 			// Daten verschicken und auf Antwort warten
@@ -957,28 +963,28 @@ class RemoteRequester implements ConfigurationRequester {
 		}
 		catch(IOException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ändern von Einmalpasswörtern", e);
+			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ã„ndern von EinmalpasswÃ¶rtern", e);
 			closeConnectionAndThrowException(e);
 		}
 		catch(RequestException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Senden der Konfigurationsanfrage zum Ändern von Einmalpasswörtern", e);
+			_debug.error("Fehler beim Senden der Konfigurationsanfrage zum Ã„ndern von EinmalpasswÃ¶rtern", e);
 			closeConnectionAndThrowException(e);
 		}
 		catch(NoSuchVersionException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ändern von Einmalpasswörtern", e);
+			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ã„ndern von EinmalpasswÃ¶rtern", e);
 			closeConnectionAndThrowException(e);
 		}
 	}
 
 	public boolean isUserAdmin(final String orderer, final String ordererPassword, final String username) throws ConfigurationTaskException {
 		try {
-			// Es wird ein Serializer zum serialisieren der übergebenen Parameter benötigt
+			// Es wird ein Serializer zum serialisieren der Ã¼bergebenen Parameter benÃ¶tigt
 			final ByteArrayOutputStream parameters = new ByteArrayOutputStream();
 			final Serializer serializerParameters = SerializingFactory.createSerializer(parameters);
 			serializerParameters.writeString(username);
-			// Verschlüsselter Auftrag
+			// VerschlÃ¼sselter Auftrag
 			final byte[] encryptedMessage = createTelegramByteArray(7, serializerParameters.getVersion(), parameters.toByteArray(), ordererPassword);
 
 			final ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
@@ -987,10 +993,10 @@ class RemoteRequester implements ConfigurationRequester {
 			// Auftraggeber in Klarschrift
 			serializer.writeString(orderer);
 
-			// Benutztes Verschlüsselungsverfahren in Klarschrift
+			// Benutztes VerschlÃ¼sselungsverfahren in Klarschrift
 			serializer.writeString(_encryptDecryptProcedure.getName());
 
-			// Der verschlüsselte Text
+			// Der verschlÃ¼sselte Text
 			serializer.writeInt(encryptedMessage.length);
 			serializer.writeBytes(encryptedMessage);
 			// Daten verschicken und auf Antwort warten
@@ -998,17 +1004,17 @@ class RemoteRequester implements ConfigurationRequester {
 		}
 		catch(IOException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ändern von Einmalpasswörtern", e);
+			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ã„ndern von EinmalpasswÃ¶rtern", e);
 			closeConnectionAndThrowException(e);
 		}
 		catch(RequestException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Senden der Konfigurationsanfrage zum Ändern von Einmalpasswörtern", e);
+			_debug.error("Fehler beim Senden der Konfigurationsanfrage zum Ã„ndern von EinmalpasswÃ¶rtern", e);
 			closeConnectionAndThrowException(e);
 		}
 		catch(NoSuchVersionException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ändern von Einmalpasswörtern", e);
+			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ã„ndern von EinmalpasswÃ¶rtern", e);
 			closeConnectionAndThrowException(e);
 		}
 		return false; //Sollte nicht erreicht werden
@@ -1016,11 +1022,11 @@ class RemoteRequester implements ConfigurationRequester {
 
 	public boolean isUserValid(final String orderer, final String ordererPassword, final String username) throws ConfigurationTaskException {
 		try {
-			// Es wird ein Serializer zum serialisieren der übergebenen Parameter benötigt
+			// Es wird ein Serializer zum serialisieren der Ã¼bergebenen Parameter benÃ¶tigt
 			final ByteArrayOutputStream parameters = new ByteArrayOutputStream();
 			final Serializer serializerParameters = SerializingFactory.createSerializer(parameters);
 			serializerParameters.writeString(username);
-			// Verschlüsselter Auftrag
+			// VerschlÃ¼sselter Auftrag
 			final byte[] encryptedMessage = createTelegramByteArray(10, serializerParameters.getVersion(), parameters.toByteArray(), ordererPassword);
 
 			final ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
@@ -1029,10 +1035,10 @@ class RemoteRequester implements ConfigurationRequester {
 			// Auftraggeber in Klarschrift
 			serializer.writeString(orderer);
 
-			// Benutztes Verschlüsselungsverfahren in Klarschrift
+			// Benutztes VerschlÃ¼sselungsverfahren in Klarschrift
 			serializer.writeString(_encryptDecryptProcedure.getName());
 
-			// Der verschlüsselte Text
+			// Der verschlÃ¼sselte Text
 			serializer.writeInt(encryptedMessage.length);
 			serializer.writeBytes(encryptedMessage);
 			// Daten verschicken und auf Antwort warten
@@ -1040,17 +1046,17 @@ class RemoteRequester implements ConfigurationRequester {
 		}
 		catch(IOException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ändern von Einmalpasswörtern", e);
+			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ã„ndern von EinmalpasswÃ¶rtern", e);
 			closeConnectionAndThrowException(e);
 		}
 		catch(RequestException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Senden der Konfigurationsanfrage zum Ändern von Einmalpasswörtern", e);
+			_debug.error("Fehler beim Senden der Konfigurationsanfrage zum Ã„ndern von EinmalpasswÃ¶rtern", e);
 			closeConnectionAndThrowException(e);
 		}
 		catch(NoSuchVersionException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ändern von Einmalpasswörtern", e);
+			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ã„ndern von EinmalpasswÃ¶rtern", e);
 			closeConnectionAndThrowException(e);
 		}
 		return false; //Sollte nicht erreicht werden
@@ -1068,12 +1074,12 @@ class RemoteRequester implements ConfigurationRequester {
 		try {
 
 			if(data == null || data.size() == 0) {
-				//Wenn keine Konfigurationsdaten mitgeliefert werden sollen, createNewUser-Methode aufrufen, die diese nicht mitüberträgt.
+				//Wenn keine Konfigurationsdaten mitgeliefert werden sollen, createNewUser-Methode aufrufen, die diese nicht mitÃ¼bertrÃ¤gt.
 				createNewUser(orderer, ordererPassword, newUsername, newUserPid, newPassword, adminRights, pidConfigurationArea);
 				return;
 			}
 
-			// Es wird ein Serializer zum serialisieren der übergebenen Parameter benötigt
+			// Es wird ein Serializer zum serialisieren der Ã¼bergebenen Parameter benÃ¶tigt
 			final ByteArrayOutputStream parameters = new ByteArrayOutputStream();
 			final Serializer serializerParameters = SerializingFactory.createSerializer(parameters);
 			serializerParameters.writeString(newUsername);
@@ -1081,14 +1087,14 @@ class RemoteRequester implements ConfigurationRequester {
 			serializerParameters.writeString(newPassword);
 			serializerParameters.writeBoolean(adminRights);
 			serializerParameters.writeString(pidConfigurationArea);
-			//DataAndATGUsageInformation serialisieren, es wurde am Anfang der Funktion geprüft, ob data null ist.
+			//DataAndATGUsageInformation serialisieren, es wurde am Anfang der Funktion geprÃ¼ft, ob data null ist.
 			serializerParameters.writeInt(data.size());
 			for(DataAndATGUsageInformation dataAndATGUsageInformation : data) {
 				serializerParameters.writeObjectReference(dataAndATGUsageInformation.getAttributeGroupUsage());
 				serializerParameters.writeData(dataAndATGUsageInformation.getData());
 			}
 			
-			// Verschlüsselter Auftrag
+			// VerschlÃ¼sselter Auftrag
 			final byte[] encryptedMessage = createTelegramByteArray(9, serializerParameters.getVersion(), parameters.toByteArray(), ordererPassword);
 
 			final ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
@@ -1097,10 +1103,10 @@ class RemoteRequester implements ConfigurationRequester {
 			// Auftraggeber in Klarschrift
 			serializer.writeString(orderer);
 
-			// Benutztes Verschlüsselungsverfahren in Klarschrift
+			// Benutztes VerschlÃ¼sselungsverfahren in Klarschrift
 			serializer.writeString(_encryptDecryptProcedure.getName());
 
-			// Der verschlüsselte Text
+			// Der verschlÃ¼sselte Text
 			serializer.writeInt(encryptedMessage.length);
 			serializer.writeBytes(encryptedMessage);
 
@@ -1143,12 +1149,12 @@ class RemoteRequester implements ConfigurationRequester {
 
 	public void changeUserRights(String orderer, String ordererPassword, String user, boolean adminRights) throws ConfigurationTaskException {
 		try {
-			// Es wird ein Serializer zum serialisieren der übergebenen Parameter benötigt
+			// Es wird ein Serializer zum serialisieren der Ã¼bergebenen Parameter benÃ¶tigt
 			final ByteArrayOutputStream parameters = new ByteArrayOutputStream();
 			final Serializer serializerParameters = SerializingFactory.createSerializer(parameters);
 			serializerParameters.writeString(user);
 			serializerParameters.writeBoolean(adminRights);
-			// Verschlüsselter Auftrag
+			// VerschlÃ¼sselter Auftrag
 			final byte[] encryptedMessage = createTelegramByteArray(4, serializerParameters.getVersion(), parameters.toByteArray(), ordererPassword);
 
 			final ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
@@ -1157,10 +1163,10 @@ class RemoteRequester implements ConfigurationRequester {
 			// Auftraggeber in Klarschrift
 			serializer.writeString(orderer);
 
-			// Benutztes Verschlüsselungsverfahren in Klarschrift
+			// Benutztes VerschlÃ¼sselungsverfahren in Klarschrift
 			serializer.writeString(_encryptDecryptProcedure.getName());
 
-			// Der verschlüsselte Text
+			// Der verschlÃ¼sselte Text
 			serializer.writeInt(encryptedMessage.length);
 			serializer.writeBytes(encryptedMessage);
 
@@ -1169,29 +1175,29 @@ class RemoteRequester implements ConfigurationRequester {
 		}
 		catch(IOException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ändern von Benutzerrechten", e);
+			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ã„ndern von Benutzerrechten", e);
 			closeConnectionAndThrowException(e);
 		}
 		catch(RequestException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Senden der Konfigurationsanfrage zum Ändern von Benutzerrechten", e);
+			_debug.error("Fehler beim Senden der Konfigurationsanfrage zum Ã„ndern von Benutzerrechten", e);
 			closeConnectionAndThrowException(e);
 		}
 		catch(NoSuchVersionException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ändern von Benutzerrechten", e);
+			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ã„ndern von Benutzerrechten", e);
 			closeConnectionAndThrowException(e);
 		}
 	}
 
 	public void changeUserPassword(String orderer, String ordererPassword, String user, String newPassword) throws ConfigurationTaskException {
 		try {
-			// Es wird ein Serializer zum serialisieren der übergebenen Parameter benötigt
+			// Es wird ein Serializer zum serialisieren der Ã¼bergebenen Parameter benÃ¶tigt
 			final ByteArrayOutputStream parameters = new ByteArrayOutputStream();
 			final Serializer serializerParameters = SerializingFactory.createSerializer(parameters);
 			serializerParameters.writeString(user);
 			serializerParameters.writeString(newPassword);
-			// Verschlüsselter Auftrag
+			// VerschlÃ¼sselter Auftrag
 			final byte[] encryptedMessage = createTelegramByteArray(3, serializerParameters.getVersion(), parameters.toByteArray(), ordererPassword);
 
 			final ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
@@ -1200,10 +1206,10 @@ class RemoteRequester implements ConfigurationRequester {
 			// Auftraggeber in Klarschrift
 			serializer.writeString(orderer);
 
-			// Benutztes Verschlüsselungsverfahren in Klarschrift
+			// Benutztes VerschlÃ¼sselungsverfahren in Klarschrift
 			serializer.writeString(_encryptDecryptProcedure.getName());
 
-			// Der verschlüsselte Text
+			// Der verschlÃ¼sselte Text
 			serializer.writeInt(encryptedMessage.length);
 			serializer.writeBytes(encryptedMessage);
 
@@ -1212,17 +1218,17 @@ class RemoteRequester implements ConfigurationRequester {
 		}
 		catch(IOException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ändern des Benutzerpassworts", e);
+			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ã„ndern des Benutzerpassworts", e);
 			closeConnectionAndThrowException(e);
 		}
 		catch(RequestException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Senden der Konfigurationsanfrage zum Ändern des Benutzerpassworts", e);
+			_debug.error("Fehler beim Senden der Konfigurationsanfrage zum Ã„ndern des Benutzerpassworts", e);
 			closeConnectionAndThrowException(e);
 		}
 		catch(NoSuchVersionException e) {
 			e.printStackTrace();
-			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ändern des Benutzerpassworts", e);
+			_debug.error("Fehler beim Serialisieren der Konfigurationsanfrage zum Ã„ndern des Benutzerpassworts", e);
 			closeConnectionAndThrowException(e);
 		}
 	}
@@ -1250,7 +1256,7 @@ class RemoteRequester implements ConfigurationRequester {
 
 	public Map<String, ConfigurationArea> getAllConfigurationAreas() throws RequestException {
 		// Datensatz an die Konfiguration verschicken und auf die Antwort warten.
-		// Es wird ein leeres byte-Array mitgeschickt, da keine Daten spezifiziert werden müssen
+		// Es wird ein leeres byte-Array mitgeschickt, da keine Daten spezifiziert werden mÃ¼ssen
 		final Data data = sendConfigAreaTask("AlleBereicheAnfordern", new byte[0]);
 		try {
 			return getAllConfigurationAreasResult(getMessageDeserializer(data, "AlleBereicheAnfordernAntwort"));
@@ -1261,11 +1267,11 @@ class RemoteRequester implements ConfigurationRequester {
 	}
 
 	/**
-	 * Ließt aus einem Deserialier die Antwort auf eine Konfigurationsbereichsanfrage aus.
+	 * LieÃŸt aus einem Deserialier die Antwort auf eine Konfigurationsbereichsanfrage aus.
 	 *
-	 * @param deserializer Objekt, das die serialisierte Antwort enthält
+	 * @param deserializer Objekt, das die serialisierte Antwort enthÃ¤lt
 	 *
-	 * @return Als Schlüssel dient die Pid, Value ist ein Konfigurationsbereich
+	 * @return Als SchlÃ¼ssel dient die Pid, Value ist ein Konfigurationsbereich
 	 */
 	private Map<String, ConfigurationArea> getAllConfigurationAreasResult(Deserializer deserializer) throws IOException {
 		// Anzahl Konfigurationsbereiche. Jeder Eintrag entspricht einer Id
@@ -1299,15 +1305,15 @@ class RemoteRequester implements ConfigurationRequester {
 		}
 		catch(ConfigurationTaskException e) {
 			// Dieser Fall kann nicht auftreten, die Methode wirft allerdings diese Exception.
-			// In diesem Fall sind die beiden Exceptions gleich und bedeuten "Die Konfiguration führt den Auftrag nicht aus".
+			// In diesem Fall sind die beiden Exceptions gleich und bedeuten "Die Konfiguration fÃ¼hrt den Auftrag nicht aus".
 			throw new ConfigurationChangeException(e);
 		}
 	}
 
 	/**
-	 * Ließt aus einem Deserialisierer eine Id und erzeugt das dazugehörige Objekt
+	 * LieÃŸt aus einem Deserialisierer eine Id und erzeugt das dazugehÃ¶rige Objekt
 	 *
-	 * @param deserializer Enthält die Id
+	 * @param deserializer EnthÃ¤lt die Id
 	 *
 	 * @return Konfigurationsbereich, dessen Id ausgelesen wurde
 	 *
@@ -1319,13 +1325,13 @@ class RemoteRequester implements ConfigurationRequester {
 
 
 	/**
-	 * Erzeugt mit einem Serializer ein byte-Array, das drei Strings enthält
+	 * Erzeugt mit einem Serializer ein byte-Array, das drei Strings enthÃ¤lt
 	 *
 	 * @param stringOne   Wird als erstes serialisiert
 	 * @param stringTwo   Wird als zweites serialisiert
 	 * @param stringThree Wird als drittes serialisiert
 	 *
-	 * @return byte-Array, das Strings enthält
+	 * @return byte-Array, das Strings enthÃ¤lt
 	 *
 	 * @throws java.io.IOException
 	 * @throws de.bsvrz.sys.funclib.dataSerializer.NoSuchVersionException
@@ -1342,10 +1348,10 @@ class RemoteRequester implements ConfigurationRequester {
 
 	public ConsistencyCheckResultInterface checkConsistency(Collection<ConfigAreaAndVersion> configurationAreas) throws RequestException {
 		try {
-			final Data data = sendConfigAreaTask("BereichePrüfen", serializeConfigAndVersion(configurationAreas));
+			final Data data = sendConfigAreaTask("BereichePrÃ¼fen", serializeConfigAndVersion(configurationAreas));
 
 			// Falls es eine Fehlerantwort war, so wird eine RequestException geworfen
-			return getConsistencyCheckResult(getMessageDeserializer(data, "BereichePrüfenAntwort"));
+			return getConsistencyCheckResult(getMessageDeserializer(data, "BereichePrÃ¼fenAntwort"));
 		}
 		catch(NoSuchVersionException e) {
 			throw new RequestException(e);
@@ -1375,8 +1381,8 @@ class RemoteRequester implements ConfigurationRequester {
 	public ConsistencyCheckResultInterface releaseConfigurationAreasForTransfer(Collection<ConfigAreaAndVersion> configurationAreas)
 			throws RequestException, ConfigurationChangeException {
 		try {
-			final Data data = sendConfigAreaTask("BereicheFreigabeZurÜbernahme", serializeConfigAndVersion(configurationAreas));
-			return getConsistencyCheckResult(getMessageDeserializer2(data, "BereicheFreigabeZurÜbernahmeAntwort"));
+			final Data data = sendConfigAreaTask("BereicheFreigabeZurÃœbernahme", serializeConfigAndVersion(configurationAreas));
+			return getConsistencyCheckResult(getMessageDeserializer2(data, "BereicheFreigabeZurÃœbernahmeAntwort"));
 		}
 		catch(NoSuchVersionException e) {
 			throw new RequestException(e);
@@ -1393,7 +1399,7 @@ class RemoteRequester implements ConfigurationRequester {
 			throws RequestException, ConfigurationChangeException {
 		try {
 			final Data data = sendConfigAreaTask("BereicheFreigabeZurAktivierung", serializeConfigAndVersion(configurationAreas));
-			// Die Antwort(es hat geklappt) wird nicht benötigt, es wird nur geprüft, ob es zu einem Fehler gekommen ist.
+			// Die Antwort(es hat geklappt) wird nicht benÃ¶tigt, es wird nur geprÃ¼ft, ob es zu einem Fehler gekommen ist.
 			getConsistencyCheckResult(getMessageDeserializer2(data, "BereicheFreigabeZurAktivierungAntwort"));
 		}
 		catch(NoSuchVersionException e) {
@@ -1429,7 +1435,7 @@ class RemoteRequester implements ConfigurationRequester {
 		try {
 			final Data data = sendConfigAreaTask("BereicheImportieren", serializeImportExportTask(importPath, configurationAreaPids));
 
-			// Die Antwort(es hat geklappt) wird nicht benötigt, es wird nur geprüft, ob es zu einem Fehler gekommen ist.
+			// Die Antwort(es hat geklappt) wird nicht benÃ¶tigt, es wird nur geprÃ¼ft, ob es zu einem Fehler gekommen ist.
 			getConsistencyCheckResult(getMessageDeserializer2(data, "BereicheImportierenAntwort"));
 		}
 		catch(NoSuchVersionException e) {
@@ -1440,7 +1446,7 @@ class RemoteRequester implements ConfigurationRequester {
 		}
 		catch(ConfigurationTaskException e) {
 			// Dieser Fall kann nicht auftreten, die Methode wirft allerdings diese Exception.
-			// In diesem Fall sind die beiden Exceptions gleich und bedeuten "Die Konfiguration führt den Auftrag nicht aus".
+			// In diesem Fall sind die beiden Exceptions gleich und bedeuten "Die Konfiguration fÃ¼hrt den Auftrag nicht aus".
 			throw new ConfigurationChangeException(e);
 		}
 	}
@@ -1449,7 +1455,7 @@ class RemoteRequester implements ConfigurationRequester {
 		try {
 			final Data data = sendConfigAreaTask("BereicheExportieren", serializeImportExportTask(exportPath, configurationAreaPids));
 
-			// Die Antwort(es hat geklappt) wird nicht benötigt, es wird nur geprüft, ob es zu einem Fehler gekommen ist.
+			// Die Antwort(es hat geklappt) wird nicht benÃ¶tigt, es wird nur geprÃ¼ft, ob es zu einem Fehler gekommen ist.
 			getConsistencyCheckResult(getMessageDeserializer2(data, "BereicheExportierenAntwort"));
 		}
 		catch(NoSuchVersionException e) {
@@ -1690,7 +1696,7 @@ class RemoteRequester implements ConfigurationRequester {
 			// Pid, string
 			// name, string
 			// ConfigurationObjectType, Referenz
-			// Anzahl Elemente der Liste, int (Wurde null übergeben, wird dies mit -99 codiert)
+			// Anzahl Elemente der Liste, int (Wurde null Ã¼bergeben, wird dies mit -99 codiert)
 			//      Referenzen auf die Objekte der Menge
 
 			// Es ist ein Konfigurationsobjekt
@@ -1704,7 +1710,7 @@ class RemoteRequester implements ConfigurationRequester {
 			// Type des Objekts
 			serializer.writeObjectReference(type);
 
-			// Es kann <code>null</code> übergeben werden, dies wird mit -99 kodiert
+			// Es kann <code>null</code> Ã¼bergeben werden, dies wird mit -99 kodiert
 			if(sets != null) {
 				serializer.writeInt(sets.size());
 				for(ObjectSet objectSet : sets) {
@@ -1738,7 +1744,7 @@ class RemoteRequester implements ConfigurationRequester {
 			}
 		}
 		catch(ConfigurationTaskException e) {
-			// Die beiden Fälle können gleich behandlet werden. Die Konfiguration lehnt es ab das Objekt
+			// Die beiden FÃ¤lle kÃ¶nnen gleich behandlet werden. Die Konfiguration lehnt es ab das Objekt
 			// anzulegen.
 			e.printStackTrace();
 			_debug.error("Konfiguration hat das Erzeugen eines neuen Objekts verweigert", e);
@@ -1794,12 +1800,12 @@ class RemoteRequester implements ConfigurationRequester {
 	/**
 	 * Diese Methode wird aufgerufen, wenn ein dynamiches Objekt angelegt werden soll und die Antwort erwartet wird.
 	 * Die Methode blockiert solange, bis die Antwort empfangen wird. Dann wird das dynamische Objekt aus der Antwort ausgelesen und
-	 * zurückgegeben.
+	 * zurÃ¼ckgegeben.
 	 *
 	 * @param requestIndex Index der Anfrage, die Antwort wird den selben Index haben.
 	 * @return Objekt, das angelegt wurde.
 	 * @throws de.bsvrz.dav.daf.main.impl.config.request.RequestException Technisches Problem beim empfang/Deserialisierung der Antwort
-	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException Die Konfiguration kann den Auftrag nicht durchführen (fehlenden Rechte)
+	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException Die Konfiguration kann den Auftrag nicht durchfÃ¼hren (fehlenden Rechte)
 	 */
 	private DynamicObject waitForResponseAndDeserializeDynamicObject(final int requestIndex) throws RequestException, ConfigurationChangeException {
 		final Data reply = _senderWriteConfigObjects.waitForReply(requestIndex);
@@ -1817,7 +1823,7 @@ class RemoteRequester implements ConfigurationRequester {
 			}
 		}
 		catch(ConfigurationTaskException e) {
-			// Die beiden Fälle können gleich behandlet werden. Die Konfiguration lehnt es ab das Objekt
+			// Die beiden FÃ¤lle kÃ¶nnen gleich behandlet werden. Die Konfiguration lehnt es ab das Objekt
 			// anzulegen.
 			e.printStackTrace();
 			_debug.error("Konfiguration hat das Erzeugen eines neuen dynamischen Objekts verweigert", e);
@@ -1842,7 +1848,7 @@ class RemoteRequester implements ConfigurationRequester {
 				// Pid, string
 				// name, string
 				// DynamicObjectType, Referenz
-				// Anzahl folgender Datensätze+ATG-Verwendungen, int (Wert 0 bedeutet, dass eine leere Liste oder null übergeben wurde)
+				// Anzahl folgender DatensÃ¤tze+ATG-Verwendungen, int (Wert 0 bedeutet, dass eine leere Liste oder null Ã¼bergeben wurde)
 				//  ATG-Verwendung, Referenz
 				//  Datensatz, serialisierter Datensatz
 
@@ -1896,7 +1902,7 @@ class RemoteRequester implements ConfigurationRequester {
 
 			// Aufbau des Telegramms:
 			// Referenz auf das zu kopierende Objekt
-			// Größe der Map (int)
+			// GrÃ¶ÃŸe der Map (int)
 			// Jeder Eintrag in der Map besteht aus:
 			// Pid, die ersetzt werden soll, string
 			// Pid ersetzende Pid, string
@@ -1930,7 +1936,7 @@ class RemoteRequester implements ConfigurationRequester {
 			deserializer = getMessageDeserializer2(reply, "AntwortObjektKopieren");
 		}
 		catch(ConfigurationTaskException e) {
-			// Da die Konfiguration sich weigert den Auftrag durchzuführen, muss in diesem Fall kein unterschied gemacht werden
+			// Da die Konfiguration sich weigert den Auftrag durchzufÃ¼hren, muss in diesem Fall kein unterschied gemacht werden
 			throw new ConfigurationChangeException(e);
 		}
 		try {
@@ -2038,9 +2044,9 @@ class RemoteRequester implements ConfigurationRequester {
 			final Serializer serializer = SerializingFactory.createSerializer(byteArrayStream);
 
 			// Aufbau des Telegramms
-			// 1) Objekt, dessen Menge geändert werden soll (Objektreferenz)
+			// 1) Objekt, dessen Menge geÃ¤ndert werden soll (Objektreferenz)
 			// 2) Menge (Objektreferenz)
-			// 3) boolean (true = Die Menge soll am Objekt hinzugefügt werden; false = Die Menge soll entfernt werden)
+			// 3) boolean (true = Die Menge soll am Objekt hinzugefÃ¼gt werden; false = Die Menge soll entfernt werden)
 
 			serializer.writeObjectReference(configurationObject);
 			serializer.writeObjectReference(set);
@@ -2051,7 +2057,7 @@ class RemoteRequester implements ConfigurationRequester {
 			// Auf die Antwort warten
 			final Data reply = _senderWriteConfigObjects.waitForReply(requestIndex);
 			// Beim erzeugen des Deserializers werden eventuelle Exceptions erzeugt (ConfiChangeExcpetion).
-			// Wurde auf Konfigurationsseite kein Fehler geworfen, wird der Deserializer nicht weiter benötigt.
+			// Wurde auf Konfigurationsseite kein Fehler geworfen, wird der Deserializer nicht weiter benÃ¶tigt.
 			final Deserializer deserializer = getMessageDeserializer2(reply, "AntwortObjektMengenBearbeiten");
 		}
 		catch(IOException e) {
@@ -2071,7 +2077,7 @@ class RemoteRequester implements ConfigurationRequester {
 	}
 
 	private List<SystemObject> readSystemObjectList(final Deserializer deserializer) throws IOException {
-		// Anzahl Systemobjekte, die ausgelesen werden müssen
+		// Anzahl Systemobjekte, die ausgelesen werden mÃ¼ssen
 		final int size = deserializer.readInt();
 
 		final List<SystemObject> typeElementObjects = new ArrayList<SystemObject>(size);
@@ -2083,14 +2089,14 @@ class RemoteRequester implements ConfigurationRequester {
 	}
 
 	/**
-	 * Verschickt ein Telegramm an die Konfiguration und ermittelt alle Elemente einer Menge unter Berücksichtigung der übergebenen Versionen.
+	 * Verschickt ein Telegramm an die Konfiguration und ermittelt alle Elemente einer Menge unter BerÃ¼cksichtigung der Ã¼bergebenen Versionen.
 	 *
 	 * @param systemObjectType
 	 * @param kindOfVersion
 	 * @param fromVersion
 	 * @param toVersion
 	 *
-	 * @return Alle Elemente, die zu einer Menge gehören und in den angegebenen Versionen gültig waren (in Abhängigkeit von <code>kindOfVersion</code>).
+	 * @return Alle Elemente, die zu einer Menge gehÃ¶ren und in den angegebenen Versionen gÃ¼ltig waren (in AbhÃ¤ngigkeit von <code>kindOfVersion</code>).
 	 *
 	 * @throws de.bsvrz.dav.daf.main.impl.config.request.RequestException
 	 */
@@ -2106,7 +2112,7 @@ class RemoteRequester implements ConfigurationRequester {
 
 			// Aufbau des Telegramms
 			// 1) Type (Objektreferenz)
-			// 2) Danach werden von der Anfrage anhängig die Versionen serialisiert (siehe Methode, dort wird der Aufbau beschrieben)
+			// 2) Danach werden von der Anfrage anhÃ¤ngig die Versionen serialisiert (siehe Methode, dort wird der Aufbau beschrieben)
 
 
 			serializer.writeObjectReference(systemObjectType);
@@ -2130,7 +2136,7 @@ class RemoteRequester implements ConfigurationRequester {
 
 
 	/**
-	 * Serialisert die übergebenen Parameter.
+	 * Serialisert die Ã¼bergebenen Parameter.
 	 *
 	 * @param serializer
 	 * @param kindOfVersion
@@ -2145,16 +2151,16 @@ class RemoteRequester implements ConfigurationRequester {
 
 		// Telegrammaufbau:
 
-		// 1) Um was für eine Anfrage handelt es sich (byte)
+		// 1) Um was fÃ¼r eine Anfrage handelt es sich (byte)
 
-		// von 1) abhängig ist der Aufbau des Telegramms unterschiedlich:
+		// von 1) abhÃ¤ngig ist der Aufbau des Telegramms unterschiedlich:
 		//  IN_ALL_VERSIONS und IN_ANY_VERSIONS:
 		//      formVersion (short)
 		//      toVersion (short)
 		//  IN_VERSION:
 		//      inVersion (short)
 		//  IN_NEXT_VERSION:
-		//      keine weiteren Informationen nötig
+		//      keine weiteren Informationen nÃ¶tig
 
 		serializer.writeByte(kindOfVersion.getCode());
 
@@ -2163,19 +2169,19 @@ class RemoteRequester implements ConfigurationRequester {
 			serializer.writeShort(toVersion);
 		}
 		else if(kindOfVersion == KindOfVersion.IN_NEXT_VERSION) {
-			// In diesem Fall sind keine weiteren Informationen nötig
+			// In diesem Fall sind keine weiteren Informationen nÃ¶tig
 		}
 		else if(kindOfVersion == KindOfVersion.IN_VERSION) {
 			serializer.writeShort(fromVersion);
 		}
 		else {
-			throw new IllegalStateException("Diese Art von Anfragen wird nicht unterstützt: " + kindOfVersion);
+			throw new IllegalStateException("Diese Art von Anfragen wird nicht unterstÃ¼tzt: " + kindOfVersion);
 		}
 	}
 
 
 	/**
-	 * Serialisiert eine ObjectTimeSpecification. Der Aufbau ist vom Typ abhängig.
+	 * Serialisiert eine ObjectTimeSpecification. Der Aufbau ist vom Typ abhÃ¤ngig.
 	 *
 	 * @param serializer
 	 * @param timeSpecification
@@ -2183,7 +2189,7 @@ class RemoteRequester implements ConfigurationRequester {
 	 * @throws java.io.IOException
 	 */
 	private void serializeObjectTimeSpezifikation(Serializer serializer, ObjectTimeSpecification timeSpecification) throws IOException {
-		// wird als erstes benötigt um rauszufinden, welche Werte noch gelesen werden können
+		// wird als erstes benÃ¶tigt um rauszufinden, welche Werte noch gelesen werden kÃ¶nnen
 		serializer.writeShort(timeSpecification.getType().getCode());
 
 		if(timeSpecification.getType() == TimeSpecificationType.VALID) {
@@ -2212,7 +2218,7 @@ class RemoteRequester implements ConfigurationRequester {
 	 * @param path                  Verzeichnis der Versorgungsdateien
 	 * @param configurationAreaPids Pids
 	 *
-	 * @return byte-Array, das die übergebenen Parameter serialisiert enthält
+	 * @return byte-Array, das die Ã¼bergebenen Parameter serialisiert enthÃ¤lt
 	 *
 	 * @throws de.bsvrz.sys.funclib.dataSerializer.NoSuchVersionException
 	 * @throws java.io.IOException
@@ -2245,7 +2251,7 @@ class RemoteRequester implements ConfigurationRequester {
 	}
 
 	/**
-	 * Erstellt mit einem Serialisierer ein Byte-Array, das Konfigurationsbereiche und dazugehörige Versionen enthält.
+	 * Erstellt mit einem Serialisierer ein Byte-Array, das Konfigurationsbereiche und dazugehÃ¶rige Versionen enthÃ¤lt.
 	 *
 	 * @param configurationAreas s.o
 	 *
@@ -2263,9 +2269,9 @@ class RemoteRequester implements ConfigurationRequester {
 	}
 
 	/**
-	 * Ließt aus einem Deserialier die Antwort auf eine Konfigurationsbereichsanfrage aus.
+	 * LieÃŸt aus einem Deserialier die Antwort auf eine Konfigurationsbereichsanfrage aus.
 	 *
-	 * @param deserializer Objekt, das die serialisierte Antwort enthält
+	 * @param deserializer Objekt, das die serialisierte Antwort enthÃ¤lt
 	 *
 	 * @return Objekt, das aus den serialisierten Daten erzeugt wurde
 	 */
@@ -2273,7 +2279,7 @@ class RemoteRequester implements ConfigurationRequester {
 		// Wird die Antwort enthalten
 		final ConsistencyCheckResult consistencyCheckResult = new ConsistencyCheckResult();
 
-		// Anzahl lokaler Fehler einlesen. Ist die Zahl 0, so war kein Fehler vorhanden und mögliche Interferenzfehler können
+		// Anzahl lokaler Fehler einlesen. Ist die Zahl 0, so war kein Fehler vorhanden und mÃ¶gliche Interferenzfehler kÃ¶nnen
 		// eingelesen werden.
 		final int numberOfLocalErrors = deserializer.readInt();
 		if(numberOfLocalErrors > 0) {
@@ -2308,7 +2314,7 @@ class RemoteRequester implements ConfigurationRequester {
 	}
 
 	/**
-	 * Ließt ein serialisiertes ConsistencyCheckResultEntry aus einem Deserializer aus
+	 * LieÃŸt ein serialisiertes ConsistencyCheckResultEntry aus einem Deserializer aus
 	 *
 	 * @param deserializer s.o.
 	 * @param type         Art des Fehlers/Warnung (lokal, interferenz oder Warnung)
@@ -2317,9 +2323,9 @@ class RemoteRequester implements ConfigurationRequester {
 	 */
 	private ConsistencyCheckResultEntry getConsistencyCheckResultEntry(Deserializer deserializer, ConsistencyCheckResultEntryType type) throws IOException {
 		final ConfigurationArea configArea = (ConfigurationArea)deserializer.readObjectReference(_localConfiguration);
-		// Text der zum Fehler oder zu der Warnung gehört
+		// Text der zum Fehler oder zu der Warnung gehÃ¶rt
 		final String errorText = deserializer.readString();
-		// Anzahl Objekte, die zu dem Fehler oder der Warnung gehören
+		// Anzahl Objekte, die zu dem Fehler oder der Warnung gehÃ¶ren
 		final int numberOfInvolvedObjects = deserializer.readInt();
 		final SystemObject[] involvedObjects = new SystemObject[numberOfInvolvedObjects];
 
@@ -2331,13 +2337,13 @@ class RemoteRequester implements ConfigurationRequester {
 	}
 
 	/**
-	 * Diese Methode verschickt ein Telegramm. Der Typ wird über einen Parameter festgelegt.
+	 * Diese Methode verschickt ein Telegramm. Der Typ wird Ã¼ber einen Parameter festgelegt.
 	 *
 	 * @param message Nachricht, die verschickt werden soll
 	 *
 	 * @return Antwort auf die Anfrage
 	 *
-	 * @throws de.bsvrz.dav.daf.main.impl.config.request.RequestException Fehler bei der Bearbeitung des Telegramms (Der Benutzer hatte nicht die nötigen Rechte diesen Auftrag zu erteilen, usw.)
+	 * @throws de.bsvrz.dav.daf.main.impl.config.request.RequestException Fehler bei der Bearbeitung des Telegramms (Der Benutzer hatte nicht die nÃ¶tigen Rechte diesen Auftrag zu erteilen, usw.)
 	 */
 	private Data sendConfigAreaTask(String messageType, final byte[] message) throws RequestException {
 		int requestIndex;
@@ -2354,15 +2360,15 @@ class RemoteRequester implements ConfigurationRequester {
 	/**
 	 * Sendet eine Backup-Anfrage an die Konfiguration und wartet auf das Beenden
 	 *
-	 * @param message  Serialisierte Nachricht, die den Sicherungs-Pfad enthält
-	 * @param callback Objekt, das über Fortschrittsmeldungen informiert werden soll. Darf null sein.
+	 * @param message  Serialisierte Nachricht, die den Sicherungs-Pfad enthÃ¤lt
+	 * @param callback Objekt, das Ã¼ber Fortschrittsmeldungen informiert werden soll. Darf null sein.
 	 *
 	 * @return true wenn alle Dateien korrekt gesichert wurden.
 	 *
-	 * @throws de.bsvrz.dav.daf.main.impl.config.request.RequestException           Fehler bei der Übertragung
+	 * @throws de.bsvrz.dav.daf.main.impl.config.request.RequestException           Fehler bei der Ãœbertragung
 	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationTaskException Der Backup-Vorgang konnte nicht gestartet werden, beispielsweise weil das Zielverzeichnis falsch war. Falls das Sichern
-	 *                                    einzelner Dateien fehlschlägt wird keine solche Exception geworfen, stattdessen findet man innerhalb vom callback
-	 *                                    eventuelle Fehlschläge und die Funktion gibt false zurück
+	 *                                    einzelner Dateien fehlschlÃ¤gt wird keine solche Exception geworfen, stattdessen findet man innerhalb vom callback
+	 *                                    eventuelle FehlschlÃ¤ge und die Funktion gibt false zurÃ¼ck
 	 */
 	private BackupResult sendConfigAreaBackupTask(final byte[] message, BackupProgressCallback callback)
 			throws RequestException, ConfigurationTaskException {
@@ -2375,7 +2381,7 @@ class RemoteRequester implements ConfigurationRequester {
 			requestIndex = _senderConfigAreaTask.sendData("BackupKonfigurationsdaten", message);
 		}
 		catch(Exception e) {
-			throw new RequestException("Konnte Anfrage an Konfiguration nicht senden. Das kann an einem veralteten Datenmodell liegen. Benötigt wird kb.systemModellGlobal in Version 24.", e);
+			throw new RequestException("Konnte Anfrage an Konfiguration nicht senden. Das kann an einem veralteten Datenmodell liegen. BenÃ¶tigt wird kb.systemModellGlobal in Version 24.", e);
 		}
 		double fileProgress;
 		double totalProgress;
@@ -2423,15 +2429,15 @@ class RemoteRequester implements ConfigurationRequester {
 
 	/**
 	 * Erzeugt ein kodiertes Byte-Array, das folgenden Aufbau besitzt:<br> - benutzte Serialisiererversion(Wert ist nicht serialisiert) (ersten 4 Bytes)<br> - Typ
-	 * des Pakets (int)<br> - Länge des Zufallstexts (int) - Zufallstext (byte[]) - übergebenes Byte-Array <code>messageCleartext</code>
+	 * des Pakets (int)<br> - LÃ¤nge des Zufallstexts (int) - Zufallstext (byte[]) - Ã¼bergebenes Byte-Array <code>messageCleartext</code>
 	 *
 	 * @param messageType       Nachrichtentyp
 	 * @param serializerVersion Version, mit der die Daten serialisiert werden sollen
 	 * @param messageCleartext  Bisher erzeugte Daten, die verschickt werden sollen
 	 *
-	 * @return verschlüsseltes Byte-Array, das alle oben genannten Daten enthält
+	 * @return verschlÃ¼sseltes Byte-Array, das alle oben genannten Daten enthÃ¤lt
 	 *
-	 * @throws de.bsvrz.dav.daf.main.impl.config.request.RequestException Alle Fehler die auftauchen werden als RequestException interpretiert. Dies wird gemacht, da eine weitere Übertragung keinen Sinn
+	 * @throws de.bsvrz.dav.daf.main.impl.config.request.RequestException Alle Fehler die auftauchen werden als RequestException interpretiert. Dies wird gemacht, da eine weitere Ãœbertragung keinen Sinn
 	 *                          macht.
 	 */
 	private byte[] createTelegramByteArray(int messageType, int serializerVersion, byte[] messageCleartext, String encryptionText) throws RequestException {
@@ -2445,7 +2451,7 @@ class RemoteRequester implements ConfigurationRequester {
 			serializer.writeInt(messageType);
 			serializer.writeInt(randomText.length);
 			serializer.writeBytes(randomText);
-			// Klartext schreiben. Was ausgelesen werden kann, weiss der Empfänger (longs, ints, ....)
+			// Klartext schreiben. Was ausgelesen werden kann, weiss der EmpfÃ¤nger (longs, ints, ....)
 			serializer.writeBytes(messageCleartext);
 
 			final byte[] randomStringAndCleartextMessage = out.toByteArray();
@@ -2453,7 +2459,7 @@ class RemoteRequester implements ConfigurationRequester {
 			// Die ersten 4 Bytes enhalten die Serialiszerversion
 			final byte[] wholeMessage = new byte[4 + randomStringAndCleartextMessage.length];
 
-			// Das höherwärtigste Byte steht in Zelle 0
+			// Das hÃ¶herwÃ¤rtigste Byte steht in Zelle 0
 			wholeMessage[0] = (byte)((serializerVersion & 0xff000000) >>> 24);
 			wholeMessage[1] = (byte)((serializerVersion & 0x00ff0000) >>> 16);
 			wholeMessage[2] = (byte)((serializerVersion & 0x0000ff00) >>> 8);
@@ -2479,7 +2485,7 @@ class RemoteRequester implements ConfigurationRequester {
 	private boolean checkSystemModellVersion(final int requiredVersion, final String errorMessage) {
 		final boolean versionOk = getSystemModelVersion() >= requiredVersion;
 		if(!versionOk) {
-			_debug.warning(errorMessage + ". Der Bereich kb.systemModellGlobal wird in Version " + requiredVersion +" oder höher benötigt.");
+			_debug.warning(errorMessage + ". Der Bereich kb.systemModellGlobal wird in Version " + requiredVersion +" oder hÃ¶her benÃ¶tigt.");
 		}
 		return versionOk;
 	}
@@ -2487,7 +2493,7 @@ class RemoteRequester implements ConfigurationRequester {
 	private void ensureSystemModellVersion(final int requiredVersion, final String errorMessage) throws RequestException {
 		final boolean versionOk = getSystemModelVersion() >= requiredVersion;
 		if(!versionOk) {
-			throw new RequestException(errorMessage + ". Der Bereich kb.systemModellGlobal wird in Version " + requiredVersion +" oder höher benötigt.");
+			throw new RequestException(errorMessage + ". Der Bereich kb.systemModellGlobal wird in Version " + requiredVersion +" oder hÃ¶her benÃ¶tigt.");
 		}
 	}
 
@@ -2531,7 +2537,7 @@ class RemoteRequester implements ConfigurationRequester {
 		ConfigurationArea defaultArea = _localConfiguration.getConfigurationAuthority().getDefaultConfigurationArea();
 		if(defaultArea == null){
 			throw new ConfigurationChangeException(
-					"Kein Default-Bereich für neue Objekte am Konfigurationsverantwortlichen versorgt: " + _localConfiguration.getConfigurationAuthority().getPid()
+					"Kein Default-Bereich fÃ¼r neue Objekte am Konfigurationsverantwortlichen versorgt: " + _localConfiguration.getConfigurationAuthority().getPid()
 			);
 		}
 		return defaultArea.createConfigurationObject(type, pid, name, sets);
@@ -2542,7 +2548,7 @@ class RemoteRequester implements ConfigurationRequester {
 		ConfigurationArea defaultArea = _localConfiguration.getConfigurationAuthority().getDefaultConfigurationArea();
 		if(defaultArea == null){
 			throw new ConfigurationChangeException(
-					"Kein Default-Bereich für neue Objekte am Konfigurationsverantwortlichen versorgt: " + _localConfiguration.getConfigurationAuthority().getPid()
+					"Kein Default-Bereich fÃ¼r neue Objekte am Konfigurationsverantwortlichen versorgt: " + _localConfiguration.getConfigurationAuthority().getPid()
 			);
 		}
 		return defaultArea.createDynamicObject(type, pid, name);
@@ -2556,7 +2562,7 @@ class RemoteRequester implements ConfigurationRequester {
 			Serializer serializer = SerializingFactory.createSerializer(byteArrayStream);
 			serializer.writeLong(object.getId());
 			// Daten verschicken
-			requestIndex = _senderWriteConfigObjects.sendData("ObjektLöschen", byteArrayStream.toByteArray());
+			requestIndex = _senderWriteConfigObjects.sendData("ObjektLÃ¶schen", byteArrayStream.toByteArray());
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -2564,7 +2570,7 @@ class RemoteRequester implements ConfigurationRequester {
 		}
 		Data reply = _senderWriteConfigObjects.waitForReply(requestIndex);
 		try {
-			Deserializer deserializer = getMessageDeserializer2(reply, "AntwortObjektLöschen");
+			Deserializer deserializer = getMessageDeserializer2(reply, "AntwortObjektLÃ¶schen");
 			long invalidationTime = deserializer.readLong();
 			if(_localConfiguration instanceof DafDataModel) {
 				((DafDataModel)_localConfiguration).objectInvalidated((DafSystemObject) object, invalidationTime);
@@ -2616,7 +2622,7 @@ class RemoteRequester implements ConfigurationRequester {
 			serializer.writeLong(object.getId());
 			serializer.writeString(name);
 			// Daten verschicken
-			requestIndex = _senderWriteConfigObjects.sendData("ObjektNamenÄndern", byteArrayStream.toByteArray());
+			requestIndex = _senderWriteConfigObjects.sendData("ObjektNamenÃ„ndern", byteArrayStream.toByteArray());
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -2624,7 +2630,7 @@ class RemoteRequester implements ConfigurationRequester {
 		}
 		Data reply = _senderWriteConfigObjects.waitForReply(requestIndex);
 		try {
-			getMessageDeserializer2(reply, "AntwortObjektNamenÄndern");
+			getMessageDeserializer2(reply, "AntwortObjektNamenÃ„ndern");
 		}
 		catch(ConfigurationChangeException e){
 			throw e;
@@ -2662,7 +2668,7 @@ class RemoteRequester implements ConfigurationRequester {
 			try {
 				_objectCreatedCountDown.await(500, TimeUnit.MILLISECONDS);
 			} catch (InterruptedException e) {
-				// InterruptedException führt zum sofortigen Ende der Methode
+				// InterruptedException fÃ¼hrt zum sofortigen Ende der Methode
 			}
 		}
 

@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2006 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -37,18 +43,18 @@ import java.io.ByteArrayInputStream;
  * Implementierung des Interfaces {@link DoubleAttributeType} auf Seiten der Konfiguration.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 8550 $ / $Date: 2011-01-06 10:48:12 +0100 (Thu, 06 Jan 2011) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigDoubleAttributeType extends ConfigAttributeType implements DoubleAttributeType {
 
-	/** DebugLogger f¸r Debug-Ausgaben */
+	/** DebugLogger f√ºr Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	/** Speichert die Eigenschaften dieses AttributTyps. */
 	private DoubleAttributeTypeValues _values;
 
 	/**
-	 * Konstruktor eines Flieﬂkomma-Attribut-Typen.
+	 * Konstruktor eines Flie√ükomma-Attribut-Typen.
 	 *
 	 * @param configurationArea Konfigurationsbereich dieses Attribut-Typen
 	 * @param systemObjectInfo  das korrespondierende Objekt aus den Konfigurationsdateien
@@ -66,7 +72,7 @@ public class ConfigDoubleAttributeType extends ConfigAttributeType implements Do
 	}
 
 	/**
-	 * Gibt das Objekt zur¸ck, welches die Eigenschaften dieses AttributTyps enth‰lt. Existiert es noch nicht, so wird es erzeugt und der entsprechende
+	 * Gibt das Objekt zur√ºck, welches die Eigenschaften dieses AttributTyps enth√§lt. Existiert es noch nicht, so wird es erzeugt und der entsprechende
 	 * konfigurierende Datensatz ausgelesen.
 	 *
 	 * @return die Eigenschaften des AttributTyps
@@ -79,8 +85,8 @@ public class ConfigDoubleAttributeType extends ConfigAttributeType implements Do
 	}
 
 	/**
-	 * Wird aufgerufen, wenn das Objekt ver‰ndert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zur¸cksetzen. Erbende Klassen m¸ssen diese
-	 * Funktion ¸berschreiben, wenn sie Daten cachen.
+	 * Wird aufgerufen, wenn das Objekt ver√§ndert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zur√ºcksetzen. Erbende Klassen m√ºssen diese
+	 * Funktion √ºberschreiben, wenn sie Daten cachen.
 	 */
 	@Override
 	synchronized void invalidateCache() {
@@ -89,16 +95,16 @@ public class ConfigDoubleAttributeType extends ConfigAttributeType implements Do
 	}
 
 	/**
-	 * Diese Klasse liest die Informationen f¸r diesen Attributtypen mit Hilfe des Deserializers direkt aus dem Byte-Array des konfigurierenden Datensatzes aus und
-	 * verwendet nicht die Methode {@link de.bsvrz.dav.daf.main.config.SystemObject#getConfigurationData ConfigurationData}, da dort Informationen benˆtigt
-	 * werden, die erst hier zur Verf¸gung gestellt werden.
+	 * Diese Klasse liest die Informationen f√ºr diesen Attributtypen mit Hilfe des Deserializers direkt aus dem Byte-Array des konfigurierenden Datensatzes aus und
+	 * verwendet nicht die Methode {@link de.bsvrz.dav.daf.main.config.SystemObject#getConfigurationData ConfigurationData}, da dort Informationen ben√∂tigt
+	 * werden, die erst hier zur Verf√ºgung gestellt werden.
 	 */
 	private class DoubleAttributeTypeValues {
 
 		/** Die Einheit dieses Attribut-Typs. */
 		private String _unit;
 
-		/** Die Genauigkeit dieses Flieﬂkommazahl-Attribut-Typs. */
+		/** Die Genauigkeit dieses Flie√ükommazahl-Attribut-Typs. */
 		private byte _accuracy;
 
 		/** Konstruktor, der die Eigenschaften dieses AttributTypen aus einem konfigurierenden Datensatz ausliest. */
@@ -119,14 +125,14 @@ public class ConfigDoubleAttributeType extends ConfigAttributeType implements Do
 			}
 			catch(Exception ex) {
 				final String errorMessage =
-						"Die Flieﬂkommazahl-AttributTypEigenschaften des AttributTyps " + getNameOrPidOrId() + " konnten nicht ermittelt werden";
+						"Die Flie√ükommazahl-AttributTypEigenschaften des AttributTyps " + getNameOrPidOrId() + " konnten nicht ermittelt werden";
 				_debug.error(errorMessage, ex);
 				throw new IllegalStateException(errorMessage, ex);
 			}
 		}
 
 		/**
-		 * Gibt die Einheit dieses Attribut-Typs zur¸ck.
+		 * Gibt die Einheit dieses Attribut-Typs zur√ºck.
 		 *
 		 * @return die Einheit dieses Attribut-Typs
 		 */
@@ -135,7 +141,7 @@ public class ConfigDoubleAttributeType extends ConfigAttributeType implements Do
 		}
 
 		/**
-		 * Gibt die Genauigkeit dieses Flieﬂkommazahl-Attribut-Typs zur¸ck.
+		 * Gibt die Genauigkeit dieses Flie√ükommazahl-Attribut-Typs zur√ºck.
 		 *
 		 * @return die Genauigkeit dieses Attribut-Typs
 		 */

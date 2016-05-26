@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2003 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2003 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.datgen.
  * 
- * de.bsvrz.pat.datgen is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.datgen is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.datgen is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.datgen; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.datgen.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.datgen.generator.xmlParser;
@@ -43,7 +49,7 @@ import java.util.*;
  * Klasse zur Verarbeitung unserer XML-Daten-Dateien
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5055 $
+ * @version $Revision$
  */
 public class XmlFormatReader {
 
@@ -53,22 +59,22 @@ public class XmlFormatReader {
 	/** Bei Wiedergabe einer XML-Datei wird die Originalzeit in der Datei beibehalten */
 	private static final int ORIGINAL_TIME = 0;
 
-	/** Bei Wiedergabe einer XML-Datei wird die Originalzeit in der Datei angepaßt: Das zeitliche Verhalten wird in die Jetztzeit verschoben. */
+	/** Bei Wiedergabe einer XML-Datei wird die Originalzeit in der Datei angepaÃŸt: Das zeitliche Verhalten wird in die Jetztzeit verschoben. */
 	private static final int ADJUST_TIME = 1;
 
-	/** Basis-URI für die DTD */
+	/** Basis-URI fÃ¼r die DTD */
 	private String baseUri;
 
 	/** Die Parser-<i>Factory</i> */
 	private SAXParserFactory factory;
 
-	/** Handler für SAX-Ereignisse */
+	/** Handler fÃ¼r SAX-Ereignisse */
 	private DefaultHandler parserHandler;
 
 	/** Name der Eingabedatei */
 	private String inputFile;
 
-	/** Eingabe-<i>Stream</i> für die Protokolle */
+	/** Eingabe-<i>Stream</i> fÃ¼r die Protokolle */
 	private BufferedInputStream inputFileReader;
 
 	/** Zeigt an, ober der Parser validierend sein soll oder nicht */
@@ -77,10 +83,10 @@ public class XmlFormatReader {
 	/** Der XML-Parser */
 	private SAXParser parser;
 
-	/** Handler für Eingangs-Validitäts-Prüfung */
+	/** Handler fÃ¼r Eingangs-ValiditÃ¤ts-PrÃ¼fung */
 	private DefaultHandler validityHandler;
 
-	/** Der Parser, der zum Verwenden der Validität der XML-Datei verwendet wird */
+	/** Der Parser, der zum Verwenden der ValiditÃ¤t der XML-Datei verwendet wird */
 	private SAXParser validityParser;
 
 	/**
@@ -89,7 +95,7 @@ public class XmlFormatReader {
 	 */
 	private int timeStampOption = ORIGINAL_TIME;
 
-	/** Liste der gülten Werte für den <code>-zeitstempel</code>-Parameter */
+	/** Liste der gÃ¼lten Werte fÃ¼r den <code>-zeitstempel</code>-Parameter */
 	private ArgumentList.ValueSelection validTimeStampOptions = new ArgumentList.ValueSelection();
 
 	/**
@@ -101,9 +107,9 @@ public class XmlFormatReader {
 	 */
 	public XmlFormatReader(ArgumentList argumentList) throws Exception {
 
-		validTimeStampOptions.add("übernehmen").alias("uebernehmen").alias("u")
+		validTimeStampOptions.add("Ã¼bernehmen").alias("uebernehmen").alias("u")
 				.ignoreCase().convertTo(ORIGINAL_TIME)
-				.purpose("Wiedergabe des Protokolls geschieht mit den ursprünglichen Zeiten");
+				.purpose("Wiedergabe des Protokolls geschieht mit den ursprÃ¼nglichen Zeiten");
 		validTimeStampOptions.add("anpassen").alias("a").ignoreCase()
 				.convertTo(ADJUST_TIME)
 				.purpose("Wiedergabe des Protokolls wird in die Jetztzeit verschoben");
@@ -128,13 +134,13 @@ public class XmlFormatReader {
 	}
 
 	/**
-	 * Validitäts-Check der XML-Datei: Bevor die Daten in der XML-Datei gelesen werden, wird diese auf formale Korrektheit geprüft.
+	 * ValiditÃ¤ts-Check der XML-Datei: Bevor die Daten in der XML-Datei gelesen werden, wird diese auf formale Korrektheit geprÃ¼ft.
 	 *
-	 * @throws IOException  wenn beim Lesen der Datei o. ä. ein Fehler auftritt
+	 * @throws IOException  wenn beim Lesen der Datei o. Ã¤. ein Fehler auftritt
 	 * @throws SAXException wenn ein SAX-spezifisches Problem auftritt.
 	 */
 	public void checkValidity() throws IOException, SAXException {
-		debug.fine("Validitäts-Check");
+		debug.fine("ValiditÃ¤ts-Check");
 		if((inputFile.length() > 0) && isValidating) {
 			((SaxHandler)parserHandler).setIsInVerify(true);
 			debug.finer("XmlFormatReader: Vor validityParser.parse. inputFile = \"" + inputFile + "\"");
@@ -156,7 +162,7 @@ public class XmlFormatReader {
 	 * @param dm      Das Datenmodell, auf dem die Applikation arbeitet.
 	 * @param cdi     Die Verbindung zum DaV
 	 * @param sq      Sende-Queue
-	 * @param objects Liste der Objekte, die gesendet werden sollen (d. h. in dieser Liste <b>nicht</B> angegebene Objekte werden in der XML-Datei überlesen)
+	 * @param objects Liste der Objekte, die gesendet werden sollen (d. h. in dieser Liste <b>nicht</B> angegebene Objekte werden in der XML-Datei Ã¼berlesen)
 	 * @param dg      Der aufrufende Datengenerator
 	 */
 	public void initSaxHandlers(
@@ -186,7 +192,7 @@ public class XmlFormatReader {
 	/**
 	 * XML-Datei parsen.
 	 *
-	 * @throws IOException  wenn beim Lesen der Datei o. ä. ein Fehler auftritt
+	 * @throws IOException  wenn beim Lesen der Datei o. Ã¤. ein Fehler auftritt
 	 * @throws SAXException wenn ein SAX-spezifisches Problem auftritt.
 	 */
 	public void parse() throws IOException, SAXException {

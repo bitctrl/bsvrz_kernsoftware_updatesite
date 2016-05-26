@@ -1,11 +1,11 @@
 /*
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.communication.dataRepresentation.data.byteArray;
 
@@ -30,9 +36,9 @@ import java.util.*;
 /**
  * Klasse, die noch zu dokumentieren ist.
  *
- * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * @author Kappich+Kni√ü Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 8326 $ / $Date: 2010-11-16 12:00:46 +0100 (Tue, 16 Nov 2010) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ByteArrayPrimitiveData extends ByteArrayData implements Data.TextValue, Data.TimeValue, Data.ReferenceValue, Data.NumberValue {
 	public ByteArrayPrimitiveData(byte[] bytes, int offset, AttributeInfo attributeInfo) {
@@ -50,7 +56,7 @@ public class ByteArrayPrimitiveData extends ByteArrayData implements Data.TextVa
 	}
 
 	public Iterator<Data> iterator() {
-		throw new UnsupportedOperationException("‹ber das Attribut " + getName() + " kann nicht iteriert werden");
+		throw new UnsupportedOperationException("√úber das Attribut " + getName() + " kann nicht iteriert werden");
 	}
 
 	public boolean isList() {
@@ -99,7 +105,7 @@ public class ByteArrayPrimitiveData extends ByteArrayData implements Data.TextVa
 
 	public void setText(String text) {
 //		Thread.dumpStack();
-		throw new UnsupportedOperationException("setText: Das Attribut " + getName() + " darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("setText: Das Attribut " + getName() + " darf nicht ver√§ndert werden");
 	}
 
 	// TimeValue-Sicht mit entsprechenden Zugriffsmethoden
@@ -118,11 +124,11 @@ public class ByteArrayPrimitiveData extends ByteArrayData implements Data.TextVa
 	}
 
 	public void setSeconds(long seconds) {
-		throw new UnsupportedOperationException("setSeconds: Das Attribut " + getName() + " darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("setSeconds: Das Attribut " + getName() + " darf nicht ver√§ndert werden");
 	}
 
 	public void setMillis(long milliSeconds) {
-		throw new UnsupportedOperationException("setMillis: Das Attribut " + getName() + " darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("setMillis: Das Attribut " + getName() + " darf nicht ver√§ndert werden");
 	}
 
 	// ReferenceValue-Sicht mit entsprechenden Zugriffsmethoden
@@ -141,15 +147,15 @@ public class ByteArrayPrimitiveData extends ByteArrayData implements Data.TextVa
 	}
 
 	public void setSystemObject(SystemObject object) {
-		throw new UnsupportedOperationException("setSystemObject: Das Attribut " + getName() + " darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("setSystemObject: Das Attribut " + getName() + " darf nicht ver√§ndert werden");
 	}
 
 	public void setSystemObjectPid(String objectPid, ObjectLookup datamodel) {
-		throw new UnsupportedOperationException("setSystemObjectPid: Das Attribut " + getName() + " darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("setSystemObjectPid: Das Attribut " + getName() + " darf nicht ver√§ndert werden");
 	}
 
 	public void setSystemObjectPid(final String objectPid) {
-		throw new UnsupportedOperationException("setSystemObjectPid: Das Attribut " + getName() + " darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("setSystemObjectPid: Das Attribut " + getName() + " darf nicht ver√§ndert werden");
 	}
 
 	public String getSystemObjectPid() {
@@ -219,23 +225,23 @@ public class ByteArrayPrimitiveData extends ByteArrayData implements Data.TextVa
 		}
 
 		public void setState(IntegerValueState state) {
-			throw new UnsupportedOperationException("(unscaled) setState: Das Attribut " + getName() + " darf nicht ver‰ndert werden");
+			throw new UnsupportedOperationException("(unscaled) setState: Das Attribut " + getName() + " darf nicht ver√§ndert werden");
 		}
 
 		public void set(int value) {
-			throw new UnsupportedOperationException("(unscaled) set(int): Das Attribut " + getName() + " darf nicht ver‰ndert werden");
+			throw new UnsupportedOperationException("(unscaled) set(int): Das Attribut " + getName() + " darf nicht ver√§ndert werden");
 		}
 
 		public void set(long value) {
-			throw new UnsupportedOperationException("(unscaled) set(long): Das Attribut " + getName() + " darf nicht ver‰ndert werden");
+			throw new UnsupportedOperationException("(unscaled) set(long): Das Attribut " + getName() + " darf nicht ver√§ndert werden");
 		}
 
 		public void set(float value) {
-			throw new UnsupportedOperationException("(unscaled) set(float): Das Attribut " + getName() + " darf nicht ver‰ndert werden");
+			throw new UnsupportedOperationException("(unscaled) set(float): Das Attribut " + getName() + " darf nicht ver√§ndert werden");
 		}
 
 		public void set(double value) {
-			throw new UnsupportedOperationException("(unscaled) set(double): Das Attribut " + getName() + " darf nicht ver‰ndert werden");
+			throw new UnsupportedOperationException("(unscaled) set(double): Das Attribut " + getName() + " darf nicht ver√§ndert werden");
 		}
 
 		public String getText() {
@@ -255,7 +261,7 @@ public class ByteArrayPrimitiveData extends ByteArrayData implements Data.TextVa
 		}
 
 		public void setText(String text) {
-			throw new UnsupportedOperationException("(unscaled) setText: Das Attribut " + getName() + " darf nicht ver‰ndert werden");
+			throw new UnsupportedOperationException("(unscaled) setText: Das Attribut " + getName() + " darf nicht ver√§ndert werden");
 		}
 	}
 
@@ -296,23 +302,23 @@ public class ByteArrayPrimitiveData extends ByteArrayData implements Data.TextVa
 	}
 
 	public void setState(IntegerValueState state) {
-		throw new UnsupportedOperationException("setState: Das Attribut " + getName() + " darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("setState: Das Attribut " + getName() + " darf nicht ver√§ndert werden");
 	}
 
 	public void set(int value) {
-		throw new UnsupportedOperationException("set(int): Das Attribut " + getName() + " darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("set(int): Das Attribut " + getName() + " darf nicht ver√§ndert werden");
 	}
 
 	public void set(long value) {
-		throw new UnsupportedOperationException("set(long): Das Attribut " + getName() + " darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("set(long): Das Attribut " + getName() + " darf nicht ver√§ndert werden");
 	}
 
 	public void set(float value) {
-		throw new UnsupportedOperationException("set(float): Das Attribut " + getName() + " darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("set(float): Das Attribut " + getName() + " darf nicht ver√§ndert werden");
 	}
 
 	public void set(double value) {
-		throw new UnsupportedOperationException("set(double): Das Attribut " + getName() + " darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("set(double): Das Attribut " + getName() + " darf nicht ver√§ndert werden");
 	}
 
 	public Data.NumberArray asUnscaledArray() {

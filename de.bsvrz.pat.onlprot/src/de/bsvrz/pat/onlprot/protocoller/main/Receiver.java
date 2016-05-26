@@ -1,13 +1,13 @@
 /*
  * Copyright 2011 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2003 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2003 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.onlprot.
  * 
- * de.bsvrz.pat.onlprot is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.onlprot is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.onlprot is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.onlprot; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.onlprot.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.onlprot.protocoller.main;
@@ -43,38 +49,38 @@ import java.util.*;
 
 /**
  * Online-Protokollierer
- * <p/>
- * Diese Klasse implementiert den Online-Protokollierer, der sich über Aufrufargumente gesteuert auf beliebige Online-Daten des Systems anmelden kann.
- * <p/>
+ * <p>
+ * Diese Klasse implementiert den Online-Protokollierer, der sich Ã¼ber Aufrufargumente gesteuert auf beliebige Online-Daten des Systems anmelden kann.
+ * <p>
  * Aufruf: <blockquote><code> java de.bsvrz.pat.onlprot.protocoller.main.Receiver [-protModul=modulName] [-datei=protokollDatei] [&lt;weitereParameterDesVerwendetenProtokollierungsmoduls&gt;]
  * ([-rolle=anmeldeRolle] [-option=anmeldeOption] [-objekte=objektSpezifikationen] -daten=datenSpezifikation)+ </code></blockquote>
- * <p/>
- * Das heißt, es können eine oder mehrere Anmeldespezifikationen beim Start des Programms angegeben werden.
- * <p/>
- * Jede Anmeldespezifikation kann optional die Anmelde-Rolle, die Anmeldeoption und die Angabe der Objekte enthalten, für die die Anmeldung durchgeführt werden
- * soll. Wenn diese Argumente weggelassen werden, dann übernehmen sie die unten angegebenen Standardwerte. Über die Datenspezifikation muss angegeben werden,
+ * <p>
+ * Das heiÃŸt, es kÃ¶nnen eine oder mehrere Anmeldespezifikationen beim Start des Programms angegeben werden.
+ * <p>
+ * Jede Anmeldespezifikation kann optional die Anmelde-Rolle, die Anmeldeoption und die Angabe der Objekte enthalten, fÃ¼r die die Anmeldung durchgefÃ¼hrt werden
+ * soll. Wenn diese Argumente weggelassen werden, dann Ã¼bernehmen sie die unten angegebenen Standardwerte. Ãœber die Datenspezifikation muss angegeben werden,
  * welche Daten angemeldet werden sollen.
- * <p/>
- * Im einzelnen stehen die Parameter für folgendes:
- * <p/>
+ * <p>
+ * Im einzelnen stehen die Parameter fÃ¼r folgendes:
+ * <p>
  * <dl> <dt><code>-protModul = modulName</code> <dd>Name des Moduls, welches ein Protokollierungsmodul implementiert. Wird kein Protokollierungsmodul angegeben,
  * so wird das Standardmodul hinzugeladen. <dt><code>-datei = protokollDatei</code> <dd> Legt die Datei fest, in der die protokollierten Datensequenzen
- * gespeichert werden können. Wird dieser Parameter nicht angegeben, so werden die protokollierten Daten auf die Standardausgabe ausgegeben. <dt><code>-rolle =
- * anmeldeRolle</code> <dd>Hier sind die Werte <code>Empfänger</code> (<code>receiver</code>) bzw. <code>Senke</code> (<code>drain</code>) möglich, um zu
- * signalisieren, dass die Applikation als Empfänger bzw. als Senke für beliebige Daten arbeiten soll. Wenn keine Anmelde-Rolle angegeben wurde, wird
- * standardmäßig der Wert Empfänger benutzt. <dt><code>-option = anmeldeOption</code> <dd><code>online</code> (Standard), <code>o</code>: Anmeldung auf alle
- * Online-Datensätze.<br> <code>delta</code>, <code>d</code>: Anmeldung nur auf geänderte Datensätze. <br> <code>nachgeliefert</code>, <code>n</code>,
- * <code>delayed</code>: Anmeldung zusätzlich auch auf nachgelieferte Datensätze. <dt><code>-objekte = objektSpezifikationen</code> <dd>Kommaseparierte Liste
- * von PIDs oder Objekt-Ids mit optionalem, durch Doppelpunkt getrennten Mengennamen. <br> Es können mehrere, durch Kommas getrennte, Objekte spezifiziert
+ * gespeichert werden kÃ¶nnen. Wird dieser Parameter nicht angegeben, so werden die protokollierten Daten auf die Standardausgabe ausgegeben. <dt><code>-rolle =
+ * anmeldeRolle</code> <dd>Hier sind die Werte <code>EmpfÃ¤nger</code> (<code>receiver</code>) bzw. <code>Senke</code> (<code>drain</code>) mÃ¶glich, um zu
+ * signalisieren, dass die Applikation als EmpfÃ¤nger bzw. als Senke fÃ¼r beliebige Daten arbeiten soll. Wenn keine Anmelde-Rolle angegeben wurde, wird
+ * standardmÃ¤ÃŸig der Wert EmpfÃ¤nger benutzt. <dt><code>-option = anmeldeOption</code> <dd><code>online</code> (Standard), <code>o</code>: Anmeldung auf alle
+ * Online-DatensÃ¤tze.<br> <code>delta</code>, <code>d</code>: Anmeldung nur auf geÃ¤nderte DatensÃ¤tze. <br> <code>nachgeliefert</code>, <code>n</code>,
+ * <code>delayed</code>: Anmeldung zusÃ¤tzlich auch auf nachgelieferte DatensÃ¤tze. <dt><code>-objekte = objektSpezifikationen</code> <dd>Kommaseparierte Liste
+ * von PIDs oder Objekt-Ids mit optionalem, durch Doppelpunkt getrennten Mengennamen. <br> Es kÃ¶nnen mehrere, durch Kommas getrennte, Objekte spezifiziert
  * werden. Ein Objekt wird entweder durch die Objekt-Id oder vorzugsweise durch die PID des Objekts spezifiziert. Optional kann hinter der Objekt-ID oder PID
  * mit Doppelpunkt getrennt ein Mengenname angegeben werden; damit wird dann nicht das angegebene Objekt, sondern alle in der angegebenen Menge unterhalb des
  * angegebenen Objekts enthaltenen Objekte spezifiziert. <dt><code>-daten = datenSpezifikation</code> <dd>Durch Doppelpunkt getrennt Attributgruppen-PID,
- * Aspekt-PID und optional Simulationsvariante.<br> Anstelle der PID der Attributgruppe kann mit einem Stern ("*") angegeben werden, dass die Anmeldung für alle
- * Attributgruppen, die bei den ausgewählten Objekten als Online-Attributgruppen konfiguriert sind, durchgeführt wird.<br> Anstelle der PID des Aspekte kann mit
- * einem Stern ("*") angegeben werden, dass die Anmeldung für alle Aspekte, die bei den ausgewählten Attributgruppen konfiguriert sind, durchgeführt wird.<br>
- * Die Simulationsvariante kann (einschließlich des vorhergehenden Doppelpunkts) weggelassen werden um die Default-Simulationsvariante zu benutzen. </dl>
- * <p/>
- * Empfangene Datensätze werden mit Hilfe einer {@link de.bsvrz.pat.onlprot.standardProtocolModule.StandardProtocoller Ausgabefunktion} ausgegeben. Die Art der Ausgabe kann variiert
+ * Aspekt-PID und optional Simulationsvariante.<br> Anstelle der PID der Attributgruppe kann mit einem Stern ("*") angegeben werden, dass die Anmeldung fÃ¼r alle
+ * Attributgruppen, die bei den ausgewÃ¤hlten Objekten als Online-Attributgruppen konfiguriert sind, durchgefÃ¼hrt wird.<br> Anstelle der PID des Aspekte kann mit
+ * einem Stern ("*") angegeben werden, dass die Anmeldung fÃ¼r alle Aspekte, die bei den ausgewÃ¤hlten Attributgruppen konfiguriert sind, durchgefÃ¼hrt wird.<br>
+ * Die Simulationsvariante kann (einschlieÃŸlich des vorhergehenden Doppelpunkts) weggelassen werden um die Default-Simulationsvariante zu benutzen. </dl>
+ * <p>
+ * Empfangene DatensÃ¤tze werden mit Hilfe einer {@link de.bsvrz.pat.onlprot.standardProtocolModule.StandardProtocoller Ausgabefunktion} ausgegeben. Die Art der Ausgabe kann variiert
  * werden durch weitere Protokollierungsmodule, die von {@link de.bsvrz.pat.onlprot.standardProtocolModule.ProtocolModule} abgeleitet werden.
  *
  * @author Kappich Systemberatung
@@ -88,7 +94,7 @@ public class Receiver {
 	/** Die Debug-Ausgabe */
 	private static Debug debug = null;
 
-	/** Andockstelle für Protokollierungsmodule */
+	/** Andockstelle fÃ¼r Protokollierungsmodule */
 	private static ProtocolModuleConnector pmc = null;
 
 	/**
@@ -137,16 +143,16 @@ public class Receiver {
 			}
 
 			debug.config(
-					subscriptionInfo.getOptions() + "-Anmeldung als " + subscriptionInfo.getReceiverRole() + " für " + attributeGroup.getNameOrPidOrId() + ":"
+					subscriptionInfo.getOptions() + "-Anmeldung als " + subscriptionInfo.getReceiverRole() + " fÃ¼r " + attributeGroup.getNameOrPidOrId() + ":"
 					+ aspect.getNameOrPidOrId() + simulationVariantText
 			);
 			debug.config(" Objekte: " + objects);
 
 			/* XXX
 			 * Work around: Ist die Simulationsvariante -1 (also nicht explizit
-			 * über die Aufrufparameter gesetzt), so wird sie durch die
+			 * Ã¼ber die Aufrufparameter gesetzt), so wird sie durch die
 			 * DaV-Applikationsfunktionen automatisch auf 0 gesetzt. Dieses
-			 * Verhalten ist unerwünscht und wird hier bis auf weiteres
+			 * Verhalten ist unerwÃ¼nscht und wird hier bis auf weiteres
 			 * umgangen.
 			 */
 			short rescueSimulationVariant = dataDescription.getSimulationVariant();
@@ -186,14 +192,14 @@ public class Receiver {
 		Debug.init("OnlineProtokollierer", argumentList);
 		debug = Debug.getLogger();
 
-		/* Vollständige Aufrufparameter-Zeile */
+		/* VollstÃ¤ndige Aufrufparameter-Zeile */
 		String[] originalArguments = new String[arguments.length];
 		for(int i = 0; i < arguments.length; i++) {
 			originalArguments[i] = arguments[i];
 		}
 
 		DataKindDeterminer dkd = new DataKindDeterminer(
-				DataKindDeterminer.notIsSender, "Empfänger", DataKindDeterminer.examineParamData
+				DataKindDeterminer.notIsSender, "EmpfÃ¤nger", DataKindDeterminer.examineParamData
 		);
 		ClientDavParameters parameters;
 		List subscriptions = new LinkedList();
@@ -217,7 +223,7 @@ public class Receiver {
 					"-protModul: Name des Moduls, welches ein Protokollierungsmodul implementiert. Wird kein Protokollierungsmodul angegeben, so wird das Standardmodul hinzugeladen."
 			);
 			debug.error(
-					"-datei: Legt die Datei fest, in der die protokollierten Datensequenzen gespeichert werden können. Wird dieser Parameter nicht angegeben, so werden die protokollierten Daten auf die Standardausgabe ausgegeben."
+					"-datei: Legt die Datei fest, in der die protokollierten Datensequenzen gespeichert werden kÃ¶nnen. Wird dieser Parameter nicht angegeben, so werden die protokollierten Daten auf die Standardausgabe ausgegeben."
 			);
 			if(pmc != null) {
 				debug.error(pmc.getHelp());
@@ -230,8 +236,8 @@ public class Receiver {
 				debug.error("-option= " + dkd.getValidOptions().getInfo());
 			}
 			else {
-				debug.error("-rolle = <keine Information verfügbar>");
-				debug.error("-option = <keine Information verfügbar>");
+				debug.error("-rolle = <keine Information verfÃ¼gbar>");
+				debug.error("-option = <keine Information verfÃ¼gbar>");
 			}
 			debug.error("-objekte:Kommaseparierte Liste von Objekt-IDs oder PIDs mit optionalem, durch Doppelpunkt getrennten Mengennamen");
 			debug.error("-daten:durch Doppelpunkt getrennt Attributgruppen-PID, Aspekt-PID und optional Simulationsvariante");

@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.archive;
@@ -29,50 +35,50 @@ import java.util.*;
 
 /**
  * Schnittstelle, die von Applikationen benutzt wird, um Anfragen an ein Archivsystem zu stellen. Eine konkrete Implementierung wird von den
- * Datenverteiler-Applikationsfunktionen nach erfolgreichem Verbindungsaufbau zum Datenverteiler über die Methode {@link
- * de.bsvrz.dav.daf.main.ClientDavInterface#getArchive} zur Verfügung gestellt.
+ * Datenverteiler-Applikationsfunktionen nach erfolgreichem Verbindungsaufbau zum Datenverteiler Ã¼ber die Methode {@link
+ * de.bsvrz.dav.daf.main.ClientDavInterface#getArchive} zur VerfÃ¼gung gestellt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11925 $
+ * @version $Revision$
  */
 public interface ArchiveRequestManager {
 
 	/**
-	 * Spezifiziert die Größe des Empfangspuffers je Archivanfrage, die mit nachfolgenden <code>request</code> Aufrufen erzeugt werden. Der angegebene Parameter
-	 * ist eine grobe Vorgabe für alle Streams einer Archivanfrage zusammen und muss von einer Implementierung nicht exakt berücksichtigt werden, sondern sollte in
-	 * der sendeseitigen Blockbildung und in der Flusskontrolle so berücksichtigt werden, dass die Summe der vom Archivsystem gesendeten aber noch nicht von der
-	 * anfragenden Applikation abgerufenen Bytes in der angegebenen Größenordnung liegt. Der Defaultwert ist 0 mit der Bedeutung, das die Größe durch einen
+	 * Spezifiziert die GrÃ¶ÃŸe des Empfangspuffers je Archivanfrage, die mit nachfolgenden <code>request</code> Aufrufen erzeugt werden. Der angegebene Parameter
+	 * ist eine grobe Vorgabe fÃ¼r alle Streams einer Archivanfrage zusammen und muss von einer Implementierung nicht exakt berÃ¼cksichtigt werden, sondern sollte in
+	 * der sendeseitigen Blockbildung und in der Flusskontrolle so berÃ¼cksichtigt werden, dass die Summe der vom Archivsystem gesendeten aber noch nicht von der
+	 * anfragenden Applikation abgerufenen Bytes in der angegebenen GrÃ¶ÃŸenordnung liegt. Der Defaultwert ist 0 mit der Bedeutung, das die GrÃ¶ÃŸe durch einen
 	 * entsprechenden Parameter des Archivsystems festgelegt wird.
 	 *
-	 * @param numberOfBytes Grobe Vorgabe bezüglich der Anzahl zu puffernden Bytes pro Archivanfrage oder 0, wenn keine Vorgabe seitens der Empfangsapplikation
+	 * @param numberOfBytes Grobe Vorgabe bezÃ¼glich der Anzahl zu puffernden Bytes pro Archivanfrage oder 0, wenn keine Vorgabe seitens der Empfangsapplikation
 	 *                      gemacht werden soll und statt dessen ein entsprechender Parameter des Archivsystems verwendet werden soll.
 	 */
 	void setReceiveBufferSize(int numberOfBytes);
 
 	/**
 	 * Ruft Archivdaten von einem Archivsystem mit Hilfe eines Ergebnisdatenstroms ab. Diese Methode wird von einer Applikation aufgerufen um Archivdaten von einem
-	 * Archivsystem abzufragen. Eine Implementierung dieser Methode sollte ein Objekt zurückliefern über das asynchron auf das Ergebnis der Archivanfrage
-	 * zugegriffen werden kann. Im Ergebnis wird für die im Parameter <code>spec</code> spezifizierten Daten ein Stream von Ergebnisdatensätzen erwartet.
+	 * Archivsystem abzufragen. Eine Implementierung dieser Methode sollte ein Objekt zurÃ¼ckliefern Ã¼ber das asynchron auf das Ergebnis der Archivanfrage
+	 * zugegriffen werden kann. Im Ergebnis wird fÃ¼r die im Parameter <code>spec</code> spezifizierten Daten ein Stream von ErgebnisdatensÃ¤tzen erwartet.
 	 *
-	 * @param priority Priorität der Anfrage
-	 * @param spec     Spezifikation der gewünschten Archivdaten. Ein Objekt der Klasse {@link de.bsvrz.dav.daf.main.archive.ArchiveDataSpecification}
+	 * @param priority PrioritÃ¤t der Anfrage
+	 * @param spec     Spezifikation der gewÃ¼nschten Archivdaten. Ein Objekt der Klasse {@link de.bsvrz.dav.daf.main.archive.ArchiveDataSpecification}
 	 *
-	 * @return Ergebnisobjekt über das asynchron auf die gewünschten Ergebnisdatensätze zugegriffen werden kann.
+	 * @return Ergebnisobjekt Ã¼ber das asynchron auf die gewÃ¼nschten ErgebnisdatensÃ¤tze zugegriffen werden kann.
 	 *
 	 * @throws IllegalStateException Das Archivsystem ist nicht erreichbar.
 	 */
 	ArchiveDataQueryResult request(ArchiveQueryPriority priority, ArchiveDataSpecification spec) throws IllegalStateException;
 
 	/**
-	 * Ruft Archivdaten von einem Archivsystem mit Hilfe mehrerer Ergebnisdatenströme ab. Diese Methode wird von einer Applikation aufgerufen um Archivdaten von
-	 * einem Archivsystem abzufragen. Eine Implementierung dieser Methode sollte ein Objekt zurückliefern über das asynchron auf die Ergebnisse der Archivanfrage
-	 * zugegriffen werden kann. Im Ergebnis wird für jede Archivdatenspezifikation in der übergebenen Liste <code>specs</code> jeweils ein Stream von
-	 * Ergebnisdatensätzen erwartet.
+	 * Ruft Archivdaten von einem Archivsystem mit Hilfe mehrerer ErgebnisdatenstrÃ¶me ab. Diese Methode wird von einer Applikation aufgerufen um Archivdaten von
+	 * einem Archivsystem abzufragen. Eine Implementierung dieser Methode sollte ein Objekt zurÃ¼ckliefern Ã¼ber das asynchron auf die Ergebnisse der Archivanfrage
+	 * zugegriffen werden kann. Im Ergebnis wird fÃ¼r jede Archivdatenspezifikation in der Ã¼bergebenen Liste <code>specs</code> jeweils ein Stream von
+	 * ErgebnisdatensÃ¤tzen erwartet.
 	 *
-	 * @param priority Priorität der Anfrage
-	 * @param specs    Liste mit Spezifikationen der gewünschten Archivdaten.
+	 * @param priority PrioritÃ¤t der Anfrage
+	 * @param specs    Liste mit Spezifikationen der gewÃ¼nschten Archivdaten.
 	 *
-	 * @return Ergebnisobjekt über das asynchron auf die Ergebnisdatenströme mit den gewünschten Ergebnisdatensätzen zugegriffen werden kann.
+	 * @return Ergebnisobjekt Ã¼ber das asynchron auf die ErgebnisdatenstrÃ¶me mit den gewÃ¼nschten ErgebnisdatensÃ¤tzen zugegriffen werden kann.
 	 *
 	 * @throws IllegalStateException Das Archivsystem ist nicht erreichbar.
 	 */
@@ -80,34 +86,34 @@ public interface ArchiveRequestManager {
 
 	/**
 	 * Start einer Archivinformationsanfrage an das Archivsystem. Diese Methode wird von einer Applikation aufgerufen, um eine Archivinformationsanfrage an das
-	 * Archivsystem zu starten. Eine Implementierung dieser Methode sollte ohne zu blockieren ein Objekt zurückliefern über das asynchron auf das Ergebnis der
+	 * Archivsystem zu starten. Eine Implementierung dieser Methode sollte ohne zu blockieren ein Objekt zurÃ¼ckliefern Ã¼ber das asynchron auf das Ergebnis der
 	 * Anfrage zugegriffen werden kann.
-	 * <p/>
-	 * Das Ergebnisobjekt beinhaltet eine Liste von Objekten. Diese Objekte geben unter anderem ein Objekt vom Typ <code>ArchiveDataSpecification</code> zurück.
+	 * <p>
+	 * Das Ergebnisobjekt beinhaltet eine Liste von Objekten. Diese Objekte geben unter anderem ein Objekt vom Typ <code>ArchiveDataSpecification</code> zurÃ¼ck.
 	 * Dieses Objekt ist eine Referenz auf den Eingabeparameter <code>spec</code>.
 	 *
-	 * @param spec Spezifikation der Archivdaten zu denen Informationen gewünscht werden.
+	 * @param spec Spezifikation der Archivdaten zu denen Informationen gewÃ¼nscht werden.
 	 *
-	 * @return Ergebnisobjekt über das asynchron auf die gewünschten Informationen zugegriffen werden kann.
+	 * @return Ergebnisobjekt Ã¼ber das asynchron auf die gewÃ¼nschten Informationen zugegriffen werden kann.
 	 *
 	 * @throws IllegalStateException Das Archivsystem ist nicht erreichbar.
 	 */
 	ArchiveInfoQueryResult requestInfo(ArchiveDataSpecification spec) throws IllegalStateException;
 
 	/**
-	 * Die Implementation dieser Methode meldet sich als Empfänger von aktuellen Daten an. Die zurückgegebenen Datensätze unterscheiden sich von einer "normalen"
-	 * Anmeldung als Empfänger, da Archivdaten zeitlich vor die aktuellen Daten gemischt werden. Der Benutzer legt dabei fest wie gross der Zeitraum sein soll, der
-	 * vor die aktuellen Daten gemischt werden soll. Der Zeitraum wird als "Zeitspanne" oder als "Anzahl Datensätze" angegeben. </br> Ist kein Archivsystem
-	 * vorhanden oder bei der Archivanfrage tritt ein Fehler auf, werden nur die aktuellen Daten zurückgegeben.
+	 * Die Implementation dieser Methode meldet sich als EmpfÃ¤nger von aktuellen Daten an. Die zurÃ¼ckgegebenen DatensÃ¤tze unterscheiden sich von einer "normalen"
+	 * Anmeldung als EmpfÃ¤nger, da Archivdaten zeitlich vor die aktuellen Daten gemischt werden. Der Benutzer legt dabei fest wie gross der Zeitraum sein soll, der
+	 * vor die aktuellen Daten gemischt werden soll. Der Zeitraum wird als "Zeitspanne" oder als "Anzahl DatensÃ¤tze" angegeben. </br> Ist kein Archivsystem
+	 * vorhanden oder bei der Archivanfrage tritt ein Fehler auf, werden nur die aktuellen Daten zurÃ¼ckgegeben.
 	 *
-	 * @param receiver        Objekt, das Methoden zur Verfügung stellt um den Strom aus historischen und aktuellen Daten entgegen zu nehmen
-	 * @param object          System-Objekt für die die spezifizierten Daten anzumelden sind
+	 * @param receiver        Objekt, das Methoden zur VerfÃ¼gung stellt um den Strom aus historischen und aktuellen Daten entgegen zu nehmen
+	 * @param object          System-Objekt fÃ¼r die die spezifizierten Daten anzumelden sind
 	 * @param dataDescription Beschreibende Informationen zu den anzumeldenden Daten
-	 * @param options         Für die Anmeldung zu verwendende Optionen
+	 * @param options         FÃ¼r die Anmeldung zu verwendende Optionen
 	 * @param historyType     <code>HistoryTypeParameter.TIME</code> = Der Parameter <code>history</code> bezieht sich auf einen Zeitraum, der vor den aktuellen
 	 *                        Daten liegen soll (in ms); <code>HistoryTypeParameter.INDEX</code> = Der Parameter <code>history</code> bezieht sich auf die Anzahl
-	 *                        Datensätze, die mindestens vor den aktuellen Daten liegen sollen
-	 * @param history         Zeitraum der Archivdaten in Millisekunden, die vor den ersten aktuellen Datensätzen liegen
+	 *                        DatensÃ¤tze, die mindestens vor den aktuellen Daten liegen sollen
+	 * @param history         Zeitraum der Archivdaten in Millisekunden, die vor den ersten aktuellen DatensÃ¤tzen liegen
 	 */
 	void subscribeReceiver(
 			DatasetReceiverInterface receiver,
@@ -118,10 +124,10 @@ public interface ArchiveRequestManager {
 			long history);
 
 	/**
-	 * Die Implementation dieser Methode meldet einen Empfänger ab, der mit der Methode {@link ArchiveRequestManager#subscribeReceiver} angemeldet wurde.
+	 * Die Implementation dieser Methode meldet einen EmpfÃ¤nger ab, der mit der Methode {@link ArchiveRequestManager#subscribeReceiver} angemeldet wurde.
 	 *
 	 * @param receiver
-	 * @param object          System-Objekt für die die spezifizierten Daten angemeldet wurden
+	 * @param object          System-Objekt fÃ¼r die die spezifizierten Daten angemeldet wurden
 	 * @param dataDescription Beschreibende Informationen zu den angemeldeten Daten
 	 */
 	void unsubscribeReceiver(
@@ -129,157 +135,157 @@ public interface ArchiveRequestManager {
 
 	/**
 	 * Start einer Archivinformationsanfrage an das Archivsystem. Diese Methode wird von einer Applikation aufgerufen, um eine Archivinformationsanfrage an das
-	 * Archivsystem zu starten. Eine Implementierung dieser Methode sollte ohne zu blockieren ein Objekt zurückliefern über das asynchron auf das Ergebnis der
+	 * Archivsystem zu starten. Eine Implementierung dieser Methode sollte ohne zu blockieren ein Objekt zurÃ¼ckliefern Ã¼ber das asynchron auf das Ergebnis der
 	 * Anfrage zugegriffen werden kann.
-	 * <p/>
-	 * Das Ergebnisobjekt beinhaltet eine Liste von Objekten. Diese Objekte geben unter anderem ein Objekt vom Typ <code>ArchiveDataSpecification</code> zurück.
-	 * Diese Objekte sind Referenzen auf Einträge des Übergabeparameters <code>specs</code>.
+	 * <p>
+	 * Das Ergebnisobjekt beinhaltet eine Liste von Objekten. Diese Objekte geben unter anderem ein Objekt vom Typ <code>ArchiveDataSpecification</code> zurÃ¼ck.
+	 * Diese Objekte sind Referenzen auf EintrÃ¤ge des Ãœbergabeparameters <code>specs</code>.
 	 *
-	 * @param specs Liste mit Spezifikationen der Archivdaten zu denen Informationen gewünscht werden
+	 * @param specs Liste mit Spezifikationen der Archivdaten zu denen Informationen gewÃ¼nscht werden
 	 *
-	 * @return Ergebnisobjekt über das asynchron auf die gewünschten Informationen zugegriffen werden kann.
+	 * @return Ergebnisobjekt Ã¼ber das asynchron auf die gewÃ¼nschten Informationen zugegriffen werden kann.
 	 *
 	 * @throws IllegalStateException Das Archivsystem ist nicht erreichbar.
 	 */
 	ArchiveInfoQueryResult requestInfo(List<ArchiveDataSpecification> specs) throws IllegalStateException;
 
 	/**
-	 * Beauftragt das Archivsystem Archivdaten der Sicherung {@link de.bsvrz.dav.daf.main.impl.archive.filesaver.ArchiveFileSaver} zu übergeben. Eine Applikation
-	 * ruft diese Methode auf, um alle Archivdaten, die gesichert werden können, zu sichern. Eine Implementierung dieser Methode sollte ohne zu blockieren ein
-	 * Objekt zurückliefern über das asynchron auf das Ergebnis der Anfrage zugegriffen werden kann.
+	 * Beauftragt das Archivsystem Archivdaten der Sicherung {@link de.bsvrz.dav.daf.main.impl.archive.filesaver.ArchiveFileSaver} zu Ã¼bergeben. Eine Applikation
+	 * ruft diese Methode auf, um alle Archivdaten, die gesichert werden kÃ¶nnen, zu sichern. Eine Implementierung dieser Methode sollte ohne zu blockieren ein
+	 * Objekt zurÃ¼ckliefern Ã¼ber das asynchron auf das Ergebnis der Anfrage zugegriffen werden kann.
 	 *
-	 * @return Ergebnisobjekt über das Informationen über den Zustand des Auftrags abgefragt werden können
+	 * @return Ergebnisobjekt Ã¼ber das Informationen Ã¼ber den Zustand des Auftrags abgefragt werden kÃ¶nnen
 	 *
 	 * @throws IllegalStateException Das Archivsystem ist nicht erreichbar.
 	 */
 	ArchiveQueryResult savePersistentData() throws IllegalStateException;
 
 	/**
-	 * Start der Wiederherstellung von Datensätzen, die der Sicherung übergeben wurden (siehe {@link ArchiveRequestManager#savePersistentData()}). Diese Methode
-	 * wird von einer Applikation aufgerufen, die Datensätze benötgt, die sich nicht im direkten Zugriff des Archivsystems befinden, sondern bereits der Sicherung
-	 * übergeben wurden und später gelöscht wurden (siehe {@link ArchiveRequestManager#deleteDataSimulationVariant}, {@link ArchiveRequestManager#deleteData}).
-	 * Eine Implementierung dieser Methode sollte ohne zu blockieren ein Objekt zurückliefern über das asynchron auf das Ergebnis des Auftrags zugegriffen werden
+	 * Start der Wiederherstellung von DatensÃ¤tzen, die der Sicherung Ã¼bergeben wurden (siehe {@link ArchiveRequestManager#savePersistentData()}). Diese Methode
+	 * wird von einer Applikation aufgerufen, die DatensÃ¤tze benÃ¶tgt, die sich nicht im direkten Zugriff des Archivsystems befinden, sondern bereits der Sicherung
+	 * Ã¼bergeben wurden und spÃ¤ter gelÃ¶scht wurden (siehe {@link ArchiveRequestManager#deleteDataSimulationVariant}, {@link ArchiveRequestManager#deleteData}).
+	 * Eine Implementierung dieser Methode sollte ohne zu blockieren ein Objekt zurÃ¼ckliefern Ã¼ber das asynchron auf das Ergebnis des Auftrags zugegriffen werden
 	 * kann.
 	 *
-	 * @param requiredData Eine Liste von Zeitbereichen/Indexbereichen, die Wiederhergestellt werden müssen.
+	 * @param requiredData Eine Liste von Zeitbereichen/Indexbereichen, die Wiederhergestellt werden mÃ¼ssen.
 	 *
-	 * @return Ergebnisobjekt über das Informationen über den Zustand des Auftrags abgefragt werden können
+	 * @return Ergebnisobjekt Ã¼ber das Informationen Ã¼ber den Zustand des Auftrags abgefragt werden kÃ¶nnen
 	 *
 	 * @throws IllegalStateException Das Archivsystem ist nicht erreichbar.
 	 */
 	ArchiveQueryResult restorePersistentData(List<ArchiveInformationResult> requiredData) throws IllegalStateException;
 
 	/**
-	 * Beauftragt das Archivsystem Archivdaten, die zu einer Simulation gehören, aus dem Archivsystem zu löschen. Der Löschauftrag bezieht sich dabei nicht auf
-	 * Datensätze, die bereits der Sicherung übergeben wurden und von dieser verwaltet werden (siehe {@link ArchiveRequestManager#savePersistentData()}). Die
-	 * Methode wird von einer Applikation aufgerufen, um nicht mehr benötigte Datensätze, die zu einer Simulation gehören, aus dem Archivsystem zu löschen.
+	 * Beauftragt das Archivsystem Archivdaten, die zu einer Simulation gehÃ¶ren, aus dem Archivsystem zu lÃ¶schen. Der LÃ¶schauftrag bezieht sich dabei nicht auf
+	 * DatensÃ¤tze, die bereits der Sicherung Ã¼bergeben wurden und von dieser verwaltet werden (siehe {@link ArchiveRequestManager#savePersistentData()}). Die
+	 * Methode wird von einer Applikation aufgerufen, um nicht mehr benÃ¶tigte DatensÃ¤tze, die zu einer Simulation gehÃ¶ren, aus dem Archivsystem zu lÃ¶schen.
 	 *
 	 * @param simulationVariant Simulationsvariante, ganzzahliger Wert zwischen 1,...,999
 	 *
-	 * @return Ergebnisobjekt, über das Informationen über den Zustand des Auftrags abgefragt werden können
+	 * @return Ergebnisobjekt, Ã¼ber das Informationen Ã¼ber den Zustand des Auftrags abgefragt werden kÃ¶nnen
 	 *
 	 * @throws IllegalStateException Das Archivsystem ist nicht erreichbar.
 	 */
 	ArchiveQueryResult deleteDataSimulationVariant(short simulationVariant) throws IllegalStateException;
 
 	/**
-	 * Beauftragt das Archivsystem den Löschzeitpunkt der angegebenen Zeitbereiche zu verlängern. Die Methode wird von einer Applikation aufgerufen, um benötigte
-	 * Zeitbereiche länger als vorgesehen im direkten Zugriff des Archivsystems zu halten.
+	 * Beauftragt das Archivsystem den LÃ¶schzeitpunkt der angegebenen Zeitbereiche zu verlÃ¤ngern. Die Methode wird von einer Applikation aufgerufen, um benÃ¶tigte
+	 * Zeitbereiche lÃ¤nger als vorgesehen im direkten Zugriff des Archivsystems zu halten.
 	 *
-	 * @param requiredData Zeitbereiche, die länger im direkten Zugriff des Archivsystems bleiben sollen
-	 * @param timePeriod   Zeitspanne, die die ausgewählten Daten länger im direkten Zugriff des Archivsystem bleiben sollen (in ms)
+	 * @param requiredData Zeitbereiche, die lÃ¤nger im direkten Zugriff des Archivsystems bleiben sollen
+	 * @param timePeriod   Zeitspanne, die die ausgewÃ¤hlten Daten lÃ¤nger im direkten Zugriff des Archivsystem bleiben sollen (in ms)
 	 *
-	 * @return Ergebnisobjekt, über das Informationen über den Zustand des Auftrags abgefragt werden können
+	 * @return Ergebnisobjekt, Ã¼ber das Informationen Ã¼ber den Zustand des Auftrags abgefragt werden kÃ¶nnen
 	 */
 	ArchiveQueryResult increaseDeleteTime(List<ArchiveInformationResult> requiredData, long timePeriod);
 
 	/**
-	 * Beauftragt das Archivsystem die angegebenen Zeitbereiche ohne Rücksicht auf den mit {@link ArchiveRequestManager#increaseDeleteTime} festgelegten Wert zu
-	 * löschen. Das Löschen der Zeitbereiche wird dabei in zwei Varianten unterteilt. In der ersten Variante werden die Zeitbereiche umgehend aus dem direkten
-	 * Zugriff des Archivsystems entfernt. In der zweiten Variante werden die Zeitbereiche nur als "zu löschend" markiert, sobald das "automatische Löschen" des
-	 * Archivsystems angstoßen wird (dies geschieht zyklisch), werden die Zeitbereiche entfernt.
-	 * <p/>
-	 * Bei allen Löschoperationen, die durch diesen Methodenaufruf ausgelöst werden, muss darauf geachtete werden, dass der Vorhaltezeitraum der Zeitbereiche
+	 * Beauftragt das Archivsystem die angegebenen Zeitbereiche ohne RÃ¼cksicht auf den mit {@link ArchiveRequestManager#increaseDeleteTime} festgelegten Wert zu
+	 * lÃ¶schen. Das LÃ¶schen der Zeitbereiche wird dabei in zwei Varianten unterteilt. In der ersten Variante werden die Zeitbereiche umgehend aus dem direkten
+	 * Zugriff des Archivsystems entfernt. In der zweiten Variante werden die Zeitbereiche nur als "zu lÃ¶schend" markiert, sobald das "automatische LÃ¶schen" des
+	 * Archivsystems angstoÃŸen wird (dies geschieht zyklisch), werden die Zeitbereiche entfernt.
+	 * <p>
+	 * Bei allen LÃ¶schoperationen, die durch diesen Methodenaufruf ausgelÃ¶st werden, muss darauf geachtete werden, dass der Vorhaltezeitraum der Zeitbereiche
 	 * abgelaufen sein muss und das die Zeitbereiche gesichert wurden, falls diese gesichert werden sollten. Wird gegen eine diese Forderungen verstossen, wird der
-	 * angegebene Zeitbereich nicht gelöscht.
+	 * angegebene Zeitbereich nicht gelÃ¶scht.
 	 *
-	 * @param dataDisposedToDelete Zeitbereich(e), die gelöscht werden sollen
+	 * @param dataDisposedToDelete Zeitbereich(e), die gelÃ¶scht werden sollen
 	 * @param deleteImmediately    true = Variante 1, die Zeitbereiche werden umgehend aus dem direkten Zugriff des Archivsystems entfernt; false = Variante 2, die
-	 *                             Zeitbereiche werden nur als "zu löschend" markiert und später aus dem direkten Zugriff des Archivsystems entfernt
+	 *                             Zeitbereiche werden nur als "zu lÃ¶schend" markiert und spÃ¤ter aus dem direkten Zugriff des Archivsystems entfernt
 	 *
-	 * @return Ergebnisobjekt, über das Informationen über den Zustand des Auftrags abgefragt werden können
+	 * @return Ergebnisobjekt, Ã¼ber das Informationen Ã¼ber den Zustand des Auftrags abgefragt werden kÃ¶nnen
 	 */
 	ArchiveQueryResult deleteData(List<ArchiveInformationResult> dataDisposedToDelete, boolean deleteImmediately);
 
 	/**
 	 * Beauftragt das Archivsystem seine Informationen zu gespeicherten Daten mit einem Speichermedium Typ B {@link
-	 * de.bsvrz.dav.daf.main.impl.archive.filesaver.ArchiveFileSaver} abzugleichen. Dies kann nötig werden, wenn die eindeutigen Identifizierungen der
-	 * Speichermedien von Typ B durch die Sicherung geändert wurden (Beispiel: Die Daten wurden vorher auf CD gespeichert, nun werden die Daten auf DVD gespeichert
-	 * und die alten Datenbestände auf DVD umkopiert, somit fallen mehrere CD´s auf eine DVD und die eindeutigen Identifizierungen der CD´s sind nutzlos. Die
-	 * eindeutigen Identifizierungen der CD´s wurde aber vom Archivsystem gespeichert und müssen folglich abgeglichen werden).
+	 * de.bsvrz.dav.daf.main.impl.archive.filesaver.ArchiveFileSaver} abzugleichen. Dies kann nÃ¶tig werden, wenn die eindeutigen Identifizierungen der
+	 * Speichermedien von Typ B durch die Sicherung geÃ¤ndert wurden (Beispiel: Die Daten wurden vorher auf CD gespeichert, nun werden die Daten auf DVD gespeichert
+	 * und die alten DatenbestÃ¤nde auf DVD umkopiert, somit fallen mehrere CDÅ½s auf eine DVD und die eindeutigen Identifizierungen der CDÅ½s sind nutzlos. Die
+	 * eindeutigen Identifizierungen der CDÅ½s wurde aber vom Archivsystem gespeichert und mÃ¼ssen folglich abgeglichen werden).
 	 *
 	 * @param volumeIdTypB Eindeutige Identifikation eines Speichermediums Typ B
 	 *
-	 * @return Ergebnisobjekt, über das Informationen über den Zustand des Auftrags abgefragt werden können
+	 * @return Ergebnisobjekt, Ã¼ber das Informationen Ã¼ber den Zustand des Auftrags abgefragt werden kÃ¶nnen
 	 */
 	ArchiveQueryResult archiveFileSaverAlignment(int volumeIdTypB);
 
 	/**
-	 * Stellt fest ob das Archivsystem über den Datenverteiler derzeit erreichbar ist. Eine positive/negative Antwort ist keine Garantie, dass dieser Zustand auch
-	 * in Zukunft gültig ist/bleibt.
+	 * Stellt fest ob das Archivsystem Ã¼ber den Datenverteiler derzeit erreichbar ist. Eine positive/negative Antwort ist keine Garantie, dass dieser Zustand auch
+	 * in Zukunft gÃ¼ltig ist/bleibt.
 	 *
-	 * @return true = Das Archivsystem ist derzeit erreichbar, es können alle im Interface spezifizierten Methoden benutzt werden; false = Das Archivsystem ist
+	 * @return true = Das Archivsystem ist derzeit erreichbar, es kÃ¶nnen alle im Interface spezifizierten Methoden benutzt werden; false = Das Archivsystem ist
 	 *         derzeit nicht erreichbar
 	 */
 	boolean isArchiveAvailable();
 
 	/**
-	 * Das übergebene Objekt <code>listener</code> wird benachrichtigt sobald sich die Erreichbarkeit des Archivsystems über den Datenverteiler ändert.
+	 * Das Ã¼bergebene Objekt <code>listener</code> wird benachrichtigt sobald sich die Erreichbarkeit des Archivsystems Ã¼ber den Datenverteiler Ã¤ndert.
 	 *
-	 * @param listener Objekt, das benutzt wird um Änderungen der Erreichbarkeit des Archivsystems über den Datenverteiler anzuzeigen
+	 * @param listener Objekt, das benutzt wird um Ã„nderungen der Erreichbarkeit des Archivsystems Ã¼ber den Datenverteiler anzuzeigen
 	 */
 	void addArchiveAvailabilityListener(ArchiveAvailabilityListener listener);
 
 	/**
-	 * Das Objekt, das mit {@link #addArchiveAvailabilityListener} übergeben wurde, wird nicht mehr benachrichtigt sobald sich die Erreichbarkeit des Archivsystems
-	 * über den Datenverteiler ändert.
+	 * Das Objekt, das mit {@link #addArchiveAvailabilityListener} Ã¼bergeben wurde, wird nicht mehr benachrichtigt sobald sich die Erreichbarkeit des Archivsystems
+	 * Ã¼ber den Datenverteiler Ã¤ndert.
 	 *
-	 * @param listener Objekt, das nicht mehr benachrichtigt werden soll, wenn sich die Erreichbarkeit des Archivsystems über den Datenverteiler ändert
+	 * @param listener Objekt, das nicht mehr benachrichtigt werden soll, wenn sich die Erreichbarkeit des Archivsystems Ã¼ber den Datenverteiler Ã¤ndert
 	 */
 	void removeArchiveAvailabilityListener(ArchiveAvailabilityListener listener);
 
 	/**
 	 * Beauftragt das Archivsystem fehlende Daten von anderen Archivsystemen anzufordern und diese dann als "nachgefordert" zu speichern und bei Archivanfragen zur
-	 * Verfügung zu stellen.
+	 * VerfÃ¼gung zu stellen.
 	 *
-	 * @param requiredData      Datenidentifikation(en), die nachgefordert werden sollen. Jede Datenidentifikation speichert zusätlich den Zeitbereich, in dem
+	 * @param requiredData      Datenidentifikation(en), die nachgefordert werden sollen. Jede Datenidentifikation speichert zusÃ¤tlich den Zeitbereich, in dem
 	 *                          Daten zu dieser Datenidentifikation angefordert werden soll. Es muss mindestens eine Datenidentifikation vorhanden sein.
 	 * @param requestedArchives Archivsystem(e), bei denen Daten angefordert werden. Ist diese Liste leer werden alle Archivsystem angefragt, die beim
 	 *                          automatischen Nachfordern angefragt werden.
 	 *
-	 * @return Ergebnisobjekt, über das Informationen über den Zustand des Auftrags abgefragt werden können
+	 * @return Ergebnisobjekt, Ã¼ber das Informationen Ã¼ber den Zustand des Auftrags abgefragt werden kÃ¶nnen
 	 */
 	ArchiveQueryResult requestData(Collection<ArchiveInformationResult> requiredData, Collection<SystemObject> requestedArchives);
 
 	/**
 	 * Beauftragt das Archivsystem fehlende Daten von anderen Archivsystemen anzufordern und diese dann als "nachgefordert" zu speichern und bei Archivanfragen zur
-	 * Verfügung zu stellen. Es werden alle Datenidentifikationen angefragt, die auch beim automatischen Nachfordern angefragt werden.
+	 * VerfÃ¼gung zu stellen. Es werden alle Datenidentifikationen angefragt, die auch beim automatischen Nachfordern angefragt werden.
 	 *
 	 * @param startTime         Startzeitpunkt, ab dem Daten nachgefordert werden
 	 * @param endTime           Endzeitpunkt, bis zu dem Daten nachgefordert werden
 	 * @param requestedArchives Archivsysteme die angefragt werden. Ist die Liste leer werden alle Archivsysteme angefragt, die beim automatischen Nachfordern
 	 *                          angefragt werden
 	 *
-	 * @return Ergebnisobjekt, über das Informationen über den Zustand des Auftrags abgefragt werden können
+	 * @return Ergebnisobjekt, Ã¼ber das Informationen Ã¼ber den Zustand des Auftrags abgefragt werden kÃ¶nnen
 	 */
 	ArchiveQueryResult requestData(long startTime, long endTime, Collection<SystemObject> requestedArchives);
 
 	/**
-	 * Gibt Informationen über die Anzahl Anfragen zurück, die eine Applikation gleichzeitig stellen darf. Wenn die Anfrage fehlschlägt
-	 * ({@link de.bsvrz.dav.daf.main.archive.ArchiveNumQueriesResult#isRequestSuccessful()} liefert false zurück und es gibt eine entsprechende Fehlermeldung) kann davon ausgegangen werden,
-	 * dass eine ältere Archivsystem-Version eingesetzt wird und maximal 5 gleichzeitige Anfragen pro Applikation zulässig sind.
+	 * Gibt Informationen Ã¼ber die Anzahl Anfragen zurÃ¼ck, die eine Applikation gleichzeitig stellen darf. Wenn die Anfrage fehlschlÃ¤gt
+	 * ({@link de.bsvrz.dav.daf.main.archive.ArchiveNumQueriesResult#isRequestSuccessful()} liefert false zurÃ¼ck und es gibt eine entsprechende Fehlermeldung) kann davon ausgegangen werden,
+	 * dass eine Ã¤ltere Archivsystem-Version eingesetzt wird und maximal 5 gleichzeitige Anfragen pro Applikation zulÃ¤ssig sind.
 	 *
-	 * @return Ergebnisobjekt, über dass Informationen zu der maximalen Anzahl Anfragen pro Applikation abgefragt werden können.
+	 * @return Ergebnisobjekt, Ã¼ber dass Informationen zu der maximalen Anzahl Anfragen pro Applikation abgefragt werden kÃ¶nnen.
 	 */
 	ArchiveNumQueriesResult getNumArchiveQueries();
 }

@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main;
@@ -23,10 +29,10 @@ package de.bsvrz.dav.daf.main;
 import java.util.Collection;
 
 /**
- * Interface um Transaktionen durchzuführen
+ * Interface um Transaktionen durchzufÃ¼hren
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8953 $
+ * @version $Revision$
  */
 public interface Transactions {
 
@@ -55,15 +61,15 @@ public interface Transactions {
 	 * Meldet einen Transaktionssender an.
 	 * @param sender Callback zur Sendesteuerung
 	 * @param dataDescription Datenidentifikation der Transaktion (Transaktionsobjekt, -attributgruppe, -aspekt)
-	 * @throws OneSubscriptionPerSendData Falls es schon eine widersprüchliche Anmeldung zu dieser Transaktion oder einem enthaltenen Datensatz gibt.
+	 * @throws OneSubscriptionPerSendData Falls es schon eine widersprÃ¼chliche Anmeldung zu dieser Transaktion oder einem enthaltenen Datensatz gibt.
 	 */
 	public void subscribeSender(TransactionSenderInterface sender, TransactionDataDescription dataDescription) throws OneSubscriptionPerSendData;
 
 	/**
-	 * Meldet einen Transaktionsempfänger an.
+	 * Meldet einen TransaktionsempfÃ¤nger an.
 	 * @param receiver Callback zum Empfang von Daten
 	 * @param dataDescription Datenidentifikation der Transaktion (Transaktionsobjekt, -attributgruppe, -aspekt)
-	 * @throws OneSubscriptionPerSendData Falls es schon eine widersprüchliche Anmeldung zu dieser Transaktion oder einem enthaltenen Datensatz gibt.
+	 * @throws OneSubscriptionPerSendData Falls es schon eine widersprÃ¼chliche Anmeldung zu dieser Transaktion oder einem enthaltenen Datensatz gibt.
 	 */
 	public void subscribeReceiver(TransactionReceiverInterface receiver, TransactionDataDescription dataDescription) throws OneSubscriptionPerSendData;
 
@@ -72,13 +78,13 @@ public interface Transactions {
 	 * @param receiver Callback zum Empfang von Daten
 	 * @param dataDescription Datenidentifikation der Transaktion (Transaktionsobjekt, -attributgruppe, -aspekt)
 	 * @param subscriptions Datenidentifikationen innerhalb der Transaktion
-	 * @throws OneSubscriptionPerSendData Falls es schon eine widersprüchliche Anmeldung zu dieser Transaktion oder einem enthaltenen Datensatz gibt.
+	 * @throws OneSubscriptionPerSendData Falls es schon eine widersprÃ¼chliche Anmeldung zu dieser Transaktion oder einem enthaltenen Datensatz gibt.
 	 */
 	public void subscribeDrain(TransactionReceiverInterface receiver, TransactionDataDescription dataDescription, Collection<InnerDataSubscription> subscriptions) throws OneSubscriptionPerSendData;
 
 	/**
-	 * Meldet einen Transaktionempfänger oder eine Transaktionssenke ab.
-	 * @param receiver Empfänger-Klasse
+	 * Meldet einen TransaktionempfÃ¤nger oder eine Transaktionssenke ab.
+	 * @param receiver EmpfÃ¤nger-Klasse
 	 * @param dataDescription Datenidentifikation der Transaktion (Transaktionsobjekt, -attributgruppe, -aspekt)
 	 */
 	public void unsubscribeReceiver(TransactionReceiverInterface receiver, TransactionDataDescription dataDescription);
@@ -100,7 +106,7 @@ public interface Transactions {
 	public void sendTransaction(final TransactionDataDescription dataDescription, final Collection<ResultData> data, final long dataTime) throws SendSubscriptionNotConfirmed ;
 
 	/**
-	 * Sendet eine Transaktion mit dem Transaktiondatensatz-Zeitstempel der aktuellen Zeit. Innere Daten können einen anderen Zeitstempel haben.
+	 * Sendet eine Transaktion mit dem Transaktiondatensatz-Zeitstempel der aktuellen Zeit. Innere Daten kÃ¶nnen einen anderen Zeitstempel haben.
 	 * @param dataDescription Datenidentifikation der Transaktion (Transaktionsobjekt, -attributgruppe, -aspekt)
 	 * @param data Liste mit Daten
 	 * @throws SendSubscriptionNotConfirmed Bei fehlender Sender-Anmeldung

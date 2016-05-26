@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.util;
 
@@ -27,15 +33,15 @@ import java.util.Iterator;
 import java.util.WeakHashMap;
 
 /**
- * Ein WeakHashSet referenziert seine Elemente nur über {@link WeakReference}s. Damit können Elemente im WeakHashSet
+ * Ein WeakHashSet referenziert seine Elemente nur Ã¼ber {@link WeakReference}s. Damit kÃ¶nnen Elemente im WeakHashSet
  * jederzeit durch den Garbage-Collector entsorgt werden, sofern sie nirgendwo anders direkt referenziert werden.
- * <p/>
- * Das Hinzufügen von null-Elementen wird still ignoriert, da null-Elemente hier bedeuten, dass ein entsprechendes
- * Objekt vom Garbage-Collector entfernt wurde. Das Hinzufügen von null kann also so interpretiert werden, dass ein
- * bereits nicht mehr verfügbares Element hinzugefügt werden soll, was in keiner Änderung des Sets resultiert.
+ * <p>
+ * Das HinzufÃ¼gen von null-Elementen wird still ignoriert, da null-Elemente hier bedeuten, dass ein entsprechendes
+ * Objekt vom Garbage-Collector entfernt wurde. Das HinzufÃ¼gen von null kann also so interpretiert werden, dass ein
+ * bereits nicht mehr verfÃ¼gbares Element hinzugefÃ¼gt werden soll, was in keiner Ã„nderung des Sets resultiert.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11291 $
+ * @version $Revision$
  */
 public class WeakHashSet<E> extends AbstractSet<E> {
 	private final WeakHashMap<E, Reference<E>> _backingHashMap;
@@ -50,7 +56,7 @@ public class WeakHashSet<E> extends AbstractSet<E> {
 	/**
 	 * Erstellt ein neues WeakHashSet
 	 *
-	 * @param initialCapacity ursprüngliche Kapazität
+	 * @param initialCapacity ursprÃ¼ngliche KapazitÃ¤t
 	 */
 	public WeakHashSet(final int initialCapacity) {
 		_backingHashMap = new WeakHashMap<E, Reference<E>>(initialCapacity);
@@ -59,7 +65,7 @@ public class WeakHashSet<E> extends AbstractSet<E> {
 	/**
 	 * Erstellt ein neues WeakHashSet
 	 *
-	 * @param initialCapacity ursprüngliche Kapazität
+	 * @param initialCapacity ursprÃ¼ngliche KapazitÃ¤t
 	 * @param loadFactor      load Factor
 	 */
 	public WeakHashSet(final int initialCapacity, final float loadFactor) {
@@ -67,9 +73,9 @@ public class WeakHashSet<E> extends AbstractSet<E> {
 	}
 
 	/**
-	 * Gibt einen iterator über alle verbleibenden Elemente zurück
+	 * Gibt einen iterator Ã¼ber alle verbleibenden Elemente zurÃ¼ck
 	 *
-	 * @return einen iterator über alle verbleibenden Elemente
+	 * @return einen iterator Ã¼ber alle verbleibenden Elemente
 	 */
 	@Override
 	public Iterator<E> iterator() {
@@ -77,8 +83,8 @@ public class WeakHashSet<E> extends AbstractSet<E> {
 	}
 
 	/**
-	 * Gibt die Anzahl der enthaltenen Elemente zurück. Da praktisch zu jeder Zeit Elemente vom Garbage Collector entfernt
-	 * werden können, kann die zurückgegebene Anzahl sich von folgenden Funktionsaufrufen unterscheiden.
+	 * Gibt die Anzahl der enthaltenen Elemente zurÃ¼ck. Da praktisch zu jeder Zeit Elemente vom Garbage Collector entfernt
+	 * werden kÃ¶nnen, kann die zurÃ¼ckgegebene Anzahl sich von folgenden Funktionsaufrufen unterscheiden.
 	 *
 	 * @return die Anzahl der enthaltenen Elemente
 	 */
@@ -99,7 +105,7 @@ public class WeakHashSet<E> extends AbstractSet<E> {
 	}
 
 	/**
-	 * Fügt ein neues Element hinzu, welches über eine {@link WeakReference} referenziert wird.
+	 * FÃ¼gt ein neues Element hinzu, welches Ã¼ber eine {@link WeakReference} referenziert wird.
 	 *
 	 * @param e Element
 	 * @see #addWeakReference(Object)
@@ -111,7 +117,7 @@ public class WeakHashSet<E> extends AbstractSet<E> {
 	}
 
 	/**
-	 * Fügt ein neues Element hinzu, welches über eine {@link WeakReference} referenziert wird. Identisch zu {@link
+	 * FÃ¼gt ein neues Element hinzu, welches Ã¼ber eine {@link WeakReference} referenziert wird. Identisch zu {@link
 	 * #add(Object)}
 	 *
 	 * @param e Element
@@ -122,7 +128,7 @@ public class WeakHashSet<E> extends AbstractSet<E> {
 	}
 
 	/**
-	 * Fügt ein neues Element hinzu, welches über eine {@link SoftReference} referenziert wird.
+	 * FÃ¼gt ein neues Element hinzu, welches Ã¼ber eine {@link SoftReference} referenziert wird.
 	 *
 	 * @param e Element
 	 */
@@ -143,7 +149,7 @@ public class WeakHashSet<E> extends AbstractSet<E> {
 	}
 
 	/**
-	 * Gibt einen bereits gespeicherten Eintrag zurück, bei dem equals() mit dem übergebenen Objekt true liefern würde.
+	 * Gibt einen bereits gespeicherten Eintrag zurÃ¼ck, bei dem equals() mit dem Ã¼bergebenen Objekt true liefern wÃ¼rde.
 	 * Durch diese Methode kann das WeakHashSet als ein Cache benutzt werden, da hier mehrere Identische Objekte durch ein
 	 * einzelnes Objekt mit den gleichen Eigenschaften ersetzt werden kann.
 	 *

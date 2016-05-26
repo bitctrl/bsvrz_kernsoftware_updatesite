@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,39 +14,45 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.config;
 
 /**
- * Schnittstellenklasse zum Zugriff auf die Eigenschaften von Flieﬂkomma-Attributtypen. Attribute von diesem
- * Attributtyp enthalten Flieﬂkommazahl mit 32 oder 64 Bit Genauigkeit. Durch den Attributtyp wird die Einheit
+ * Schnittstellenklasse zum Zugriff auf die Eigenschaften von Flie√ükomma-Attributtypen. Attribute von diesem
+ * Attributtyp enthalten Flie√ükommazahl mit 32 oder 64 Bit Genauigkeit. Durch den Attributtyp wird die Einheit
  * und die Genauigkeit von Werten dieses Typs definiert.
  *
- * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * @author Kappich+Kni√ü Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
  * @author Stephan Homeyer (sth)
- * @version $Revision: 5052 $ / $Date: 2007-08-31 20:02:55 +0200 (Fri, 31 Aug 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public interface DoubleAttributeType extends AttributeType {
 	/**
-	 * Ergebnis der Methode {@link #getAccuracy()} f¸r eine Genauigkeit entsprechend dem IEEE 754 floating-point
+	 * Ergebnis der Methode {@link #getAccuracy()} f√ºr eine Genauigkeit entsprechend dem IEEE 754 floating-point
 	 * "single format" mit 32 Bits.
 	 */
 	public final static byte FLOAT = 0;
 
 	/**
-	 * Ergebnis der Methode {@link #getAccuracy()} f¸r eine Genauigkeit entsprechend dem IEEE 754 floating-point
+	 * Ergebnis der Methode {@link #getAccuracy()} f√ºr eine Genauigkeit entsprechend dem IEEE 754 floating-point
 	 * "double format" mit 64 Bits.
 	 */
 	public final static byte DOUBLE = 1;
 
 	/**
-	 * Bestimmt die Maﬂeinheit von Werten dieses Attributtyps.
+	 * Bestimmt die Ma√üeinheit von Werten dieses Attributtyps.
 	 *
-	 * @return Maﬂeinheit dieses Attributtyps.
+	 * @return Ma√üeinheit dieses Attributtyps.
 	 */
 	public String getUnit();
 

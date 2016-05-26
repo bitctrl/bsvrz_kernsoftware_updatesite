@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel;
@@ -28,14 +34,14 @@ import java.util.*;
 
 
 /**
- * Diese Klasse stellt einen Mechanismus zur Verfügung, der zerstückelte Datensätze zu vollständigen Datensätzen zusammenbaut und dann zur Verfügung stellt.
+ * Diese Klasse stellt einen Mechanismus zur VerfÃ¼gung, der zerstÃ¼ckelte DatensÃ¤tze zu vollstÃ¤ndigen DatensÃ¤tzen zusammenbaut und dann zur VerfÃ¼gung stellt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
+ * @version $Revision$
  */
 public class SplittedApplicationTelegramsTable {
 
-	/** Die Tabelle wo je nach Datum eine Liste der zerstückelten Telegramme gehalten wird. */
+	/** Die Tabelle wo je nach Datum eine Liste der zerstÃ¼ckelten Telegramme gehalten wird. */
 	private Hashtable dataTable;
 
 	/** Erzeugt ein Objekt dieser Klasse. */
@@ -44,15 +50,15 @@ public class SplittedApplicationTelegramsTable {
 	}
 
 	/**
-	 * Diese Methode sammelt alle Teiltelegramme. Wurden alle Teiltelegramme empfangen, werden alle Teiltelegramme zurückgegeben.
+	 * Diese Methode sammelt alle Teiltelegramme. Wurden alle Teiltelegramme empfangen, werden alle Teiltelegramme zurÃ¼ckgegeben.
 	 *
-	 * @param telegram Teiltelegramm, das ein Telegramm vervollständigen soll oder ein komplettes Telegramm, das als ganzes übergeben wurde und somit nicht
+	 * @param telegram Teiltelegramm, das ein Telegramm vervollstÃ¤ndigen soll oder ein komplettes Telegramm, das als ganzes Ã¼bergeben wurde und somit nicht
 	 *                 zusammengebaut werden muss.
 	 *
-	 * @return Alle Teiltelegramme, aus denen ein vollständiges Telegramm rekonstruiert werden kann (und damit ein Datenatz) oder aber <code>null</code>.
-	 *         <code>null</code> bedeutet, dass noch nicht alle Teiltelegramme empfangen wurden, die nötig sind um das gesamte Telegramm zusammen zu bauen.
+	 * @return Alle Teiltelegramme, aus denen ein vollstÃ¤ndiges Telegramm rekonstruiert werden kann (und damit ein Datenatz) oder aber <code>null</code>.
+	 *         <code>null</code> bedeutet, dass noch nicht alle Teiltelegramme empfangen wurden, die nÃ¶tig sind um das gesamte Telegramm zusammen zu bauen.
 	 *
-	 * @throws IllegalArgumentException Das übergebene Telegramm konnte keinem bisher empfangenen Teil zugeordnet werden oder war <code>null</code>.
+	 * @throws IllegalArgumentException Das Ã¼bergebene Telegramm konnte keinem bisher empfangenen Teil zugeordnet werden oder war <code>null</code>.
 	 */
 	public final ApplicationDataTelegram[] put(ApplicationDataTelegram telegram) {
 		if(telegram == null) {
@@ -61,7 +67,7 @@ public class SplittedApplicationTelegramsTable {
 		int totalTelegramCount = telegram.getTotalTelegramsCount();
 		int index = telegram.getTelegramNumber();
 		if(index >= totalTelegramCount) {
-			throw new IllegalArgumentException("Der Telegramm-Index ist grösser als die maximale Anzahl der zerstückelten Telegramme dieses Datensatzes");
+			throw new IllegalArgumentException("Der Telegramm-Index ist grÃ¶sser als die maximale Anzahl der zerstÃ¼ckelten Telegramme dieses Datensatzes");
 		}
 		if((index == 0) && (totalTelegramCount == 1)) {
 			return (new ApplicationDataTelegram[]{telegram});
@@ -100,7 +106,7 @@ public class SplittedApplicationTelegramsTable {
 							continue;
 						}
 						else {
-							throw new IllegalArgumentException("Falsche Daten in der Cache-Tabelle der zerstückelten Telegramme");
+							throw new IllegalArgumentException("Falsche Daten in der Cache-Tabelle der zerstÃ¼ckelten Telegramme");
 						}
 					}
 				}

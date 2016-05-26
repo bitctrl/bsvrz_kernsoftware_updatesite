@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.dataRepresentation;
@@ -37,18 +43,18 @@ import de.bsvrz.dav.daf.main.config.TimeAttributeType;
 import java.util.*;
 
 /**
- * Diese Klasse stellt Methoden zur Verfügung, um die Interfaces der Konfiguration zu entschlacken.
+ * Diese Klasse stellt Methoden zur VerfÃ¼gung, um die Interfaces der Konfiguration zu entschlacken.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13173 $
+ * @version $Revision$
  */
 public class AttributeHelper {
 	/**
-	 * Gibt den Typ des korrespondierenden Datensatzes zurück. Gibt die Kodierung der folgenden Typen zurück:
-	 * <ul> <li>{@link StringAttributeType} für Zeichenketten,</li> <li>{@link de.bsvrz.dav.daf.main.config.IntegerAttributeType} für Ganze
-	 * Zahlen,</li> <li>{@link DoubleAttributeType} für Fließkommazahlen,</li> <li>{@link TimeAttributeType} für
-	 * Zeitstempel und</li> <li>{@link ReferenceAttributeType} für Objekt-Referenzen und</li> <li>{@link
-	 * de.bsvrz.dav.daf.main.config.AttributeListDefinition} für Attributlisten in strukturierten Attributgruppen.</li> </ul>
+	 * Gibt den Typ des korrespondierenden Datensatzes zurÃ¼ck. Gibt die Kodierung der folgenden Typen zurÃ¼ck:
+	 * <ul> <li>{@link StringAttributeType} fÃ¼r Zeichenketten,</li> <li>{@link de.bsvrz.dav.daf.main.config.IntegerAttributeType} fÃ¼r Ganze
+	 * Zahlen,</li> <li>{@link DoubleAttributeType} fÃ¼r FlieÃŸkommazahlen,</li> <li>{@link TimeAttributeType} fÃ¼r
+	 * Zeitstempel und</li> <li>{@link ReferenceAttributeType} fÃ¼r Objekt-Referenzen und</li> <li>{@link
+	 * de.bsvrz.dav.daf.main.config.AttributeListDefinition} fÃ¼r Attributlisten in strukturierten Attributgruppen.</li> </ul>
 	 *
 	 * @param attributeType Der Attributtyp.
 	 * @param isArray       ob es sich um ein Array handelt
@@ -93,7 +99,7 @@ public class AttributeHelper {
 
 	/**
 	 * Liefert eine Liste Stellvertreterobjekte von allen Attributen und Attributlisten dieser Attributmenge
-	 * zurück. Die Reihenfolge der Attribute in der Liste entspricht der durch die {@link Attribute#getPosition
+	 * zurÃ¼ck. Die Reihenfolge der Attribute in der Liste entspricht der durch die {@link Attribute#getPosition
 	 * Position} der Attribute definierte Reihenfolge innerhalb der Attributgruppe bzw. Attributliste
 	 *
 	 * @return Liste von {@link Attribute Attributen} und {@link de.bsvrz.dav.daf.main.config.AttributeListDefinition AttributListen}

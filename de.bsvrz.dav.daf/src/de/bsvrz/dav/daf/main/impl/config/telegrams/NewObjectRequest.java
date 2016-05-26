@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config.telegrams;
@@ -29,7 +35,7 @@ import java.io.IOException;
  * Diese Klasse stellt ein NewObject-Anfragetelegramm dar.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5054 $
+ * @version $Revision$
  */
 public class NewObjectRequest extends ConfigTelegram {
 
@@ -51,7 +57,7 @@ public class NewObjectRequest extends ConfigTelegram {
 	/** Die Ids der Mengen */
 	private long _setIds[];
 
-	/** Erzeugt ein neues Objekt ohne Parameter. Die Parameter werden zu einem Späteren Zeitpunkt über die read-Methode eingelesen. */
+	/** Erzeugt ein neues Objekt ohne Parameter. Die Parameter werden zu einem SpÃ¤teren Zeitpunkt Ã¼ber die read-Methode eingelesen. */
 	public NewObjectRequest() {
 		_type = NEW_OBJECT_REQUEST_TYPE;
 	}
@@ -77,7 +83,7 @@ public class NewObjectRequest extends ConfigTelegram {
 	}
 
 	/**
-	 * Gibt die Konfigurationszeit zurück
+	 * Gibt die Konfigurationszeit zurÃ¼ck
 	 *
 	 * @return Die Konfigurationszeit
 	 */
@@ -86,7 +92,7 @@ public class NewObjectRequest extends ConfigTelegram {
 	}
 
 	/**
-	 * Liefert die Objekt-ID zurück.
+	 * Liefert die Objekt-ID zurÃ¼ck.
 	 *
 	 * @return Objekt ID
 	 */
@@ -95,7 +101,7 @@ public class NewObjectRequest extends ConfigTelegram {
 	}
 
 	/**
-	 * Liefert die permanente ID (PID) des Objekts zurück.
+	 * Liefert die permanente ID (PID) des Objekts zurÃ¼ck.
 	 *
 	 * @return permanente Id des Objektes
 	 */
@@ -104,7 +110,7 @@ public class NewObjectRequest extends ConfigTelegram {
 	}
 
 	/**
-	 * Gibt den Namen des Objektes zurück
+	 * Gibt den Namen des Objektes zurÃ¼ck
 	 *
 	 * @return der Name
 	 */
@@ -113,7 +119,7 @@ public class NewObjectRequest extends ConfigTelegram {
 	}
 
 	/**
-	 * Gibt die ID des Typs zurück
+	 * Gibt die ID des Typs zurÃ¼ck
 	 *
 	 * @return Die ID des Typs
 	 */
@@ -122,7 +128,7 @@ public class NewObjectRequest extends ConfigTelegram {
 	}
 
 	/**
-	 * Gibt die IDs der Mengen zurück
+	 * Gibt die IDs der Mengen zurÃ¼ck
 	 *
 	 * @return Die IDs der Mengen
 	 */

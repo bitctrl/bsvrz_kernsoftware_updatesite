@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.puk.config.xmlFile.resolver;
 
@@ -31,9 +37,9 @@ import de.bsvrz.sys.funclib.debug.Debug;
  * Implementierung eines EntityResolvers, der Referenzen auf den Public-Identifier "-//K2S//DTD Dokument//DE" ersetzt
  * durch die K2S.dtd Resource-Datei in diesem Package.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 5091 $ / $Date: 2007-09-03 15:31:49 +0200 (Mon, 03 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class K2SEntityResolver implements EntityResolver {
 
@@ -42,17 +48,17 @@ public class K2SEntityResolver implements EntityResolver {
 	private EntityResolver _resolver = new SilentK2SEntityResolver();
 
 	/**
-	 * Löst Referenzen auf external entities wie z.B. DTD-Dateien auf.
-	 * <p/>
+	 * LÃ¶st Referenzen auf external entities wie z.B. DTD-Dateien auf.
+	 * <p>
 	 * Angegebene Dateien werden, falls sie im Suchverzeichnis gefunden werden, von dort geladen. Ansonsten wird der
 	 * normale Mechanismus zum Laden von externen Entities benutzt. Das Suchverzeichnis kann bei Bedarf im @{link
 	 * SEDataModel#SEDataModel Konstruktor} spezifiziert werden.
 	 *
-	 * @param publicId Der public identifer der externen Entity oder null falls dieser nicht verfügbar ist.
+	 * @param publicId Der public identifer der externen Entity oder null falls dieser nicht verfÃ¼gbar ist.
 	 * @param systemId Der system identifier aus dem XML-Dokument.
-	 * @return Für Referenzen die im Suchverzeichnis wird ein InputSource-Objekt, das mit der entsprechenden Datei im
-	 *         Suchverzeichnis verbunden ist zurückgegeben. Ansonsten wird null für den normalen Suchmechanismus
-	 *         zurückgegeben.
+	 * @return FÃ¼r Referenzen die im Suchverzeichnis wird ein InputSource-Objekt, das mit der entsprechenden Datei im
+	 *         Suchverzeichnis verbunden ist zurÃ¼ckgegeben. Ansonsten wird null fÃ¼r den normalen Suchmechanismus
+	 *         zurÃ¼ckgegeben.
 	 * @throws org.xml.sax.SAXException Bei Fehlern beim Zugriff auf externe Entities.
 	 * @see org.xml.sax.EntityResolver#resolveEntity
 	 */

@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.fileaccess;
@@ -24,46 +30,46 @@ import de.bsvrz.dav.daf.main.config.DynamicObjectType;
 
 
 /**
- * Dieses Interface stellt für dynamische Objekte Informationen zur Verfügung.
+ * Dieses Interface stellt fÃ¼r dynamische Objekte Informationen zur VerfÃ¼gung.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 13057 $ / $Date: 2015-01-07 19:05:41 +0100 (Wed, 07 Jan 2015) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public interface DynamicObjectInfo extends SystemObjectInformationInterface {
 
 	/**
-	 * Diese Methode gibt an, zu welchem Zeitpunkt das dynamische Objekt des Konfigurationsbereichs gültig wird/wurde.
+	 * Diese Methode gibt an, zu welchem Zeitpunkt das dynamische Objekt des Konfigurationsbereichs gÃ¼ltig wird/wurde.
 	 *
 	 * @return s.o.
 	 */
 	long getFirstValidTime();
 
 	/**
-	 * Diese Methode gibt an, zu welchem Zeitpunkt das dynamische Objekt des Konfigurationsbereichs ungültig wird/wurde. Der Wert "0" bedeutet, dass dieser
-	 * Zeitpunkt noch unbekannt ist und das das Objekt bis zu Festlegung dieses Zeitpunkt gültig bleibt.
+	 * Diese Methode gibt an, zu welchem Zeitpunkt das dynamische Objekt des Konfigurationsbereichs ungÃ¼ltig wird/wurde. Der Wert "0" bedeutet, dass dieser
+	 * Zeitpunkt noch unbekannt ist und das das Objekt bis zu Festlegung dieses Zeitpunkt gÃ¼ltig bleibt.
 	 *
 	 * @return s.o.
 	 */
 	long getFirstInvalidTime();
 
 	/**
-	 * Diese Methode markiert ein dynamisches Objekt als ungültig, als Zeitpunkt wird die aktuelle Uhrzeit benutzt. Die Methode {@link #getFirstInvalidTime} wird
-	 * danach den gerade gesetzten Wert zurückgeben. Wird die Methode ein zweites mal aufgerufen, wird der Aufruf ignoriert da das Objekt bereits ungültig ist.
+	 * Diese Methode markiert ein dynamisches Objekt als ungÃ¼ltig, als Zeitpunkt wird die aktuelle Uhrzeit benutzt. Die Methode {@link #getFirstInvalidTime} wird
+	 * danach den gerade gesetzten Wert zurÃ¼ckgeben. Wird die Methode ein zweites mal aufgerufen, wird der Aufruf ignoriert da das Objekt bereits ungÃ¼ltig ist.
 	 */
 	void setInvalid() throws IllegalStateException;
 
 	/**
-	 * Diese Methode gibt die Simulationsvariante des dynamischen Objekts zurück.
+	 * Diese Methode gibt die Simulationsvariante des dynamischen Objekts zurÃ¼ck.
 	 *
 	 * @return s.o.
 	 */
 	short getSimulationVariant();
 
 	/**
-	 * Diese Methode löscht ein dynamisches Objekt. Das Objekt steht danach nicht mehr zur Verfügung und kann nicht mehr rekonstruiert werden.
-	 * <p/>
-	 * Eventuelle Informationen in Dateien und/oder in Datenstrukturen müssen entfernt werden und dürfen auch nach Neustart des Systems nicht mehr zur Verfügung
+	 * Diese Methode lÃ¶scht ein dynamisches Objekt. Das Objekt steht danach nicht mehr zur VerfÃ¼gung und kann nicht mehr rekonstruiert werden.
+	 * <p>
+	 * Eventuelle Informationen in Dateien und/oder in Datenstrukturen mÃ¼ssen entfernt werden und dÃ¼rfen auch nach Neustart des Systems nicht mehr zur VerfÃ¼gung
 	 * stehen.
 	 *
 	 * @throws IllegalStateException 
@@ -71,7 +77,7 @@ public interface DynamicObjectInfo extends SystemObjectInformationInterface {
 	void remove() throws IllegalStateException;
 
 	/**
-	 * Gibt den Persistenzmodus des dynamischen Objekts zurück.
+	 * Gibt den Persistenzmodus des dynamischen Objekts zurÃ¼ck.
 	 * @return PersistenceMode
 	 */
 	DynamicObjectType.PersistenceMode getPersPersistenceMode();

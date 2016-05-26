@@ -4,10 +4,10 @@ Created-By: Kappich Systemberatung
 Bundle-ManifestVersion: 2
 Bundle-Name: de.bsvrz.puk.config
 Bundle-SymbolicName: de.bsvrz.puk.config
-Bundle-Version: 3.6.5.qualifier
+Bundle-Version: 3.7.4.qualifier
 Bundle-Vendor: Kappich Systemberatung
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: de.bsvrz.puk.config,
  de.bsvrz.puk.config.configFile.datamodel,
  de.bsvrz.puk.config.configFile.fileaccess,
@@ -29,15 +29,15 @@ Export-Package: de.bsvrz.puk.config,
  de.bsvrz.puk.config.xmlFile.properties,
  de.bsvrz.puk.config.xmlFile.resolver,
  de.bsvrz.puk.config.xmlFile.writer
-Require-Bundle: de.bsvrz.dav.daf;bundle-version="[3.6.5,4.0.0)",
- de.bsvrz.sys.funclib.commandLineArgs;bundle-version="[3.6.5,4.0.0)",
- de.bsvrz.sys.funclib.hexdump;bundle-version="[3.6.5,4.0.0)",
- de.bsvrz.sys.funclib.debug;bundle-version="[3.6.5,4.0.0)",
- de.bsvrz.sys.funclib.xmlSupport;bundle-version="[3.6.5,4.0.0)",
- de.bsvrz.sys.funclib.filelock;bundle-version="[3.6.5,4.0.0)",
- de.bsvrz.sys.funclib.crypt;bundle-version="[3.6.5,4.0.0)",
- de.bsvrz.sys.funclib.concurrent;bundle-version="[3.6.5,4.0.0)",
- de.bsvrz.sys.funclib.application;bundle-version="[3.6.5,4.0.0)"
+Require-Bundle: de.bsvrz.dav.daf;bundle-version="[3.7.4,4.0.0)",
+ de.bsvrz.sys.funclib.commandLineArgs;bundle-version="[3.7.4,4.0.0)",
+ de.bsvrz.sys.funclib.hexdump;bundle-version="[3.7.4,4.0.0)",
+ de.bsvrz.sys.funclib.debug;bundle-version="[3.7.4,4.0.0)",
+ de.bsvrz.sys.funclib.xmlSupport;bundle-version="[3.7.4,4.0.0)",
+ de.bsvrz.sys.funclib.filelock;bundle-version="[3.7.4,4.0.0)",
+ de.bsvrz.sys.funclib.crypt;bundle-version="[3.7.4,4.0.0)",
+ de.bsvrz.sys.funclib.concurrent;bundle-version="[3.7.4,4.0.0)",
+ de.bsvrz.sys.funclib.application;bundle-version="[3.7.4,4.0.0)"
 Eclipse-BuddyPolicy: dependent
 Bundle-ClassPath: .
 

@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.main.impl.archive.request;
 
@@ -45,13 +51,13 @@ import de.bsvrz.dav.daf.main.SendSubscriptionNotConfirmed;
 import de.bsvrz.dav.daf.main.impl.archive.ArchiveQueryID;
 
 /**
- * Diese Klasse beauftragt das Archivsystem den Lˆschzeitpunkt von Daten, die sich im direkten Zugriff des Archivsystems
- * befinden, um einen bestimmten Zeitraum zu verl‰ngern.
+ * Diese Klasse beauftragt das Archivsystem den L√∂schzeitpunkt von Daten, die sich im direkten Zugriff des Archivsystems
+ * befinden, um einen bestimmten Zeitraum zu verl√§ngern.
  * Diese Klasse wird von der Klasse {@link StreamedArchiveRequester} benutzt.
  *
- * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * @author Kappich+Kni√ü Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 5064 $ / $Date: 2007-09-01 22:25:35 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class IncreaseDeleteTime implements ArchiveQueryResult {
 	/**
@@ -70,7 +76,7 @@ public class IncreaseDeleteTime implements ArchiveQueryResult {
 	private String _errorString;
 
 	/**
-	 * DebugLogger f¸r Debug-Ausgaben
+	 * DebugLogger f√ºr Debug-Ausgaben
 	 */
 	private static final Debug _debug = Debug.getLogger();
 
@@ -81,12 +87,12 @@ public class IncreaseDeleteTime implements ArchiveQueryResult {
 	 */
 	private boolean _lock = true;
 	/**
-	 * Zeitbereiche, die l‰nger im Zugriff des Archivsystems bleiben sollen.
+	 * Zeitbereiche, die l√§nger im Zugriff des Archivsystems bleiben sollen.
 	 */
 	private final List<ArchiveInformationResult> _requiredData;
 
 	/**
-	 * Bestimmt die Zeitspanne um die die Daten l‰nger im direkten Zugriff des Archivsystems bleiben sollen.
+	 * Bestimmt die Zeitspanne um die die Daten l√§nger im direkten Zugriff des Archivsystems bleiben sollen.
 	 */
 	private final long _timePeriod;
 
@@ -97,10 +103,10 @@ public class IncreaseDeleteTime implements ArchiveQueryResult {
 
 	/**
 	 * @param archiveRequestID         eindeutige Identifikation des Objekts
-	 * @param requiredData             Daten, die L‰nger im direkten Zugriff des Archivs bleiben sollen
-	 * @param timePeriod               Zeitspanne, die die Daten l‰nger im direkten Zugriff des Archivsystems bleiben
+	 * @param requiredData             Daten, die L√§nger im direkten Zugriff des Archivs bleiben sollen
+	 * @param timePeriod               Zeitspanne, die die Daten l√§nger im direkten Zugriff des Archivsystems bleiben
 	 *                                 sollen
-	 * @param streamedArchiveRequester Objekt, ¸ber das Daten verschickten kann
+	 * @param streamedArchiveRequester Objekt, √ºber das Daten verschickten kann
 	 */
 	public IncreaseDeleteTime(ArchiveQueryID archiveRequestID, List<ArchiveInformationResult> requiredData, long timePeriod, StreamedArchiveRequester streamedArchiveRequester, short defaultSimulationVariant) {
 		_archiveRequestID = archiveRequestID;
@@ -133,13 +139,13 @@ public class IncreaseDeleteTime implements ArchiveQueryResult {
 	}
 
 	/**
-	 * Diese Methode wird aufgerufen, wenn eine Antwort des Archivs auf den Auftrag zum verschieben des Lˆschzeitpunkts vorliegt.
+	 * Diese Methode wird aufgerufen, wenn eine Antwort des Archivs auf den Auftrag zum verschieben des L√∂schzeitpunkts vorliegt.
 	 *
 	 * @param data Antwort des Archivs
 	 */
 	public void archiveResponse(Data data) {
 		synchronized (this) {
-			// aus den Daten das byte-Array anfordern. In dem Array sind die Informationen, ob der Auftrag zum verschieben des Lˆschzeitpunkts geklappt hat,
+			// aus den Daten das byte-Array anfordern. In dem Array sind die Informationen, ob der Auftrag zum verschieben des L√∂schzeitpunkts geklappt hat,
 			// kodiert.
 			byte[] queryResponse = data.getUnscaledArray("daten").getByteArray();
 
@@ -167,8 +173,8 @@ public class IncreaseDeleteTime implements ArchiveQueryResult {
 	}
 
 	/**
-	 * Der Aufruf dieser Methode beauftragt das Archivsystem den Lˆschzeitpunkt der angegebenen Zeitbereiche um den
-	 * angegebenen Zeitbereich zu verl‰nger.
+	 * Der Aufruf dieser Methode beauftragt das Archivsystem den L√∂schzeitpunkt der angegebenen Zeitbereiche um den
+	 * angegebenen Zeitbereich zu verl√§nger.
 	 */
 	public void increaseDeleteTime() {
 
@@ -183,11 +189,11 @@ public class IncreaseDeleteTime implements ArchiveQueryResult {
 
 		try {
 
-			// Zeitspanne um die die Zeitbereiche l‰nger im Archiv verbleiben sollen
+			// Zeitspanne um die die Zeitbereiche l√§nger im Archiv verbleiben sollen
 			serializer.writeLong(_timePeriod);
 
-			// Anzahl Eintr‰ge der Liste speichern, beim auspacken ist dann bekannt, wie viele Eintr‰ge
-			// entpackt werden m¸ssen.
+			// Anzahl Eintr√§ge der Liste speichern, beim auspacken ist dann bekannt, wie viele Eintr√§ge
+			// entpackt werden m√ºssen.
 			serializer.writeInt(_requiredData.size());
 
 			// Jede Anfrage, die in der spec-Liste steht, in das byte-Array speichern
@@ -274,8 +280,8 @@ public class IncreaseDeleteTime implements ArchiveQueryResult {
 				// Dabei tritt ein Sonderfall auf, wenn die Simulationsvariante auf
 				// <code>NO_SIMULATION_VARIANT_SET</code> , dies entspricht einer
 				// <code>-1</code>, gesetzt wurde. In diesem Fall muss der default Wert
-				// f¸r die Simulationsvariante gew‰hlt werden. Der default-Wert wurde im Konstruktor dieser
-				// Klasse ¸bergeben.
+				// f√ºr die Simulationsvariante gew√§hlt werden. Der default-Wert wurde im Konstruktor dieser
+				// Klasse √ºbergeben.
 				if (dataDescription.getSimulationVariant() != -1) {
 					serializer.writeShort(dataDescription.getSimulationVariant());
 				} else {
@@ -297,11 +303,11 @@ public class IncreaseDeleteTime implements ArchiveQueryResult {
 		// byte-Array erzeugen
 		final byte[] data = out.toByteArray();
 
-		// daten + 4 bytes f¸r die Serializerversion
+		// daten + 4 bytes f√ºr die Serializerversion
 		final byte[] dataAndSeriVersion = new byte[data.length + 4];
 
 		// Serializerversion speichern
-		// Das hˆherw‰rtigste Byte steht in Zelle 0
+		// Das h√∂herw√§rtigste Byte steht in Zelle 0
 		dataAndSeriVersion[0] = (byte) ((serializerVersion & 0xff000000) >>> 24);
 		dataAndSeriVersion[1] = (byte) ((serializerVersion & 0x00ff0000) >>> 16);
 		dataAndSeriVersion[2] = (byte) ((serializerVersion & 0x0000ff00) >>> 8);

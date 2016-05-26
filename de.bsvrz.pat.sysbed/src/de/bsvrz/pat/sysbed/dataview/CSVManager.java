@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.pat.sysbed.dataview;
 
@@ -34,18 +40,18 @@ import java.util.Set;
 import java.util.TreeMap;
 
 /**
- * Der CSVManager übernimmt innerhalb dieses Pakets die Erstellung der Header- und Datenzeilen
- * wie sie etwa in CSV-Dateien verwendet werden, das heißt, es handelt sich um Zeilen mit Datenfeldern,
+ * Der CSVManager Ã¼bernimmt innerhalb dieses Pakets die Erstellung der Header- und Datenzeilen
+ * wie sie etwa in CSV-Dateien verwendet werden, das heiÃŸt, es handelt sich um Zeilen mit Datenfeldern,
  * die durch ein Trennzeichen voneinander separiert sind. Die Ausgangsdaten sind hier in  einer
  * Collection von DataTableObjects enthalten, und die Spalten und der Inhalt der Datenzeilen kann durch 
  * eine Collection von CellKeys gefiltert werden. Eine wesentliche Aufgabe bei der Erstellung der Zeilen
  * ist die Abbildung der Arrays: deren Inhalte werden in aufeinanderfolgenden Spalten wiedergegeben.
  * <p>
- * Jeder CSVManager kann nur für eine Attributgruppe verwendet werden, die schon im Konstruktor 
- * endgültig festgelegt wird.
+ * Jeder CSVManager kann nur fÃ¼r eine Attributgruppe verwendet werden, die schon im Konstruktor 
+ * endgÃ¼ltig festgelegt wird.
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 8084 $
+ * @version $Revision$
  *
  */
 public class CSVManager {
@@ -53,35 +59,35 @@ public class CSVManager {
 	private String _delimiter = ";";
 	
 	/**
-	 * Jeder CSVManager kann nur für eine Attributgruppe verwendet werden, die schon
-	 * im Konstruktor endgültig festgelegt wird.
+	 * Jeder CSVManager kann nur fÃ¼r eine Attributgruppe verwendet werden, die schon
+	 * im Konstruktor endgÃ¼ltig festgelegt wird.
 	 */
 	private final AttributeGroup _attributeGroup;
 	
 	/**
-	 * Die im Konstruktor übergebene Menge selektierter CellkKeys bestimmt Spalten und
-	 * diejenigen Einträge, die nicht leer sein können.
+	 * Die im Konstruktor Ã¼bergebene Menge selektierter CellkKeys bestimmt Spalten und
+	 * diejenigen EintrÃ¤ge, die nicht leer sein kÃ¶nnen.
 	 */
 	private final Set<CellKey> _selectedCellKeys;
 	
 	/**
-	 * Enthält die benötigten Datensätze in der richtigen Reihenfolge
+	 * EnthÃ¤lt die benÃ¶tigten DatensÃ¤tze in der richtigen Reihenfolge
 	 */
 	private final List<DataTableObject> _dataTableObjects = new ArrayList<DataTableObject>();
 	
 	/**
-	 * Enthält die CSV-Spalten als Schlüssel und als Wert je eine HashMap, die wiederum
-	 * als Schlüssel eine Datensatzkennung enthält und als Wert den Text der Zelle.
+	 * EnthÃ¤lt die CSV-Spalten als SchlÃ¼ssel und als Wert je eine HashMap, die wiederum
+	 * als SchlÃ¼ssel eine Datensatzkennung enthÃ¤lt und als Wert den Text der Zelle.
 	 */
 	private final Map<CSVColumn, Map<DataTableObjectId, String>> _csvColumnToText = 
 		new TreeMap<CSVColumn, Map<DataTableObjectId, String>>();
 	
-	/** speichert das Zeitformat für die Spalte 'Zeit' */
+	/** speichert das Zeitformat fÃ¼r die Spalte 'Zeit' */
 	static private final String TIME_FORMAT = "dd.MM.yyyy HH:mm:ss,SSS";
 	
 	/**
-	 * Jeder CSVManager kann nur für eine Attributgruppe verwendet werden, die nicht veränderbar ist.
-	 * Die übergebenen CellKeys werden als Filter benutzt, fall die Collection nicht <code>null</code>
+	 * Jeder CSVManager kann nur fÃ¼r eine Attributgruppe verwendet werden, die nicht verÃ¤nderbar ist.
+	 * Die Ã¼bergebenen CellKeys werden als Filter benutzt, fall die Collection nicht <code>null</code>
 	 * ist. Die Inhalte der Datenzeilen werden den DataTableObjects entnommen werden.
 	 * 
 	 * @param attributeGroup die Attributgruppe
@@ -106,8 +112,8 @@ public class CSVManager {
 				}
 			}
 		} else {	
-			// keine Selektion, nehme alle CellKeys aller DataTableObjects; ACHTUNG: wenn dataTableObjects keine Datensätze
-			// mit Daten enthält, entstehen hier keine CellKeys, die Spalteninformationen haben, was auf die Initialisierung
+			// keine Selektion, nehme alle CellKeys aller DataTableObjects; ACHTUNG: wenn dataTableObjects keine DatensÃ¤tze
+			// mit Daten enthÃ¤lt, entstehen hier keine CellKeys, die Spalteninformationen haben, was auf die Initialisierung
 			// in initCSVColumns Auswirkungen hat.
 			_selectedCellKeys = new HashSet<CellKey>();
 			for ( DataTableObject dataTableObject : dataTableObjects) {
@@ -121,12 +127,12 @@ public class CSVManager {
 	}
 	
 	/**
-	 * Gibt die Titelzeile der CSV-Datei zurück. Ist der übergebene Wert <code>true</code>, so werden
-	 * auch die Spalten der Zeilenköpfe (Art, Zeit und Objekt) aufgeführt.
+	 * Gibt die Titelzeile der CSV-Datei zurÃ¼ck. Ist der Ã¼bergebene Wert <code>true</code>, so werden
+	 * auch die Spalten der ZeilenkÃ¶pfe (Art, Zeit und Objekt) aufgefÃ¼hrt.
 	 * <p>
 	 * Wurde im Konstruktor eine von <code>null</code> verschiedene Collection von CellKeys angegeben,
-	 * so wirkt diese als Filter auf Spalten, Zeilen und Zellen. Für die Header-Zeile heißt dies: es
-	 * treten nur Spalten auf, für die mindestens ein selektierter CellKey existiert.
+	 * so wirkt diese als Filter auf Spalten, Zeilen und Zellen. FÃ¼r die Header-Zeile heiÃŸt dies: es
+	 * treten nur Spalten auf, fÃ¼r die mindestens ein selektierter CellKey existiert.
 	 * 
 	 * @return die Header-Zeile
 	 */
@@ -138,7 +144,7 @@ public class CSVManager {
 		}
 		for ( CSVColumn column : _csvColumnToText.keySet()) {
 			final String name = column.getName();
-			if ( name.length()>0) {	// Der leere String entsteht nur bei den Keine-Daten-Datensätzen
+			if ( name.length()>0) {	// Der leere String entsteht nur bei den Keine-Daten-DatensÃ¤tzen
 				buffer.append( name + _delimiter);
 			}
 		}
@@ -147,11 +153,11 @@ public class CSVManager {
 	}
 	
 	/**
-	 * Gibt die Zeilen der CSV-Datei, die die Inhalte enthalten, zurück. Ist der übergebene Wert <code>true</code>, 
-	 * so werden auch die Inhalte der Zeilenköpfe (Art, Zeit und Objekt) aufgeführt.
+	 * Gibt die Zeilen der CSV-Datei, die die Inhalte enthalten, zurÃ¼ck. Ist der Ã¼bergebene Wert <code>true</code>, 
+	 * so werden auch die Inhalte der ZeilenkÃ¶pfe (Art, Zeit und Objekt) aufgefÃ¼hrt.
 	 * <p>
 	 * Wurde im Konstruktor eine von <code>null</code> verschiedene Collection von CellKeys angegeben,
-	 * so wirkt diese als Filter auf Spalten, Zeilen und Zellen. Für die Datenzeilen heißt dies, dass nur
+	 * so wirkt diese als Filter auf Spalten, Zeilen und Zellen. FÃ¼r die Datenzeilen heiÃŸt dies, dass nur
 	 * die Inhalte von Zellen mit selektierten CellKeys ausgegeben werden, und dass leere Spalten und
 	 * leere Zeilen gar nicht ausgeben werden.
 	 * 
@@ -182,11 +188,11 @@ public class CSVManager {
 	////////////////////////////////////////////////////////////////////////
 	
 	private void initCSVColumns(final Map<String,DataTableObject> dataTableObjectMap) {
-		// Enthält _dataTableObjects keine Datensätze mit richtigen Daten, so enthält _selectedCellKeys
-		// nur Super-Spalten, weshalb _csvColumnToText leer bleibt. Im Moment fällt das nur bei der
-		// Ausgabe, die auf getCSVHeaderLine zurückgreift auf, und ist wohl erträglich.
-		// Richtiger wäre es, die folgende Art der Initialisierung nur für einen CSVManager mit
-		// Selektion durchzuführen, und für einen CSV-Manager ohne Selektion die CSVColumns aus
+		// EnthÃ¤lt _dataTableObjects keine DatensÃ¤tze mit richtigen Daten, so enthÃ¤lt _selectedCellKeys
+		// nur Super-Spalten, weshalb _csvColumnToText leer bleibt. Im Moment fÃ¤llt das nur bei der
+		// Ausgabe, die auf getCSVHeaderLine zurÃ¼ckgreift auf, und ist wohl ertrÃ¤glich.
+		// Richtiger wÃ¤re es, die folgende Art der Initialisierung nur fÃ¼r einen CSVManager mit
+		// Selektion durchzufÃ¼hren, und fÃ¼r einen CSV-Manager ohne Selektion die CSVColumns aus
 		// der Attributgruppe zu initialisieren.
 		for ( CellKey cellKey : _selectedCellKeys) {
 			if ( !cellKey.isSuperColumn()) {
@@ -238,10 +244,10 @@ public class CSVManager {
 			
 		}
 		// Die Vorgehensweise ist nun wie folgt: wir haben ein DataTableObject, die _csvColumns,
-		// sowie die _selectedCellKeys. Wir iterieren über _csvColumns und gucken, ob der entsprechende
+		// sowie die _selectedCellKeys. Wir iterieren Ã¼ber _csvColumns und gucken, ob der entsprechende
 		// CellKey selektiert ist; wenn nicht, so gibt es einen leeren Spalteneintrag. Wenn doch, so
 		// holen wir uns von dem DataTableObject den Wert und benutzen ihn.
-		boolean lineIsRelevant = false;	// relevant = mind. ein CellKey wurde selektiert (false dürfte nicht mehr auftreten)
+		boolean lineIsRelevant = false;	// relevant = mind. ein CellKey wurde selektiert (false dÃ¼rfte nicht mehr auftreten)
 		if ( (dataTableObject == null) || (dataTableObject.getData() != null)) {	// normaler Datensatz
 			for ( CSVColumn column : _csvColumnToText.keySet()) {
 				final Map<DataTableObjectId,String> theDataIndexSet = _csvColumnToText.get( column);
@@ -267,15 +273,15 @@ public class CSVManager {
 	}
 	
 	/**
-	 * Eine CSVColumn ist entweder ein ansonsten leeres Objekt für eine Spalte, die noch 
+	 * Eine CSVColumn ist entweder ein ansonsten leeres Objekt fÃ¼r eine Spalte, die noch 
 	 * Subspalten hat, oder sie kapselt die Informationen, die eine Spalte in einer
-	 * CSV-Datei benötigt, also Name und die Informationen des CellKeys, aus dem sie
-	 * konstruiert wurde, die benötigt werden, um die Inhalte von Datensätzen ermitteln
-	 * zu können. Von einer CellKeyColumn unterscheidet sie sich dadurch, dass ein Array
-	 * dort hier durch mehrere Spalten repräsentiert wird.
+	 * CSV-Datei benÃ¶tigt, also Name und die Informationen des CellKeys, aus dem sie
+	 * konstruiert wurde, die benÃ¶tigt werden, um die Inhalte von DatensÃ¤tzen ermitteln
+	 * zu kÃ¶nnen. Von einer CellKeyColumn unterscheidet sie sich dadurch, dass ein Array
+	 * dort hier durch mehrere Spalten reprÃ¤sentiert wird.
 	 * 
 	 * @author Kappich Systemberatung
-	 * @version $Revision: 8084 $
+	 * @version $Revision$
 	 *
 	 */
 	private class CSVColumn implements Comparable<CSVColumn> {
@@ -327,8 +333,8 @@ public class CSVManager {
 			if ( (_arrayIndexes != null) && (o._arrayIndexes != null)) {
 				final int length = _arrayIndexes.length;
 				if ( length!= o._arrayIndexes.length) {
-					// Möglicherweise kann das eintreten, aber nicht, wenn die _cellKeyColumnIndex'e gleich sind!
-					throw new RuntimeException("Fehler in CSVColumn.compareTo: Arrays unterschiedlicher Größe deuten auf ein Logikwölkchen hin!");
+					// MÃ¶glicherweise kann das eintreten, aber nicht, wenn die _cellKeyColumnIndex'e gleich sind!
+					throw new RuntimeException("Fehler in CSVColumn.compareTo: Arrays unterschiedlicher GrÃ¶ÃŸe deuten auf ein LogikwÃ¶lkchen hin!");
 				}
 				for ( int index = 0; index < length; index++) {
 					if ( _arrayIndexes[index] != o._arrayIndexes[index]) {
@@ -336,7 +342,7 @@ public class CSVManager {
 					}
 				}
 				return 0;
-			} // Die letzten Fälle dienen zur Sicherheit.
+			} // Die letzten FÃ¤lle dienen zur Sicherheit.
 			else if ( _arrayIndexes != null) {
 				return -1;
 			} 
@@ -349,7 +355,7 @@ public class CSVManager {
 		}
 		
 		/**
-		 * Gibt den Namen zurück.
+		 * Gibt den Namen zurÃ¼ck.
 		 * 
 		 * @return den Namen
  		 */

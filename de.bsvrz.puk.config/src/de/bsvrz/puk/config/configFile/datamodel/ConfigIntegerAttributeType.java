@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2006 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -41,17 +47,17 @@ import java.io.ByteArrayInputStream;
 import java.util.*;
 
 /**
- * Implementierung des Interfaces für Integer-Attribut-Typen.
+ * Implementierung des Interfaces fÃ¼r Integer-Attribut-Typen.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 11741 $ / $Date: 2013-10-24 13:54:49 +0200 (Thu, 24 Oct 2013) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigIntegerAttributeType extends ConfigAttributeType implements IntegerAttributeType {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
-	/** Speichert die erlaubten diskreten Zustände eines Attributs. */
+	/** Speichert die erlaubten diskreten ZustÃ¤nde eines Attributs. */
 	private List<IntegerValueState> _states = null;
 
 	/** Speichert die Eigenschaften dieses AttributTyps. */
@@ -61,23 +67,23 @@ public class ConfigIntegerAttributeType extends ConfigAttributeType implements I
 	private boolean _undefinedValueRequested = false;
 
 	/**
-	 * Enthält entweder den undefiniert Wert, oder <code>null</code> falls der Wert nicht berechenbar war. Der Wert kann nicht im konstruktor berechnet werden, da
-	 * dort die States nicht zur Verfügung stehen.
+	 * EnthÃ¤lt entweder den undefiniert Wert, oder <code>null</code> falls der Wert nicht berechenbar war. Der Wert kann nicht im konstruktor berechnet werden, da
+	 * dort die States nicht zur VerfÃ¼gung stehen.
 	 */
 	private Long _undefinedValue;
 
 	/**
-	 * Konstruktor für Integer-Attribut-Typen.
+	 * Konstruktor fÃ¼r Integer-Attribut-Typen.
 	 *
 	 * @param configurationArea der Konfigurationsbereich dieses Typs
-	 * @param systemObjectInfo  das korrespondierende Objekt für Dateioperationen dieses Typs
+	 * @param systemObjectInfo  das korrespondierende Objekt fÃ¼r Dateioperationen dieses Typs
 	 */
 	public ConfigIntegerAttributeType(ConfigurationArea configurationArea, SystemObjectInformationInterface systemObjectInfo) {
 		super(configurationArea, systemObjectInfo);
 	}
 
 	public short getValueSize() {
-		throw new UnsupportedOperationException("Methode IntegerAttributeType.getValueSize() wird nicht mehr unterstützt.");
+		throw new UnsupportedOperationException("Methode IntegerAttributeType.getValueSize() wird nicht mehr unterstÃ¼tzt.");
 	}
 
 	public int getByteCount() {
@@ -91,7 +97,7 @@ public class ConfigIntegerAttributeType extends ConfigAttributeType implements I
 	public List<IntegerValueState> getStates() {
 		if(_states == null) {
 			List<IntegerValueState> states = new ArrayList<IntegerValueState>();
-			ObjectSet set = getObjectSet("zustände");
+			ObjectSet set = getObjectSet("zustÃ¤nde");
 			if(set != null) {
 				for(SystemObject systemObject : set.getElements()) {
 					IntegerValueState state = (IntegerValueState)systemObject;
@@ -104,7 +110,7 @@ public class ConfigIntegerAttributeType extends ConfigAttributeType implements I
 	}
 
 	/**
-	 * Gibt das Objekt zurück, welches die Eigenschaften dieses AttributTyps enthält. Existiert es noch nicht, so wird es erzeugt und der entsprechende
+	 * Gibt das Objekt zurÃ¼ck, welches die Eigenschaften dieses AttributTyps enthÃ¤lt. Existiert es noch nicht, so wird es erzeugt und der entsprechende
 	 * konfigurierende Datensatz ausgelesen.
 	 *
 	 * @return die Eigenschaften dieses AttributTyps
@@ -117,8 +123,8 @@ public class ConfigIntegerAttributeType extends ConfigAttributeType implements I
 	}
 
 	/**
-	 * Wird aufgerufen, wenn das Objekt verändert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zurücksetzen. Erbende Klassen müssen diese
-	 * Funktion überschreiben, wenn sie Daten cachen.
+	 * Wird aufgerufen, wenn das Objekt verÃ¤ndert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zurÃ¼cksetzen. Erbende Klassen mÃ¼ssen diese
+	 * Funktion Ã¼berschreiben, wenn sie Daten cachen.
 	 */
 	@Override
 	synchronized void invalidateCache() {
@@ -129,9 +135,9 @@ public class ConfigIntegerAttributeType extends ConfigAttributeType implements I
 	}
 
 	/**
-	 * Stellt den undefiniert Wert zur Verfügung. Ist dieser noch nicht vorhanden, wird er angefordert.
+	 * Stellt den undefiniert Wert zur VerfÃ¼gung. Ist dieser noch nicht vorhanden, wird er angefordert.
 	 *
-	 * @return undefiniert Wert, <code>null</code> bedeutet, dass es keinen Wert für diesen Attributtyp gibt
+	 * @return undefiniert Wert, <code>null</code> bedeutet, dass es keinen Wert fÃ¼r diesen Attributtyp gibt
 	 */
 	synchronized private Long getUndefinedValue() {
 		if(!_undefinedValueRequested) {
@@ -150,12 +156,12 @@ public class ConfigIntegerAttributeType extends ConfigAttributeType implements I
 	}
 
 	/**
-	 * Diese Klasse liest die Informationen für diesen Attributtypen mit Hilfe des Deserializers direkt aus dem Byte-Array des konfigurierenden Datensatzes aus und
-	 * verwendet nicht die Methode {@link SystemObject#getConfigurationData}, da dort Informationen benötigt werden, die hier erst zur Verfügung gestellt werden.
+	 * Diese Klasse liest die Informationen fÃ¼r diesen Attributtypen mit Hilfe des Deserializers direkt aus dem Byte-Array des konfigurierenden Datensatzes aus und
+	 * verwendet nicht die Methode {@link SystemObject#getConfigurationData}, da dort Informationen benÃ¶tigt werden, die hier erst zur VerfÃ¼gung gestellt werden.
 	 */
 	private class IntegerAttributeTypeValues {
 
-		/** Anzahl, der für die Darstellung benötigten Bytes. */
+		/** Anzahl, der fÃ¼r die Darstellung benÃ¶tigten Bytes. */
 		private byte _byteCount;
 
 		/** Bereich, des Ganzzahl-Attribut-Typs. */
@@ -169,7 +175,7 @@ public class ConfigIntegerAttributeType extends ConfigAttributeType implements I
 				final AttributeGroupUsage attributeGroupUsage = atg.getAttributeGroupUsage(asp);
 				byte[] bytes = _systemObjectInfo.getConfigurationData(attributeGroupUsage.getId());
 				assert bytes.length == 9
-						: "Länge des Byte-Arrays der Attributgruppe atg.ganzzahlAttributTypEigenschaften hat sich geändert. Angenommene Länge = 9.";
+						: "LÃ¤nge des Byte-Arrays der Attributgruppe atg.ganzzahlAttributTypEigenschaften hat sich geÃ¤ndert. Angenommene LÃ¤nge = 9.";
 
 				final ByteArrayInputStream in = new ByteArrayInputStream(bytes);
 				Deserializer deserializer = SerializingFactory.createDeserializer(getSerializerVersion(), in);
@@ -177,7 +183,7 @@ public class ConfigIntegerAttributeType extends ConfigAttributeType implements I
 				_range = (IntegerValueRange)deserializer.readObjectReference(getDataModel());
 				_byteCount = deserializer.readByte();
 
-				in.close();	// Stream schließen
+				in.close();	// Stream schlieÃŸen
 			}
 			catch(Exception ex) {
 				final String errorMessage = "Die GanzzahlAttributTypEigenschaften des AttributTyps " + getPidOrNameOrId() + " konnten nicht ermittelt werden";
@@ -187,16 +193,16 @@ public class ConfigIntegerAttributeType extends ConfigAttributeType implements I
 		}
 
 		/**
-		 * Gibt die Anzahl der benötigten Bytes zurück, die für die Darstellung benötigt werden.
+		 * Gibt die Anzahl der benÃ¶tigten Bytes zurÃ¼ck, die fÃ¼r die Darstellung benÃ¶tigt werden.
 		 *
-		 * @return die Anzahl der benötigten Bytes
+		 * @return die Anzahl der benÃ¶tigten Bytes
 		 */
 		public byte getByteCount() {
 			return _byteCount;
 		}
 
 		/**
-		 * Gibt den Bereich des Ganzzahl-Attribut-Typs zurück.
+		 * Gibt den Bereich des Ganzzahl-Attribut-Typs zurÃ¼ck.
 		 *
 		 * @return der Bereich des Ganzzahl-Attribut-Typs
 		 */

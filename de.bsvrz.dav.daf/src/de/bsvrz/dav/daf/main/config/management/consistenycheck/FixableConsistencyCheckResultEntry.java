@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.config.management.consistenycheck;
@@ -29,12 +35,12 @@ import java.util.List;
 
 /**
  * Stellt einen behebbaren Fehler dar. Instanzen dieser klasse sind um Gegensatz zu ConsistencyCheckResultEntry nicht immutable, daher kann sich insbesondere
- * die Einordnung in die verschiedenen Kategorien von ConsistencyCheckResult ändern. Daher sind nach dem aufrufen von fix() entsprechende Einordungen in ein
+ * die Einordnung in die verschiedenen Kategorien von ConsistencyCheckResult Ã¤ndern. Daher sind nach dem aufrufen von fix() entsprechende Einordungen in ein
  * ConsistencyCheckResult unbrauchbar. In {@link de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel#checkConsistencyAndFixErrors(java.util.Collection)}
- * wird das dadurch korrigiert, dass die Einträge in eine neue ConsistencyCheckResult-Instanz kopiert werden.
+ * wird das dadurch korrigiert, dass die EintrÃ¤ge in eine neue ConsistencyCheckResult-Instanz kopiert werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8953 $
+ * @version $Revision$
  */
 public abstract class FixableConsistencyCheckResultEntry extends ConsistencyCheckResultEntry {
 
@@ -46,7 +52,7 @@ public abstract class FixableConsistencyCheckResultEntry extends ConsistencyChec
 
 	/**
 	 * @param configurationArea Konfigurationsbereich, in dem der Fehler, die Warnung, aufgetaucht ist
-	 * @param involvedObjects   Objekte, die dazu geführt haben, dass es zu einem Fehler oder einer Warnung gekommen ist
+	 * @param involvedObjects   Objekte, die dazu gefÃ¼hrt haben, dass es zu einem Fehler oder einer Warnung gekommen ist
 	 * @param errorText         Fehlertext, der die Art des Fehlers/Warnung genauer beschreibt.
 	 */
 	public FixableConsistencyCheckResultEntry(
@@ -56,10 +62,10 @@ public abstract class FixableConsistencyCheckResultEntry extends ConsistencyChec
 
 
 	/**
-	 * Ändert den Status dieser behebbaren Fehlermeldung
+	 * Ã„ndert den Status dieser behebbaren Fehlermeldung
 	 *
 	 * @param text      Text der dem Benutzer angezeigt wird, null wenn der alte Text beibehalten werden soll.
-	 * @param hasFailed Ist das Beheben des Problems fehlgeschlagen? Wenn true wird die Konsistenzprüfung einen Fehler ergeben. Wenn false gilt der Fehler aus
+	 * @param hasFailed Ist das Beheben des Problems fehlgeschlagen? Wenn true wird die KonsistenzprÃ¼fung einen Fehler ergeben. Wenn false gilt der Fehler aus
 	 *                  behoben.
 	 */
 	protected final void update(final String text, final boolean hasFailed) {
@@ -69,7 +75,7 @@ public abstract class FixableConsistencyCheckResultEntry extends ConsistencyChec
 	}
 
 	/**
-	 * Gibt den Fehlertext zurück
+	 * Gibt den Fehlertext zurÃ¼ck
 	 *
 	 * @return s.o.
 	 */
@@ -92,7 +98,7 @@ public abstract class FixableConsistencyCheckResultEntry extends ConsistencyChec
 	}
 
 	/**
-	 * Gibt zurück, ob es sich um einen Fehler handelt.
+	 * Gibt zurÃ¼ck, ob es sich um einen Fehler handelt.
 	 *
 	 * @return LOCAL_ERROR wenn das Problem nicht automatisch behoben werden konnte, sonst WARNING
 	 */
@@ -103,18 +109,18 @@ public abstract class FixableConsistencyCheckResultEntry extends ConsistencyChec
 	}
 
 	/**
-	 * Fordert die Klasse auf den Fehler zu beheben. Diese Funktion sollte {@link #update(String, boolean)} aufrufen, um über den Erfolg der Fehlerkorrektur zu
+	 * Fordert die Klasse auf den Fehler zu beheben. Diese Funktion sollte {@link #update(String, boolean)} aufrufen, um Ã¼ber den Erfolg der Fehlerkorrektur zu
 	 * informieren.
 	 *
 	 * @throws Exception Fehler
 	 */
 	protected abstract void fix() throws Exception;
 
-	/** Behebt den Fehler, den dieses Objekt repräsentiert */
+	/** Behebt den Fehler, den dieses Objekt reprÃ¤sentiert */
 	public final void fixError() {
 		try {
 			fix();
-			if(!_isFixed) throw new IllegalStateException("Ungültiger Zustand, update() wurde nicht aufgerufen.");
+			if(!_isFixed) throw new IllegalStateException("UngÃ¼ltiger Zustand, update() wurde nicht aufgerufen.");
 		}
 		catch(Exception e) {
 			// Exception mit Stacktrace in String umwandeln
@@ -136,7 +142,7 @@ public abstract class FixableConsistencyCheckResultEntry extends ConsistencyChec
 	}
 
 	/**
-	 * Gibt zurück ob das Problem behoben ist
+	 * Gibt zurÃ¼ck ob das Problem behoben ist
 	 *
 	 * @return true wenn behoben
 	 */
@@ -145,7 +151,7 @@ public abstract class FixableConsistencyCheckResultEntry extends ConsistencyChec
 	}
 
 	/**
-	 * Gibt zurück, ob beim beheben des Fehlers ein Problem auftrat
+	 * Gibt zurÃ¼ck, ob beim beheben des Fehlers ein Problem auftrat
 	 *
 	 * @return true wenn ein Fehler auftrat
 	 */

@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.xmlFile.writer;
@@ -30,23 +36,24 @@ import de.bsvrz.puk.config.configFile.datamodel.ConfigurationAreaUnversionedChan
 import de.bsvrz.puk.config.xmlFile.properties.*;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.text.Collator;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Diese Klasse schreibt einen Konfigurationsbereich in eine XML-Datei, dabei wird die K2S.DTD berücksichtigt.
+ * Diese Klasse schreibt einen Konfigurationsbereich in eine XML-Datei, dabei wird die K2S.DTD berÃ¼cksichtigt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13364 $
+ * @version $Revision$
  */
 public class ConfigAreaWriter {
 
-	/** Enthält den gesamten Konfigurationsbereich */
+	/** EnthÃ¤lt den gesamten Konfigurationsbereich */
 	final ConfigurationAreaProperties _area;
 
-	/** Einrückungszeichen, wird pro Ebene einen _emptyString nach rechts eingerückt. Ein Objekt auf Ebene 2 würde also 2 "_emptyString" eingerückt. */
+	/** EinrÃ¼ckungszeichen, wird pro Ebene einen _emptyString nach rechts eingerÃ¼ckt. Ein Objekt auf Ebene 2 wÃ¼rde also 2 "_emptyString" eingerÃ¼ckt. */
 	final String _emptyString = "\t";
 
 	public ConfigAreaWriter(ConfigurationAreaProperties area) {
@@ -54,9 +61,9 @@ public class ConfigAreaWriter {
 	}
 
 	/**
-	 * Schreibt die im Konstruktor übergebenen Objekte als XML-Datei, als Grundlage dient die K2S.DTD.
+	 * Schreibt die im Konstruktor Ã¼bergebenen Objekte als XML-Datei, als Grundlage dient die K2S.DTD.
 	 *
-	 * @param file Datei, in der die Objekte gespeichert werden sollen. Ist die Datei nicht vorhanden, so wird sie angelegt. Ist sie vorhanden, wird sie gelöscht
+	 * @param file Datei, in der die Objekte gespeichert werden sollen. Ist die Datei nicht vorhanden, so wird sie angelegt. Ist sie vorhanden, wird sie gelÃ¶scht
 	 *             und neu erzeugt.
 	 *
 	 * @throws IOException Falls es einen Fehler beim erstellen der Versorgungsdatei gab.
@@ -64,7 +71,7 @@ public class ConfigAreaWriter {
 	public void writeConfigAreaAsXML(final File file) throws IOException {
 		if(file.exists()) {
 			if(!file.delete()) {
-				throw new IllegalArgumentException("Die Datei " + file + " konnte nicht gelöscht werden.");
+				throw new IllegalArgumentException("Die Datei " + file + " konnte nicht gelÃ¶scht werden.");
 			}
 		}
 
@@ -72,7 +79,7 @@ public class ConfigAreaWriter {
 			throw new IllegalArgumentException("Die Datei " + file + " konnte nicht angelegt werden.");
 		}
 
-		// Die Datei steht zur Verfügung
+		// Die Datei steht zur VerfÃ¼gung
 		OutputStream fileOutput = new FileOutputStream(file);
 		try {
 			writeConfigAreaAsXML(fileOutput);
@@ -83,15 +90,14 @@ public class ConfigAreaWriter {
 	}
 
 	/**
-	 * Schreibt die im Konstruktor übergebenen Objekte als XML in einen OutputStream, als Grundlage dient die K2S.DTD.
+	 * Schreibt die im Konstruktor Ã¼bergebenen Objekte als XML in einen OutputStream, als Grundlage dient die K2S.DTD.
 	 *
 	 * @param outputStream OutputStream, in der die Objekte gespeichert werden sollen.
 	 *
 	 * @throws IOException Falls es einen Fehler beim erstellen der Versorgungsdatei gab.
 	 */
 	public void writeConfigAreaAsXML(final OutputStream outputStream) throws IOException {
-		OutputStream out = new PrintStream(outputStream, false, "ISO-8859-1");
-		PrintWriter pw = new PrintWriter(out);
+		PrintWriter pw = new PrintWriter(new OutputStreamWriter(outputStream, Charset.forName("ISO-8859-1")));
 		try {
 
 			pw.println("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
@@ -109,10 +115,10 @@ public class ConfigAreaWriter {
 			// konfigurationsAenderung schreiben (und zwar alle)
 			writeConfigAreaChanges(_area.getConfigurationAreaChangeInformation(), pw, 1);
 
-			// Schreibt alle Abhängigkeiten als Kommentar in die Datei
+			// Schreibt alle AbhÃ¤ngigkeiten als Kommentar in die Datei
 			writeDependencies(_area.getAreaDependencies(), pw, 1);
 
-			// Schreibt alle Unversionierten Änderungen als Kommentar in die Datei
+			// Schreibt alle Unversionierten Ã„nderungen als Kommentar in die Datei
 			writeUnversionedChanges(_area.getUnversionedChanges(), pw, 1);
 
 			// Anzahl Tabs, bis das modell-Tag beginnt
@@ -131,7 +137,7 @@ public class ConfigAreaWriter {
 			}
 			);
 
-			// Anzahl Tabs um eins erhöhen
+			// Anzahl Tabs um eins erhÃ¶hen
 			final int nextNumberOfTabs = numberOfTabs + 1;
 
 			pw.print(modelEmptyString);
@@ -203,11 +209,11 @@ public class ConfigAreaWriter {
 	}
 
 	/**
-	 * Schreibt alle Abhängigkeiten des Bereichs zu anderen Bereichen als Kommentar in den übergebenen Writer
+	 * Schreibt alle AbhÃ¤ngigkeiten des Bereichs zu anderen Bereichen als Kommentar in den Ã¼bergebenen Writer
 	 *
-	 * @param areaDependencies Abhängigkeiten. Wird <code>null</code> übergeben, wird dies als "die Abhängigkeiten wurden noch nicht geprüft" interpretiert und nichts gemacht.
-	 * @param writer           Writer, in den die Abhängigkeiten geschrieben werden
-	 * @param textDepth        Einrückungstiefe
+	 * @param areaDependencies AbhÃ¤ngigkeiten. Wird <code>null</code> Ã¼bergeben, wird dies als "die AbhÃ¤ngigkeiten wurden noch nicht geprÃ¼ft" interpretiert und nichts gemacht.
+	 * @param writer           Writer, in den die AbhÃ¤ngigkeiten geschrieben werden
+	 * @param textDepth        EinrÃ¼ckungstiefe
 	 */
 	private void writeDependencies(Collection<ConfigurationAreaDependency> areaDependencies, final PrintWriter writer, final int textDepth) {
 
@@ -215,24 +221,24 @@ public class ConfigAreaWriter {
 			final String initialBlanks = createEmptyString(textDepth);
 
 			{
-				// Die Abhängigkeiten sollen, wie im Datensatz gespeichert, ausgegeben werden
+				// Die AbhÃ¤ngigkeiten sollen, wie im Datensatz gespeichert, ausgegeben werden
 
 				writer.print(initialBlanks);
 
-				// Kommentartag (öffnen)
+				// Kommentartag (Ã¶ffnen)
 				final String commentStringOpen = "<!--";
 				// Kommentartag (schliessen)
 				final String commentStringClose = "-->";
 
 				if(areaDependencies.isEmpty() == true) {
-					writer.println(commentStringOpen + "Der Bereich " + _area.getPid() + " benötigt keine anderen Bereiche." + commentStringClose);
+					writer.println(commentStringOpen + "Der Bereich " + _area.getPid() + " benÃ¶tigt keine anderen Bereiche." + commentStringClose);
 				}
 				else {
 
-					// Kommentar in XML öffnen
+					// Kommentar in XML Ã¶ffnen
 					writer.println(commentStringOpen);
-					writer.println(initialBlanks + "Abhängigkeiten des Bereichs " + _area.getPid());
-					// Tabellenüberschrift erzeugen
+					writer.println(initialBlanks + "AbhÃ¤ngigkeiten des Bereichs " + _area.getPid());
+					// TabellenÃ¼berschrift erzeugen
 					writeHeaderForDependencies(writer, initialBlanks, "      ");
 
 					for(ConfigurationAreaDependency areaDependency : areaDependencies) {
@@ -247,15 +253,15 @@ public class ConfigAreaWriter {
 						// Zeilenumbruch
 						writer.println();
 					}
-					// Kommentar wieder schließen
+					// Kommentar wieder schlieÃŸen
 					writer.println(initialBlanks + commentStringClose);
 				}
 			}
 
 //			{
-//				// Die Abhängigkeiten sortieren
+//				// Die AbhÃ¤ngigkeiten sortieren
 //
-//				// In dieser Map liegen alle Abhängigkeiten sortiert vor.
+//				// In dieser Map liegen alle AbhÃ¤ngigkeiten sortiert vor.
 //				final Map<String, List<ConfigurationAreaDependency>> sortedDependencies = new HashMap<String, List<ConfigurationAreaDependency>>();
 //
 //				for(ConfigurationAreaDependency areaDependency : areaDependencies) {
@@ -281,34 +287,34 @@ public class ConfigAreaWriter {
 //						}
 //					}
 //					);
-//				}//for, über alle Listen, die sortiert werden müssen
+//				}//for, Ã¼ber alle Listen, die sortiert werden mÃ¼ssen
 //
-//				// Bereiche, von dem der Bereich abhängig ist. Die Bereiche werden über die Pid identifiziert.
+//				// Bereiche, von dem der Bereich abhÃ¤ngig ist. Die Bereiche werden Ã¼ber die Pid identifiziert.
 //				final Set<String> areasPid = sortedDependencies.keySet();
 //
 //
 //				writer.print(initialBlanks);
 //
-//				// Kommentartag (öffnen)
+//				// Kommentartag (Ã¶ffnen)
 //				final String commentStringOpen = "<!--";
 //				// Kommentartag (schliessen)
 //				final String commentStringClose = "-->";
 //
 //				if(areasPid.isEmpty() == false) {
 //
-//					// Kommentar in XML öffnen
+//					// Kommentar in XML Ã¶ffnen
 //					writer.println(commentStringOpen);
 //
-//					writer.println(initialBlanks + "Abhängigkeiten des Bereichs " + _area.getPid());
-//					// Tabellenüberschrift erzeugen
+//					writer.println(initialBlanks + "AbhÃ¤ngigkeiten des Bereichs " + _area.getPid());
+//					// TabellenÃ¼berschrift erzeugen
 //					writeHeaderForDependencies(writer, initialBlanks, "      ");
 //
 //					for(String areaPid : areasPid) {
 //						final List<ConfigurationAreaDependency> dependencies = sortedDependencies.get(areaPid);
-//						// Alle Abhängigkeiten von diesem einen Bereich. Die letzte Abhängigkeite, die gefunden wurde, ist am Ende der Liste gespeichert.
+//						// Alle AbhÃ¤ngigkeiten von diesem einen Bereich. Die letzte AbhÃ¤ngigkeite, die gefunden wurde, ist am Ende der Liste gespeichert.
 //						// So wurde die Liste eben sortiert.
 //
-//						// Die als letztes gefundene Abhängigkeit wird als erstes ausgegeben.
+//						// Die als letztes gefundene AbhÃ¤ngigkeit wird als erstes ausgegeben.
 //						for(int nr = dependencies.size() - 1; nr >= 0; nr--) {
 //
 //							final ConfigurationAreaDependency dependency = dependencies.get(nr);
@@ -325,110 +331,106 @@ public class ConfigAreaWriter {
 //						}
 //					}
 //
-//					// Kommentar wieder schließen
+//					// Kommentar wieder schlieÃŸen
 //					writer.println(initialBlanks + commentStringClose);
 //				}
 //				else {
-//					writer.println(commentStringOpen + "Der Bereich " + _area.getPid() + " benötigt keine anderen Bereiche." + commentStringClose);
+//					writer.println(commentStringOpen + "Der Bereich " + _area.getPid() + " benÃ¶tigt keine anderen Bereiche." + commentStringClose);
 //				}
 //			}
 		}
 	}
 
 	/**
-	 * Schreibt die Tabellenüberschrift für die Abhängigkeiten eines Bereichs zu anderen Bereichen
+	 * Schreibt die TabellenÃ¼berschrift fÃ¼r die AbhÃ¤ngigkeiten eines Bereichs zu anderen Bereichen
 	 *
 	 * @param writer                   Objekt, zum schreiben der Daten
-	 * @param initialBlanks            Einrückungstiefe der Überschrift
-	 * @param spacesBetweenTitleHeader Abstand zwischen den Spaltenüberschriften
+	 * @param initialBlanks            EinrÃ¼ckungstiefe der Ãœberschrift
+	 * @param spacesBetweenTitleHeader Abstand zwischen den SpaltenÃ¼berschriften
 	 */
 	private void writeHeaderForDependencies(final PrintWriter writer, final String initialBlanks, final String spacesBetweenTitleHeader) {
 
 		writer.print(initialBlanks);
-		writer.print("Abhängig ab Version");
+		writer.print("AbhÃ¤ngig ab Version");
 		writer.print(spacesBetweenTitleHeader);
-		writer.print("Art der Abhängigkeit");
+		writer.print("Art der AbhÃ¤ngigkeit");
 		writer.print(spacesBetweenTitleHeader);
-		writer.print("Version des benötigten Bereichs");
+		writer.print("Version des benÃ¶tigten Bereichs");
 		writer.print(spacesBetweenTitleHeader);
-		writer.print("Benötigter Bereich");
+		writer.print("BenÃ¶tigter Bereich");
 		writer.println();
 	}
 
 
 	/**
-	 * Schreibt alle unversionierten Änderungen des Konfigurationsbereichs in den übergebenen Writer
+	 * Schreibt alle unversionierten Ã„nderungen des Konfigurationsbereichs in den Ã¼bergebenen Writer
 	 *
-	 * @param unversionedChanges Unversionierte Änderungen. Wird <code>null</code> übergeben, wird nichts gemacht.
-	 * @param writer           Writer, in den die Abhängigkeiten geschrieben werden
-	 * @param textDepth        Einrückungstiefe
+	 * @param unversionedChanges Unversionierte Ã„nderungen. Wird <code>null</code> Ã¼bergeben, wird nichts gemacht.
+	 * @param writer           Writer, in den die AbhÃ¤ngigkeiten geschrieben werden
+	 * @param textDepth        EinrÃ¼ckungstiefe
 	 */
 	private void writeUnversionedChanges(Collection<ConfigurationAreaUnversionedChange> unversionedChanges, final PrintWriter writer, final int textDepth) {
 
-		if(unversionedChanges != null) {
+		if(unversionedChanges != null && !unversionedChanges.isEmpty()) {
 			final String initialBlanks = createEmptyString(textDepth);
 
-			{
-				// Die Abhängigkeiten sollen, wie im Datensatz gespeichert, ausgegeben werden
+			// Die AbhÃ¤ngigkeiten sollen, wie im Datensatz gespeichert, ausgegeben werden
 
+			writer.print(initialBlanks);
+
+			// Kommentartag (Ã¶ffnen)
+			final String commentStringOpen = "<!--";
+			// Kommentartag (schliessen)
+			final String commentStringClose = "-->";
+
+
+			// Kommentar in XML Ã¶ffnen
+			writer.println(commentStringOpen);
+			writer.println(initialBlanks + "Unversionierte Ã„nderungen des Bereichs " + _area.getPid());
+			// TabellenÃ¼berschrift erzeugen
+
+			writer.print(initialBlanks);
+			writer.print("Aktiv ab Version");
+			writer.print("      ");
+			writer.print("GeÃ¤nderte Attribut-Typen");
+			writer.println();
+
+			for(ConfigurationAreaUnversionedChange unversionedChange : unversionedChanges) {
 				writer.print(initialBlanks);
-
-				// Kommentartag (öffnen)
-				final String commentStringOpen = "<!--";
-				// Kommentartag (schliessen)
-				final String commentStringClose = "-->";
-
-				if(!unversionedChanges.isEmpty()) {
-
-					// Kommentar in XML öffnen
-					writer.println(commentStringOpen);
-					writer.println(initialBlanks + "Unversionierte Änderungen des Bereichs " + _area.getPid());
-					// Tabellenüberschrift erzeugen
-
-					writer.print(initialBlanks);
-					writer.print("Aktiv ab Version");
-					writer.print("      ");
-					writer.print("Geänderte Attribut-Typen");
-					writer.println();
-
-					for(ConfigurationAreaUnversionedChange unversionedChange : unversionedChanges) {
-						writer.print(initialBlanks);
-						String[] attributeTypePids = unversionedChange.getAttributeTypePids();
-						String first = "Keine";
-						if(attributeTypePids.length > 0) {
-							first = attributeTypePids[0];
-						}
-						writer.printf(
-								"%-21s %s",
-								unversionedChange.getConfigurationAreaVersion(),
-								first
-						);
-						for(int i = 1; i < attributeTypePids.length; i++) {
-							// Zeilenumbruch
-							writer.println();
-							writer.print(initialBlanks);
-							String attributeTypePid = attributeTypePids[i];
-							writer.printf(
-									"%-21s %s",
-									"",
-									attributeTypePid
-							);
-						}
-						writer.println();
-					}
-					// Kommentar wieder schließen
-					writer.println(initialBlanks + commentStringClose);
+				String[] attributeTypePids = unversionedChange.getAttributeTypePids();
+				String first = "Keine";
+				if(attributeTypePids.length > 0) {
+					first = attributeTypePids[0];
 				}
+				writer.printf(
+						"%-21s %s",
+						unversionedChange.getConfigurationAreaVersion(),
+						first
+				);
+				for(int i = 1; i < attributeTypePids.length; i++) {
+					// Zeilenumbruch
+					writer.println();
+					writer.print(initialBlanks);
+					String attributeTypePid = attributeTypePids[i];
+					writer.printf(
+							"%-21s %s",
+							"",
+							attributeTypePid
+					);
+				}
+				writer.println();
 			}
+			// Kommentar wieder schlieÃŸen
+			writer.println(initialBlanks + commentStringClose);
 		}
 	}
 
 	/**
 	 * Schreibt eine mengenDefinition (siehe K2S.DTD) als XML in einen Stream.
 	 *
-	 * @param objectSetTypeProperties Objekt, das alle Informationen einer mengenDefinition (siehe K2S.DTD) enthält
+	 * @param objectSetTypeProperties Objekt, das alle Informationen einer mengenDefinition (siehe K2S.DTD) enthÃ¤lt
 	 * @param writer                  Stream, in den das Objekt geschrieben wird
-	 * @param textDepth               Einrückungstiefe des Textes
+	 * @param textDepth               EinrÃ¼ckungstiefe des Textes
 	 */
 	private void writeSetDefinition(final ObjectSetTypeProperties objectSetTypeProperties, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);
@@ -473,7 +475,7 @@ public class ConfigAreaWriter {
 	 *
 	 * @param attributeListProperties Objekt, das ein attributListenDefinition darstellt
 	 * @param writer                  Stream in den das Objekt geschrieben wird
-	 * @param textDepth               Einrückungstiefe des Textes
+	 * @param textDepth               EinrÃ¼ckungstiefe des Textes
 	 */
 	private void writeAttributeListDefinition(final AttributeListProperties attributeListProperties, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);
@@ -504,7 +506,7 @@ public class ConfigAreaWriter {
 	}
 
 	/**
-	 * Erzeugt textDepth viele Tabs in einem String und gibt diesen leeren String zurück.
+	 * Erzeugt textDepth viele Tabs in einem String und gibt diesen leeren String zurÃ¼ck.
 	 *
 	 * @param textDepth s.o.
 	 *
@@ -542,7 +544,7 @@ public class ConfigAreaWriter {
 				writeAttributeAndValueCheckedValue(" persistenzModus", "persistent", writer);
 			}
 			else if(typeProperties.getPersistenceMode() == PersistenceMode.PERSISTENT_AND_INVALID_ON_RESTART) {
-				writeAttributeAndValueCheckedValue(" persistenzModus", "persistentUndUngültigNachNeustart", writer);
+				writeAttributeAndValueCheckedValue(" persistenzModus", "persistentUndUngÃ¼ltigNachNeustart", writer);
 			}
 		}
 		writer.println(">");
@@ -559,7 +561,7 @@ public class ConfigAreaWriter {
 		if(typeProperties.getExtendedPids().length > 0) {
 			// Erweitert wurde gesetzt
 
-			// Alle Pids, die geschrieben werden müssen
+			// Alle Pids, die geschrieben werden mÃ¼ssen
 			final String[] extendedPids = typeProperties.getExtendedPids();
 
 			// Jeder Eintrag muss um eins nach rechts versetzt werden
@@ -633,7 +635,7 @@ public class ConfigAreaWriter {
 
 		// Attributgruppen und Mengen werden rausgeschrieben
 		for(String pidATG : atgList) {
-			// Einrücken
+			// EinrÃ¼cken
 			writer.print(initialBlanks + _emptyString);
 			writer.print("<attributgruppe");
 			writeAttributeAndValueUncheckedValue(" pid", pidATG, writer);
@@ -646,7 +648,7 @@ public class ConfigAreaWriter {
 		}
 
 		for(String pidATG : transactionList) {
-			// Einrücken
+			// EinrÃ¼cken
 			writer.print(initialBlanks + _emptyString);
 			writer.print("<transaktion");
 			writeAttributeAndValueUncheckedValue(" pid", pidATG, writer);
@@ -655,7 +657,7 @@ public class ConfigAreaWriter {
 
 		// defaultParameter rausschreiben
 		for(ConfigurationDefaultParameter defaultParameter : typeProperties.getDefaultParameters()) {
-			// Einrücken
+			// EinrÃ¼cken
 			writeDefaultParameter(defaultParameter, writer, textDepth + 1);
 		}
 
@@ -669,7 +671,7 @@ public class ConfigAreaWriter {
 	 *
 	 * @param attributeGroupProperties Objekt, das in der Datei gespeichert werden soll
 	 * @param writer                   Objekt, das die Datei darstellt, in die geschrieben werden soll
-	 * @param textDepth                Einrüdckungstiefe
+	 * @param textDepth                EinrÃ¼dckungstiefe
 	 */
 	private void writeAttributeGroupDefinition(final AttributeGroupProperties attributeGroupProperties, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);
@@ -680,10 +682,10 @@ public class ConfigAreaWriter {
 		// Attribute des Elements schreiben
 		writeAttributeAndValueUncheckedValue(" pid", attributeGroupProperties.getPid(), writer);
 		writeAttributeAndValueCheckedValue(" name", attributeGroupProperties.getName(), writer);
-		// Attribut konfigurierend wird nicht mehr benötigt.
+		// Attribut konfigurierend wird nicht mehr benÃ¶tigt.
 //		writeJaNein(" konfigurierend", attributeGroupProperties.getConfiguring(), writer);
 		writeJaNein(" parametrierend", attributeGroupProperties.isParameter(), writer);
-		// Der Code wird nicht mehr benötigt
+		// Der Code wird nicht mehr benÃ¶tigt
 //		writeAttributeAndValueCheckedValue(" code", Short.toString(attributeGroupProperties.getCode()), writer);
 		writer.println(">");
 
@@ -728,7 +730,7 @@ public class ConfigAreaWriter {
 	 *
 	 * @param transactionProperties Objekt, das in der Datei gespeichert werden soll
 	 * @param writer                Objekt, das die Datei darstellt, in die geschrieben werden soll
-	 * @param textDepth             Einrüdckungstiefe
+	 * @param textDepth             EinrÃ¼dckungstiefe
 	 */
 	private void writeTransactionDefinition(final TransactionProperties transactionProperties, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);
@@ -764,9 +766,9 @@ public class ConfigAreaWriter {
 		final List<TransactionProperties.DataIdentification> possibleDids = transactionProperties.getPossibleDids();
 		if(possibleDids != null && possibleDids.size() > 0) writeDids("akzeptiert", possibleDids, writer, textDepth + 1);
 
-		// benötigt?
+		// benÃ¶tigt?
 		final List<TransactionProperties.DataIdentification> requiredDids = transactionProperties.getRequiredDids();
-		if(requiredDids != null && requiredDids.size() > 0) writeDids("benötigt", requiredDids, writer, textDepth + 1);
+		if(requiredDids != null && requiredDids.size() > 0) writeDids("benÃ¶tigt", requiredDids, writer, textDepth + 1);
 
 		writer.print(initialBlanks);
 		writer.println("</transaktionsDefinition>");
@@ -789,7 +791,7 @@ public class ConfigAreaWriter {
 	private void writeDid(final TransactionProperties.DataIdentification identification, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);
 		writer.print(initialBlanks);
-		writer.print("<transaktionsEinschränkung");
+		writer.print("<transaktionsEinschrÃ¤nkung");
 		writeAttributeAndValueCheckedValue(" nurTransaktionsObjekt", identification.isOnlyTransactionObject() ? "ja" : "", writer);
 		writeAttributeAndValueCheckedValue(" objektTyp", identification.getObjectType(), writer);
 		writeAttributeAndValueCheckedValue(" attributGruppe", identification.getAttributeGroup(), writer);
@@ -802,7 +804,7 @@ public class ConfigAreaWriter {
 	 *
 	 * @param aspectProperties Objekt, das gespeichert werden soll
 	 * @param writer           Stellt die Datei dar
-	 * @param textDepth        Einrückungstiefe
+	 * @param textDepth        EinrÃ¼ckungstiefe
 	 */
 	private void writeAspectDefinition(final AspectProperties aspectProperties, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);
@@ -812,7 +814,7 @@ public class ConfigAreaWriter {
 
 		writeAttributeAndValueUncheckedValue(" pid", aspectProperties.getPid(), writer);
 		writeAttributeAndValueCheckedValue(" name", aspectProperties.getName(), writer);
-		// Code wird nicht mehr benötigt
+		// Code wird nicht mehr benÃ¶tigt
 //		writeAttributeAndValueCheckedValue(" code", Short.toString(aspectProperties.getCode()), writer);
 		writer.println(">");
 
@@ -827,7 +829,7 @@ public class ConfigAreaWriter {
 	 *
 	 * @param attributeTypeProperties Objekt, das gespeichert werden soll
 	 * @param writer                  Stellt die Datei dar
-	 * @param textDepth               Einrückungstiefe
+	 * @param textDepth               EinrÃ¼ckungstiefe
 	 */
 	private void writeAttributeDefinition(final AttributeTypeProperties attributeTypeProperties, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);
@@ -852,7 +854,7 @@ public class ConfigAreaWriter {
 	}
 
 	/**
-	 * Schreibt ...attribute="value"... in den übergebenen Stream. Ist attribute oder value <code>null</code> oder "", so wird nichts geschrieben
+	 * Schreibt ...attribute="value"... in den Ã¼bergebenen Stream. Ist attribute oder value <code>null</code> oder "", so wird nichts geschrieben
 	 * @param attribute s.o.
 	 * @param value     s.o.
 	 * @param writer    Stream, in dem die Daten geschrieben werden
@@ -864,7 +866,7 @@ public class ConfigAreaWriter {
 	}
 
 	/**
-	 * StringBuilder aus Performancegründen wiederverwnden
+	 * StringBuilder aus PerformancegrÃ¼nden wiederverwnden
 	 */
 	private StringBuilder _builder = new StringBuilder();
 
@@ -891,7 +893,7 @@ public class ConfigAreaWriter {
 
 
 	/**
-	 * Schreibt ...attribute="value"... in den übergebenen Stream. Weder attribute noch value werden auf <code>null</code> oder "" geprüft.
+	 * Schreibt ...attribute="value"... in den Ã¼bergebenen Stream. Weder attribute noch value werden auf <code>null</code> oder "" geprÃ¼ft.
 	 *
 	 * @param attribute s.o.
 	 * @param value     s.o.
@@ -905,7 +907,7 @@ public class ConfigAreaWriter {
 	}
 
 	/**
-	 * Schreibt folgenden String "attributeName=ja" oder " attributeName=nein" in den übergebenen Stream.
+	 * Schreibt folgenden String "attributeName=ja" oder " attributeName=nein" in den Ã¼bergebenen Stream.
 	 *
 	 * @param attributeName Name des Attributes, der vor dem = stehen soll
 	 * @param value         Wert, der hinter dem = stehen soll
@@ -928,7 +930,7 @@ public class ConfigAreaWriter {
 	 *
 	 * @param defaultValue Wert, der geschrieben soll
 	 * @param writer       Objekt mit dem die Menge gespeichert werden kann
-	 * @param textDepth    Einrückungstiefe ab dem der Text in der Datei erscheinen soll
+	 * @param textDepth    EinrÃ¼ckungstiefe ab dem der Text in der Datei erscheinen soll
 	 */
 	private void writeDefault(final String defaultValue, final PrintWriter writer, final int textDepth) {
 
@@ -949,9 +951,9 @@ public class ConfigAreaWriter {
 	 * Schreibt das Element "konfigurationsAenderung". Das Element kann mehrfach geschrieben werden
 	 *
 	 * @param configurationAreaChangeInformations
-	 *                  Alle Änderungen, die gespeichert werden sollen
+	 *                  Alle Ã„nderungen, die gespeichert werden sollen
 	 * @param writer    Objekt mit dem die Menge gespeichert werden kann
-	 * @param textDepth Einrückungstiefe ab dem der Text in der Datei erscheinen soll
+	 * @param textDepth EinrÃ¼ckungstiefe ab dem der Text in der Datei erscheinen soll
 	 */
 	private void writeConfigAreaChanges(
 			final ConfigurationAreaChangeInformation[] configurationAreaChangeInformations, final PrintWriter writer, final int textDepth
@@ -983,7 +985,7 @@ public class ConfigAreaWriter {
 			writeAttributeAndValueUncheckedValue(" grund", areaChangeInformation.getReason(), writer);
 			writer.print(">");
 
-			// Zusatztext, den jemand geschrieben haben kann (eine Stufe tiefer einrücken, als die tags)
+			// Zusatztext, den jemand geschrieben haben kann (eine Stufe tiefer einrÃ¼cken, als die tags)
 //			writer.print(initialBlanks + _emptyString);
 			writer.print(areaChangeInformation.getText());
 //			System.out.println("Text2:" + areaChangeInformation.getText() + ":Ende2");
@@ -995,11 +997,11 @@ public class ConfigAreaWriter {
 	}
 
 	/**
-	 * Schreibt das Element "info" in den übergebenen Stream
+	 * Schreibt das Element "info" in den Ã¼bergebenen Stream
 	 *
 	 * @param info      Objekt, das in eine XML-Datei geschrieben werden soll
 	 * @param writer    Objekt mit dem die Menge gespeichert werden kann
-	 * @param textDepth Einrückungstiefe ab dem der Text in der Datei erscheinen soll
+	 * @param textDepth EinrÃ¼ckungstiefe ab dem der Text in der Datei erscheinen soll
 	 */
 	private void writeInfo(final SystemObjectInfo info, final PrintWriter writer, final int textDepth) {
 
@@ -1014,9 +1016,9 @@ public class ConfigAreaWriter {
 //			writer.print(initialBlanks);
 //			writer.println("<info>");
 //
-//			// soviel muss immer eingerückt werden
+//			// soviel muss immer eingerÃ¼ckt werden
 //			StringBuffer shortInfo = new StringBuffer(initialBlanks);
-//			// eins mehr einrücken als den Rest
+//			// eins mehr einrÃ¼cken als den Rest
 //			shortInfo.append(_emptyString);
 //
 //			shortInfo.append("<kurzinfo>");
@@ -1049,7 +1051,7 @@ public class ConfigAreaWriter {
 			writer.print(initialBlanks);
 			writer.println("<info>");
 
-			// Soviele Leerzeichen wird ShortInfo und Beschreibung eingerückt
+			// Soviele Leerzeichen wird ShortInfo und Beschreibung eingerÃ¼ckt
 			final String blanksShortInfoAndDescription = createEmptyString(textDepth + 1);
 			writer.print(blanksShortInfoAndDescription);
 			writer.print("<kurzinfo>");
@@ -1074,7 +1076,7 @@ public class ConfigAreaWriter {
 	 *
 	 * @param set       Menge, die gespeichert werden soll
 	 * @param writer    Objekt mit dem die Menge gespeichert werden kann
-	 * @param textDepth Einrückungstiefe ab dem der Text in der Datei erscheinen soll
+	 * @param textDepth EinrÃ¼ckungstiefe ab dem der Text in der Datei erscheinen soll
 	 */
 	private void writeSet(final ConfigurationSet set, final PrintWriter writer, final int textDepth) {
 		// soviele Leerzeichen stehen mindestens vor einem Eintrag
@@ -1097,7 +1099,7 @@ public class ConfigAreaWriter {
 	 *
 	 * @param defaultParameter der Default-Parameter-Datensatz
 	 * @param writer           Objekt, mit dem der Datensatz gespeichert werden kann
-	 * @param textDepth        Einrückungstiefe, ab dem der Text in der Datei erscheinen soll
+	 * @param textDepth        EinrÃ¼ckungstiefe, ab dem der Text in der Datei erscheinen soll
 	 */
 	private void writeDefaultParameter(final ConfigurationDefaultParameter defaultParameter, final PrintWriter writer, final int textDepth) {
 		// soviele Leerzeichen stehen mindestens vor einem Eintrag
@@ -1121,7 +1123,7 @@ public class ConfigAreaWriter {
 	 *
 	 * @param configurationAspect Objekt, das gespeichert werden soll
 	 * @param writer              Stellt die Datei dar
-	 * @param textDepth           Einrückungstiefe
+	 * @param textDepth           EinrÃ¼ckungstiefe
 	 */
 	private void writeAspect(final ConfigurationAspect configurationAspect, final PrintWriter writer, final int textDepth) {
 		// soviele Leerzeichen stehen mindestens vor einem Eintrag
@@ -1159,7 +1161,7 @@ public class ConfigAreaWriter {
 	 *
 	 * @param attribute Objekt, das gespeichert werden soll
 	 * @param writer    Stellt die Datei dar
-	 * @param textDepth Einrückungstiefe
+	 * @param textDepth EinrÃ¼ckungstiefe
 	 */
 	private void writeAttribute(PlainAttributeProperties attribute, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);
@@ -1185,7 +1187,7 @@ public class ConfigAreaWriter {
 	 *
 	 * @param attributeList Objekt, das gespeichert werden soll
 	 * @param writer        Stellt die Datei dar
-	 * @param textDepth     Einrückungstiefe
+	 * @param textDepth     EinrÃ¼ckungstiefe
 	 */
 	private void writeAttributeList(ListAttributeProperties attributeList, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);
@@ -1210,7 +1212,7 @@ public class ConfigAreaWriter {
 	 * @param unknownAttributeType Objekt, das folgende Typen besitzen kann: ConfigurationString, ConfigurationIntegerDef, ConfigurationTimeStamp,
 	 *                             ConfigurationObjectReference, ConfigurationDoubleDef
 	 * @param writer               Stream, in den das Objekt geschrieben wird
-	 * @param textDepth            Einrückgungstiefe des Textes
+	 * @param textDepth            EinrÃ¼ckgungstiefe des Textes
 	 */
 	private void writeAttributeType(Object unknownAttributeType, final PrintWriter writer, final int textDepth) {
 
@@ -1274,7 +1276,7 @@ public class ConfigAreaWriter {
 	 *
 	 * @param doubleDef Objekt, das eine kommazahl(siehe K2S.DTD) darstellt
 	 * @param writer    Stream, in den der Text geschrieben wird
-	 * @param textDepth Einrückkungstiefe des Textes
+	 * @param textDepth EinrÃ¼ckkungstiefe des Textes
 	 */
 	private void writeFloatingPointNumber(final ConfigurationDoubleDef doubleDef, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);
@@ -1293,7 +1295,7 @@ public class ConfigAreaWriter {
 	 *
 	 * @param objectReference Objekt, das eine objektReferenz nach K2S.DTD darstellt
 	 * @param writer          Stream, in den das Objekt als XML Text geschrieben wird
-	 * @param textDepth       Einrückungstiefe des Textes
+	 * @param textDepth       EinrÃ¼ckungstiefe des Textes
 	 */
 	private void writeObjectReference(final ConfigurationObjectReference objectReference, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);
@@ -1324,7 +1326,7 @@ public class ConfigAreaWriter {
 	 *
 	 * @param timeStamp Objekt, das gespeichert werden soll
 	 * @param writer    Stellt die Datei dar
-	 * @param textDepth Einrückungstiefe
+	 * @param textDepth EinrÃ¼ckungstiefe
 	 */
 	private void writeTimeStamp(final ConfigurationTimeStamp timeStamp, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);
@@ -1342,7 +1344,7 @@ public class ConfigAreaWriter {
 	 *
 	 * @param configurationValueRange Objekt, dass das Element bereich darstellt
 	 * @param writer                  Stream
-	 * @param textDepth               Einrückungstiefe des Textes
+	 * @param textDepth               EinrÃ¼ckungstiefe des Textes
 	 */
 	private void writeRegion(final ConfigurationValueRange configurationValueRange, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);
@@ -1368,7 +1370,7 @@ public class ConfigAreaWriter {
 	 *
 	 * @param configurationState Objekt, dass das Element zustand darstellt
 	 * @param writer             Stream
-	 * @param textDepth          Einrückungstiefe des Textes
+	 * @param textDepth          EinrÃ¼ckungstiefe des Textes
 	 */
 	private void writeState(final ConfigurationState configurationState, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);
@@ -1389,9 +1391,9 @@ public class ConfigAreaWriter {
 	/**
 	 * Schreibt ein konfigurationsObjekt (siehe K2S.DTD) als XML Text in einen Stream.
 	 *
-	 * @param configurationObject Objekt, das alle Informationen eines konfigurationsObjekt (siehe K2S.DTD) enthält
+	 * @param configurationObject Objekt, das alle Informationen eines konfigurationsObjekt (siehe K2S.DTD) enthÃ¤lt
 	 * @param writer              Stream, in dem das Objekt als XML Text gespeichert wird
-	 * @param textDepth           Einrückungstiefe des Textes
+	 * @param textDepth           EinrÃ¼ckungstiefe des Textes
 	 */
 	private void writeConfigurationObject(final ConfigurationConfigurationObject configurationObject, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);
@@ -1400,7 +1402,7 @@ public class ConfigAreaWriter {
 		writer.print("<konfigurationsObjekt");
 
 		writeAttributeAndValueUncheckedValue(" pid", configurationObject.getPid(), writer);
-		// Es werden keine Id´s geschrieben
+		// Es werden keine IdÅ½s geschrieben
 //		writeAttributeAndValueCheckedValue(" id", Long.toString(configurationObject.getId()), writer);
 		writeAttributeAndValueCheckedValue(" name", configurationObject.getName(), writer);
 		writeAttributeAndValueUncheckedValue(" typ", configurationObject.getType(), writer);
@@ -1437,9 +1439,9 @@ public class ConfigAreaWriter {
 	/**
 	 * Speichert einen datensatz (siehe K2S.DTD) als XML Text. Das Attribut "pid" wird automatisch durch die Kombination "attributgruppe" und "aspekt" ersetzt.
 	 *
-	 * @param dataset   Objekt, das alle Informationen über einen datensatz (siehe K2S.DTD) enthält
+	 * @param dataset   Objekt, das alle Informationen Ã¼ber einen datensatz (siehe K2S.DTD) enthÃ¤lt
 	 * @param writer    Stream, in dem das Objekt als XML Text gespeichert wird
-	 * @param textDepth Einrückungstiefe des XML-Strings
+	 * @param textDepth EinrÃ¼ckungstiefe des XML-Strings
 	 */
 	private void writeDataset(final ConfigurationDataset dataset, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);
@@ -1464,7 +1466,7 @@ public class ConfigAreaWriter {
 	 *
 	 * @param dateAnddataListAndDataField Inhalt des Datensatzes
 	 * @param writer                      Stream, in dem das Objekt als XML Text gespeichert wird
-	 * @param textDepth                   Einrückungstiefe des XML-Strings
+	 * @param textDepth                   EinrÃ¼ckungstiefe des XML-Strings
 	 */
 	private void writeDatasetElements(final DatasetElement[] dateAnddataListAndDataField, final PrintWriter writer, final int textDepth) {
 		for(int nr = 0; nr < dateAnddataListAndDataField.length; nr++) {
@@ -1483,9 +1485,9 @@ public class ConfigAreaWriter {
 	/**
 	 * Schreibt ein datum (siehe K2S.DTD)
 	 *
-	 * @param data      Objekt, das alle Informationen eines "datum" enthält
+	 * @param data      Objekt, das alle Informationen eines "datum" enthÃ¤lt
 	 * @param writer    Stream, in dem die Daten gespeichert werden
-	 * @param textDepth Einrückungstiefe
+	 * @param textDepth EinrÃ¼ckungstiefe
 	 */
 	private void writeDate(final ConfigurationData data, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);
@@ -1500,9 +1502,9 @@ public class ConfigAreaWriter {
 	/**
 	 * Schreibt eine datenliste (siehe K2S.DTD)
 	 *
-	 * @param dataList  Objekt, das alle Informationen für eine datenliste (siehe K2S.DTD) enthält
+	 * @param dataList  Objekt, das alle Informationen fÃ¼r eine datenliste (siehe K2S.DTD) enthÃ¤lt
 	 * @param writer    Stream, auf dem das Objekt als XML Text gespeichert wird
-	 * @param textDepth Einrückungstiefe
+	 * @param textDepth EinrÃ¼ckungstiefe
 	 */
 	private void writeDataList(final ConfigurationDataList dataList, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);
@@ -1533,9 +1535,9 @@ public class ConfigAreaWriter {
 	/**
 	 * Schreibt ein datenfeld (siehe K2S.DTD)
 	 *
-	 * @param dataField Objekt, das alle Informationen für ein datenfeld (siehe K2S.DTD) enthält
+	 * @param dataField Objekt, das alle Informationen fÃ¼r ein datenfeld (siehe K2S.DTD) enthÃ¤lt
 	 * @param writer    Stream, auf dem das Objekt als XML Text gespeichert wird
-	 * @param textDepth Einrückungstiefe
+	 * @param textDepth EinrÃ¼ckungstiefe
 	 */
 	private void writeDataField(final ConfigurationDataField dataField, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);
@@ -1563,9 +1565,9 @@ public class ConfigAreaWriter {
 	/**
 	 * Schreibt ein Element objektMenge (siehe K2S.DTD)
 	 *
-	 * @param objectSet Objekt, das alle Informationen eines Elements objektMenge (siehe K2S.DTD) enthält
+	 * @param objectSet Objekt, das alle Informationen eines Elements objektMenge (siehe K2S.DTD) enthÃ¤lt
 	 * @param writer    Stream, mit dem das Objekt als XML Text gespeichert wird
-	 * @param textDepth Einrückungstiefe des Textes
+	 * @param textDepth EinrÃ¼ckungstiefe des Textes
 	 */
 	private void writeObjectSet(final ConfigurationObjectSet objectSet, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);
@@ -1588,7 +1590,7 @@ public class ConfigAreaWriter {
 	 *
 	 * @param elementPids Array mit Pids. Jede Pid entspricht einem element (siehe K2S.DTD)
 	 * @param writer      Stream, auf dem die Daten geschrieben werden
-	 * @param textDepth   Einrückungstiefe
+	 * @param textDepth   EinrÃ¼ckungstiefe
 	 */
 	private void writeElements(final String[] elementPids, final PrintWriter writer, final int textDepth) {
 		final String initialBlanks = createEmptyString(textDepth);

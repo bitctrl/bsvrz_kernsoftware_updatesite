@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.sys.funclib.losb.
  * 
- * de.bsvrz.sys.funclib.losb is free software; you can redistribute it and/or modify
+ * de.bsvrz.sys.funclib.losb is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.losb is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.sys.funclib.losb; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.losb.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Straße 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.losb.util;
@@ -29,15 +35,15 @@ import java.lang.reflect.Method;
  *
  * @author beck et al. projects GmbH
  * @author Phil Schrettenbrunner
- * @version $Revision: 6420 $ / $Date: 2009-03-10 23:19:01 +0100 (Tue, 10 Mar 2009) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class JavaSpy {
 
 	/**
 	 * Liefert den Wert eines (privaten) Feldes als String.
-	 * <p/>
+	 * <p>
 	 * <code>JavaSpy.getFieldvalue(dti, "index");</code> ist gleichbedeutend mit <code>... dti.index ... ;</code>
-	 * <p/>
+	 * <p>
 	 * Die erste Varianten funktioniert aber auch mit privaten Feldern.
 	 *
 	 * @param object    Das Objekt
@@ -85,9 +91,9 @@ public class JavaSpy {
 
 	/**
 	 * Setzt den Wert eines (privaten) Feldes.
-	 * <p/>
+	 * <p>
 	 * <code>JavaSpy.setFieldvalue(dti, "index", new Integer(123));</code> ist gleichbedeutend mit <code>dti.index = 123;</code>
-	 * <p/>
+	 * <p>
 	 * Die erste Varianten funktioniert aber auch mit privaten Feldern.
 	 *
 	 * @param object    Das Objekt
@@ -106,14 +112,14 @@ public class JavaSpy {
 	/**
 	 * Ruft eine Methode (auch private) auf dem angegebenen Objekt mit den angegebenen Paramtern auf. <code>JavaSpy.executeMethod(dti, "getAbsolutPosition", new
 	 * Class[] {int.class}, new Object[] {0} );</code> ist gleichbedeutend mit <code>dti.getAbsolutPosition(0);</code>
-	 * <p/>
+	 * <p>
 	 * Die erste Variante funktioniert aber auch mit privaten Methoden.
 	 *
 	 * @param object      Das Objekt
 	 * @param methodName  Der Name der Methode, die aufgerufen werden soll, z.B. <code>toString</code>
 	 * @param paramTypes  Die Signatur als Class-Array. Wenn die Signatur <code>(long, int)</code> ist, muss hier <code>new Class[] {long.class,
 	 *                    int.class}</code> stehen
-	 * @param paramValues Die zu �bergebenden Werte als Object Array
+	 * @param paramValues Die zu übergebenden Werte als Object Array
 	 *
 	 * @return Der Returnwert der Methode als Object
 	 *

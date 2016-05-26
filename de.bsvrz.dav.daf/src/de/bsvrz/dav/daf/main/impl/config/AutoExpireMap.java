@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config;
@@ -26,18 +32,18 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Spezielle Map-implementierung, die dür die ID-Systemobjekt-Map im DafDataModel verwendet wird.
+ * Spezielle Map-implementierung, die dÃ¼r die ID-Systemobjekt-Map im DafDataModel verwendet wird.
  *
- * Im Gegensatz zu einer normalen Map bietet sie die Möglichkeit, Bestimmte Werte bei Bedarf durch eine WeakReference zu ersetzen
+ * Im Gegensatz zu einer normalen Map bietet sie die MÃ¶glichkeit, Bestimmte Werte bei Bedarf durch eine WeakReference zu ersetzen
  * (ggf. nach einem Timeout).
  *
- * Außerdem verkleinert sich die Map automatisch (rehash) wenn die Kapazität der Map mehr als 3 mal so groß ist, wie die aktuelle
+ * AuÃŸerdem verkleinert sich die Map automatisch (rehash) wenn die KapazitÃ¤t der Map mehr als 3 mal so groÃŸ ist, wie die aktuelle
  * Elementanzahl.
  *
  * Diese Klasse ist Threadsafe.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13168 $
+ * @version $Revision$
  */
 class AutoExpireMap<K, V> {
 
@@ -66,7 +72,7 @@ class AutoExpireMap<K, V> {
 	}
 
 	/**
-	 * Löst bei Bedarf WeakReferences auf, die gemischt mit normalen Objekten in der Map gespeichert sind
+	 * LÃ¶st bei Bedarf WeakReferences auf, die gemischt mit normalen Objekten in der Map gespeichert sind
 	 * @param ref Objekt oder Weakreference
 	 * @return Ausgepacktes Objekt
 	 */
@@ -123,7 +129,7 @@ class AutoExpireMap<K, V> {
 	}
 
 	/**
-	 * Arbeitet die ReferenceQueue ab um abgeräumte Einträge zu entfernen, Triggert falls nötig einen rehash()
+	 * Arbeitet die ReferenceQueue ab um abgerÃ¤umte EintrÃ¤ge zu entfernen, Triggert falls nÃ¶tig einen rehash()
 	 */
 	private void update() {
 		while (true) {
@@ -142,7 +148,7 @@ class AutoExpireMap<K, V> {
 	}
 
 	private void rehash() {
-		// Muss synchronisiert ausgeführt werden
+		// Muss synchronisiert ausgefÃ¼hrt werden
 		assert Thread.holdsLock(this);
 
 		_delegate = new ConcurrentHashMap<K, Object>(_delegate);
@@ -150,7 +156,7 @@ class AutoExpireMap<K, V> {
 	}
 
 	/**
-	 * Gibt alle Keys zurück. Da die values durch WeakReferences referneziert werden können, gibt es möglicherweise nicht zu jedem key einen Wert.
+	 * Gibt alle Keys zurÃ¼ck. Da die values durch WeakReferences referneziert werden kÃ¶nnen, gibt es mÃ¶glicherweise nicht zu jedem key einen Wert.
 	 * @return Keys
 	 */
 	public synchronized Set<K> keySet() {
@@ -159,7 +165,7 @@ class AutoExpireMap<K, V> {
 	}
 
 	/**
-	 * Gibt eine Kopie der enthaltenen Werte zurück.
+	 * Gibt eine Kopie der enthaltenen Werte zurÃ¼ck.
 	 * @return
 	 */
 	public synchronized Collection<V> values() {
@@ -174,10 +180,10 @@ class AutoExpireMap<K, V> {
 	}
 
 	/**
-	 * Sorgt dafür, dass ein Eintrag nach einer Zeit durch eine WeakReference ersetzt wird
+	 * Sorgt dafÃ¼r, dass ein Eintrag nach einer Zeit durch eine WeakReference ersetzt wird
 	 * @param key Key des Eintrags
-	 * @param val Wert des Eintrags (muss angegeben werden um sicherzustellen, dass nicht zwischenzeitlich der Wert geändert wurde und dann
-	 *            irrtümlich entfernt wird, vgl. compareAndSwap-Technik)
+	 * @param val Wert des Eintrags (muss angegeben werden um sicherzustellen, dass nicht zwischenzeitlich der Wert geÃ¤ndert wurde und dann
+	 *            irrtÃ¼mlich entfernt wird, vgl. compareAndSwap-Technik)
 	 * @param timeout Anzahl Millisekunden, nach der der Eintrag ersetzt wird (> 0)
 	 */
 	public synchronized void expire(final K key, final V val, final long timeout) {
@@ -191,10 +197,10 @@ class AutoExpireMap<K, V> {
 	}
 
 	/**
-	 * Sorgt dafür, dass ein Eintrag sofort durch eine WeakReference ersetzt wird
+	 * Sorgt dafÃ¼r, dass ein Eintrag sofort durch eine WeakReference ersetzt wird
 	 * @param key Key des Eintrags
-	 * @param val Wert des Eintrags (muss angegeben werden um sicherzustellen, dass nicht zwischenzeitlich der Wert geändert wurde und dann
-	 *            irrtümlich entfernt wird, vgl. compareAndSwap-Technik)
+	 * @param val Wert des Eintrags (muss angegeben werden um sicherzustellen, dass nicht zwischenzeitlich der Wert geÃ¤ndert wurde und dann
+	 *            irrtÃ¼mlich entfernt wird, vgl. compareAndSwap-Technik)
 	 */
 	public synchronized void expireNow(final K key, final V val) {
 		Object ref = _delegate.get(key);

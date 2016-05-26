@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.protocol;
@@ -42,41 +48,41 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * Das Modul Protokollsteuerung ist das Bindeglied der Komponente Kommunikation zwischen den Modulen Telegrammverwaltung und Verwaltung. Es stellt für die
- * Interaktion mit dem Datenverteiler eine Funktionsschnittstelle zur Verfügung, die die technischen Aspekte der Kommunikation gegenüber der Verwaltung kapselt
- * und implementiert die Abbildung auf Telegramme und Kommunikationsabläufe. Die Protokollsteuerung grenzt sich zur Telegrammverwaltung ab, weil hier die aus
+ * Das Modul Protokollsteuerung ist das Bindeglied der Komponente Kommunikation zwischen den Modulen Telegrammverwaltung und Verwaltung. Es stellt fÃ¼r die
+ * Interaktion mit dem Datenverteiler eine Funktionsschnittstelle zur VerfÃ¼gung, die die technischen Aspekte der Kommunikation gegenÃ¼ber der Verwaltung kapselt
+ * und implementiert die Abbildung auf Telegramme und KommunikationsablÃ¤ufe. Die Protokollsteuerung grenzt sich zur Telegrammverwaltung ab, weil hier die aus
  * Sicht der Datenverteiler-Applikationsfunktionen speziellen und nicht wiederverwendbaren Funktionen der Kommunikation mit dem Datenverteiler enthalten sind.
- * Folgende Funktionen und Abläufe werden in der Protokollsteuerung implementiert: <ul> <li>Initialisierung und Verhandlung der Protokollversion. </li>Mit Hilfe
- * der Telegrammverwaltung wird die TCP-Verbindung zum Datenverteiler hergestellt. Anschließend wird dem Datenverteiler in einem
- * Protokollversionsanfrage-Telegramm mitgeteilt, welche Versionen des Kommunikationsprotokolls unterstützt werden. Als Reaktion wird vom Datenverteiler ein
- * Protokollversionsantwort-Telegramm erwartet in dem die zu verwendende Version des Protokolls enthalten ist. <li>Authentifizierung gegenüber dem
- * Datenverteiler und Verhandlung der Verbindungsparameter. </li>Zur Authentifizierung wird ein Authentifizierungsbereitschafts-Telegramm übertragen. Als
+ * Folgende Funktionen und AblÃ¤ufe werden in der Protokollsteuerung implementiert: <ul> <li>Initialisierung und Verhandlung der Protokollversion. </li>Mit Hilfe
+ * der Telegrammverwaltung wird die TCP-Verbindung zum Datenverteiler hergestellt. AnschlieÃŸend wird dem Datenverteiler in einem
+ * Protokollversionsanfrage-Telegramm mitgeteilt, welche Versionen des Kommunikationsprotokolls unterstÃ¼tzt werden. Als Reaktion wird vom Datenverteiler ein
+ * Protokollversionsantwort-Telegramm erwartet in dem die zu verwendende Version des Protokolls enthalten ist. <li>Authentifizierung gegenÃ¼ber dem
+ * Datenverteiler und Verhandlung der Verbindungsparameter. </li>Zur Authentifizierung wird ein Authentifizierungsbereitschafts-Telegramm Ã¼bertragen. Als
  * Antwort wird ein vom Datenverteiler generierter Zufallstext im Authentifizierungsaufforderungs-Telegramm erwartet. Dieser Text wird durch das Modul
- * HMAC-MD5-Verschlüsselung verschlüsselt. Als geheimer Schlüssel dient dabei das Passwort des Benutzers. Der verschlüsselte Text wird mit weiteren
- * Informationen zum Datenverteiler übertragen. Als Antwort wird vom Datenverteiler ein Authentifizierungsannahme-Telegramm oder ein
+ * HMAC-MD5-VerschlÃ¼sselung verschlÃ¼sselt. Als geheimer SchlÃ¼ssel dient dabei das Passwort des Benutzers. Der verschlÃ¼sselte Text wird mit weiteren
+ * Informationen zum Datenverteiler Ã¼bertragen. Als Antwort wird vom Datenverteiler ein Authentifizierungsannahme-Telegramm oder ein
  * Authentifizierungsablehnungs-Telegramm erwartet. Im Falle einer Authentifizierungsablehnung wird der Authentifizierungsvorgang abgebrochen und kann bei
  * Bedarf von der Verwaltung mit anderen Authentifizierungsinformationen wiederholt initiiert werden. Im Falle einer Authentifizierungsannahme werden
- * anschließend die Verbindungsparameter verhandelt. Dazu sendet die Protokollsteuerung ein Verbindungsparameteranfrage-Telegramm an den Datenverteiler und
+ * anschlieÃŸend die Verbindungsparameter verhandelt. Dazu sendet die Protokollsteuerung ein Verbindungsparameteranfrage-Telegramm an den Datenverteiler und
  * erwartet ein Verbindungsparameterantwort-Telegramm mit der Festlegung der Verbindungsparameter vom Datenverteiler. <li>Abbruch der Verbindung</li> Diese
- * Funktion führt zum sofortigen Abbruch der Verbindung zum Datenverteiler mit Hilfe der Abbruch-Funktion der Telegrammverwaltung. <li>Terminierung der
- * Verbindung</li>Zur Terminierung der Verbindung zum Datenverteiler wird ein Applikationsabmeldungs-Telegramm übertragen und die Kommunikationsverbindung
- * terminiert. Dabei wird durch die Telegrammverwaltung sichergestellt, dass alle noch im Sendepuffer befindliche Telegramme vor dem Schließen der
- * Kommunikationsverbindung zum Datenverteiler übertragen werden. <li>Parametrierung des Datenverteilers</li>Zur An- bzw. Abmeldung von zu empfangenden bzw. zu
- * sendenden Daten wird ein entsprechendes Telegramm (Empfangsanmeldung, Sendeanmeldung, Empfangsabmeldung, Sendeabmeldung) an den Datenverteiler übertragen.
+ * Funktion fÃ¼hrt zum sofortigen Abbruch der Verbindung zum Datenverteiler mit Hilfe der Abbruch-Funktion der Telegrammverwaltung. <li>Terminierung der
+ * Verbindung</li>Zur Terminierung der Verbindung zum Datenverteiler wird ein Applikationsabmeldungs-Telegramm Ã¼bertragen und die Kommunikationsverbindung
+ * terminiert. Dabei wird durch die Telegrammverwaltung sichergestellt, dass alle noch im Sendepuffer befindliche Telegramme vor dem SchlieÃŸen der
+ * Kommunikationsverbindung zum Datenverteiler Ã¼bertragen werden. <li>Parametrierung des Datenverteilers</li>Zur An- bzw. Abmeldung von zu empfangenden bzw. zu
+ * sendenden Daten wird ein entsprechendes Telegramm (Empfangsanmeldung, Sendeanmeldung, Empfangsabmeldung, Sendeabmeldung) an den Datenverteiler Ã¼bertragen.
  * <li>Entgegennahme von Sendesteuerungs-Telegrammen und Weiterleitung der enthaltenen Information (ob Daten, die von der Applikation zum Senden angemeldet
- * wurden, vom Datenverteiler benötigt werden oder nicht) an die Verwaltung. </li> <li>Senden von Anwendungsdaten</li>Zu sendende Datenblöcke werden in
+ * wurden, vom Datenverteiler benÃ¶tigt werden oder nicht) an die Verwaltung. </li> <li>Senden von Anwendungsdaten</li>Zu sendende DatenblÃ¶cke werden in
  * Telegramme zerlegt und an die Telegrammverwaltung weitergeleitet.<li>Empfang von Anwendungsdaten</li>Von der Telegrammverwaltung entgegengenommene Telegramme
- * werden zu Datenblöcken rekombiniert und an das Modul Verwaltung weitergeleitet.<li>Zerlegung von großen Datenblöcken in mehrere Datentelegramme beim Senden
- * und Rekombination von zusammengehörigen Datentelegrammen zu einem Datenblock beim Empfang.</li><li>Telegrammlaufzeitermittlung</li>Zur Messung von
- * Telegrammlaufzeiten wird ein Telegrammlaufzeitanfrage-Telegramm mit der aktuellen Systemzeit an den Datenverteiler übertragen. Als Antwort wird ein
- * Telegrammlaufzeitantwort-Telegramm erwartet, in dem die ursprünglich übertragene Systemzeit enthalten ist. Durch Vergleich der Zeit zwischen dem Absenden des
- * Anfrage-Telegramms und dem Erhalt der Antwort wird die Laufzeit für Hin- und Rückweg zusammen ermittelt. Andererseits kann auch vom Datenverteiler eine
- * solche Messung durchgeführt werden, d.h. bei Empfang eines Telegrammlaufzeitanfrage-Telegramms wird die enthaltene Systemzeit in einem
- * Telegrammlaufzeitantwort-Telegramm zurück übertragen.<li>Fehlerbehandlung</li>Fehlerzustände, die von der Protokollsteuerung erkannt werden oder von der
- * Telegrammverwaltung gemeldet werden, führen zu einem Abbruch der Verbindung und zu einer Benachrichtigung des Moduls Verwaltung.</ul>
+ * werden zu DatenblÃ¶cken rekombiniert und an das Modul Verwaltung weitergeleitet.<li>Zerlegung von groÃŸen DatenblÃ¶cken in mehrere Datentelegramme beim Senden
+ * und Rekombination von zusammengehÃ¶rigen Datentelegrammen zu einem Datenblock beim Empfang.</li><li>Telegrammlaufzeitermittlung</li>Zur Messung von
+ * Telegrammlaufzeiten wird ein Telegrammlaufzeitanfrage-Telegramm mit der aktuellen Systemzeit an den Datenverteiler Ã¼bertragen. Als Antwort wird ein
+ * Telegrammlaufzeitantwort-Telegramm erwartet, in dem die ursprÃ¼nglich Ã¼bertragene Systemzeit enthalten ist. Durch Vergleich der Zeit zwischen dem Absenden des
+ * Anfrage-Telegramms und dem Erhalt der Antwort wird die Laufzeit fÃ¼r Hin- und RÃ¼ckweg zusammen ermittelt. Andererseits kann auch vom Datenverteiler eine
+ * solche Messung durchgefÃ¼hrt werden, d.h. bei Empfang eines Telegrammlaufzeitanfrage-Telegramms wird die enthaltene Systemzeit in einem
+ * Telegrammlaufzeitantwort-Telegramm zurÃ¼ck Ã¼bertragen.<li>Fehlerbehandlung</li>FehlerzustÃ¤nde, die von der Protokollsteuerung erkannt werden oder von der
+ * Telegrammverwaltung gemeldet werden, fÃ¼hren zu einem Abbruch der Verbindung und zu einer Benachrichtigung des Moduls Verwaltung.</ul>
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13514 $
+ * @version $Revision$
  */
 public class ClientHighLevelCommunication implements HighLevelCommunicationCallbackInterface {
 
@@ -107,13 +113,13 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 	/** Der Anmeldemanager (Teil der Verwaltung). */
 	private SubscriptionManager _subscriptionManager;
 
-	/** Temporäre Liste der Systemtelegramme für interne Synchronisationszwecke. */
+	/** TemporÃ¤re Liste der Systemtelegramme fÃ¼r interne Synchronisationszwecke. */
 	private final List<DataTelegram> _syncSystemTelegramList;
 
-	/** Temporäre Liste der zerstückelten Telegramme. */
+	/** TemporÃ¤re Liste der zerstÃ¼ckelten Telegramme. */
 	private SplittedApplicationTelegramsTable splittedTelegramsTable;
 
-	/** Hält die Informationen über den Initialisierungszustand dieser Komponente. */
+	/** HÃ¤lt die Informationen Ã¼ber den Initialisierungszustand dieser Komponente. */
 	private boolean _readyForConfigDependantData;
 
 	/** Wird beim ersten Aufruf von terminate(...) gesetzt. */
@@ -122,40 +128,40 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 	/** Wird beim ersten Aufruf von terminate(true, ...) gesetzt. */
 	private volatile boolean _disconnectingOnError = false;
 
-	/** Das Objekt, das für das Schliessen nach Auftritt eines Fehlers zuständig ist. */
+	/** Das Objekt, das fÃ¼r das Schliessen nach Auftritt eines Fehlers zustÃ¤ndig ist. */
 	private ApplicationCloseActionHandler _closer;
 
 	/** Die Kommunikationseingenschaften */
 	private ClientConnectionProperties properties;
 
-	/** Beobachter für Zustandsänderungen der Datenverteilerverbindung. */
+	/** Beobachter fÃ¼r ZustandsÃ¤nderungen der Datenverteilerverbindung. */
 	private DavConnectionListener _connectionListener;
 
 	/** Asynchrone Verarbeitung von empfangenen Sendsteuerungstelegrammen */
 	private ClientHighLevelCommunication.SendControlNotifier _sendControlNotifier;
 	
-	// Für Tests
+	// FÃ¼r Tests
 	private static boolean DO_NOT_SEND_AUTH_REQUEST_FOR_TESTS = false;
 
 	/**
-	 * Dieser Konstruktor erzeugt eine Instanz dieser Klasse mit den übergebenen Parametern. {@link de.bsvrz.dav.daf.main.ClientDavParameters} enthält die Adresse
+	 * Dieser Konstruktor erzeugt eine Instanz dieser Klasse mit den Ã¼bergebenen Parametern. {@link de.bsvrz.dav.daf.main.ClientDavParameters} enthÃ¤lt die Adresse
 	 * und Subadresse des Datenverteilers, spezifiziert das zu verwendende Protokoll durch dessen Namen. {@link de.bsvrz.dav.daf.main.ApplicationCloseActionHandler}
 	 * bestimmt wie die Applikationsfunktion auf einen Kommunikationsfehler reagieren soll.
-	 * <p/>
-	 * {@link ClientConnectionProperties} werden erzeugt, die die Eigenschaften dieser Verbindung verkörpern. Sie spezifizieren insbesondere
-	 * den {@link de.bsvrz.dav.daf.communication.lowLevel.AuthentificationProcess AuthentificationProcess}, das für die Passwortverschlüsselung zuständige Verfahren. Weiter enthalten
+	 * <p>
+	 * {@link ClientConnectionProperties} werden erzeugt, die die Eigenschaften dieser Verbindung verkÃ¶rpern. Sie spezifizieren insbesondere
+	 * den {@link de.bsvrz.dav.daf.communication.lowLevel.AuthentificationProcess AuthentificationProcess}, das fÃ¼r die PasswortverschlÃ¼sselung zustÃ¤ndige Verfahren. Weiter enthalten
 	 * sie die PID der Konfiguration.
-	 * <p/>
-	 * Ein Systemtelegramm {@link de.bsvrz.dav.daf.communication.lowLevel.telegrams.ProtocolVersionRequest} wird gebildet und zum Datenverteiler gesendet. Es enthält Angaben über die
-	 * unterstützte Protokollversion. Auf die Antwort wird eine festgelegte Zeit gewartet (maximale Wartezeit auf synchrone Antworten). Wenn die Antwort nicht
-	 * innerhalb diese Zeit an-gekommen ist oder die Protokollversion vom Datenverteiler nicht unterstützt wird, dann wird eine CommunicationError-Ausnahme
+	 * <p>
+	 * Ein Systemtelegramm {@link de.bsvrz.dav.daf.communication.lowLevel.telegrams.ProtocolVersionRequest} wird gebildet und zum Datenverteiler gesendet. Es enthÃ¤lt Angaben Ã¼ber die
+	 * unterstÃ¼tzte Protokollversion. Auf die Antwort wird eine festgelegte Zeit gewartet (maximale Wartezeit auf synchrone Antworten). Wenn die Antwort nicht
+	 * innerhalb diese Zeit an-gekommen ist oder die Protokollversion vom Datenverteiler nicht unterstÃ¼tzt wird, dann wird eine CommunicationError-Ausnahme
 	 * erzeugt.
 	 *
-	 * @param clientDavParameters Parameterklasse für die Datenverteiler-Applikationsfunktionen
+	 * @param clientDavParameters Parameterklasse fÃ¼r die Datenverteiler-Applikationsfunktionen
 	 * @param closer              bestimmt, wie die Applikationsfunktionen auf einen Kommunikationsfehler reagieren soll
 	 *
-	 * @throws CommunicationError  Wenn die Verhandlung der Protokollversion nicht durchgeführt wurde oder die Protokollversion nicht unterstützt wird.
-	 * @throws ConnectionException Wenn die Verbindung über die Telegrammverwaltung fehlschlägt.
+	 * @throws CommunicationError  Wenn die Verhandlung der Protokollversion nicht durchgefÃ¼hrt wurde oder die Protokollversion nicht unterstÃ¼tzt wird.
+	 * @throws ConnectionException Wenn die Verbindung Ã¼ber die Telegrammverwaltung fehlschlÃ¤gt.
 	 */
 	public ClientHighLevelCommunication(ClientDavParameters clientDavParameters, ApplicationCloseActionHandler closer) throws CommunicationError, ConnectionException {
 		LowLevelCommunicationInterface lowLevelCommunication = null;
@@ -181,7 +187,7 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 		else {
 			int davVersion = protocolVersionAnswer.getPreferredVersion();
 			if(davVersion != _dafVersion) {
-				errorMessage = "Die lokale Protokollversion (" + _dafVersion + ") wird vom Datenverteiler nicht unterstützt.";
+				errorMessage = "Die lokale Protokollversion (" + _dafVersion + ") wird vom Datenverteiler nicht unterstÃ¼tzt.";
 			}
 		}
 		if(errorMessage != null) {
@@ -192,15 +198,23 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 		_sendControlNotifier.start();
 	}
 
+	/** 
+	 * Gibt <tt>true</tt> zurÃ¼ck, wenn die Verbindung getrennt wurde
+	 * @return <tt>true</tt>, wenn die Verbindung getrennt wurde, sonst <tt>false</tt>
+	 */
+	public boolean isDisconnecting() {
+		return _disconnecting;
+	}
+
 	/**
-	 * Asynchrone Verarbeitung von empfangenen Sendsteuerungstelegrammen. Speichert mit put übergebene Sendesteuerungstelegramme in einer internen Queue, aus der
+	 * Asynchrone Verarbeitung von empfangenen Sendsteuerungstelegrammen. Speichert mit put Ã¼bergebene Sendesteuerungstelegramme in einer internen Queue, aus der
 	 * die Telegramme asynchron von einem eigenen Thread ausgelesen und zur Weiterverarbeitung an den SubscriptionsManager weitergegeben werden.
 	 */
 	private class SendControlNotifier implements Runnable {
 
 		private UnboundedQueue<RequestSenderDataTelegram> _telegrams;
 
-		/** Der Konstruktor erzeugt die interne Queue. Der Thread zur Verarbeitung der Telegramme wird erst später bei Aufruf der start()-Methode angelegt und gestartet. */
+		/** Der Konstruktor erzeugt die interne Queue. Der Thread zur Verarbeitung der Telegramme wird erst spÃ¤ter bei Aufruf der start()-Methode angelegt und gestartet. */
 		public SendControlNotifier() {
 			_telegrams = new UnboundedQueue<RequestSenderDataTelegram>();
 		}
@@ -213,7 +227,7 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 		}
 
 		/**
-		 * Speichert das übergebene Telegramm in der Queue zur asynchronen Verarbeitung.
+		 * Speichert das Ã¼bergebene Telegramm in der Queue zur asynchronen Verarbeitung.
 		 *
 		 * @param telegram Zu verarbeitendes Sendesteuerungstelegramm.
 		 */
@@ -221,7 +235,7 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 			_telegrams.put(telegram);
 		}
 
-		/** Signalisiert dem Thread zur Verarbeitung der Telegramme, dass keine weiteren Telegramme verarbeitet werden müssen und der Thread sich beenden kann. */
+		/** Signalisiert dem Thread zur Verarbeitung der Telegramme, dass keine weiteren Telegramme verarbeitet werden mÃ¼ssen und der Thread sich beenden kann. */
 		public void close() {
 			_telegrams.put(null);
 		}
@@ -247,15 +261,15 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 		}
 	}
 
-	/** Dieser Konstruktor wird für JUnit-Tests gebraucht. */
+	/** Dieser Konstruktor wird fÃ¼r JUnit-Tests gebraucht. */
 	public ClientHighLevelCommunication() {
 		// Variablen setzen, die final sind
 		_syncSystemTelegramList = new LinkedList<DataTelegram>();
 	}
 
 	/**
-	 * Schließt die Initialisierung ab. Diese Methode wird von ClientDavConnection aufgerufen. Es werden Referenzen auf den Konfigurationsmanager, den
-	 * Cache-Manager und den Anmeldungsmanager festgehalten. Zusätzlich wird eine Referenz auf ClientHighLevelCommunication an den Anmeldungsmanager übergeben.
+	 * SchlieÃŸt die Initialisierung ab. Diese Methode wird von ClientDavConnection aufgerufen. Es werden Referenzen auf den Konfigurationsmanager, den
+	 * Cache-Manager und den Anmeldungsmanager festgehalten. ZusÃ¤tzlich wird eine Referenz auf ClientHighLevelCommunication an den Anmeldungsmanager Ã¼bergeben.
 	 *
 	 * @param configurationManager der Konfigurationsmanager
 	 * @param cacheManager         der Cache-Manager
@@ -269,7 +283,7 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 	}
 
 	/**
-	 * Gibt die Id der Applikation zurück.
+	 * Gibt die Id der Applikation zurÃ¼ck.
 	 *
 	 * @return die Id der Applikation
 	 */
@@ -278,7 +292,7 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 	}
 
 	/**
-	 * Gibt die Id des Datenverteilers zurück.
+	 * Gibt die Id des Datenverteilers zurÃ¼ck.
 	 *
 	 * @return die Id des Datenverteilers
 	 */
@@ -287,7 +301,7 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 	}
 
 	/**
-	 * Gibt die Id der Konfiguration zurück.
+	 * Gibt die Id der Konfiguration zurÃ¼ck.
 	 *
 	 * @return die ID der Konfiguration
 	 */
@@ -296,7 +310,7 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 	}
 
 	/**
-	 * Gibt die Id des Benutzers zurück.
+	 * Gibt die Id des Benutzers zurÃ¼ck.
 	 *
 	 * @return die ID des Benutzers
 	 */
@@ -306,7 +320,7 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 
 	/**
 	 * Diese Methode wird vom Anmeldungsmanager aufgerufen, nachdem die Anmeldungen erfolgreich abgeschlossen sind, die eine gerichtete Kommunikation mit der
-	 * Konfiguration gewährleisten. Dadurch signalisiert der Anmeldungsmanager die Bereitschaft, Datensätze zu empfangen, die Konfigurationsdaten benötigen, um
+	 * Konfiguration gewÃ¤hrleisten. Dadurch signalisiert der Anmeldungsmanager die Bereitschaft, DatensÃ¤tze zu empfangen, die Konfigurationsdaten benÃ¶tigen, um
 	 * interpretiert zu werden.
 	 */
 	public final synchronized void setReadyForConfigDependantData() {
@@ -325,14 +339,14 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 
 	/**
 	 * Die Methode erstellt eine logische Verbindung zum Datenverteiler, d. h. die Authentifizierung der Applikation und das Einstellen der Kommunikationsparameter
-	 * wird durchgeführt, damit der Austausch von Daten sicher durchgeführt werden kann. Ein {@link AuthentificationTextRequest}-Telegramm mit der
-	 * Konfigurations-PID wird über die {@link de.bsvrz.dav.daf.communication.lowLevel.LowLevelCommunication Telegrammverwaltung} zum Datenverteiler gesendet, um einen Schlüssel für die
+	 * wird durchgefÃ¼hrt, damit der Austausch von Daten sicher durchgefÃ¼hrt werden kann. Ein {@link AuthentificationTextRequest}-Telegramm mit der
+	 * Konfigurations-PID wird Ã¼ber die {@link de.bsvrz.dav.daf.communication.lowLevel.LowLevelCommunication Telegrammverwaltung} zum Datenverteiler gesendet, um einen SchlÃ¼ssel fÃ¼r die
 	 * Authentifizierung anzufordern. Auf die Antwort {@link AuthentificationTextAnswer} wird eine gewisse Zeit gewartet (maximale Wartezeit auf synchrone
-	 * Antworten). Mit dem vom Datenverteiler erhaltenen Schlüssel wird das Benutzerpasswort durch den {@link de.bsvrz.dav.daf.communication.lowLevel.AuthentificationProcess} verschlüsselt und als {@link
+	 * Antworten). Mit dem vom Datenverteiler erhaltenen SchlÃ¼ssel wird das Benutzerpasswort durch den {@link de.bsvrz.dav.daf.communication.lowLevel.AuthentificationProcess} verschlÃ¼sselt und als {@link
 	 * AuthentificationRequest} zum Datenverteiler gesendet. Auch hier wird eine gewisse Zeit auf die Antwort {@link de.bsvrz.dav.daf.communication.lowLevel.telegrams.AuthentificationAnswer} gewartet (maximale
 	 * Wartezeit auf synchrone Antworten). Wenn die Authentifizierung erfolgreich ist, werden die Ids der Applikation, des Datenverteilers, der Konfiguration und
-	 * des Benutzers übertragen und von dieser Subkomponente festgehalten. Wird als Id der Konfiguration <code>-1</code> zurückgegeben, so war die spezifizierte
-	 * PID dem System nicht bekannt. Sonst werden die Keep-alive-Parameter und die Durchsatzprüfungsparameter mit dem Datenverteiler verhandelt. Ein {@link
+	 * des Benutzers Ã¼bertragen und von dieser Subkomponente festgehalten. Wird als Id der Konfiguration <code>-1</code> zurÃ¼ckgegeben, so war die spezifizierte
+	 * PID dem System nicht bekannt. Sonst werden die Keep-alive-Parameter und die DurchsatzprÃ¼fungsparameter mit dem Datenverteiler verhandelt. Ein {@link
 	 * ComParametersRequest} wird zum Datenverteiler gesendet. Auch hier wird auf die Antwort {@link ComParametersAnswer} eine gewisse Zeit gewartet (maximale
 	 * Wartezeit auf synchrone Antworten).
 	 *
@@ -345,7 +359,7 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 		// Authentifikationstext holen
 		AuthentificationTextAnswer text = getAuthentificationText();
 		if(text == null) {
-			throw new CommunicationError("Der Datenverteiler antwortet nicht auf die Authentifikationsschlüsselanforderung.\n");
+			throw new CommunicationError("Der Datenverteiler antwortet nicht auf die AuthentifikationsschlÃ¼sselanforderung.\n");
 		}
 		byte password[] = text.getEncryptedPassword(properties.getAuthentificationProcess(), properties.getUserPassword());
 
@@ -362,7 +376,7 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 		_localDVId = authentification.getLocaleDVId();
 		_localConfigurationId = authentification.getLocaleConfigurationId();
 		if(_localConfigurationId == -1) {
-			throw new CommunicationError("Die gegebene 'Konfiguration-PID' ist ungültig.\n");
+			throw new CommunicationError("Die gegebene 'Konfiguration-PID' ist ungÃ¼ltig.\n");
 		}
 
 		// Timeouts Parameter verhandeln
@@ -428,8 +442,8 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 	}
 
 	/**
-	 * Versendet ein Applikationsdatentelegramm an den Datenverteiler. Falls der zu sendende Datensatz größer ist, als die im System gesetzte maximale Länge eines
-	 * Telegramms, wird er in Teiltelegramme zerstückelt und zum Datenverteiler gesendet.
+	 * Versendet ein Applikationsdatentelegramm an den Datenverteiler. Falls der zu sendende Datensatz grÃ¶ÃŸer ist, als die im System gesetzte maximale LÃ¤nge eines
+	 * Telegramms, wird er in Teiltelegramme zerstÃ¼ckelt und zum Datenverteiler gesendet.
 	 *
 	 * @param dataToSend die zu sendenden Daten als Bytefeld vorbereitet
 	 */
@@ -447,7 +461,7 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 	 * ist, wird die close-Methode vom {@link ApplicationCloseActionHandler} aufgerufen.
 	 *
 	 * @param error   Ist <code>true</code>, wenn die Verbindung im Fehlerfall abgebrochen werden soll, ohne die noch gepufferten Telegramme zu versenden; <code>false</code>, wenn versucht werden soll alle gepufferten Telegramme zu versenden.
-	 * @param message Fehlermeldung, die die Fehlersituation näher beschreibt.
+	 * @param message Fehlermeldung, die die Fehlersituation nÃ¤her beschreibt.
 	 */
 	public synchronized final void terminate(boolean error, String message) {
 		final DataTelegram terminationTelegram;
@@ -510,26 +524,26 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 	}
 
 	/**
-	 * {@inheritDoc} Erhält ein Aktualisierungsdatum vom Datenverteiler. Diese Methode wird von der {@link de.bsvrz.dav.daf.communication.lowLevel.LowLevelCommunication} aufgerufen, wenn ein neues
-	 * Telegramm angekommen ist. Sie reagiert nur auf die Telegramme, die für die Applikation von Interesse sind.
-	 * <p/>
+	 * {@inheritDoc} ErhÃ¤lt ein Aktualisierungsdatum vom Datenverteiler. Diese Methode wird von der {@link de.bsvrz.dav.daf.communication.lowLevel.LowLevelCommunication} aufgerufen, wenn ein neues
+	 * Telegramm angekommen ist. Sie reagiert nur auf die Telegramme, die fÃ¼r die Applikation von Interesse sind.
+	 * <p>
 	 * Neu ankommende Telegramme werden je nach Typ unterschiedlich weiterverarbeitet:
-	 * <p/>
+	 * <p>
 	 * Wenn das Telegramm vom Typ {@link AuthentificationTextAnswer}, {@link AuthentificationAnswer}, {@link ComParametersAnswer}, {@link ProtocolVersionAnswer}
-	 * oder {@link TelegramTimeAnswer} ist, wird es in eine Liste eingefügt und eine Broadcast-Nachricht an alle wartenden Methoden gesendet. Diese überprüfen ob
-	 * die Nachricht für sie relevant ist. In diesem Falle wird sie aus der Liste entfernt und bearbeitet.<br/> Wenn das Telegramm vom Typ {@link
-	 * de.bsvrz.dav.daf.communication.lowLevel.telegrams.TelegramTimeRequest} ist, wird anhand der übergebenen gemessene Zeit ein {@link TelegramTimeAnswer} gebildet und zum Datenverteiler gesendet. <br/> Wenn das
+	 * oder {@link TelegramTimeAnswer} ist, wird es in eine Liste eingefÃ¼gt und eine Broadcast-Nachricht an alle wartenden Methoden gesendet. Diese Ã¼berprÃ¼fen ob
+	 * die Nachricht fÃ¼r sie relevant ist. In diesem Falle wird sie aus der Liste entfernt und bearbeitet.<br/> Wenn das Telegramm vom Typ {@link
+	 * de.bsvrz.dav.daf.communication.lowLevel.telegrams.TelegramTimeRequest} ist, wird anhand der Ã¼bergebenen gemessene Zeit ein {@link TelegramTimeAnswer} gebildet und zum Datenverteiler gesendet. <br/> Wenn das
 	 * Telegramm vom Typ {@link RequestSenderDataTelegram} ist, wird die Methode {@link SubscriptionManager#notifySenderApplication(de.bsvrz.dav.daf.communication.lowLevel.telegrams.BaseSubscriptionInfo,
 	 *byte) notifySenderApplication} des Anmeldungsmanagers aufgerufen, um die Applikation zu benachrichtigen. <br/> Wenn das Telegramm vom Typ {@link
-	 * ApplicationDataTelegram} ist, wird zunächst überprüft, ob ein zerstückeltes Telegramm vorliegt. Ist dies der Fall, dann wird es in eine Liste eingefügt und
-	 * überprüft ob alle Teiltelegramme vorhanden sind. Sind alle vorhanden, wird aus den Telegrammen ein {@link SendDataObject} erzeugt, das weiterverarbeitet
-	 * werden kann. Wenn das Telegramm nicht zerstückelt ist, wird es sofort in ein {@link SendDataObject} zur Weiterbearbeitung umgewandelt. Wenn dieses
-	 * erfolgreich erzeugt wurde, wird anhand seiner Basisanmeldeinformation überprüft, ob es eine Antwort einer Konfigurationsanfrage ist. Ist dies der Fall, so
+	 * ApplicationDataTelegram} ist, wird zunÃ¤chst Ã¼berprÃ¼ft, ob ein zerstÃ¼ckeltes Telegramm vorliegt. Ist dies der Fall, dann wird es in eine Liste eingefÃ¼gt und
+	 * Ã¼berprÃ¼ft ob alle Teiltelegramme vorhanden sind. Sind alle vorhanden, wird aus den Telegrammen ein {@link SendDataObject} erzeugt, das weiterverarbeitet
+	 * werden kann. Wenn das Telegramm nicht zerstÃ¼ckelt ist, wird es sofort in ein {@link SendDataObject} zur Weiterbearbeitung umgewandelt. Wenn dieses
+	 * erfolgreich erzeugt wurde, wird anhand seiner Basisanmeldeinformation Ã¼berprÃ¼ft, ob es eine Antwort einer Konfigurationsanfrage ist. Ist dies der Fall, so
 	 * wird das Telegramm der {@link de.bsvrz.dav.daf.main.impl.ConfigurationManager#update(de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.SendDataObject) update}-Methode des
-	 * Konfigurations-Managers übergeben, wenn nicht, handelt es sich um ein Online-Telegramm und es wird an die {@link
-	 * CacheManager#update(de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.SendDataObject) update}-Methode des Cache-Managers übergeben. <br/>Wenn das Telegramm vom Typ {@link
+	 * Konfigurations-Managers Ã¼bergeben, wenn nicht, handelt es sich um ein Online-Telegramm und es wird an die {@link
+	 * CacheManager#update(de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.SendDataObject) update}-Methode des Cache-Managers Ã¼bergeben. <br/>Wenn das Telegramm vom Typ {@link
 	 * de.bsvrz.dav.daf.communication.lowLevel.telegrams.ClosingTelegram} oder {@link TerminateOrderTelegram} ist, wird die Methode {@link #terminate} aufgerufen.
-	 * <p/>
+	 * <p>
 	 * Jeder andere Telegrammtyp wird ignoriert.
 	 */
 	public final void update(DataTelegram telegram) throws InterruptedException {
@@ -563,12 +577,12 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 				ApplicationDataTelegram applicationDataTelegram = (ApplicationDataTelegram)telegram;
 				SendDataObject receivedData = null;
 				int maxTelegramNumber = applicationDataTelegram.getTotalTelegramsCount();
-				// prüfen, ob das Telegram in einem Stück gesendet werden kann
+				// prÃ¼fen, ob das Telegram in einem StÃ¼ck gesendet werden kann
 				if(maxTelegramNumber == 1) {
 					receivedData = TelegramUtility.getSendDataObject(applicationDataTelegram);
 				}
 				else {
-					// das Telegramm wird in Teilstücke zerlegt
+					// das Telegramm wird in TeilstÃ¼cke zerlegt
 					final ApplicationDataTelegram telegramArray[] = splittedTelegramsTable.put(applicationDataTelegram);
 					if(telegramArray != null) {
 						receivedData = TelegramUtility.getSendDataObject(telegramArray);
@@ -584,7 +598,7 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 						}
 					}
 					else {
-						// Online-Datensätze
+						// Online-DatensÃ¤tze
 						if(_readyForConfigDependantData) {
 							_cacheManager.update(receivedData);
 						}
@@ -626,7 +640,7 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 	}
 
 	/**
-	 * Diese Methode gibt die Eigenschaften dieser Verbindung zurück.
+	 * Diese Methode gibt die Eigenschaften dieser Verbindung zurÃ¼ck.
 	 *
 	 * @return die Eigenschaften dieser Verbindung
 	 */
@@ -649,10 +663,10 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 	}
 
 	/**
-	 * Diese Methode dient dem reduzieren von doppeltem Code. Aus einer Telegrammliste wird das gewünschte Telegramm herausgesucht und zurückgegeben.
+	 * Diese Methode dient dem reduzieren von doppeltem Code. Aus einer Telegrammliste wird das gewÃ¼nschte Telegramm herausgesucht und zurÃ¼ckgegeben.
 	 *
-	 * @param maximumWaitingTime die gewünschte maximale Wartezeit
-	 * @param telegramType          den gewünschten Telegramm-Typ
+	 * @param maximumWaitingTime die gewÃ¼nschte maximale Wartezeit
+	 * @param telegramType          den gewÃ¼nschten Telegramm-Typ
 	 *
 	 * @return das gesuchte Telegramm
 	 */
@@ -669,7 +683,7 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 					ListIterator iterator = _syncSystemTelegramList.listIterator(0);
 					while(iterator.hasNext()) {
 						telegram = (DataTelegram)iterator.next();
-						if(telegram != null) {     // in der LinkedList können theoretisch null-Objekte vorkommen
+						if(telegram != null) {     // in der LinkedList kÃ¶nnen theoretisch null-Objekte vorkommen
 							if(telegram.getType() == telegramType) {
 								iterator.remove();
 								return telegram;
@@ -703,7 +717,7 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 		}
 		String incarnationName = properties.getIncarnationName();
 		final String applicationIncarnationName;
-		// Name für das vom Datenverteiler zu erzeugende Objekt wird aus Applikationsname und Inkarnationsname gebildet.
+		// Name fÃ¼r das vom Datenverteiler zu erzeugende Objekt wird aus Applikationsname und Inkarnationsname gebildet.
 		// Dabei wird ": " zur Trennung benutzt, wenn der Inkarnationsname nicht leer ist
 		if(incarnationName.length() > 0) {
 			applicationIncarnationName = applicationName + ": " + incarnationName;
@@ -741,7 +755,7 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 	/**
 	 * Schickt ein Authentifikations-Telegramm zum Datenverteiler und wartet auf seine Antwort.
 	 *
-	 * @param encryptedUserPassword das verschlüsselte Passwort des Benutzers
+	 * @param encryptedUserPassword das verschlÃ¼sselte Passwort des Benutzers
 	 *
 	 * @return Die Authentifikations-Telegramm-Antwort des Datenverteilers oder <code>null</code>, falls die Antwort nicht ermittelt werden konnte.
 	 */
@@ -785,14 +799,14 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 	}
 
 	/**
-	 * Schickt ein Laufzeitermittlungs-Telegramm zum Datenverteiler und wartet auf seine Antwort, um herauszubekommen, wie viel Zeit die Übertragung in Anspruch
+	 * Schickt ein Laufzeitermittlungs-Telegramm zum Datenverteiler und wartet auf seine Antwort, um herauszubekommen, wie viel Zeit die Ãœbertragung in Anspruch
 	 * nimmt.
 	 *
 	 * @param maxWaitingTime Zeit in Millisekunden, die maximal auf eine Antwort gewartet wird.
-	 * @return Die Zeit, die benötigt wurde, um ein Telegramm von der Applikation zum Datenverteiler und zurück zu senden oder <code>-1</code> falls innerhalb
+	 * @return Die Zeit, die benÃ¶tigt wurde, um ein Telegramm von der Applikation zum Datenverteiler und zurÃ¼ck zu senden oder <code>-1</code> falls innerhalb
 	 *         der angegebenen Timeout-Zeit keine Antwort empfangen wurde.
 	 *
-	 * @throws CommunicationError Falls die Verbindung zum Datenverteiler gestört ist.
+	 * @throws CommunicationError Falls die Verbindung zum Datenverteiler gestÃ¶rt ist.
 	 */
 	public final long getTelegramTime(long maxWaitingTime) throws CommunicationError {
 		if(_disconnecting) {
@@ -846,15 +860,15 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 	}
 
 	/**
-	 * Meldet einen Beobachter für Zustandsänderungen der Datenverteilerverbindung an.
+	 * Meldet einen Beobachter fÃ¼r ZustandsÃ¤nderungen der Datenverteilerverbindung an.
 	 *
-	 * @param connectionListener Beobachter für Zustandsänderungen der Datenverteilerverbindung
+	 * @param connectionListener Beobachter fÃ¼r ZustandsÃ¤nderungen der Datenverteilerverbindung
 	 */
 	public synchronized void setConnectionListener(DavConnectionListener connectionListener) {
 		_connectionListener = connectionListener;
 	}
 
-	/** Wird die Verbindung zum Datenverteiler terminiert, so wird dem Beobachter, der sich dafür interessiert, dieses mitgeteilt. */
+	/** Wird die Verbindung zum Datenverteiler terminiert, so wird dem Beobachter, der sich dafÃ¼r interessiert, dieses mitgeteilt. */
 	private void notifyConnectionClosed() {
 		final DavConnectionListener connectionListener;
 		synchronized(this) {
@@ -872,7 +886,7 @@ public class ClientHighLevelCommunication implements HighLevelCommunicationCallb
 	}
 
 	/**
-	 * Gibt die temporäre Liste der Systemtelegramme für interne Synchronisationszwecke zurück.
+	 * Gibt die temporÃ¤re Liste der Systemtelegramme fÃ¼r interne Synchronisationszwecke zurÃ¼ck.
 	 *
 	 * @return die Liste der Systemtelegramme
 	 */

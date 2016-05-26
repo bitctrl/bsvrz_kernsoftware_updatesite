@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.main.impl.archive.request;
 
@@ -45,13 +51,13 @@ import de.bsvrz.dav.daf.main.SendSubscriptionNotConfirmed;
 import de.bsvrz.dav.daf.main.impl.archive.ArchiveQueryID;
 
 /**
- * Diese Klasse beaufragt das Archivsystem die angegebenen Zeitbereiche zu löschen. Dabei kann unterschieden werden ob
- * die Zeitbereiche sofort oder beim "automatischen löschen" des Archivsystem gelöscht werden soll.
+ * Diese Klasse beaufragt das Archivsystem die angegebenen Zeitbereiche zu lÃ¶schen. Dabei kann unterschieden werden ob
+ * die Zeitbereiche sofort oder beim "automatischen lÃ¶schen" des Archivsystem gelÃ¶scht werden soll.
  * Diese Klasse wird von der Klasse {@link StreamedArchiveRequester} benutzt.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 5064 $ / $Date: 2007-09-01 22:25:35 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class DeleteData implements ArchiveQueryResult {
 	/**
@@ -60,7 +66,7 @@ public class DeleteData implements ArchiveQueryResult {
 	private final ArchiveQueryID _archiveRequestID;
 
 	/**
-	 * Konnte der Auftrag zum löschen vom Archivsystem verarbeitet werden
+	 * Konnte der Auftrag zum lÃ¶schen vom Archivsystem verarbeitet werden
 	 */
 	private boolean _increaseTimeSuccessful;
 
@@ -70,7 +76,7 @@ public class DeleteData implements ArchiveQueryResult {
 	private String _errorString;
 
 	/**
-	 * DebugLogger für Debug-Ausgaben
+	 * DebugLogger fÃ¼r Debug-Ausgaben
 	 */
 	private static final Debug _debug = Debug.getLogger();
 
@@ -81,13 +87,13 @@ public class DeleteData implements ArchiveQueryResult {
 	 */
 	private boolean _lock = true;
 	/**
-	 * Zeitbereiche, die gelöscht werden sollen
+	 * Zeitbereiche, die gelÃ¶scht werden sollen
 	 */
 	private final List<ArchiveInformationResult> _dataDisposedToDelete;
 
 	/**
-	 * Bestimmt ob die angegebenen Zeitbereiche direkt gelöscht werden oder ob diese erst beim nächsten automatischen
-	 * Löschzyklus gelöscht werden.
+	 * Bestimmt ob die angegebenen Zeitbereiche direkt gelÃ¶scht werden oder ob diese erst beim nÃ¤chsten automatischen
+	 * LÃ¶schzyklus gelÃ¶scht werden.
 	 */
 	private final boolean _deleteImmediately;
 
@@ -127,13 +133,13 @@ public class DeleteData implements ArchiveQueryResult {
 	}
 
 	/**
-	 * Diese Methode wird aufgerufen, wenn eine Antwort des Archivs auf den Löschauftrag vorliegt.
+	 * Diese Methode wird aufgerufen, wenn eine Antwort des Archivs auf den LÃ¶schauftrag vorliegt.
 	 *
 	 * @param data Antwort des Archivs
 	 */
 	public void archiveResponse(Data data) {
 		synchronized (this) {
-			// aus den Daten das byte-Array anfordern. In dem Array sind die Informationen, ob der Löschauftrag geklappt hat,
+			// aus den Daten das byte-Array anfordern. In dem Array sind die Informationen, ob der LÃ¶schauftrag geklappt hat,
 			// kodiert.
 			byte[] queryResponse = data.getUnscaledArray("daten").getByteArray();
 
@@ -161,8 +167,8 @@ public class DeleteData implements ArchiveQueryResult {
 	}
 
 	/**
-	 * Der Aufruf dieser Methode beauftragt das Archivsystem den Löschzeitpunkt der angegebenen Zeitbereiche um den
-	 * angegebenen Zeitbereich zu verlänger.
+	 * Der Aufruf dieser Methode beauftragt das Archivsystem den LÃ¶schzeitpunkt der angegebenen Zeitbereiche um den
+	 * angegebenen Zeitbereich zu verlÃ¤nger.
 	 */
 	public void increaseDeleteTime() {
 
@@ -177,15 +183,15 @@ public class DeleteData implements ArchiveQueryResult {
 
 		try {
 
-			// Sollen die Daten sofort gelöscht werden
+			// Sollen die Daten sofort gelÃ¶scht werden
 			if (_deleteImmediately == true) {
-				// Die angegebenen Zeibereiche sofort löschen
+				// Die angegebenen Zeibereiche sofort lÃ¶schen
 				serializer.writeLong(-1);
 			} else {
 				serializer.writeLong(0);
 			}
-			// Anzahl Einträge der Liste speichern, beim auspacken ist dann bekannt, wie viele Einträge
-			// entpackt werden müssen.
+			// Anzahl EintrÃ¤ge der Liste speichern, beim auspacken ist dann bekannt, wie viele EintrÃ¤ge
+			// entpackt werden mÃ¼ssen.
 			serializer.writeInt(_dataDisposedToDelete.size());
 
 			// Jede Anfrage, die in der spec-Liste steht, in das byte-Array speichern
@@ -272,8 +278,8 @@ public class DeleteData implements ArchiveQueryResult {
 				// Dabei tritt ein Sonderfall auf, wenn die Simulationsvariante auf
 				// <code>NO_SIMULATION_VARIANT_SET</code> , dies entspricht einer
 				// <code>-1</code>, gesetzt wurde. In diesem Fall muss der default Wert
-				// für die Simulationsvariante gewählt werden. Der default-Wert wurde im Konstruktor dieser
-				// Klasse übergeben.
+				// fÃ¼r die Simulationsvariante gewÃ¤hlt werden. Der default-Wert wurde im Konstruktor dieser
+				// Klasse Ã¼bergeben.
 				if (dataDescription.getSimulationVariant() != -1) {
 					serializer.writeShort(dataDescription.getSimulationVariant());
 				} else {
@@ -295,11 +301,11 @@ public class DeleteData implements ArchiveQueryResult {
 		// byte-Array erzeugen
 		final byte[] data = out.toByteArray();
 
-		// daten + 4 bytes für die Serializerversion
+		// daten + 4 bytes fÃ¼r die Serializerversion
 		final byte[] dataAndSeriVersion = new byte[data.length + 4];
 
 		// Serializerversion speichern
-		// Das höherwärtigste Byte steht in Zelle 0
+		// Das hÃ¶herwÃ¤rtigste Byte steht in Zelle 0
 		dataAndSeriVersion[0] = (byte) ((serializerVersion & 0xff000000) >>> 24);
 		dataAndSeriVersion[1] = (byte) ((serializerVersion & 0x00ff0000) >>> 16);
 		dataAndSeriVersion[2] = (byte) ((serializerVersion & 0x0000ff00) >>> 8);

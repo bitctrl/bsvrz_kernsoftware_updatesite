@@ -1,11 +1,11 @@
 /*
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl;
@@ -32,7 +38,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * TBD Beschreibung
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11279 $
+ * @version $Revision$
  */
 public class SendSubscriptionObject {
 
@@ -45,12 +51,12 @@ public class SendSubscriptionObject {
 	/** Die Zeit des Sendeindexes */
 	private long _time;
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	/**
-	 * Falls auf die Sendesteuerung (positiv/negativ) gewartet werden muss, wird zum synchronisieren dieses Objekt benutzt. Falls sich die Sendesterung ändert,
-	 * wird jeder Thread geweckt, der auf dieses Objekt wartet. Das selbe passiert, wenn eine fest vorgegebene Zeitspanne abläuft, auch in diesem Fall wird jeder
+	 * Falls auf die Sendesteuerung (positiv/negativ) gewartet werden muss, wird zum synchronisieren dieses Objekt benutzt. Falls sich die Sendesterung Ã¤ndert,
+	 * wird jeder Thread geweckt, der auf dieses Objekt wartet. Das selbe passiert, wenn eine fest vorgegebene Zeitspanne ablÃ¤uft, auch in diesem Fall wird jeder
 	 * benachtichtigt, der auf diesem Objekt wartet.
 	 */
 	private final Object _requestLock = new Object();
@@ -62,7 +68,7 @@ public class SendSubscriptionObject {
 	private final long _timeOut = 1 * 60 * 1000;
 
 	/**
-	 * Diese Variable wird true, falls das erste mal Daten verschickt werden können. Wenn danach die Sendesteuerung negativ wird, wird nicht noch einmal die
+	 * Diese Variable wird true, falls das erste mal Daten verschickt werden kÃ¶nnen. Wenn danach die Sendesteuerung negativ wird, wird nicht noch einmal die
 	 * <code>_timeOut</code> gewartet.
 	 */
 	private boolean _checkedConnectionFirstTime = false;
@@ -84,7 +90,7 @@ public class SendSubscriptionObject {
 		_time = (((System.currentTimeMillis() / 1000L) << 32) & 0xFFFFFFFF00000000L);
 	}
 
-	/** Gibt den Anmelde-Zeitstempel zurück
+	/** Gibt den Anmelde-Zeitstempel zurÃ¼ck
 	 * @return Sekunden seit 1970
 	 */
 	public int getTimeStamp() {
@@ -92,7 +98,7 @@ public class SendSubscriptionObject {
 	}
 
 	/**
-	 * Gibt die Sendeanmeldeinformationen zurück
+	 * Gibt die Sendeanmeldeinformationen zurÃ¼ck
 	 *
 	 * @return Sendeanmeldeinformationen
 	 */
@@ -101,8 +107,8 @@ public class SendSubscriptionObject {
 	}
 
 	/**
-	 * Gibt den Index der Sendung der übergebenen Anmeldungsinformation zurück. Der Index startet immer mit 1 und wird bei jeder Abfrage um 1 erhöht, wenn es
-	 * 0x3FFFFFFF (2 hoch 29 ) erreicht hat, fängt es wieder bei 1 an.
+	 * Gibt den Index der Sendung der Ã¼bergebenen Anmeldungsinformation zurÃ¼ck. Der Index startet immer mit 1 und wird bei jeder Abfrage um 1 erhÃ¶ht, wenn es
+	 * 0x3FFFFFFF (2 hoch 29 ) erreicht hat, fÃ¤ngt es wieder bei 1 an.
 	 *
 	 * @return der Index der Sendung
 	 */
@@ -117,7 +123,7 @@ public class SendSubscriptionObject {
 	}
 
 	/**
-	 * Gibt die Information zurück, ob die Applikation Daten senden kann oder nicht.
+	 * Gibt die Information zurÃ¼ck, ob die Applikation Daten senden kann oder nicht.
 	 *
 	 * @return true: Applikation kann Daten senden, false: Applikation kann keine Daten senden.
 	 */
@@ -125,38 +131,38 @@ public class SendSubscriptionObject {
 		synchronized(_requestLock) {
 			// Falls beim ersten mal eine gar keine Sendesteuerung vorliegt (positiv/negativ), wird eine bestimmte Zeitdauer gewartet.
 			// In dieser Zeit muss die Sendesteuerung positiv oder negativ werden.
-			// Wird die Sendesteuerung nicht positiv, wird <code>false</code> zurückgegeben, dies führt
+			// Wird die Sendesteuerung nicht positiv, wird <code>false</code> zurÃ¼ckgegeben, dies fÃ¼hrt
 			// dann zu einer Exception. Wird die Sendesteuerung vor Ablauf der Zeit positiv, wird
-			// <code>true</code> zurückgegeben.
-			// Liegt gar keine Sendesteuerung vor, wird <code>false</code> zurückgegeben.
+			// <code>true</code> zurÃ¼ckgegeben.
+			// Liegt gar keine Sendesteuerung vor, wird <code>false</code> zurÃ¼ckgegeben.
 
-			// Bei Anmeldung als Quelle wird direkt <code>true</code> zurückgegeben
+			// Bei Anmeldung als Quelle wird direkt <code>true</code> zurÃ¼ckgegeben
 			if(isSource()) {
 				return true;
 			}
 			else if(_checkedConnectionFirstTime == true && _requestAnswered == true) {
 				// Es wurde ein bestimmter Zeitraum abgewartet und es liegt eine Antwort vor, dann
 				// wird dieses Ergebnis benutzt (wenn also auch nach Ablauf der Zeit eine Sendersteuerung vorliegt,
-				// die nach Ablauf der Zeit noch nicht vorhanden war, wird dieser Zustand zurückgegeben)
+				// die nach Ablauf der Zeit noch nicht vorhanden war, wird dieser Zustand zurÃ¼ckgegeben)
 				return _state == 0;
 			}
 			else if(_checkedConnectionFirstTime == true && _requestAnswered == false) {
 				// Es wurde ein bestimmter Zeitraum abgewartet und es liegt !keine! Antwort vor, dann
-				// wird immer false zurückgegeben, da der Zustand unbekannt ist.
+				// wird immer false zurÃ¼ckgegeben, da der Zustand unbekannt ist.
 				return false;
 			}
 
 			// Es besteht keine Sendesteuerung (positiv oder negativ) und das "erste warten" hat noch nicht statt gefunden, also warten.
 			// Dieser Teil wird nur einmal am Anfang durchlaufen, danach verhindert _checkedConnectionFirstTime dies.
 			final TimeoutTimer timer = new TimeoutTimer(_timeOut);
-			// Solange die Sendesteuerung nicht auf positiv/negativ geändert wurde oder aber der Timer ist
+			// Solange die Sendesteuerung nicht auf positiv/negativ geÃ¤ndert wurde oder aber der Timer ist
 			// abgelaufen, wird nichts gemacht
 
 			while((_requestAnswered == false) && (timer.isTimeExpired() == false)) {
 				_debug.fine("Applikation wartet auf eine positive/negative Sendesteuerung: sendIndex = " + _sendIndex);
 
 				// Die Restzeit speichern, ist diese 0 darf der Thread nicht mit Restzeit 0 schlafen gelegt werden.
-				// Dies ist nötig, denn ein Thread, der mit 0 schlafen gelegt wird, wartet auf ein notify und
+				// Dies ist nÃ¶tig, denn ein Thread, der mit 0 schlafen gelegt wird, wartet auf ein notify und
 				// wacht nicht nach 0 Sekunden auf !
 				// (bei Restzeit 0 wird die while-Schleife von alleine verlassen, da isTimeExpired == true ist)
 				final long remainingTime = timer.getRemainingTime();
@@ -177,14 +183,14 @@ public class SendSubscriptionObject {
 				return _state == 0;
 			}
 			else {
-				// Es wurde noch keine Sendesteuerung gesetzt, also eine Exception auslösen
+				// Es wurde noch keine Sendesteuerung gesetzt, also eine Exception auslÃ¶sen
 				return false;
 			}
 		}
 	}
 
 	/**
-	 * Setzt die Flagge, ob Daten gesendet werden können oder nicht
+	 * Setzt die Flagge, ob Daten gesendet werden kÃ¶nnen oder nicht
 	 *
 	 * @param state Status
 	 */

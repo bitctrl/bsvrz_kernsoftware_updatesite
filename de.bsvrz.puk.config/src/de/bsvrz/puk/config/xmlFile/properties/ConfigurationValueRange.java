@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.xmlFile.properties;
@@ -30,7 +36,7 @@ import java.text.NumberFormat;
  *
  * @author Achim Wullenkord (AW), Kappich Systemberatung
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 5091 $ / $Date: 2007-09-03 15:31:49 +0200 (Mon, 03 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigurationValueRange implements ConfigurationIntegerValueRange {
 	/**
@@ -65,7 +71,7 @@ public class ConfigurationValueRange implements ConfigurationIntegerValueRange {
 	/**
 	 * Attribut "skalierung"
 	 *
-	 * @param scale String, der die Skalierung enthält. Ist in dem String "," enthalten, wird dies durch einen "."
+	 * @param scale String, der die Skalierung enthÃ¤lt. Ist in dem String "," enthalten, wird dies durch einen "."
 	 *              ersetzt.
 	 */
 	public void setScale(String scale) {
@@ -129,7 +135,7 @@ public class ConfigurationValueRange implements ConfigurationIntegerValueRange {
 
 	/**
 	 * Parameter "info"
-	 * @return info, die zu diesem Objekt gehört
+	 * @return info, die zu diesem Objekt gehÃ¶rt
 	 */
 	public SystemObjectInfo getInfo() {
 		return _info;
@@ -138,14 +144,14 @@ public class ConfigurationValueRange implements ConfigurationIntegerValueRange {
 	/**
 	 * skalierung
 	 *
-	 * @return Wert des Attributes skalierung, wurde kein Wert gesetzt wird 1.0 zurückgegeben
+	 * @return Wert des Attributes skalierung, wurde kein Wert gesetzt wird 1.0 zurÃ¼ckgegeben
 	 */
 	public double getScale() {
 		return _scale;
 	}
 
 	/**
-	 * Gibt die Skalierung in Standard-Notation zurück.
+	 * Gibt die Skalierung in Standard-Notation zurÃ¼ck.
 	 *
 	 * @return Skalierung in Standard-Notation.
 	 */
@@ -165,7 +171,7 @@ public class ConfigurationValueRange implements ConfigurationIntegerValueRange {
 	/**
 	 * einheit
 	 *
-	 * @return Wert des Attributes einheit. Wurde kein Wert gesetzt, wird "" zurückgegeben
+	 * @return Wert des Attributes einheit. Wurde kein Wert gesetzt, wird "" zurÃ¼ckgegeben
 	 */
 	public String getUnit() {
 		return _unit;

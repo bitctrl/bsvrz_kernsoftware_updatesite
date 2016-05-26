@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -26,56 +32,56 @@ import de.bsvrz.dav.daf.main.config.management.ConfigAreaAndVersion;
 import java.util.*;
 
 /**
- * Die Aufgabe der Implementation dieses Interfaces ist es, fehlende Konfigurationsbereiche, die benötigt werden um Abhängigkeiten zwischen
- * Konfigurationsberichen aufzulösen, zu entdecken.
- * <p/>
- * Jeder Konfigurationsbereich speichert die Konfigurationsbereiche von denen er abhängig ist. Soll der Konfigurationsbereich nun benutzt werden (Import,
- * Export, Aktivierung, Freigabe zur Übernahme, usw.), so müssen diese Bereiche vorhanden sein.
+ * Die Aufgabe der Implementation dieses Interfaces ist es, fehlende Konfigurationsbereiche, die benÃ¶tigt werden um AbhÃ¤ngigkeiten zwischen
+ * Konfigurationsberichen aufzulÃ¶sen, zu entdecken.
+ * <p>
+ * Jeder Konfigurationsbereich speichert die Konfigurationsbereiche von denen er abhÃ¤ngig ist. Soll der Konfigurationsbereich nun benutzt werden (Import,
+ * Export, Aktivierung, Freigabe zur Ãœbernahme, usw.), so mÃ¼ssen diese Bereiche vorhanden sein.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
+ * @version $Revision$
  */
 public interface AreaDependencyCheck {
 
 	/**
-	 * Die Methode prüft ob alle Abhängigkeiten der einzelnen Bereiche mit den übergebenen Bereichen aufgelöst werden können.
-	 * <p/>
+	 * Die Methode prÃ¼ft ob alle AbhÃ¤ngigkeiten der einzelnen Bereiche mit den Ã¼bergebenen Bereichen aufgelÃ¶st werden kÃ¶nnen.
+	 * <p>
 	 *
-	 * @param areas Bereiche mit entsprechenden Vesionen(>0). Alle Abhängigkeiten der Bereiche müssen mit den übergebenen Bereichen aufgelöst werden können.
+	 * @param areas Bereiche mit entsprechenden Vesionen(>0). Alle AbhÃ¤ngigkeiten der Bereiche mÃ¼ssen mit den Ã¼bergebenen Bereichen aufgelÃ¶st werden kÃ¶nnen.
 	 *
-	 * @return Objekt, dass das Ergebnis der Prüfung enthält.
+	 * @return Objekt, dass das Ergebnis der PrÃ¼fung enthÃ¤lt.
 	 */
 	public AreaDependencyCheckResult checkAreas(List<ConfigAreaAndVersion> areas);
 
 	public interface AreaDependencyCheckResult {
 
 		/**
-		 * Gibt alle Bereiche und deren Abhängigkeiten zurück, die nicht aufgelöst werden konnten und deren Abhängigkeit als "optional" gekennzeichnet sind.
+		 * Gibt alle Bereiche und deren AbhÃ¤ngigkeiten zurÃ¼ck, die nicht aufgelÃ¶st werden konnten und deren AbhÃ¤ngigkeit als "optional" gekennzeichnet sind.
 		 *
-		 * @return Als Schlüssel dient der Bereich, dessen Abhängigkeit nicht aufgelöst werden konnte. Es wird eine Liste zurückgegeben, mit allen Abhängigkeiten, die
-		 *         nicht aufgelöst werden konnten und die optional sind. Wurden keine Fehler gefunden, ist die Map leer.
+		 * @return Als SchlÃ¼ssel dient der Bereich, dessen AbhÃ¤ngigkeit nicht aufgelÃ¶st werden konnte. Es wird eine Liste zurÃ¼ckgegeben, mit allen AbhÃ¤ngigkeiten, die
+		 *         nicht aufgelÃ¶st werden konnten und die optional sind. Wurden keine Fehler gefunden, ist die Map leer.
 		 */
 		public Map<ConfigurationArea, List<ConfigurationAreaDependency>> getOptionalDependencyErrors();
 
 		/**
-		 * Gibt alle Bereiche und deren Avhängigkeiten zurück, die nicht aufgelöst werden konnten und deren Abhängigkeit als "notwenig" gekennzeichnet sind.
+		 * Gibt alle Bereiche und deren AvhÃ¤ngigkeiten zurÃ¼ck, die nicht aufgelÃ¶st werden konnten und deren AbhÃ¤ngigkeit als "notwenig" gekennzeichnet sind.
 		 *
-		 * @return Als Schlüssel dient der Bereich, dessen Abhängigkeit nicht aufgelöst werden konnte. Es wird eine Liste zurückgegeben, die alle Abhängigkeiten des
-		 *         Schlüssel-Bereichs enthält. Wurden keine Fehler gefunden, ist die Map leer.
+		 * @return Als SchlÃ¼ssel dient der Bereich, dessen AbhÃ¤ngigkeit nicht aufgelÃ¶st werden konnte. Es wird eine Liste zurÃ¼ckgegeben, die alle AbhÃ¤ngigkeiten des
+		 *         SchlÃ¼ssel-Bereichs enthÃ¤lt. Wurden keine Fehler gefunden, ist die Map leer.
 		 */
 		public Map<ConfigurationArea, List<ConfigurationAreaDependency>> getNeededDependencyErrors();
 
 		/**
-		 * Gibt alle Bereiche zurück, deren Abhägigkeiten nicht geprüft werden konnte. Dies ist zum Beispiel möglich, wenn ein Bereich vor der Einführung dieses
-		 * Mechanismus aktiviert wurde. Sobald dieser Bereich allerdings aktiviert/zur Aktivierung freigegeben/ zur Übernahme freigegeben wird, stehen diese
-		 * Informationen zur Verfügung.
+		 * Gibt alle Bereiche zurÃ¼ck, deren AbhÃ¤gigkeiten nicht geprÃ¼ft werden konnte. Dies ist zum Beispiel mÃ¶glich, wenn ein Bereich vor der EinfÃ¼hrung dieses
+		 * Mechanismus aktiviert wurde. Sobald dieser Bereich allerdings aktiviert/zur Aktivierung freigegeben/ zur Ãœbernahme freigegeben wird, stehen diese
+		 * Informationen zur VerfÃ¼gung.
 		 *
-		 * @return Alle Bereiche, deren Abhängigkeiten noch nicht erfasst wurden.
+		 * @return Alle Bereiche, deren AbhÃ¤ngigkeiten noch nicht erfasst wurden.
 		 */
 		public List<ConfigurationArea> getAreasWithUnknownDependencies();
 	}
 
-	/** Gibt alle Aktionen an, die die Konfiguration beim Start durchführen kann. Anhand dieser Aktion werden unterschiedliche Tests durchgeführt. */
+	/** Gibt alle Aktionen an, die die Konfiguration beim Start durchfÃ¼hren kann. Anhand dieser Aktion werden unterschiedliche Tests durchgefÃ¼hrt. */
 	public enum KindOfConfigurationAction {
 		START_CONFIGURATION,
 		IMPORT,

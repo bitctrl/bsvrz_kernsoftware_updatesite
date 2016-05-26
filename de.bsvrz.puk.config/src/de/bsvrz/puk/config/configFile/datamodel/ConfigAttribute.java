@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2006 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -38,11 +44,11 @@ import java.io.ByteArrayInputStream;
  * Implementierung eines Attribut-Objekts auf Seiten der Konfiguration.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 8550 $ / $Date: 2011-01-06 10:48:12 +0100 (Thu, 06 Jan 2011) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigAttribute extends ConfigConfigurationObject implements Attribute {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	/** Speichert die Attributeigenschaften dieses Attributs. */
@@ -52,10 +58,10 @@ public class ConfigAttribute extends ConfigConfigurationObject implements Attrib
 	private String _defaultAttributeValue;
 
 	/**
-	 * Konstruktor für ein KonfigurationsObjekt.
+	 * Konstruktor fÃ¼r ein KonfigurationsObjekt.
 	 *
 	 * @param configurationArea der Konfigurationsbereich dieses KonfigurationsObjekts
-	 * @param systemObjectInfo  das korrespondierende Objekt für die Dateioperationen dieses KonfigurationsObjekts
+	 * @param systemObjectInfo  das korrespondierende Objekt fÃ¼r die Dateioperationen dieses KonfigurationsObjekts
 	 */
 	public ConfigAttribute(ConfigurationArea configurationArea, SystemObjectInformationInterface systemObjectInfo) {
 		super(configurationArea, systemObjectInfo);
@@ -95,7 +101,7 @@ public class ConfigAttribute extends ConfigConfigurationObject implements Attrib
 		return _defaultAttributeValue;
 	}
 
-	/** Lädt den Default-Attributwert dieses Attributs aus einem konfigurierenden Datensatz. */
+	/** LÃ¤dt den Default-Attributwert dieses Attributs aus einem konfigurierenden Datensatz. */
 	public void loadDefaultAttributeValue() {
 		// Default-Attributwert bestimmen und cachen
 		try {
@@ -113,7 +119,7 @@ public class ConfigAttribute extends ConfigConfigurationObject implements Attrib
 
 				_defaultAttributeValue = deserializer.readString(32767);
 
-				in.close();	// Stream schließen
+				in.close();	// Stream schlieÃŸen
 			}
 		}
 		catch(IllegalArgumentException e) {
@@ -128,7 +134,7 @@ public class ConfigAttribute extends ConfigConfigurationObject implements Attrib
 	}
 
 	/**
-	 * Gibt das Objekt zurück, welches die Attributeigenschaften dieses Attributs enthält. Existiert es noch nicht, so wird es erzeugt und der entsprechende
+	 * Gibt das Objekt zurÃ¼ck, welches die Attributeigenschaften dieses Attributs enthÃ¤lt. Existiert es noch nicht, so wird es erzeugt und der entsprechende
 	 * konfigurierende Datensatz ausgelesen.
 	 *
 	 * @return die Attributeigenschaften
@@ -140,7 +146,7 @@ public class ConfigAttribute extends ConfigConfigurationObject implements Attrib
 		return _values;
 	}
 
-	/** Wird aufgerufen, wenn das Objekt verändert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zurücksetzen. */
+	/** Wird aufgerufen, wenn das Objekt verÃ¤ndert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zurÃ¼cksetzen. */
 	@Override
 	synchronized void invalidateCache() {
 		super.invalidateCache();
@@ -148,18 +154,18 @@ public class ConfigAttribute extends ConfigConfigurationObject implements Attrib
 	}
 
 	/**
-	 * Diese Klasse liest die Informationen für das Attribut mit Hilfe des Deserializers direkt aus dem Byte-Array des konfigurierenden Datensatzes aus. Dies geht
-	 * nicht mit der Methode {@link de.bsvrz.dav.daf.main.config.SystemObject#getConfigurationData}, da dort Informationen benötigt werden, die hier erst zur Verfügung gestellt werden.
+	 * Diese Klasse liest die Informationen fÃ¼r das Attribut mit Hilfe des Deserializers direkt aus dem Byte-Array des konfigurierenden Datensatzes aus. Dies geht
+	 * nicht mit der Methode {@link de.bsvrz.dav.daf.main.config.SystemObject#getConfigurationData}, da dort Informationen benÃ¶tigt werden, die hier erst zur VerfÃ¼gung gestellt werden.
 	 */
 	private class AttributeValues {
 
-		/** die Position eines Attributs oder einer Attributliste in der übergeordneten Attributmenge (Attributgruppe bzw. Attributliste) */
+		/** die Position eines Attributs oder einer Attributliste in der Ã¼bergeordneten Attributmenge (Attributgruppe bzw. Attributliste) */
 		private short _position;
 
-		/** die maximale Feldgröße dieses Attributs */
+		/** die maximale FeldgrÃ¶ÃŸe dieses Attributs */
 		private int _maxCount;
 
-		/** gibt an, ob die Feldgröße dieses Attributs variieren kann */
+		/** gibt an, ob die FeldgrÃ¶ÃŸe dieses Attributs variieren kann */
 		private boolean _isCountVariable;
 
 		/** der Typ des Attributs */
@@ -172,7 +178,7 @@ public class ConfigAttribute extends ConfigConfigurationObject implements Attrib
 				final Aspect asp = getDataModel().getAspect("asp.eigenschaften");
 				final AttributeGroupUsage attributeGroupUsage = atg.getAttributeGroupUsage(asp);
 				byte[] bytes = _systemObjectInfo.getConfigurationData(attributeGroupUsage.getId());
-				assert bytes.length == 15 : "Länge des Byte-Arrays der Attributgruppe atg.attributEigenschaften hat sich geändert. Angenommene Länge = 15.";
+				assert bytes.length == 15 : "LÃ¤nge des Byte-Arrays der Attributgruppe atg.attributEigenschaften hat sich geÃ¤ndert. Angenommene LÃ¤nge = 15.";
 
 				final ByteArrayInputStream in = new ByteArrayInputStream(bytes);
 				Deserializer deserializer = SerializingFactory.createDeserializer(getSerializerVersion(), in);
@@ -182,7 +188,7 @@ public class ConfigAttribute extends ConfigConfigurationObject implements Attrib
 				_isCountVariable = deserializer.readBoolean();
 				_attributeType = (AttributeType)deserializer.readObjectReference(getDataModel());
 
-				in.close();	// Stream schließen
+				in.close();	// Stream schlieÃŸen
 			}
 			catch(Exception ex) {
 				final String errorMessage = "Die Attributeigenschaften des Attributs " + getPidOrNameOrId() + " konnten nicht ermittelt werden";
@@ -192,7 +198,7 @@ public class ConfigAttribute extends ConfigConfigurationObject implements Attrib
 		}
 
 		/**
-		 * Gibt die Position eines Attributs oder einer Attributliste in der übergeordneten Attributmenge (Attributgruppe bzw. Attributliste) zurück.
+		 * Gibt die Position eines Attributs oder einer Attributliste in der Ã¼bergeordneten Attributmenge (Attributgruppe bzw. Attributliste) zurÃ¼ck.
 		 *
 		 * @return die Position eines Attributs oder einer Attributliste
 		 */
@@ -201,25 +207,25 @@ public class ConfigAttribute extends ConfigConfigurationObject implements Attrib
 		}
 
 		/**
-		 * Gibt die maximale Feldgröße dieses Attributs zurück.
+		 * Gibt die maximale FeldgrÃ¶ÃŸe dieses Attributs zurÃ¼ck.
 		 *
-		 * @return die maximale Feldgröße dieses Attributs
+		 * @return die maximale FeldgrÃ¶ÃŸe dieses Attributs
 		 */
 		public int getMaxCount() {
 			return _maxCount;
 		}
 
 		/**
-		 * Gibt zurück, ob die Feldgröße dieses Attributs variieren kann.
+		 * Gibt zurÃ¼ck, ob die FeldgrÃ¶ÃŸe dieses Attributs variieren kann.
 		 *
-		 * @return <code>true</code>, wenn die Feldgröße dieses Attributs variieren kann, sonst <code>false</code>
+		 * @return <code>true</code>, wenn die FeldgrÃ¶ÃŸe dieses Attributs variieren kann, sonst <code>false</code>
 		 */
 		public boolean isCountVariable() {
 			return _isCountVariable;
 		}
 
 		/**
-		 * Gibt den Typ dieses Attributs zurück.
+		 * Gibt den Typ dieses Attributs zurÃ¼ck.
 		 *
 		 * @return der Typ dieses Attributs
 		 */

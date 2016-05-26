@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.sys.funclib.xmlSupport.
  * 
  * de.bsvrz.sys.funclib.xmlSupport is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.xmlSupport is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.xmlSupport; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.xmlSupport; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.sys.funclib.xmlSupport.saxPullAdapter;
 
@@ -48,7 +54,7 @@ import java.net.URL;
  * vereinfacht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 9302 $
+ * @version $Revision$
  */
 public class SaxPullAdapter {
 
@@ -70,7 +76,7 @@ public class SaxPullAdapter {
 			factory.setXIncludeAware(true);
 		}
 		catch(UnsupportedOperationException e) {
-			final String message = "Der eingesetzte XML-Parser unterst¸tzt nicht die neusten Schnittstellen. " +
+			final String message = "Der eingesetzte XML-Parser unterst√ºtzt nicht die neusten Schnittstellen. " +
 			                       "Die Xerces XML-Parser mit Versionen kleiner oder gleich 2.6.2 sollten aus dem CLASSPATH " +
 			                       "entfernt werden. Die in Java 5 enthaltenen XML-Parser sind ausreichend.";
 			_debug.error(message);
@@ -96,7 +102,7 @@ public class SaxPullAdapter {
 			factory.setXIncludeAware(true);
 		}
 		catch(UnsupportedOperationException e) {
-			final String message = "Der eingesetzte XML-Parser unterst¸tzt nicht die neusten Schnittstellen. " +
+			final String message = "Der eingesetzte XML-Parser unterst√ºtzt nicht die neusten Schnittstellen. " +
 			                       "Die Xerces XML-Parser mit Versionen kleiner oder gleich 2.6.2 sollten aus dem CLASSPATH " +
 			                       "entfernt werden. Die in Java 5 enthaltenen XML-Parser sind ausreichend.";
 			_debug.error(message);
@@ -218,7 +224,7 @@ public class SaxPullAdapter {
 
 		/**
 		 * Receive notification of ignorable whitespace in element content.
-		 * <p/>
+		 * <p>
 		 * <p>By default, do nothing.  Application writers may override this method to take specific actions for each chunk of ignorable whitespace (such as adding
 		 * data to a node or buffer, or printing it to a file).</p>
 		 *

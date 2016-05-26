@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2006 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -36,7 +42,7 @@ import java.util.*;
  * Implementierung der Attributgruppe auf Seiten der Konfiguration.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 8583 $ / $Date: 2011-01-11 12:33:20 +0100 (Tue, 11 Jan 2011) $ / ($Author: rr $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigAttributeGroup extends ConfigAttributeSet implements AttributeGroup {
 
@@ -44,10 +50,10 @@ public class ConfigAttributeGroup extends ConfigAttributeSet implements Attribut
 	private Map<Aspect, AttributeGroupUsage> _attributeGroupUsageMap = null;
 
 	/**
-	 * Konstruktor für eine Attributgruppe.
+	 * Konstruktor fÃ¼r eine Attributgruppe.
 	 *
 	 * @param configurationArea der Konfigurationsbereich der Attributgruppe
-	 * @param systemObjectInfo  das korrespondierende Objekt für die Dateioperationen der Attributgruppe
+	 * @param systemObjectInfo  das korrespondierende Objekt fÃ¼r die Dateioperationen der Attributgruppe
 	 */
 	public ConfigAttributeGroup(ConfigurationArea configurationArea, SystemObjectInformationInterface systemObjectInfo) {
 		super(configurationArea, systemObjectInfo);
@@ -83,9 +89,9 @@ public class ConfigAttributeGroup extends ConfigAttributeSet implements Attribut
 	}
 
 	/**
-	 * Liest die Attributgruppenverwendungen ein und speichert sie in Abhängigkeit zu ihren Aspekten.
+	 * Liest die Attributgruppenverwendungen ein und speichert sie in AbhÃ¤ngigkeit zu ihren Aspekten.
 	 *
-	 * @return die Attributgruppenverwendungen in Abhängigkeit zu ihren Aspekten
+	 * @return die Attributgruppenverwendungen in AbhÃ¤ngigkeit zu ihren Aspekten
 	 */
 	private synchronized Map<Aspect, AttributeGroupUsage> getAttributeGroupUsageMap() {
 		if(_attributeGroupUsageMap == null) {
@@ -130,8 +136,8 @@ public class ConfigAttributeGroup extends ConfigAttributeSet implements Attribut
 	}
 
 	/**
-	 * Wird aufgerufen, wenn das Objekt verändert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zurücksetzen. Erbende Klassen müssen diese
-	 * Funktion überschreiben, wenn sie Daten cachen.
+	 * Wird aufgerufen, wenn das Objekt verÃ¤ndert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zurÃ¼cksetzen. Erbende Klassen mÃ¼ssen diese
+	 * Funktion Ã¼berschreiben, wenn sie Daten cachen.
 	 */
 	@Override
 	synchronized void invalidateCache() {

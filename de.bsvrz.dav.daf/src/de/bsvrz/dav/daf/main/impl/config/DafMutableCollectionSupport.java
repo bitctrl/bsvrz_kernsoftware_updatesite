@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config;
@@ -30,19 +36,19 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Hilfsklasse zur Verwaltung von Anmeldungen auf Änderungen der Elemente von dynamischen Typen und dynamischen Mengen.
+ * Hilfsklasse zur Verwaltung von Anmeldungen auf Ã„nderungen der Elemente von dynamischen Typen und dynamischen Mengen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5982 $
+ * @version $Revision$
  */
 public class DafMutableCollectionSupport {
-	/** Logger für Debug-Ausgaben. */
+	/** Logger fÃ¼r Debug-Ausgaben. */
 	private static final Debug _debug = Debug.getLogger();
 
-	/** Zugehörige dynamische Menge oder dynamischer Typ. */
+	/** ZugehÃ¶rige dynamische Menge oder dynamischer Typ. */
 	private MutableCollection _mutableCollection;
 
-	/** Map mit der Zuordnung von Simulationsvarianten zu einem Hilfsobjekt an dem die Liste der zugehörigen angemeldeten Listenern etc. gespeichert ist. */
+	/** Map mit der Zuordnung von Simulationsvarianten zu einem Hilfsobjekt an dem die Liste der zugehÃ¶rigen angemeldeten Listenern etc. gespeichert ist. */
 	private HashMap<Short, ListenersAndElements> _simVariant2ListenersAndElements = new HashMap<Short, ListenersAndElements>(4);
 
 	/**
@@ -54,9 +60,9 @@ public class DafMutableCollectionSupport {
 	}
 
 	/**
-	 * Meldet einen Listener auf Änderungen der Elemente einer dynamischen Menge oder eines dynamischen Typs unter Berücksichtigung der Simulationsvariante an.
+	 * Meldet einen Listener auf Ã„nderungen der Elemente einer dynamischen Menge oder eines dynamischen Typs unter BerÃ¼cksichtigung der Simulationsvariante an.
 	 * @param simulationVariant Simulationsvariante unter der die dynamische Zusammenstellung betrachtet werden soll.
-	 * @param changeListener Listener, der bei Änderungen der Elemente informiert werden soll.
+	 * @param changeListener Listener, der bei Ã„nderungen der Elemente informiert werden soll.
 	 */
 	public void addChangeListener(final short simulationVariant, final MutableCollectionChangeListener changeListener) {
 		synchronized(this) {
@@ -88,9 +94,9 @@ public class DafMutableCollectionSupport {
 	}
 
 	/**
-	 * Informiert die angemeldeten Listener über hinzugefügte oder entfernte Elemente der zugehörigen dynamischen Zusammenstellung.
-	 * @param simulationVariant Simulationsvariante auf die sich die Änderung bezieht.
-	 * @param addedElements Hinzugefügte Elemente.
+	 * Informiert die angemeldeten Listener Ã¼ber hinzugefÃ¼gte oder entfernte Elemente der zugehÃ¶rigen dynamischen Zusammenstellung.
+	 * @param simulationVariant Simulationsvariante auf die sich die Ã„nderung bezieht.
+	 * @param addedElements HinzugefÃ¼gte Elemente.
 	 * @param removedElements Entfernte Elemente.
 	 */
 	public void collectionChanged(final short simulationVariant, final List<SystemObject> addedElements, final List<SystemObject> removedElements) {
@@ -114,9 +120,9 @@ public class DafMutableCollectionSupport {
 	}
 
 	/**
-	 * Stellt sicher, dass eine und höchstens eine Anmeldung bei der Konfiguration auf Änderungen der Elemente der zugehörigen dynamischen Zusammenstellung
+	 * Stellt sicher, dass eine und hÃ¶chstens eine Anmeldung bei der Konfiguration auf Ã„nderungen der Elemente der zugehÃ¶rigen dynamischen Zusammenstellung
 	 * unter der angegebenen Simulationsvariante vorliegt.
- 	 * @param listenersAndElements Hilfsobjekt aus der Map <code>_simVariant2ListenersAndElements</code> für die entsprechende Simulationsvariante.
+ 	 * @param listenersAndElements Hilfsobjekt aus der Map <code>_simVariant2ListenersAndElements</code> fÃ¼r die entsprechende Simulationsvariante.
 	 * @param simulationVariant Simulationsvariante, die angemeldet werden soll.
 	 */
 	private void ensureSubscribedState(final ListenersAndElements listenersAndElements, final short simulationVariant) {
@@ -132,7 +138,7 @@ public class DafMutableCollectionSupport {
 			}
 			catch(RequestException e) {
 				final String message =
-						"Kommunikationsproblem bei Anmeldung auf Änderungen der dynamischen Zusammenstellung " + _mutableCollection.getPidOrNameOrId();
+						"Kommunikationsproblem bei Anmeldung auf Ã„nderungen der dynamischen Zusammenstellung " + _mutableCollection.getPidOrNameOrId();
 				_debug.error(message, e);
 				((DafDataModel)_mutableCollection.getDataModel()).getConnection().disconnect(true, message + " " + e.getMessage());
 			}
@@ -141,9 +147,9 @@ public class DafMutableCollectionSupport {
 	}
 
 	/**
-	 * Stellt sicher, dass keine Anmeldung bei der Konfiguration auf Änderungen der Elemente der zugehörigen dynamischen Zusammenstellung unter der angegebenen
+	 * Stellt sicher, dass keine Anmeldung bei der Konfiguration auf Ã„nderungen der Elemente der zugehÃ¶rigen dynamischen Zusammenstellung unter der angegebenen
 	 * Simulationsvariante vorliegt.
- 	 * @param listenersAndElements Hilfsobjekt aus der Map <code>_simVariant2ListenersAndElements</code> für die entsprechende Simulationsvariante.
+ 	 * @param listenersAndElements Hilfsobjekt aus der Map <code>_simVariant2ListenersAndElements</code> fÃ¼r die entsprechende Simulationsvariante.
 	 * @param simulationVariant Simulationsvariante, die abgemeldet werden soll.
 	 */
 	private void ensureUnsubscribedState(final ListenersAndElements listenersAndElements, final short simulationVariant) {
@@ -155,7 +161,7 @@ public class DafMutableCollectionSupport {
 			}
 			catch(RequestException e) {
 				final String message =
-						"Kommunikationsproblem bei Abmeldung auf Änderungen der dynamischen Zusammenstellung " + _mutableCollection.getPidOrNameOrId();
+						"Kommunikationsproblem bei Abmeldung auf Ã„nderungen der dynamischen Zusammenstellung " + _mutableCollection.getPidOrNameOrId();
 				_debug.error(message, e);
 				((DafDataModel)_mutableCollection.getDataModel()).getConnection().disconnect(true, message + " " + e.getMessage());
 			}
@@ -164,12 +170,12 @@ public class DafMutableCollectionSupport {
 	}
 
 	/**
-	 * Bestimmt das Hilfsobjekt mit den angemeldeten Listenern etc. aus der Map <code>_simVariant2ListenersAndElements</code> für die entsprechende
+	 * Bestimmt das Hilfsobjekt mit den angemeldeten Listenern etc. aus der Map <code>_simVariant2ListenersAndElements</code> fÃ¼r die entsprechende
 	 * Simulationsvariante.
- 	 * @param simulationVariant Simulationsvariante des Hilfsobjekts mit den gewünschten Listenern
+ 	 * @param simulationVariant Simulationsvariante des Hilfsobjekts mit den gewÃ¼nschten Listenern
 	 * @param create Wenn <code>true</code>, dann wird eine neues Hilfsobjekt erzeugt und in die Map eingetragen, wenn noch kein Hilfsobjekt mit den
-	 * angemeldeten Listenern für diese Simulationsvariante vorhanden war.
-	 * @return Hilfsobjekt mit den gewünschten Listenern etc. oder <code>null</code>, falls kein Hilfsobjekt vorhanden war und kein neues erzeugt werden sollte.
+	 * angemeldeten Listenern fÃ¼r diese Simulationsvariante vorhanden war.
+	 * @return Hilfsobjekt mit den gewÃ¼nschten Listenern etc. oder <code>null</code>, falls kein Hilfsobjekt vorhanden war und kein neues erzeugt werden sollte.
 	 */
 	private ListenersAndElements getListenersAndElements(final short simulationVariant, boolean create) {
 		ListenersAndElements listenersAndElements;
@@ -183,9 +189,9 @@ public class DafMutableCollectionSupport {
 	}
 
 	/**
-	 * Bestimmt die aktuellen Elemente der zugehörigen dynamischen Menge oder des zugehörigen dynamischen Typs unter Berücksichtigung der Simulationsvariante.
+	 * Bestimmt die aktuellen Elemente der zugehÃ¶rigen dynamischen Menge oder des zugehÃ¶rigen dynamischen Typs unter BerÃ¼cksichtigung der Simulationsvariante.
 	 * @param simulationVariant Simulationsvariante unter der die dynamische Zusammenstellung betrachtet werden soll.
-	 * @return Aktuelle Elemente der dynamischen Menge oder des dynamischen Typs unter Berücksichtigung der Simulationsvariante.
+	 * @return Aktuelle Elemente der dynamischen Menge oder des dynamischen Typs unter BerÃ¼cksichtigung der Simulationsvariante.
 	 */
 	public List<SystemObject> getElements(final short simulationVariant) {
 		synchronized(this) {
@@ -197,7 +203,7 @@ public class DafMutableCollectionSupport {
 	}
 
 	/**
-	 * Hilfsobjekt mit den angemeldeten Listenern etc. aus der Map <code>_simVariant2ListenersAndElements</code> für die entsprechende Simulationsvariante.
+	 * Hilfsobjekt mit den angemeldeten Listenern etc. aus der Map <code>_simVariant2ListenersAndElements</code> fÃ¼r die entsprechende Simulationsvariante.
 	 */
 	private static class ListenersAndElements {
 
@@ -207,27 +213,27 @@ public class DafMutableCollectionSupport {
 		/** Aktuelle Elemente */
 		private final ArrayList<SystemObject> _elements = new ArrayList<SystemObject>();
 
-		/** Flag, das <code>true</code> ist, wenn bereits eine entsprechende Anmeldung bei der Konfiguration getätigt wurde.*/
+		/** Flag, das <code>true</code> ist, wenn bereits eine entsprechende Anmeldung bei der Konfiguration getÃ¤tigt wurde.*/
 		private boolean _subscribed = false;
 
-		/** @return Liefert die angemeldeten Listener zurück. */
+		/** @return Liefert die angemeldeten Listener zurÃ¼ck. */
 		public List<MutableCollectionChangeListener> getListeners() {
 			return _listeners;
 		}
 
-		/** @return Liefert die aktuellen Elemente zurück.*/
+		/** @return Liefert die aktuellen Elemente zurÃ¼ck.*/
 		public List<SystemObject> getElements() {
 			return _elements;
 		}
 
-		/** @return <code>true</code>, wenn bereits eine entsprechende Anmeldung bei der Konfiguration getätigt wurde.*/
+		/** @return <code>true</code>, wenn bereits eine entsprechende Anmeldung bei der Konfiguration getÃ¤tigt wurde.*/
 		public boolean isSubscribed() {
 			return _subscribed;
 		}
 
 		/**
-		 * Setzt, die Kennung, ob bereits eine entsprechende Anmeldung bei der Konfiguration getätigt wurde.
-		 * @param subscribed <code>true</code>, wenn bereits eine entsprechende Anmeldung bei der Konfiguration getätigt wurde.
+		 * Setzt, die Kennung, ob bereits eine entsprechende Anmeldung bei der Konfiguration getÃ¤tigt wurde.
+		 * @param subscribed <code>true</code>, wenn bereits eine entsprechende Anmeldung bei der Konfiguration getÃ¤tigt wurde.
 		 * */
 		public void setSubscribed(final boolean subscribed) {
 			_subscribed = subscribed;

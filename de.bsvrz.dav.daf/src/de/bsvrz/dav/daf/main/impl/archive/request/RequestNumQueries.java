@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.main.impl.archive.request;
 
@@ -35,18 +41,18 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Diese Klasse stellt ein Objekt zur Verfügung, über das eine Anfrage nach der Anzahl möglichen Archivanfragen (pro Applikation) gestartet werden kann.
+ * Diese Klasse stellt ein Objekt zur VerfÃ¼gung, Ã¼ber das eine Anfrage nach der Anzahl mÃ¶glichen Archivanfragen (pro Applikation) gestartet werden kann.
  * Diese Klasse wird von der Klasse {@link de.bsvrz.dav.daf.main.impl.archive.request.StreamedArchiveRequester} benutzt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 12626 $ / $Date: 2014-07-25 17:26:33 +0200 (Fri, 25 Jul 2014) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class RequestNumQueries implements ArchiveNumQueriesResult {
 
 	private final ArchiveQueryID _client;
 
 	/**
-	 * DebugLogger für Debug-Ausgaben
+	 * DebugLogger fÃ¼r Debug-Ausgaben
 	 */
 	private static final Debug _debug = Debug.getLogger();
 
@@ -123,19 +129,19 @@ public class RequestNumQueries implements ArchiveNumQueriesResult {
 	/**
 	 * Diese Methode ist blockierend, bis die Antwort des Archivs vorliegt.
 	 *
-	 * @return true = Die Anfrage konnte fehlerfrei bearbeitet werden; false = Während der Bearbeitung der Anfrage kam es
+	 * @return true = Die Anfrage konnte fehlerfrei bearbeitet werden; false = WÃ¤hrend der Bearbeitung der Anfrage kam es
 	 *         zu einem Fehler, dieser kann mit <code>getErrorMessage</code> angezeigt werden
 	 * @throws InterruptedException Der Thread, der den Auftrag bearbeitet, wurde abgebrochen
 	 */
 	public boolean isRequestSuccessful() throws InterruptedException {
 		synchronized (this) {
-			// Der Archivmanager ist möglicherweise veraltet und verwirft die Anfrage, daher hier nur eine begrenzte Zeit warten
+			// Der Archivmanager ist mÃ¶glicherweise veraltet und verwirft die Anfrage, daher hier nur eine begrenzte Zeit warten
 			long waitUntil = System.currentTimeMillis() + 10000; // Max 10 Sekunden warten
 			while (_lock) {
 				long remainingMillis = waitUntil - System.currentTimeMillis();
 				if(remainingMillis <= 0) {
 					_requestSuccessful = false;
-					_errorMessage = "Keine Antwort vom Archivsystem. Archivsystem unterstützt möglicherweise die Anfrage nicht (ist veraltet).";
+					_errorMessage = "Keine Antwort vom Archivsystem. Archivsystem unterstÃ¼tzt mÃ¶glicherweise die Anfrage nicht (ist veraltet).";
 				}
 				try {
 					this.wait(10000);
@@ -148,8 +154,8 @@ public class RequestNumQueries implements ArchiveNumQueriesResult {
 	}
 
 	/**
-	 * Diese Methode liefert einen String mit der Fehlermeldung, die dazu geführt hat das die Informationsanfrage nicht
-	 * ausgeführt werden konnte. Dieser Aufruf blockiert solange, bis ein Ergebnis des Archivsystems vorliegt.
+	 * Diese Methode liefert einen String mit der Fehlermeldung, die dazu gefÃ¼hrt hat das die Informationsanfrage nicht
+	 * ausgefÃ¼hrt werden konnte. Dieser Aufruf blockiert solange, bis ein Ergebnis des Archivsystems vorliegt.
 	 *
 	 * @return String mit einer Fehlermeldung
 	 * @throws InterruptedException Der Thread, der den Auftrag bearbeitet, wurde abgebrochen
@@ -187,11 +193,11 @@ public class RequestNumQueries implements ArchiveNumQueriesResult {
 		// Die Versionsnummer des Serializer speichern
 		final int serializerVersion = serializer.getVersion();
 
-		// daten + 4 bytes für die Serializerversion
+		// daten + 4 bytes fÃ¼r die Serializerversion
 		byte[] dataAndSeriVersion = new byte[data.length + 4];
 
 		// Serializerversion speichern
-		// Das höherwertigste Byte steht in Zelle 0
+		// Das hÃ¶herwertigste Byte steht in Zelle 0
 		dataAndSeriVersion[0] = (byte) ((serializerVersion & 0xff000000) >>> 24);
 		dataAndSeriVersion[1] = (byte) ((serializerVersion & 0x00ff0000) >>> 16);
 		dataAndSeriVersion[2] = (byte) ((serializerVersion & 0x0000ff00) >>> 8);
@@ -205,7 +211,7 @@ public class RequestNumQueries implements ArchiveNumQueriesResult {
 			e.printStackTrace();
 		} catch (SendSubscriptionNotConfirmed sendSubscriptionNotConfirmed) {
 			sendSubscriptionNotConfirmed.printStackTrace();
-			throw new IllegalStateException("Versand einer Anfrage ist wegen nicht vorliegender positiver Sendesteuerung nicht möglich", sendSubscriptionNotConfirmed);
+			throw new IllegalStateException("Versand einer Anfrage ist wegen nicht vorliegender positiver Sendesteuerung nicht mÃ¶glich", sendSubscriptionNotConfirmed);
 		} catch(DataModelException e){
 			synchronized(this){
 				_errorMessage = e.getMessage();
@@ -221,7 +227,7 @@ public class RequestNumQueries implements ArchiveNumQueriesResult {
 
 	/**
 	 * Diese Methode wird aufgerufen, wenn die Antwort des Archivsystems empfangen wurde. Die Antwort wird analysiert und
-	 * die betreffenden Objekte zur Verfügung gestellt, wartende Threads werden benachrichtigt.
+	 * die betreffenden Objekte zur VerfÃ¼gung gestellt, wartende Threads werden benachrichtigt.
 	 */
 	public void archiveResponse(Data data) {
 		synchronized (this) {

@@ -1,11 +1,11 @@
 /*
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.communication.dataRepresentation.data.info.version1;
 
@@ -32,9 +38,9 @@ import java.util.*;
 /**
  * Klasse, die noch zu dokumentieren ist.
  *
- * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * @author Kappich+Kni√ü Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 5084 $ / $Date: 2007-09-03 10:42:50 +0200 (Mon, 03 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public abstract class NumberDefinitionInfo extends AttributeTypeDefinitionInfo {
 
@@ -46,7 +52,7 @@ public abstract class NumberDefinitionInfo extends AttributeTypeDefinitionInfo {
 	protected static final NumberFormat _precisionTestNumberFormat;
 
 	static {
-		_integerNumberFormat = NumberFormat.getNumberInstance();
+		_integerNumberFormat = NumberFormat.getNumberInstance(Locale.GERMANY);
 		_integerNumberFormat.setMinimumIntegerDigits(1);
 		_integerNumberFormat.setMaximumIntegerDigits(999);
 		_integerNumberFormat.setGroupingUsed(false);
@@ -149,7 +155,7 @@ public abstract class NumberDefinitionInfo extends AttributeTypeDefinitionInfo {
 			if(state!=null) return text.append("(").append(state.getName()).append(")").toString();
 			IntegerValueRange range= type.getRange();
 			if(range==null || value<range.getMinimum() || value>range.getMaximum()) {
-				return text.append("<<ung¸ltiger Wert>>").toString();
+				return text.append("<<ung√ºltiger Wert>>").toString();
 			}
 			return _unscaledUnit;
 		}
@@ -166,7 +172,7 @@ public abstract class NumberDefinitionInfo extends AttributeTypeDefinitionInfo {
 			if(state!=null) return state.getName();
 			IntegerValueRange range= type.getRange();
 			if(range==null || value<range.getMinimum() || value>range.getMaximum()) {
-				return " <<ung¸ltiger Wert (" + value + ")>>";
+				return " <<ung√ºltiger Wert (" + value + ")>>";
 			}
 			double conversionFactor= range.getConversionFactor();
 			if(conversionFactor == 1) return String.valueOf(value);
@@ -266,7 +272,21 @@ public abstract class NumberDefinitionInfo extends AttributeTypeDefinitionInfo {
 			if(range==null) throw new ArithmeticException("Attributtyp " + getAttributeType().getPid() + " hat keinen definierten Wertebereich");
 			long value= unscaledLongValue(bytes, offset);
 			if(value < range.getMinimum() || value > range.getMaximum())  throw new IllegalStateException("Attributtyp " + getAttributeType().getPid() + ": Wert " + value + " nicht im Bereich");
-			return value * range.getConversionFactor();
+			double conversionFactor = range.getConversionFactor();
+			// Folgende Fallunterscheidung vermeidet Genauigkeitsfehler bei conversionFactor < 1.0:
+			// Beispiel: 
+			// 95362170 * 0.000001 = 95.36216999999999
+			// aber
+			// 95362170 / (1 / 0.000001) = 95.36217 (wie erwartet)
+			if(conversionFactor < 1.0) {
+				return value / (1 / conversionFactor);
+			}
+			else if(conversionFactor > 1.0){
+				return value * conversionFactor;
+			}
+			else {
+				return value;
+			}
 		}
 		catch(ConfigurationException e) {
 			throw new RuntimeException(e);

@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -28,16 +34,16 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Hilfsklasse zur Verwaltung von Anmeldungen auf Änderungen der Elemente von dynamischen Typen und dynamischen Mengen.
+ * Hilfsklasse zur Verwaltung von Anmeldungen auf Ã„nderungen der Elemente von dynamischen Typen und dynamischen Mengen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5982 $
+ * @version $Revision$
  */
 public class ConfigMutableCollectionSupport {
-	/** Zugehörige dynamische Menge oder dynamischer Typ. */
+	/** ZugehÃ¶rige dynamische Menge oder dynamischer Typ. */
 	private MutableCollection _mutableCollection;
 
-	/** Map mit der Zuordnung von Simulationsvarianten zu der Liste mit den zugehörigen angemeldeten Listenern. */
+	/** Map mit der Zuordnung von Simulationsvarianten zu der Liste mit den zugehÃ¶rigen angemeldeten Listenern. */
 	private HashMap<Short, List<MutableCollectionChangeListener>> _simVariant2Listeners = new HashMap<Short, List<MutableCollectionChangeListener>>(4);
 
 	/**
@@ -49,9 +55,9 @@ public class ConfigMutableCollectionSupport {
 	}
 
 	/**
-	 * Meldet einen Listener auf Änderungen der Elemente einer dynamischen Menge oder eines dynamischen Typs unter Berücksichtigung der Simulationsvariante an.
+	 * Meldet einen Listener auf Ã„nderungen der Elemente einer dynamischen Menge oder eines dynamischen Typs unter BerÃ¼cksichtigung der Simulationsvariante an.
 	 * @param simulationVariant Simulationsvariante unter der die dynamische Zusammenstellung betrachtet werden soll.
-	 * @param changeListener Listener, der bei Änderungen der Elemente informiert werden soll.
+	 * @param changeListener Listener, der bei Ã„nderungen der Elemente informiert werden soll.
 	 */
 	public void addChangeListener(final short simulationVariant, final MutableCollectionChangeListener changeListener) {
 		synchronized(this) {
@@ -81,9 +87,9 @@ public class ConfigMutableCollectionSupport {
 	}
 
 	/**
-	 * Informiert die angemeldeten Listener über hinzugefügte oder entfernte Elemente der zugehörigen dynamischen Zusammenstellung.
-	 * @param simulationVariant Simulationsvariante auf die sich die Änderung bezieht.
-	 * @param addedElements Hinzugefügte Elemente.
+	 * Informiert die angemeldeten Listener Ã¼ber hinzugefÃ¼gte oder entfernte Elemente der zugehÃ¶rigen dynamischen Zusammenstellung.
+	 * @param simulationVariant Simulationsvariante auf die sich die Ã„nderung bezieht.
+	 * @param addedElements HinzugefÃ¼gte Elemente.
 	 * @param removedElements Entfernte Elemente.
 	 */
 	public void collectionChanged(final short simulationVariant, final List<SystemObject> addedElements, final List<SystemObject> removedElements) {
@@ -99,9 +105,9 @@ public class ConfigMutableCollectionSupport {
 
 	/**
 	 * Bestimmt die Liste der angemeldeten Listener einer vorgegebenen Simulationsvariante.
-	 * @param simulationVariant Simulationsvariante der gewünschten Listener
+	 * @param simulationVariant Simulationsvariante der gewÃ¼nschten Listener
 	 * @param create Wenn <code>true</code>, dann wird eine leere Liste erzeugt, wenn noch kein Listener dieser Simulationsvariante vorhanden war.
-	 * @return Liste mit den gewünschten Listenern oder <code>null</code>, falls kein Listener vorhanden war und keine leere Liste erzeugt werden sollte.
+	 * @return Liste mit den gewÃ¼nschten Listenern oder <code>null</code>, falls kein Listener vorhanden war und keine leere Liste erzeugt werden sollte.
 	 */
 	private List<MutableCollectionChangeListener> getListeners(final short simulationVariant, boolean create) {
 		List<MutableCollectionChangeListener> listeners;

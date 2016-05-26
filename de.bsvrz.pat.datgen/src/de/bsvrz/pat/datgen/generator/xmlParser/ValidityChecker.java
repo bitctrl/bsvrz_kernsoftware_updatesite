@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2003 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2003 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.datgen.
  * 
- * de.bsvrz.pat.datgen is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.datgen is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.datgen is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.datgen; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.datgen.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.datgen.generator.xmlParser;
@@ -29,10 +35,10 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * Klasse zum Prüfen der Validität einer XML-Daten-Datei.
+ * Klasse zum PrÃ¼fen der ValiditÃ¤t einer XML-Daten-Datei.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5030 $
+ * @version $Revision$
  */
 public class ValidityChecker extends DefaultHandler {
 
@@ -71,7 +77,7 @@ public class ValidityChecker extends DefaultHandler {
 	/**
 	 * Schwerer Fehler
 	 *
-	 * @param e Den fatalen Fehler auslösende Exception
+	 * @param e Den fatalen Fehler auslÃ¶sende Exception
 	 *
 	 * @throws SAXException bei Problemen
 	 */
@@ -81,7 +87,7 @@ public class ValidityChecker extends DefaultHandler {
 	/**
 	 * Fehler
 	 *
-	 * @param e Den Fehler auslösende Exception
+	 * @param e Den Fehler auslÃ¶sende Exception
 	 *
 	 * @throws SAXException bei Problemen
 	 */
@@ -93,7 +99,7 @@ public class ValidityChecker extends DefaultHandler {
 	/**
 	 * Warnung
 	 *
-	 * @param e Die Warnung auslösende Exception
+	 * @param e Die Warnung auslÃ¶sende Exception
 	 *
 	 * @throws SAXException bei Problemen
 	 */
@@ -103,7 +109,7 @@ public class ValidityChecker extends DefaultHandler {
 	}
 
 	/**
-	 * Callback-Methode für Start des XML-Dokuments
+	 * Callback-Methode fÃ¼r Start des XML-Dokuments
 	 *
 	 * @throws SAXException bei Problemen
 	 */
@@ -154,11 +160,11 @@ public class ValidityChecker extends DefaultHandler {
 	}
 
 	/**
-	 * Callback-Methode für die Verarbeitung von Characters.
+	 * Callback-Methode fÃ¼r die Verarbeitung von Characters.
 	 *
 	 * @param ch     Feld mit den erparsten <code>char</CODE>s
 	 * @param start  Startposition
-	 * @param length Länge des Feldes
+	 * @param length LÃ¤nge des Feldes
 	 *
 	 * @throws SAXException bei Problemen
 	 */

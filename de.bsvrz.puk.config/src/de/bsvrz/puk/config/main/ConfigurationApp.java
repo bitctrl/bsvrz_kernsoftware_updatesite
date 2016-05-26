@@ -1,14 +1,14 @@
 /*
  * Copyright 2011 by Kappich Systemberatung, Aachen
- * Copyright 2006 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * Copyright 2006 by Kappich Systemberatung Aachen
  * Copyright 2007 by Kappich Systemberatung Aachen
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -17,8 +17,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main;
@@ -45,36 +51,36 @@ import java.util.*;
 
 /**
  * Mit dieser Klasse wird die Konfiguration gestartet. Die Konfiguration kann in folgenden verschiedenen Arbeitsmodi parallel gestartet werden: <ul> <li>Import
- * von Versorgungsdateien</li> <li>Export von Versorgungsdateien</li> <li>Konsistenzprüfung der Konfiguration</li> <li>Aktivierung von
- * Konfigurationsbereichen</li> <li>Freigabe zur Übernahme von Konfigurationsbereichen</li> <li>Freigabe zur Aktivierung von Konfigurationsbereichen</li>
- * <li>Konfigurationseditor zur interaktiven Versorgung</li> <li>Konfiguration als dienstleistender Hintergrundprozeß für andere Applikationen des Systems</li>
+ * von Versorgungsdateien</li> <li>Export von Versorgungsdateien</li> <li>KonsistenzprÃ¼fung der Konfiguration</li> <li>Aktivierung von
+ * Konfigurationsbereichen</li> <li>Freigabe zur Ãœbernahme von Konfigurationsbereichen</li> <li>Freigabe zur Aktivierung von Konfigurationsbereichen</li>
+ * <li>Konfigurationseditor zur interaktiven Versorgung</li> <li>Konfiguration als dienstleistender HintergrundprozeÃŸ fÃ¼r andere Applikationen des Systems</li>
  * </ul>
- * <p/>
- * Die Konfiguration kann mit folgenden spezifischen Aufrufparametern gestartet werden: <ul> <li>-verwaltung=datei</li>Über diesen Aufrufparameter wird die
+ * <p>
+ * Die Konfiguration kann mit folgenden spezifischen Aufrufparametern gestartet werden: <ul> <li>-verwaltung=datei</li>Ãœber diesen Aufrufparameter wird die
  * Verwaltungsdatei spezifiziert, aus der sich die Konfiguration initialisieren soll. Wenn keine weiteren Aufrufparameter angegeben werden, dann wird der
- * Arbeitsmodus 'Konfiguration' gestartet. <ul> Soll Die Konfiguration im Arbeitsmodus 'Konfiguration' betrieben werden, so können/müssen folgende Parameter
- * angegeben werden:<br> <li>Optionaler Parameter: -benutzerverwaltung=datei</li>Über diesen Parameter wird die Datei spezifiziert, die die
- * Benutzerverwaltungsinformationen(Benutzernamen, Passwörter, usw.) enthält. Wird keine Datei angegeben, wird eine Default-Datei benutzt. Neue Benutzer,
- * Änderungen der Passwörter, usw. werden in der angegebenen Datei durchgeführt.<br> <li>-benutzer=Benutzername</li> Enthält den Benutzernamen, mit dem sich die
- * Konfiguration beim Datenverteiler anmeldet <li>-authentifizierung=datei</li> Enthält das Passwort, mit dem sich die Konfiguration beim Datenverteiler
- * anmeldet </ul> <li>-import=pid,pid,...</li>Über diesen Aufrufparameter werden eine oder mehrere Pids der Konfigurationsbereiche angegeben, die importiert
- * werden sollen. Wenn dieser Aufrufparameter angegeben wurde, dann wird der Arbeitsmodus 'Import' gestartet. In diesem Arbeitsmodus müssen außerdem die
- * Aufrufparameter '-verzeichnis' und '-verwaltung' angegeben werden. <li>-export=pid,pid,...</li>Über diesen Aufrufparameter werden eine oder mehrere Pids der
+ * Arbeitsmodus 'Konfiguration' gestartet. <ul> Soll Die Konfiguration im Arbeitsmodus 'Konfiguration' betrieben werden, so kÃ¶nnen/mÃ¼ssen folgende Parameter
+ * angegeben werden:<br> <li>Optionaler Parameter: -benutzerverwaltung=datei</li>Ãœber diesen Parameter wird die Datei spezifiziert, die die
+ * Benutzerverwaltungsinformationen(Benutzernamen, PasswÃ¶rter, usw.) enthÃ¤lt. Wird keine Datei angegeben, wird eine Default-Datei benutzt. Neue Benutzer,
+ * Ã„nderungen der PasswÃ¶rter, usw. werden in der angegebenen Datei durchgefÃ¼hrt.<br> <li>-benutzer=Benutzername</li> EnthÃ¤lt den Benutzernamen, mit dem sich die
+ * Konfiguration beim Datenverteiler anmeldet <li>-authentifizierung=datei</li> EnthÃ¤lt das Passwort, mit dem sich die Konfiguration beim Datenverteiler
+ * anmeldet </ul> <li>-import=pid,pid,...</li>Ãœber diesen Aufrufparameter werden eine oder mehrere Pids der Konfigurationsbereiche angegeben, die importiert
+ * werden sollen. Wenn dieser Aufrufparameter angegeben wurde, dann wird der Arbeitsmodus 'Import' gestartet. In diesem Arbeitsmodus mÃ¼ssen auÃŸerdem die
+ * Aufrufparameter '-verzeichnis' und '-verwaltung' angegeben werden. <li>-export=pid,pid,...</li>Ãœber diesen Aufrufparameter werden eine oder mehrere Pids der
  * Konfigurationsbereiche angegeben, die exportiert werden sollen. Wenn dieser Aufrufparameter angegeben wurde, dann wird der Arbeitsmodus 'Export' gestartet.
- * In diesem Arbeitsmodus müssen außerdem die Aufrufparameter '-verzeichnis' und '-verwaltung' angegeben werden. <li>-verzeichnis=verzeichnis</li>Dieser
+ * In diesem Arbeitsmodus mÃ¼ssen auÃŸerdem die Aufrufparameter '-verzeichnis' und '-verwaltung' angegeben werden. <li>-verzeichnis=verzeichnis</li>Dieser
  * Aufrufparameter gilt im Zusammenhang mit dem Arbeitsmodus 'Import' oder 'Export'. Er gibt an, wo (beim Import) sich die Dateien befinden bzw. wohin (beim
- * Export) die Dateien geschrieben werden sollen. <li>-editor</li>Über diesen Aufrufparameter wird spezifiziert, dass der Arbeitsmodus 'Konfigurationseditor'
- * gestartet werden soll. Wenn zusätzlich der Aufrufparameter '-verwaltung' angegeben wird, dann arbeitet der Editor im Offline-Modus direkt auf den
- * Konfigurationsdateien. Ansonsten arbeitet der Editor im Online-Modus und versucht über die Datenverteilerschnittstelle eine Verbindung zu einer Instanz im
- * Arbeitsmodus 'Konfiguration' aufzubauen. <li>-konsistenzprüfung</li>Beauftragt die Konfiguration alle Konfigurationsbereiche in der aktuellsten Version auf
- * Konsistenz zu prüfen. In diesem Arbeitsmodus muss außerdem der Aufrufparameter '-verwaltung' angegeben werden. <li>-aktivierung</li>Beauftragt die
- * Konfiguration alle Konfigurationsbereiche in der aktuellsten Version zu aktivieren. In diesem Arbeitsmodus muss außerdem der Aufrufparameter '-verwaltung'
- * angegeben werden. <li>-freigabeaktivierung</li>Beauftragt die Konfiguration alle Konfigurationsbereiche in der aktuellsten Version für andere Konfigurationen
- * "zur Aktivierung freizugeben". In diesem Arbeitsmodus muss außerdem der Aufrufparameter '-verwaltung' angegeben werden. <li>-freigabeübernahme</li>Beauftragt
- * die Konfiguration alle Konfigurationsbereiche in der aktuellsten Version zur Übernahme freizugeben. In diesem Arbeitsmodus muss außerdem der Aufrufparameter
- * '-verwaltung' angegeben werden. <li>-freigabeZurAktivierungOhneLokaleAktivierungDurchDenKV=pid,pid,...</li>Über diesen Aufrufparameter werden eine oder
- * mehrere Pids von Konfigurationsbereichen angegeben. Diese Bereiche können durch eine andere Konfiguration aktiviert werden, ohne dass der
- * Konfigurationsverantwortliche der Bereiche die angegebene Bereiche aktiviert hat. In diesem Arbeitsmodus muss außerdem der Aufrufparameter '-verwaltung'
+ * Export) die Dateien geschrieben werden sollen. <li>-editor</li>Ãœber diesen Aufrufparameter wird spezifiziert, dass der Arbeitsmodus 'Konfigurationseditor'
+ * gestartet werden soll. Wenn zusÃ¤tzlich der Aufrufparameter '-verwaltung' angegeben wird, dann arbeitet der Editor im Offline-Modus direkt auf den
+ * Konfigurationsdateien. Ansonsten arbeitet der Editor im Online-Modus und versucht Ã¼ber die Datenverteilerschnittstelle eine Verbindung zu einer Instanz im
+ * Arbeitsmodus 'Konfiguration' aufzubauen. <li>-konsistenzprÃ¼fung</li>Beauftragt die Konfiguration alle Konfigurationsbereiche in der aktuellsten Version auf
+ * Konsistenz zu prÃ¼fen. In diesem Arbeitsmodus muss auÃŸerdem der Aufrufparameter '-verwaltung' angegeben werden. <li>-aktivierung</li>Beauftragt die
+ * Konfiguration alle Konfigurationsbereiche in der aktuellsten Version zu aktivieren. In diesem Arbeitsmodus muss auÃŸerdem der Aufrufparameter '-verwaltung'
+ * angegeben werden. <li>-freigabeaktivierung</li>Beauftragt die Konfiguration alle Konfigurationsbereiche in der aktuellsten Version fÃ¼r andere Konfigurationen
+ * "zur Aktivierung freizugeben". In diesem Arbeitsmodus muss auÃŸerdem der Aufrufparameter '-verwaltung' angegeben werden. <li>-freigabeÃ¼bernahme</li>Beauftragt
+ * die Konfiguration alle Konfigurationsbereiche in der aktuellsten Version zur Ãœbernahme freizugeben. In diesem Arbeitsmodus muss auÃŸerdem der Aufrufparameter
+ * '-verwaltung' angegeben werden. <li>-freigabeZurAktivierungOhneLokaleAktivierungDurchDenKV=pid,pid,...</li>Ãœber diesen Aufrufparameter werden eine oder
+ * mehrere Pids von Konfigurationsbereichen angegeben. Diese Bereiche kÃ¶nnen durch eine andere Konfiguration aktiviert werden, ohne dass der
+ * Konfigurationsverantwortliche der Bereiche die angegebene Bereiche aktiviert hat. In diesem Arbeitsmodus muss auÃŸerdem der Aufrufparameter '-verwaltung'
  * angegeben werden.<li>keine Aufrufparameter</li>Ohne Aufrufparameter wird der Arbeitsmodus 'Konfigurationseditor' im Online-Modus gestartet. </ul>
  *
  * @author Kappich Systemberatung
@@ -83,7 +89,7 @@ import java.util.*;
 
 public class ConfigurationApp {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static Debug _debug;
 
 	/** Thread, der beim Herunterfahren des Systems die Daten sichert. */
@@ -171,14 +177,14 @@ public class ConfigurationApp {
 					startConfigurationEditorOnline();
 				}
 			}
-			else if(argumentList.hasArgument("-konsistenzprüfung") && argumentList.hasArgument("-verwaltung")) {
+			else if(argumentList.hasArgument("-konsistenzprÃ¼fung") && argumentList.hasArgument("-verwaltung")) {
 				final File managementFile = argumentList.fetchArgument("-verwaltung").asExistingFile();
 				final boolean allowDoublePids = argumentList.fetchArgument("-doppeltePidsZulassen=nein").booleanValue();
 				final boolean ignoreDependencyErrorsInConsistencyCheck =
-						argumentList.fetchArgument("-ignoriereFehlerDerAbhängigkeitenBeiKonsistenzprüfung=nein").booleanValue() || argumentList.fetchArgument(
+						argumentList.fetchArgument("-ignoriereFehlerDerAbhÃ¤ngigkeitenBeiKonsistenzprÃ¼fung=nein").booleanValue() || argumentList.fetchArgument(
 								"-ignoriereFehlerDerAbhaengigkeitenBeiKonsistenzpruefung=nein"
 						).booleanValue();
-				argumentList.fetchArgument("-konsistenzprüfung");
+				argumentList.fetchArgument("-konsistenzprÃ¼fung");
 				checkConsistency(managementFile, allowDoublePids, ignoreDependencyErrorsInConsistencyCheck);
 				correctUsage = true;
 			}
@@ -186,7 +192,7 @@ public class ConfigurationApp {
 				final File managementFile = argumentList.fetchArgument("-verwaltung").asExistingFile();
 				final boolean allowDoublePids = argumentList.fetchArgument("-doppeltePidsZulassen=nein").booleanValue();
 				final boolean ignoreDependencyErrorsInConsistencyCheck =
-						argumentList.fetchArgument("-ignoriereFehlerDerAbhängigkeitenBeiKonsistenzprüfung=nein").booleanValue() || argumentList.fetchArgument(
+						argumentList.fetchArgument("-ignoriereFehlerDerAbhÃ¤ngigkeitenBeiKonsistenzprÃ¼fung=nein").booleanValue() || argumentList.fetchArgument(
 								"-ignoriereFehlerDerAbhaengigkeitenBeiKonsistenzpruefung=nein"
 						).booleanValue();
 				argumentList.fetchArgument("-aktivierung");
@@ -199,17 +205,17 @@ public class ConfigurationApp {
 				startReleaseAreasForActivation(managementFile);
 				correctUsage = true;
 			}
-			else if((argumentList.hasArgument("-freigabeübernahme") || argumentList.hasArgument("-freigabeuebernahme")) && argumentList.hasArgument(
+			else if((argumentList.hasArgument("-freigabeÃ¼bernahme") || argumentList.hasArgument("-freigabeuebernahme")) && argumentList.hasArgument(
 					"-verwaltung"
 			)) {
 				final File managementFile = argumentList.fetchArgument("-verwaltung").asExistingFile();
 				final boolean allowDoublePids = argumentList.fetchArgument("-doppeltePidsZulassen=nein").booleanValue();
 				final boolean ignoreDependencyErrorsInConsistencyCheck =
-						argumentList.fetchArgument("-ignoriereFehlerDerAbhängigkeitenBeiKonsistenzprüfung=nein").booleanValue() || argumentList.fetchArgument(
+						argumentList.fetchArgument("-ignoriereFehlerDerAbhÃ¤ngigkeitenBeiKonsistenzprÃ¼fung=nein").booleanValue() || argumentList.fetchArgument(
 								"-ignoriereFehlerDerAbhaengigkeitenBeiKonsistenzpruefung=nein"
 						).booleanValue();
-				if(argumentList.hasArgument("-freigabeübernahme")) {
-					argumentList.fetchArgument("-freigabeübernahme");
+				if(argumentList.hasArgument("-freigabeÃ¼bernahme")) {
+					argumentList.fetchArgument("-freigabeÃ¼bernahme");
 				}
 				else {
 					argumentList.fetchArgument("-freigabeuebernahme");
@@ -221,7 +227,7 @@ public class ConfigurationApp {
 				final File managementFile = argumentList.fetchArgument("-verwaltung").asExistingFile();
 				final boolean allowDoublePids = argumentList.fetchArgument("-doppeltePidsZulassen=nein").booleanValue();
 				final boolean ignoreDependencyErrorsInConsistencyCheck =
-						argumentList.fetchArgument("-ignoriereFehlerDerAbhängigkeitenBeiKonsistenzprüfung=nein").booleanValue() || argumentList.fetchArgument(
+						argumentList.fetchArgument("-ignoriereFehlerDerAbhÃ¤ngigkeitenBeiKonsistenzprÃ¼fung=nein").booleanValue() || argumentList.fetchArgument(
 								"-ignoriereFehlerDerAbhaengigkeitenBeiKonsistenzpruefung=nein"
 						).booleanValue();
 				final String activatePids = argumentList.fetchArgument("-freigabeZurAktivierungOhneLokaleAktivierungDurchDenKV").asNonEmptyString();
@@ -241,7 +247,7 @@ public class ConfigurationApp {
 
 				final File managementFile = argumentList.fetchArgument("-verwaltung").asExistingFile();
 
-				// Information: Die Argumente -benutzer und -authentifizierung werden später automatisch rausgezogen
+				// Information: Die Argumente -benutzer und -authentifizierung werden spÃ¤ter automatisch rausgezogen
 
 				final File userManagementFile;
 				if(argumentList.hasArgument("-benutzerverwaltung")) {
@@ -277,10 +283,10 @@ public class ConfigurationApp {
 
 				dealWithInvalidOnRestartObjects(dataModel);
 
-				_debug.info("Konfiguration ist bereit für Anfragen");
+				_debug.info("Konfiguration ist bereit fÃ¼r Anfragen");
 				System.out.println("");
 				System.out.println("******************************************************************");
-				System.out.println("********** Die Konfiguration ist bereit für Anfragen *************");
+				System.out.println("********** Die Konfiguration ist bereit fÃ¼r Anfragen *************");
 				System.out.println("******************************************************************");
 				System.out.println("");
 
@@ -314,7 +320,7 @@ public class ConfigurationApp {
 	}
 
 	/**
-	 * Diese Methode setzt alle dynamischen Objekte, die als "ungültigBeimNeustart" markiert sind, auf ungültig.
+	 * Diese Methode setzt alle dynamischen Objekte, die als "ungÃ¼ltigBeimNeustart" markiert sind, auf ungÃ¼ltig.
 	 *
 	 * @param dataModel Datenmodell
 	 */
@@ -328,15 +334,15 @@ public class ConfigurationApp {
 			systemObjectTypes.add((DynamicObjectType)systemObject);
 		}
 
-		// Alle Bereiche, die der Konfigurationsverantwortliche der Konfiguration ändern darf
+		// Alle Bereiche, die der Konfigurationsverantwortliche der Konfiguration Ã¤ndern darf
 		final Collection<ConfigurationArea> examineAreas = getAuthorityConfigAreas(dataModel.getConfigurationAuthority(), dataModel);
 
-		// Alle aktuellen dynamischen Objekte, für die der Konfigurationsverantwortliche der Konfiguration
-		// verantwortlich ist. Achtung, diese Methode benutzt die Vererbung, eine Einschränkung der Tyen macht also
+		// Alle aktuellen dynamischen Objekte, fÃ¼r die der Konfigurationsverantwortliche der Konfiguration
+		// verantwortlich ist. Achtung, diese Methode benutzt die Vererbung, eine EinschrÃ¤nkung der Tyen macht also
 		// keinen Sinn !!
 		final Collection<SystemObject> allDynamicObjects = dataModel.getAllObjects(examineAreas, systemObjectTypes, ObjectTimeSpecification.valid());
 
-		// Alle Objekte auf ungültig setzen, die transient sind.
+		// Alle Objekte auf ungÃ¼ltig setzen, die transient sind.
 		for(SystemObject systemObject : allDynamicObjects) {
 
 			// Objekttyp des Objekts anfordern, dies kann nur ein dynamischer Typ sein
@@ -347,11 +353,11 @@ public class ConfigurationApp {
 				_debug.finest("InvalidOnRestart Objekt: " + systemObject.getPidOrNameOrId());
 			}
 		}
-//		_debug.info("Anzahl gefundener transienter dynamischer Typen: " + transientObjectTypes.size() + " Anzahl dynamischer Objekte, die transient waren und auf ungültig gesetzt wurden: " + allDynamicObjects.size());
+//		_debug.info("Anzahl gefundener transienter dynamischer Typen: " + transientObjectTypes.size() + " Anzahl dynamischer Objekte, die transient waren und auf ungÃ¼ltig gesetzt wurden: " + allDynamicObjects.size());
 	}
 
 	/**
-	 * Diese Methode sucht zu einem Konfigurationsverantwortlichen alle aktiven Konfigurationsbereiche heraus, für die er verantwortlich ist.
+	 * Diese Methode sucht zu einem Konfigurationsverantwortlichen alle aktiven Konfigurationsbereiche heraus, fÃ¼r die er verantwortlich ist.
 	 *
 	 * @param authority Verantwortlicher, zu dem die Bereiche gesucht werden sollen
 	 * @param dataModel Datenmodell, in dem die Bereiche vorhanden sind
@@ -373,7 +379,7 @@ public class ConfigurationApp {
 	/**
 	 * Die eingelesenen Strings werden von Leerzeichen befreit, die vor oder nach den Pids stehen.
 	 *
-	 * @param pids die zu überprüfenden Strings
+	 * @param pids die zu Ã¼berprÃ¼fenden Strings
 	 *
 	 * @return die Strings enthalten jetzt vor oder nach der Pid keine Leerzeichen mehr
 	 */
@@ -400,7 +406,7 @@ public class ConfigurationApp {
 		// Datenmodell starten
 		final ConfigDataModel dataModel = new ConfigDataModel(managementFile);
 
-		// Queue und Thread für die asynchrone Abarbeitung von bestimmten Konfigurationsanfragen erzeugen
+		// Queue und Thread fÃ¼r die asynchrone Abarbeitung von bestimmten Konfigurationsanfragen erzeugen
 		AsyncRequestQueue asyncRequestQueue = new AsyncRequestQueue();
 		asyncRequestQueue.start();
 
@@ -412,7 +418,7 @@ public class ConfigurationApp {
 			);
 		}
 		catch(Exception e) {
-			// Im Fehlerfall dafür sorgen, dass die bereits angelegten Lock-Dateien gelöscht werden
+			// Im Fehlerfall dafÃ¼r sorgen, dass die bereits angelegten Lock-Dateien gelÃ¶scht werden
 			dataModel.close();
 			throw e;
 		}
@@ -435,7 +441,7 @@ public class ConfigurationApp {
 		// Datamodell
 		final DataModel dataModel = new ConfigDataModel(managementFile);
 
-		// Alle Dateien sind für andere gesperrt worden (lock-Dateien). Diese müssen wieder freigegeben werden, sobald
+		// Alle Dateien sind fÃ¼r andere gesperrt worden (lock-Dateien). Diese mÃ¼ssen wieder freigegeben werden, sobald
 		// die Aktion beendet wurde.
 
 		startAutoCloser(dataModel, null);
@@ -445,8 +451,8 @@ public class ConfigurationApp {
 			((ConfigurationControl)dataModel).importConfigurationAreas(importPath, pids);
 		}
 		catch(Exception ex) {
-			_debug.error("Der Import konnte nicht ordnungsgemäß durchgeführt werden", ex);
-			throw new RuntimeException("Der Import konnte nicht ordnungsgemäß durchgeführt werden", ex);
+			_debug.error("Der Import konnte nicht ordnungsgemÃ¤ÃŸ durchgefÃ¼hrt werden", ex);
+			throw new RuntimeException("Der Import konnte nicht ordnungsgemÃ¤ÃŸ durchgefÃ¼hrt werden", ex);
 		}
 	}
 
@@ -454,7 +460,7 @@ public class ConfigurationApp {
 		_debug.info("Export wird gestartet: " + managementFile.toString() + "\t" + exportPath.toString() + "\t" + pids.size());
 		final ConfigDataModel configDataModel = new ConfigDataModel(managementFile);
 
-		// Alle Dateien sind für andere gesperrt worden (lock-Dateien). Diese müssen wieder freigegeben werden, sobald
+		// Alle Dateien sind fÃ¼r andere gesperrt worden (lock-Dateien). Diese mÃ¼ssen wieder freigegeben werden, sobald
 		// die Aktion beendet wurde.
 		startAutoCloser(configDataModel, null);
 
@@ -467,32 +473,32 @@ public class ConfigurationApp {
 			configDataModel.exportConfigurationAreas(exportPath, pids);
 		}
 		catch(Exception ex) {
-			_debug.error("Der Export konnte nicht ordnungsgemäß durchgeführt werden", ex);
-			throw new RuntimeException("Der Export konnte nicht ordnungsgemäß durchgeführt werden", ex);
+			_debug.error("Der Export konnte nicht ordnungsgemÃ¤ÃŸ durchgefÃ¼hrt werden", ex);
+			throw new RuntimeException("Der Export konnte nicht ordnungsgemÃ¤ÃŸ durchgefÃ¼hrt werden", ex);
 		}
 	}
 
 	/**
-	 * Unterzieht alle Bereiche in der aktuellsten Version einer Konsistenzprüfung. Die Version muss nicht unbedingt die aktuelle Version sein, sondern die
-	 * Version, die aktiviert werden könnte.
+	 * Unterzieht alle Bereiche in der aktuellsten Version einer KonsistenzprÃ¼fung. Die Version muss nicht unbedingt die aktuelle Version sein, sondern die
+	 * Version, die aktiviert werden kÃ¶nnte.
 	 *
 	 * @param managementFile  Verwaltungsdatei, wird zum erzeugen des DataModel gebraucht
-	 * @param allowDoublePids <code>true</code> falls doppelte Pids in verschiedenen Konfigurationsbereichen von der Konsistenzprüfung zugelassen werden sollen.
+	 * @param allowDoublePids <code>true</code> falls doppelte Pids in verschiedenen Konfigurationsbereichen von der KonsistenzprÃ¼fung zugelassen werden sollen.
 	 * @param ignoreDependencyErrorsInConsistencyCheck
-	 *                        <code>true</code> falls Fehler bei der Prüfung der Abhängigkeiten in der Konsistenzprüfung ignoriert werden sollen.
+	 *                        <code>true</code> falls Fehler bei der PrÃ¼fung der AbhÃ¤ngigkeiten in der KonsistenzprÃ¼fung ignoriert werden sollen.
 	 */
 	private void checkConsistency(File managementFile, final boolean allowDoublePids, final boolean ignoreDependencyErrorsInConsistencyCheck) {
-		_debug.info("Konsistenzprüfung wird gestartet: " + managementFile.toString());
+		_debug.info("KonsistenzprÃ¼fung wird gestartet: " + managementFile.toString());
 		final ConfigDataModel dataModel = new ConfigDataModel(managementFile, ignoreDependencyErrorsInConsistencyCheck);
 		dataModel.setAllowDoublePids(allowDoublePids);
 //		dataModel.setIgnoreDependencyErrorsInConsistencyCheck(ignoreDependencyErrorsInConsistencyCheck);
-		// Alle Dateien sind für andere gesperrt worden (lock-Dateien). Diese müssen wieder freigegeben werden, sobald
+		// Alle Dateien sind fÃ¼r andere gesperrt worden (lock-Dateien). Diese mÃ¼ssen wieder freigegeben werden, sobald
 		// die Aktion beendet wurde.
 		startAutoCloser(dataModel, null);
 
 		// Alle Bereiche anfordern.
-		// Bereiche ,für die die Konfiguration verantwortlich ist, werden in der neusten Version geprüft.
-		// Bereiche, für die die Konfiguration nicht verantwortlich ist, werden in der "zur Übernahme freigegeben" Version geprüft.
+		// Bereiche ,fÃ¼r die die Konfiguration verantwortlich ist, werden in der neusten Version geprÃ¼ft.
+		// Bereiche, fÃ¼r die die Konfiguration nicht verantwortlich ist, werden in der "zur Ãœbernahme freigegeben" Version geprÃ¼ft.
 
 		final Collection<ConfigurationArea> configurationAreas = dataModel.getAllConfigurationAreas().values();
 		// Alle Bereiche mit den jeweiligen Versionen
@@ -503,7 +509,7 @@ public class ConfigurationApp {
 			if(dataModel.getConfigurationAuthority() == configurationArea.getConfigurationAuthority() || dataModel.getConfigurationAuthorityPid().equals(
 					configurationArea.getConfigurationAuthority().getPid()
 			)) {
-				// In der neusten Version prüfen
+				// In der neusten Version prÃ¼fen
 				version = ((ConfigConfigurationArea)configurationArea).getLastModifiedVersion();
 			}
 			else {
@@ -517,18 +523,18 @@ public class ConfigurationApp {
 			_debug.info(consistencyCheckResult.toString());
 		}
 		catch(Exception ex) {
-			_debug.error("Die Konsistenzprüfung konnte nicht ordnungsgemäß durchgeführt werden", ex);
-			throw new RuntimeException("Die Konsistenzprüfung konnte nicht ordnungsgemäß durchgeführt werden", ex);
+			_debug.error("Die KonsistenzprÃ¼fung konnte nicht ordnungsgemÃ¤ÃŸ durchgefÃ¼hrt werden", ex);
+			throw new RuntimeException("Die KonsistenzprÃ¼fung konnte nicht ordnungsgemÃ¤ÃŸ durchgefÃ¼hrt werden", ex);
 		}
 	}
 
 	/**
-	 * Aktiviert alle Bereiche in der höchst möglichen Version.
+	 * Aktiviert alle Bereiche in der hÃ¶chst mÃ¶glichen Version.
 	 *
 	 * @param managementFile  Verwaltungsdatei, wird zum erzeugen des DataModel gebraucht
-	 * @param allowDoublePids <code>true</code> falls doppelte Pids in verschiedenen Konfigurationsbereichen von der Konsistenzprüfung zugelassen werden sollen.
+	 * @param allowDoublePids <code>true</code> falls doppelte Pids in verschiedenen Konfigurationsbereichen von der KonsistenzprÃ¼fung zugelassen werden sollen.
 	 * @param ignoreDependencyErrorsInConsistencyCheck
-	 *                        <code>true</code> falls Fehler bei der Prüfung der Abhängigkeiten in der Konsistenzprüfung ignoriert werden sollen.
+	 *                        <code>true</code> falls Fehler bei der PrÃ¼fung der AbhÃ¤ngigkeiten in der KonsistenzprÃ¼fung ignoriert werden sollen.
 	 */
 	private void startActivation(File managementFile, final boolean allowDoublePids, final boolean ignoreDependencyErrorsInConsistencyCheck) {
 		_debug.info("Aktivierung wird gestartet: " + managementFile.toString());
@@ -536,7 +542,7 @@ public class ConfigurationApp {
 		dataModel.setAllowDoublePids(allowDoublePids);
 		//dataModel.setIgnoreDependencyErrorsInConsistencyCheck(ignoreDependencyErrorsInConsistencyCheck);
 
-		// Alle Dateien sind für andere gesperrt worden (lock-Dateien). Diese müssen wieder freigegeben werden, sobald
+		// Alle Dateien sind fÃ¼r andere gesperrt worden (lock-Dateien). Diese mÃ¼ssen wieder freigegeben werden, sobald
 		// die Aktion beendet wurde.
 		startAutoCloser(dataModel, null);
 
@@ -546,7 +552,7 @@ public class ConfigurationApp {
 		final List<ConfigAreaAndVersion> configAreasAndVersions = new ArrayList<ConfigAreaAndVersion>();
 
 		for(ConfigurationArea configurationArea : configurationAreas) {
-			// Den Bereich mit der aktuellsten Version prüfen und aktivieren.
+			// Den Bereich mit der aktuellsten Version prÃ¼fen und aktivieren.
 			configAreasAndVersions.add(new ConfigAreaAndVersion(configurationArea));
 		}
 
@@ -554,13 +560,13 @@ public class ConfigurationApp {
 			dataModel.activateConfigurationAreas(configAreasAndVersions);
 		}
 		catch(Exception ex) {
-			_debug.error("Die Aktivierung konnte nicht ordnungsgemäß durchgeführt werden", ex);
-			throw new RuntimeException("Die Aktivierung konnte nicht ordnungsgemäß durchgeführt werden", ex);
+			_debug.error("Die Aktivierung konnte nicht ordnungsgemÃ¤ÃŸ durchgefÃ¼hrt werden", ex);
+			throw new RuntimeException("Die Aktivierung konnte nicht ordnungsgemÃ¤ÃŸ durchgefÃ¼hrt werden", ex);
 		}
 	}
 
 	/**
-	 * Gibt alle Bereiche zur Aktivierung für andere Konfigurationen in der höchst möglichen Version frei.
+	 * Gibt alle Bereiche zur Aktivierung fÃ¼r andere Konfigurationen in der hÃ¶chst mÃ¶glichen Version frei.
 	 *
 	 * @param managementFile Verwaltungsdatei, wird zum Erzeugen des DataModel gebraucht
 	 */
@@ -568,18 +574,18 @@ public class ConfigurationApp {
 		_debug.info("Freigabe zur Aktivierung wird gestartet: " + managementFile.toString());
 		final DataModel dataModel = new ConfigDataModel(managementFile);
 
-		// Alle Dateien sind für andere gesperrt worden (lock-Dateien). Diese müssen wieder freigegeben werden, sobald
+		// Alle Dateien sind fÃ¼r andere gesperrt worden (lock-Dateien). Diese mÃ¼ssen wieder freigegeben werden, sobald
 		// die Aktion beendet wurde.
 		startAutoCloser(dataModel, null);
 
-		// Alle Bereiche anfordern. Die aus der Verwaltungsdatei müssen nicht angefordert werden, weil
-		// die Bereiche noch nicht lokal aktiviert wurden und somit nicht für andere zur Aktivierung freigegeben
-		// werden können.
-		// Es können nur die Bereiche zur Aktivierung freigegen werden, für die die Konfiguration auch verantwortlich ist.
+		// Alle Bereiche anfordern. Die aus der Verwaltungsdatei mÃ¼ssen nicht angefordert werden, weil
+		// die Bereiche noch nicht lokal aktiviert wurden und somit nicht fÃ¼r andere zur Aktivierung freigegeben
+		// werden kÃ¶nnen.
+		// Es kÃ¶nnen nur die Bereiche zur Aktivierung freigegen werden, fÃ¼r die die Konfiguration auch verantwortlich ist.
 
-		// Alle Bereiche, die aktiv sind (müssen noch gecastet werden)
+		// Alle Bereiche, die aktiv sind (mÃ¼ssen noch gecastet werden)
 		final List<SystemObject> areas = dataModel.getType("typ.konfigurationsBereich").getObjects();
-		// Alle Bereiche, die betrachtet werden müssen. Für dieses Bereiche ist die Konfiguration auch verantwortlich.
+		// Alle Bereiche, die betrachtet werden mÃ¼ssen. FÃ¼r dieses Bereiche ist die Konfiguration auch verantwortlich.
 		final Collection<ConfigurationArea> configurationAreas = new ArrayList<ConfigurationArea>(areas.size());
 		for(SystemObject area : areas) {
 			final ConfigurationArea configurationArea = (ConfigurationArea)area;
@@ -591,7 +597,7 @@ public class ConfigurationApp {
 		final List<ConfigAreaAndVersion> configAreasAndVersions = new ArrayList<ConfigAreaAndVersion>(configurationAreas.size());
 
 		for(ConfigurationArea configurationArea : configurationAreas) {
-			// Den Bereich mit der lokal aktivierten Version für andere freigeben
+			// Den Bereich mit der lokal aktivierten Version fÃ¼r andere freigeben
 			configAreasAndVersions.add(new ConfigAreaAndVersion(configurationArea));
 		}
 
@@ -599,26 +605,26 @@ public class ConfigurationApp {
 			((ConfigurationControl)dataModel).releaseConfigurationAreasForActivation(configAreasAndVersions);
 		}
 		catch(Exception ex) {
-			_debug.error("Die Freigabe zur Aktivierung konnte nicht ordnungsgemäß durchgeführt werden", ex);
-			throw new RuntimeException("Die Freigabe zur Aktivierung konnte nicht ordnungsgemäß durchgeführt werden", ex);
+			_debug.error("Die Freigabe zur Aktivierung konnte nicht ordnungsgemÃ¤ÃŸ durchgefÃ¼hrt werden", ex);
+			throw new RuntimeException("Die Freigabe zur Aktivierung konnte nicht ordnungsgemÃ¤ÃŸ durchgefÃ¼hrt werden", ex);
 		}
 	}
 
 	/**
-	 * Gibt alle Bereiche zur Übernahme für andere Konfigurationen in der höchst möglichen Version frei.
+	 * Gibt alle Bereiche zur Ãœbernahme fÃ¼r andere Konfigurationen in der hÃ¶chst mÃ¶glichen Version frei.
 	 *
 	 * @param managementFile  Verwaltungsdatei, wird zum erzeugen des DataModel gebraucht
-	 * @param allowDoublePids <code>true</code> falls doppelte Pids in verschiedenen Konfigurationsbereichen von der Konsistenzprüfung zugelassen werden sollen.
+	 * @param allowDoublePids <code>true</code> falls doppelte Pids in verschiedenen Konfigurationsbereichen von der KonsistenzprÃ¼fung zugelassen werden sollen.
 	 * @param ignoreDependencyErrorsInConsistencyCheck
-	 *                        <code>true</code> falls Fehler bei der Prüfung der Abhängigkeiten in der Konsistenzprüfung ignoriert werden sollen.
+	 *                        <code>true</code> falls Fehler bei der PrÃ¼fung der AbhÃ¤ngigkeiten in der KonsistenzprÃ¼fung ignoriert werden sollen.
 	 */
 	private void startReleaseAreasForTransfer(File managementFile, final boolean allowDoublePids, final boolean ignoreDependencyErrorsInConsistencyCheck) {
-		_debug.info("Freigabe zur Übernahme wird gestartet: " + managementFile.toString());
+		_debug.info("Freigabe zur Ãœbernahme wird gestartet: " + managementFile.toString());
 		final ConfigDataModel dataModel = new ConfigDataModel(managementFile, ignoreDependencyErrorsInConsistencyCheck);
 		dataModel.setAllowDoublePids(allowDoublePids);
 		//dataModel.setIgnoreDependencyErrorsInConsistencyCheck(ignoreDependencyErrorsInConsistencyCheck);
 
-		// Alle Dateien sind für andere gesperrt worden (lock-Dateien). Diese müssen wieder freigegeben werden, sobald
+		// Alle Dateien sind fÃ¼r andere gesperrt worden (lock-Dateien). Diese mÃ¼ssen wieder freigegeben werden, sobald
 		// die Aktion beendet wurde.
 		startAutoCloser(dataModel, null);
 
@@ -626,11 +632,11 @@ public class ConfigurationApp {
 		final Collection<ConfigurationArea> configurationAreas = dataModel.getAllConfigurationAreas().values();
 		final List<ConfigAreaAndVersion> configAreasAndVersions = new ArrayList<ConfigAreaAndVersion>();
 
-		// Es dürfen nur Bereiche freigegeben werden, für die die Konfiguration auch der KV ist.
+		// Es dÃ¼rfen nur Bereiche freigegeben werden, fÃ¼r die die Konfiguration auch der KV ist.
 
 		for(ConfigurationArea configurationArea : configurationAreas) {
 			if(dataModel.getConfigurationAuthority() == configurationArea.getConfigurationAuthority()) {
-				// Der Bereich wird mit der größt möglichen Version für andere zur Übernahme freigegeben
+				// Der Bereich wird mit der grÃ¶ÃŸt mÃ¶glichen Version fÃ¼r andere zur Ãœbernahme freigegeben
 				configAreasAndVersions.add(new ConfigAreaAndVersion(configurationArea));
 			}
 		}
@@ -639,41 +645,41 @@ public class ConfigurationApp {
 			dataModel.releaseConfigurationAreasForTransfer(configAreasAndVersions);
 		}
 		catch(Exception ex) {
-			_debug.error("Die Freigabe zur Übernahme konnte nicht ordnungsgemäß durchgeführt werden", ex);
-			throw new RuntimeException("Die Freigabe zur Übernahme konnte nicht ordnungsgemäß durchgeführt werden", ex);
+			_debug.error("Die Freigabe zur Ãœbernahme konnte nicht ordnungsgemÃ¤ÃŸ durchgefÃ¼hrt werden", ex);
+			throw new RuntimeException("Die Freigabe zur Ãœbernahme konnte nicht ordnungsgemÃ¤ÃŸ durchgefÃ¼hrt werden", ex);
 		}
 	}
 
 
 	/**
-	 * Gibt die angegebenen Bereiche zur Aktivierung für andere Konfigurationen in der höchst möglichen Version frei. Die entsprechenden Bereiche müssen vorher
+	 * Gibt die angegebenen Bereiche zur Aktivierung fÃ¼r andere Konfigurationen in der hÃ¶chst mÃ¶glichen Version frei. Die entsprechenden Bereiche mÃ¼ssen vorher
 	 * nicht lokal aktiviert worden sein.
 	 *
 	 * @param managementFile  Verwaltungsdatei, wird zum erzeugen des DataModel gebraucht
 	 * @param pids            Pids der Konfigurationsbereiche, die freigegeben werden sollen.
-	 * @param allowDoublePids <code>true</code> falls doppelte Pids in verschiedenen Konfigurationsbereichen von der Konsistenzprüfung zugelassen werden sollen.
+	 * @param allowDoublePids <code>true</code> falls doppelte Pids in verschiedenen Konfigurationsbereichen von der KonsistenzprÃ¼fung zugelassen werden sollen.
 	 * @param ignoreDependencyErrorsInConsistencyCheck
-	 *                        <code>true</code> falls Fehler bei der Prüfung der Abhängigkeiten in der Konsistenzprüfung ignoriert werden sollen.
+	 *                        <code>true</code> falls Fehler bei der PrÃ¼fung der AbhÃ¤ngigkeiten in der KonsistenzprÃ¼fung ignoriert werden sollen.
 	 */
 	private void startReleaseForActivationWithoutCAActivation(
 			final File managementFile, final List<String> pids, final boolean allowDoublePids, final boolean ignoreDependencyErrorsInConsistencyCheck) {
 
-		_debug.info("Freigabe zur Übernahme wird gestartet: " + managementFile.toString());
+		_debug.info("Freigabe zur Ãœbernahme wird gestartet: " + managementFile.toString());
 		final ConfigDataModel dataModel = new ConfigDataModel(managementFile, ignoreDependencyErrorsInConsistencyCheck);
 		dataModel.setAllowDoublePids(allowDoublePids);
 //		dataModel.setIgnoreDependencyErrorsInConsistencyCheck(ignoreDependencyErrorsInConsistencyCheck);
 
-		// Alle Dateien sind für andere gesperrt worden (lock-Dateien). Diese müssen wieder freigegeben werden, sobald
+		// Alle Dateien sind fÃ¼r andere gesperrt worden (lock-Dateien). Diese mÃ¼ssen wieder freigegeben werden, sobald
 		// die Aktion beendet wurde.
 		startAutoCloser(dataModel, null);
 
 		final List<ConfigAreaAndVersion> configAreasAndVersions = new ArrayList<ConfigAreaAndVersion>();
 
-		// Prüfen, ob die übergebenen Bereiche überhaupt für andere freigegeben werden dürfen.
+		// PrÃ¼fen, ob die Ã¼bergebenen Bereiche Ã¼berhaupt fÃ¼r andere freigegeben werden dÃ¼rfen.
 		// Nur der KV kann die Bereiche freigeben.
 
 		for(String pid : pids) {
-			// Dieser Bereich soll für andere zur Aktivierung freigegeben werden ohne vorher durch den KV aktiviert worden zu sein
+			// Dieser Bereich soll fÃ¼r andere zur Aktivierung freigegeben werden ohne vorher durch den KV aktiviert worden zu sein
 			final ConfigurationArea area = dataModel.getConfigurationArea(pid);
 
 			configAreasAndVersions.add(new ConfigAreaAndVersion(area));
@@ -685,16 +691,16 @@ public class ConfigurationApp {
 			);
 
 			if(consistencyCheckResult.interferenceErrors()) {
-				// Es gab Interfernezfehler. Die Bereiche können nicht für anderen freigegeben werden.
+				// Es gab Interfernezfehler. Die Bereiche kÃ¶nnen nicht fÃ¼r anderen freigegeben werden.
 				_debug.warning(
-						"Bei der Aktivierung durch andere ohne vorherige Aktivierung durch den KV wurden folgende Inkonsistenzen erkannt, die nicht zu einem Abbruch der Aktion geführt haben: "
+						"Bei der Aktivierung durch andere ohne vorherige Aktivierung durch den KV wurden folgende Inkonsistenzen erkannt, die nicht zu einem Abbruch der Aktion gefÃ¼hrt haben: "
 						+ consistencyCheckResult
 				);
 			}
 		}
 		catch(Exception ex) {
-			_debug.error("Die Freigabe zur Aktivierung ohne Aktivierung durch den KV konnte nicht ordnungsgemäß durchgeführt werden", ex);
-			throw new RuntimeException("Die Freigabe zur Aktivierung ohne Aktivierung durch den KV konnte nicht ordnungsgemäß durchgeführt werden", ex);
+			_debug.error("Die Freigabe zur Aktivierung ohne Aktivierung durch den KV konnte nicht ordnungsgemÃ¤ÃŸ durchgefÃ¼hrt werden", ex);
+			throw new RuntimeException("Die Freigabe zur Aktivierung ohne Aktivierung durch den KV konnte nicht ordnungsgemÃ¤ÃŸ durchgefÃ¼hrt werden", ex);
 		}
 	}
 
@@ -704,10 +710,10 @@ public class ConfigurationApp {
 	 */
 	private void startRestructure(final File managementFile) {
 
-		_debug.info("Freigabe zur Übernahme wird gestartet: " + managementFile.toString());
+		_debug.info("Freigabe zur Ãœbernahme wird gestartet: " + managementFile.toString());
 		final ConfigDataModel dataModel = new ConfigDataModel(managementFile);
 
-		// Alle Dateien sind für andere gesperrt worden (lock-Dateien). Diese müssen wieder freigegeben werden, sobald
+		// Alle Dateien sind fÃ¼r andere gesperrt worden (lock-Dateien). Diese mÃ¼ssen wieder freigegeben werden, sobald
 		// die Aktion beendet wurde.
 		startAutoCloser(dataModel, null);
 
@@ -715,48 +721,48 @@ public class ConfigurationApp {
 			dataModel.restructure(ConfigurationAreaFile.RestructureMode.FullRestructure);
 		}
 		catch(Exception ex) {
-			_debug.error("Die Restrukturierung konnte nicht ordnungsgemäß durchgeführt werden", ex);
-			throw new RuntimeException("Die Restrukturierung konnte nicht ordnungsgemäß durchgeführt werden", ex);
+			_debug.error("Die Restrukturierung konnte nicht ordnungsgemÃ¤ÃŸ durchgefÃ¼hrt werden", ex);
+			throw new RuntimeException("Die Restrukturierung konnte nicht ordnungsgemÃ¤ÃŸ durchgefÃ¼hrt werden", ex);
 		}
 	}
 
 
-	/** Gibt die Verwendungsmöglichkeiten der Konfiguration aus. */
+	/** Gibt die VerwendungsmÃ¶glichkeiten der Konfiguration aus. */
 	private void usage() {
 		System.out.println();
 		System.out.print("Verwendung: ");
 		System.out.println("java " + this.getClass().getName() + " [optionen]");
 		System.out.println();   // Leerzeile
-		System.out.println("Folgende Parameter werden unterstützt:");
+		System.out.println("Folgende Parameter werden unterstÃ¼tzt:");
 		System.out.println("\t-?");
 		System.out.println("\t-hilfe");
 		System.out.println("\t-verwaltung=datei           die Verwaltungsdatei der Konfiguration");
 		System.out.println("\t-import=pid,pid,...         die Pids der zu importierenden Konfigurationsbereiche");
 		System.out.println("\t-export=pid,pid,...         die Pids der zu exportierenden Konfigurationsbereiche");
 		System.out.println("\t-verzeichnis=versorgung     Verzeichnis der Versorgungsdateien");
-		System.out.println("\t-editor                     für den Konfigurationseditor");
-		System.out.println("\t-konsistenzprüfung          für die Konsistenzprüfung");
-		System.out.println("\t-aktivierung                für die Aktivierung von Konfigurationsbereichen");
-		System.out.println("\t-restrukturierung           für die manuelle Restrukturierung von Konfigurationsbereichen");
+		System.out.println("\t-editor                     fÃ¼r den Konfigurationseditor");
+		System.out.println("\t-konsistenzprÃ¼fung          fÃ¼r die KonsistenzprÃ¼fung");
+		System.out.println("\t-aktivierung                fÃ¼r die Aktivierung von Konfigurationsbereichen");
+		System.out.println("\t-restrukturierung           fÃ¼r die manuelle Restrukturierung von Konfigurationsbereichen");
 		System.out.println("\t-doppeltePidsZulassen       wenn doppelte PIDs zugelassen sein sollen");
-		System.out.println("\t-ignoriereFehlerDerAbhängigkeitenBeiKonsistenzprüfung");
-		System.out.println("\t                            wenn Fehler, die auf nicht erfüllte Abhängigkeiten zwischen Konfigurationsbereichen zurückzuführen");
-		System.out.println("\t                            sind, während der Konsistenzprüfung ignoriert werden sollen");
-		System.out.println("\t-freigabeaktivierung        für die Freigabe von Konfigurationsbereichen zur Aktivierung");
-		System.out.println("\t-freigabeübernahme          für die Freigabe von Konfigurationsbereichen zur Übernahme");
+		System.out.println("\t-ignoriereFehlerDerAbhÃ¤ngigkeitenBeiKonsistenzprÃ¼fung");
+		System.out.println("\t                            wenn Fehler, die auf nicht erfÃ¼llte AbhÃ¤ngigkeiten zwischen Konfigurationsbereichen zurÃ¼ckzufÃ¼hren");
+		System.out.println("\t                            sind, wÃ¤hrend der KonsistenzprÃ¼fung ignoriert werden sollen");
+		System.out.println("\t-freigabeaktivierung        fÃ¼r die Freigabe von Konfigurationsbereichen zur Aktivierung");
+		System.out.println("\t-freigabeÃ¼bernahme          fÃ¼r die Freigabe von Konfigurationsbereichen zur Ãœbernahme");
 		System.out.println("\t-sicherungsVerzeichnis=pfad Verzeichnis zur Sicherung von Konfigurationsdateien");
 
 		System.out.println();    // Leerzeile
-		System.out.println("Folgende Optionen werden unterstützt:");
-		System.out.println("\t-Konfiguration benötigt die Parameter '-verwaltung', '-benutzer', '-authentifizierung' und optional '-benutzerverwaltung'");
-		System.out.println("\t-Import benötigt die Parameter '-import', '-verzeichnis' und '-verwaltung'");
-		System.out.println("\t-Export benötigt die Parameter '-export', '-verzeichnis' und '-verwaltung'");
-		System.out.println("\t-Konfigurationseditor benötigt den Parameter '-editor' und für den Offline-Modus zusätzlich '-verwaltung'");
-		System.out.println("\t-Konsistenzprüfung benötigt die Parameter '-konsistenzprüfung' und '-verwaltung'");
-		System.out.println("\t-Aktivierung von Konfigurationsbereichen benötigt die Parameter '-aktivierung' und '-verwaltung'");
-		System.out.println("\t-Restrukturierung benötigt die Parameter '-restrukturierung' und '-verwaltung'");
-		System.out.println("\t-Freigabe aller Konfigurationsbereiche zur Aktivierung benötigt die Parameter '-freigabeaktivierung' und '-verwaltung'");
-		System.out.println("\t-Freigabe aller Konfigurationsbereiche zur Übernahme benötigt die Parameter '-freigabeübernahme' und '-verwaltung'");
+		System.out.println("Folgende Optionen werden unterstÃ¼tzt:");
+		System.out.println("\t-Konfiguration benÃ¶tigt die Parameter '-verwaltung', '-benutzer', '-authentifizierung' und optional '-benutzerverwaltung'");
+		System.out.println("\t-Import benÃ¶tigt die Parameter '-import', '-verzeichnis' und '-verwaltung'");
+		System.out.println("\t-Export benÃ¶tigt die Parameter '-export', '-verzeichnis' und '-verwaltung'");
+		System.out.println("\t-Konfigurationseditor benÃ¶tigt den Parameter '-editor' und fÃ¼r den Offline-Modus zusÃ¤tzlich '-verwaltung'");
+		System.out.println("\t-KonsistenzprÃ¼fung benÃ¶tigt die Parameter '-konsistenzprÃ¼fung' und '-verwaltung'");
+		System.out.println("\t-Aktivierung von Konfigurationsbereichen benÃ¶tigt die Parameter '-aktivierung' und '-verwaltung'");
+		System.out.println("\t-Restrukturierung benÃ¶tigt die Parameter '-restrukturierung' und '-verwaltung'");
+		System.out.println("\t-Freigabe aller Konfigurationsbereiche zur Aktivierung benÃ¶tigt die Parameter '-freigabeaktivierung' und '-verwaltung'");
+		System.out.println("\t-Freigabe aller Konfigurationsbereiche zur Ãœbernahme benÃ¶tigt die Parameter '-freigabeÃ¼bernahme' und '-verwaltung'");
 	}
 
 	/**
@@ -769,7 +775,7 @@ public class ConfigurationApp {
 		configTimer.schedule(new AutoSaver(dataModel), _bufferTime, _bufferTime);
 	}
 
-	/** Legt einen Thread an, der ausgeführt wird, wenn das System beendet wird. Dieser Thread wird alle Daten der Konfiguration sichern. */
+	/** Legt einen Thread an, der ausgefÃ¼hrt wird, wenn das System beendet wird. Dieser Thread wird alle Daten der Konfiguration sichern. */
 	public void startAutoCloser(DataModel dataModel, ConfigurationCommunicator configurationCommunicator) {
 		if(_autoCloser == null) {
 			_autoCloser = new AutoCloser(dataModel, configurationCommunicator);
@@ -777,7 +783,7 @@ public class ConfigurationApp {
 		}
 	}
 
-	/** Runnable Implementierung, die beim Beenden und zyklisch dafür sorgt, dass ungesicherte Konfigurationsänderungen gespeichert werden. */
+	/** Runnable Implementierung, die beim Beenden und zyklisch dafÃ¼r sorgt, dass ungesicherte KonfigurationsÃ¤nderungen gespeichert werden. */
 	private class AutoSaver extends TimerTask {
 
 		private final ConfigDataModel _dataModel;
@@ -792,14 +798,14 @@ public class ConfigurationApp {
 				if(_foreignObjectManager != null) _foreignObjectManager.save();
 			}
 			catch(Exception ex) {
-				// falls das Speichern nicht gelingt wird nur eine Warnung ausgegeben, evtl. gelingt es beim nächsten Mal
-				_debug.warning("Zwischenspeicher für Fremdobjekte konnte nicht gespeichert werden", ex);
+				// falls das Speichern nicht gelingt wird nur eine Warnung ausgegeben, evtl. gelingt es beim nÃ¤chsten Mal
+				_debug.warning("Zwischenspeicher fÃ¼r Fremdobjekte konnte nicht gespeichert werden", ex);
 			}
 			try {
 				_dataModel.save();
 			}
 			catch(IOException ex) {
-				// falls das Speichern nicht gelingt wird nur eine Warnung ausgegeben, evtl. gelingt es beim nächsten Mal
+				// falls das Speichern nicht gelingt wird nur eine Warnung ausgegeben, evtl. gelingt es beim nÃ¤chsten Mal
 				_debug.warning("Die Verwaltungsdaten und die Konfigurationsdateien konnten nicht gespeichert werden", ex.getMessage());
 			}
 		}
@@ -818,7 +824,7 @@ public class ConfigurationApp {
 		/**
 		 * Objekte, an denen die Close Methode aufgerufen wird.
 		 *
-		 * @param dataModel                 Datenmodell, an dem close aufgerufen wird. <code>null</code> darf nicht übergeben werden.
+		 * @param dataModel                 Datenmodell, an dem close aufgerufen wird. <code>null</code> darf nicht Ã¼bergeben werden.
 		 * @param configurationCommunicator Objekt, an dem close aufgerufen wird. Soll an diesem Objekte kein close aufgerufen werden, muss <code>null</code>
 		 *                                  aufgerufen werden.
 		 */
@@ -833,8 +839,8 @@ public class ConfigurationApp {
 				if(_foreignObjectManager != null) _foreignObjectManager.close();
 			}
 			catch(Exception ex) {
-				// falls das Speichern nicht gelingt wird nur eine Warnung ausgegeben, evtl. gelingt es beim nächsten Mal
-				_debug.warning("Zwischenspeicher für Fremdobjekte konnte nicht geschlossen werden", ex.getMessage());
+				// falls das Speichern nicht gelingt wird nur eine Warnung ausgegeben, evtl. gelingt es beim nÃ¤chsten Mal
+				_debug.warning("Zwischenspeicher fÃ¼r Fremdobjekte konnte nicht geschlossen werden", ex.getMessage());
 			}
 			((ConfigDataModel)_dataModel).close();
 
@@ -864,7 +870,7 @@ public class ConfigurationApp {
 					_debug.error("Schwerwiegender Laufzeitfehler: " + t + " hat sich wegen eines Errors beendet, Prozess wird terminiert", e);
 				}
 				catch(Throwable ignored) {
-					// Weitere Fehler während der Ausgaben werden ignoriert, damit folgendes exit() auf jeden Fall ausgeführt wird.
+					// Weitere Fehler wÃ¤hrend der Ausgaben werden ignoriert, damit folgendes exit() auf jeden Fall ausgefÃ¼hrt wird.
 				}
 				System.exit(1);
 			}

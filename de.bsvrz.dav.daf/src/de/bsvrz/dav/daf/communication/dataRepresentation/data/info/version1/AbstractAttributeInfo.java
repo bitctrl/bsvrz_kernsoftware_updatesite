@@ -1,11 +1,11 @@
 /*
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.communication.dataRepresentation.data.info.version1;
 
@@ -30,9 +36,9 @@ import de.bsvrz.dav.daf.main.config.ConfigurationException;
 /**
  * Klasse, die noch zu dokumentieren ist.
  *
- * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * @author Kappich+Kni√ü Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 11527 $ / $Date: 2013-08-06 16:29:25 +0200 (Tue, 06 Aug 2013) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public abstract class AbstractAttributeInfo implements AttributeInfo {
 	private final Attribute _attribute;
@@ -151,6 +157,6 @@ public abstract class AbstractAttributeInfo implements AttributeInfo {
 	}
 
 	public Data createModifiableData(byte[] bytes) {
-		throw new IllegalStateException("getModifiableCopy(): Kopie kann nur von ganzen Datens‰tzen erzeugt werden, this: " + getName());
+		throw new IllegalStateException("getModifiableCopy(): Kopie kann nur von ganzen Datens√§tzen erzeugt werden, this: " + getName());
 	}
 }

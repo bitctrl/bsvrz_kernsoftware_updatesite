@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.fileaccess;
@@ -24,10 +30,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
-* Interne Klasse, die Informationen während einer Restrukturierugn speichert
+* Interne Klasse, die Informationen wÃ¤hrend einer Restrukturierugn speichert
 *
 * @author Kappich Systemberatung
-* @version $Revision: 13128 $
+* @version $Revision$
 */
 class RestructureInfo implements HeaderInfo {
 	/**
@@ -37,13 +43,13 @@ class RestructureInfo implements HeaderInfo {
 	 *
 	 * Key ist die alte Dateiposition, value die neue.
 	 *
-	 * Eine Map ist hier eigentlich unnötig, da eine Liste von Paaren oder so genauso ausreichen würde. Dateiposition als Key ist
+	 * Eine Map ist hier eigentlich unnÃ¶tig, da eine Liste von Paaren oder so genauso ausreichen wÃ¼rde. Dateiposition als Key ist
 	 * aber eindeutig und daher OK.
 	 */
 	final Map<Long, Long> _newFilePositions = new HashMap<Long, Long>();
 
 	/**
-	 * Speichert Headerende in neuer Datei (= Start NgaBlöcke)
+	 * Speichert Headerende in neuer Datei (= Start NgaBlÃ¶cke)
 	 */
 	long _headerEnd = -1;
 

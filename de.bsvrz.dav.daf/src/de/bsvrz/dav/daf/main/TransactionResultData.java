@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main;
@@ -39,7 +45,7 @@ import java.util.List;
  * Klasse, die einen Transaktionsdatensatz kapselt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8953 $
+ * @version $Revision$
  */
 public class TransactionResultData implements Transaction {
 
@@ -105,7 +111,7 @@ public class TransactionResultData implements Transaction {
 	}
 
 	/**
-	 * Bestimmt das System-Objekt zu dem die im Ergebnis enthaltenen Daten gehˆren.
+	 * Bestimmt das System-Objekt zu dem die im Ergebnis enthaltenen Daten geh√∂ren.
 	 *
 	 * @return System-Objekt der enthaltenen Daten
 	 */
@@ -134,9 +140,9 @@ public class TransactionResultData implements Transaction {
 	}
 
 	/**
-	 * Erstellt einen neuen Transaktionsdatensatz aus einer Transaktionsdatenidentifikation und einer Liste mit inneren Datens‰tzen
+	 * Erstellt einen neuen Transaktionsdatensatz aus einer Transaktionsdatenidentifikation und einer Liste mit inneren Datens√§tzen
 	 * @param dataDescription Datenidentifikation
-	 * @param data Datens‰tze
+	 * @param data Datens√§tze
 	 * @param dataTime
 	 */
 	public TransactionResultData(final TransactionDataDescription dataDescription, final Collection<ResultData> data, final long dataTime) {
@@ -145,12 +151,12 @@ public class TransactionResultData implements Transaction {
 
 
 	/**
-	 * Erstellt einen neuen Transaktionsdatensatz aus einer Transaktionsdatenidentifikation und einer Liste mit inneren Datens‰tzen
+	 * Erstellt einen neuen Transaktionsdatensatz aus einer Transaktionsdatenidentifikation und einer Liste mit inneren Datens√§tzen
 	 *
 	 * @param dataDescription      Datenidentifikation
-	 * @param data                 Datens‰tze
-	 * @param wasSentAsTransaction Kann auf false gesetzt werden um zu signalisieren, dass die Datens‰tze in data nicht als Transaktionsdatensatz verwendet wurden,
-	 *                             sondern nachher vom Zentraldatenverteiler in einen neuen Transaktionsdatensatz eingef¸gt worden sind.
+	 * @param data                 Datens√§tze
+	 * @param wasSentAsTransaction Kann auf false gesetzt werden um zu signalisieren, dass die Datens√§tze in data nicht als Transaktionsdatensatz verwendet wurden,
+	 *                             sondern nachher vom Zentraldatenverteiler in einen neuen Transaktionsdatensatz eingef√ºgt worden sind.
 	 * @param dataTime
 	 */
 	public TransactionResultData(
@@ -171,7 +177,7 @@ public class TransactionResultData implements Transaction {
 	}
 
 	/**
-	 * Konvertiert den Transaktionsdatensatz in ein ResultData zum Versenden ¸ber den Datenverteiler. Die inneren Datens‰tze werden dabei serialisiert.
+	 * Konvertiert den Transaktionsdatensatz in ein ResultData zum Versenden √ºber den Datenverteiler. Die inneren Datens√§tze werden dabei serialisiert.
 	 * @param connection Verbindung
 	 * @return ResultData
 	 */
@@ -283,10 +289,10 @@ public class TransactionResultData implements Transaction {
 	}
 
 	/**
-	 * Ein innerer Datensatz. Entspricht einem ResultData mit der zus‰tzlichen Eigenschaft, ob der Datensatz als Transaktion versendet wurde oder nicht.
+	 * Ein innerer Datensatz. Entspricht einem ResultData mit der zus√§tzlichen Eigenschaft, ob der Datensatz als Transaktion versendet wurde oder nicht.
 	 *
 	 * @author Kappich Systemberatung
-	 * @version $Revision: 8953 $
+	 * @version $Revision$
 	 */
 	static class TransactionInnerData implements TransactionDataset {
 
@@ -384,7 +390,7 @@ public class TransactionResultData implements Transaction {
 		}
 
 		/**
-		 * Bestimmt das System-Objekt zu dem die im Ergebnis enthaltenen Daten gehˆren.
+		 * Bestimmt das System-Objekt zu dem die im Ergebnis enthaltenen Daten geh√∂ren.
 		 *
 		 * @return System-Objekt der enthaltenen Daten
 		 */

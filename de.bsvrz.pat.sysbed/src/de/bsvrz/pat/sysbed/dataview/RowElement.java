@@ -1,13 +1,13 @@
 /*
  * Copyright 2010 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.dataview;
@@ -28,21 +34,21 @@ import java.awt.*;
 
 
 /**
- * Diese Klasse repr‰sentiert die Zelle eines Blattes in der hierarchischen Struktur {@link RowData}.
- * F¸r die "Keine-Daten-Datens‰tze" gibt es eine eigene, wenngleich sehr ‰hnliche Klasse {@link RowPanel}.
+ * Diese Klasse repr√§sentiert die Zelle eines Blattes in der hierarchischen Struktur {@link RowData}.
+ * F√ºr die "Keine-Daten-Datens√§tze" gibt es eine eigene, wenngleich sehr √§hnliche Klasse {@link RowPanel}.
  * <p>
  * Die erste Implementation dieser Klasse erweiterte JComponent. Um die Hintergrundfarbe bei Selektion
- * ‰ndern zu kˆnnen, wurde statt des JLabel ein JPanel mit dem JLabel mit add hinzugef¸gt. Als 
- * Seiteneffekt ging die linksb¸ndige Darstellung der Texte verloren. Jetzt erweitert diese Klasse 
+ * √§ndern zu k√∂nnen, wurde statt des JLabel ein JPanel mit dem JLabel mit add hinzugef√ºgt. Als 
+ * Seiteneffekt ging die linksb√ºndige Darstellung der Texte verloren. Jetzt erweitert diese Klasse 
  * (wie auch RowPanel) JPanel. 
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8211 $
+ * @version $Revision$
  */
 @SuppressWarnings("serial")
 public class RowElement extends JPanel {
-	// Wenn ein leerer Text in den Konstruktor gesteckt wird, ist die pr‰ferrierte Hˆhe mal 10,
-	// mal 12, aber der ZeilenHeader ist hat mindestens die Hˆhe 18. Damit die Zeile nicht nur
+	// Wenn ein leerer Text in den Konstruktor gesteckt wird, ist die pr√§ferrierte H√∂he mal 10,
+	// mal 12, aber der ZeilenHeader ist hat mindestens die H√∂he 18. Damit die Zeile nicht nur
 	// teilweise dargestellt wird, wird im Konstruktor mindestens der Minimalwert gesetzt.
 	// Der leere Text kam unter anderem dann vor, wenn eine Attributgruppe auf oberster Ebene
 	// ein Array ist, und dieses Array im Datensatz leer ist (kurz: leere Arrays). Dieser
@@ -83,7 +89,7 @@ public class RowElement extends JPanel {
 	}
 	
 	/**
-	 * Gibt den dargestellten Text der Zelle zur¸ck.
+	 * Gibt den dargestellten Text der Zelle zur√ºck.
 	 * 
 	 * @return dargestellten Text
 	 */
@@ -92,9 +98,9 @@ public class RowElement extends JPanel {
 	}
 	
 	/**
-	 * Diese Methode definiert den Unterschied zwischen der Darstellung einer ausgew‰hlten und einer
-	 * nicht ausgew‰hlten Zelle; dieser Unterschied darf sich ausschlieﬂlich auf Farben beziehen,
-	 * keinesfalls auf Rahmen oder Fonts oder irgendetwas anderes, das die Grˆﬂe ver‰ndert.
+	 * Diese Methode definiert den Unterschied zwischen der Darstellung einer ausgew√§hlten und einer
+	 * nicht ausgew√§hlten Zelle; dieser Unterschied darf sich ausschlie√ülich auf Farben beziehen,
+	 * keinesfalls auf Rahmen oder Fonts oder irgendetwas anderes, das die Gr√∂√üe ver√§ndert.
 	 * 
 	 * @param isSelected ist die Zelle selektiert?
 	 */

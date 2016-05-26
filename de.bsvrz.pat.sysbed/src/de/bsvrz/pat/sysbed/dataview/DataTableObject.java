@@ -1,13 +1,13 @@
 /*
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.dataview;
@@ -36,13 +42,13 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Ein Objekt dieser Klasse repräsentiert einen Datensatz in der {@link DataViewFrame Online-Tabelle}. 
+ * Ein Objekt dieser Klasse reprÃ¤sentiert einen Datensatz in der {@link DataViewFrame Online-Tabelle}. 
  * Reichen die Informationen eines {@link ResultData} nicht aus, so steht ein weiterer Konstruktor 
- * zur Verfügung, dem neben den benötigten Werten für die Online-Tabelle die
- * {@link de.bsvrz.dav.daf.main.archive.ArchiveDataKind Art der Archivanfrage} übergeben werden kann.
+ * zur VerfÃ¼gung, dem neben den benÃ¶tigten Werten fÃ¼r die Online-Tabelle die
+ * {@link de.bsvrz.dav.daf.main.archive.ArchiveDataKind Art der Archivanfrage} Ã¼bergeben werden kann.
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 8084 $
+ * @version $Revision$
  */
 public class DataTableObject {
 	
@@ -124,7 +130,7 @@ public class DataTableObject {
 	}
 	
 	/**
-	 * Gibt das Systemobjekt zurück.
+	 * Gibt das Systemobjekt zurÃ¼ck.
 	 * 
 	 * @return das Systemobjekt
 	 */
@@ -133,7 +139,7 @@ public class DataTableObject {
 	}
 	
 	/**
-	 * Gibt die Datenbeschreibung (Attributgruppe, Aspekt und Simulationsvariante) zurück.
+	 * Gibt die Datenbeschreibung (Attributgruppe, Aspekt und Simulationsvariante) zurÃ¼ck.
 	 * 
 	 * @return die Datenbeschreibung
 	 */
@@ -151,7 +157,7 @@ public class DataTableObject {
 	}
 	
 	/**
-	 * Gibt die Archivzeit zurück.
+	 * Gibt die Archivzeit zurÃ¼ck.
 	 * 
 	 * @return die Archivzeit
 	 */
@@ -160,7 +166,7 @@ public class DataTableObject {
 	}
 	
 	/**
-	 * Gibt die Datenzeit zurück.
+	 * Gibt die Datenzeit zurÃ¼ck.
 	 * 
 	 * @return die Datenzeit
 	 */
@@ -169,7 +175,7 @@ public class DataTableObject {
 	}
 	
 	/**
-	 * Gibt den Datenindex zurück.
+	 * Gibt den Datenindex zurÃ¼ck.
 	 * 
 	 * @return der Datenindex
 	 */
@@ -178,7 +184,7 @@ public class DataTableObject {
 	}
 	
 	/**
-	 * Gibt den Zustand der Daten zurück.
+	 * Gibt den Zustand der Daten zurÃ¼ck.
 	 * 
 	 * @return der Zustand der Daten
 	 */
@@ -187,7 +193,7 @@ public class DataTableObject {
 	}
 	
 	/**
-	 * Gibt die Art des Datensatzes zurück (ob OA = online aktuell, ON = online nachgeliefert, 
+	 * Gibt die Art des Datensatzes zurÃ¼ck (ob OA = online aktuell, ON = online nachgeliefert, 
 	 * NA = nachgefordert aktuell, NN = nachgefordert nachgeliefert -
 	 * siehe auch Technische Anforderungen Archivsystem).
 	 * 
@@ -198,7 +204,7 @@ public class DataTableObject {
 	}
 	
 	/**
-	 * Gibt die Daten dieses Datensatzes zurück.
+	 * Gibt die Daten dieses Datensatzes zurÃ¼ck.
 	 * 
 	 * @return die Daten dieses Datensatzes
 	 */
@@ -207,7 +213,7 @@ public class DataTableObject {
 	}
 	
 	/**
-	 * Gibt eine Liste aller CellKeys des Datensatzes zurück.
+	 * Gibt eine Liste aller CellKeys des Datensatzes zurÃ¼ck.
 	 * 
 	 * @return 
 	 */
@@ -219,7 +225,7 @@ public class DataTableObject {
 	}
 	
 	/**
-	 * Gibt einen RowKey für den Datensatz zurück.
+	 * Gibt einen RowKey fÃ¼r den Datensatz zurÃ¼ck.
 	 * 
 	 * @return
 	 */
@@ -228,12 +234,12 @@ public class DataTableObject {
 	}
 
 	/**
-	 * Hängt an die übergebene Liste <code>theCellKeys</code> alle CellKeys, die zwischen CellKey
+	 * HÃ¤ngt an die Ã¼bergebene Liste <code>theCellKeys</code> alle CellKeys, die zwischen CellKey
 	 * <code>key1</code> und CellKey <code>key2</code> liegen.
 	 * 
 	 * @param key1 ein CellKey
 	 * @param key2 ein CellKey
-	 * @param theCellKeys die Liste, an die die CellKeys angehängt werden
+	 * @param theCellKeys die Liste, an die die CellKeys angehÃ¤ngt werden
 	 */
 	public void appendTheKeysBetween( 
 			final CellKey key1, 
@@ -258,14 +264,14 @@ public class DataTableObject {
 	}
 	
 	/**
-	 * Fügt am Ende der Liste alle die CellKeys an, die zwischen den übergebenen CellKeys
-	 * und zwischen den übergebenen Spalten liegen.
+	 * FÃ¼gt am Ende der Liste alle die CellKeys an, die zwischen den Ã¼bergebenen CellKeys
+	 * und zwischen den Ã¼bergebenen Spalten liegen.
 	 *  
 	 * @param key1 ein CellKey
 	 * @param key2 ein CellKey
 	 * @param minColumn die Anfangs-CellKeyColumn
 	 * @param maxColumn die End-CellKeyColumn
-	 * @param theCellKeys die Liste, an die die CellKeys angehängt werden
+	 * @param theCellKeys die Liste, an die die CellKeys angehÃ¤ngt werden
 	 */
 	public void appendTheKeysBetween( 
 			final CellKey key1, 
@@ -294,13 +300,13 @@ public class DataTableObject {
 	}
 	
 	/**
-	 * Fügt am Ende der Liste <code>theCellKeys</code> alle die CellKeys des Datensatzes ab dem übergebenen 
-	 * CellKey <code>key</code>, die auch zwischen den übergebenen CellKeyColumns liegen, an.
+	 * FÃ¼gt am Ende der Liste <code>theCellKeys</code> alle die CellKeys des Datensatzes ab dem Ã¼bergebenen 
+	 * CellKey <code>key</code>, die auch zwischen den Ã¼bergebenen CellKeyColumns liegen, an.
 	 * 
-	 * @param key ab diesem CellKey wird angefügt
+	 * @param key ab diesem CellKey wird angefÃ¼gt
 	 * @param minColumn die Anfangs-CellKeyColumn
 	 * @param maxColumn die End-CellKeyColumn
-	 * @param theCellKeys die Liste, an die die CellKeys angehängt werden
+	 * @param theCellKeys die Liste, an die die CellKeys angehÃ¤ngt werden
 	 */
 	public void appendTheKeysFrom( 
 			final CellKey key, 
@@ -326,12 +332,12 @@ public class DataTableObject {
 	}
 	
 	/**
-	 * Fügt am Ende der Liste alle die CellKeys des Datensatzes, die zwischen den 
-	 * übergebenen Spalten liegen, an.
+	 * FÃ¼gt am Ende der Liste alle die CellKeys des Datensatzes, die zwischen den 
+	 * Ã¼bergebenen Spalten liegen, an.
 	 * 
 	 * @param minColumn die Anfangs-CellKeyColumn
 	 * @param maxColumn die End-CellKeyColumn
-	 * @param theCellKeys theCellKeys die Liste, an die die CellKeys angehängt werden
+	 * @param theCellKeys theCellKeys die Liste, an die die CellKeys angehÃ¤ngt werden
 	 */
 	public void appendTheKeysBetween( 
 			final CellKeyColumn minColumn, 
@@ -351,13 +357,13 @@ public class DataTableObject {
 	}
 	
 	/**
-	 * Fügt am Ende der Liste <code>theCellKeys</code> alle die CellKeys des Datensatzes bis zu dem übergebenen 
-	 * CellKey <code>key</code>, die auch zwischen den übergebenen CellKeyColumns liegen, an.
+	 * FÃ¼gt am Ende der Liste <code>theCellKeys</code> alle die CellKeys des Datensatzes bis zu dem Ã¼bergebenen 
+	 * CellKey <code>key</code>, die auch zwischen den Ã¼bergebenen CellKeyColumns liegen, an.
 	 * 
-	 * @param key bis zu diesem CellKey wird angefügt
+	 * @param key bis zu diesem CellKey wird angefÃ¼gt
 	 * @param minColumn die Anfangs-CellKeyColumn
 	 * @param maxColumn die End-CellKeyColumn
-	 * @param theCellKeys die Liste, an die die CellKeys angehängt werden
+	 * @param theCellKeys die Liste, an die die CellKeys angehÃ¤ngt werden
 	 */
 	public void appendTheKeysTo( 
 			final CellKey key, 
@@ -426,7 +432,7 @@ public class DataTableObject {
 	 * Datensatz-Index besteht.
 	 * 
 	 * @author Kappich Systemberatung
-	 * @version $Revision: 8084 $
+	 * @version $Revision$
 	 *
 	 */
 	public class DataTableObjectId {
@@ -435,7 +441,7 @@ public class DataTableObject {
 		
 		/**
 		 * Konstruiert ein DataTableObjectId aus einem DataTableObject, indem es Systemobject-Id und 
-		 * Datensatz-Index übernimmt. 
+		 * Datensatz-Index Ã¼bernimmt. 
 		 * 
 		 * @param dataTableObject ein Datensatz
 		 */

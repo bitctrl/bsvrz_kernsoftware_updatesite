@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.fileaccess;
@@ -24,7 +30,7 @@ package de.bsvrz.puk.config.configFile.fileaccess;
 * Bildet einen Dateipointer aif ein Objekt in einer Konfigurationsdatei ab
 *
 * @author Kappich Systemberatung
-* @version $Revision: 13218 $
+* @version $Revision$
 */
 public final class FilePointer implements ObjectReference {
 
@@ -43,8 +49,8 @@ public final class FilePointer implements ObjectReference {
 		if(position > 0) {
 			// Es handelt sich um dynamisches Objekt, das sich in der dyn. nGa Menge befindet.
 			// Die relative Positionsangabe bezieht sich auf den Beginn des dyn. nGa Bereichs.
-			// Die relative Position ist immer um +1 erhöht worden, damit wurde eine "doppelte 0" verhindert.
-			// Die "0" gehört zu den Konfigurationsobjekten.
+			// Die relative Position ist immer um +1 erhÃ¶ht worden, damit wurde eine "doppelte 0" verhindert.
+			// Die "0" gehÃ¶rt zu den Konfigurationsobjekten.
 			pointer = new FilePointer(((file.getStartOldDynamicObjects() + file.getHeaderEnd()) + position) - 1);
 		}
 		else {

@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.config;
@@ -23,54 +29,54 @@ package de.bsvrz.dav.daf.main.config;
 import java.util.List;
 
 /**
- * Schnittstelle zum Zugriff auf die beschreibenden Informationen und Einschränkungen von Mengen-Typen. Zu
+ * Schnittstelle zum Zugriff auf die beschreibenden Informationen und EinschrÃ¤nkungen von Mengen-Typen. Zu
  * jedem Mengen-Typ wird konfiguriert welcher Name eine Menge dieses Typs haben muss, welche Typen von
- * Objekten enthalten sein dürfen, wieviele Objekte mindestens und höchstens enthalten sein müssen bzw.
- * dürfen, ob eine Menge an den entsprechenden Objekten vorhanden sein muss oder darf und ob eine Menge dieses
+ * Objekten enthalten sein dÃ¼rfen, wieviele Objekte mindestens und hÃ¶chstens enthalten sein mÃ¼ssen bzw.
+ * dÃ¼rfen, ob eine Menge an den entsprechenden Objekten vorhanden sein muss oder darf und ob eine Menge dieses
  * Typs konfigurierend oder dynamisch ist.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
  * @author Stephan Homeyer (sth)
- * @version $Revision: 5052 $ / $Date: 2007-08-31 20:02:55 +0200 (Fri, 31 Aug 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public interface ObjectSetType extends ConfigurationObjectType {
 	/**
-	 * Liefert eine Liste von {@link SystemObjectType Objekt-Typen} zurück, die in Mengen dieses Typs verwendet
-	 * werden können.
+	 * Liefert eine Liste von {@link SystemObjectType Objekt-Typen} zurÃ¼ck, die in Mengen dieses Typs verwendet
+	 * werden kÃ¶nnen.
 	 *
 	 * @return Liste von Typ-Objekten.
 	 */
 	public List<SystemObjectType> getObjectTypes();
 
 	/**
-	 * Liefert die Anzahl von Objekten, die mindestens in der Menge vorhanden sein müssen.
+	 * Liefert die Anzahl von Objekten, die mindestens in der Menge vorhanden sein mÃ¼ssen.
 	 *
 	 * @return Anzahl der mindestens in der Menge geforderten Objekte
 	 */
 	public int getMinimumElementCount();
 
 	/**
-	 * Liefert die Anzahl von Objekten, die höchstens in der Menge vorhanden sein dürfen.
+	 * Liefert die Anzahl von Objekten, die hÃ¶chstens in der Menge vorhanden sein dÃ¼rfen.
 	 *
-	 * @return Anzahl der höchstens in der Menge erlaubten Objekte oder <code>0</code> falls die Anzahl
+	 * @return Anzahl der hÃ¶chstens in der Menge erlaubten Objekte oder <code>0</code> falls die Anzahl
 	 *         unbegrenzt ist.
 	 */
 	public int getMaximumElementCount();
 
 	/**
-	 * Liefert zurück, ob eine Menge dieses Typs online änderbar ist. Mengen, deren Typ vom Typ DynamischeMenge
-	 * abgeleitet ist, sind online änderbar, d.h. es können Objekte online hinzugefügt und entfernt werden.
-	 * Mengen, deren Typ vom Typ KonfigurationsMenge abgeleitet ist, sind nicht online änderbar, d.h. nur mit
-	 * einer neuen Konfigurationsversion können Objekte hinzugefügt und entfernt werden.
+	 * Liefert zurÃ¼ck, ob eine Menge dieses Typs online Ã¤nderbar ist. Mengen, deren Typ vom Typ DynamischeMenge
+	 * abgeleitet ist, sind online Ã¤nderbar, d.h. es kÃ¶nnen Objekte online hinzugefÃ¼gt und entfernt werden.
+	 * Mengen, deren Typ vom Typ KonfigurationsMenge abgeleitet ist, sind nicht online Ã¤nderbar, d.h. nur mit
+	 * einer neuen Konfigurationsversion kÃ¶nnen Objekte hinzugefÃ¼gt und entfernt werden.
 	 *
-	 * @return <code>true</code>, wenn die Menge online änderbar ist;<br> <code>false</code>, wenn die Menge
-	 *         nicht online änderbar ist.
+	 * @return <code>true</code>, wenn die Menge online Ã¤nderbar ist;<br> <code>false</code>, wenn die Menge
+	 *         nicht online Ã¤nderbar ist.
 	 */
 	public boolean isMutable();
 
 	/**
-	 * Liefert die Referenzierungsart des Mengen-Typs zurück. Von der Konfiguration werden folgende
+	 * Liefert die Referenzierungsart des Mengen-Typs zurÃ¼ck. Von der Konfiguration werden folgende
 	 * Referenzierungsarten unterschieden: <ul> <li>Gerichtete Assoziation</li> <li>Aggregation</li>
 	 * <li>Komposition</li> </ul>
 	 *

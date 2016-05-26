@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.preselection.panel;
@@ -26,6 +32,7 @@ import de.bsvrz.dav.daf.main.config.Aspect;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dav.daf.main.config.SystemObjectType;
+import de.bsvrz.pat.sysbed.main.GenericTestMonitorApplication;
 import de.bsvrz.pat.sysbed.preselection.lists.PreselectionLists;
 import de.bsvrz.pat.sysbed.preselection.lists.PreselectionListsFilter;
 import de.bsvrz.pat.sysbed.preselection.lists.PreselectionListsListener;
@@ -41,15 +48,15 @@ import java.util.List;
 
 /**
  * Klasse die einen modalen Dialog zur Objektauswahl anzeigt. Im Dialog wird neben einem {@link PreselectionLists Panel zur Objektauswahl} und einem optionalem
- * {@link PreselectionTree Baum mit Filtermöglichkeiten} (wird im Konstruktor festgelegt) auch ein OK-Button und ein Cancel-Button angezeigt. Über entsprechende
- * Methoden kann eingestellt werden, wieviele Objekte, Typen, Attributgruppen und Aspekte mindestens bzw. höchstens ausgewählt werden müssen respektive können.
- * Außerdem kann durch die Vorgabe einer Liste von zu unterstützenden Aspekten die Wahl der Attributgruppen eingeschränkt werden. Der OK-Button wird nur
- * aktiviert, wenn alle Einschränkungen erfüllt sind. Vorzuselektierende Objekte, Typen, Attributgruppen und Aspekte können mit ensprechenden Methoden übergeben
- * werden. Mit der Methode {@link #show()} wird der Dialog im Modalen Zustand angezeigt und danach können mit entsprechenden Abfragemethoden die selektierten
+ * {@link PreselectionTree Baum mit FiltermÃ¶glichkeiten} (wird im Konstruktor festgelegt) auch ein OK-Button und ein Cancel-Button angezeigt. Ãœber entsprechende
+ * Methoden kann eingestellt werden, wieviele Objekte, Typen, Attributgruppen und Aspekte mindestens bzw. hÃ¶chstens ausgewÃ¤hlt werden mÃ¼ssen respektive kÃ¶nnen.
+ * AuÃŸerdem kann durch die Vorgabe einer Liste von zu unterstÃ¼tzenden Aspekten die Wahl der Attributgruppen eingeschrÃ¤nkt werden. Der OK-Button wird nur
+ * aktiviert, wenn alle EinschrÃ¤nkungen erfÃ¼llt sind. Vorzuselektierende Objekte, Typen, Attributgruppen und Aspekte kÃ¶nnen mit ensprechenden Methoden Ã¼bergeben
+ * werden. Mit der Methode {@link #show()} wird der Dialog im Modalen Zustand angezeigt und danach kÃ¶nnen mit entsprechenden Abfragemethoden die selektierten
  * Objekte, Typen, Attributgruppen und Aspekte abgefragt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
+ * @version $Revision$
  * @see PreselectionPanel
  * @see PreselectionLists
  * @see de.bsvrz.pat.sysbed.preselection.tree.PreselectionTree
@@ -84,7 +91,7 @@ public class PreselectionDialog {
 	 * Erzeugt einen neuen modalen Objektauswahldialog. Es werden nur Objekte eines vorgegebenen Typs zur Auswahl im Dialog angeboten.
 	 *
 	 * @param title           Titel des Dialogfensters
-	 * @param parentComponent Bezugskomponente in einem Fenster oder Dialog auf das sich dieser Dialog beziehen soll oder <code>null</code>, wenn er unabhängig von
+	 * @param parentComponent Bezugskomponente in einem Fenster oder Dialog auf das sich dieser Dialog beziehen soll oder <code>null</code>, wenn er unabhÃ¤ngig von
 	 *                        anderen Fenstern erzeugt und positioniert werden soll.
 	 * @param listsFilter     Objekt zum Filtern der Objektauswahlmenge
 	 * @param filterType      Typ der Objekte, die zur Auswahl angeboten werden sollen.
@@ -96,10 +103,10 @@ public class PreselectionDialog {
 	}
 
 	/**
-	 * Erzeugt einen neuen modalen Objektauswahldialog. Die Typen der im Dialog zur Auswahl angebotenen Objekte können vorgegeben werden.
+	 * Erzeugt einen neuen modalen Objektauswahldialog. Die Typen der im Dialog zur Auswahl angebotenen Objekte kÃ¶nnen vorgegeben werden.
 	 *
 	 * @param title           Titel des Dialogfensters
-	 * @param parentComponent Bezugskomponente in einem Fenster oder Dialog auf das sich dieser Dialog beziehen soll oder <code>null</code>, wenn er unabhängig von
+	 * @param parentComponent Bezugskomponente in einem Fenster oder Dialog auf das sich dieser Dialog beziehen soll oder <code>null</code>, wenn er unabhÃ¤ngig von
 	 *                        anderen Fenstern erzeugt und positioniert werden soll.
 	 * @param listsFilter     Objekt zum Filtern der Objektauswahlmenge
 	 * @param filterTypes     Typen der Objekte, die zur Auswahl angeboten werden sollen.
@@ -111,10 +118,10 @@ public class PreselectionDialog {
 	}
 
 	/**
-	 * Erzeugt einen neuen modalen Objektauswahldialog. Die Typen der im Dialog zur Auswahl angebotenen Objekte können vorgegeben werden.
+	 * Erzeugt einen neuen modalen Objektauswahldialog. Die Typen der im Dialog zur Auswahl angebotenen Objekte kÃ¶nnen vorgegeben werden.
 	 *
 	 * @param title           Titel des Dialogfensters
-	 * @param parentComponent Bezugskomponente in einem Fenster oder Dialog auf das sich dieser Dialog beziehen soll oder <code>null</code>, wenn er unabhängig von
+	 * @param parentComponent Bezugskomponente in einem Fenster oder Dialog auf das sich dieser Dialog beziehen soll oder <code>null</code>, wenn er unabhÃ¤ngig von
 	 *                        anderen Fenstern erzeugt und positioniert werden soll.
 	 * @param listsFilter     Objekt zum Filtern der Objektauswahlmenge
 	 * @param filterTypes     Typen der Objekte, die zur Auswahl angeboten werden sollen.
@@ -124,11 +131,11 @@ public class PreselectionDialog {
 	}
 
 	/**
-	 * Erzeugt einen neuen modalen Objektauswahldialog. Es werden nur Objekte eines vorgegebenen Typs zur Auswahl im Dialog angeboten. Es besteht die Möglichkeit
-	 * einen {@link de.bsvrz.pat.sysbed.preselection.tree.PreselectionTree Baum mit Filtermöglichkeiten} anzuzeigen.
+	 * Erzeugt einen neuen modalen Objektauswahldialog. Es werden nur Objekte eines vorgegebenen Typs zur Auswahl im Dialog angeboten. Es besteht die MÃ¶glichkeit
+	 * einen {@link de.bsvrz.pat.sysbed.preselection.tree.PreselectionTree Baum mit FiltermÃ¶glichkeiten} anzuzeigen.
 	 *
 	 * @param title           Titel des Dialogfensters
-	 * @param parentComponent Bezugskomponente in einem Fenster oder Dialog auf das sich dieser Dialog beziehen soll oder <code>null</code>, wenn er unabhängig von
+	 * @param parentComponent Bezugskomponente in einem Fenster oder Dialog auf das sich dieser Dialog beziehen soll oder <code>null</code>, wenn er unabhÃ¤ngig von
 	 *                        anderen Fenstern erzeugt und positioniert werden soll.
 	 * @param listsFilter     Objekt zum Filtern der Objektauswahlmenge
 	 * @param filterType      Typ der Objekte, die zur Auswahl angeboten werden sollen.
@@ -147,11 +154,11 @@ public class PreselectionDialog {
 	}
 
 	/**
-	 * Erzeugt einen neuen modalen Objektauswahldialog. Die Typen der im Dialog zur Auswahl angebotenen Objekte können vorgegeben werden. Es besteht die
-	 * Möglichkeit einen {@link de.bsvrz.pat.sysbed.preselection.tree.PreselectionTree Baum mit Filtermöglichkeiten} anzuzeigen.
+	 * Erzeugt einen neuen modalen Objektauswahldialog. Die Typen der im Dialog zur Auswahl angebotenen Objekte kÃ¶nnen vorgegeben werden. Es besteht die
+	 * MÃ¶glichkeit einen {@link de.bsvrz.pat.sysbed.preselection.tree.PreselectionTree Baum mit FiltermÃ¶glichkeiten} anzuzeigen.
 	 *
 	 * @param title           Titel des Dialogfensters
-	 * @param parentComponent Bezugskomponente in einem Fenster oder Dialog auf das sich dieser Dialog beziehen soll oder <code>null</code>, wenn er unabhängig von
+	 * @param parentComponent Bezugskomponente in einem Fenster oder Dialog auf das sich dieser Dialog beziehen soll oder <code>null</code>, wenn er unabhÃ¤ngig von
 	 *                        anderen Fenstern erzeugt und positioniert werden soll.
 	 * @param listsFilter     Objekt zum Filtern der Objektauswahlmenge
 	 * @param filterTypes     Typen der Objekte, die zur Auswahl angeboten werden sollen.
@@ -170,11 +177,11 @@ public class PreselectionDialog {
 	}
 
 	/**
-	 * Erzeugt einen neuen modalen Objektauswahldialog. Die Typen der im Dialog zur Auswahl angebotenen Objekte können vorgegeben werden. Es besteht die
-	 * Möglichkeit einen {@link de.bsvrz.pat.sysbed.preselection.tree.PreselectionTree Baum mit Filtermöglichkeiten} anzuzeigen.
+	 * Erzeugt einen neuen modalen Objektauswahldialog. Die Typen der im Dialog zur Auswahl angebotenen Objekte kÃ¶nnen vorgegeben werden. Es besteht die
+	 * MÃ¶glichkeit einen {@link de.bsvrz.pat.sysbed.preselection.tree.PreselectionTree Baum mit FiltermÃ¶glichkeiten} anzuzeigen.
 	 *
 	 * @param title           Titel des Dialogfensters
-	 * @param parentComponent Bezugskomponente in einem Fenster oder Dialog auf das sich dieser Dialog beziehen soll oder <code>null</code>, wenn er unabhängig von
+	 * @param parentComponent Bezugskomponente in einem Fenster oder Dialog auf das sich dieser Dialog beziehen soll oder <code>null</code>, wenn er unabhÃ¤ngig von
 	 *                        anderen Fenstern erzeugt und positioniert werden soll.
 	 * @param listsFilter     Objekt zum Filtern der Objektauswahlmenge
 	 * @param filterTypes     Typen der Objekte, die zur Auswahl angeboten werden sollen.
@@ -189,7 +196,7 @@ public class PreselectionDialog {
 			final Collection treeNodes,
 			final ClientDavInterface connection
 	) {
-		_dialog = createDialog(title, parentComponent);
+		_dialog = createDialog(GenericTestMonitorApplication.getTitle(title, connection), parentComponent);
 		final JPanel preselectionPanel = new JPanel(new BorderLayout());
 		if(treeNodes == null || connection == null) {	// ohne PreselectionTree anzeigen
 			_preselectionLists = new PreselectionLists();
@@ -207,7 +214,7 @@ public class PreselectionDialog {
 		}
 		_dialog.getContentPane().add(preselectionPanel, BorderLayout.CENTER);
 
-		// untere Buttons einfügen
+		// untere Buttons einfÃ¼gen
 		final Box buttonBox = createButtonBox();
 		_dialog.getContentPane().add(buttonBox, BorderLayout.SOUTH);
 
@@ -220,8 +227,8 @@ public class PreselectionDialog {
 	}
 
 	/**
-	 * Erzeugt eine Box mit OK-Button und Abbrechen-Button für den Dialog. Hier findet eine Anmeldung auf Änderungen der Auwahl in den Listen statt. Abhängig von
-	 * der Auswahl und den eingestellten Einschränkungen wird der OK-Button enabled oder mit einer entsprechenden Begründung im Tooltip des Buttons disabled.
+	 * Erzeugt eine Box mit OK-Button und Abbrechen-Button fÃ¼r den Dialog. Hier findet eine Anmeldung auf Ã„nderungen der Auwahl in den Listen statt. AbhÃ¤ngig von
+	 * der Auswahl und den eingestellten EinschrÃ¤nkungen wird der OK-Button enabled oder mit einer entsprechenden BegrÃ¼ndung im Tooltip des Buttons disabled.
 	 *
 	 * @return Box mit OK-Button und Abbrechen-Button.
 	 */
@@ -262,73 +269,73 @@ public class PreselectionDialog {
 						if(selectedObjects.size() < getMinimumSelectedObjects()) {
 							enable = false;
 							if(getMinimumSelectedObjects() == 1) {
-								disableCause += "mindestens ein Objekt ausgewählt werden muss";
+								disableCause += "mindestens ein Objekt ausgewÃ¤hlt werden muss";
 							}
 							else {
-								disableCause += "mindestens " + getMinimumSelectedObjects() + " Objekte ausgewählt werden müssen";
+								disableCause += "mindestens " + getMinimumSelectedObjects() + " Objekte ausgewÃ¤hlt werden mÃ¼ssen";
 							}
 						}
 						else if(selectedObjectTypes.size() < getMinimumSelectedObjectTypes()) {
 							enable = false;
 							if(getMinimumSelectedObjectTypes() == 1) {
-								disableCause += "mindestens ein Typ ausgewählt werden muss";
+								disableCause += "mindestens ein Typ ausgewÃ¤hlt werden muss";
 							}
 							else {
-								disableCause += "mindestens " + getMinimumSelectedObjectTypes() + " Typen ausgewählt werden müssen  ";
+								disableCause += "mindestens " + getMinimumSelectedObjectTypes() + " Typen ausgewÃ¤hlt werden mÃ¼ssen  ";
 							}
 						}
 						else if(selectedAttributeGroups.size() < getMinimumSelectedAttributeGroups()) {
 							enable = false;
 							if(getMinimumSelectedAttributeGroups() == 1) {
-								disableCause += "mindestens eine Attributgruppe ausgewählt werden muss";
+								disableCause += "mindestens eine Attributgruppe ausgewÃ¤hlt werden muss";
 							}
 							else {
-								disableCause += "mindestens " + getMinimumSelectedObjects() + " Attributgruppen ausgewählt werden müssen";
+								disableCause += "mindestens " + getMinimumSelectedObjects() + " Attributgruppen ausgewÃ¤hlt werden mÃ¼ssen";
 							}
 						}
 						else if(selectedAspects.size() < getMinimumSelectedAspects()) {
 							enable = false;
 							if(getMinimumSelectedAspects() == 1) {
-								disableCause += "mindestens ein Aspekt ausgewählt werden muss";
+								disableCause += "mindestens ein Aspekt ausgewÃ¤hlt werden muss";
 							}
 							else {
-								disableCause += "mindestens " + getMinimumSelectedAspects() + " Aspekte ausgewählt werden müssen";
+								disableCause += "mindestens " + getMinimumSelectedAspects() + " Aspekte ausgewÃ¤hlt werden mÃ¼ssen";
 							}
 						}
 						else if(selectedObjects.size() > getMaximumSelectedObjects()) {
 							enable = false;
 							if(getMaximumSelectedObjects() == 1) {
-								disableCause += "höchstens ein Objekt ausgewählt werden darf";
+								disableCause += "hÃ¶chstens ein Objekt ausgewÃ¤hlt werden darf";
 							}
 							else {
-								disableCause += "höchstens " + getMaximumSelectedObjects() + " Objekte ausgewählt werden dürfen";
+								disableCause += "hÃ¶chstens " + getMaximumSelectedObjects() + " Objekte ausgewÃ¤hlt werden dÃ¼rfen";
 							}
 						}
 						else if(selectedObjectTypes.size() > getMaximumSelectedObjectTypes()) {
 							enable = false;
 							if(getMaximumSelectedObjectTypes() == 1) {
-								disableCause += "höchstens ein Typ ausgewählt werden muss";
+								disableCause += "hÃ¶chstens ein Typ ausgewÃ¤hlt werden muss";
 							}
 							else {
-								disableCause += "höchstens " + getMaximumSelectedObjectTypes() + " Typen ausgewählt werden dürfen";
+								disableCause += "hÃ¶chstens " + getMaximumSelectedObjectTypes() + " Typen ausgewÃ¤hlt werden dÃ¼rfen";
 							}
 						}
 						else if(selectedAttributeGroups.size() > getMaximumSelectedAttributeGroups()) {
 							enable = false;
 							if(getMaximumSelectedAttributeGroups() == 1) {
-								disableCause += "höchstens eine Attributgruppe ausgewählt werden darf";
+								disableCause += "hÃ¶chstens eine Attributgruppe ausgewÃ¤hlt werden darf";
 							}
 							else {
-								disableCause += "höchstens " + getMaximumSelectedAttributeGroups() + " Attributgruppen ausgewählt werden dürfen";
+								disableCause += "hÃ¶chstens " + getMaximumSelectedAttributeGroups() + " Attributgruppen ausgewÃ¤hlt werden dÃ¼rfen";
 							}
 						}
 						else if(selectedAspects.size() > getMaximumSelectedAspects()) {
 							enable = false;
 							if(getMaximumSelectedAspects() == 1) {
-								disableCause += "höchstens ein Aspekt ausgewählt werden darf";
+								disableCause += "hÃ¶chstens ein Aspekt ausgewÃ¤hlt werden darf";
 							}
 							else {
-								disableCause += "höchstens " + getMaximumSelectedAspects() + " Aspekte ausgewählt werden dürfen";
+								disableCause += "hÃ¶chstens " + getMaximumSelectedAspects() + " Aspekte ausgewÃ¤hlt werden dÃ¼rfen";
 							}
 						}
 						else {
@@ -336,7 +343,7 @@ public class PreselectionDialog {
 						}
 						okButton.setEnabled(enable);
 						if(enable) {
-							okButton.setToolTipText("Auswahl übernehmen");
+							okButton.setToolTipText("Auswahl Ã¼bernehmen");
 						}
 						else {
 							disableCause += ".";
@@ -349,12 +356,12 @@ public class PreselectionDialog {
 	}
 
 	/**
-	 * Erzeugt das {@link JDialog}-Objekt, das für den Dialog benutzt werden soll. Es erhält einen entsprechenden Titel und wird relativ zur Bezugskomponente aus
+	 * Erzeugt das {@link JDialog}-Objekt, das fÃ¼r den Dialog benutzt werden soll. Es erhÃ¤lt einen entsprechenden Titel und wird relativ zur Bezugskomponente aus
 	 * einem anderen Fenster dargestellt.
 	 *
 	 * @param title           Titel des Dialogfensters
 	 * @param parentComponent Bezugskomponente im einem Fenster oder einem Dialog auf das sich dieser Dialog beziehen soll oder <code>null</code>, wenn der Dialog
-	 *                        unabhängig von anderen Fenstern erzeugt und positioniert werden soll.
+	 *                        unabhÃ¤ngig von anderen Fenstern erzeugt und positioniert werden soll.
 	 *
 	 * @return Neu erzeugtes JDialog-Objekt, dass relativ zur Bezugskomponente positioniert ist.
 	 */
@@ -375,36 +382,36 @@ public class PreselectionDialog {
 	}
 
 	/**
-	 * Bestimmt die minimale Anzahl auszuwählender Objekttypen.
+	 * Bestimmt die minimale Anzahl auszuwÃ¤hlender Objekttypen.
 	 *
-	 * @return Minimale Anzahl auszuwählender Objekttypen.
+	 * @return Minimale Anzahl auszuwÃ¤hlender Objekttypen.
 	 */
 	public int getMinimumSelectedObjectTypes() {
 		return _minimumSelectedObjectTypes;
 	}
 
 	/**
-	 * Setzt die minimale Anzahl auszuwählender Objekttypen. Wenn die Methode nicht aufgerufen wird, dann wird als Defaultwert 0 benutzt.
+	 * Setzt die minimale Anzahl auszuwÃ¤hlender Objekttypen. Wenn die Methode nicht aufgerufen wird, dann wird als Defaultwert 0 benutzt.
 	 *
-	 * @param minimumSelectedObjectTypes Minimale Anzahl auszuwählender Objekttypen.
+	 * @param minimumSelectedObjectTypes Minimale Anzahl auszuwÃ¤hlender Objekttypen.
 	 */
 	public void setMinimumSelectedObjectTypes(int minimumSelectedObjectTypes) {
 		_minimumSelectedObjectTypes = minimumSelectedObjectTypes;
 	}
 
 	/**
-	 * Bestimmt die maximale Anzahl auszuwählender Objekttypen.
+	 * Bestimmt die maximale Anzahl auszuwÃ¤hlender Objekttypen.
 	 *
-	 * @return Maximale Anzahl auszuwählender Objekttypen.
+	 * @return Maximale Anzahl auszuwÃ¤hlender Objekttypen.
 	 */
 	public int getMaximumSelectedObjectTypes() {
 		return _maximumSelectedObjectTypes;
 	}
 
 	/**
-	 * Setzt die maximale Anzahl auszuwählender Objekttypen. Wenn die Methode nicht aufgerufen wird, dann wird als Defaultwert {@link Integer#MAX_VALUE} benutzt.
+	 * Setzt die maximale Anzahl auszuwÃ¤hlender Objekttypen. Wenn die Methode nicht aufgerufen wird, dann wird als Defaultwert {@link Integer#MAX_VALUE} benutzt.
 	 *
-	 * @param maximumSelectedObjectTypes Maximale Anzahl auszuwählender Objekttypen.
+	 * @param maximumSelectedObjectTypes Maximale Anzahl auszuwÃ¤hlender Objekttypen.
 	 */
 	public void setMaximumSelectedObjectTypes(int maximumSelectedObjectTypes) {
 		_maximumSelectedObjectTypes = maximumSelectedObjectTypes;
@@ -414,36 +421,36 @@ public class PreselectionDialog {
 	}
 
 	/**
-	 * Bestimmt die minimale Anzahl auszuwählender Objekte.
+	 * Bestimmt die minimale Anzahl auszuwÃ¤hlender Objekte.
 	 *
-	 * @return Minimale Anzahl auszuwählender Objekte.
+	 * @return Minimale Anzahl auszuwÃ¤hlender Objekte.
 	 */
 	public int getMinimumSelectedObjects() {
 		return _minimumSelectedObjects;
 	}
 
 	/**
-	 * Setzt die minimale Anzahl auszuwählender Objekte. Wenn die Methode nicht aufgerufen wird, dann wird als Defaultwert 1 benutzt.
+	 * Setzt die minimale Anzahl auszuwÃ¤hlender Objekte. Wenn die Methode nicht aufgerufen wird, dann wird als Defaultwert 1 benutzt.
 	 *
-	 * @param minimumSelectedObjects Minimale Anzahl auszuwählender Objekte.
+	 * @param minimumSelectedObjects Minimale Anzahl auszuwÃ¤hlender Objekte.
 	 */
 	public void setMinimumSelectedObjects(int minimumSelectedObjects) {
 		_minimumSelectedObjects = minimumSelectedObjects;
 	}
 
 	/**
-	 * Bestimmt die maximale Anzahl auszuwählender Objekte.
+	 * Bestimmt die maximale Anzahl auszuwÃ¤hlender Objekte.
 	 *
-	 * @return Maximale Anzahl auszuwählender Objekte.
+	 * @return Maximale Anzahl auszuwÃ¤hlender Objekte.
 	 */
 	public int getMaximumSelectedObjects() {
 		return _maximumSelectedObjects;
 	}
 
 	/**
-	 * Setzt die maximale Anzahl auszuwählender Objekte. Wenn die Methode nicht aufgerufen wird, dann wird als Defaultwert {@link Integer#MAX_VALUE} benutzt.
+	 * Setzt die maximale Anzahl auszuwÃ¤hlender Objekte. Wenn die Methode nicht aufgerufen wird, dann wird als Defaultwert {@link Integer#MAX_VALUE} benutzt.
 	 *
-	 * @param maximumSelectedObjects Maximale Anzahl auszuwählender Objekte.
+	 * @param maximumSelectedObjects Maximale Anzahl auszuwÃ¤hlender Objekte.
 	 */
 	public void setMaximumSelectedObjects(int maximumSelectedObjects) {
 		_maximumSelectedObjects = maximumSelectedObjects;
@@ -453,37 +460,37 @@ public class PreselectionDialog {
 	}
 
 	/**
-	 * Bestimmt die minimale Anzahl auszuwählender Attributgruppen.
+	 * Bestimmt die minimale Anzahl auszuwÃ¤hlender Attributgruppen.
 	 *
-	 * @return Minimale Anzahl auszuwählender Attributgruppen.
+	 * @return Minimale Anzahl auszuwÃ¤hlender Attributgruppen.
 	 */
 	public int getMinimumSelectedAttributeGroups() {
 		return _minimumSelectedAttributeGroups;
 	}
 
 	/**
-	 * Setzt die minimale Anzahl auszuwählender Attributgruppen. Wenn die Methode nicht aufgerufen wird, dann wird als Defaultwert 0 benutzt.
+	 * Setzt die minimale Anzahl auszuwÃ¤hlender Attributgruppen. Wenn die Methode nicht aufgerufen wird, dann wird als Defaultwert 0 benutzt.
 	 *
-	 * @param minimumSelectedAttributeGroups Minimale Anzahl auszuwählender Attributgruppen.
+	 * @param minimumSelectedAttributeGroups Minimale Anzahl auszuwÃ¤hlender Attributgruppen.
 	 */
 	public void setMinimumSelectedAttributeGroups(int minimumSelectedAttributeGroups) {
 		_minimumSelectedAttributeGroups = minimumSelectedAttributeGroups;
 	}
 
 	/**
-	 * Bestimmt die maximale Anzahl auszuwählender Attributgruppen.
+	 * Bestimmt die maximale Anzahl auszuwÃ¤hlender Attributgruppen.
 	 *
-	 * @return Maximale Anzahl auszuwählender Attributgruppen.
+	 * @return Maximale Anzahl auszuwÃ¤hlender Attributgruppen.
 	 */
 	public int getMaximumSelectedAttributeGroups() {
 		return _maximumSelectedAttributeGroups;
 	}
 
 	/**
-	 * Setzt die maximale Anzahl auszuwählender Attributgruppen. Wenn die Methode nicht aufgerufen wird, dann wird als Defaultwert {@link Integer#MAX_VALUE}
+	 * Setzt die maximale Anzahl auszuwÃ¤hlender Attributgruppen. Wenn die Methode nicht aufgerufen wird, dann wird als Defaultwert {@link Integer#MAX_VALUE}
 	 * benutzt.
 	 *
-	 * @param maximumSelectedAttributeGroups Maximale Anzahl auszuwählender Attributgruppen.
+	 * @param maximumSelectedAttributeGroups Maximale Anzahl auszuwÃ¤hlender Attributgruppen.
 	 */
 	public void setMaximumSelectedAttributeGroups(int maximumSelectedAttributeGroups) {
 		if(_maximumSelectedAttributeGroups == 0 && maximumSelectedAttributeGroups != 0) _preselectionLists.showAttributeGroups(true);
@@ -495,36 +502,36 @@ public class PreselectionDialog {
 	}
 
 	/**
-	 * Bestimmt die minimale Anzahl auszuwählender Aspekte.
+	 * Bestimmt die minimale Anzahl auszuwÃ¤hlender Aspekte.
 	 *
-	 * @return Minimale Anzahl auszuwählender Aspekte.
+	 * @return Minimale Anzahl auszuwÃ¤hlender Aspekte.
 	 */
 	public int getMinimumSelectedAspects() {
 		return _minimumSelectedAspects;
 	}
 
 	/**
-	 * Setzt die minimale Anzahl auszuwählender Aspekte. Wenn die Methode nicht aufgerufen wird, dann wird als Defaultwert 0 benutzt.
+	 * Setzt die minimale Anzahl auszuwÃ¤hlender Aspekte. Wenn die Methode nicht aufgerufen wird, dann wird als Defaultwert 0 benutzt.
 	 *
-	 * @param minimumSelectedAspects Minimale Anzahl auszuwählender Aspekte.
+	 * @param minimumSelectedAspects Minimale Anzahl auszuwÃ¤hlender Aspekte.
 	 */
 	public void setMinimumSelectedAspects(int minimumSelectedAspects) {
 		_minimumSelectedAspects = minimumSelectedAspects;
 	}
 
 	/**
-	 * Bestimmt die maximale Anzahl auszuwählender Aspekte.
+	 * Bestimmt die maximale Anzahl auszuwÃ¤hlender Aspekte.
 	 *
-	 * @return Maximale Anzahl auszuwählender Aspekte.
+	 * @return Maximale Anzahl auszuwÃ¤hlender Aspekte.
 	 */
 	public int getMaximumSelectedAspects() {
 		return _maximumSelectedAspects;
 	}
 
 	/**
-	 * Setzt die maximale Anzahl auszuwählender Aspekte. Wenn die Methode nicht aufgerufen wird, dann wird als Defaultwert {@link Integer#MAX_VALUE} benutzt.
+	 * Setzt die maximale Anzahl auszuwÃ¤hlender Aspekte. Wenn die Methode nicht aufgerufen wird, dann wird als Defaultwert {@link Integer#MAX_VALUE} benutzt.
 	 *
-	 * @param maximumSelectedAspects Maximale Anzahl auszuwählender Aspekte.
+	 * @param maximumSelectedAspects Maximale Anzahl auszuwÃ¤hlender Aspekte.
 	 */
 	public void setMaximumSelectedAspects(int maximumSelectedAspects) {
 		if(_maximumSelectedAspects == 0 && maximumSelectedAspects != 0) _preselectionLists.showAspects(true);
@@ -536,7 +543,7 @@ public class PreselectionDialog {
 	}
 
 	/**
-	 * Gibt die selektierten Objekte zurück.
+	 * Gibt die selektierten Objekte zurÃ¼ck.
 	 *
 	 * @return die selektierten Objekte
 	 */
@@ -545,7 +552,7 @@ public class PreselectionDialog {
 	}
 
 	/**
-	 * Gibt die selektierten Objekt-Typen zurück.
+	 * Gibt die selektierten Objekt-Typen zurÃ¼ck.
 	 *
 	 * @return die selektierten Objekt-Typen
 	 */
@@ -554,7 +561,7 @@ public class PreselectionDialog {
 	}
 
 	/**
-	 * Gibt die selektierten Attributgruppen zurück.
+	 * Gibt die selektierten Attributgruppen zurÃ¼ck.
 	 *
 	 * @return die selektierten Attributgruppen
 	 */
@@ -563,7 +570,7 @@ public class PreselectionDialog {
 	}
 
 	/**
-	 * Gibt die selektierten Aspekte zurück.
+	 * Gibt die selektierten Aspekte zurÃ¼ck.
 	 *
 	 * @return die selektierten Aspekte
 	 */
@@ -572,7 +579,7 @@ public class PreselectionDialog {
 	}
 
 	/**
-	 * Gibt den selektierten Pfad des Baums als kommaseparierten String zurück. Jedes Objekt wird durch eine PID repräsentiert.
+	 * Gibt den selektierten Pfad des Baums als kommaseparierten String zurÃ¼ck. Jedes Objekt wird durch eine PID reprÃ¤sentiert.
 	 *
 	 * @return Pfad des Baums als kommaseparierten String
 	 */
@@ -581,79 +588,79 @@ public class PreselectionDialog {
 	}
 
 	/**
-	 * Mit dieser Methode können Objekte angegeben werden, die beim Füllen der Listen vorselektiert sein sollen.
+	 * Mit dieser Methode kÃ¶nnen Objekte angegeben werden, die beim FÃ¼llen der Listen vorselektiert sein sollen.
 	 *
-	 * @param objects Objekte, die vorselektiert sein sollen. Wird <code>null</code> übergeben, wird die Selektion gelöscht.
+	 * @param objects Objekte, die vorselektiert sein sollen. Wird <code>null</code> Ã¼bergeben, wird die Selektion gelÃ¶scht.
 	 */
 	public void setSelectedObjects(List<SystemObject> objects) {
 		_preselectionLists.setPreselectedObjects(objects);
 	}
 
 	/**
-	 * Mit dieser Methode können Objekte angegeben werden, die beim Füllen der Listen vorselektiert sein sollen.
+	 * Mit dieser Methode kÃ¶nnen Objekte angegeben werden, die beim FÃ¼llen der Listen vorselektiert sein sollen.
 	 *
-	 * @param types Objekte, die vorselektiert sein sollen. Wird <code>null</code> übergeben, wird die Selektion gelöscht.
+	 * @param types Objekte, die vorselektiert sein sollen. Wird <code>null</code> Ã¼bergeben, wird die Selektion gelÃ¶scht.
 	 */
 	public void setSelectedObjectTypes(List<SystemObjectType> types) {
 		_preselectionLists.setPreselectedObjectTypes(types);
 	}
 
 	/**
-	 * Mit dieser Methode können Attributgruppen angegeben werden, die beim Füllen der Listen vorselektiert sein sollen.
+	 * Mit dieser Methode kÃ¶nnen Attributgruppen angegeben werden, die beim FÃ¼llen der Listen vorselektiert sein sollen.
 	 *
-	 * @param attributeGroups Attributgruppen, die vorselektiert sein sollen. Wird <code>null</code> übergeben, wird die Selektion gelöscht.
+	 * @param attributeGroups Attributgruppen, die vorselektiert sein sollen. Wird <code>null</code> Ã¼bergeben, wird die Selektion gelÃ¶scht.
 	 */
 	public void setSelectedAttributeGroups(List<AttributeGroup> attributeGroups) {
 		_preselectionLists.setPreselectedAttributeGroups(attributeGroups);
 	}
 
 	/**
-	 * Mit dieser Methode können Aspekte angegeben werden, die beim Füllen der Listen vorselektiert sein sollen.
+	 * Mit dieser Methode kÃ¶nnen Aspekte angegeben werden, die beim FÃ¼llen der Listen vorselektiert sein sollen.
 	 *
-	 * @param aspects Aspekte, die vorselektiert sein sollen. Wird <code>null</code> übergeben, wird die Selektion gelöscht.
+	 * @param aspects Aspekte, die vorselektiert sein sollen. Wird <code>null</code> Ã¼bergeben, wird die Selektion gelÃ¶scht.
 	 */
 	public void setSelectedAspects(List<Aspect> aspects) {
 		_preselectionLists.setPreselectedAspects(aspects);
 	}
 
 	/**
-	 * Mit dieser Methode kann ein Objekt angegeben werden, welches beim Füllen der Listen vorselektiert sein soll.
+	 * Mit dieser Methode kann ein Objekt angegeben werden, welches beim FÃ¼llen der Listen vorselektiert sein soll.
 	 *
-	 * @param object Objekt, welches vorselektiert sein soll. Wird <code>null</code> übergeben, wird die Selektion gelöscht.
+	 * @param object Objekt, welches vorselektiert sein soll. Wird <code>null</code> Ã¼bergeben, wird die Selektion gelÃ¶scht.
 	 */
 	public void setSelectedObject(SystemObject object) {
 		setSelectedObjects(Arrays.asList(object));
 	}
 
 	/**
-	 * Mit dieser Methode kann ein Objekt-Typ angegeben werden, welcher beim Füllen der Listen vorselektiert sein soll.
+	 * Mit dieser Methode kann ein Objekt-Typ angegeben werden, welcher beim FÃ¼llen der Listen vorselektiert sein soll.
 	 *
-	 * @param type Objekt-Typ, welcher vorselektiert sein soll. Wird <code>null</code> übergeben, wird die Selektion gelöscht.
+	 * @param type Objekt-Typ, welcher vorselektiert sein soll. Wird <code>null</code> Ã¼bergeben, wird die Selektion gelÃ¶scht.
 	 */
 	public void setSelectedObjectType(SystemObjectType type) {
 		setSelectedObjectTypes(Arrays.asList(type));
 	}
 
 	/**
-	 * Mit dieser Methode kann eine Attributgruppe angegeben werden, welche beim Füllen der Listen vorselektiert sein soll.
+	 * Mit dieser Methode kann eine Attributgruppe angegeben werden, welche beim FÃ¼llen der Listen vorselektiert sein soll.
 	 *
-	 * @param attributeGroup Attributgruppe, welche vorselektiert sein soll. Wird <code>null</code> übergeben, wird die Selektion gelöscht.
+	 * @param attributeGroup Attributgruppe, welche vorselektiert sein soll. Wird <code>null</code> Ã¼bergeben, wird die Selektion gelÃ¶scht.
 	 */
 	public void setSelectedAttributeGroup(AttributeGroup attributeGroup) {
 		setSelectedAttributeGroups(Arrays.asList(attributeGroup));
 	}
 
 	/**
-	 * Mit dieser Methode kann ein Aspekt angegeben werden, welcher beim Füllen der Listen vorselektiert sein soll.
+	 * Mit dieser Methode kann ein Aspekt angegeben werden, welcher beim FÃ¼llen der Listen vorselektiert sein soll.
 	 *
-	 * @param aspect Aspekt, welcher vorselektiert sein soll. Wird <code>null</code> übergeben, wird die Selektion gelöscht.
+	 * @param aspect Aspekt, welcher vorselektiert sein soll. Wird <code>null</code> Ã¼bergeben, wird die Selektion gelÃ¶scht.
 	 */
 	public void setSelectedAspect(Aspect aspect) {
 		setSelectedAspects(Arrays.asList(aspect));
 	}
 
 	/**
-	 * Kommaseparierte PIDs werden als String übergeben, die einen Pfad im Baum des PreselectionTrees darstellen. Ist der Pfad vorhanden, dann wird er selektiert.
+	 * Kommaseparierte PIDs werden als String Ã¼bergeben, die einen Pfad im Baum des PreselectionTrees darstellen. Ist der Pfad vorhanden, dann wird er selektiert.
 	 *
 	 * @param treePath Pfad des Baums als kommaseparierten String
 	 */
@@ -667,7 +674,7 @@ public class PreselectionDialog {
 	}
 
 	/**
-	 * Gibt die Simulationsvariante zurück.
+	 * Gibt die Simulationsvariante zurÃ¼ck.
 	 *
 	 * @return die Simulationsvariante
 	 */

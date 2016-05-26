@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!ELEMENT protokoll ( kopf, koerper) >
 
@@ -44,7 +44,7 @@
 
 <!ELEMENT feld (liste|attribut)* >
 <!ATTLIST feld name CDATA #REQUIRED>
-<!ATTLIST feld länge CDATA #REQUIRED>
+<!ATTLIST feld lÃ¤nge CDATA #REQUIRED>
 
 <!ELEMENT liste (attribut|feld|liste)+ >
 <!ATTLIST liste name CDATA #IMPLIED>

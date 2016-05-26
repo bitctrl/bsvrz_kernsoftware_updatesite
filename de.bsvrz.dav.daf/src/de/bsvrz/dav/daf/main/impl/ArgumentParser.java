@@ -1,11 +1,11 @@
 /*
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl;
@@ -29,13 +35,13 @@ import java.util.ArrayList;
 public class ArgumentParser {
 
 	/** Diese Methode extrahiert von einem Argument den Wert. Das Argument muss
-	 * mit dem Schlüssel anfangen.
+	 * mit dem SchlÃ¼ssel anfangen.
 	 *
 	 *@param argument  Das zu bearbeitende Argument.
-	 *@param key  Der Schlüssel des Arguments.
+	 *@param key  Der SchlÃ¼ssel des Arguments.
 	 *@return Argument-Wert.
 	 *@throws InvalidArgumentException Wenn die eingabe parameter <code>null</code> sind oder
-	 *       wenn das Argument nicht mit dem Schlüssel anfängt.
+	 *       wenn das Argument nicht mit dem SchlÃ¼ssel anfÃ¤ngt.
 	 */
 	public static final String getParameter(String argument, String key) throws InvalidArgumentException {
 		String parameter = "";
@@ -43,26 +49,26 @@ public class ArgumentParser {
 			throw new InvalidArgumentException("Das angegebene Argument ist null");
 		}
 		if (key == null) {
-			throw new InvalidArgumentException("Der angegebene Schlüssel ist null");
+			throw new InvalidArgumentException("Der angegebene SchlÃ¼ssel ist null");
 		}
 		if (argument.startsWith(key)) {
 			parameter = argument.substring(key.length(), argument.length());
 		}
 		else {
-			throw new InvalidArgumentException("Das angegebene Argument muss mit der gegebenen Schlüssel anfangen.");
+			throw new InvalidArgumentException("Das angegebene Argument muss mit der gegebenen SchlÃ¼ssel anfangen.");
 		}
 		return parameter;
 	}
 
 	/** Diese Methode extrahiert aus einem Argument die Werte. Das Argument muss
-	 * mit dem Schlüssel anfangen und die Werte (wenn es mehrere gibt) müssen mit dem
+	 * mit dem SchlÃ¼ssel anfangen und die Werte (wenn es mehrere gibt) mÃ¼ssen mit dem
 	 * angegebenen Trennzeichen getrennt sein.
 	 *
 	 *@param argument Das zu bearbeitende Argument.
-	 *@param key Der Schlüssel des Arguments.
-	 *@param separator Trennzeichen für die Werte
-	 *@throws InvalidArgumentException  Wenn ein übergebener Parameter null ist oder
-	 *       wenn das Argument nicht mit dem Schlüssel anfängt.
+	 *@param key Der SchlÃ¼ssel des Arguments.
+	 *@param separator Trennzeichen fÃ¼r die Werte
+	 *@throws InvalidArgumentException  Wenn ein Ã¼bergebener Parameter null ist oder
+	 *       wenn das Argument nicht mit dem SchlÃ¼ssel anfÃ¤ngt.
 	 */
 	public static final String[] getParameters(String argument, String key, String separator) throws InvalidArgumentException {
 		ArrayList list = new ArrayList();
@@ -70,7 +76,7 @@ public class ArgumentParser {
 			throw new InvalidArgumentException("Das angegebene Argument ist null");
 		}
 		if (key == null) {
-			throw new InvalidArgumentException("Der angegebene Schlüssel ist null");
+			throw new InvalidArgumentException("Der angegebene SchlÃ¼ssel ist null");
 		}
 
 		if (argument.startsWith(key)) {
@@ -104,7 +110,7 @@ public class ArgumentParser {
 			return parameters;
 		}
 		else {
-			throw new InvalidArgumentException("Das angegebene Argument muss mit dem angegebenen Schlüssel anfangen.");
+			throw new InvalidArgumentException("Das angegebene Argument muss mit dem angegebenen SchlÃ¼ssel anfangen.");
 		}
 	}
 

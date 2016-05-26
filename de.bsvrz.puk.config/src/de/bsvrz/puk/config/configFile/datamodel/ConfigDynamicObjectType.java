@@ -3,13 +3,13 @@
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2008 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2006 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -18,8 +18,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -31,23 +37,23 @@ import de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformationInterfac
 import java.util.*;
 
 /**
- * Implementierung des Interfaces für den Typ von dynamischen Objekten.
+ * Implementierung des Interfaces fÃ¼r den Typ von dynamischen Objekten.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13033 $
+ * @version $Revision$
  */
 public class ConfigDynamicObjectType extends ConfigSystemObjectType implements DynamicObjectType {
 
-	/** Objekt zur Verwaltung von Anmeldungen auf Änderung der Elemente dieses Typs. */
+	/** Objekt zur Verwaltung von Anmeldungen auf Ã„nderung der Elemente dieses Typs. */
 	private ConfigMutableCollectionSupport _mutableCollectionSupport = new ConfigMutableCollectionSupport(this);
 
-	/** Enthält alle Listener, die informiert werden müssen sobald ein Objekt dieses Typs erzeugt wurde. */
+	/** EnthÃ¤lt alle Listener, die informiert werden mÃ¼ssen sobald ein Objekt dieses Typs erzeugt wurde. */
 	private final Set<DynamicObjectCreatedListener> _createdListener = new HashSet<DynamicObjectCreatedListener>();
 
-	/** Alle Listener, die informiert werden sobald sich der Name eines dynamischen Objekt ändert */
+	/** Alle Listener, die informiert werden sobald sich der Name eines dynamischen Objekt Ã¤ndert */
 	private final Set<NameChangeListener> _nameChangedListener = new HashSet<NameChangeListener>();
 
-	/** Alle Listener, die informiert werden wollen sobald ein dynamisches Objekt ungültig wird. */
+	/** Alle Listener, die informiert werden wollen sobald ein dynamisches Objekt ungÃ¼ltig wird. */
 	private final Set<InvalidationListener> _invalidationListener = new HashSet<InvalidationListener>();
 
 	private final DynamicObjectTypePublisher _dynamicObjectTypePublisher;
@@ -57,7 +63,7 @@ public class ConfigDynamicObjectType extends ConfigSystemObjectType implements D
 	 * Konstruktor erstellt den Typ eines dynamischen Objekts.
 	 *
 	 * @param configurationArea der Konfigurationsbereich des Typs
-	 * @param systemObjectInfo  das korrespondierende Objekt für die Dateioperationen des Typ-Objekts
+	 * @param systemObjectInfo  das korrespondierende Objekt fÃ¼r die Dateioperationen des Typ-Objekts
 	 * @param dynamicObjectTypePublisher
 	 */
 	public ConfigDynamicObjectType(
@@ -126,10 +132,10 @@ public class ConfigDynamicObjectType extends ConfigSystemObjectType implements D
 	}
 
 	/**
-	 * Informiert alle Listener, dass ein dynamischens Objekt ungültig geworden ist. Ist kein Listener angemeldet, wird nichts gemacht. Die Benachrichtung wird
-	 * nicht sofort, sondern asynchron durch den AsyncNotificationThread durchgeführt.
+	 * Informiert alle Listener, dass ein dynamischens Objekt ungÃ¼ltig geworden ist. Ist kein Listener angemeldet, wird nichts gemacht. Die Benachrichtung wird
+	 * nicht sofort, sondern asynchron durch den AsyncNotificationThread durchgefÃ¼hrt.
 	 *
-	 * @param newInvalidObject Objekt, das ungültig geworden ist.
+	 * @param newInvalidObject Objekt, das ungÃ¼ltig geworden ist.
 	 */
 	public void informInvalidationListener(DynamicObject newInvalidObject) {
 		final boolean isLocalDynamicObject = newInvalidObject instanceof ConfigDynamicObject;
@@ -149,10 +155,10 @@ public class ConfigDynamicObjectType extends ConfigSystemObjectType implements D
 	}
 
 	/**
-	 * Informiert alle Listener, die sich auf Namenänderungen angemeldet haben. Ist kein Listener vorhanden wird nichts gemacht. Die Benachrichtung wird nicht
-	 * sofort, sondern asynchron durch den AsyncNotificationThread durchgeführt.
+	 * Informiert alle Listener, die sich auf NamenÃ¤nderungen angemeldet haben. Ist kein Listener vorhanden wird nichts gemacht. Die Benachrichtung wird nicht
+	 * sofort, sondern asynchron durch den AsyncNotificationThread durchgefÃ¼hrt.
 	 *
-	 * @param newNamedObject Objekt, dessen Name geändert wurde.
+	 * @param newNamedObject Objekt, dessen Name geÃ¤ndert wurde.
 	 */
 	public void informNameChangedListener(DynamicObject newNamedObject) {
 		final boolean isLocalDynamicObject = newNamedObject instanceof ConfigDynamicObject;
@@ -173,8 +179,8 @@ public class ConfigDynamicObjectType extends ConfigSystemObjectType implements D
 	}
 
 	/**
-	 * Diese Methode wird aufgerufen, wenn ein neues Objekt angelegt wurde und informiert alle Listener, die auf Änderungen dieser Art angemeldet sind. Ist kein
-	 * Listener vorhanden wird nichts gemacht. Die Benachrichtung wird nicht sofort, sondern asynchron durch den AsyncNotificationThread durchgeführt.
+	 * Diese Methode wird aufgerufen, wenn ein neues Objekt angelegt wurde und informiert alle Listener, die auf Ã„nderungen dieser Art angemeldet sind. Ist kein
+	 * Listener vorhanden wird nichts gemacht. Die Benachrichtung wird nicht sofort, sondern asynchron durch den AsyncNotificationThread durchgefÃ¼hrt.
 	 *
 	 * @param createdObject     Objekt, das neu erzeugt wurde.
 	 * @param simulationVariant Simulationsvariante unter der das Objekt erzeugt wurde.
@@ -194,7 +200,7 @@ public class ConfigDynamicObjectType extends ConfigSystemObjectType implements D
 	}
 
 	/**
-	 * Speichert neue Objekte dieses Typs und stößt die Benachrichtigung der Listener an, die sich auf Änderungen der Elemente angemeldet haben.
+	 * Speichert neue Objekte dieses Typs und stÃ¶ÃŸt die Benachrichtigung der Listener an, die sich auf Ã„nderungen der Elemente angemeldet haben.
 	 *
 	 * @param createdObject     Neu erzeugtes Objekt
 	 * @param simulationVariant Simulationsvariante unter der das Objekt erzeugt wurde.
@@ -213,9 +219,9 @@ public class ConfigDynamicObjectType extends ConfigSystemObjectType implements D
 	}
 
 	/**
-	 * Entfernt ein gelöschtes Element dieses Typs und stößt die Benachrichtigung der Listener an, die sich auf Änderungen der Elemente angemeldet haben.
+	 * Entfernt ein gelÃ¶schtes Element dieses Typs und stÃ¶ÃŸt die Benachrichtigung der Listener an, die sich auf Ã„nderungen der Elemente angemeldet haben.
 	 *
-	 * @param invalidatedObject gelöschtes Objekt
+	 * @param invalidatedObject gelÃ¶schtes Objekt
 	 */
 	public void handleDeletedElement(final DynamicObject invalidatedObject) {
 		// Element-Cache aktualisieren

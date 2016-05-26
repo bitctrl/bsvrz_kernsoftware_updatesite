@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,23 +14,29 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.config;
 
 /**
- * Diese Klasse stellt Methoden zur Verfügung, um bei Konfigurationsanfragen, den Gültigkeitsbereich der Objekte
- * einzuschränken.
+ * Diese Klasse stellt Methoden zur VerfÃ¼gung, um bei Konfigurationsanfragen, den GÃ¼ltigkeitsbereich der Objekte
+ * einzuschrÃ¤nken.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Stephan Homeyer (sth)
- * @version $Revision: 5052 $ / $Date: 2007-08-31 20:02:55 +0200 (Fri, 31 Aug 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ObjectTimeSpecification {
 	/**
-	 * Objekt, welches für alle Spezifikationen gilt, die aktuelle Objekte ermitteln wollen.
+	 * Objekt, welches fÃ¼r alle Spezifikationen gilt, die aktuelle Objekte ermitteln wollen.
 	 */
 	private static ObjectTimeSpecification _default;
 
@@ -40,34 +46,34 @@ public class ObjectTimeSpecification {
 	private TimeSpecificationType _type;
 
 	/**
-	 * Startzeitpunkt des Gültigkeitszeitraumes.
+	 * Startzeitpunkt des GÃ¼ltigkeitszeitraumes.
 	 */
 	private long _startTime;
 
 	/**
-	 * Endzeitpunkt des Gültigkeitszeitraumes.
+	 * Endzeitpunkt des GÃ¼ltigkeitszeitraumes.
 	 */
 	private long _endTime;
 
 	/**
-	 * Privater Konstruktor, damit keine undefinierten Objekte angelegt werden können.
+	 * Privater Konstruktor, damit keine undefinierten Objekte angelegt werden kÃ¶nnen.
 	 */
 	private ObjectTimeSpecification() {
 	}
 
 	/**
-	 * Konstruktor für das Spezifikationsobjekt, welches nur einen Zeitpunkt enthält.
+	 * Konstruktor fÃ¼r das Spezifikationsobjekt, welches nur einen Zeitpunkt enthÃ¤lt.
 	 *
-	 * @param type Typ der Gültigkeit
+	 * @param type Typ der GÃ¼ltigkeit
 	 */
 	private ObjectTimeSpecification(TimeSpecificationType type) {
 		_type = type;
 	}
 
 	/**
-	 * Konstruktor für das Spezifikationsobjekt, welches einen Zeitbereich enthält.
+	 * Konstruktor fÃ¼r das Spezifikationsobjekt, welches einen Zeitbereich enthÃ¤lt.
 	 *
-	 * @param type	  Typ der Gültigkeit
+	 * @param type	  Typ der GÃ¼ltigkeit
 	 * @param startTime Beginn des Zeitraumes
 	 * @param endTime   Ende des Zeitraumes
 	 */
@@ -78,9 +84,9 @@ public class ObjectTimeSpecification {
 	}
 
 	/**
-	 * Für Objekte, die aktuell gültig sind.
+	 * FÃ¼r Objekte, die aktuell gÃ¼ltig sind.
 	 *
-	 * @return Spezifikationsobjekt des Gültigkeitszeitraumes
+	 * @return Spezifikationsobjekt des GÃ¼ltigkeitszeitraumes
 	 */
 	public static ObjectTimeSpecification valid() {
 		if (_default == null) _default = new ObjectTimeSpecification(TimeSpecificationType.VALID);
@@ -88,48 +94,48 @@ public class ObjectTimeSpecification {
 	}
 
 	/**
-	 * Für Objekte, die zu einem bestimmten Zeitpunkt gültig sind.
+	 * FÃ¼r Objekte, die zu einem bestimmten Zeitpunkt gÃ¼ltig sind.
 	 *
-	 * @param time der Zeitpunkt, zu dem die Objekte gültig waren
-	 * @return Spezifikationsobjekt des Gültigkeitszeitraumes
+	 * @param time der Zeitpunkt, zu dem die Objekte gÃ¼ltig waren
+	 * @return Spezifikationsobjekt des GÃ¼ltigkeitszeitraumes
 	 */
 	public static ObjectTimeSpecification valid(long time) {
 		return new ObjectTimeSpecification(TimeSpecificationType.VALID_AT_TIME, time, time);
 	}
 
 	/**
-	 * Für Objekte, die an mindestens einem Zeitpunkt des angegebenen Zeitbereichs gültig waren.
+	 * FÃ¼r Objekte, die an mindestens einem Zeitpunkt des angegebenen Zeitbereichs gÃ¼ltig waren.
 	 *
 	 * @param startTime Beginn des Zeitraumes
 	 * @param endTime   Ende des Zeitraumes
-	 * @return Spezifikationsobjekt des Gültigkeitszeitraumes
+	 * @return Spezifikationsobjekt des GÃ¼ltigkeitszeitraumes
 	 */
 	public static ObjectTimeSpecification validInPeriod(long startTime, long endTime) {
 		return new ObjectTimeSpecification(TimeSpecificationType.VALID_IN_PERIOD, startTime, endTime);
 	}
 
 	/**
-	 * Für Objekte, die während des gesamten Zeitraumes gültig waren.
+	 * FÃ¼r Objekte, die wÃ¤hrend des gesamten Zeitraumes gÃ¼ltig waren.
 	 *
 	 * @param startTime Beginn des Zeitraumes
 	 * @param endTime   Ende des Zeitraumes
-	 * @return Spezifikationsobjekt des Gültigkeitszeitraumes
+	 * @return Spezifikationsobjekt des GÃ¼ltigkeitszeitraumes
 	 */
 	public static ObjectTimeSpecification validDuringPeriod(long startTime, long endTime) {
 		return new ObjectTimeSpecification(TimeSpecificationType.VALID_DURING_PERIOD, startTime, endTime);
 	}
 
 	/**
-	 * Gibt den Typ der Gültigkeits-Spezifikation zurück.
+	 * Gibt den Typ der GÃ¼ltigkeits-Spezifikation zurÃ¼ck.
 	 *
-	 * @return Typ der Gültigkeits-Spezifikation
+	 * @return Typ der GÃ¼ltigkeits-Spezifikation
 	 */
 	public TimeSpecificationType getType() {
 		return _type;
 	}
 
 	/**
-	 * Gibt den Beginn des Zeitbereichs der Gültigkeit zurück. Gilt nur für die Gültigkeits-Spezifikationen, die einen
+	 * Gibt den Beginn des Zeitbereichs der GÃ¼ltigkeit zurÃ¼ck. Gilt nur fÃ¼r die GÃ¼ltigkeits-Spezifikationen, die einen
 	 * Zeitbereich angegeben haben.
 	 *
 	 * @return Beginn des angegebenen Zeitbereichs
@@ -143,7 +149,7 @@ public class ObjectTimeSpecification {
 	}
 
 	/**
-	 * Gibt das Ende des Zeitbereichs der Gültigkeit zurück. Gilt nur für die Gültigkeits-Spezifikationen, die einen
+	 * Gibt das Ende des Zeitbereichs der GÃ¼ltigkeit zurÃ¼ck. Gilt nur fÃ¼r die GÃ¼ltigkeits-Spezifikationen, die einen
 	 * Zeitbereich angegeben haben.
 	 *
 	 * @return Ende des angegebenen Zeitbereichs
@@ -157,7 +163,7 @@ public class ObjectTimeSpecification {
 	}
 
 	/**
-	 * Gibt den angegebenen Zeitpunkt der Gültigkeit zurück. Gilt nur für die Gültigkeits-Spezifikation bei der nur ein
+	 * Gibt den angegebenen Zeitpunkt der GÃ¼ltigkeit zurÃ¼ck. Gilt nur fÃ¼r die GÃ¼ltigkeits-Spezifikation bei der nur ein
 	 * Zeitpunkt angegeben wurde.
 	 *
 	 * @return der angegebene Zeitpunkt

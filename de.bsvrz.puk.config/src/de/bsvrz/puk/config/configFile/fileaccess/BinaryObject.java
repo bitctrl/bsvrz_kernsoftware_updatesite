@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.fileaccess;
@@ -27,44 +33,44 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 /**
- * Binäre Darstellung eines Objekts in der Konfigurationsdatei ({@link de.bsvrz.puk.config.configFile.fileaccess.ConfigAreaFile}).
+ * BinÃ¤re Darstellung eines Objekts in der Konfigurationsdatei ({@link de.bsvrz.puk.config.configFile.fileaccess.ConfigAreaFile}).
  *
  * Diese Klasse bietet einfache Methoden um Objekte aus {@link java.io.DataInput}-Objekten (wie DataInputStreams oder {@link de.bsvrz.dav.daf.util.BufferedRandomAccessFile}s)
  * einzulesen und sie wieder zu schreiben.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13166 $
+ * @version $Revision$
  */
 public abstract class BinaryObject {
 
 	/**
-	 * Größe des Headers fär Konfigurationsobjekte:
-	 * ID (long), PidHashCode (int), Typ-ID (long), Objekttyp (byte), Ungültig (short), Gültig (short)
+	 * GrÃ¶ÃŸe des Headers fÃ¤r Konfigurationsobjekte:
+	 * ID (long), PidHashCode (int), Typ-ID (long), Objekttyp (byte), UngÃ¼ltig (short), GÃ¼ltig (short)
 	 */
 	public static final int CONFIG_OBJ_HEADER_SIZE = (8 + 4 + 8 + 1 + 2 + 2);
 
 	/**
-	 * Größe des Headers fär dynamische Objekte:
-	 * ID (long), PidHashCode (int), Typ-ID (long), Objekttyp (byte), Ungültig (long), Gültig (long), Simulationsvariante (short)
+	 * GrÃ¶ÃŸe des Headers fÃ¤r dynamische Objekte:
+	 * ID (long), PidHashCode (int), Typ-ID (long), Objekttyp (byte), UngÃ¼ltig (long), GÃ¼ltig (long), Simulationsvariante (short)
 	 */
 	public static final int DYN_OBJ_HEADER_SIZE = (8 + 4 + 8 + 1 + 8 + 8 + 2);
 
-	// Markierungsbyte für Konfigurationsobjekte
+	// Markierungsbyte fÃ¼r Konfigurationsobjekte
 	public static final int CONFIGURATION_OBJECT_TYPE = 0;
 
-	// Markierungsbyte für dynamische Objekte
+	// Markierungsbyte fÃ¼r dynamische Objekte
 	public static final int DYNAMIC_OBJECT_TYPE = 1;
 
 	/**
 	 * Liest ein Objekt ein
 	 * @param input Eingabe-Stream oder {@link de.bsvrz.dav.daf.util.BufferedRandomAccessFile}, das sich an der richtigen Position befindet.
-	 *              Der Stream befindet sich nach dem Einlesen garantiert an der Position nach dem Objekt (oder der Lücke),
-	 *              wo also ein weiteres Objekt gelesen werden kännte.
-	 * @return Eingelesenes Objekt oder null, wenn sich an dieser Position eine Lücke befindet.
+	 *              Der Stream befindet sich nach dem Einlesen garantiert an der Position nach dem Objekt (oder der LÃ¼cke),
+	 *              wo also ein weiteres Objekt gelesen werden kÃ¤nnte.
+	 * @return Eingelesenes Objekt oder null, wenn sich an dieser Position eine LÃ¼cke befindet.
 	 * @throws IOException
 	 */
 	public static BinaryObject fromDataInput(DataInput input) throws IOException {
-		// Länge des Blocks einlesen
+		// LÃ¤nge des Blocks einlesen
 		final int sizeOfObject = input.readInt();
 
 		// Id des Objekts einlesen
@@ -130,25 +136,25 @@ public abstract class BinaryObject {
 	public abstract int write(DataOutput output) throws IOException;
 
 	/**
-	 * Gibt die Objekt-ID zurück
-	 * @return die Objekt-ID oder 0 falls es sich um eine Lücke handelt
+	 * Gibt die Objekt-ID zurÃ¼ck
+	 * @return die Objekt-ID oder 0 falls es sich um eine LÃ¼cke handelt
 	 */
 	public abstract long getObjectId();
 
 	/**
-	 * Gibt den Pid-Hashcode zurück
+	 * Gibt den Pid-Hashcode zurÃ¼ck
 	 * @return den Pid-Hashcode
 	 */
 	public abstract int getPidHashCode();
 
 	/**
-	 * Gibt die ID des Objekttyps zuück
+	 * Gibt die ID des Objekttyps zuÃ¼ck
 	 * @return die ID des Objekttyps
 	 */
 	public abstract long getTypeId();
 
 	/**
-	 * Gibt die gepackten Bytes zurück. Die gepackten Bytes enthalten weitere Objektinformationen wie die Name, Pid, Konfigurationsdaten usw.
+	 * Gibt die gepackten Bytes zurÃ¼ck. Die gepackten Bytes enthalten weitere Objektinformationen wie die Name, Pid, Konfigurationsdaten usw.
 	 * @return die gepackten Bytes
 	 */
 	public abstract byte[] getPackedBytes();

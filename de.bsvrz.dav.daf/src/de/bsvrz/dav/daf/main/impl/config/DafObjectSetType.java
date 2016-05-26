@@ -1,14 +1,14 @@
 /*
  * Copyright 2008 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * Copyright 2006 by Kappich Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -17,8 +17,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config;
@@ -35,25 +41,25 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Klasse zum Zugriff auf die beschreibenden Informationen und Einschränkungen von Mengen-Typen. Zu jedem Mengen-Typ wird konfiguriert welcher Name eine Menge
- * dieses Typs haben muss, welche Typen von Objekten enthalten sein dürfen, wieviele Objekte mindestens und höchstens enthalten sein müssen bzw. dürfen, ob eine
+ * Klasse zum Zugriff auf die beschreibenden Informationen und EinschrÃ¤nkungen von Mengen-Typen. Zu jedem Mengen-Typ wird konfiguriert welcher Name eine Menge
+ * dieses Typs haben muss, welche Typen von Objekten enthalten sein dÃ¼rfen, wieviele Objekte mindestens und hÃ¶chstens enthalten sein mÃ¼ssen bzw. dÃ¼rfen, ob eine
  * Menge an den entsprechenden Objekten vorhanden sein muss oder darf und ob eine Menge dieses Typs konfigurierend oder dynamisch ist.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13141 $
+ * @version $Revision$
  */
 public class DafObjectSetType extends DafConfigurationObjectType implements ObjectSetType {
 
-	/** Anzahl von Objekten, die mindestens in der Menge vorhanden sein müssen */
+	/** Anzahl von Objekten, die mindestens in der Menge vorhanden sein mÃ¼ssen */
 	private int _minimumElementCount;
 
-	/** Anzahl von Objekten, die höchstens in der Menge vorhanden sein dürfen */
+	/** Anzahl von Objekten, die hÃ¶chstens in der Menge vorhanden sein dÃ¼rfen */
 	private int _maximumElementCount;
 
 	/** Flag, das true ist, wenn dieser Typ dynamische Mengen definiert. */
 	private boolean _mutable;
 
-	/** Liste von {@link de.bsvrz.dav.daf.main.config.SystemObjectType Objekt-Typen}, die in Mengen dieses Typs verwendet werden können */
+	/** Liste von {@link de.bsvrz.dav.daf.main.config.SystemObjectType Objekt-Typen}, die in Mengen dieses Typs verwendet werden kÃ¶nnen */
 	private List<SystemObjectType> _objectTypes;
 
 	/** Konfigurierender Datensatz mit den wesentlichen Eigenschaften dieses Attributtyps oder <code>null</code>, wenn der Datensatz noch nicht geladen wurde. */
@@ -141,7 +147,7 @@ public class DafObjectSetType extends DafConfigurationObjectType implements Obje
 	}
 
 	/**
-	 * Lädt den konfigurierenden Datensatz mit den Eigenschaften dieses Objekts aus der Konfiguration und speichert ihn für weitere Aufrufe dieser Methode.
+	 * LÃ¤dt den konfigurierenden Datensatz mit den Eigenschaften dieses Objekts aus der Konfiguration und speichert ihn fÃ¼r weitere Aufrufe dieser Methode.
 	 *
 	 * @return Konfigurierender Datensatz mit den Eigenschaften dieses Objekts.
 	 */

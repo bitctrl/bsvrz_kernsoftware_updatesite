@@ -6,7 +6,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config.request.telegramManager;
@@ -38,15 +44,15 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Bietet eine Kommunikation mit einem Sender und einer Senke. Der Sender verschickt Aufträge, die Antworten auf diese Aufträge werden dann durch die Quelle
+ * Bietet eine Kommunikation mit einem Sender und einer Senke. Der Sender verschickt AuftrÃ¤ge, die Antworten auf diese AuftrÃ¤ge werden dann durch die Quelle
  * empfangen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13310 $
+ * @version $Revision$
  */
 public abstract class AbstractSenderReceiverCommunication implements SenderReceiverCommunication {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	private final ClientDavInterface _connection;
@@ -62,18 +68,18 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 	private DataListener _dataListener = null;
 
 	/**
-	 * Beschreibt ob der Empfänger für Antworten für Konfigurationsanfragen diese Antworten auch empfangen darf. Dürfen keine antworten empfangen werden, weil die
-	 * Rechte nicht gesetzt wurde, so darf auch keine Anfrage gesendet werden (da die Antwort der Konfigurations niemals empfangen werden könnte und ewig auf die
-	 * Antwort gewartet werden würde).
-	 * <p/>
-	 * Der default DataState.DATA ist zufällig gewählt und muss nur ungleich DataState.NO_RIGHTS sein.
+	 * Beschreibt ob der EmpfÃ¤nger fÃ¼r Antworten fÃ¼r Konfigurationsanfragen diese Antworten auch empfangen darf. DÃ¼rfen keine antworten empfangen werden, weil die
+	 * Rechte nicht gesetzt wurde, so darf auch keine Anfrage gesendet werden (da die Antwort der Konfigurations niemals empfangen werden kÃ¶nnte und ewig auf die
+	 * Antwort gewartet werden wÃ¼rde).
+	 * <p>
+	 * Der default DataState.DATA ist zufÃ¤llig gewÃ¤hlt und muss nur ungleich DataState.NO_RIGHTS sein.
 	 */
 	private DataState _dataStateReceiver = DataState.DATA;
 
-	/** Für Anfragen */
+	/** FÃ¼r Anfragen */
 	private DataDescription _requestDescription;
 
-	/** Für Antworten, kann <code>null</code> bleiben, wenn keine Antworten benötigt werden */
+	/** FÃ¼r Antworten, kann <code>null</code> bleiben, wenn keine Antworten benÃ¶tigt werden */
 	private DataDescription _responseDescription = null;
 
 	private final Object _monitor = new Object();
@@ -100,7 +106,7 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 
 	/**
 	 * @param connection    Verbindung zum DaV
-	 * @param senderObject  Objekt, zum anmelden für Sendeaufträge
+	 * @param senderObject  Objekt, zum anmelden fÃ¼r SendeauftrÃ¤ge
 	 * @param ordererObject Objekt, zum anmelden als Senke (siehe {@link #init}). Dieses Objekt wird beim versenden auch als "Absender" eingetragen. Dadurch weiss
 	 *                      die Empfangende Applikation (senderObjekt), wohin die Antwort muss(wenn eine Senke angemeldet wurde) bzw. wer die Antwort verschickt
 	 *                      hat.
@@ -114,20 +120,20 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 	}
 
 	/**
-	 * Meldet einen Sender und eine Senke auf die übergebenen Parameter an, wenn alle vier Parameter gesetzt sind. Als Simulationsvariante wird die beim starten
+	 * Meldet einen Sender und eine Senke auf die Ã¼bergebenen Parameter an, wenn alle vier Parameter gesetzt sind. Als Simulationsvariante wird die beim starten
 	 * der Applikation gesetzt Variante benutzt.
-	 * <p/>
+	 * <p>
 	 * Sind die Parameter responseAtg und responseAspect <code>null</code>, wird keine Senke angemeldet sondern nur der Sender.
 	 *
-	 * @param requestAtg     ATG für Anfrage (Anmeldung als Sender)
-	 * @param requestAspect  Aspekt für Anfragen (Anmeldung für Sender)
-	 * @param responseAtg    ATG für Antworten auf Anfragen (Anmeldung als Senke) oder <code>null</code>, wenn kein Senke angemeldet werden soll.
-	 * @param responseAspect Aspekt für Antworten auf Anfragen (Anmeldung als Senke) oder <code>null</code>, wenn kein Senke angemeldet werden soll.
+	 * @param requestAtg     ATG fÃ¼r Anfrage (Anmeldung als Sender)
+	 * @param requestAspect  Aspekt fÃ¼r Anfragen (Anmeldung fÃ¼r Sender)
+	 * @param responseAtg    ATG fÃ¼r Antworten auf Anfragen (Anmeldung als Senke) oder <code>null</code>, wenn kein Senke angemeldet werden soll.
+	 * @param responseAspect Aspekt fÃ¼r Antworten auf Anfragen (Anmeldung als Senke) oder <code>null</code>, wenn kein Senke angemeldet werden soll.
 	 * @param dataListener Objekt, das Telegramme verarbeiten und diese dann aus dem Strom der Telegramme entfernen kann. Ist das Objekt <code>null</code>,
 	 * werden die Telegramme nicht gefiltert und normal durch diese Klasse bearbeitet.
 
 	 *
-	 * @throws OneSubscriptionPerSendData Wenn bereits eine Senke für die gleichen Daten angemeldet wurde.
+	 * @throws OneSubscriptionPerSendData Wenn bereits eine Senke fÃ¼r die gleichen Daten angemeldet wurde.
 	 */
 	public void init(AttributeGroup requestAtg, Aspect requestAspect, AttributeGroup responseAtg, Aspect responseAspect, DataListener dataListener)
 			throws OneSubscriptionPerSendData {
@@ -135,21 +141,21 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 	}
 
 	/**
-	 * Meldet einen Sender und eine Senke auf die übergebenen Parameter an, wenn alle vier Parameter gesetzt sind. Die zu nutzende Simulationsvariante wird
-	 * übergeben.
-	 * <p/>
+	 * Meldet einen Sender und eine Senke auf die Ã¼bergebenen Parameter an, wenn alle vier Parameter gesetzt sind. Die zu nutzende Simulationsvariante wird
+	 * Ã¼bergeben.
+	 * <p>
 	 * Sind die Parameter responseAtg und responseAspect <code>null</code>, wird keine Senke angemeldet sondern nur der Sender.
 	 *
-	 * @param requestAtg        ATG für Anfrage (Anmeldung als Sender)
-	 * @param requestAspect     Aspekt für Anfragen (Anmeldung für Sender)
-	 * @param responseAtg       ATG für Antworten auf Anfragen (Anmeldung als Senke) oder <code>null</code>, wenn kein Senke angemeldet werden soll.
-	 * @param responseAspect    Aspekt für Antworten auf Anfragen (Anmeldung als Senke) oder <code>null</code>, wenn kein Senke angemeldet werden soll.
+	 * @param requestAtg        ATG fÃ¼r Anfrage (Anmeldung als Sender)
+	 * @param requestAspect     Aspekt fÃ¼r Anfragen (Anmeldung fÃ¼r Sender)
+	 * @param responseAtg       ATG fÃ¼r Antworten auf Anfragen (Anmeldung als Senke) oder <code>null</code>, wenn kein Senke angemeldet werden soll.
+	 * @param responseAspect    Aspekt fÃ¼r Antworten auf Anfragen (Anmeldung als Senke) oder <code>null</code>, wenn kein Senke angemeldet werden soll.
 	 * @param simulationVariant Simulationsvariante, die zur Anmeldung benutzt werden soll
 	 * @param dataListener Objekt, das Telegramme verarbeiten und diese dann aus dem Strom der Telegramme entfernen kann. Ist das Objekt <code>null</code>,
 	 * werden die Telegramme nicht gefiltert und normal durch diese Klasse bearbeitet.
 
 	 *
-	 * @throws OneSubscriptionPerSendData Wenn bereits eine Senke für die gleichen Daten angemeldet wurde.
+	 * @throws OneSubscriptionPerSendData Wenn bereits eine Senke fÃ¼r die gleichen Daten angemeldet wurde.
 	 */
 	public void init(
 			AttributeGroup requestAtg,
@@ -171,7 +177,7 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 		};
 		_connection.addConnectionListener(listener);
 		
-		// Sender von Aufträgen
+		// Sender von AuftrÃ¤gen
 		_requestDescription = new DataDescription(requestAtg, requestAspect, simulationVariant);
 		_dataListener = dataListener;
 
@@ -181,7 +187,7 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 		_connection.subscribeSender(_requester, _senderObject, _requestDescription, SenderRole.sender());
 
 		if(responseAtg != null && responseAspect != null) {
-			// Senke für Antworten
+			// Senke fÃ¼r Antworten
 			_responseDescription = new DataDescription(responseAtg, responseAspect, simulationVariant);
 			_receiver = new AnswerReceiver();
 			final DrainSubscription drain;
@@ -247,7 +253,7 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 		else {
 			throw new IllegalStateException(
 					"Eine Konfigurationsanfrage mit Datenidentifikation " + _requestDescription
-					+ " konnte nicht ausgeführt werden, weil für den Empfang der Antwort mit Datenidentifikation " + _responseDescription
+					+ " konnte nicht ausgefÃ¼hrt werden, weil fÃ¼r den Empfang der Antwort mit Datenidentifikation " + _responseDescription
 					+ " keine Rechte zum empfang vorlagen. Systemobjekt Konfiguration: " + _senderObject + " Systemobjekt Applikation " + _receiverObject
 					+ " Nachrichtentyp, der verschickt werden sollte " + messageType
 			);
@@ -258,7 +264,7 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 		final AttributeGroup attributeGroup = _requestDescription.getAttributeGroup();
 		Data data = AttributeBaseValueDataFactory.createAdapter(attributeGroup, AttributeHelper.getAttributesValues(_requestDescription.getAttributeGroup()));
 
-		// Der Absender des Telegramms ist das Objekt, dass sich als Empfänger auf die Daten angemeldet hat
+		// Der Absender des Telegramms ist das Objekt, dass sich als EmpfÃ¤nger auf die Daten angemeldet hat
 		data.getReferenceValue("absender").setSystemObject(_receiverObject);
 
 		data.getScaledValue("anfrageIndex").set(requestIndex);
@@ -290,7 +296,7 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 							}
 						}
 						if(reply == null) {
-							if(waitTime < 0){
+							if(waitTime <= 0){
 								throw new RuntimeException("Die Konfiguration antwortet nicht");
 							}
 							long startTime = System.nanoTime();
@@ -311,8 +317,8 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 			return reply;
 		}
 		else {
-			// Es wurde gar kein Empfänger für Nachrichten angemeldet. Also wird nie eine Antwort kommen
-			throw new IllegalStateException("Es wurde keine Senke für Antworten angemeldet.");
+			// Es wurde gar kein EmpfÃ¤nger fÃ¼r Nachrichten angemeldet. Also wird nie eine Antwort kommen
+			throw new IllegalStateException("Es wurde keine Senke fÃ¼r Antworten angemeldet.");
 		}
 	}
 
@@ -353,7 +359,7 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 		/**
 		 * Nimmt Antworten der Konfiguration entgegen.
 		 *
-		 * @param results Empfangene Datensätze.
+		 * @param results Empfangene DatensÃ¤tze.
 		 */
 		public void update(ResultData results[]) {
 			for(int i = 0; i < results.length; i++) {
@@ -361,17 +367,17 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 				_debug.finer("Konfigurationsantwort erhalten");
 				//_debug.finest("Konfigurationsantwort erhalten", result.getData());
 
-				// Es dürfen keine Antworten empfangen werden, da keine Rechte gesetzt wurde.
-				// Also dürfen auch keine Anfragen verschickt werden, da die Antwort der Konfiguration
-				// niemals empfangen werden könnte.
+				// Es dÃ¼rfen keine Antworten empfangen werden, da keine Rechte gesetzt wurde.
+				// Also dÃ¼rfen auch keine Anfragen verschickt werden, da die Antwort der Konfiguration
+				// niemals empfangen werden kÃ¶nnte.
 				if(result.getDataState() == DataState.NO_RIGHTS) {
 					// Es gibt keine Rechte, also versenden von Daten verhindern
 					_dataStateReceiver = DataState.NO_RIGHTS;
 				}
 				else if(_dataStateReceiver == DataState.NO_RIGHTS) {
 					// Die Variable steht auf "nicht senden", aber ein neuer Datensatz erlaubt das
-					// versenden von Daten. Also den Zustand ändern.
-					// Hatte die Variable vorher einen anderen Zustand, muss dieser nicht angepaßt werden.
+					// versenden von Daten. Also den Zustand Ã¤ndern.
+					// Hatte die Variable vorher einen anderen Zustand, muss dieser nicht angepaÃŸt werden.
 					_dataStateReceiver = result.getDataState();
 				}
 
@@ -384,7 +390,7 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 						long replySenderId = data.getReferenceValue("absender").getId();
 
 						if(replySenderId != _senderObject.getId()) {
-							_debug.fine("Falscher Empfänger", replySenderId);
+							_debug.fine("Falscher EmpfÃ¤nger", replySenderId);
 							continue;
 						}
 
@@ -396,7 +402,7 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 							processTelegram = _dataListener.messageReceived(data);
 						}
 						else {
-							// Es gibt kein Objekt, das Telegramm aus dem Telegramm-Strom herausziehen möchte
+							// Es gibt kein Objekt, das Telegramm aus dem Telegramm-Strom herausziehen mÃ¶chte
 							processTelegram = true;
 						}
 
@@ -413,15 +419,15 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 		}
 	}
 
-	/** Callback-Klasse für Sendeanmeldung der Anfragen */
+	/** Callback-Klasse fÃ¼r Sendeanmeldung der Anfragen */
 	private class RequestSender implements ClientSenderInterface {
 
 		/**
 		 * Sendesteuerung des Datenverteilers an die Applikation. Diese Methode muss von der Applikation implementiert werden, um den Versand von Daten zu starten
-		 * bzw. anzuhalten. Der Datenverteiler signalisiert damit einer Quelle oder einem Sender dass mindestens ein Abnehmer bzw. kein Abnehmer mehr für die zuvor
+		 * bzw. anzuhalten. Der Datenverteiler signalisiert damit einer Quelle oder einem Sender dass mindestens ein Abnehmer bzw. kein Abnehmer mehr fÃ¼r die zuvor
 		 * angemeldeten Daten vorhanden ist. Die Quelle wird damit aufgefordert den Versand von Daten zu starten bzw. zu stoppen.
 		 *
-		 * @param object          Das in der zugehörigen Sendeanmeldung angegebene Objekt, auf das sich die Sendesteuerung bezieht.
+		 * @param object          Das in der zugehÃ¶rigen Sendeanmeldung angegebene Objekt, auf das sich die Sendesteuerung bezieht.
 		 * @param dataDescription Beschreibende Informationen zu den angemeldeten Daten auf die sich die Sendesteuerung bezieht.
 		 * @param state           Status der Sendesteuerung. Kann einen der Werte <code>START_SENDING</code>, <code>STOP_SENDING</code>,
 		 *                        <code>STOP_SENDING_NO_RIGHTS</code>, <code>STOP_SENDING_NOT_A_VALID_SUBSCRIPTION</code> enthalten.
@@ -453,13 +459,13 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 		}
 
 		/**
-		 * Diese Methode muss von der Applikation implementiert werden, um zu signalisieren, ob Sendesteuerungen erwünscht sind und mit der Methode
+		 * Diese Methode muss von der Applikation implementiert werden, um zu signalisieren, ob Sendesteuerungen erwÃ¼nscht sind und mit der Methode
 		 * <code>dataRequest</code> verarbeitet werden.
 		 *
-		 * @param object          Das in der zugehörigen Sendeanmeldung angegebene System-Objekt.
-		 * @param dataDescription Die in der zugehörigen Sendeanmeldung angegebenen beschreibenden Informationen der angemeldeten Daten.
+		 * @param object          Das in der zugehÃ¶rigen Sendeanmeldung angegebene System-Objekt.
+		 * @param dataDescription Die in der zugehÃ¶rigen Sendeanmeldung angegebenen beschreibenden Informationen der angemeldeten Daten.
 		 *
-		 * @return <code>true</code>, falls Sendesteuerungen gewünscht sind, sonst <code>false</code>.
+		 * @return <code>true</code>, falls Sendesteuerungen gewÃ¼nscht sind, sonst <code>false</code>.
 		 *
 		 * @see #dataRequest
 		 */
@@ -469,13 +475,13 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 	}
 
 	/**
-	 * Dieses Interface ermöglich es Daten, die durch eine Instanz der Klasse {@link AbstractSenderReceiverCommunication} empfangen wurde, zu verarbeiten, bevor
+	 * Dieses Interface ermÃ¶glich es Daten, die durch eine Instanz der Klasse {@link AbstractSenderReceiverCommunication} empfangen wurde, zu verarbeiten, bevor
 	 * diese durch den normalen Mechanismus bearbeitet werden.
-	 * <p/>
-	 * Ein Beispiel wären dynamische Mengen. Die Konfigurations verschickt, sobald sich der Status einer dynamischen Menge ändert, eine Nachricht mit den
-	 * Änderungen der Menge an alle angemeldeten Objekte, die sich für Änderungen interssieren. Für diese Nachricht gibt es kein Objekt, das aktiv {@link
+	 * <p>
+	 * Ein Beispiel wÃ¤ren dynamische Mengen. Die Konfigurations verschickt, sobald sich der Status einer dynamischen Menge Ã¤ndert, eine Nachricht mit den
+	 * Ã„nderungen der Menge an alle angemeldeten Objekte, die sich fÃ¼r Ã„nderungen interssieren. FÃ¼r diese Nachricht gibt es kein Objekt, das aktiv {@link
 	 * AbstractSenderReceiverCommunication#waitForReply} wartet.
-	 * <p/>
+	 * <p>
 	 * Die Nachricht wird mit der update-Methode empfangen und dann zuerst an ein Objekt, das dieses Interface implementiert, weitergereicht. Dort kann dann
 	 * entschieden werden, ob das Telegramm anders verarbeitet werden soll (wie es bei dynamischen Menge der Fall ist) oder ob das Telegramm normal weitergeleitet
 	 * werden soll (an ein Objekt, das aktiv mit  {@link AbstractSenderReceiverCommunication#waitForReply} wartet).
@@ -483,7 +489,7 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 	public interface DataListener {
 
 		/**
-		 * Diese Methode wird aufgerufen, sobald eine Instanz von {@link AbstractSenderReceiverCommunication} ein Telegramm in der update-Methode empfängt. Das
+		 * Diese Methode wird aufgerufen, sobald eine Instanz von {@link AbstractSenderReceiverCommunication} ein Telegramm in der update-Methode empfÃ¤ngt. Das
 		 * Telegramm kann normal weiter verarbeitet werden oder aber aus dem Strom der Telegramme entfernt werden.
 		 *
 		 * @param data Telegramm, das empfangen wurde
@@ -500,14 +506,14 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 	/**
 	 * {@inheritDoc} Defaultimplementierung erzeugt eine Exception.
 	 * @param notifyingMutableCollectionChangeListener
-	 * @throws UnsupportedOperationException Wenn die Methode nicht überschrieben wurde.
+	 * @throws UnsupportedOperationException Wenn die Methode nicht Ã¼berschrieben wurde.
 	 */
 	public void setMutableCollectionChangeListener(final MutableCollectionChangeListener notifyingMutableCollectionChangeListener) {
 		throw new UnsupportedOperationException("setMutableCollectionChangeListener nicht implementiert");
 	}
 
 	/**
-	 * Klasse, die mehrere Empfängsobjekte an einer Senke kapselt
+	 * Klasse, die mehrere EmpfÃ¤ngsobjekte an einer Senke kapselt
 	 */
 	private static class DrainSubscription implements ClientReceiverInterface, NonQueueingReceiver {
 
@@ -545,7 +551,7 @@ public abstract class AbstractSenderReceiverCommunication implements SenderRecei
 	}
 
 	/**
-	 * Klasse für eine Datenidentifikation, wird als Key in {@link #_drainSubscriptions} benutzt.
+	 * Klasse fÃ¼r eine Datenidentifikation, wird als Key in {@link #_drainSubscriptions} benutzt.
 	 */
 	private static class DataIdent {
 		private final ClientDavInterface _connection;

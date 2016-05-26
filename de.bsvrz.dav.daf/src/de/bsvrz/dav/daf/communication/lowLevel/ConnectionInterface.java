@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel;
@@ -27,24 +33,24 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Eine Implementierung dieses Interfaces legt fest, welches Netzwerkprotokoll die Daten zwischen Softwareeinheiten oder Rechner übertragen werden. Die
- * Funktionalität wird protokollneutral durch dieses Interface für die Client-seitig notwendigen Methoden nach Außen vertreten.
+ * Eine Implementierung dieses Interfaces legt fest, welches Netzwerkprotokoll die Daten zwischen Softwareeinheiten oder Rechner Ã¼bertragen werden. Die
+ * FunktionalitÃ¤t wird protokollneutral durch dieses Interface fÃ¼r die Client-seitig notwendigen Methoden nach AuÃŸen vertreten.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5055 $
+ * @version $Revision$
  * @see ServerConnectionInterface
  */
 public interface ConnectionInterface {
 
 	/**
-	 * Gibt die Hauptadresse der Verbindung zurück.
+	 * Gibt die Hauptadresse der Verbindung zurÃ¼ck.
 	 *
 	 * @return Die Hauptadresse der Verbindung als Zeichenkette oder <code>null</code>, wenn die Adresse nicht bekannt ist.
 	 */
 	public String getMainAdress();
 
 	/**
-	 * Gibt die Nummer der Subadresse der Verbindung zurück.
+	 * Gibt die Nummer der Subadresse der Verbindung zurÃ¼ck.
 	 *
 	 * @return Die Nummer der Subadresse der Verbindung oder <code>0</code>, wenn der keine Verbindung besteht oder <code>-1</code>, wenn die Adresse nicht bekannt
 	 *         ist.
@@ -52,16 +58,16 @@ public interface ConnectionInterface {
 	public int getSubAdressNumber();
 
 	/**
-	 * Gibt den Stream des Sendekanals zurück, auf den die Datensätze geschrieben werden.
+	 * Gibt den Stream des Sendekanals zurÃ¼ck, auf den die DatensÃ¤tze geschrieben werden.
 	 *
-	 * @return Der Stream des Sendekanals oder <code>null</code>, wenn die Verbindung nicht zur Verfügung steht.
+	 * @return Der Stream des Sendekanals oder <code>null</code>, wenn die Verbindung nicht zur VerfÃ¼gung steht.
 	 */
 	public OutputStream getOutputStream();
 
 	/**
-	 * Gibt den Stream des Empfangskanals zurück, von dem die Datensätze gelesen werden.
+	 * Gibt den Stream des Empfangskanals zurÃ¼ck, von dem die DatensÃ¤tze gelesen werden.
 	 *
-	 * @return Der Stream des Empfangskanals oder <code>null</code>, wenn die Verbindung nicht zur Verfügung steht.
+	 * @return Der Stream des Empfangskanals oder <code>null</code>, wenn die Verbindung nicht zur VerfÃ¼gung steht.
 	 */
 	public InputStream getInputStream();
 
@@ -75,11 +81,11 @@ public interface ConnectionInterface {
 	 */
 	public void connect(String mainAdress, int subAdressNumber) throws ConnectionException;
 
-	/** Schließt die aktuelle Verbindung. */
+	/** SchlieÃŸt die aktuelle Verbindung. */
 	public void disconnect();
 
 	/**
-	 * Gibt die Information über den Verbindungsstatus zurück.
+	 * Gibt die Information Ã¼ber den Verbindungsstatus zurÃ¼ck.
 	 *
 	 * @return <code>true</code>, falls eine Verbindung aufgebaut wurde, sonst <code>false</code>.
 	 */

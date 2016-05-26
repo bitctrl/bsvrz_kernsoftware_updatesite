@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Plugin zur Bereitstellung der API der SWE Systemkalender
 Bundle-SymbolicName: de.bsvrz.vew.syskal
 Bundle-Version: 1.2.4.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: BitCtrl Systems GmbH
 Export-Package: de.bsvrz.sys.funclib.dambach.dav.daf,
  de.bsvrz.sys.funclib.dambach.konfiguration.netz,

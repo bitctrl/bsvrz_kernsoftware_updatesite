@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main.managementfile;
@@ -26,7 +32,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Die Implementierung dieses Interfaces ist für die Verwaltungsdaten der Konfiguration zuständig.
+ * Die Implementierung dieses Interfaces ist fÃ¼r die Verwaltungsdaten der Konfiguration zustÃ¤ndig.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
  * @version $Revision:5077 $ / $Date:2007-09-02 14:48:31 +0200 (So, 02 Sep 2007) $ / ($Author:rs $)
@@ -34,7 +40,7 @@ import java.util.*;
 public interface ConfigurationManagementFile {
 
 	/**
-	 * Gibt die Pid des Konfigurationsverantwortlichen der Konfiguration zurück.
+	 * Gibt die Pid des Konfigurationsverantwortlichen der Konfiguration zurÃ¼ck.
 	 *
 	 * @return Die Pid des Konfigurationsverantwortlichen der Konfiguration.
 	 */
@@ -48,14 +54,14 @@ public interface ConfigurationManagementFile {
 	void setConfigurationAuthority(String pid);
 
 	/**
-	 * Gibt alle Einträge über Konfigurationsbereiche der Konfiguration in der zu verwendenden Reihenfolge aus den Verwaltungsdaten zurück.
+	 * Gibt alle EintrÃ¤ge Ã¼ber Konfigurationsbereiche der Konfiguration in der zu verwendenden Reihenfolge aus den Verwaltungsdaten zurÃ¼ck.
 	 *
 	 * @return alle Konfigurationsbereiche der Konfiguration in der zu verwendenden Reihenfolge
 	 */
 	List<ConfigurationAreaManagementInfo> getAllConfigurationAreaManagementInfos();
 
 	/**
-	 * Gibt einen Eintrag aus den Verwaltungsdaten zu der angegebenen Pid eines Konfigurationsbereichs zurück.
+	 * Gibt einen Eintrag aus den Verwaltungsdaten zu der angegebenen Pid eines Konfigurationsbereichs zurÃ¼ck.
 	 *
 	 * @param configurationAreaPid Pid eines Konfigurationsbereichs
 	 *
@@ -64,9 +70,9 @@ public interface ConfigurationManagementFile {
 	ConfigurationAreaManagementInfo getConfigurationAreaManagementInfo(String configurationAreaPid);
 
 	/**
-	 * Fügt einen neuen Eintrag eines Konfigurationsbereichs ans Ende der Verwaltungsdatei ein.
+	 * FÃ¼gt einen neuen Eintrag eines Konfigurationsbereichs ans Ende der Verwaltungsdatei ein.
 	 *
-	 * @param pid Pid des Konfigurationsbereichs, welcher zu den Verwaltungsdaten hinzugefügt werden soll
+	 * @param pid Pid des Konfigurationsbereichs, welcher zu den Verwaltungsdaten hinzugefÃ¼gt werden soll
 	 *
 	 * @return der Eintrag in den Verwaltungsdaten zu einem Konfigurationsbereich
 	 */
@@ -76,17 +82,17 @@ public interface ConfigurationManagementFile {
 	void save() throws IOException;
 
 	/**
-	 * Diese Methode wird aufgerufen, wenn das System heruntergefahren wird. Es müssen alle Daten persistent gespeichert werden und es muss
-	 * ein Zustand hergestellt werden, dass das System später erneut gestartet werden kann (Temporäre Dateien löschen, usw.).
+	 * Diese Methode wird aufgerufen, wenn das System heruntergefahren wird. Es mÃ¼ssen alle Daten persistent gespeichert werden und es muss
+	 * ein Zustand hergestellt werden, dass das System spÃ¤ter erneut gestartet werden kann (TemporÃ¤re Dateien lÃ¶schen, usw.).
 	 *
 	 * @throws IOException
 	 */
 	void close() throws IOException;
 
 	/**
-	 * Bestimmt das Verzeichnis in dem die Dateien mit den Elementzugehörigkeiten von dynamischen Mengen gespeichert werden sollen.
+	 * Bestimmt das Verzeichnis in dem die Dateien mit den ElementzugehÃ¶rigkeiten von dynamischen Mengen gespeichert werden sollen.
 	 * Falls das Verzeichnis noch nich existiert, wird es erzeugt.
-	 * @return Verzeichnis in dem die Dateien mit den Elementzugehörigkeiten von dynamischen Mengen gespeichert werden sollen.
+	 * @return Verzeichnis in dem die Dateien mit den ElementzugehÃ¶rigkeiten von dynamischen Mengen gespeichert werden sollen.
 	 */
 	File getObjectSetDirectory();
 

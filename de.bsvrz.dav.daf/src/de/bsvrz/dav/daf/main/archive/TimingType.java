@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,41 +15,47 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.archive;
 
 /**
- * Type einer Timingangabe. Timingangaben können sich auf den Datenzeitstempel,
+ * Type einer Timingangabe. Timingangaben kÃ¶nnen sich auf den Datenzeitstempel,
  * den Archivzeitstempel oder den Datensatzindex beziehen.
  * Timingangabe werden in der Klasse {@link de.bsvrz.dav.daf.main.impl.archive.PersistentDataRequest} benutzt um
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5064 $
+ * @version $Revision$
  */
 public final class TimingType {
 
 	/**
-	 * Typ für Timingangaben die sich auf Datenzeitstempel beziehen.
+	 * Typ fÃ¼r Timingangaben die sich auf Datenzeitstempel beziehen.
 	 */
 	public static final TimingType DATA_TIME= new TimingType("Datenzeitstempel");
 
 	/**
-	 * Typ für Timingangaben die sich auf Archivzeitstempel beziehen.
+	 * Typ fÃ¼r Timingangaben die sich auf Archivzeitstempel beziehen.
 	 */
 	public static final TimingType ARCHIVE_TIME= new TimingType("Archivzeitstempel");
 
 	/**
-	 * Typ für Timingangaben die sich auf Datensatzindexe beziehen.
+	 * Typ fÃ¼r Timingangaben die sich auf Datensatzindexe beziehen.
 	 */
 	public static final TimingType DATA_INDEX= new TimingType("Datensatzindex");
 
 
 	/**
-	 * Liefert eine textuelle Beschreibung dieses Objekts zurück. Das genaue Format ist nicht
-	 * festgelegt und kann sich ändern.
+	 * Liefert eine textuelle Beschreibung dieses Objekts zurÃ¼ck. Das genaue Format ist nicht
+	 * festgelegt und kann sich Ã¤ndern.
 	 * @return Beschreibung dieses Objekts.
 	 */
 	public String toString() {

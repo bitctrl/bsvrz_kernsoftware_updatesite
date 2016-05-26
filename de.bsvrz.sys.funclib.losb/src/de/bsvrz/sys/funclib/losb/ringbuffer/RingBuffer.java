@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.sys.funclib.losb.
  * 
- * de.bsvrz.sys.funclib.losb is free software; you can redistribute it and/or modify
+ * de.bsvrz.sys.funclib.losb is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.losb is distributed in the hope that it will be useful,
@@ -15,25 +15,31 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.sys.funclib.losb; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.losb.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.losb.ringbuffer;
 
 /**
- * Der FIFO-Ringpuffer ist über einem Feld von Objektreferenzen angelegt. Die Gesamtkapazität ist festgelegt oder unbegrenzt, wobei das zugrunde liegende Feld
- * stets durch Blöcke fester Größe erweitert oder reduziert wird. Wenn die Gesamtkapazität gleich der Blockgroesse ist, wird das zugrundeliegende Feld nicht
- * veraendert. Die Einfüge- und Ausleseoperationen sind im den Regelfall von konstantem Aufwand und von proportional zur Puffergröße ansteigendem Auf-wand,
- * falls ein neuer Block angefügt oder gelöscht werden muss. Die Einfüge-/Ausleseoperationen des Regelfalles benötigen nur wenige elementare Anweisungen. Es
- * sind keine Speicheroperationen notwendig und es entsteht auch keine Arbeit für den Garbage Collector. Falls die Feldgröße verändert werden muss, kommt der
- * Aufwand für das Kopieren des gesamten Feldes hinzu. Ein Block wird nur dann gelöscht, wenn eine bestimmte Anzahl Blöcke ungenutzt sind. Dadurch werden
- * oszillierende Felder vermieden, wenn der Füllgrad um eine Blockgrenze pendelt. Die Warteschlangen dienen darüber hinaus zur Synchronisation des
+ * Der FIFO-Ringpuffer ist Ã¼ber einem Feld von Objektreferenzen angelegt. Die GesamtkapazitÃ¤t ist festgelegt oder unbegrenzt, wobei das zugrunde liegende Feld
+ * stets durch BlÃ¶cke fester GrÃ¶ÃŸe erweitert oder reduziert wird. Wenn die GesamtkapazitÃ¤t gleich der Blockgroesse ist, wird das zugrundeliegende Feld nicht
+ * veraendert. Die EinfÃ¼ge- und Ausleseoperationen sind im den Regelfall von konstantem Aufwand und von proportional zur PuffergrÃ¶ÃŸe ansteigendem Auf-wand,
+ * falls ein neuer Block angefÃ¼gt oder gelÃ¶scht werden muss. Die EinfÃ¼ge-/Ausleseoperationen des Regelfalles benÃ¶tigen nur wenige elementare Anweisungen. Es
+ * sind keine Speicheroperationen notwendig und es entsteht auch keine Arbeit fÃ¼r den Garbage Collector. Falls die FeldgrÃ¶ÃŸe verÃ¤ndert werden muss, kommt der
+ * Aufwand fÃ¼r das Kopieren des gesamten Feldes hinzu. Ein Block wird nur dann gelÃ¶scht, wenn eine bestimmte Anzahl BlÃ¶cke ungenutzt sind. Dadurch werden
+ * oszillierende Felder vermieden, wenn der FÃ¼llgrad um eine Blockgrenze pendelt. Die Warteschlangen dienen darÃ¼ber hinaus zur Synchronisation des
  * produzierenden Prozesses (ruft push() auf) und des verarbeitenden Prozesses (ruft pop() auf).
  *
  * @author beck et al. projects GmbH
  * @author Alexander Schmidt
- * @version $Revision: 6438 $ / $Date: 2009-03-26 16:39:12 +0100 (Thu, 26 Mar 2009) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  * @param <E> Typ der Elemente im Ringpuffer.
  */
 public class RingBuffer<E> {
@@ -44,22 +50,22 @@ public class RingBuffer<E> {
 	/** Minimale Blockgroesse */
 	public static final int UNBOUNDED_SIZE = 0;
 
-	/** Anzahl der Blöcke die initial angelegt und nicht unterschritten wird */
+	/** Anzahl der BlÃ¶cke die initial angelegt und nicht unterschritten wird */
 	private static final int MIN_CHUNK_NO = 1;
 
-	/** Blöcke werden gelöscht, wenn mindestens diese Zahl an Blöcken ungenutzt ist */
+	/** BlÃ¶cke werden gelÃ¶scht, wenn mindestens diese Zahl an BlÃ¶cken ungenutzt ist */
 	private static final int REM_CHUNK_THRESHOLD = 2;
 
 	/** Zeiger auf Beginn und Ende des Ringpuffers */
 	protected int firstElem = 0, lastElem = -1;
 
-	/** Anzahl der Blöcke */
+	/** Anzahl der BlÃ¶cke */
 	protected int noOfChunks = MIN_CHUNK_NO;
 
-	/** Größe der Blöcke */
+	/** GrÃ¶ÃŸe der BlÃ¶cke */
 	protected int chunkSize = -1;
 
-	/** Maximale Größe der Warteschlange */
+	/** Maximale GrÃ¶ÃŸe der Warteschlange */
 	protected int maxSize = UNBOUNDED_SIZE;
 
 	protected Object[] buf;
@@ -70,7 +76,7 @@ public class RingBuffer<E> {
 	private int chnkIncreases = 0, chnkDecreases = 0;
 
 	/**
-	 * @param chnkSize Größe der Blöcke, um die das Feld der Warteschlange wächst und schrumpft. Die empfohlene Mindestgröße für diesen Parameter ist
+	 * @param chnkSize GrÃ¶ÃŸe der BlÃ¶cke, um die das Feld der Warteschlange wÃ¤chst und schrumpft. Die empfohlene MindestgrÃ¶ÃŸe fÃ¼r diesen Parameter ist
 	 *                 <code>16</code>.
 	 * @param mxSize   Maximale Groesse der Warteschlange. Wird diese ueberschritten, liefert {@link #push(Object)} false. Wenn dieser Parameter {@link
 	 *                 #UNBOUNDED_SIZE} ist, ist die Groesse unbegrenzt.
@@ -102,9 +108,9 @@ public class RingBuffer<E> {
 	}
 
 	/**
-	 * Fügt ein Objekt in die Warteschlange an letzter Stelle ein. Ein Thread, der in pop() wartet, wird fortgesetzt.
+	 * FÃ¼gt ein Objekt in die Warteschlange an letzter Stelle ein. Ein Thread, der in pop() wartet, wird fortgesetzt.
 	 *
-	 * @param elem Einzufügendes Objekt
+	 * @param elem EinzufÃ¼gendes Objekt
 	 *
 	 * @return Wahr, wenn Platz in der Queue war und das Datum eingefuegt wurde, falsch sonst
 	 */
@@ -123,7 +129,7 @@ public class RingBuffer<E> {
 	}
 
 	/**
-	 * Liefert das erste Element der Warteschlange. Wenn die Warteschlange leer ist, blockiert der aufrufende Thread bis zum nächsten pop()-Aufruf.
+	 * Liefert das erste Element der Warteschlange. Wenn die Warteschlange leer ist, blockiert der aufrufende Thread bis zum nÃ¤chsten pop()-Aufruf.
 	 *
 	 * @return Das erste Element der Warteschlange.
 	 *
@@ -184,9 +190,9 @@ public class RingBuffer<E> {
 	}
 
 	/**
-	 * Liefert das zuletzt eingefügte Element.
+	 * Liefert das zuletzt eingefÃ¼gte Element.
 	 *
-	 * @return Zuletzt eingefügtes Element oder <code>null</code> falls RingBuffer leer.
+	 * @return Zuletzt eingefÃ¼gtes Element oder <code>null</code> falls RingBuffer leer.
 	 */
 	@SuppressWarnings({"unchecked"})
 	public synchronized E getLast() {
@@ -201,7 +207,7 @@ public class RingBuffer<E> {
 	/**
 	 * Informmationsausgabe.
 	 *
-	 * @return Liefert die Anzahl der Blöcke und die Anzahl der Elemente im Puffer zurück.
+	 * @return Liefert die Anzahl der BlÃ¶cke und die Anzahl der Elemente im Puffer zurÃ¼ck.
 	 */
 	public synchronized String status() {
 		return "chunks=" + noOfChunks + " size=" + size();
@@ -256,9 +262,9 @@ public class RingBuffer<E> {
 	}
 
 	/**
-	 * Zeigt ob der Buffer vollständig gefüllt ist.
+	 * Zeigt ob der Buffer vollstÃ¤ndig gefÃ¼llt ist.
 	 *
-	 * @return <code>true</code> falls der Buffer vollständig gefüllt.<code>false</code> sonst.
+	 * @return <code>true</code> falls der Buffer vollstÃ¤ndig gefÃ¼llt.<code>false</code> sonst.
 	 */
 	public boolean isFull() {
 		if(maxSize() == UNBOUNDED_SIZE) {
@@ -270,7 +276,7 @@ public class RingBuffer<E> {
 	}
 
 	/**
-	 * Kopiert den Inhalt des Ringpuffers in eine Liste. Es werden nur die Referenzen kopiert - d.h. die Liste enthält die gleichen Objekte wie der Ringpuffer.
+	 * Kopiert den Inhalt des Ringpuffers in eine Liste. Es werden nur die Referenzen kopiert - d.h. die Liste enthÃ¤lt die gleichen Objekte wie der Ringpuffer.
 	 *
 	 * @param newBuf Array in den das Ergebnis kopiert werden soll. Ist das Array zu klein, wird ein neues angelegt.
 	 *
@@ -291,15 +297,15 @@ public class RingBuffer<E> {
 		}
 		return newBuf;
 		/*
-		 * Ist so umständlich, da (E[])new Object[0] NICHT funktioniert! Sonst könnte man einfach
+		 * Ist so umstÃ¤ndlich, da (E[])new Object[0] NICHT funktioniert! Sonst kÃ¶nnte man einfach
 		 * ein neues Array anlegen, und dort die Werte einkopieren.
 		 */
 	}
 
 	/**
-	 * Liefert den zweitobersten Datensatz zurück.
+	 * Liefert den zweitobersten Datensatz zurÃ¼ck.
 	 *
-	 * @return Zeitobersten Datensatz. <code>null</code> falls weniger als zwei Datensätze im Ringpuffer sind.
+	 * @return Zeitobersten Datensatz. <code>null</code> falls weniger als zwei DatensÃ¤tze im Ringpuffer sind.
 	 */
 	@SuppressWarnings("unchecked")
 	public synchronized E next() {

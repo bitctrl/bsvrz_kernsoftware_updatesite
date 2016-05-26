@@ -1,13 +1,13 @@
 /*
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.dataview;
@@ -37,16 +43,16 @@ import java.util.List;
 
 /**
  * Diese Klasse speichert die Verbindung zwischen einem {@link DataTableObject} 
- * dessen hierarchischer Struktur der Form {@link RowData}. Zusätzlich können die Komponenten 
+ * dessen hierarchischer Struktur der Form {@link RowData}. ZusÃ¤tzlich kÃ¶nnen die Komponenten 
  * eines Zeilenkopfes und einer Nutzdatenzeile angefordert werden.
  * 
  * Alle abrufbaren Informationen werden erst beim ersten Abruf konstruiert.
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 8082 $
+ * @version $Revision$
  * 
- * @deprecated Der Klassenname ist komplett irreführend, denn es handelt sich nicht um etwas
- * datensatz-ähnliches. Die Klasse wurde in DataTableObjectRenderer umbenannt.
+ * @deprecated Der Klassenname ist komplett irrefÃ¼hrend, denn es handelt sich nicht um etwas
+ * datensatz-Ã¤hnliches. Die Klasse wurde in DataTableObjectRenderer umbenannt.
  */
 @Deprecated
 public class Dataset {
@@ -54,19 +60,19 @@ public class Dataset {
 	/** speichert einen Datensatz vom Datenverteiler */
 	private final DataTableObject _dataTableObject;
 	
-	/** speichert die Struktur des Spaltenheaders, damit die Nutzdaten damit verknüpft werden können */
+	/** speichert die Struktur des Spaltenheaders, damit die Nutzdaten damit verknÃ¼pft werden kÃ¶nnen */
 	private final HeaderGrid _header;
 	
 	/** speichert die hierarchischen Struktur des Datensatzes */
 	private RowData _rowData = null;
 	
-	/** speichert die zum Datensatz gehörende Zeilenkopf-Komponente */
+	/** speichert die zum Datensatz gehÃ¶rende Zeilenkopf-Komponente */
 	private JComponent _rowHeaderRow = null;
 	
-	/** speichert die zum Datensatz gehörende Datenzeilen-Komponente */
+	/** speichert die zum Datensatz gehÃ¶rende Datenzeilen-Komponente */
 	private JComponent _viewportRow = null;
 	
-	/** speichert die Höhe der Komponente einer Zeile */
+	/** speichert die HÃ¶he der Komponente einer Zeile */
 	private int _height = -1;
 	
 	/** speichert die Breite des Headers */
@@ -94,7 +100,7 @@ public class Dataset {
 	}
 	
 	/**
-	 * Gibt den Datensatz zurück.
+	 * Gibt den Datensatz zurÃ¼ck.
 	 * 
 	 * @return Datensatz
 	 */
@@ -103,7 +109,7 @@ public class Dataset {
 	}
 	
 	/**
-	 * Gibt die hierarchische Struktur des Datensatzes zurück.
+	 * Gibt die hierarchische Struktur des Datensatzes zurÃ¼ck.
 	 * 
 	 * @return hierarchische Struktur des Datensatzes
 	 */
@@ -115,10 +121,10 @@ public class Dataset {
 	}
 	
 	/**
-	 * Gibt die Komponente des Zeilenkopfes zurück.
+	 * Gibt die Komponente des Zeilenkopfes zurÃ¼ck.
 	 * 
 	 * @param timeFormat
-	 *            das gewünschte Format
+	 *            das gewÃ¼nschte Format
 	 * 
 	 * @return Komponente des Zeilenkopfes
 	 */
@@ -130,7 +136,7 @@ public class Dataset {
 	}
 	
 	/**
-	 * Gibt die Komponente der Datenzeile zurück.
+	 * Gibt die Komponente der Datenzeile zurÃ¼ck.
 	 * 
 	 * @return Komponente der Datenzeile
 	 */
@@ -142,9 +148,9 @@ public class Dataset {
 	}
 	
 	/**
-	 * Gibt die Höhe dieser Zeile in Pixel zurück.
+	 * Gibt die HÃ¶he dieser Zeile in Pixel zurÃ¼ck.
 	 * 
-	 * @return Höhe dieser Zeile
+	 * @return HÃ¶he dieser Zeile
 	 */
 	public int getHeight() {
 		if(_height == -1) {
@@ -155,12 +161,12 @@ public class Dataset {
 	
 	/**
 	 * Erstellt die Verbindungen zwischen den Daten und dem Header. Jedes Blattelement meldet 
-	 * sich beim entsprechenden Blatt im Header an, damit etwaige Größenänderungen vom Header 
-	 * an die Datenstruktur übergeben werden kann.
+	 * sich beim entsprechenden Blatt im Header an, damit etwaige GrÃ¶ÃŸenÃ¤nderungen vom Header 
+	 * an die Datenstruktur Ã¼bergeben werden kann.
 	 */
 	public void setLinks() {
-		_rowHeaderRow = null; // wenn die Elemente verbunden werden sollen, müssen die Komponenten erst gelöscht
-		_viewportRow = null; // werden. Nach dem nächsten Erstellen, benutzen sie auch die Informationen aus dem
+		_rowHeaderRow = null; // wenn die Elemente verbunden werden sollen, mÃ¼ssen die Komponenten erst gelÃ¶scht
+		_viewportRow = null; // werden. Nach dem nÃ¤chsten Erstellen, benutzen sie auch die Informationen aus dem
 		// Header
 		if(_rowData == null) {
 			createRowData();
@@ -169,10 +175,10 @@ public class Dataset {
 		createViewportRow();
 	}
 	
-	/** Entfernt alle Einträge, außer den Datensatz und die Höhe einer Zeile. */
+	/** Entfernt alle EintrÃ¤ge, auÃŸer den Datensatz und die HÃ¶he einer Zeile. */
 	public void unsetLinks() {
-		// löscht alles außer ResultData und Height (Objekte einschließlich Verweise)
-		if(_rowData != null) { // nur dann macht es Sinn, sonst gibt es nichts zum Löschen
+		// lÃ¶scht alles auÃŸer ResultData und Height (Objekte einschlieÃŸlich Verweise)
+		if(_rowData != null) { // nur dann macht es Sinn, sonst gibt es nichts zum LÃ¶schen
 			unlinkData(_rowData, _header);
 		}
 		removeComponents();
@@ -189,7 +195,7 @@ public class Dataset {
 	/**
 	 * Rekursive Hilfsmethode. Sie wird von {@link #setLinks()} aufgerufen. Die Verbindungen zum 
 	 * Spaltenheader werden hergestellt und die Breite der Komponenten, welche die Daten anzeigen 
-	 * wird initial festgelegt. Diese Methode wird nur ausgeführt, wenn im Datensatz auch Daten 
+	 * wird initial festgelegt. Diese Methode wird nur ausgefÃ¼hrt, wenn im Datensatz auch Daten 
 	 * vorhanden sind.
 	 * 
 	 * @param rowData
@@ -201,7 +207,7 @@ public class Dataset {
     private void linkData(RowData rowData, HeaderGrid headerGrid) {
 		if(_dataTableObject != null) { // _resultData.getData() != null
 			if(_dataTableObject.getData() == null) {
-				// Idee: bis in die Blätter gehen, dort anmelden und die Summe ergibt dann die Breite 
+				// Idee: bis in die BlÃ¤tter gehen, dort anmelden und die Summe ergibt dann die Breite 
 				// des leeren Datensatzes
 				_headerWidth = 0;
 				getHeaderWidth(headerGrid, rowData);
@@ -265,7 +271,7 @@ public class Dataset {
 	
 	/**
 	 * Rekursive Hilfsmethode. Sie entfernt die Verbindungen zwischen den Daten und dem Spaltenheader. Diese Methode 
-	 * wird nur ausgeführt, wenn auch Daten vorhanden sind.
+	 * wird nur ausgefÃ¼hrt, wenn auch Daten vorhanden sind.
 	 * 
 	 * @param rowData
 	 *            Daten, die mit dem Spaltenheader verbunden sind
@@ -317,7 +323,7 @@ public class Dataset {
 	
 	/**
 	 * Erzeugt anhand der Daten eine neue Zeile im Zeilenheader, bestehend aus einem Zeitstempel und 
-	 * dem dazugehörenden Objekt.
+	 * dem dazugehÃ¶renden Objekt.
 	 * 
 	 * @param dataTableObject
 	 *            das Objekt der Online-Tabelle
@@ -410,7 +416,7 @@ public class Dataset {
 		return rowHeaderPanel;
 	}
 	
-	/** Erzeugt aus einem Datensatz eine Swing-Komponente, damit die Daten angezeigt werden können. */
+	/** Erzeugt aus einem Datensatz eine Swing-Komponente, damit die Daten angezeigt werden kÃ¶nnen. */
 	private void createViewportRow() {
 		if(_rowData == null) {
 			createRowData();
@@ -420,8 +426,8 @@ public class Dataset {
 	}
 	
 	/**
-	 * Ermittelt die Höhe der diesen Datensatz repräsentierenden Swing-Komponente. Falls die Komponenten 
-	 * extra für die Ermittlung der Höhe erzeugt werden, dann werden sie anschließend auch wieder gelöscht.
+	 * Ermittelt die HÃ¶he der diesen Datensatz reprÃ¤sentierenden Swing-Komponente. Falls die Komponenten 
+	 * extra fÃ¼r die Ermittlung der HÃ¶he erzeugt werden, dann werden sie anschlieÃŸend auch wieder gelÃ¶scht.
 	 */
 	private void setHeight() {
 		if(_viewportRow == null) {
@@ -433,7 +439,7 @@ public class Dataset {
 		}
 	}
 	
-	/** Löscht alle nicht mehr benötigten Komponenten, außer des Datensatzes, des Spaltenheaders und der Höhe. */
+	/** LÃ¶scht alle nicht mehr benÃ¶tigten Komponenten, auÃŸer des Datensatzes, des Spaltenheaders und der HÃ¶he. */
 	private void removeComponents() {
 		_rowData = null;
 		_rowHeaderRow = null;

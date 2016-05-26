@@ -5,9 +5,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main.communication.query;
@@ -49,11 +55,11 @@ import java.util.concurrent.ScheduledExecutorService;
  * TBD RS dokumentieren.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 9229 $
+ * @version $Revision$
  */
 public class ForeignObjectManager {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	private final ClientDavInterface _connection;
@@ -106,7 +112,7 @@ public class ForeignObjectManager {
 					_foreignObjectCache = new PersistentDynamicObjectCache(configuration, foreignObjectCacheFile);
 				}
 				catch(Exception e1) {
-					_debug.warning("Datei mit gespeicherten Fremdobjekten konnte nicht gelesen werden, Datei " + foreignObjectCacheFile + " wird gelöscht");
+					_debug.warning("Datei mit gespeicherten Fremdobjekten konnte nicht gelesen werden, Datei " + foreignObjectCacheFile + " wird gelÃ¶scht");
 					try {
 						foreignObjectCacheFile.delete();
 						_foreignObjectCache = new PersistentDynamicObjectCache(configuration, foreignObjectCacheFile);
@@ -133,14 +139,14 @@ public class ForeignObjectManager {
 		}
 
 		synchronized(_authorityPid2Requester) {
-			// Da als Value für einen Key auch null eingetragen sein kann, muss dies hier mit containsKey() geprüft werden.
+			// Da als Value fÃ¼r einen Key auch null eingetragen sein kann, muss dies hier mit containsKey() geprÃ¼ft werden.
 			if(_authorityPid2Requester.containsKey(managementPid)) {
 				return _authorityPid2Requester.get(managementPid);
 			}
 		}
 		final SystemObject managementObject = _configuration.getObject(managementPid);
 		synchronized(_authorityPid2Requester) {
-			// Da als Value für einen Key auch null eingetragen sein kann, muss dies hier mit containsKey() geprüft werden.
+			// Da als Value fÃ¼r einen Key auch null eingetragen sein kann, muss dies hier mit containsKey() geprÃ¼ft werden.
 			if(_authorityPid2Requester.containsKey(managementPid)) {
 				return _authorityPid2Requester.get(managementPid);
 			}
@@ -167,7 +173,7 @@ public class ForeignObjectManager {
 			String managementPid = getElementsManagementPid(mutableSet);
 			return getForeignConfigRequester(managementPid);
 		}
-		// Es ist ein Typ-Objekt, dass hier nicht berücksichtigt wird
+		// Es ist ein Typ-Objekt, dass hier nicht berÃ¼cksichtigt wird
 		return null;
 	}
 
@@ -275,7 +281,7 @@ public class ForeignObjectManager {
 //				}
 //			}
 //		}
-//		// Überprüfen, ob der jeweilige KV von noch nicht bekannten Objekten bekannt ist und angefragt werden kann.
+//		// ÃœberprÃ¼fen, ob der jeweilige KV von noch nicht bekannten Objekten bekannt ist und angefragt werden kann.
 //		for(Iterator<Long> iterator = toBeRequestedObjectIds.iterator(); iterator.hasNext();) {
 //			Long toBeRequestedObjectId = iterator.next();
 //			final ConfigurationAuthority foreignConfigurationAuthority = getForeignConfigurationAuthority(toBeRequestedObjectId);
@@ -287,7 +293,7 @@ public class ForeignObjectManager {
 ////				foreignConfigRequester.queryObject(toBeRequestedObjectId, listener);
 ////
 ////			}
-//			// Hier wird geprüft, ob eine asynchrone Anfrage momentan sinnvoll ist. Wenn nicht,
+//			// Hier wird geprÃ¼ft, ob eine asynchrone Anfrage momentan sinnvoll ist. Wenn nicht,
 //			if(foreignConfigurationAuthority == null || foreignConfigRequester == null || foreignConfigRequester.isStartedAndUnconnectedAndTimedOut()) {
 //				iterator.remove();
 //			}
@@ -330,7 +336,7 @@ public class ForeignObjectManager {
 			}
 		}
 		
-		// Überprüfen, ob der jeweilige KV von noch nicht bekannten Objekten bekannt ist und angefragt werden kann.
+		// ÃœberprÃ¼fen, ob der jeweilige KV von noch nicht bekannten Objekten bekannt ist und angefragt werden kann.
 		for(Iterator<Long> iterator = toBeRequestedObjectIds.iterator(); iterator.hasNext();) {
 			Long toBeRequestedObjectId = iterator.next();
 			final ConfigurationAuthority foreignConfigurationAuthority = getForeignConfigurationAuthority(toBeRequestedObjectId);
@@ -341,7 +347,7 @@ public class ForeignObjectManager {
 			else {
 				foreignConfigRequester = null;
 			}
-			// Hier wird geprüft, ob eine asynchrone Anfrage momentan sinnvoll ist.
+			// Hier wird geprÃ¼ft, ob eine asynchrone Anfrage momentan sinnvoll ist.
 			if(foreignConfigurationAuthority == null || foreignConfigRequester == null || foreignConfigRequester.isStartedAndUnconnectedAndTimedOut()) {
 				iterator.remove();
 			}
