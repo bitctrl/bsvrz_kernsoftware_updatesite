@@ -49,10 +49,10 @@
 	</modules>
 
 	<properties>
-		<tycho-version>0.20.0</tycho-version>
-		<tycho-extras-version>0.18.1</tycho-extras-version>
+		<tycho-version>0.22.0</tycho-version>
+		<tycho-extras-version>0.22.0</tycho-extras-version>
 		<mockito-version>1.9.5</mockito-version>
-		<tycho-surefire-version>0.18.0</tycho-surefire-version>
+		<tycho-surefire-version>0.22.0</tycho-surefire-version>
 		<maven-site-plugin-version>3.2</maven-site-plugin-version>
 		<maven-project-info-reports-plugin-version>2.4</maven-project-info-reports-plugin-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
