@@ -18,7 +18,6 @@
    </license>
 
    <requires>
-      <import plugin="de.bsvrz.dav.daf" version="3.5.0" match="compatible"/>
       <import plugin="de.bsvrz.sys.funclib.debug" version="3.7.4" match="compatible"/>
       <import plugin="de.bsvrz.sys.funclib.commandLineArgs" version="3.7.4" match="compatible"/>
       <import plugin="de.bsvrz.sys.funclib.timeout" version="3.7.4" match="compatible"/>
@@ -31,6 +30,7 @@
       <import plugin="de.bsvrz.sys.funclib.application" version="3.7.4" match="compatible"/>
       <import plugin="de.bsvrz.sys.funclib.operatingMessage" version="3.7.4" match="compatible"/>
       <import plugin="de.bsvrz.sys.funclib.asyncReceiver" version="3.7.4" match="compatible"/>
+      <import plugin="de.bsvrz.dav.daf" version="3.5.0" match="compatible"/>
       <import plugin="de.bsvrz.sys.funclib.dataSerializer" version="3.7.4" match="compatible"/>
       <import plugin="de.bsvrz.sys.funclib.communicationStreams" version="3.7.4" match="compatible"/>
       <import plugin="de.bsvrz.pat.onlprot" version="3.7.4" match="compatible"/>
@@ -39,7 +39,6 @@
       <import plugin="de.bsvrz.pat.datgen" version="3.7.4" match="compatible"/>
       <import plugin="de.bsvrz.pat.sysprot" version="3.7.4" match="compatible"/>
       <import plugin="de.bsvrz.sys.funclib.dataIdentificationSettings" version="3.7.4" match="compatible"/>
-      <import plugin="org.eclipse.core.runtime"/>
    </requires>
 
    <plugin
