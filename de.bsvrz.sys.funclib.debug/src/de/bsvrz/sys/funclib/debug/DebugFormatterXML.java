@@ -1,11 +1,11 @@
 /*
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.sys.funclib.debug.
  * 
  * de.bsvrz.sys.funclib.debug is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.debug is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.debug; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.debug; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.debug;
@@ -24,7 +30,7 @@ import java.util.logging.*;
 import java.util.Date;
 import java.text.*;
 
-/** Formatiert die Debugmeldungen für die XML-Ausgabe.
+/** Formatiert die Debugmeldungen fÃ¼r die XML-Ausgabe.
  * Folgende DTD liegt der Ausgabe zugrunde:
  * <pre><code>
  * &lt;?xml version="1.0" encoding="ISO-8859-1"?>
@@ -38,21 +44,21 @@ import java.text.*;
  * &lt;!ELEMENT debug (DebugAusgabe+)>
  * </code></pre>
  *
- * @author Hans Christian Kniß (HCK)
- * @version $Revision: 5003 $ / $Date: 2007-08-27 21:41:46 +0200 (Mon, 27 Aug 2007) $
+ * @author Hans Christian KniÃŸ (HCK)
+ * @version $Revision$ / $Date$
  */
 public class DebugFormatterXML extends java.util.logging.Formatter {
 
-	/** Formatstring für das Ausgabeformat des Zeitstempels. Ausgabe erfolgt mit Datum,
+	/** Formatstring fÃ¼r das Ausgabeformat des Zeitstempels. Ausgabe erfolgt mit Datum,
 	 * Uhrzeit, Millisekunden und Zeitoffset zur Zeitangabe in UMT.
 	 */
 	private static final DateFormat _absoluteMillisecondsFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss,SSS:Z");
-	/** Formatstring mit Angabe für die Formatierung der Zahlenausgaben für die lfdNr
+	/** Formatstring mit Angabe fÃ¼r die Formatierung der Zahlenausgaben fÃ¼r die lfdNr
 	 * der Meldung und die ThreadId.
 	 */
 	private static final DecimalFormat _numberFormat = new DecimalFormat("000000");
-	/** Systemabhängig zur Laufzeit ermittelter String für den Zeilenumbruch. Daduch
-	 * wird idie Meldungsausgabe plattformunabhängig.
+	/** SystemabhÃ¤ngig zur Laufzeit ermittelter String fÃ¼r den Zeilenumbruch. Daduch
+	 * wird idie Meldungsausgabe plattformunabhÃ¤ngig.
 	 */
 	private static final String NEWLINE = System.getProperty("line.separator");
 
@@ -71,7 +77,7 @@ public class DebugFormatterXML extends java.util.logging.Formatter {
 	 * </pre></code>
 	 * @param lr LogRecord mit den Informationen einer Meldung.
 	 * @return Gibt ein XML-Element <CODE><DebugAusgabe></CODE> mit den im LogRecord
-	 * übergebenen Informationen aus.
+	 * Ã¼bergebenen Informationen aus.
 	 */
 
 	public String format(LogRecord lr) {

@@ -44,8 +44,8 @@ import java.util.TreeSet;
 /**
  * Die Klasse erzeugt SystemKalenderEintraege vom Typ: "ODER{Samstag, Sonntag}*,*" oder "UND{MoBisSa, NICHT
  * Feiertag}*,*". Die Berechnung der Zeitpunkte mit Wildcards bezieht sich noch auf das aktuelle Kalenderjahr. Die
- * Vorgehensweise könnte dahingehend sein, dass beim Jahrewechsel die Zustandswechsel neu berechnet werden. Muss also
- * noch geklärt werden *
+ * Vorgehensweise kÃ¶nnte dahingehend sein, dass beim Jahrewechsel die Zustandswechsel neu berechnet werden. Muss also
+ * noch geklÃ¤rt werden *
  * 
  * @version $Revision: 1.7 $ / $Date: 2015/06/08 15:13:12 $ / ($Author: Pittner $)
  * 

@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.plugins.onlinetable;
@@ -43,11 +49,11 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Implementiert das Modul f¸r die Onlinetabelle. Dieses Modul stellt f¸r die ausgew‰hlte Datenidentifikation alle aktuellen Daten vom Datenverteiler in
+ * Implementiert das Modul f√ºr die Onlinetabelle. Dieses Modul stellt f√ºr die ausgew√§hlte Datenidentifikation alle aktuellen Daten vom Datenverteiler in
  * Tabellendarstellung dar.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5055 $
+ * @version $Revision$
  */
 public class OnlineTableModule extends ExternalModuleAdapter {
 
@@ -59,7 +65,7 @@ public class OnlineTableModule extends ExternalModuleAdapter {
 
 	/* ############ Methoden ############ */
 	/**
-	 * Gibt den Namen des Moduls zur¸ck.
+	 * Gibt den Namen des Moduls zur√ºck.
 	 *
 	 * @return der Name des Moduls
 	 */
@@ -68,7 +74,7 @@ public class OnlineTableModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Gibt den Text des Buttons zur¸ck.
+	 * Gibt den Text des Buttons zur√ºck.
 	 *
 	 * @return Text des Buttons
 	 */
@@ -77,7 +83,7 @@ public class OnlineTableModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Gibt den Text des Tooltips zur¸ck.
+	 * Gibt den Text des Tooltips zur√ºck.
 	 *
 	 * @return Text des Tooltips
 	 */
@@ -86,9 +92,9 @@ public class OnlineTableModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Diese Methode erh‰lt die ausgew‰hlte Datenidentifikation und stellt die Onlinetabelle dar.
+	 * Diese Methode erh√§lt die ausgew√§hlte Datenidentifikation und stellt die Onlinetabelle dar.
 	 *
-	 * @param settingsData enth‰lt die ausgew‰hlte Datenidentifikation
+	 * @param settingsData enth√§lt die ausgew√§hlte Datenidentifikation
 	 */
 	public void startModule(final SettingsData settingsData) {
 		_dialog = new OnlineTableDialog();
@@ -96,7 +102,7 @@ public class OnlineTableModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Diese Methode erh‰lt alle Einstellungen f¸r die Anzeige der OnlineTabelle.
+	 * Diese Methode erh√§lt alle Einstellungen f√ºr die Anzeige der OnlineTabelle.
 	 *
 	 * @param settingsData die Einstellungsdaten
 	 */
@@ -106,8 +112,8 @@ public class OnlineTableModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Diese Methode erh‰lt alle Einstellungen f¸r die Onlinetabelle und startet den {@link OnlineTableDialog Dialog}. Dieser wird mit den Einstellungsdaten
-	 * gef¸llt.
+	 * Diese Methode erh√§lt alle Einstellungen f√ºr die Onlinetabelle und startet den {@link OnlineTableDialog Dialog}. Dieser wird mit den Einstellungsdaten
+	 * gef√ºllt.
 	 *
 	 * @param settingsData die Einstellungsdaten
 	 */
@@ -117,33 +123,33 @@ public class OnlineTableModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Gibt an, ob die Vorauswahl den Anforderungen der Onlinetabelle gen¸gen.
+	 * Gibt an, ob die Vorauswahl den Anforderungen der Onlinetabelle gen√ºgen.
 	 *
-	 * @param settingsData enth‰lt die ausgew‰hlte Datenidentifikation
+	 * @param settingsData enth√§lt die ausgew√§hlte Datenidentifikation
 	 *
-	 * @return gibt an, ob die Vorauswahl den Anforderungen der Onlinetabelle gen¸gen
+	 * @return gibt an, ob die Vorauswahl den Anforderungen der Onlinetabelle gen√ºgen
 	 */
 	public boolean isPreselectionValid(final SettingsData settingsData) {
 		if(!super.isPreselectionValid(settingsData)) {
-			_tooltipText = "Genau eine Attributgruppe, ein Aspekt und mindestens ein Objekt m¸ssen ausgew‰hlt sein.";
+			_tooltipText = "Genau eine Attributgruppe, ein Aspekt und mindestens ein Objekt m√ºssen ausgew√§hlt sein.";
 			return false;
 		}
 
-		// ATGV pr¸fen
+		// ATGV pr√ºfen
 		final AttributeGroupUsage atgUsage = settingsData.getAttributeGroup().getAttributeGroupUsage(settingsData.getAspect());
 		if(atgUsage == null || atgUsage.isConfigurating()) {
-			_tooltipText = "Es muss eine Online-Attributgruppenverwendung ausgew‰hlt werden.";
+			_tooltipText = "Es muss eine Online-Attributgruppenverwendung ausgew√§hlt werden.";
 			return false;
 		}
-		_tooltipText = "Auswahl ¸bernehmen";
+		_tooltipText = "Auswahl √ºbernehmen";
 		return true;
 	}
 
 
 	/* ############### Klasse OnlineTableDialog ############## */
 	/**
-	 * Stellt einen Dialog zur Verf¸gung, mit dem Einstellungen f¸r die Onlinetabelle gemacht werden kˆnnen. Diese Einstellungen kˆnnen gespeichert werden. Durch
-	 * bet‰tigen des "OK"-Buttons wird die Onlinetabelle gestartet.
+	 * Stellt einen Dialog zur Verf√ºgung, mit dem Einstellungen f√ºr die Onlinetabelle gemacht werden k√∂nnen. Diese Einstellungen k√∂nnen gespeichert werden. Durch
+	 * bet√§tigen des "OK"-Buttons wird die Onlinetabelle gestartet.
 	 */
 	private class OnlineTableDialog implements DialogInterface {
 
@@ -153,22 +159,22 @@ public class OnlineTableModule extends ExternalModuleAdapter {
 		/** speichert eine Instanz der Datenidentifikationsauswahl */
 		private DataIdentificationChoice _dataIdentificationChoice;
 
-		/** gibt an, welche Rollen zur Verf¸gung stehen */
-		private final String[] _roleUnit = {"Empf‰nger", "Senke"};
+		/** gibt an, welche Rollen zur Verf√ºgung stehen */
+		private final String[] _roleUnit = {"Empf√§nger", "Senke"};
 
-		/** gibt an, welche Anmeldearten zur Verf¸gung stehen */
-		private final String[] _applyModeEntries = {"Online", "Nur ge‰nderte Datens‰tze", "Auch nachgelieferte Datens‰tze"};
+		/** gibt an, welche Anmeldearten zur Verf√ºgung stehen */
+		private final String[] _applyModeEntries = {"Online", "Nur ge√§nderte Datens√§tze", "Auch nachgelieferte Datens√§tze"};
 
-		/** gibt an, welche Darstellungsoptionen zur Verf¸gung stehen */
-		private final String[] _displayOptions = {"Aktuelle Daten unten anh‰ngen", "Aktuelle Daten oben einf¸gen", "Nur aktuellste Daten anzeigen"};
+		/** gibt an, welche Darstellungsoptionen zur Verf√ºgung stehen */
+		private final String[] _displayOptions = {"Aktuelle Daten unten anh√§ngen", "Aktuelle Daten oben einf√ºgen", "Nur aktuellste Daten anzeigen"};
 
-		/** hier kann die Rolle ausgew‰hlt werden */
+		/** hier kann die Rolle ausgew√§hlt werden */
 		private JComboBox _roleComboBox;
 
-		/** hier kann die Anmeldeart ausgew‰hlt werden */
+		/** hier kann die Anmeldeart ausgew√§hlt werden */
 		private JComboBox _applyModeCombo;
 
-		/** hier kann die Darstellungsoption ausgew‰hlt werden */
+		/** hier kann die Darstellungsoption ausgew√§hlt werden */
 		private JComboBox _displayOptionsComboBox;
 
 
@@ -178,9 +184,9 @@ public class OnlineTableModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Mit dieser Methode kˆnnen die Datenidentifikationsdaten ¸bergeben werden. Der Dialog wird mit Default-Werten dargestellt.
+		 * Mit dieser Methode k√∂nnen die Datenidentifikationsdaten √ºbergeben werden. Der Dialog wird mit Default-Werten dargestellt.
 		 *
-		 * @param data enth‰lt die ausgew‰hlte Datenidentifikation
+		 * @param data enth√§lt die ausgew√§hlte Datenidentifikation
 		 */
 		public void setDataIdentification(final SettingsData data) {
 			if(_dialog == null) {
@@ -194,7 +200,7 @@ public class OnlineTableModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Diese Methode zeigt den Dialog an und tr‰gt die Einstellungsdaten in die entsprechenden Felder ein.
+		 * Diese Methode zeigt den Dialog an und tr√§gt die Einstellungsdaten in die entsprechenden Felder ein.
 		 *
 		 * @param data die Einstellungsdaten
 		 */
@@ -337,9 +343,9 @@ public class OnlineTableModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Gibt die ausgew‰hlte Rolle f¸r die Onlinetabelle zur¸ck.
+		 * Gibt die ausgew√§hlte Rolle f√ºr die Onlinetabelle zur√ºck.
 		 *
-		 * @return die ausgew‰hlte Rolle
+		 * @return die ausgew√§hlte Rolle
 		 */
 		private String getRole() {
 			String item = (String)_roleComboBox.getSelectedItem();
@@ -352,9 +358,9 @@ public class OnlineTableModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Setzt die Rolle f¸r die Onlinetabelle.
+		 * Setzt die Rolle f√ºr die Onlinetabelle.
 		 *
-		 * @param role die Rolle f¸r die Onlinetabelle
+		 * @param role die Rolle f√ºr die Onlinetabelle
 		 */
 		private void setRole(final String role) {
 			int index = 0;
@@ -368,7 +374,7 @@ public class OnlineTableModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Gibt die Anmeldeart zur¸ck.
+		 * Gibt die Anmeldeart zur√ºck.
 		 *
 		 * @return die Anmeldeart
 		 */
@@ -409,9 +415,9 @@ public class OnlineTableModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Gibt die ausgew‰hlte Darstellungsoption zur¸ck.
+		 * Gibt die ausgew√§hlte Darstellungsoption zur√ºck.
 		 *
-		 * @return der Index der ausgew‰hlten Darstellungsoption
+		 * @return der Index der ausgew√§hlten Darstellungsoption
 		 */
 		private String getDisplayOptions() {
 			return String.valueOf(_displayOptionsComboBox.getSelectedIndex());
@@ -429,7 +435,7 @@ public class OnlineTableModule extends ExternalModuleAdapter {
 		/**
 		 * Erstellt die Einstellungsdaten.
 		 *
-		 * @param title der Name f¸r die Einstellungen
+		 * @param title der Name f√ºr die Einstellungen
 		 *
 		 * @return die Einstellungsdaten
 		 */
@@ -463,7 +469,7 @@ public class OnlineTableModule extends ExternalModuleAdapter {
 			return keyValueList;
 		}
 
-		/** Durch bet‰tigen des "OK"-Buttons wird die Onlinetabelle gestartet und dieser Dialog wird geschlossen. Die Parameter werden gespeichert. */
+		/** Durch bet√§tigen des "OK"-Buttons wird die Onlinetabelle gestartet und dieser Dialog wird geschlossen. Die Parameter werden gespeichert. */
 		public void doOK() {
 			SettingsData settingsData = getSettings("");
 			startSettings(settingsData);
@@ -471,7 +477,7 @@ public class OnlineTableModule extends ExternalModuleAdapter {
 			saveSettings(settingsData);
 		}
 
-		/** diese Methode schlieﬂt den Dialog */
+		/** diese Methode schlie√üt den Dialog */
 		public void doCancel() {
 			_dialog.setVisible(false);
 			_dialog.dispose();

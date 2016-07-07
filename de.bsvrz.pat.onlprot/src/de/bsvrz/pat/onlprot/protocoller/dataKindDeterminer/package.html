@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta http-equiv="Content-Style-Type" content="text/css">
 	<title></title>
 	<meta name="Generator" content="Cocoa HTML Writer">
@@ -28,8 +28,8 @@
 <p class="p1"><b>Modul Datenart bestimmen</b></p>
 
 <p class="p2">Das Modul <i>Datenart bestimmen </i>dient dazu, die Tupel aus <span class="s1">&#x2011;rolle</span>, <span class="s1">&#x2011;option</span>, <span
-		class="s1">&#x2011;objekte </span>und <span class="s1">&#x2013;daten </span>auszuwerten. Es können mehrere solcher Tupel angegeben werden. Ergebnis ist
-	ein Feld mit Sätzen dieser Angaben, das vom Modul <i>Verwaltung</i> für die Anmeldung auf Daten verwendet werden kann. Ein Satz des Feldes enthält die
+		class="s1">&#x2011;objekte </span>und <span class="s1">&#x2013;daten </span>auszuwerten. Es kÃ¶nnen mehrere solcher Tupel angegeben werden. Ergebnis ist
+	ein Feld mit SÃ¤tzen dieser Angaben, das vom Modul <i>Verwaltung</i> fÃ¼r die Anmeldung auf Daten verwendet werden kann. Ein Satz des Feldes enthÃ¤lt die
 	folgenden Informationen:</p>
 <ul>
 	<li style="margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Times New Roman">Objekt(e)</li>
@@ -39,30 +39,30 @@
 	<li style="margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Times New Roman">Option</li>
 	<li style="margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Times New Roman">Rolle</li>
 </ul>
-<p class="p2">Um diese Funktionalität in anderen SW-Einheiten verwenden zu können, ist sie parametrierbar: Man kann zum einen angeben, ob <span class="s1">&#x2013;option </span>berücksichtigt
+<p class="p2">Um diese FunktionalitÃ¤t in anderen SW-Einheiten verwenden zu kÃ¶nnen, ist sie parametrierbar: Man kann zum einen angeben, ob <span class="s1">&#x2013;option </span>berÃ¼cksichtigt
 	werden soll oder nicht und zum anderen, welche Werte bei <span class="s1">&#x2011;rolle</span> erlaubt sind.</p>
 
-<p class="p2">Für die einzelnen Parameter jedes Tupels gilt folgendes Vorgehen:</p>
+<p class="p2">FÃ¼r die einzelnen Parameter jedes Tupels gilt folgendes Vorgehen:</p>
 <ul>
-	<li style="margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Times New Roman">Rolle auswerten:          <br>
-		Der Aufrufparameter für die Rolle wird interpretiert und die dem Wert entsprechende Konstante zurückgegeben. Die Menge der gültigen Rollen
-		(<i>Quelle</i>, <i>Sender</i>, <i>Empfänger</i> oder <i>Senke</i>) kann eingeschränkt werden. Ein <i>Default-</i>Wert muss angegeben werden. Wurde für
+	<li style="margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Times New Roman">Rolle auswerten:Â Â Â Â Â Â Â Â Â  <br>
+		Der Aufrufparameter fÃ¼r die Rolle wird interpretiert und die dem Wert entsprechende Konstante zurÃ¼ckgegeben. Die Menge der gÃ¼ltigen Rollen
+		(<i>Quelle</i>, <i>Sender</i>, <i>EmpfÃ¤nger</i> oder <i>Senke</i>) kann eingeschrÃ¤nkt werden. Ein <i>Default-</i>Wert muss angegeben werden. Wurde fÃ¼r
 		den Aufrufparameter ein unerlaubter Wert angegeben, so wird die Methode mit einer Ausnahme beendet.
 	</li>
-	<li style="margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Times New Roman">Option auswerten:        <br>
-		Der Aufrufparameter für die Optionen wird, falls er berücksichtigt werden soll, interpretiert und die dem Wert entsprechende Konstante zurückgegeben.
-		Die möglichen Optionen sind <i>Online-Daten</i>, <i>Deltadaten </i>und <i>nachgelieferte Daten</i>.
+	<li style="margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Times New Roman">Option auswerten:Â Â Â Â Â Â Â  <br>
+		Der Aufrufparameter fÃ¼r die Optionen wird, falls er berÃ¼cksichtigt werden soll, interpretiert und die dem Wert entsprechende Konstante zurÃ¼ckgegeben.
+		Die mÃ¶glichen Optionen sind <i>Online-Daten</i>, <i>Deltadaten </i>und <i>nachgelieferte Daten</i>.
 	</li>
-	<li style="margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Times New Roman">Objekte auswerten:      <br>
-		Die ID(s) des (der) angegebenen Objekts (Objekte) wird (werden) aus der Konfiguration abgefragt und zurückgegeben. Existiert der angegebene Wert nicht
-		in der Konfiguration, so wird die Methode mit einer Ausnahme beendet. Zu beachten ist, daß mehrere Objekte, durch Kommas getrennt, angegeben können.
+	<li style="margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Times New Roman">Objekte auswerten:Â Â Â Â Â  <br>
+		Die ID(s) des (der) angegebenen Objekts (Objekte) wird (werden) aus der Konfiguration abgefragt und zurÃ¼ckgegeben. Existiert der angegebene Wert nicht
+		in der Konfiguration, so wird die Methode mit einer Ausnahme beendet. Zu beachten ist, daÃŸ mehrere Objekte, durch Kommas getrennt, angegeben kÃ¶nnen.
 	</li>
-	<li style="margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Times New Roman">Daten auswerten:         <br>
-		Die ID(s) der angegebenen Attributgruppen-/Aspekt-Kombination(en) wird (werden) aus der Konfiguration abgefragt und zurückgegeben. Existieren die IDs
-		nicht in der Konfiguration, so wird die Methode mit einer Ausnahme beendet. Auch die Simulationsvariante wird berücksichtigt.
+	<li style="margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px Times New Roman">Daten auswerten:Â Â Â Â Â Â Â Â  <br>
+		Die ID(s) der angegebenen Attributgruppen-/Aspekt-Kombination(en) wird (werden) aus der Konfiguration abgefragt und zurÃ¼ckgegeben. Existieren die IDs
+		nicht in der Konfiguration, so wird die Methode mit einer Ausnahme beendet. Auch die Simulationsvariante wird berÃ¼cksichtigt.
 	</li>
 </ul>
 <p class="p2"><i>Datenart bestimmen </i>wird als eigenes Modul realisiert, weil es bei den SW-Einheiten <i>System-Protokollierer </i>und <i>Datengenerator </i>wiederverwendet
-	werden kann und verschiedene zusammenhängende Funktionalitäten durch eine einfache Schnittstelle zur Verfügung stellt.</p>
+	werden kann und verschiedene zusammenhÃ¤ngende FunktionalitÃ¤ten durch eine einfache Schnittstelle zur VerfÃ¼gung stellt.</p>
 </body>
 </html>

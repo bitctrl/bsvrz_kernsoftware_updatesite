@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.util.cron;
@@ -23,10 +29,10 @@ package de.bsvrz.dav.daf.util.cron;
 import java.util.concurrent.*;
 
 /**
- * ScheduledExecutorService-Implementierung, die anhand einer {@link CronDefinition} periodische Aufträge planen kann
+ * ScheduledExecutorService-Implementierung, die anhand einer {@link CronDefinition} periodische AuftrÃ¤ge planen kann
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13114 $
+ * @version $Revision$
  */
 public class CronScheduler extends ScheduledThreadPoolExecutor {
 
@@ -56,8 +62,8 @@ public class CronScheduler extends ScheduledThreadPoolExecutor {
 
 	/**
 	 * Plant einen Auftrag
-	 * @param command Auszuführender Befehl
-	 * @param cronDefinition Auszuführende Zeitpunkte
+	 * @param command AuszufÃ¼hrender Befehl
+	 * @param cronDefinition AuszufÃ¼hrende Zeitpunkte
 	 * @return ScheduledFuture-Objekt zum Abfragen des Ergebnisses (sofern vorhanden)
 	 */
 	public ScheduledFuture<?> schedule(final Runnable command, final CronDefinition cronDefinition) {
@@ -66,8 +72,8 @@ public class CronScheduler extends ScheduledThreadPoolExecutor {
 
 	/**
 	 * Plant einen Auftrag
-	 * @param callable Auszuführender Befehl
-	 * @param cronDefinition Auszuführende Zeitpunkte
+	 * @param callable AuszufÃ¼hrender Befehl
+	 * @param cronDefinition AuszufÃ¼hrende Zeitpunkte
 	 * @return ScheduledFuture-Objekt zum Abfragen des Ergebnisses (sofern vorhanden)
 	 */
 	public <V> ScheduledFuture<V> schedule(final Callable<V> callable, final CronDefinition cronDefinition) {
@@ -87,7 +93,7 @@ public class CronScheduler extends ScheduledThreadPoolExecutor {
 	private class CronTask<V> extends FutureTask<V> implements RunnableScheduledFuture<V>{
 
 		private final CronDefinition _cronDefinition;
-		private long _lastRunTime = System.currentTimeMillis();
+		private long _lastRunTime = getTime();
 		private long _nextScheduledTime;
 
 		public CronTask(final Callable<V> callable, final CronDefinition cronDefinition) {
@@ -103,8 +109,7 @@ public class CronScheduler extends ScheduledThreadPoolExecutor {
 
 		@Override
 		public long getDelay(final TimeUnit unit) {
-			long delay = unit.convert(_nextScheduledTime - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
-			return delay;
+			return unit.convert(_nextScheduledTime - getTime(), TimeUnit.MILLISECONDS);
 		}
 
 		@Override
@@ -139,5 +144,13 @@ public class CronScheduler extends ScheduledThreadPoolExecutor {
 					"_cronDefinition=" + _cronDefinition +
 					'}';
 		}
+	}
+
+	/**
+	 * Zum testen Ã¼berschreibbar um eine andere Uhr zu benutzen.
+	 * @return aktuelle Zeit in Millisekunden analog zu System.currentTimeMillis()
+	 */
+	protected long getTime() {
+		return System.currentTimeMillis();
 	}
 }

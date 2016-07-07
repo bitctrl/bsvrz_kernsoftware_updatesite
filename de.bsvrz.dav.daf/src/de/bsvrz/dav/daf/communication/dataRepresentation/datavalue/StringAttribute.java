@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.dataRepresentation.datavalue;
@@ -24,19 +30,20 @@ package de.bsvrz.dav.daf.communication.dataRepresentation.datavalue;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
- * Diese Klasse stellt die Attribute und Funktionalit‰ten des Datentyps String zur Verf¸gung.
+ * Diese Klasse stellt die Attribute und Funktionalit√§ten des Datentyps String zur Verf√ºgung.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5049 $
+ * @version $Revision$
  */
 public class StringAttribute extends DataValue {
 
 	/** Der Stringwert */
 	private String _string;
 
-	/** Erzeugt ein neues Objekt ohne Parameter. Die Parameter werden zu einem Sp‰teren Zeitpunkt ¸ber die read-Methode eingelesen. */
+	/** Erzeugt ein neues Objekt ohne Parameter. Die Parameter werden zu einem Sp√§teren Zeitpunkt √ºber die read-Methode eingelesen. */
 	public StringAttribute() {
 		_type = STRING_TYPE;
 	}
@@ -47,6 +54,7 @@ public class StringAttribute extends DataValue {
 	 * @param str String
 	 */
 	public StringAttribute(String str) {
+		Objects.requireNonNull(str, "String ist null");
 		_type = STRING_TYPE;
 		_string = str;
 	}
@@ -57,6 +65,9 @@ public class StringAttribute extends DataValue {
 
 
 	public final DataValue cloneObject() {
+		if(_string == null) {
+			return new StringAttribute();
+		}
 		return new StringAttribute(_string);
 	}
 
@@ -74,8 +85,8 @@ public class StringAttribute extends DataValue {
 	}
 
 	/**
-	 * Diese Methode pr¸ft auf Gleichheit eines Objektes, dass dieser Klasse entstammt. Die Pr¸fung erfolgt von "grob" nach "fein". Nach einer
-	 * <code>null</code>-Referenzabfrage wird die Instanceof methode aufgerufen, abschlieﬂend wird der Inhalt des Objektes gepr¸ft.
+	 * Diese Methode pr√ºft auf Gleichheit eines Objektes, dass dieser Klasse entstammt. Die Pr√ºfung erfolgt von "grob" nach "fein". Nach einer
+	 * <code>null</code>-Referenzabfrage wird die Instanceof methode aufgerufen, abschlie√üend wird der Inhalt des Objektes gepr√ºft.
 	 *
 	 * @param obj Referenzobjekt
 	 *

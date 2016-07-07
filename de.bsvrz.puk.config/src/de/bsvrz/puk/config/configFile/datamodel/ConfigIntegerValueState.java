@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2006 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -34,11 +40,11 @@ import java.io.ByteArrayInputStream;
  * Implementierung des Interfaces {@link IntegerValueState} auf Seiten der Konfiguration.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 11583 $ / $Date: 2013-08-22 15:59:25 +0200 (Thu, 22 Aug 2013) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigIntegerValueState extends ConfigConfigurationObject implements IntegerValueState {
 	/**
-	 * DebugLogger für Debug-Ausgaben
+	 * DebugLogger fÃ¼r Debug-Ausgaben
 	 */
 	private static final Debug _debug = Debug.getLogger();
 
@@ -59,7 +65,7 @@ public class ConfigIntegerValueState extends ConfigConfigurationObject implement
 
 	@Override
 	public void setName(final String name) throws ConfigurationChangeException {
-		// Sind im fehlerhafterweise als änderbar markiert, dürfen aber nur über eine "unversionierte Datenmodelländerung"
+		// Sind im fehlerhafterweise als Ã¤nderbar markiert, dÃ¼rfen aber nur Ã¼ber eine "unversionierte DatenmodellÃ¤nderung"
 		// umbenannt werden
 		RelaxedModelChanges relaxedModelChanges = RelaxedModelChanges.getInstance(getDataModel());
 		if(relaxedModelChanges.allowChangeValueName(this)){
@@ -67,7 +73,7 @@ public class ConfigIntegerValueState extends ConfigConfigurationObject implement
 		}
 		else {
 			throw new ConfigurationChangeException(
-					"Der Name des Objekts (" + getNameOrPidOrId() + ") darf nur über unversionierte Datenmodelländerungen geändert werden. " +
+					"Der Name des Objekts (" + getNameOrPidOrId() + ") darf nur Ã¼ber unversionierte DatenmodellÃ¤nderungen geÃ¤ndert werden. " +
 							"Bitte kb.metaModellGlobal in Mindestversion 16 installieren."
 			);
 		}
@@ -78,7 +84,7 @@ public class ConfigIntegerValueState extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Gibt das Objekt zurück, welches die Eigenschaften dieses Wertezustands enthält. Existiert es noch nicht, so wird es erzeugt und der entsprechende
+	 * Gibt das Objekt zurÃ¼ck, welches die Eigenschaften dieses Wertezustands enthÃ¤lt. Existiert es noch nicht, so wird es erzeugt und der entsprechende
 	 * konfigurierende Datensatz ausgelesen.
 	 *
 	 * @return die Eigenschaften des Wertezustands
@@ -91,8 +97,8 @@ public class ConfigIntegerValueState extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Wird aufgerufen, wenn das Objekt verändert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zurücksetzen. Erbende Klassen müssen diese
-	 * Funktion überschreiben, wenn sie Daten cachen.
+	 * Wird aufgerufen, wenn das Objekt verÃ¤ndert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zurÃ¼cksetzen. Erbende Klassen mÃ¼ssen diese
+	 * Funktion Ã¼berschreiben, wenn sie Daten cachen.
 	 */
 	@Override
 	synchronized void invalidateCache() {
@@ -101,9 +107,9 @@ public class ConfigIntegerValueState extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Diese Klasse liest die Informationen für diesen Wertezustand mit Hilfe des Deserializers direkt aus dem Byte-Array des konfigurierenden Datensatzes aus und
-	 * verwendet nicht die Methode {@link de.bsvrz.dav.daf.main.config.SystemObject#getConfigurationData ConfigurationData}, da dort Informationen benötigt
-	 * werden, die erst hier zur Verfügung gestellt werden.
+	 * Diese Klasse liest die Informationen fÃ¼r diesen Wertezustand mit Hilfe des Deserializers direkt aus dem Byte-Array des konfigurierenden Datensatzes aus und
+	 * verwendet nicht die Methode {@link de.bsvrz.dav.daf.main.config.SystemObject#getConfigurationData ConfigurationData}, da dort Informationen benÃ¶tigt
+	 * werden, die erst hier zur VerfÃ¼gung gestellt werden.
 	 */
 	private class IntegerValueStateValues {
 		/**
@@ -135,7 +141,7 @@ public class ConfigIntegerValueState extends ConfigConfigurationObject implement
 		}
 
 		/**
-		 * Gibt den Wert des Zustands eines Ganzzahl-Attributs zurück.
+		 * Gibt den Wert des Zustands eines Ganzzahl-Attributs zurÃ¼ck.
 		 *
 		 * @return den Wert des Zustands eines Ganzzahl-Attributs
 		 */

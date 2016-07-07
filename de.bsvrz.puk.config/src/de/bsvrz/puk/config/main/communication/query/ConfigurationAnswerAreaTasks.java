@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.puk.config.main.communication.query;
 
@@ -29,11 +35,11 @@ import de.bsvrz.dav.daf.main.impl.config.request.telegramManager.AbstractSenderR
 import de.bsvrz.dav.daf.main.impl.config.request.telegramManager.SenderReceiverCommunication;
 
 /**
- * Klasse, die Antworten auf Auftr‰ge an die Konfiguration zur¸ckschickt.
- * Diese Antworten beziehen sich auf Auftr‰ge, die Konfigurationsbereiche verwalten sollen. 
+ * Klasse, die Antworten auf Auftr√§ge an die Konfiguration zur√ºckschickt.
+ * Diese Antworten beziehen sich auf Auftr√§ge, die Konfigurationsbereiche verwalten sollen. 
  *
  * @author Achim Wullenkord (AW), Kappich Systemberatung
- * @version $Revision: 5079 $ / $Date: 2007-09-02 14:59:08 +0200 (Sun, 02 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigurationAnswerAreaTasks extends AbstractSenderReceiverCommunication implements SenderReceiverCommunication {
 	private final ClientDavInterface _connection;

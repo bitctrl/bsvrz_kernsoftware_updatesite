@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config.telegrams;
@@ -26,17 +32,17 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Diese Klasse stellt ein Anfragetelegramm zu den Verbindungsinformationen eines DAV dar. Das Telegramm enthält die ID des DAV dessen Verbindungen, zu anderen
+ * Diese Klasse stellt ein Anfragetelegramm zu den Verbindungsinformationen eines DAV dar. Das Telegramm enthÃ¤lt die ID des DAV dessen Verbindungen, zu anderen
  * DAV, gesucht werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5054 $
+ * @version $Revision$
  */
 public class TransmitterConnectionInfoRequest extends ConfigTelegram {
 
 	/**
-	 * Gewünschte Version der Antwort. Der Wert 0 kennzeichnet, dass nur die ursprüngliche Version einer Antwort ohne Benutzernamen für die Authentifizierung
-	 * erwartet wird; der Wert 1 kennzeichnet, dass falls möglich die neue Version der Antwort mit Benutzernamen für die Authentifizierung bevorzugt wird.
+	 * GewÃ¼nschte Version der Antwort. Der Wert 0 kennzeichnet, dass nur die ursprÃ¼ngliche Version einer Antwort ohne Benutzernamen fÃ¼r die Authentifizierung
+	 * erwartet wird; der Wert 1 kennzeichnet, dass falls mÃ¶glich die neue Version der Antwort mit Benutzernamen fÃ¼r die Authentifizierung bevorzugt wird.
 	 *
 	 * @see TransmitterConnectionInfoAnswer
 	 */
@@ -45,7 +51,7 @@ public class TransmitterConnectionInfoRequest extends ConfigTelegram {
 	/** Die Id des Datenverteilers */
 	private long _transmitterId;
 
-	/** Erzeugt ein neues Objekt ohne Parameter. Die Parameter werden zu einem späteren Zeitpunkt über die read-Methode eingelesen. */
+	/** Erzeugt ein neues Objekt ohne Parameter. Die Parameter werden zu einem spÃ¤teren Zeitpunkt Ã¼ber die read-Methode eingelesen. */
 	public TransmitterConnectionInfoRequest() {
 		_type = TRANSMITTER_CONNECTION_INFO_REQUEST_TYPE;
 	}
@@ -53,7 +59,7 @@ public class TransmitterConnectionInfoRequest extends ConfigTelegram {
 	/**
 	 * Erzeugt ein neues Objekt mit den gegebenen Parametern.
 	 *
-	 * @param desiredReplyVersion Gewünschte Version der Antwort
+	 * @param desiredReplyVersion GewÃ¼nschte Version der Antwort
 	 * @param transmitterId       TransmitterID
 	 */
 	public TransmitterConnectionInfoRequest(long desiredReplyVersion, long transmitterId) {
@@ -63,10 +69,10 @@ public class TransmitterConnectionInfoRequest extends ConfigTelegram {
 	}
 
 	/**
-	 * Bestimmt die gewünschte Antwort-Version.
+	 * Bestimmt die gewÃ¼nschte Antwort-Version.
 	 *
-	 * @return Der Wert 0 kennzeichnet, dass nur die ursprüngliche Version einer Antwort ohne Benutzernamen für die Authentifizierung erwartet wird; der Wert 1
-	 *         kennzeichnet, dass falls möglich die neue Version der Antwort mit Benutzernamen für die Authentifizierung bevorzugt wird.
+	 * @return Der Wert 0 kennzeichnet, dass nur die ursprÃ¼ngliche Version einer Antwort ohne Benutzernamen fÃ¼r die Authentifizierung erwartet wird; der Wert 1
+	 *         kennzeichnet, dass falls mÃ¶glich die neue Version der Antwort mit Benutzernamen fÃ¼r die Authentifizierung bevorzugt wird.
 	 *
 	 * @see TransmitterConnectionInfoAnswer
 	 */
@@ -83,10 +89,10 @@ public class TransmitterConnectionInfoRequest extends ConfigTelegram {
 		return _transmitterId;
 	}
 
-	/** @return Liefert eine Beschreibung des Telegramms für Debug-Zwecke */
+	/** @return Liefert eine Beschreibung des Telegramms fÃ¼r Debug-Zwecke */
 	public final String parseToString() {
 		String str = "Datenverteilernetztopologie Anfrage: \n";
-		str += "gewünschte Antwort-Version: " + _desiredReplyVersion + "\n";
+		str += "gewÃ¼nschte Antwort-Version: " + _desiredReplyVersion + "\n";
 		str += "Datenverteiler Id: " + _transmitterId + "\n";
 		return str;
 	}

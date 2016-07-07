@@ -1,13 +1,13 @@
 /*
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel.telegrams;
@@ -32,7 +38,7 @@ import java.io.IOException;
 
 /**
  * @author Kappich Systemberatung
- * @version $Revision: 6339 $
+ * @version $Revision$
  */
 public class ReceiveSubscriptionInfo {
 
@@ -73,7 +79,7 @@ public class ReceiveSubscriptionInfo {
 	}
 
 	/**
-	 * Gibt die Basisanmeldeinformationen zurück.
+	 * Gibt die Basisanmeldeinformationen zurÃ¼ck.
 	 *
 	 * @return Basisanmeldeinformationen
 	 */
@@ -82,34 +88,34 @@ public class ReceiveSubscriptionInfo {
 	}
 
 	/**
-	 * Gibt an, ob Interesse an nachgelieferten oder an aktuellen Datensätzen besteht.
+	 * Gibt an, ob Interesse an nachgelieferten oder an aktuellen DatensÃ¤tzen besteht.
 	 *
-	 * @return <code>true:</code> nachgelieferte Datensätze erwünscht, <code>false:</code> nachgelieferte Datensätze nicht erwünscht
+	 * @return <code>true:</code> nachgelieferte DatensÃ¤tze erwÃ¼nscht, <code>false:</code> nachgelieferte DatensÃ¤tze nicht erwÃ¼nscht
 	 */
 	public final boolean getDelayedDataFlag() {
 		return _receiveOptions.withDelayed();
 	}
 
 	/**
-	 * Gibt an, ob Interesse an nur den geänderten Datensätzen oder an allen Datensätzen besteht.
+	 * Gibt an, ob Interesse an nur den geÃ¤nderten DatensÃ¤tzen oder an allen DatensÃ¤tzen besteht.
 	 *
-	 * @return <code>true:</code> nur geänderte Datensätze erwünscht, <code>false:</code> alle Datensätze erwünscht
+	 * @return <code>true:</code> nur geÃ¤nderte DatensÃ¤tze erwÃ¼nscht, <code>false:</code> alle DatensÃ¤tze erwÃ¼nscht
 	 */
 	public final boolean getDeltaDataFlag() {
 		return _receiveOptions.withDelta();
 	}
 
 	/**
-	 * Gibt an, ob die Applikation als ein normaler Empfänger für diese Datums angemeldet ist oder nicht.
+	 * Gibt an, ob die Applikation als ein normaler EmpfÃ¤nger fÃ¼r diese Datums angemeldet ist oder nicht.
 	 *
-	 * @return <code>true:</code> Applikation ist normaler Emfänger, <code>false:</code> Applikation ist kein normaler Empfänger
+	 * @return <code>true:</code> Applikation ist normaler EmfÃ¤nger, <code>false:</code> Applikation ist kein normaler EmpfÃ¤nger
 	 */
 	public final boolean isReceiver() {
 		return _receiverRole.isReceiver();
 	}
 
 	/**
-	 * Gibt an, ob die Applikation als Senke für dieses Datum angemeldet ist oder nicht.
+	 * Gibt an, ob die Applikation als Senke fÃ¼r dieses Datum angemeldet ist oder nicht.
 	 *
 	 * @return <code>true:</code>Applikation ist als Senke angemeldet, <code>false:</code>Applikation ist nicht als Senke angemeldet.
 	 */
@@ -118,9 +124,9 @@ public class ReceiveSubscriptionInfo {
 	}
 
 	/**
-	 * Gibt die Informationen über die Empfangsoptionen zurück.
+	 * Gibt die Informationen Ã¼ber die Empfangsoptionen zurÃ¼ck.
 	 *
-	 * @return Informationen über die Empfangsoptionen
+	 * @return Informationen Ã¼ber die Empfangsoptionen
 	 */
 
 	public final ReceiveOptions getReceiveOptions() {
@@ -128,16 +134,16 @@ public class ReceiveSubscriptionInfo {
 	}
 
 	/**
-	 * Gibt die Informationen über die Empfangsapplikationsrole zurück.
+	 * Gibt die Informationen Ã¼ber die Empfangsapplikationsrole zurÃ¼ck.
 	 *
-	 * @return Informationen über die Empfangsapplikationsrole
+	 * @return Informationen Ã¼ber die Empfangsapplikationsrole
 	 */
 	public final ReceiverRole getReceiverRole() {
 		return _receiverRole;
 	}
 
 	/**
-	 * Gibt den letzten Index des Datensatzes, den die Applikation empfangen hat, zurück.
+	 * Gibt den letzten Index des Datensatzes, den die Applikation empfangen hat, zurÃ¼ck.
 	 *
 	 * @return Index des Datensatzes
 	 */
@@ -170,7 +176,7 @@ public class ReceiveSubscriptionInfo {
 	}
 
 	/**
-	 * Gibt den letzten Fehlerstatus zurück.
+	 * Gibt den letzten Fehlerstatus zurÃ¼ck.
 	 *
 	 * @return letzter Fehlerstatus
 	 */
@@ -188,7 +194,7 @@ public class ReceiveSubscriptionInfo {
 	}
 
 	/**
-	 * Gibt eine Kopie des Objektes zurück.
+	 * Gibt eine Kopie des Objektes zurÃ¼ck.
 	 *
 	 * @return Kopie des Objektes
 	 */
@@ -203,7 +209,7 @@ public class ReceiveSubscriptionInfo {
 	 *
 	 * @param receiveSubscriptionInfo Weitere Empfangsanmeldeinformation
 	 *
-	 * @return <code>true<code> bei Änderung dieser Empfangsanmeldeinformation, </code>false</code> sonst
+	 * @return <code>true<code> bei Ã„nderung dieser Empfangsanmeldeinformation, </code>false</code> sonst
 	 */
 	public final boolean updateSubscriptionInfo(ReceiveSubscriptionInfo receiveSubscriptionInfo) {
 		BaseSubscriptionInfo _baseSubscriptionInfo = receiveSubscriptionInfo.getBaseSubscriptionInfo();
@@ -234,19 +240,19 @@ public class ReceiveSubscriptionInfo {
 		if(changed) {
 			_receiveOptions = new ReceiveOptions(delta, delayed);
 		}
-		// wenn receiverRole Empfänger ist, dann darf keine Senke angemeldet werden
+		// wenn receiverRole EmpfÃ¤nger ist, dann darf keine Senke angemeldet werden
 		// wenn receiverRole Senke ist, dann darf keine weitere Senke angemeldet werden
 		if(_receiverRole.isReceiver() || _receiverRole.isDrain()) {
 			if(role.isDrain()) {
-				// zu einem Empfänger oder einer Senke soll noch eine Senke angemeldet werden
-				throw new IllegalStateException("Ungültige Anmeldung. Zu einem Empfänger oder einer Senke darf keine weitere Senke angemeldet werden.");
+				// zu einem EmpfÃ¤nger oder einer Senke soll noch eine Senke angemeldet werden
+				throw new IllegalStateException("UngÃ¼ltige Anmeldung. Zu einem EmpfÃ¤nger oder einer Senke darf keine weitere Senke angemeldet werden.");
 			}
 		}
 		return changed;
 	}
 
 	/**
-	 * Gibt einen String zurrück, der diesen Datensatz beschreibt.
+	 * Gibt einen String zurrÃ¼ck, der diesen Datensatz beschreibt.
 	 *
 	 * @return String, der diesen Datensatz beschreibt
 	 */
@@ -261,7 +267,7 @@ public class ReceiveSubscriptionInfo {
 	}
 
 	/**
-	 * Schreiben eines Datensatzes in den übergegebenen DataOutputStream
+	 * Schreiben eines Datensatzes in den Ã¼bergegebenen DataOutputStream
 	 *
 	 * @param out DataOutputStream
 	 *
@@ -272,12 +278,12 @@ public class ReceiveSubscriptionInfo {
 		out.writeBoolean(_receiveOptions.withDelayed());
 		out.writeBoolean(_receiveOptions.withDelta());
 		out.writeBoolean(_receiverRole.isDrain());
-		// Ein Byte Länge des nicht mehr benötigten Indikatorbitfelds
+		// Ein Byte LÃ¤nge des nicht mehr benÃ¶tigten Indikatorbitfelds
 		out.writeByte(0);
 	}
 
 	/**
-	 * Lesen eines Datensatzes vom übergegebenen DataInputStream
+	 * Lesen eines Datensatzes vom Ã¼bergegebenen DataInputStream
 	 *
 	 * @param in DataInputStream
 	 *
@@ -301,9 +307,9 @@ public class ReceiveSubscriptionInfo {
 	}
 
 	/**
-	 * Gibt die Länge dieses Telegrams zurück
+	 * Gibt die LÃ¤nge dieses Telegrams zurÃ¼ck
 	 *
-	 * @return die Länge dieses Telegrams
+	 * @return die LÃ¤nge dieses Telegrams
 	 */
 	public int getLength() {
 		return 18;

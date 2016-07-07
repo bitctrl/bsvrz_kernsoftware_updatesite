@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main.communication;
@@ -28,6 +34,7 @@ import de.bsvrz.dav.daf.util.cron.CronScheduler;
 import de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel;
 import de.bsvrz.puk.config.configFile.datamodel.MaintenanceSpec;
 import de.bsvrz.puk.config.configFile.datamodel.TimeBasedMaintenanceSpec;
+import de.bsvrz.puk.config.configFile.datamodel.TypeHierarchy;
 import de.bsvrz.puk.config.configFile.fileaccess.ConfigurationAreaFile;
 import de.bsvrz.puk.config.main.authentication.Authentication;
 import de.bsvrz.puk.config.main.authentication.ConfigAuthentication;
@@ -43,18 +50,18 @@ import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 
 /**
- * Diese Klasse übernimmt den gesamten Datenverkehr der Konfiguration. Dies beinhaltet den Empfang von Aufträgen an die Konfiguration bis hin zum versand der
+ * Diese Klasse Ã¼bernimmt den gesamten Datenverkehr der Konfiguration. Dies beinhaltet den Empfang von AuftrÃ¤gen an die Konfiguration bis hin zum versand der
  * Antworten, die von der Konfiguraiton verschickt werden sollen.
- * <p/>
- * Alle Anfragen an die Konfiguration werden an das Datenmodell weitergeleitet {@link de.bsvrz.dav.daf.main.config.DataModel} und falls nötig an die
- * erzeugten Antworten an die anfragende Applikation zurückgeschickt.
+ * <p>
+ * Alle Anfragen an die Konfiguration werden an das Datenmodell weitergeleitet {@link de.bsvrz.dav.daf.main.config.DataModel} und falls nÃ¶tig an die
+ * erzeugten Antworten an die anfragende Applikation zurÃ¼ckgeschickt.
  *
  * @author Kappich Systemberatung
  * @version $Revision:5077 $
  */
 public class ConfigurationCommunicator {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	private final ConfigDataModel _dataModel;
@@ -69,6 +76,7 @@ public class ConfigurationCommunicator {
 
 	private ScheduledFuture<?> _restructureTask = null;
 	private ScheduledFuture<?> _maintenanceTask = null;
+	private final TypeHierarchy _typeHierarchy;
 
 	public ConfigurationCommunicator(
 			AsyncRequestQueue asyncRequestQueue,
@@ -78,6 +86,7 @@ public class ConfigurationCommunicator {
 			final File foreignObjectCacheFile)
 			throws ParserConfigurationException, MissingParameterException, CommunicationError, InterruptedException, InconsistentLoginException, ConnectionException {
 		_dataModel = dataModel;
+		_typeHierarchy = new TypeHierarchy(dataModel);
 
 		final ConfigurationAuthority configurationAuthority = dataModel.getConfigurationAuthority();
 		if(configurationAuthority == null) {
@@ -107,21 +116,21 @@ public class ConfigurationCommunicator {
 		}
 		_debug.fine("login...");
 
-		// Die login-Daten wurden per Aufrufparameter übergeben
+		// Die login-Daten wurden per Aufrufparameter Ã¼bergeben
 		connection.login();
 
 		if(configurationAuthority != connection.getLocalConfigurationAuthority()) {
-			_debug.error("Datenverteiler liefert nicht den erwarteten Konfigurationsverantwortlichen zurück, sondern", connection.getLocalConfigurationAuthority());
+			_debug.error("Datenverteiler liefert nicht den erwarteten Konfigurationsverantwortlichen zurÃ¼ck, sondern", connection.getLocalConfigurationAuthority());
 		}
 
 		// Verwaltet alle Benutzer der Konfigration
 		_authentication = new ConfigAuthentication(userManagementFile, _dataModel);
 
 		try {
-			// übernimmt alle alten Konfigurationsanfragen. Dieses Objekt soll im Laufe der Zeit verschwinden
+			// Ã¼bernimmt alle alten Konfigurationsanfragen. Dieses Objekt soll im Laufe der Zeit verschwinden
 			_requesterCommunicator = new ConfigurationRequesterCommunicator(asyncRequestQueue, _dataModel, _authentication, connection);
 
-			// übernimmt die neuen Konfigurationsanfragen, später soll dieses Objekt alle Konfigurationsanfragen übernehmen
+			// Ã¼bernimmt die neuen Konfigurationsanfragen, spÃ¤ter soll dieses Objekt alle Konfigurationsanfragen Ã¼bernehmen
 			_configurationQueryManager = new ConfigurationQueryManager(connection, _dataModel, null, _authentication, foreignObjectCacheFile);
 			_requesterCommunicator.setForeignObjectManager(_configurationQueryManager.getForeignObjectManager());
 			_configurationQueryManager.start();
@@ -132,7 +141,7 @@ public class ConfigurationCommunicator {
 			startCronTasks(connection);
 		}
 		catch(RuntimeException e) {
-			// Im Fehlerfall wird die Lockdatei für die Benutzerverwaltungen wieder freigegeben
+			// Im Fehlerfall wird die Lockdatei fÃ¼r die Benutzerverwaltungen wieder freigegeben
 			_authentication.close();
 			throw e;
 		}
@@ -140,7 +149,7 @@ public class ConfigurationCommunicator {
 
 	private void startCronTasks(final ClientDavInterface connection) {
 		ConfigurationAuthority kv = _dataModel.getConfigurationAuthority();
-		AttributeGroup parameterAtg = _dataModel.getAttributeGroup("atg.parameterEndgültigesLöschen");
+		AttributeGroup parameterAtg = _dataModel.getAttributeGroup("atg.parameterEndgÃ¼ltigesLÃ¶schen");
 		if(parameterAtg == null){
 			scheduleRestructure(new CronDefinition("0 2 * * Montag"));
 		}
@@ -150,7 +159,7 @@ public class ConfigurationCommunicator {
 				connection.subscribeReceiver(new ParamReceiver(), kv, dataDescription, ReceiveOptions.normal(), ReceiverRole.receiver());
 			}
 			catch(Exception e){
-				_debug.warning("Kann Löschparameter nicht abrufen", e);
+				_debug.warning("Kann LÃ¶schparameter nicht abrufen", e);
 			}
 		}
 	}
@@ -177,16 +186,16 @@ public class ConfigurationCommunicator {
 		}
 	}
 
-	/** Plant einen periodischen Auftrag für das (Vormerken zum) Löschen von historischen dynamischen Objekten und Mengenreferenzen */
+	/** Plant einen periodischen Auftrag fÃ¼r das (Vormerken zum) LÃ¶schen von historischen dynamischen Objekten und Mengenreferenzen */
 	private void scheduleMaintenance(final CronDefinition cronDefinition, final MaintenanceSpec spec) {
 		if(_maintenanceTask != null){
 			_maintenanceTask.cancel(false);
 			_maintenanceTask = null;
 		}
 
-		if(cronDefinition != null) {
+		if(cronDefinition != null && spec != null) {
 
-			_debug.info("Geplantes Löschen: " + cronDefinition);
+			_debug.info("Geplantes LÃ¶schen: " + cronDefinition);
 
 			_maintenanceTask = _cronScheduler.schedule(
 					new Runnable() {
@@ -208,7 +217,7 @@ public class ConfigurationCommunicator {
 	}
 
 	/**
-	 * Gibt die ConfigAuthentication-Klasse zurück
+	 * Gibt die ConfigAuthentication-Klasse zurÃ¼ck
 	 * @return die ConfigAuthentication-Klasse
 	 */
 	public ConfigAuthentication getAuthentication(){
@@ -233,13 +242,13 @@ public class ConfigurationCommunicator {
 						restructureTime = new CronDefinition(data.getTextValue("IntervallRestrukturierung").getValueText());
 					}
 					catch(IllegalArgumentException e){
-						_debug.warning("Ungültiger Parameter IntervallRestrukturierung", e);
+						_debug.warning("UngÃ¼ltiger Parameter IntervallRestrukturierung", e);
 					}
 					try{
-						deleteTime = new CronDefinition(data.getTextValue("IntervallLöschen").getValueText());
+						deleteTime = new CronDefinition(data.getTextValue("IntervallLÃ¶schen").getValueText());
 					}
 					catch(IllegalArgumentException e){
-						_debug.warning("Ungültiger Parameter IntervallLöschen", e);
+						_debug.warning("UngÃ¼ltiger Parameter IntervallLÃ¶schen", e);
 					}
 					final Map<DynamicObjectType, Long> objectKeepTimes = new HashMap<DynamicObjectType, Long>();
 					final Map<ObjectSetType, Long> setKeepTimes = new HashMap<ObjectSetType, Long>();
@@ -269,7 +278,7 @@ public class ConfigurationCommunicator {
 						defaultSetKeepTime = setData.asTimeValue().getMillis();
 					}
 					spec = new TimeBasedMaintenanceSpec(
-							_dataModel,
+							_typeHierarchy,
 					        objectKeepTimes,
 					        setKeepTimes,
 					        defaultSetKeepTime

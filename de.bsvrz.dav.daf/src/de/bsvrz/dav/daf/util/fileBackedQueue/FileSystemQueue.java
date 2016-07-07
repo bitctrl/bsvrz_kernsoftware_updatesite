@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.util.fileBackedQueue;
@@ -32,10 +38,10 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Eine Queue, die zur Speicherung von Daten ausschlieﬂlich das Dateisystem verwendet. Diese Klasse ist nicht Threadsafe.
+ * Eine Queue, die zur Speicherung von Daten ausschlie√ülich das Dateisystem verwendet. Diese Klasse ist nicht Threadsafe.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 9109 $
+ * @version $Revision$
  */
 class FileSystemQueue<E> extends AbstractQueue<E> {
 
@@ -62,9 +68,9 @@ class FileSystemQueue<E> extends AbstractQueue<E> {
 	private final DataInputStream _dataInputStream;
 
 	/**
-	 * Eine Queue, die zur Speicherung von Daten ausschlieﬂlich das Dateisystem verwendet
+	 * Eine Queue, die zur Speicherung von Daten ausschlie√ülich das Dateisystem verwendet
 	 *
-	 * @param maximumFileSize Maximalgrˆﬂe der Datei in Bytes. Diese kann um maximal eine Elementgrˆﬂe ¸berschritten werden, sodass immer mindestens ein Eintrag in
+	 * @param maximumFileSize Maximalgr√∂√üe der Datei in Bytes. Diese kann um maximal eine Elementgr√∂√üe √ºberschritten werden, sodass immer mindestens ein Eintrag in
 	 *                        die Datei passt.
 	 */
 	public FileSystemQueue(final long maximumFileSize, final QueueSerializer<E> queueSerializer) {
@@ -72,11 +78,11 @@ class FileSystemQueue<E> extends AbstractQueue<E> {
 	}
 
 	/**
-	 * Eine Queue, die zur Speicherung von Daten ausschlieﬂlich das Dateisystem verwendet
+	 * Eine Queue, die zur Speicherung von Daten ausschlie√ülich das Dateisystem verwendet
 	 *
-	 * @param maximumFileSize Maximalgrˆﬂe der Datei in Bytes. Diese kann um maximal eine Elementgrˆﬂe ¸berschritten werden, sodass immer mindestens ein Eintrag in
+	 * @param maximumFileSize Maximalgr√∂√üe der Datei in Bytes. Diese kann um maximal eine Elementgr√∂√üe √ºberschritten werden, sodass immer mindestens ein Eintrag in
 	 *                        die Datei passt.
-	 * @param maxBufferSize Maximale Grˆﬂe f¸r den Schreib- und Lesebuffer f¸r Datei-Ein- und Ausgaben. Kleine Werte verringern den Speicherverbrauch,
+	 * @param maxBufferSize Maximale Gr√∂√üe f√ºr den Schreib- und Lesebuffer f√ºr Datei-Ein- und Ausgaben. Kleine Werte verringern den Speicherverbrauch,
 	 * senken aber auch die Performance.
 	 */
 	public FileSystemQueue(final long maximumFileSize, final QueueSerializer<E> queueSerializer, final int maxBufferSize) {
@@ -242,7 +248,7 @@ class FileSystemQueue<E> extends AbstractQueue<E> {
 		}
 
 		public void remove() {
-			throw new UnsupportedOperationException("Nicht unterst¸tzt");
+			throw new UnsupportedOperationException("Nicht unterst√ºtzt");
 		}
 	}
 

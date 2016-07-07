@@ -2,13 +2,13 @@
  * Copyright 2011 by Kappich Systemberatung, Aachen
  * Copyright 2008 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -17,8 +17,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main;
@@ -45,17 +51,17 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Diese Klasse repräsentiert die logische Verbindung zum Datenverteiler.
+ * Diese Klasse reprÃ¤sentiert die logische Verbindung zum Datenverteiler.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13520 $
+ * @version $Revision$
  */
 
 public class ClientDavConnection implements ClientDavInterface {
 
 	private static final Debug _debug = Debug.getLogger();
 
-	/** Die höhere Ebene der Kommunikation */
+	/** Die hÃ¶here Ebene der Kommunikation */
 	private volatile ClientHighLevelCommunication _highLevelCommunication;
 
 	/** Der Cachemanager */
@@ -79,19 +85,19 @@ public class ClientDavConnection implements ClientDavInterface {
 	/** Der Abmelder der Implizitanmeldungen */
 	private ImplicitUnsubscriber _implicitUnsubscriber;
 
-	/** Empfänger für Implizitanmeldungen */
+	/** EmpfÃ¤nger fÃ¼r Implizitanmeldungen */
 	private ImplicitReceiver _implicitReceiver;
 
 	/** Das DataModel Objekt dieser Verbindung. */
 	private DataModel _dataModel;
 
-	/** Das Objekt, das für das Schliessen nach Auftritt eines Fehlers zuständig ist. */
+	/** Das Objekt, das fÃ¼r das Schliessen nach Auftritt eines Fehlers zustÃ¤ndig ist. */
 	private DavCloseHandler _closeHandler;
 
-	/** Information über den Verbindungsstatus. */
+	/** Information Ã¼ber den Verbindungsstatus. */
 	private boolean _isConnected = false;
 
-	/** Information über den Authentifizierungsstatus. */
+	/** Information Ã¼ber den Authentifizierungsstatus. */
 	private boolean _isLoggedIn = false;
 
 	/** Simulationszeithilfsobjekt */
@@ -100,21 +106,21 @@ public class ClientDavConnection implements ClientDavInterface {
 	/** verwaltet Archivantworten */
 	private StreamedRequestManager _streamedRequestManager;
 
-	/** Enthält die Beobachter, die eine Mitteilung erhalten wollen, wenn die Verbindung zum Datenverteiler terminiert wird. */
+	/** EnthÃ¤lt die Beobachter, die eine Mitteilung erhalten wollen, wenn die Verbindung zum Datenverteiler terminiert wird. */
 	private List<DavConnectionListener> _connectionListeners = new CopyOnWriteArrayList<DavConnectionListener>();
 
 	/**
-	 * Diese Map speichert zu einer Attributgruppe, den dazugehörigen "leeren" Datensatz, der vom Datenverteiler zur Verfügung gestellt wurde. Alle Attribute des
+	 * Diese Map speichert zu einer Attributgruppe, den dazugehÃ¶rigen "leeren" Datensatz, der vom Datenverteiler zur VerfÃ¼gung gestellt wurde. Alle Attribute des
 	 * Datensatzes enthalten entweder den "Default-Wert", falls dieser definiert wurde, oder den sogenannten "undefiniert Wert". Der Datensatz der Map ist nicht
-	 * änderbar und wird nicht zurückgegeben. Falls der Datensatz gebraucht wird, wird eine "modifizierbare" Kopie angelegt und diese zurückgegeben. <p/> Die Map
-	 * ist nicht synchronisiert. <p/> Als Schlüssel dient die Attributgruppe, als Value wird ein nicht modifizierbarer Datensatz gespeichert der benutzt wird um
+	 * Ã¤nderbar und wird nicht zurÃ¼ckgegeben. Falls der Datensatz gebraucht wird, wird eine "modifizierbare" Kopie angelegt und diese zurÃ¼ckgegeben. <p> Die Map
+	 * ist nicht synchronisiert. <p> Als SchlÃ¼ssel dient die Attributgruppe, als Value wird ein nicht modifizierbarer Datensatz gespeichert der benutzt wird um
 	 * eine modifizierbare Kopie zu erzeugen.
 	 */
 	private Map<AttributeGroup, Data> _defaultData = new HashMap<AttributeGroup, Data>();
 
 	/**
-	 * Hält fest, ob sich eine Applikation explizit selbst um die Fertigmeldung kümmert oder nicht. Aus Kompatibilitätsgründen wird angenommen, dass die
-	 * Applikation sich nicht um eine Fertigmeldung kümmert. Das Flag kann mit der Methode {@link #enableExplicitApplicationReadyMessage()} gesetzt werden.
+	 * HÃ¤lt fest, ob sich eine Applikation explizit selbst um die Fertigmeldung kÃ¼mmert oder nicht. Aus KompatibilitÃ¤tsgrÃ¼nden wird angenommen, dass die
+	 * Applikation sich nicht um eine Fertigmeldung kÃ¼mmert. Das Flag kann mit der Methode {@link #enableExplicitApplicationReadyMessage()} gesetzt werden.
 	 */
 	private boolean _applicationSendsDoneMessage = false;
 
@@ -143,47 +149,47 @@ public class ClientDavConnection implements ClientDavInterface {
 	/**
 	 * Erzeugt eine neue logische Datenverteilerverbindung mit den angegebenen Parametern.
 	 *
-	 * @param parameters Parameter für die Datenverteiler-Applikationsfunktionen.
+	 * @param parameters Parameter fÃ¼r die Datenverteiler-Applikationsfunktionen.
 	 *
 	 * @throws de.bsvrz.dav.daf.main.MissingParameterException
-	 *          Wenn notwendige Informationen nicht in den übergebenen Parametern spezifiziert wurden.
+	 *          Wenn notwendige Informationen nicht in den Ã¼bergebenen Parametern spezifiziert wurden.
 	 */
 	public ClientDavConnection(ClientDavParameters parameters) throws MissingParameterException {
 		this(parameters, null);
 	}
 
 	/**
-	 * Erzeugt eine neue logische Datenverteilerverbindung mit den angegebenen Parametern. Es wird keine Verbindung zur Konfiguration aufgebaut, sämtliche
-	 * konfigurierenden Anfragen werden über das angegebene Datenmodell abgewickelt. Dieser Konstruktor ist für die Konfigurations-Applikation vorgesehen, da diese
+	 * Erzeugt eine neue logische Datenverteilerverbindung mit den angegebenen Parametern. Es wird keine Verbindung zur Konfiguration aufgebaut, sÃ¤mtliche
+	 * konfigurierenden Anfragen werden Ã¼ber das angegebene Datenmodell abgewickelt. Dieser Konstruktor ist fÃ¼r die Konfigurations-Applikation vorgesehen, da diese
 	 * ihr Datenmodell selbst verwaltet.
 	 *
-	 * @param parameters Parameter für die Datenverteiler-Applikationsfunktionen.
-	 * @param dataModel  Das zu verwendende Datenmodell für Konfigurationsanfragen.
+	 * @param parameters Parameter fÃ¼r die Datenverteiler-Applikationsfunktionen.
+	 * @param dataModel  Das zu verwendende Datenmodell fÃ¼r Konfigurationsanfragen.
 	 *
-	 * @throws de.bsvrz.dav.daf.main.MissingParameterException Wenn notwendige Informationen nicht in den übergebenen Parametern spezifiziert wurden.
+	 * @throws de.bsvrz.dav.daf.main.MissingParameterException Wenn notwendige Informationen nicht in den Ã¼bergebenen Parametern spezifiziert wurden.
 	 */
 	public ClientDavConnection(ClientDavParameters parameters, DataModel dataModel) throws MissingParameterException {
 		this(parameters, dataModel, new Object());
 	}
 
 	/**
-	 * Erzeugt eine neue logische Datenverteilerverbindung mit den angegebenen Parametern. Es wird keine Verbindung zur Konfiguration aufgebaut, sämtliche
-	 * konfigurierenden Anfragen werden über das angegebene Datenmodell abgewickelt. Dieser Konstruktor ist für die Konfigurations-Applikation vorgesehen, da diese
+	 * Erzeugt eine neue logische Datenverteilerverbindung mit den angegebenen Parametern. Es wird keine Verbindung zur Konfiguration aufgebaut, sÃ¤mtliche
+	 * konfigurierenden Anfragen werden Ã¼ber das angegebene Datenmodell abgewickelt. Dieser Konstruktor ist fÃ¼r die Konfigurations-Applikation vorgesehen, da diese
 	 * ihr Datenmodell selbst verwaltet.
 	 *
-	 * @param parameters Parameter für die Datenverteiler-Applikationsfunktionen.
-	 * @param dataModel  Das zu verwendende Datenmodell für Konfigurationsanfragen.
+	 * @param parameters Parameter fÃ¼r die Datenverteiler-Applikationsfunktionen.
+	 * @param dataModel  Das zu verwendende Datenmodell fÃ¼r Konfigurationsanfragen.
 	 * @param lock Objekt, welches zur Synchronisierung verwendet wird. Wird eine zweite Verbindung aufgebaut, synchronisieren beide Objekte auf
 	 *             dasselbe Lock-Objekt um Deadlocks zu vermeiden. (Ansonsten passiert es sehr schnell, dass jede Verbindung das eigene Lock
-	 *             hält und irgendeine Aktion auf der anderen Verbindung triggert, was dann zu einem Deadlock führt.)
-	 * @throws MissingParameterException Wenn notwendige Informationen nicht in den übergebenen Parametern spezifiziert wurden.
+	 *             hÃ¤lt und irgendeine Aktion auf der anderen Verbindung triggert, was dann zu einem Deadlock fÃ¼hrt.)
+	 * @throws MissingParameterException Wenn notwendige Informationen nicht in den Ã¼bergebenen Parametern spezifiziert wurden.
 	 */
 	protected ClientDavConnection(ClientDavParameters parameters, DataModel dataModel, final Object lock) throws MissingParameterException {
 		_lock = lock;
 
 		if(parameters == null || !parameters.isSecondConnection()) {
 
-			// Release-Info, bei 2. Verbindung unterdrücken
+			// Release-Info, bei 2. Verbindung unterdrÃ¼cken
 
 			StringBuilder info = new StringBuilder();
 			info.append("Datenverteiler-Applikationsfunktionen 'de.bsvrz.dav.daf'");
@@ -197,7 +203,7 @@ public class ClientDavConnection implements ClientDavInterface {
 				info.append(", Stand: ").append(compileTime);
 			}
 			catch(Exception e) {
-				info.append(" <Zugriff auf Release-Informationen nicht möglich> ");
+				info.append(" <Zugriff auf Release-Informationen nicht mÃ¶glich> ");
 				info.append(e);
 			}
 
@@ -210,14 +216,14 @@ public class ClientDavConnection implements ClientDavInterface {
 			_clientDavParameters = new ClientDavParameters();
 		}
 		else {
-			if(parameters.getUseSecondConnection()) { // Kann in Zukunft in "if (true)" geändert werden sobald alle Applikationen kompatibel sind
+			if(parameters.getUseSecondConnection()) { // Kann in Zukunft in "if (true)" geÃ¤ndert werden sobald alle Applikationen kompatibel sind
 				_clientDavParameters = parameters.clone(true);
 			}
 			else {
-				// Kompatibilität: Für alte Applikationen keine Kopie erzeugen, sondern bisheriges Objekt weiterverwenden
+				// KompatibilitÃ¤t: FÃ¼r alte Applikationen keine Kopie erzeugen, sondern bisheriges Objekt weiterverwenden
 				_clientDavParameters = parameters;
 
-				// macht das Objekt derzeit nicht wirklich readonly, sorgt aber dafür, dass Warnungen beim nachträglichen Ändern entstehen
+				// macht das Objekt derzeit nicht wirklich readonly, sorgt aber dafÃ¼r, dass Warnungen beim nachtrÃ¤glichen Ã„ndern entstehen
 				_clientDavParameters.setReadonly(true);
 			}
 		}
@@ -418,9 +424,9 @@ public class ClientDavConnection implements ClientDavInterface {
 
 	@Override
 	public final void disconnect(boolean error, String message) {
-		// Diese Methode nicht synchonisiert ausführen, da es sonst zu (beinahe-)Deadlocks kommt, wenn andere synchronisierte Methoden
+		// Diese Methode nicht synchonisiert ausfÃ¼hren, da es sonst zu (beinahe-)Deadlocks kommt, wenn andere synchronisierte Methoden
 		// wie login() gleichzeitig laufen.
-		// Länger dauernde Aufräumarbeiten können in notifyConnectionClosed() durchgeführt werden
+		// LÃ¤nger dauernde AufrÃ¤umarbeiten kÃ¶nnen in notifyConnectionClosed() durchgefÃ¼hrt werden
 		ClientHighLevelCommunication highLevelCommunication = _highLevelCommunication;
 		if(highLevelCommunication != null) {
 			String terminateMessage;
@@ -431,7 +437,7 @@ public class ClientDavConnection implements ClientDavInterface {
 			highLevelCommunication.terminate(error, terminateMessage);
 		}
 		else {
-			_debug.warning("Es gibt keine Verbindung zum Datenverteiler, die abgebaut werden könnte.");
+			_debug.warning("Es gibt keine Verbindung zum Datenverteiler, die abgebaut werden kÃ¶nnte.");
 		}
 	}
 
@@ -442,7 +448,7 @@ public class ClientDavConnection implements ClientDavInterface {
 				throw new RuntimeException("Datenverteilerverbindung muss vor der Authentifizierung zuerst mit connect() aufgebaut werden.");
 			}
 			if(_isLoggedIn) {
-				throw new RuntimeException("Authentifizierung wurde bereits durchgeführt.");
+				throw new RuntimeException("Authentifizierung wurde bereits durchgefÃ¼hrt.");
 			}
 			if(_dataModelConnection != null) {
 				// 2. Verbindung initialisieren
@@ -478,7 +484,10 @@ public class ClientDavConnection implements ClientDavInterface {
 				long time = System.currentTimeMillis();
 				long sleepTime = 10;
 				while(!_subscriptionManager.isInitialisationComplete()) {
-					if(System.currentTimeMillis() - time < CommunicationConstant.MAX_WAITING_TIME_FOR_SYNC_RESPONCE) {
+					if(_highLevelCommunication.isDisconnecting()){
+						throw new CommunicationError("Verbindung zum Datenverteiler wurde unterbrochen");
+					}
+					else if(System.currentTimeMillis() - time < CommunicationConstant.MAX_WAITING_TIME_FOR_SYNC_RESPONCE) {
 						try {
 							Thread.sleep(sleepTime);
 							if(sleepTime < 1000) sleepTime *= 2;
@@ -534,13 +543,13 @@ public class ClientDavConnection implements ClientDavInterface {
 	}
 
 	/**
-	 * Gibt die Aspektumleitung für eine Kombination von Attributgruppe und Aspekt zurück. Wenn keine entsprechende Aspektumleitung besteht, wird der übergebene
-	 * Original-Aspekt zurückgegeben.
+	 * Gibt die Aspektumleitung fÃ¼r eine Kombination von Attributgruppe und Aspekt zurÃ¼ck. Wenn keine entsprechende Aspektumleitung besteht, wird der Ã¼bergebene
+	 * Original-Aspekt zurÃ¼ckgegeben.
 	 *
 	 * @param attributeGroup die Attributgruppe
 	 * @param aspect         der Aspekt
 	 *
-	 * @return Den zu verwendenden Aspekt, falls es eine Aspektumleitung gibt, sonst den übergebenen Aspekt.
+	 * @return Den zu verwendenden Aspekt, falls es eine Aspektumleitung gibt, sonst den Ã¼bergebenen Aspekt.
 	 */
 	private Aspect aspectToSubstitute(AttributeGroup attributeGroup, Aspect aspect) {
 		String oldAspectPid = aspect.getPid();
@@ -557,14 +566,14 @@ public class ClientDavConnection implements ClientDavInterface {
 	}
 
 	/**
-	 * Überprüft, ob die angegebene Kombination von Objekt, Attributgruppe und Aspekt zulässig ist.
+	 * ÃœberprÃ¼ft, ob die angegebene Kombination von Objekt, Attributgruppe und Aspekt zulÃ¤ssig ist.
 	 *
-	 * @param objects zu prüfende Objekte
-	 * @param atg     zu prüfende Attributgruppe
-	 * @param aspect  zu prüfenden Aspekt
-	 * @param context Kontext, von dem diese Prüfung vorgenommen wird
+	 * @param objects zu prÃ¼fende Objekte
+	 * @param atg     zu prÃ¼fende Attributgruppe
+	 * @param aspect  zu prÃ¼fenden Aspekt
+	 * @param context Kontext, von dem diese PrÃ¼fung vorgenommen wird
 	 *
-	 * @throws IllegalArgumentException Wenn die angegebene Kombination von Objekt, Attributgruppe und Aspekt nicht zulässig ist.
+	 * @throws IllegalArgumentException Wenn die angegebene Kombination von Objekt, Attributgruppe und Aspekt nicht zulÃ¤ssig ist.
 	 */
 	private void checkDataIdentification(SystemObject[] objects, AttributeGroup atg, Aspect aspect, String context) {
 		String message = context + ": ";
@@ -585,7 +594,7 @@ public class ClientDavConnection implements ClientDavInterface {
 		
 
 		// Dies muss so gemacht werden, da es sonst zu einer Endlosschleife bei getAspects kommt.
-		// Die ATGVerwendung kann nur mit einem Datensatz aufgelöst werden, dafür wird wieder getAspects benötigt -> Endlos
+		// Die ATGVerwendung kann nur mit einem Datensatz aufgelÃ¶st werden, dafÃ¼r wird wieder getAspects benÃ¶tigt -> Endlos
 		if("atg.konfigurationsAnfrageSchnittstelle".equals(atg.getPid()) && "asp.antwort".equals(aspect.getPid())) return;
 		if("atg.konfigurationsAnfrageSchnittstelle".equals(atg.getPid()) && "asp.anfrage".equals(aspect.getPid())) return;
 		if("atg.konfigurationsAnfrageSchnittstelleLesend".equals(atg.getPid()) && "asp.antwort".equals(aspect.getPid())) return;
@@ -647,8 +656,8 @@ public class ClientDavConnection implements ClientDavInterface {
 
 			checkDataIdentification(objects, attributeGroup, _aspect, "CacheAbfrage");
 
-			// Wenn in der Datadescription keine Simulationsvariante explizit vorgegeben wurde, dann muss für die Anmeldung beim Datenverteiler die über
-			// Aufrufparameter von außen vorgebbare Simulationsvariante benutzt werden
+			// Wenn in der Datadescription keine Simulationsvariante explizit vorgegeben wurde, dann muss fÃ¼r die Anmeldung beim Datenverteiler die Ã¼ber
+			// Aufrufparameter von auÃŸen vorgebbare Simulationsvariante benutzt werden
 			short externalSimulationVariant = dataDescription.getSimulationVariant();
 			if(externalSimulationVariant == (short) -1) {
 				externalSimulationVariant = _clientDavParameters.getSimulationVariant();
@@ -744,8 +753,8 @@ public class ClientDavConnection implements ClientDavInterface {
 
 			checkDataIdentification(new SystemObject[]{object}, attributeGroup, _aspect, "Datenabfrage");
 
-			// Wenn in der Datadescription keine Simulationsvariante explizit vorgegeben wurde, dann muss für die Anmeldung beim Datenverteiler die über
-			// Aufrufparameter von außen vorgebbare Simulationsvariante benutzt werden
+			// Wenn in der Datadescription keine Simulationsvariante explizit vorgegeben wurde, dann muss fÃ¼r die Anmeldung beim Datenverteiler die Ã¼ber
+			// Aufrufparameter von auÃŸen vorgebbare Simulationsvariante benutzt werden
 			short externalSimulationVariant = dataDescription.getSimulationVariant();
 			if(externalSimulationVariant == (short) -1) {
 				externalSimulationVariant = _clientDavParameters.getSimulationVariant();
@@ -781,7 +790,7 @@ public class ClientDavConnection implements ClientDavInterface {
 				long sleepTime = 10;
 				while(cachedObject == null && !timer.isTimeExpired()) {
 					try {
-						_implicitSubscriptionDataReceived.wait(sleepTime);
+						if(sleepTime > 0) _implicitSubscriptionDataReceived.wait(sleepTime);
 						cachedObject = _cacheManager.getLastValueOfCachedData(baseSubscriptionInfo, true);
 						sleepTime = timer.getRemainingTime();
 					}
@@ -912,10 +921,10 @@ public class ClientDavConnection implements ClientDavInterface {
 	}
 
 	/**
-	 * Gibt die Id des Stellvertreterobjekts für diese Applikation zurück. Die Erzeugung des entsprechenden Objekts in der Konfiguration wird vom Datenverteiler
+	 * Gibt die Id des Stellvertreterobjekts fÃ¼r diese Applikation zurÃ¼ck. Die Erzeugung des entsprechenden Objekts in der Konfiguration wird vom Datenverteiler
 	 * nach dem Verbindungsaufbau und der erfolgreichen Authentifizierung veranlasst.
 	 *
-	 * @return Id des Stellvertreterobjekts für die lokale Applikation.
+	 * @return Id des Stellvertreterobjekts fÃ¼r die lokale Applikation.
 	 */
 	public long getLocalApplicationObjectId() {
 		if((_configurationManager == null) || (_dataModel == null) || (_subscriptionManager == null)) {
@@ -926,7 +935,7 @@ public class ClientDavConnection implements ClientDavInterface {
 
 	/**
 	 * @throws InitialisationNotCompleteException
-	 *          Wenn die Authentifizierung noch nicht erfolgreich durchgeführt wurde.
+	 *          Wenn die Authentifizierung noch nicht erfolgreich durchgefÃ¼hrt wurde.
 	 */
 	@Override
 	public final DynamicObject getLocalUser() {
@@ -994,8 +1003,8 @@ public class ClientDavConnection implements ClientDavInterface {
 					);
 				}
 				if(!data.isDefined()) {
-					// Der Datensatz kann nicht verschickt werden, weil mindestens ein Attribut den "undefiniert Wert" enthält
-					throw new IllegalArgumentException("Der übergebene Datensatz enthält mindestens ein Attribut, das nicht definiert ist: " + data);
+					// Der Datensatz kann nicht verschickt werden, weil mindestens ein Attribut den "undefiniert Wert" enthÃ¤lt
+					throw new IllegalArgumentException("Der Ã¼bergebene Datensatz enthÃ¤lt mindestens ein Attribut, das nicht definiert ist: " + data);
 				}
 				data = data.createUnmodifiableCopy();
 			}
@@ -1188,7 +1197,7 @@ public class ClientDavConnection implements ClientDavInterface {
 			_subscriptionManager.subscribeSender(sender, objects, _dataDescription, role);
 
 			if(role.isSource()) {
-				// Wenn Anmeldung als Quelle, dann leeren Datensatz für jedes angemeldete Objekt generieren
+				// Wenn Anmeldung als Quelle, dann leeren Datensatz fÃ¼r jedes angemeldete Objekt generieren
 				long now = System.currentTimeMillis();
 				for(int i = 0; i < objects.length; i++) {
 					SystemObject object = objects[i];
@@ -1251,7 +1260,7 @@ public class ClientDavConnection implements ClientDavInterface {
 			}
 			catch(Exception unsubscribeException) {
 				_debug.warning(
-						"Initialer Datensatz bei Anmeldung als Quelle konnte nicht versandt werden und Anmeldung konnte nicht rückgängig gemacht werden",
+						"Initialer Datensatz bei Anmeldung als Quelle konnte nicht versandt werden und Anmeldung konnte nicht rÃ¼ckgÃ¤ngig gemacht werden",
 						unsubscribeException
 				);
 			}
@@ -1304,34 +1313,34 @@ public class ClientDavConnection implements ClientDavInterface {
 		// gesetzt werden oder aber auf den "undefiniert Wert", wenn kein Default-Wert definiert wurde.
 		// Damit diese Prozedure nicht immer wiederholt werden muss (Datensatz anfordern, Default-Werte setzen)
 		// wird diese einmal gemacht und dieser Datensatz gespeichert. Wird erneut ein Datensatz angefordert, wird
-		// der gespeicherte Datensatz kopiert und diese Kopie zurückgegeben.
+		// der gespeicherte Datensatz kopiert und diese Kopie zurÃ¼ckgegeben.
 
-		// Speichert den Datensatz, der nicht geändert werden darf und als Kopiervorlage dienen soll
+		// Speichert den Datensatz, der nicht geÃ¤ndert werden darf und als Kopiervorlage dienen soll
 		Data masterCopy;
 
 		synchronized(_defaultData) {
 			masterCopy = _defaultData.get(attributeGroup);
 			if(masterCopy == null) {
-				// Es gibt keinen Datensatz, der alle Werte enthält. Also muss dieser erzeugt werden
+				// Es gibt keinen Datensatz, der alle Werte enthÃ¤lt. Also muss dieser erzeugt werden
 
 				// Datensatz anfordern
 				final Data firstData = AttributeBaseValueDataFactory.createAdapter(attributeGroup, AttributeHelper.getAttributesValues(attributeGroup));
 				// Default und undefiniert Werte setzen
 				firstData.setToDefault();
-				// ein nicht änderbare Kopie erzeugen und in der Map speichern
+				// ein nicht Ã¤nderbare Kopie erzeugen und in der Map speichern
 				masterCopy = firstData.createUnmodifiableCopy();
 				// Datensatz speichern, dieser dient nun immer als Kopiervorlage
 				_defaultData.put(attributeGroup, masterCopy);
 			}
 		} // synchronized
 
-		// Die Kopiervorlage steht nun zur Verfügung. Eine modifizierbare Kopie anlegen und zurückgeben
+		// Die Kopiervorlage steht nun zur VerfÃ¼gung. Eine modifizierbare Kopie anlegen und zurÃ¼ckgeben
 		return masterCopy.createModifiableCopy();
 	}
 
 	@Override
 	public void sendApplicationReadyMessage() {
-		// die endgültige Fertigmeldung soll verschickt werden.
+		// die endgÃ¼ltige Fertigmeldung soll verschickt werden.
 		sendApplicationReadyMessage(false);
 	}
 
@@ -1377,9 +1386,9 @@ public class ClientDavConnection implements ClientDavInterface {
 				}
 			}
 
-			// Bei alter Konfiguration liegt diese atg nicht vor - Versenden der Fertigmeldung nicht möglich
+			// Bei alter Konfiguration liegt diese atg nicht vor - Versenden der Fertigmeldung nicht mÃ¶glich
 			else {
-				_debug.warning("Die verwendete Konfiguration unterstützt nicht die Fertigmeldung für Start/Stop.");
+				_debug.warning("Die verwendete Konfiguration unterstÃ¼tzt nicht die Fertigmeldung fÃ¼r Start/Stop.");
 			}
 		}
 	}
@@ -1388,7 +1397,7 @@ public class ClientDavConnection implements ClientDavInterface {
 	 * Erstellt die zu versendende Fertigmeldung
 	 *
 	 * @param configuration   Verwendetes Datenmodell
-	 * @param attributeGroup  Attributgruppe für die Fertigmeldung
+	 * @param attributeGroup  Attributgruppe fÃ¼r die Fertigmeldung
 	 * @param sendNotReadyYet <code>true</code>, falls Noch-Nicht-Fertigmeldung versendet werden soll, <code>false</code> sonst.
 	 *
 	 * @return Datensatz, der verschickt werden soll.
@@ -1398,7 +1407,7 @@ public class ClientDavConnection implements ClientDavInterface {
 		long applicationID = getLocalApplicationObjectId();
 
 		if(_dataModel.getObject(applicationID) instanceof ClientApplication) {
-			// Ermittele das Applikationsobjekt, für das die Fertigmeldung versendet werden soll
+			// Ermittele das Applikationsobjekt, fÃ¼r das die Fertigmeldung versendet werden soll
 			SystemObject object = _dataModel.getObject(applicationID);
 
 			// Zusammenstellen der zu versendenden Daten
@@ -1436,7 +1445,7 @@ public class ClientDavConnection implements ClientDavInterface {
 	 * Meldet einen Transaktionssender oder eine Transaktionsquelle an.
 	 * @param sender Sender-Interface
 	 * @param dataDescription Daten-Identifikation
-	 * @param subscriptions Innere Anmeldungen (für Quelle, falls null wird ein Sender angemeldet)
+	 * @param subscriptions Innere Anmeldungen (fÃ¼r Quelle, falls null wird ein Sender angemeldet)
 	 * @throws OneSubscriptionPerSendData Fehler bei der Anmeldung (z.B. es gibt schon eine Quelle)
 	 */
 	void triggerTransactionSender(
@@ -1471,10 +1480,10 @@ public class ClientDavConnection implements ClientDavInterface {
 	}
 
 	/**
-	 * Meldet einen Transaktionsempfänger oder eine Transaktionssenke an.
-	 * @param receiver Empfänger-Interface
+	 * Meldet einen TransaktionsempfÃ¤nger oder eine Transaktionssenke an.
+	 * @param receiver EmpfÃ¤nger-Interface
 	 * @param dataDescription Daten-Identifikation
-	 * @param subscriptions Innere Anmeldungen (für Senke, falls null wird ein Empfänger angemeldet)
+	 * @param subscriptions Innere Anmeldungen (fÃ¼r Senke, falls null wird ein EmpfÃ¤nger angemeldet)
 	 * @throws OneSubscriptionPerSendData Fehler bei der Anmeldung (z.B. es gibt schon eine Senke)
 	 */
 	void triggerTransactionReceiver(
@@ -1494,7 +1503,7 @@ public class ClientDavConnection implements ClientDavInterface {
 	}
 
 	/**
-	 * Gibt den Zeitpunkt einer Sender-Anmeldung zurück
+	 * Gibt den Zeitpunkt einer Sender-Anmeldung zurÃ¼ck
 	 * @param info Anmeldung
 	 * @return Sekunden seit 1970
 	 */
@@ -1503,13 +1512,13 @@ public class ClientDavConnection implements ClientDavInterface {
 	}
 
 	/**
-	 * Gibt Informationen über eine Datenanmeldung zurück
+	 * Gibt Informationen Ã¼ber eine Datenanmeldung zurÃ¼ck
 	 *
 	 * @param davApplication Datenverteiler, der gefragt werden soll
 	 * @param object Systemobjekt
 	 * @param usage Attributgruppenverwendung
 	 * @param simulationVariant Simulationsvariante
-	 * @return Klasse mit Informationen über die angemeldeten Applikationen auf dieses Datum
+	 * @return Klasse mit Informationen Ã¼ber die angemeldeten Applikationen auf dieses Datum
 	 */
 	public ClientSubscriptionInfo getSubscriptionInfo(
 			final DavApplication davApplication, final SystemObject object, final AttributeGroupUsage usage, final short simulationVariant) throws IOException {
@@ -1520,12 +1529,12 @@ public class ClientDavConnection implements ClientDavInterface {
 	}
 
 	/**
-	 * Gibt Informationen über die Datenanmeldungen eien Appliaktion zurück
+	 * Gibt Informationen Ã¼ber die Datenanmeldungen einer Applikation zurÃ¼ck
 	 *
 	 * @param davApplication Datenverteiler, der gefragt werden soll
 	 * @param application    Applikation von der vorhandene Anmeldungen abgefragt werden sollen
 	 *
-	 * @return Klasse mit Informationen über die angemeldeten Applikationen auf dieses Datum
+	 * @return Klasse mit Informationen Ã¼ber die angemeldeten Applikationen auf dieses Datum
 	 */
 	public ApplicationSubscriptionInfo getSubscriptionInfo(
 			final DavApplication davApplication, final ClientApplication application) throws IOException {
@@ -1535,7 +1544,7 @@ public class ClientDavConnection implements ClientDavInterface {
 		return _clientDavRequester.getSubscriptionInfo(davApplication, application);
 	}
 
-	// Eine Hilfsklasse für die implizite Anmeldung
+	// Eine Hilfsklasse fÃ¼r die implizite Anmeldung
 	class ImplicitSubscriptionNote {
 
 		long unsubscriptionTime;
@@ -1618,8 +1627,8 @@ public class ClientDavConnection implements ClientDavInterface {
 
 	private void notifyConnectionClosed() {
 		if(_dataModelConnection != null){
-			// hierdurch werden laufende Operationen in der 2. Verbindung unterbrochen, die die folgenden Aktionen blockieren können.
-			// Deswegen am Anfang der Methode ausführen.
+			// hierdurch werden laufende Operationen in der 2. Verbindung unterbrochen, die die folgenden Aktionen blockieren kÃ¶nnen.
+			// Deswegen am Anfang der Methode ausfÃ¼hren.
 			_dataModelConnection.disconnect(false, "");
 		}
 		List<DavConnectionListener> connectionListenersCopy = new ArrayList<DavConnectionListener>(_connectionListeners);
@@ -1651,7 +1660,7 @@ public class ClientDavConnection implements ClientDavInterface {
 		DataFactory.forget(getDataModel());
 	}
 
-	// Eine Hilfsklasse für das Versenden der Fertigmeldung
+	// Eine Hilfsklasse fÃ¼r das Versenden der Fertigmeldung
 
 	private class ReadyMessageSender implements ClientSenderInterface {
 
@@ -1699,7 +1708,7 @@ public class ClientDavConnection implements ClientDavInterface {
 
 	private static class ConnectionShutdownHook extends Thread {
 
-		// Verbindung über WeakReference referenzierten (um Memory Leak zu verhindern, wenn eine Verbindung nicht mehr benutzt wird)
+		// Verbindung Ã¼ber WeakReference referenzierten (um Memory Leak zu verhindern, wenn eine Verbindung nicht mehr benutzt wird)
 		private final WeakReference<ClientDavConnection> _conn;
 
 		public ConnectionShutdownHook(ClientDavConnection conn) {

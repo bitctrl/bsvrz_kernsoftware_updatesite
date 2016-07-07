@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config.telegrams;
@@ -27,20 +33,20 @@ import java.io.IOException;
 
 
 /**
- * Diese Klasse stellt eine Anfrage zu Authentifizierung des Benutzers dar. Es wird ein Telegamm erzeugt, welches den Benutzernamen, das verschlüsselte
- * Passwort, einen Zufallstext sowie den Namen des Verschlüsselungsverfahrens enthält. Wenn der Zufallstext von der Applikation korrekt verschlüsselt wurde,
- * wird als Antwort ein Authentifizierungsannahme-Telegramm an die Applikation übertragen. Wenn der Zufallstext nicht korrekt verschlüsselt wurde, wird ein
+ * Diese Klasse stellt eine Anfrage zu Authentifizierung des Benutzers dar. Es wird ein Telegamm erzeugt, welches den Benutzernamen, das verschlÃ¼sselte
+ * Passwort, einen Zufallstext sowie den Namen des VerschlÃ¼sselungsverfahrens enthÃ¤lt. Wenn der Zufallstext von der Applikation korrekt verschlÃ¼sselt wurde,
+ * wird als Antwort ein Authentifizierungsannahme-Telegramm an die Applikation Ã¼bertragen. Wenn der Zufallstext nicht korrekt verschlÃ¼sselt wurde, wird ein
  * Authentifizierungsablehnungs-Telegramm gesendet und eine neues Authentifizierungsbereitschafts-Telegramm von der Applikation erwartet.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5054 $
+ * @version $Revision$
  */
 public class AuthentificationRequest extends ConfigTelegram {
 
 	/** Der Benutzername */
 	private String _userName;
 
-	/** Das verschlüsselte Passwort */
+	/** Das verschlÃ¼sselte Passwort */
 	private byte _encriptedPassword[];
 
 	/** Der Authentifizierungszufallstext */
@@ -49,7 +55,7 @@ public class AuthentificationRequest extends ConfigTelegram {
 	/** Das Authentifizierungsverfahren */
 	private String _processName;
 
-	/** Erzeugt ein neues Objekt ohne Parameter. Die parameter werden zu einem Späteren Zeitpunkt über die read-Methode eingelesen. */
+	/** Erzeugt ein neues Objekt ohne Parameter. Die parameter werden zu einem SpÃ¤teren Zeitpunkt Ã¼ber die read-Methode eingelesen. */
 	public AuthentificationRequest() {
 		_type = AUTHENTIFICATION_REQUEST_TYPE;
 	}
@@ -58,7 +64,7 @@ public class AuthentificationRequest extends ConfigTelegram {
 	 * Erzeugt ein neues Objekt mit den gegebenen Parametern.
 	 *
 	 * @param userName          Benutzername
-	 * @param encriptedPassword verschlüsseltesPasswort
+	 * @param encriptedPassword verschlÃ¼sseltesPasswort
 	 * @param text              Zufallstext
 	 * @param processName       Authentifizierungsprozessname
 	 */
@@ -73,7 +79,7 @@ public class AuthentificationRequest extends ConfigTelegram {
 	}
 
 	/**
-	 * Gibt den Benutzernamen zurück.
+	 * Gibt den Benutzernamen zurÃ¼ck.
 	 *
 	 * @return der Benutzername
 	 */
@@ -82,16 +88,16 @@ public class AuthentificationRequest extends ConfigTelegram {
 	}
 
 	/**
-	 * Gibt das verschlüsselte passwort zurück.
+	 * Gibt das verschlÃ¼sselte passwort zurÃ¼ck.
 	 *
-	 * @return das verschlüsselte Passwort
+	 * @return das verschlÃ¼sselte Passwort
 	 */
 	public final byte[] getEncriptedPasswort() {
 		return _encriptedPassword;
 	}
 
 	/**
-	 * Gibt den Authentifizierungstext zurück.
+	 * Gibt den Authentifizierungstext zurÃ¼ck.
 	 *
 	 * @return der Authentifizierungstext
 	 */

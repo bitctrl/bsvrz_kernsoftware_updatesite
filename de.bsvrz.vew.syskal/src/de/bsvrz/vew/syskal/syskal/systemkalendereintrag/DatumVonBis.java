@@ -37,11 +37,11 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
- * Die Klasse erzeugt SystemKalenderEintraege vom Typ: "<17.11.2007, 19.11.2007>". zusätzlich können noch optional eine
+ * Die Klasse erzeugt SystemKalenderEintraege vom Typ: "<17.11.2007, 19.11.2007>". zusÃ¤tzlich kÃ¶nnen noch optional eine
  * oder mehrere Zeitgruppen definiert werden, z.B.: "<17.11.2007, 19.11.2007> ({07:15:00,000 -
  * 09:00:00,000}{15:30:00,000 - 17:45:00,000})". Die Berechnung der Zeitpunkte mit Wildcards bezieht sich noch auf das
- * aktuelle Kalenderjahr. Die Vorgehensweise könnte dahingehend sein, dass beim Jahrewechsel die Zustandswechsel neu
- * berechnet werden. Muss also noch geklärt werden *
+ * aktuelle Kalenderjahr. Die Vorgehensweise kÃ¶nnte dahingehend sein, dass beim Jahrewechsel die Zustandswechsel neu
+ * berechnet werden. Muss also noch geklÃ¤rt werden *
  * 
  * @version $Revision: 1.7 $ / $Date: 2015/06/08 15:13:12 $ / ($Author: Pittner $)
  * 

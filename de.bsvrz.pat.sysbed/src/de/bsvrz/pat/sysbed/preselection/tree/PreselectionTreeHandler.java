@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.preselection.tree;
@@ -37,16 +43,16 @@ import javax.swing.tree.TreePath;
 import java.util.*;
 
 /**
- * Die Klasse <code>PreselectionTreeHandler</code> verarbeitet die Daten des Panels {@link PreselectionTree}.<p/> Mit dem Konstruktor wird das Panel
- * <code>PreselectionTree</code>, ein <code>ClientDavInterface</code> und ein <code>Systemobjekt</code> übergeben.<br/> Mittels des
+ * Die Klasse <code>PreselectionTreeHandler</code> verarbeitet die Daten des Panels {@link PreselectionTree}.<p> Mit dem Konstruktor wird das Panel
+ * <code>PreselectionTree</code>, ein <code>ClientDavInterface</code> und ein <code>Systemobjekt</code> Ã¼bergeben.<br/> Mittels des
  * <code>ClientDavInterfaces</code> und des Objektes werden Daten aus dem Datenverteiler geholt, die im <code>PreselectionTree</code> dargestellt werden sollen.
- * Außerdem werden alle Konfigurationsobjekte und alle dynamische Objekte zur späteren Bearbeitung geholt.
- * <p/>
- * Bei Anwahl eines Knotens werden die geholten Objekte ggf. durch zum Knoten gehörende Filter eingeschränkt. Die Liste dieser Objekte wird dann an das {@link
- * de.bsvrz.pat.sysbed.preselection.lists.PreselectionLists}-Panel weitergereicht, wo weiter eingeschränkt werden kann.
+ * AuÃŸerdem werden alle Konfigurationsobjekte und alle dynamische Objekte zur spÃ¤teren Bearbeitung geholt.
+ * <p>
+ * Bei Anwahl eines Knotens werden die geholten Objekte ggf. durch zum Knoten gehÃ¶rende Filter eingeschrÃ¤nkt. Die Liste dieser Objekte wird dann an das {@link
+ * de.bsvrz.pat.sysbed.preselection.lists.PreselectionLists}-Panel weitergereicht, wo weiter eingeschrÃ¤nkt werden kann.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13003 $
+ * @version $Revision$
  */
 class PreselectionTreeHandler {
 
@@ -68,7 +74,7 @@ class PreselectionTreeHandler {
 	/** speichert alle Systemobjekte in einer Liste */
 	private Collection<SystemObject> _allObjects = new ArrayList<SystemObject>();
 
-	/** speichert die Parameter für den Vorauswahldialog (Baum) */
+	/** speichert die Parameter fÃ¼r den Vorauswahldialog (Baum) */
 	private Collection<Object> _treeNodes;
 
 	/**
@@ -84,10 +90,10 @@ class PreselectionTreeHandler {
 	}
 
 	/**
-	 * Die Systemobjekte werden beim Datenverteiler angemeldet und mitsamt den Baumobjekten im <code>PreselectionTree</code> angezeigt. Die benötigten Parameter
-	 * (Systemobjekte) werden an den DaV übergeben, um mit den empfangenen Daten die spezifizierte Vorauswahl (Bäume) zu erstellen.
+	 * Die Systemobjekte werden beim Datenverteiler angemeldet und mitsamt den Baumobjekten im <code>PreselectionTree</code> angezeigt. Die benÃ¶tigten Parameter
+	 * (Systemobjekte) werden an den DaV Ã¼bergeben, um mit den empfangenen Daten die spezifizierte Vorauswahl (BÃ¤ume) zu erstellen.
 	 *
-	 * @param treeNodes enthält die darzustellenden Systemobjekte und die implementierten Baumobjekte
+	 * @param treeNodes enthÃ¤lt die darzustellenden Systemobjekte und die implementierten Baumobjekte
 	 */
 	public void setTreeNodes(Collection<Object> treeNodes) {
 		_treeNodes = treeNodes;
@@ -109,7 +115,7 @@ class PreselectionTreeHandler {
 			}
 		}
 		else {    // es gibt keine Objekte
-//			System.out.println("es wurden keine Objekte übergeben!");
+//			System.out.println("es wurden keine Objekte Ã¼bergeben!");
 			TreeNodeObject rootNode = new TreeNodeObject("Wurzel", "");
 			for(Iterator iterator = _treeNodes.iterator(); iterator.hasNext();) {
 				TreeNodeObject treeNodeObject = (TreeNodeObject)iterator.next();
@@ -127,7 +133,7 @@ class PreselectionTreeHandler {
 	 * @param objectList Objektliste, die beim Datenverteiler angemeldet werden soll
 	 */
 	private void getData(List<SystemObject> objectList) {
-		AttributeGroup atg = _configuration.getAttributeGroup("atg.datenAuswahlMenü");
+		AttributeGroup atg = _configuration.getAttributeGroup("atg.datenAuswahlMenÃ¼");
 		Aspect aspect = _configuration.getAspect("asp.parameterSoll");
 		DataDescription dataDescription = new DataDescription(atg, aspect);
 		_receiver = new Receiver();
@@ -159,8 +165,8 @@ class PreselectionTreeHandler {
 	}
 
 	/**
-	 * Gibt die Parameter für die Vorauswahl (Baum) zurück. Die Collection enthält Systemobjekte und {@link TreeNodeObject Knotenobjekte}. Anhand der Objekte wird
-	 * der Baum für die Vorauswahl erzeugt.
+	 * Gibt die Parameter fÃ¼r die Vorauswahl (Baum) zurÃ¼ck. Die Collection enthÃ¤lt Systemobjekte und {@link TreeNodeObject Knotenobjekte}. Anhand der Objekte wird
+	 * der Baum fÃ¼r die Vorauswahl erzeugt.
 	 *
 	 * @return die Sammlung von System- und Knotenobjekten
 	 */
@@ -177,12 +183,12 @@ class PreselectionTreeHandler {
 	 */
 	private class Receiver implements ClientReceiverInterface {
 
-		/** speichert ein empfangenes Menü-Data-Objekt */
+		/** speichert ein empfangenes MenÃ¼-Data-Objekt */
 		private List<TreeNodeObject> _tree = new ArrayList<TreeNodeObject>();
 
 		/**
-		 * Diese Methode erhält die Daten vom Datenverteiler. Die empfangenen Daten werden in einen Baum umgewandelt und dem Panel {@link PreselectionTree}
-		 * übermittelt.
+		 * Diese Methode erhÃ¤lt die Daten vom Datenverteiler. Die empfangenen Daten werden in einen Baum umgewandelt und dem Panel {@link PreselectionTree}
+		 * Ã¼bermittelt.
 		 *
 		 * @param results die Daten vom Datenverteiler
 		 */
@@ -192,7 +198,7 @@ class PreselectionTreeHandler {
 			SwingUtilities.invokeLater(
 					new Runnable() {
 						public void run() {
-							// Baum wird an PreselectionTree übermittelt
+							// Baum wird an PreselectionTree Ã¼bermittelt
 							_preselectionTree.setTreeData(treeModel);
 						}
 					}
@@ -200,13 +206,13 @@ class PreselectionTreeHandler {
 		}
 
 		/**
-		 * Erstellt aus einer Collection von Systemobjekten und <code>TreeNodeObject</code>s einen Baum. Für jedes Systemobjekt wird der dazugehörige Datensatz vom
-		 * Datenverteiler in einen Baum umgewandelt. Die so erstellten Bäume und die <code>TreeNodeObject</code>s werden an eine Pseudo-Wurzel gehangen und in ein
+		 * Erstellt aus einer Collection von Systemobjekten und <code>TreeNodeObject</code>s einen Baum. FÃ¼r jedes Systemobjekt wird der dazugehÃ¶rige Datensatz vom
+		 * Datenverteiler in einen Baum umgewandelt. Die so erstellten BÃ¤ume und die <code>TreeNodeObject</code>s werden an eine Pseudo-Wurzel gehangen und in ein
 		 * <code>TreeModel</code> umgewandelt.
 		 *
 		 * @param results Daten vom Datenverteiler zu den Systemobjekten
 		 *
-		 * @return den Baum für das <code>PreselectionTree</code>
+		 * @return den Baum fÃ¼r das <code>PreselectionTree</code>
 		 *
 		 * @see TreeNodeObject
 		 * @see PreselectionTree
@@ -248,7 +254,7 @@ class PreselectionTreeHandler {
 		}
 
 		/**
-		 * Erstellt zu einem einzelnen Datensatz vom Datenverteiler einen Baum und gibt den Wurzelknoten ({@link TreeNodeObject}) zurück.
+		 * Erstellt zu einem einzelnen Datensatz vom Datenverteiler einen Baum und gibt den Wurzelknoten ({@link TreeNodeObject}) zurÃ¼ck.
 		 *
 		 * @param result Datensatz vom Datenverteiler
 		 *
@@ -259,13 +265,13 @@ class PreselectionTreeHandler {
 			String rootPid = "";
 			// alle erzeugten TreeNodeObjekte werden in einer HashMap gespeichert
 			Map<String, TreeNodeObject> hashMap = new HashMap<String, TreeNodeObject>();
-			// erst werden alle TreeNodeObjekte ohne Untermenüeinträge erstellt
+			// erst werden alle TreeNodeObjekte ohne UntermenÃ¼eintrÃ¤ge erstellt
 			if(!result.hasData()) {
 				_debug.warning("Zum Systemobject " + result.getObject().getName() + " gibt es keine Daten!");
 				return new TreeNodeObject("");
 			}
 			Data data = result.getData();
-			Data menu = data.getItem("Menü");
+			Data menu = data.getItem("MenÃ¼");
 			Data.Array menuArray = menu.asArray();
 			for(int i = 0; i < menuArray.getLength(); i++) {
 				Data menuData = menuArray.getItem(i);   // den i-ten Eintrag
@@ -286,21 +292,21 @@ class PreselectionTreeHandler {
 					rootPid = pid;
 				}
 			}
-			// Untermenü-Verweise werden erstellt.
+			// UntermenÃ¼-Verweise werden erstellt.
 			for(int i = 0; i < menuArray.getLength(); i++) {
 				Data menuData = menuArray.getItem(i);
-				String[] subItems = menuData.getArray("UnterMenü").asTextArray().getTextArray();
+				String[] subItems = menuData.getArray("UnterMenÃ¼").asTextArray().getTextArray();
 				if(subItems.length > 0) {
 					String pid = menuData.getTextValue("Pid").getText();
-					TreeNodeObject treeNode = hashMap.get(pid);    // hierzu Untermenüs erstellen
+					TreeNodeObject treeNode = hashMap.get(pid);    // hierzu UntermenÃ¼s erstellen
 					for(int j = 0; j < subItems.length; j++) {
 						String subItem = subItems[j];
-						// gibt es zu dieser Pid überhaupt einen Eintrag?
+						// gibt es zu dieser Pid Ã¼berhaupt einen Eintrag?
 						if(hashMap.containsKey(subItem)) {
 							treeNode.addChild(hashMap.get(subItem));
 						}
 						else {
-							_debug.warning("Zur Untermenü-Pid " + subItem + " gibt es kein Data-Objekt!");
+							_debug.warning("Zur UntermenÃ¼-Pid " + subItem + " gibt es kein Data-Objekt!");
 						}
 					}
 				}
@@ -315,7 +321,7 @@ class PreselectionTreeHandler {
 		}
 	}
 
-	/** Die Klasse <code>DataTreeModel</code> repräsentiert ein {@link TreeModel}. */
+	/** Die Klasse <code>DataTreeModel</code> reprÃ¤sentiert ein {@link TreeModel}. */
 	private static class DataTreeModel implements TreeModel {
 
 		/** speichert den Wurzelknoten */
@@ -331,7 +337,7 @@ class PreselectionTreeHandler {
 		}
 
 		/**
-		 * Gibt des Wurzelknoten zurück.
+		 * Gibt des Wurzelknoten zurÃ¼ck.
 		 *
 		 * @return den Wurzelknoten
 		 */
@@ -340,7 +346,7 @@ class PreselectionTreeHandler {
 		}
 
 		/**
-		 * Gibt zurück, wieviele Nachfolger ein Knoten hat.
+		 * Gibt zurÃ¼ck, wieviele Nachfolger ein Knoten hat.
 		 *
 		 * @param parent ein Knoten des Baums
 		 *
@@ -355,7 +361,7 @@ class PreselectionTreeHandler {
 		}
 
 		/**
-		 * Gibt zurück, ob ein Knoten ein Blatt ist.
+		 * Gibt zurÃ¼ck, ob ein Knoten ein Blatt ist.
 		 *
 		 * @param node ein Knoten des Baums
 		 *
@@ -375,20 +381,20 @@ class PreselectionTreeHandler {
 		}
 
 		public void addTreeModelListener(TreeModelListener l) {
-			// wird hier nicht benötigt
+			// wird hier nicht benÃ¶tigt
 		}
 
 		public void removeTreeModelListener(TreeModelListener l) {
-			// wird hier nicht benötigt
+			// wird hier nicht benÃ¶tigt
 		}
 
 		/**
-		 * Gibt zu einem Knoten im Baum einen bestimmten Nachfolger zurück.
+		 * Gibt zu einem Knoten im Baum einen bestimmten Nachfolger zurÃ¼ck.
 		 *
 		 * @param parent ein Knoten im Baum
 		 * @param index  der wievielte Nachfolger
 		 *
-		 * @return den gewünschten Nachfolger
+		 * @return den gewÃ¼nschten Nachfolger
 		 */
 		public Object getChild(Object parent, int index) {
 			if(parent instanceof TreeNodeObject) {
@@ -399,7 +405,7 @@ class PreselectionTreeHandler {
 		}
 
 		/**
-		 * Gibt zu einem Nachfolger eines Knotens seine Position innerhalb alles Nachfolger dieses Knotens zurück.
+		 * Gibt zu einem Nachfolger eines Knotens seine Position innerhalb alles Nachfolger dieses Knotens zurÃ¼ck.
 		 *
 		 * @param parent ein Knoten im Baum
 		 * @param child  ein Nachfolger des Knotens
@@ -415,7 +421,7 @@ class PreselectionTreeHandler {
 		}
 
 		public void valueForPathChanged(TreePath path, Object newValue) {
-			// wird hier nicht benötigt
+			// wird hier nicht benÃ¶tigt
 		}
 	}
 }

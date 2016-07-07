@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config.request;
@@ -33,27 +39,27 @@ import de.bsvrz.sys.funclib.debug.Debug;
 import java.io.File;
 import java.util.*;
 
-// Kein Zugriff über ClientDavInterface, DataModel, das Objekt direkt erzeugen
+// Kein Zugriff Ã¼ber ClientDavInterface, DataModel, das Objekt direkt erzeugen
 /**
- * Diese Klasse stellt Methoden zur Verfügung mit denen Konfigurationsbereiche verwaltet werden können. Jeder Auftrag wird an die Konfiguration übertragen und
- * anschließend auf eine Antwort gewartet.
- * <p/>
+ * Diese Klasse stellt Methoden zur VerfÃ¼gung mit denen Konfigurationsbereiche verwaltet werden kÃ¶nnen. Jeder Auftrag wird an die Konfiguration Ã¼bertragen und
+ * anschlieÃŸend auf eine Antwort gewartet.
+ * <p>
  * Ein Objekt der Klasse kann mit Hilfe einer ClientDaVConnection erzeugt werden.
- * <p/>
- * Kommt es bei der Bearbeitung der Aufträge zu einer Exception entscheidet diese Klasse ob die Exception zur aufrufenden Instanz weitergeleitet wird oder ob
+ * <p>
+ * Kommt es bei der Bearbeitung der AuftrÃ¤ge zu einer Exception entscheidet diese Klasse ob die Exception zur aufrufenden Instanz weitergeleitet wird oder ob
  * der Fehler so schwerwiegend ist, dass die Verbindung zum Datenverteiler abgebrochen werden muss.
- * <p/>
+ * <p>
  * Eine {@link de.bsvrz.dav.daf.main.config.ConfigurationChangeException} wird zum Anwender der Klasse weitergereicht.
- * <p/>
- * Eine {@link RequestException} deutet auf einen schwerern Fehler innerhalb der Kommunikation hin, der nicht mehr behoben werden kann und führt zu einer
+ * <p>
+ * Eine {@link RequestException} deutet auf einen schwerern Fehler innerhalb der Kommunikation hin, der nicht mehr behoben werden kann und fÃ¼hrt zu einer
  * Abmeldung beim Datenverteiler.
  *
  * @author Achim Wullenkord (AW), Kappich Systemberatung
- * @version $Revision: 5060 $ / $Date: 2007-09-01 15:04:35 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigurationControlAdapter implements ConfigurationControl {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	/**
@@ -62,7 +68,7 @@ public class ConfigurationControlAdapter implements ConfigurationControl {
 	 */
 	private final ClientDavConnection _clientDaVConnection;
 
-	/** Über dieses Objekt findet die Anfrage an die Konfiguration statt. Schwerwiegende Fehler führen zu einer Terminierung der Verbindung. */
+	/** Ãœber dieses Objekt findet die Anfrage an die Konfiguration statt. Schwerwiegende Fehler fÃ¼hren zu einer Terminierung der Verbindung. */
 	private ConfigurationRequester _requester;
 
 	public ConfigurationControlAdapter(ClientDavConnection clientDaVConnection) {

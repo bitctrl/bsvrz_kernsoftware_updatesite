@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.dataview.selectionManagement;
@@ -33,26 +39,26 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Klasse zur Verwaltung selektierter Zellen und Zeilen, die durch CellKeys und RowKeys
- * repräsentiert werden.
+ * reprÃ¤sentiert werden.
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 12603 $
+ * @version $Revision$
  * 
  */
 public class SelectionManager {
-	/** Ist der SelectionManager für Veränderungen komplett gesperrt. */
+	/** Ist der SelectionManager fÃ¼r VerÃ¤nderungen komplett gesperrt. */
 	boolean _locked = false;
 	
-	/** Die Listener, die auf Selektionsänderungen angemeldet sind. */
+	/** Die Listener, die auf SelektionsÃ¤nderungen angemeldet sind. */
 	private List<SelectionListener> _listeners = new CopyOnWriteArrayList<SelectionListener>();
 	
-	/** CellKey beim Drücken einer Maustaste */
+	/** CellKey beim DrÃ¼cken einer Maustaste */
 	private CellKey _cellKeyPressed;
 	
 	/** CellKey beim Loslassen einer Maustaste */
 	private CellKey _cellKeyReleased;
 	
-	/** RowKey beim Drücken einer Maustaste */
+	/** RowKey beim DrÃ¼cken einer Maustaste */
 	private RowKey _rowKeyPressed;
 	
 	/** RowKey beim Loslassen einer Maustaste */
@@ -97,7 +103,7 @@ public class SelectionManager {
 	}
 	
 	/**
-	 * Gibt <code>true</code> zurück, wenn mindestestens ein CellKey selektiert ist, sonst <code>false</code>.
+	 * Gibt <code>true</code> zurÃ¼ck, wenn mindestestens ein CellKey selektiert ist, sonst <code>false</code>.
 	 * 
 	 * @return ist mindestestens ein CellKey selektiert?
 	 */
@@ -117,12 +123,12 @@ public class SelectionManager {
 	}
 	
 	/**
-	 * Diese Methode wird beim Drücken einer Taste vom MouseListener einer Zelle in RowData ausgeführt.
+	 * Diese Methode wird beim DrÃ¼cken einer Taste vom MouseListener einer Zelle in RowData ausgefÃ¼hrt.
 	 * 
 	 * @param key
-	 *            übergebener Schlüssel
+	 *            Ã¼bergebener SchlÃ¼ssel
 	 * @param modifiers
-	 *            gedrückte Modifiertasten
+	 *            gedrÃ¼ckte Modifiertasten
 	 */
 	public void mousePressed(CellKey key, int modifiers) {
 		if ( _locked ) {
@@ -145,7 +151,7 @@ public class SelectionManager {
 		}
 		int filteredModifiers = modifiers & ctrlMetaOrShiftDown;
 		
-		if( (filteredModifiers == 0) || (filteredModifiers == ctrlMetaOrShiftDown)) { // Nur die letzte Selektion zählt
+		if( (filteredModifiers == 0) || (filteredModifiers == ctrlMetaOrShiftDown)) { // Nur die letzte Selektion zÃ¤hlt
 			_selectedCellKeys.clear();
 			_selectedCellKeys.add( key);
 			_firstSelectedCellKey = key;
@@ -190,12 +196,12 @@ public class SelectionManager {
 	}
 	
 	/**
-	 * Diese Methode wird beim Loslassen einer Taste vom MouseListener einer Zelle in RowData ausgeführt.
+	 * Diese Methode wird beim Loslassen einer Taste vom MouseListener einer Zelle in RowData ausgefÃ¼hrt.
 	 * 
 	 * @param key
-	 *            übergebener Schlüssel
+	 *            Ã¼bergebener SchlÃ¼ssel
 	 * @param modifiers
-	 *            gedrückte Modifiertasten
+	 *            gedrÃ¼ckte Modifiertasten
 	 */
 	public void mouseReleased(CellKey key, int modifiers) {
 		if ( _locked) {
@@ -250,11 +256,11 @@ public class SelectionManager {
 		}
 	}
 	/**
-	 * Diese Methode wird von den  MouseListenern auf den Zeilen-Headern ausgeführt, wenn
-	 * dort die Maus gedrückt wird.
+	 * Diese Methode wird von den  MouseListenern auf den Zeilen-Headern ausgefÃ¼hrt, wenn
+	 * dort die Maus gedrÃ¼ckt wird.
 	 * 
-	 * @param key übergebener Schlüssel
-	 * @param modifiers gedrückte Modifiertasten
+	 * @param key Ã¼bergebener SchlÃ¼ssel
+	 * @param modifiers gedrÃ¼ckte Modifiertasten
 	 */
 	public void mousePressed( final RowKey key, int modifiers) {
 		if ( _locked) {
@@ -277,7 +283,7 @@ public class SelectionManager {
 		}
 		int filteredModifiers = modifiers & ctrlMetaOrShiftDown;
 		
-		if( (filteredModifiers == 0) || (filteredModifiers == ctrlMetaOrShiftDown)) { // Nur die letzte Selektion zählt
+		if( (filteredModifiers == 0) || (filteredModifiers == ctrlMetaOrShiftDown)) { // Nur die letzte Selektion zÃ¤hlt
 			_selectedCellKeys.clear();
 			_selectedCellKeys.addAll( _cellKeyServer.getCellKeys(key));
 			_firstSelectedCellKey = null;
@@ -325,11 +331,11 @@ public class SelectionManager {
 		fireRowSelectionChangeNotification();
 	}
 	/**
-	 * Diese Methode wird von den  MouseListenern auf den Zeilen-Headern ausgeführt, wenn
+	 * Diese Methode wird von den  MouseListenern auf den Zeilen-Headern ausgefÃ¼hrt, wenn
 	 * dort die Maus losgelassen wird.
 	 * 
-	 * @param key übergebener Schlüssel
-	 * @param modifiers gedrückte Modifiertasten
+	 * @param key Ã¼bergebener SchlÃ¼ssel
+	 * @param modifiers gedrÃ¼ckte Modifiertasten
 	 */
 	public void mouseReleased( final RowKey key, int modifiers) {
 		if ( _locked) {
@@ -422,7 +428,7 @@ public class SelectionManager {
 	}
 	
 	/**
-	 * Diese Methode gibt zurück, ob der übergebene CellKey selektiert ist.
+	 * Diese Methode gibt zurÃ¼ck, ob der Ã¼bergebene CellKey selektiert ist.
 	 * 
 	 * @param key ein CellKey
 	 * @return <code>true</code>, wenn selektiert, sonst <code>false</code>
@@ -432,7 +438,7 @@ public class SelectionManager {
 	}
 	
 	/**
-	 * Diese Methode gibt zurück, ob der übergebene RowKey selektiert ist.
+	 * Diese Methode gibt zurÃ¼ck, ob der Ã¼bergebene RowKey selektiert ist.
 	 * 
 	 * @param key  RowKey
 	 * @return <code>true</code>, wenn selektiert, sonst <code>false</code>
@@ -442,7 +448,7 @@ public class SelectionManager {
 	}
 	
 	/**
-	 * Diese Methode fügt einen Selektions-Listener hinzu.
+	 * Diese Methode fÃ¼gt einen Selektions-Listener hinzu.
 	 * 
 	 * @param listener ein Listener
 	 */
@@ -454,7 +460,7 @@ public class SelectionManager {
 	}
 	
 	/**
-	 * Diese Methode entfernt den übergebenen Selektions-Listener.
+	 * Diese Methode entfernt den Ã¼bergebenen Selektions-Listener.
 	 * 
 	 * @param listener ein Listener
 	 */
@@ -476,7 +482,7 @@ public class SelectionManager {
 	}
 	
 	/**
-	 * Diese Methode teilt geänderte CellKey-Selektionen allen Selektions-Listenern mit.
+	 * Diese Methode teilt geÃ¤nderte CellKey-Selektionen allen Selektions-Listenern mit.
 	 */
 	private void fireCellSelectionChangeNotification() {
 		if ( _locked) {
@@ -503,7 +509,7 @@ public class SelectionManager {
 	}
 	
 	/**
-	 * Diese Methode teilt geänderte RowKey-Selektionen allen Selektions-Listenern mit.
+	 * Diese Methode teilt geÃ¤nderte RowKey-Selektionen allen Selektions-Listenern mit.
 	 */
 	private void fireRowSelectionChangeNotification() {
 		if ( _locked) {
@@ -529,11 +535,11 @@ public class SelectionManager {
 		_oldRowKeys = new HashSet<RowKey>(_selectedRowKeys);
 	}
 	
-	/* Methoden zur Modifikation des SelectionManagers, eingführt im Zusammenhang mit dem Drucken */
+	/* Methoden zur Modifikation des SelectionManagers, eingfÃ¼hrt im Zusammenhang mit dem Drucken */
 	
 	/**
-	 * Dies ist eine der besonderen Methoden, die im Rahmen der Einführung des Druckens
-	 * hinzugefügt wurde. Diese Methode setzt, falls möglich, die selektierten CellKeys, 
+	 * Dies ist eine der besonderen Methoden, die im Rahmen der EinfÃ¼hrung des Druckens
+	 * hinzugefÃ¼gt wurde. Diese Methode setzt, falls mÃ¶glich, die selektierten CellKeys, 
 	 * aber alles andere, etwa Benachrichtigung von Listenern, geschieht nicht.
 	 * 
 	 * @param cellKeys eine Collection von CellKeys
@@ -548,8 +554,8 @@ public class SelectionManager {
 		}
 	}
 	/**
-	 * Dies ist eine der besonderen Methoden, die im Rahmen der Einführung des Druckens
-	 * hinzugefügt wurde. Diese Methode setzt, falls möglich, die selektierten RowKeys, 
+	 * Dies ist eine der besonderen Methoden, die im Rahmen der EinfÃ¼hrung des Druckens
+	 * hinzugefÃ¼gt wurde. Diese Methode setzt, falls mÃ¶glich, die selektierten RowKeys, 
 	 * aber alles andere, etwa Benachrichtigung von Listenern, geschieht nicht.
 	 * 
 	 *  @param cellKeys eine Collection von RowKeys
@@ -564,9 +570,9 @@ public class SelectionManager {
 		}
 	}
 	/**
-	 * Dies ist eine der besonderen Methoden, die im Rahmen der Einführung des Druckens
-	 * hinzugefügt wurde. Wird ein true übergeben, so wird der Selektions-Manager gesperrt,
-	 * d.h. es sind keine Änderungen an den Selektionen möglich, bis die Sperre wieder
+	 * Dies ist eine der besonderen Methoden, die im Rahmen der EinfÃ¼hrung des Druckens
+	 * hinzugefÃ¼gt wurde. Wird ein true Ã¼bergeben, so wird der Selektions-Manager gesperrt,
+	 * d.h. es sind keine Ã„nderungen an den Selektionen mÃ¶glich, bis die Sperre wieder
 	 * durch einen Aufruf mit false aufgehoben wird.
 	 * 
 	 * @param der neue Wert
@@ -576,9 +582,9 @@ public class SelectionManager {
 	}
 	
 	/**
-	 * Gibt true zurück, wenn das Betriebssystem ein Mac OS ist, und false sonst.
+	 * Gibt true zurÃ¼ck, wenn das Betriebssystem ein Mac OS ist, und false sonst.
 	 * 
-	 * @return läuft das Programm auf einem Mac?
+	 * @return lÃ¤uft das Programm auf einem Mac?
 	 */
 	private boolean isMac() {
 		return _isMac;

@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.main.impl.archive.request;
 
@@ -41,13 +47,13 @@ import java.nio.channels.ClosedChannelException;
 import java.util.zip.InflaterInputStream;
 
 /**
- * Diese Klasse implementiert das Interface ArchiveDataStream. Die Datensätze, die empfangen wurden, können gepackt
- * sein, diese Klasse entpackt die Datensätze und stellt sie als Objekte zur Verfügung. Diese Klasse wird von der Klasse
+ * Diese Klasse implementiert das Interface ArchiveDataStream. Die DatensÃ¤tze, die empfangen wurden, kÃ¶nnen gepackt
+ * sein, diese Klasse entpackt die DatensÃ¤tze und stellt sie als Objekte zur VerfÃ¼gung. Diese Klasse wird von der Klasse
  * {@link StreamedArchiveRequester} benutzt.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 6324 $ / $Date: 2009-02-09 16:47:39 +0100 (Mon, 09 Feb 2009) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 class DataStream implements ArchiveDataStream {
 
@@ -58,25 +64,25 @@ class DataStream implements ArchiveDataStream {
 	private final int _indexOfStream;
 
 	/**
-	 * Dies ist die Anfrage, zu der dieser Stream gehört. Der Anfrage(_query) wird gemeldet, dass der Stream keine
-	 * Archivdaten mehr vom Archiv empfängt (null-Paket) oder das der Benutzer den Stream mit abort abgebrochen hat.
+	 * Dies ist die Anfrage, zu der dieser Stream gehÃ¶rt. Der Anfrage(_query) wird gemeldet, dass der Stream keine
+	 * Archivdaten mehr vom Archiv empfÃ¤ngt (null-Paket) oder das der Benutzer den Stream mit abort abgebrochen hat.
 	 */
 	private final Query _query;
 
 	private final ArchiveDataSpecification _archiveDataSpecification;
 
 	/**
-	 * DebugLogger für Debug-Ausgaben
+	 * DebugLogger fÃ¼r Debug-Ausgaben
 	 */
 	private static final Debug _debug = Debug.getLogger();
 
 	/**
-	 * Objekt, dass einen Stream repräsentiert.
+	 * Objekt, dass einen Stream reprÃ¤sentiert.
 	 *
 	 * @param indexOfStream            Index des Streams
-	 * @param streamDemultiplexer      Objekt über das Datensätze angefordert werden können
+	 * @param streamDemultiplexer      Objekt Ã¼ber das DatensÃ¤tze angefordert werden kÃ¶nnen
 	 * @param archiveDataSpecification Siehe Klassenbeschreibung
-	 * @param query                    Archivanfrage, die zu diesem Objekt gehört
+	 * @param query                    Archivanfrage, die zu diesem Objekt gehÃ¶rt
 	 */
 	public DataStream(int indexOfStream, StreamDemultiplexer streamDemultiplexer, ArchiveDataSpecification archiveDataSpecification, Query query) {
 		_streamDemultiplexer = streamDemultiplexer;
@@ -90,12 +96,12 @@ class DataStream implements ArchiveDataStream {
 	}
 
 	/**
-	 * Diese Methode stellt einen archivierten Datensatz zur Verfügung. Der Datensatz kann dabei vom Archiv gepackt worden
+	 * Diese Methode stellt einen archivierten Datensatz zur VerfÃ¼gung. Der Datensatz kann dabei vom Archiv gepackt worden
 	 * sein, diese Methode wird den Datensatz entpacken.
 	 *
 	 * @return archivierter Datensatz
 	 * @throws ClosedChannelException Die Verbindung zum DaV wurde unterbrochen
-	 * @throws InterruptedException   Der Thread, der sich um die Verwaltung des Datensatzempfangs kümmert wurde mit
+	 * @throws InterruptedException   Der Thread, der sich um die Verwaltung des Datensatzempfangs kÃ¼mmert wurde mit
 	 *                                <code>Interrupt</code> abgebrochen
 	 * @throws ProtocolException      Ein Datensatz wurde entweder doppelt empfangen oder fehlt
 	 */
@@ -138,12 +144,12 @@ class DataStream implements ArchiveDataStream {
 				final byte byteCompression = deserializer.readByte();
 				final ArchiveDataCompression compression = ArchiveDataCompression.getInstance(byteCompression);
 
-				// Größe des Datensates, der als Byte-Array verschickt wurde. Ist die Größe 0, so
+				// GrÃ¶ÃŸe des Datensates, der als Byte-Array verschickt wurde. Ist die GrÃ¶ÃŸe 0, so
 				// war auf Archivseite das byte-Array <code>null</code>.
 				final int sizeOfData = deserializer.readInt();
 
 				// Datensatzobjekt, das erzeugt werden soll. Der intitale Wert ist null, somit muss der else-Zweig von
-				// <code>if(sizeOfData > 0)</code> nicht betrachtet werden, da dort nur data=null ausgeführt werden würde.
+				// <code>if(sizeOfData > 0)</code> nicht betrachtet werden, da dort nur data=null ausgefÃ¼hrt werden wÃ¼rde.
 				Data data = null;
 
 				if (dataState == DataState.DATA) {
@@ -178,18 +184,18 @@ class DataStream implements ArchiveDataStream {
 							}
 
 							// Der Datensatz wurde entpackt und kann deserialisiert werden. Das alte byte-Array wird an dieser
-							// Stelle überschrieben, da es nicht mehr benötigt wird.
+							// Stelle Ã¼berschrieben, da es nicht mehr benÃ¶tigt wird.
 							byteData = unzippedData.toByteArray();
 						} else if (compression == ArchiveDataCompression.NONE) {
 							// Alles in Ordnung, es wurde nicht gepackt
 						} else {
 							// Der Datensatz wurde mit einer unbekannte Version gepackt
-							throw new RuntimeException("Entpacken von Datensätzen nicht möglich, da die Version des Packers nicht unterstützt wird, geforderte Version " + compression.toString());
+							throw new RuntimeException("Entpacken von DatensÃ¤tzen nicht mÃ¶glich, da die Version des Packers nicht unterstÃ¼tzt wird, geforderte Version " + compression.toString());
 						}
 
-						// Das Byte-Array wird nun in einen Datensatz umgewandelt. Dafür muss ein neuer Deserializer
-						// erzeugt werden. Dieser benutzt die übertragene Serializer-Version.
-						// Dies ist nötig, da gerade alte Archivdaten mit einer älteren Serializer-Version
+						// Das Byte-Array wird nun in einen Datensatz umgewandelt. DafÃ¼r muss ein neuer Deserializer
+						// erzeugt werden. Dieser benutzt die Ã¼bertragene Serializer-Version.
+						// Dies ist nÃ¶tig, da gerade alte Archivdaten mit einer Ã¤lteren Serializer-Version
 						// verpackt wurden.
 
 						InputStream newUnpackedByteArray = new ByteArrayInputStream(byteData);
@@ -200,7 +206,7 @@ class DataStream implements ArchiveDataStream {
 							data = deserializerNewVersion.readData(_archiveDataSpecification.getDataDescription().getAttributeGroup());
 						} catch (NoSuchVersionException e) {
 							e.printStackTrace();
-							throw new IllegalStateException("Ein Archivdatensatz kann nicht deserialisiert werden, da das Archiv eine für die Applikation unbekannte Version zum serialisieren benutzt hat. Serializer-Version: " + serializerVersion);
+							throw new IllegalStateException("Ein Archivdatensatz kann nicht deserialisiert werden, da das Archiv eine fÃ¼r die Applikation unbekannte Version zum serialisieren benutzt hat. Serializer-Version: " + serializerVersion);
 						}
 					}
 				}
@@ -213,18 +219,18 @@ class DataStream implements ArchiveDataStream {
 			}
 			return streamedArchiveData;
 		} else {
-			// Das null-Paket wurde empfangen, somit hat das Archiv alle Datensätze versandt, die zu der Archivanfrage
-			// gehörten.
+			// Das null-Paket wurde empfangen, somit hat das Archiv alle DatensÃ¤tze versandt, die zu der Archivanfrage
+			// gehÃ¶rten.
 			_query.countFinishedStream();
 			return null;
 		}
 	}
 
 	/**
-	 * Diese Methode wird aufgerufen, falls keine Datensätze mehr benötigt werden.
+	 * Diese Methode wird aufgerufen, falls keine DatensÃ¤tze mehr benÃ¶tigt werden.
 	 */
 	public void abort() {
-		// Da der Stream mit abort beendet wurde, wird die Query darüber informiert.
+		// Da der Stream mit abort beendet wurde, wird die Query darÃ¼ber informiert.
 		_query.countFinishedStream();
 		_streamDemultiplexer.abort(_indexOfStream);
 	}

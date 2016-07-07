@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config.telegrams;
@@ -28,11 +34,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Diese Klasse stellt ein allgemeines Konfigurationstelegramm dar. Hier werden die weiteren Typen ¸ber die Klassenvariablen definiert. Zu jedem "Request", also
+ * Diese Klasse stellt ein allgemeines Konfigurationstelegramm dar. Hier werden die weiteren Typen √ºber die Klassenvariablen definiert. Zu jedem "Request", also
  * Anfrage Telegramm, gibt es ein Answer Telegramm.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5054 $
+ * @version $Revision$
  */
 public abstract class ConfigTelegram {
 
@@ -49,13 +55,13 @@ public abstract class ConfigTelegram {
 	/** NewObject-Anfragetelegramm */
 	public static final byte NEW_OBJECT_REQUEST_TYPE = 4;
 
-	/** Anfragetelegramm zur Ung¸ltigkeitserkl‰rung */
+	/** Anfragetelegramm zur Ung√ºltigkeitserkl√§rung */
 	public static final byte OBJECT_INVALIDATE_REQUEST_TYPE = 5;
 
-	/** Anfragetelegramm zur Wiederg¸ltigkeitserkl‰rung */
+	/** Anfragetelegramm zur Wiederg√ºltigkeitserkl√§rung */
 	public static final byte OBJECT_REVALIDATE_REQUEST_TYPE = 6;
 
-	/** Anfragetelegramm  zu Namens‰nderung */
+	/** Anfragetelegramm  zu Namens√§nderung */
 	public static final byte OBJECT_SET_NAME_REQUEST_TYPE = 7;
 
 	/** @deprecated Wird nicht mehr verwendet */
@@ -97,13 +103,13 @@ public abstract class ConfigTelegram {
 	/** NewObject-Antworttelegramm */
 	public static final byte NEW_OBJECT_ANSWER_TYPE = 24;
 
-	/** Antworttelegramm zur Ung¸ltigkeitserkl‰rung */
+	/** Antworttelegramm zur Ung√ºltigkeitserkl√§rung */
 	public static final byte OBJECT_INVALIDATE_ANSWER_TYPE = 25;
 
-	/** Antworttelegramm zur G¸ltigkeitserkl‰rung */
+	/** Antworttelegramm zur G√ºltigkeitserkl√§rung */
 	public static final byte OBJECT_REVALIDATE_ANSWER_TYPE = 26;
 
-	/** Antworttelegramm zur Names‰nderung */
+	/** Antworttelegramm zur Names√§nderung */
 	public static final byte OBJECT_SET_NAME_ANSWER_TYPE = 27;
 
 	/** @deprecated Wird nicht mehr verwendet */
@@ -159,7 +165,7 @@ public abstract class ConfigTelegram {
 	/** Der Typ dieses Konfigurationstelegrams */
 	protected byte _type;
 
-	/** Zus‰tzliche Informationen dieses Telegrams */
+	/** Zus√§tzliche Informationen dieses Telegrams */
 	private String _info = "";
 
 	/**
@@ -183,18 +189,18 @@ public abstract class ConfigTelegram {
 	}
 
 	/**
-	 * Gibt die zus‰tzlichen Informationen des Telegramms zur¸ck
+	 * Gibt die zus√§tzlichen Informationen des Telegramms zur√ºck
 	 *
-	 * @return zus‰tzliche Informationen des Telegrams
+	 * @return zus√§tzliche Informationen des Telegrams
 	 */
 	public final String getInfo() {
 		return _info;
 	}
 
 	/**
-	 * Setzt die zus‰tzliche Informationen des Telegramms
+	 * Setzt die zus√§tzliche Informationen des Telegramms
 	 *
-	 * @param info zus‰tzliche Informationen des Telegramms
+	 * @param info zus√§tzliche Informationen des Telegramms
 	 */
 	public final void setInfo(String info) {
 		if(info != null) {
@@ -203,7 +209,7 @@ public abstract class ConfigTelegram {
 	}
 
 	/**
-	 * Erzeugt ein neues Objekt des ¸bergebenen Typs und gibt dieses zur¸ck.
+	 * Erzeugt ein neues Objekt des √ºbergebenen Typs und gibt dieses zur√ºck.
 	 *
 	 * @param telegramType Typ des zu erzeugenden Telegramms
 	 * @param dataModel    Applikationsseitige Implementierung der DataModel Schnittstelle
@@ -265,7 +271,7 @@ public abstract class ConfigTelegram {
 	}
 
 	/**
-	 * Liefert eine textuelle Beschreibung dieses Objekts f¸r Debug-Zwecke zur¸ck.
+	 * Liefert eine textuelle Beschreibung dieses Objekts f√ºr Debug-Zwecke zur√ºck.
 	 *
 	 * @return Beschreibender Text dieses Objekts.
 	 */

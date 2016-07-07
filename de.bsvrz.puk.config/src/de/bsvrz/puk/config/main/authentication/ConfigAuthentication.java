@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main.authentication;
@@ -79,13 +85,13 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 /**
- * Diese Klasse stellt alle Methoden zur Verfügung, um die Benutzer eines Datenverteilers eindeutig zu identifizieren. Es werden weitere Methoden zur Verfügung
- * gestellt, um die Benutzer zu verwalten (anlegen neuer Benutzer, Passwörter ändern, usw.).
- * <p/>
- * Die Klasse verwaltet selbstständig die Datei, in der die Benutzer mit ihrem Passwörtern (normales Passwort und Einmal-Passwörter) und ihren Rechten
+ * Diese Klasse stellt alle Methoden zur VerfÃ¼gung, um die Benutzer eines Datenverteilers eindeutig zu identifizieren. Es werden weitere Methoden zur VerfÃ¼gung
+ * gestellt, um die Benutzer zu verwalten (anlegen neuer Benutzer, PasswÃ¶rter Ã¤ndern, usw.).
+ * <p>
+ * Die Klasse verwaltet selbststÃ¤ndig die Datei, in der die Benutzer mit ihrem PasswÃ¶rtern (normales Passwort und Einmal-PasswÃ¶rter) und ihren Rechten
  * gespeichert sind.
- * <p/>
- * Der Klasse werden nur verschlüsselte Aufträge übergeben und sie entschlüsselt diese automatisch und führt die Aufträge aus, falls der Benutzer die nötigen
+ * <p>
+ * Der Klasse werden nur verschlÃ¼sselte AuftrÃ¤ge Ã¼bergeben und sie entschlÃ¼sselt diese automatisch und fÃ¼hrt die AuftrÃ¤ge aus, falls der Benutzer die nÃ¶tigen
  * Rechte besitzt.
  *
  * @author Achim Wullenkord (AW), Kappich Systemberatung
@@ -93,38 +99,38 @@ import java.util.*;
  */
 public class ConfigAuthentication implements Authentication {
 
-	/** Als Schlüssel dient der Benutzername (String) als Value werden alle Informationen, die zu einem Benutzer gespeichert wurden, zurückgegeben. */
+	/** Als SchlÃ¼ssel dient der Benutzername (String) als Value werden alle Informationen, die zu einem Benutzer gespeichert wurden, zurÃ¼ckgegeben. */
 	private final Map<String, UserAccount> _userAccounts = new HashMap<String, UserAccount>();
 
 	/** XML-Datei, wird zum anlagen einer Sicherheitskopie gebraucht */
 	private final File _xmlFile;
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
-	/** Repräsentiert die vollständige XML-Datei. */
+	/** ReprÃ¤sentiert die vollstÃ¤ndige XML-Datei. */
 	private final Document _xmlDocument;
 
-	/** Speichert die Basis der Verzeichnisse für die Konfigurationsbereiche. */
+	/** Speichert die Basis der Verzeichnisse fÃ¼r die Konfigurationsbereiche. */
 	private URI _uriBase;
 
 	/**
-	 * Diese Liste speichert alle Texte, die mit {@link #getText} erzeugt wurden. Die Texte werden immer an das Ender der Liste eingefügt. Wird ein Text empfangen,
-	 * wird dieser aus der Liste gelöscht.
-	 * <p/>
-	 * Erreicht die eine bestimmte Größe, wird das erste Element gelöscht, da das erste Element am längsten in der Liste vorhanden ist.
-	 * <p/>
+	 * Diese Liste speichert alle Texte, die mit {@link #getText} erzeugt wurden. Die Texte werden immer an das Ender der Liste eingefÃ¼gt. Wird ein Text empfangen,
+	 * wird dieser aus der Liste gelÃ¶scht.
+	 * <p>
+	 * Erreicht die eine bestimmte GrÃ¶ÃŸe, wird das erste Element gelÃ¶scht, da das erste Element am lÃ¤ngsten in der Liste vorhanden ist.
+	 * <p>
 	 * Die Liste ist nicht synchronisiert.
 	 */
 	private final LinkedList<String> _randomText = new LinkedList<String>();
 
-	/** Wird benötigt um bei den entsprechenden Konfigurationsbereichen neue Benutzer anzulegen */
+	/** Wird benÃ¶tigt um bei den entsprechenden Konfigurationsbereichen neue Benutzer anzulegen */
 	private DataModel _dataModel;
 
 	private final FileLock _lockAuthenticationFile;
 
 	/**
-	 * Lädt alle Informationen aus der angegebenen Datei. Ist die Datei nicht vorhanden, wird eine Datei mit allen Grundeinstellungen erzeugt.
+	 * LÃ¤dt alle Informationen aus der angegebenen Datei. Ist die Datei nicht vorhanden, wird eine Datei mit allen Grundeinstellungen erzeugt.
 	 *
 	 * @param userFile XML-Datei, in der alle Benutzer gespeichert sind.
 	 */
@@ -143,7 +149,13 @@ public class ConfigAuthentication implements Authentication {
 			throw new RuntimeException(errorMessage);
 		}
 
-		_xmlFile = userFile;
+		try {
+			_xmlFile = userFile.getCanonicalFile();
+		}
+		catch(IOException e) {
+			throw new IllegalArgumentException(e);
+		}
+		
 		_dataModel = dataModel;
 
 		// Es gibt die Datei, also Daten auslesen
@@ -151,7 +163,7 @@ public class ConfigAuthentication implements Authentication {
 		final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setNamespaceAware(true);
 
-		// die Validierung der XML-Datei anhand der DTD durchführen
+		// die Validierung der XML-Datei anhand der DTD durchfÃ¼hren
 		factory.setValidating(true);
 		factory.setAttribute("http://xml.org/sax/features/validation", Boolean.TRUE);
 		DocumentBuilder builder = factory.newDocumentBuilder();
@@ -172,15 +184,15 @@ public class ConfigAuthentication implements Authentication {
 			throw new RuntimeException(errorMessage, ex);
 		}
 		_uriBase = _xmlFile.getParentFile().toURI();
-		_debug.config("Verzeichnisbasis für die Benutzer der Konfiguration", _uriBase.toString());
+		_debug.config("Verzeichnisbasis fÃ¼r die Benutzer der Konfiguration", _uriBase.toString());
 		// Daten aus der XML-Datei einlesen
 		readUserAccounts();
-		_debug.config("Benutzerdaten der Konfiguration wurden vollständig eingelesen.");
+		_debug.config("Benutzerdaten der Konfiguration wurden vollstÃ¤ndig eingelesen.");
 	}
 
 	/**
-	 * Ließt alle Benutzer aus der XML-Datei ein und erzeugt entsprechende Java-Objekte. Diese werden dann in der in der Hashtable gespeichert. Die Methode ist
-	 * private, weil diese Funktionalität nur an dieser Stelle zur Verfügung gestellt werden soll.
+	 * LieÃŸt alle Benutzer aus der XML-Datei ein und erzeugt entsprechende Java-Objekte. Diese werden dann in der in der Hashtable gespeichert. Die Methode ist
+	 * private, weil diese FunktionalitÃ¤t nur an dieser Stelle zur VerfÃ¼gung gestellt werden soll.
 	 */
 	private void readUserAccounts() {
 		synchronized(_xmlDocument) {
@@ -204,7 +216,7 @@ public class ConfigAuthentication implements Authentication {
 					admin = false;
 				}
 
-				// Alle Einmal-Passwörter des Accounts (auch die schon benutzen)
+				// Alle Einmal-PasswÃ¶rter des Accounts (auch die schon benutzen)
 				final List<SingleServingPassword> allSingleServingPasswords = new ArrayList<SingleServingPassword>();
 
 				// Einmal-Passwort Liste
@@ -218,7 +230,7 @@ public class ConfigAuthentication implements Authentication {
 					final String xmlSingleServingPasswort = xmlSingleServingPassword.getAttribute("passwort");
 					// Index des Passworts (Integer)
 					final int index = Integer.parseInt(xmlSingleServingPassword.getAttribute("passwortindex"));
-					// Ist das Passwort noch gültig (ja oder nein)
+					// Ist das Passwort noch gÃ¼ltig (ja oder nein)
 					final boolean valid;
 					if("ja".equals(xmlSingleServingPassword.getAttribute("gueltig").toLowerCase())) {
 						valid = true;
@@ -227,15 +239,15 @@ public class ConfigAuthentication implements Authentication {
 						valid = false;
 					}
 					allSingleServingPasswords.add(new SingleServingPassword(xmlSingleServingPasswort, index, valid, xmlSingleServingPassword));
-				} // Alle Einmal-Passwörter
+				} // Alle Einmal-PasswÃ¶rter
 
-				// Alle Einmal-Passwörter wurden eingelesen
+				// Alle Einmal-PasswÃ¶rter wurden eingelesen
 
-				// Alle Infos stehen zur Verfügung, das Objekt kann in die Map eingetargen werden
+				// Alle Infos stehen zur VerfÃ¼gung, das Objekt kann in die Map eingetargen werden
 				final UserAccount userAccount = new UserAccount(userName, xmlPassword, admin, allSingleServingPasswords, element);
 
 				if(_userAccounts.containsKey(userAccount.getUsername())) {
-					// Einfach das erste vorkommen überschreiben. Dieser Fall kann nur vorkommen, wenn die XML-Datei von Hand erzeugt
+					// Einfach das erste vorkommen Ã¼berschreiben. Dieser Fall kann nur vorkommen, wenn die XML-Datei von Hand erzeugt
 					// wurde.
 					_debug.warning("Der Benutzername " + userAccount.getUsername() + " ist bereits in der Benutzerdatei vorhanden");
 				}
@@ -255,9 +267,9 @@ public class ConfigAuthentication implements Authentication {
 					_userAccounts.get(username).getPassword(), authentificationText
 			);
 
-			//Prüfen, ob das Passwort übereinstimmt
+			//PrÃ¼fen, ob das Passwort Ã¼bereinstimmt
 			if(!Arrays.equals(encryptedPassword, originalEncryptedPassword)) {
-				// Da es nicht übereinstimmt versuchen ein Einmalpasswort zu benutzen. Wenn es ein Passwort gibt, wird es benutzt und gesperrt (XML-Datei wird
+				// Da es nicht Ã¼bereinstimmt versuchen ein Einmalpasswort zu benutzen. Wenn es ein Passwort gibt, wird es benutzt und gesperrt (XML-Datei wird
 				// aktualisiert). Gibt es kein Passwort, wird eine Exception geworfen.
 				_userAccounts.get(username).useSingleServingPassword(encryptedPassword, authentificationText, authentificationProcessName);
 			}
@@ -274,7 +286,7 @@ public class ConfigAuthentication implements Authentication {
 		final Long randomLong = new Long(rand.nextLong());
 
 		synchronized(_randomText) {
-			// Der Wert 100 wurde willkürlich gewählt
+			// Der Wert 100 wurde willkÃ¼rlich gewÃ¤hlt
 			if(_randomText.size() == 100) {
 				// Die Liste wird zu gross, siehe Kommentar der Liste.
 				_randomText.removeFirst();
@@ -306,42 +318,47 @@ public class ConfigAuthentication implements Authentication {
 	}
 
 	/**
-	 * Prüft, ob der übergebene Text in der Liste der zufällig erzeugten Texte <code>_randomText</code> vorhanden ist. Kann der Text nicht gefunden werden, wird
+	 * PrÃ¼ft, ob der Ã¼bergebene Text in der Liste der zufÃ¤llig erzeugten Texte <code>_randomText</code> vorhanden ist. Kann der Text nicht gefunden werden, wird
 	 * eine Exception geworfen. Konnte der Text gefunden werden, wird der Text aus der Liste entfernt.
 	 *
 	 * @param randomText Text, der in der Liste der verschickten Texte zu finden sein muss
 	 *
-	 * @throws ConfigurationTaskException Der übergebene Text konnte in der Liste der verschickten Texte nicht gefunden werden
+	 * @throws ConfigurationTaskException Der Ã¼bergebene Text konnte in der Liste der verschickten Texte nicht gefunden werden
 	 */
 	private void checkRandomText(byte[] randomText) throws ConfigurationTaskException {
 		final String randomTextString = new String(randomText);
 		synchronized(_randomText) {
 
 			if(!_randomText.remove(randomTextString)) {
-				// Der übergebene Text befindet sich nicht in den verschickten Texten.
+				// Der Ã¼bergebene Text befindet sich nicht in den verschickten Texten.
 				// Dies ist ein Fehler.
 				throw new ConfigurationTaskException("Annahme verweigert");
 			}
 		}
 	}
 
+	@Override
+	public String toString() {
+		return _xmlFile.toString();
+	}
+
 	/**
-	 * Führt einen Auftrag der Benutzerverwaltung aus und entschlüsselt dabei das übergebene Byte-Array
+	 * FÃ¼hrt einen Auftrag der Benutzerverwaltung aus und entschlÃ¼sselt dabei das Ã¼bergebene Byte-Array
 	 * @param usernameCustomer	  Benutzer, der den Auftrag erteilt
-	 * @param encryptedMessage	  verschlüsselte Aufgabe, die ausgeführt werden soll
-	 * @param authentificationProcessName  Entschlüsselungsverfahren
-	 * @return Die Rückgabe des ausgeführten Tasks (beispielsweise die Anzahl der verbleibenden Einmalpasswörter, falls danach gefragt wurde.
-	 * {@link de.bsvrz.puk.config.main.authentication.ConfigAuthentication.UserAccount#NO_RESULT} (-1) falls die Aufgabe keine Rückgabe liefert.
+	 * @param encryptedMessage	  verschlÃ¼sselte Aufgabe, die ausgefÃ¼hrt werden soll
+	 * @param authentificationProcessName  EntschlÃ¼sselungsverfahren
+	 * @return Die RÃ¼ckgabe des ausgefÃ¼hrten Tasks (beispielsweise die Anzahl der verbleibenden EinmalpasswÃ¶rter, falls danach gefragt wurde.
+	 * {@link de.bsvrz.puk.config.main.authentication.ConfigAuthentication.UserAccount#NO_RESULT} (-1) falls die Aufgabe keine RÃ¼ckgabe liefert.
 	 * @throws RequestException Fehler in der Anfrage
-	 * @throws ConfigurationTaskException Fehler beim Ausführen der Anweisung
+	 * @throws ConfigurationTaskException Fehler beim AusfÃ¼hren der Anweisung
 	 */
 	public int processTask(String usernameCustomer, byte[] encryptedMessage, String authentificationProcessName)
 			throws RequestException, ConfigurationTaskException {
 		if(_userAccounts.containsKey(usernameCustomer)) {
 
-			// Verschlüsselten Text entschlüsseln
+			// VerschlÃ¼sselten Text entschlÃ¼sseln
 
-			// Fängt alle Exceptions des Deserialisierers und wandelt sie in RequestExceptions um. Request und ConfigurationsTaskException werden durchgelassen
+			// FÃ¤ngt alle Exceptions des Deserialisierers und wandelt sie in RequestExceptions um. Request und ConfigurationsTaskException werden durchgelassen
 			try {
 				// Verfahren, das benutzt werden kann. Ist das geforderte Verfahren nicht bekannt, wird eine Exception geworfen
 				final EncryptDecryptProcedure encryptDecryptProcedure = isEncryptDecryptProcedureAllowed(authentificationProcessName);
@@ -353,10 +370,10 @@ public class ConfigAuthentication implements Authentication {
 					);
 				}
 				catch(Exception e) {
-					// Die Nachricht konnte nicht entschlüsselt werden, z.b. weil das Passwort falsch ist
-					_debug.fine("Fehler beim Entschlüsseln der Nachricht", e);
+					// Die Nachricht konnte nicht entschlÃ¼sselt werden, z.b. weil das Passwort falsch ist
+					_debug.fine("Fehler beim EntschlÃ¼sseln der Nachricht", e);
 
-					throw new ConfigurationTaskException("Die Nachricht konnte nicht entschlüsselt werden (Passwort, Benutzername falsch?)");
+					throw new ConfigurationTaskException("Die Nachricht konnte nicht entschlÃ¼sselt werden (Passwort, Benutzername falsch?)");
 				}
 
 				// Serializerversion auslesen, dies steht in den ersten 4 Bytes
@@ -369,15 +386,15 @@ public class ConfigAuthentication implements Authentication {
 				// In den ersten 4 Bytes steht der Nachrichtentyp
 				final int messageType = deserializer.readInt();
 
-				// In den nächsten Bytes steht ein Zufallstext, der vorher zu Applikation geschickt wurde.
+				// In den nÃ¤chsten Bytes steht ein Zufallstext, der vorher zu Applikation geschickt wurde.
 				// Dieser Text muss der Konfiguration bekannt sein. Ist der Text unbekannt
 				// wird eine Exception geworfen und die Verarbeitung des Pakets abgelehnt.
 
-				// Größe der Byte-Arrays
+				// GrÃ¶ÃŸe der Byte-Arrays
 				final int sizeOfRandomText = deserializer.readInt();
 				checkRandomText(deserializer.readBytes(sizeOfRandomText));
 
-				// Was für ein Auftrag muss ausgeführt werden
+				// Was fÃ¼r ein Auftrag muss ausgefÃ¼hrt werden
 				switch(messageType) {
 					case 1: {
 						// Einmal-Passwort erzeugen
@@ -398,22 +415,22 @@ public class ConfigAuthentication implements Authentication {
 						return UserAccount.NO_RESULT;
 					}
 					case 3: {
-						// Passwort ändern
+						// Passwort Ã¤ndern
 						changeUserPassword(usernameCustomer, deserializer.readString(), deserializer.readString());
 						return UserAccount.NO_RESULT;
 					}
 					case 4: {
-						// Benutzerrechte ändern
+						// Benutzerrechte Ã¤ndern
 						changeUserRights(usernameCustomer, deserializer.readString(), deserializer.readBoolean());
 						return UserAccount.NO_RESULT;
 					}
 					case 5: {
-						// Benutzer löschen
+						// Benutzer lÃ¶schen
 						deleteUser(usernameCustomer, deserializer.readString());
 						return UserAccount.NO_RESULT;
 					}
 					case 6: {
-						// Einmalpasswörter löschen
+						// EinmalpasswÃ¶rter lÃ¶schen
 						clearSingleServingPasswords(usernameCustomer, deserializer.readString());
 						return UserAccount.NO_RESULT;
 					}
@@ -422,11 +439,11 @@ public class ConfigAuthentication implements Authentication {
 						return isUserAdmin(usernameCustomer, deserializer.readString()) ? 1 : 0;
 					}
 					case 8: {
-						// Abfrage nach Anzahl der verbleibenden Einmalpasswörtern
+						// Abfrage nach Anzahl der verbleibenden EinmalpasswÃ¶rtern
 						return countRemainingSingleServingPasswords(usernameCustomer, deserializer.readString());
 					}
 					case 9: {
-						//  Neuer Benutzer inklusive konfigurierender Datensätze
+						//  Neuer Benutzer inklusive konfigurierender DatensÃ¤tze
 						createNewUser(
 								usernameCustomer,
 								deserializer.readString(),
@@ -465,15 +482,15 @@ public class ConfigAuthentication implements Authentication {
 	}
 
 	/**
-	 * Löscht für einen angegebenen Benutzer alle Einmalpasswörter bzw. markiert diese als ungültig. Nur ein Admin und der Benutzer selbst darf diese Aktion ausführen.
+	 * LÃ¶scht fÃ¼r einen angegebenen Benutzer alle EinmalpasswÃ¶rter bzw. markiert diese als ungÃ¼ltig. Nur ein Admin und der Benutzer selbst darf diese Aktion ausfÃ¼hren.
 	 * @param orderer Der Auftraggeber der Aktion
-	 * @param username Der Benutzer, dessen Einmalpasswörter gelöscht werden sollen
+	 * @param username Der Benutzer, dessen EinmalpasswÃ¶rter gelÃ¶scht werden sollen
 	 * @throws FileNotFoundException
 	 * @throws ConfigurationTaskException
 	 */
 	private void clearSingleServingPasswords(final String orderer, final String username)
 			throws FileNotFoundException, ConfigurationTaskException {
-		// prüfen, ob der Benutzer diese Aktion durchführen darf
+		// prÃ¼fen, ob der Benutzer diese Aktion durchfÃ¼hren darf
 		if(isAdmin(orderer) || orderer.equals(username)) {
 
 			if(_userAccounts.containsKey(username)) {
@@ -481,7 +498,7 @@ public class ConfigAuthentication implements Authentication {
 					_userAccounts.get(username).clearSingleServingPasswords();
 				}
 				catch(TransformerException e) {
-					throw new ConfigurationChangeException("Konnte Einmalpasswörter nicht löschen", e);
+					throw new ConfigurationChangeException("Konnte EinmalpasswÃ¶rter nicht lÃ¶schen", e);
 				}
 			}
 			else {
@@ -489,21 +506,21 @@ public class ConfigAuthentication implements Authentication {
 			}
 		}
 		else {
-			throw new ConfigurationTaskException("Benutzer verfügt nicht über die benötigten Rechte");
+			throw new ConfigurationTaskException("Benutzer verfÃ¼gt nicht Ã¼ber die benÃ¶tigten Rechte");
 		}
 	}
 
 	/**
-	 * Zählt die verbleibenden Einmalpasswörter für einen angegeben Benutzer. Nur ein Admin und der Benutzer selbst darf diese Aktion ausführen.
+	 * ZÃ¤hlt die verbleibenden EinmalpasswÃ¶rter fÃ¼r einen angegeben Benutzer. Nur ein Admin und der Benutzer selbst darf diese Aktion ausfÃ¼hren.
 	 * @param orderer Der Auftraggeber der Aktion
-	 * @param username Der Benutzer, dessen Einmalpasswörter gezählt werden sollen
-	 * @return Die Anzahl der verbliebenen Einmalpasswörter
+	 * @param username Der Benutzer, dessen EinmalpasswÃ¶rter gezÃ¤hlt werden sollen
+	 * @return Die Anzahl der verbliebenen EinmalpasswÃ¶rter
 	 * @throws FileNotFoundException
 	 * @throws ConfigurationTaskException
 	 */
 	private int countRemainingSingleServingPasswords(final String orderer, final String username)
 			throws FileNotFoundException, ConfigurationTaskException {
-		// prüfen, ob der Benutzer diese Aktion durchführen darf
+		// prÃ¼fen, ob der Benutzer diese Aktion durchfÃ¼hren darf
 		if(isAdmin(orderer) || orderer.equals(username)) {
 
 			if(_userAccounts.containsKey(username)) {
@@ -514,16 +531,16 @@ public class ConfigAuthentication implements Authentication {
 			}
 		}
 		else {
-			throw new ConfigurationTaskException("Benutzer verfügt nicht über die benötigten Rechte");
+			throw new ConfigurationTaskException("Benutzer verfÃ¼gt nicht Ã¼ber die benÃ¶tigten Rechte");
 		}
 	}
 
 	/**
-	 * Prüft ob ein Benutzer Adminrechte hat. Jeder Benutzer darf diese Aktion ausführen.
-	 * @param orderer Der Auftraggeber der Aktion. Wird in dieser Funktion derzeit nicht berücksichtigt, da jeder diese Abfrage ausführen darf
-	 * @param userToCheck Der Benutzer, dessen Rechte geprüft werden sollen.
+	 * PrÃ¼ft ob ein Benutzer Adminrechte hat. Jeder Benutzer darf diese Aktion ausfÃ¼hren.
+	 * @param orderer Der Auftraggeber der Aktion. Wird in dieser Funktion derzeit nicht berÃ¼cksichtigt, da jeder diese Abfrage ausfÃ¼hren darf
+	 * @param userToCheck Der Benutzer, dessen Rechte geprÃ¼ft werden sollen.
 	 * @return True falls der Benutzer ein Admin ist
-	 * @throws ConfigurationTaskException Der Auftrag kann nicht ausgeführt werden, weil der Benutzer nicht existiert
+	 * @throws ConfigurationTaskException Der Auftrag kann nicht ausgefÃ¼hrt werden, weil der Benutzer nicht existiert
 	 */
 	private boolean isUserAdmin(final String orderer, final String userToCheck) throws ConfigurationTaskException {
 		if(_userAccounts.containsKey(userToCheck)) {
@@ -554,35 +571,35 @@ public class ConfigAuthentication implements Authentication {
 
 	/**
 	 * @param username                      Benutzer, der den Auftrag angestossen hat
-	 * @param usernameSingleServingPasswort Benutzer für den das Einmal-Passwort gedacht ist
+	 * @param usernameSingleServingPasswort Benutzer fÃ¼r den das Einmal-Passwort gedacht ist
 	 * @param passwortSingleServingPasswort Einmal-Passwort
 	 *
 	 * @throws RequestException           Technischer Fehler, der Auftrag konnte nicht bearbeitet werden.
-	 * @throws ConfigurationTaskException Die Konfiguration weigert sich den Auftrag auszuführen weil z.b. das Passwort falsch war, der Benutzer nicht die nötigen
+	 * @throws ConfigurationTaskException Die Konfiguration weigert sich den Auftrag auszufÃ¼hren weil z.b. das Passwort falsch war, der Benutzer nicht die nÃ¶tigen
 	 *                                    Rechte besitzt usw..
 	 */
 	private void createSingleServingPassword(String username, String usernameSingleServingPasswort, String passwortSingleServingPasswort)
 			throws RequestException, ConfigurationTaskException {
-		// prüfen, ob der Benutzer überhaupt ein Einmal-Passwort erzeugen darf
+		// prÃ¼fen, ob der Benutzer Ã¼berhaupt ein Einmal-Passwort erzeugen darf
 		if(isAdmin(username)) {
-			// Der Benutzer darf ein Einmal-Passwort anlegen, also Nachricht entschlüsseln
+			// Der Benutzer darf ein Einmal-Passwort anlegen, also Nachricht entschlÃ¼sseln
 
 			// Einmal-Passwort erzeugen
 			if(_userAccounts.containsKey(usernameSingleServingPasswort)) {
 				_userAccounts.get(usernameSingleServingPasswort).createNewSingleServingPassword(passwortSingleServingPasswort);
 			}
 			else {
-				// Der Benutzer, für den das Passwort angelegt werden soll, existiert nicht
+				// Der Benutzer, fÃ¼r den das Passwort angelegt werden soll, existiert nicht
 				throw new ConfigurationTaskException("Unbekannter Benutzer");
 			}
 		}
 		else {
-			throw new ConfigurationTaskException("Benutzer verfügt nicht über die benötigten Rechte");
+			throw new ConfigurationTaskException("Benutzer verfÃ¼gt nicht Ã¼ber die benÃ¶tigten Rechte");
 		}
 	}
 
 	/**
-	 * Prüft, ob das Verfahren, das zum ver/entschlüsseln benutzt wurde, zugelassen ist. Ist das Verfahren nicht zugelassen oder es kann nicht zugeordnet werden,
+	 * PrÃ¼ft, ob das Verfahren, das zum ver/entschlÃ¼sseln benutzt wurde, zugelassen ist. Ist das Verfahren nicht zugelassen oder es kann nicht zugeordnet werden,
 	 * wird eine ConfigurationTaskException geworfen.
 	 *
 	 * @param usedEncryptDecryptProcedure Benutztes Verfahren als String
@@ -593,23 +610,23 @@ public class ConfigAuthentication implements Authentication {
 		// Es wird eine IllegalArgumException geworfen, wenn das Verfahren unbekannt ist
 		final EncryptDecryptProcedure usedProcedure = EncryptDecryptProcedure.valueOf(usedEncryptDecryptProcedure);
 
-		// Sollen weitere Verschlüsslungsverfahren benutzt werden, muss die Factory erweitert werden und die If-Abfrage um
+		// Sollen weitere VerschlÃ¼sslungsverfahren benutzt werden, muss die Factory erweitert werden und die If-Abfrage um
 		// die entsprechenden zugelassenen Verfahren erweitert werden
 		if((usedProcedure != EncryptDecryptProcedure.HmacMD5) && (usedProcedure != EncryptDecryptProcedure.PBEWithMD5AndDES)) {
-			// Das gewählte Verschlüssungsverfahren wird nicht unterstützt
-			throw new ConfigurationTaskException("Das Verfahren wird nicht unterstützt: " + usedEncryptDecryptProcedure);
+			// Das gewÃ¤hlte VerschlÃ¼ssungsverfahren wird nicht unterstÃ¼tzt
+			throw new ConfigurationTaskException("Das Verfahren wird nicht unterstÃ¼tzt: " + usedEncryptDecryptProcedure);
 		}
 
 		return usedProcedure;
 	}
 
 	/**
-	 * Prüft ob der Benutzer Admin-Rechte besitzt.
+	 * PrÃ¼ft ob der Benutzer Admin-Rechte besitzt.
 	 *
-	 * @param username Benutzername, der geprüft werden soll ob Admin-Rechte vorhanden sind
+	 * @param username Benutzername, der geprÃ¼ft werden soll ob Admin-Rechte vorhanden sind
 	 *
-	 * @return true = Der Benutzer darf die Eigenschaften anderer Benutzer ändern und Einmal-Passwörter anlegen; false = Der Benutzer darf nur sein eigenes
-	 *         Passwort ändern
+	 * @return true = Der Benutzer darf die Eigenschaften anderer Benutzer Ã¤ndern und Einmal-PasswÃ¶rter anlegen; false = Der Benutzer darf nur sein eigenes
+	 *         Passwort Ã¤ndern
 	 */
 	private boolean isAdmin(String username) {
 		if(_userAccounts.containsKey(username)) {
@@ -621,15 +638,15 @@ public class ConfigAuthentication implements Authentication {
 	}
 
 	/**
-	 * Legt einen neuen Benutzer mit den übergebenen Parametern an.
+	 * Legt einen neuen Benutzer mit den Ã¼bergebenen Parametern an.
 	 *
 	 * @param username          Benutzer, der den Auftrag erteilt
 	 * @param newUserName       Name des neuen Benutzers
 	 * @param newUserPassword   Passwort des neuen Benutzers
 	 * @param admin             Rechte des neuen Benutzers (true = Adminrechte; false = normaler Benutzerrechte)
-	 * @param newUserPid        Pid, die der neue Benutzer erhalten soll. Wird ein Leerstring ("") übergeben, so bekommt der Benutzer keine expliziete Pid
+	 * @param newUserPid        Pid, die der neue Benutzer erhalten soll. Wird ein Leerstring ("") Ã¼bergeben, so bekommt der Benutzer keine expliziete Pid
 	 * @param configurationArea Pid des Konfigurationsbereichs, in dem der neue Benutzer angelegt werden soll
-	 * @param data              Konfigurierende Datensätze, die angelegt werden sollen (falls leere Liste oder <code>null</code> werden keine Daten angelegt)
+	 * @param data              Konfigurierende DatensÃ¤tze, die angelegt werden sollen (falls leere Liste oder <code>null</code> werden keine Daten angelegt)
 	 *
 	 * @throws ConfigurationTaskException Der neue Benutzer durfte nicht anglegt werden (Keine Rechte, Bentuzer bereits vorhanden)
 	 * @throws RequestException           technischer Fehler beim Zugriff auf die XML-Datei
@@ -640,21 +657,21 @@ public class ConfigAuthentication implements Authentication {
 			throws ConfigurationTaskException, RequestException {
 		if(isAdmin(username)) {
 
-			// Es werden 4 Fälle betrachtet
+			// Es werden 4 FÃ¤lle betrachtet
 			// Fall 1: Es gibt weder ein Objekt, das den Benutzer in der Konfiguration darstellt, noch einen Eintrag in der XML-Datei (Objekt erzeugen und XML-Eintrag erzeugen (Normalfall))
 			// Fall 2: Es gibt einen Eintrag in der XML-Datei aber kein Objekt das den Benutzer in der Konfiguration darstellt (Objekt erzeugen und gegebenfalls XML-Datei anpassen)
-			// Fall 3: Es gibt ein Objekt, aber keinen Eintrag in der XML-Datei (Eintrag in die XML-Datei, Objekt nicht ändern)
+			// Fall 3: Es gibt ein Objekt, aber keinen Eintrag in der XML-Datei (Eintrag in die XML-Datei, Objekt nicht Ã¤ndern)
 			// Fall 4: Es gibt ein Objekt und einen Eintrag in der XML-Datei (Fehlerfall)
 
-			// Speichert, ob es zu einem Benutzer ein gültiges Objekt gibt
+			// Speichert, ob es zu einem Benutzer ein gÃ¼ltiges Objekt gibt
 			final boolean userHasObject = userHasObject(newUserName, newUserPid);
 
 			if((!userHasObject) && (!_userAccounts.containsKey(newUserName))) {
 				try {
 					// Fall 1: Eintrag XML und Objekt erzeugen
 
-					// Es wird erst das Objekt angelegt, da es passieren kann, dass der Benutzer keine Rechte dafür besitzt.
-					// Dann würde eine Exception geworfen und es muss auch kein Eintrag in die XML-Datei gemacht werden.
+					// Es wird erst das Objekt angelegt, da es passieren kann, dass der Benutzer keine Rechte dafÃ¼r besitzt.
+					// Dann wÃ¼rde eine Exception geworfen und es muss auch kein Eintrag in die XML-Datei gemacht werden.
 					// Darf der Benutzer Objekt anlegen und es kommt beim schreiben der XML-datei zu einem Fehler, so kann
 					// die Methode erneut aufgerufen werden und es wird automatisch Fall 3 abgearbeitet.
 					createUserObject(configurationArea, newUserName, newUserPid, data);
@@ -680,13 +697,13 @@ public class ConfigAuthentication implements Authentication {
 				}
 			}
 			else {
-				// Fall 4, es ist alles vorhanden. Ein bestehender Benutzer soll überschrieben werden. Das ist ein
+				// Fall 4, es ist alles vorhanden. Ein bestehender Benutzer soll Ã¼berschrieben werden. Das ist ein
 				// Fehler.
 				throw new ConfigurationTaskException("Der Benutzername ist bereits vergeben");
 			}
 		}
 		else {
-			throw new ConfigurationTaskException("Der Benutzer hat nicht die nötigen Rechte");
+			throw new ConfigurationTaskException("Der Benutzer hat nicht die nÃ¶tigen Rechte");
 		}
 	}
 
@@ -696,7 +713,7 @@ public class ConfigAuthentication implements Authentication {
 	 * @param pidConfigurationArea Pid des Konfiguratinsbereichs, in dem der neue Benutzer angelegt werden soll
 	 * @param username             Name des Objekts
 	 * @param pid                  Pid des Objekts
-	 * @param data                 Konfigurierende Datensätze, die angelegt werden sollen, oder <code>null</code> falls keine angelgt werden sollen
+	 * @param data                 Konfigurierende DatensÃ¤tze, die angelegt werden sollen, oder <code>null</code> falls keine angelgt werden sollen
 	 *
 	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException Fehler beim Erzeugen des neuen Benutzers
 	 */
@@ -731,7 +748,7 @@ public class ConfigAuthentication implements Authentication {
 	 * @throws TransformerException
 	 */
 	private void createUserXML(String newUserName, String newUserPassword, boolean admin) throws FileNotFoundException, TransformerException {
-		// Für XML-Datei
+		// FÃ¼r XML-Datei
 		final String newUserRightsString;
 		if(admin) {
 			newUserRightsString = "ja";
@@ -744,7 +761,7 @@ public class ConfigAuthentication implements Authentication {
 		final UserAccount newUser = new UserAccount(newUserName, newUserPassword, admin, new ArrayList<SingleServingPassword>(), xmlObject);
 
 		synchronized(_xmlDocument) {
-			// Das neue Objekt in die Liste der bestehenden einfügen
+			// Das neue Objekt in die Liste der bestehenden einfÃ¼gen
 			_xmlDocument.getDocumentElement().appendChild(xmlObject);
 		}
 
@@ -754,24 +771,24 @@ public class ConfigAuthentication implements Authentication {
 	}
 
 	/**
-	 * Prüft, ob es zu der Kombination Benutzername und Pid ein gültiges Objekt gibt. Ein gültiges Objekt bedeutet, dass Pid und Benutzername übereinstimmen.
+	 * PrÃ¼ft, ob es zu der Kombination Benutzername und Pid ein gÃ¼ltiges Objekt gibt. Ein gÃ¼ltiges Objekt bedeutet, dass Pid und Benutzername Ã¼bereinstimmen.
 	 *
 	 * @param username Benutzername
 	 * @param pid      Pid des Benutzers
 	 *
-	 * @return true = Es gibt ein aktuell gültiges Objekt; false = Es gibt kein aktuell gültiges Objekt
+	 * @return true = Es gibt ein aktuell gÃ¼ltiges Objekt; false = Es gibt kein aktuell gÃ¼ltiges Objekt
 	 *
-	 * @throws IllegalStateException Es gibt ein Objekt mit der angegebenen Pid, aber der Name des Objekts ist anders, als der übergebene Name
+	 * @throws IllegalStateException Es gibt ein Objekt mit der angegebenen Pid, aber der Name des Objekts ist anders, als der Ã¼bergebene Name
 	 */
 	private boolean userHasObject(final String username, final String pid) {
 
 		if(!"".equals(pid)) {
-			// Es wurde eine Pid übergeben, gibt es zu der Pid ein Objekt
+			// Es wurde eine Pid Ã¼bergeben, gibt es zu der Pid ein Objekt
 			final SystemObject user = _dataModel.getObject(pid);
 			if(user != null) {
 				// Es gibt ein Objekt zur angegebenen Pid
 				if((username.equals(user.getName()))) {
-					// Pid und Benutzername stimmen mit dem gefundenen Objekt überein. Das Objekt wurde gefunden
+					// Pid und Benutzername stimmen mit dem gefundenen Objekt Ã¼berein. Das Objekt wurde gefunden
 					return true;
 				}
 				else {
@@ -785,7 +802,7 @@ public class ConfigAuthentication implements Authentication {
 			}
 		}
 		else {
-			// Es wurde keine Pid angegeben, es müssen alle Benutzer betrachtet werden
+			// Es wurde keine Pid angegeben, es mÃ¼ssen alle Benutzer betrachtet werden
 			Iterator i = _dataModel.getType("typ.benutzer").getObjects().iterator();
 			while(i.hasNext()) {
 				// Objekt, das in der Konfiguration gespeichert ist und einen Benutzer darstellt
@@ -793,13 +810,13 @@ public class ConfigAuthentication implements Authentication {
 				if(configUser.getName().equals(username)) {
 					return true;
 				}
-			} // while über alle Benutzer
+			} // while Ã¼ber alle Benutzer
 			return false;
 		}
 	}
 
 	/**
-	 * Ließt aus einem Byte-Array die ersten 4 Bytes aus und erzeugt daraus die benutztes Serializerversion
+	 * LieÃŸt aus einem Byte-Array die ersten 4 Bytes aus und erzeugt daraus die benutztes Serializerversion
 	 *
 	 * @param message Nachricht, die ersten 4 Bytes werden ausgelesen
 	 *
@@ -810,7 +827,7 @@ public class ConfigAuthentication implements Authentication {
 	}
 
 	/**
-	 * Entfernt die ersten 4 Bytes eines Byte-Arrays und gibt ein neues Array zurück, bei dem genau die ersten 4 Bytes fehlen.
+	 * Entfernt die ersten 4 Bytes eines Byte-Arrays und gibt ein neues Array zurÃ¼ck, bei dem genau die ersten 4 Bytes fehlen.
 	 *
 	 * @param byteArray Array, aus dem die ersten 4 Bytes entfernt werden
 	 *
@@ -824,21 +841,21 @@ public class ConfigAuthentication implements Authentication {
 
 	/**
 	 * Setzt bei einem Benutzer das Passwort neu. Dies kann entweder ein Admin bei einem anderen Benutzerkonto oder ein Benutzer bei seinem eigenen Benutzerkonto.
-	 * <p/>
-	 * Ist für einen Benutzer nur das Objekt des Benutzers in der Konfiguration vorhanden, aber das Benutzerkonto fehlt, wird das Benutzerkonto mit {@link
+	 * <p>
+	 * Ist fÃ¼r einen Benutzer nur das Objekt des Benutzers in der Konfiguration vorhanden, aber das Benutzerkonto fehlt, wird das Benutzerkonto mit {@link
 	 * #createNewUser} angelegt. Das neue Benutzerkonto besitzt dabei keine Adminrechte. Das neue Benutzerkonto wird dabei das Passwort erhalten, das neu gesetzt
 	 * werden sollte.
-	 * <p/>
+	 * <p>
 	 * Gibt es zwar ein Benutzerkonto, aber kein Objekt in der Konfiguration, wird ein Fehler ausgegeben.
-	 * <p/>
+	 * <p>
 	 * Sind weder Objekt noch Benutzerkonto vorhanden wird ein Fehler ausgegeben.
 	 *
-	 * @param username                  Benutzer, der den Auftrag zum ändern des Passworts erteilt hat
-	 * @param userNameForPasswordChange Benutzer, dessen Passwort geändert werden soll
+	 * @param username                  Benutzer, der den Auftrag zum Ã¤ndern des Passworts erteilt hat
+	 * @param userNameForPasswordChange Benutzer, dessen Passwort geÃ¤ndert werden soll
 	 * @param newPassword               neues Passwort
 	 *
 	 * @throws ConfigurationTaskException Der Benutzer ist unbekannt oder es gibt zu dem Benutzer kein entsprechendes Objekt oder der Benutzer darf das Passwort
-	 *                                    nicht ändern (kein Admin oder der Besitzer des Passwords).
+	 *                                    nicht Ã¤ndern (kein Admin oder der Besitzer des Passwords).
 	 * @throws RequestException           Fehler beim Zugriff auf die XML-Datei
 	 */
 	private void changeUserPassword(String username, String userNameForPasswordChange, String newPassword) throws ConfigurationTaskException, RequestException {
@@ -848,25 +865,25 @@ public class ConfigAuthentication implements Authentication {
 
 		synchronized(_userAccounts) {
 			if(hasUserObject && _userAccounts.containsKey(userNameForPasswordChange)) {
-				// Das Objekt ist vorhanden und es gibt Benutzerdaten zu dem Benutzer, der geändert werden soll (Das ist der Normalfall)
+				// Das Objekt ist vorhanden und es gibt Benutzerdaten zu dem Benutzer, der geÃ¤ndert werden soll (Das ist der Normalfall)
 
-				// Der Benutzername steht zur Verfügung, nun kann geprüft werden wer versucht das Passwort zu ändern.
+				// Der Benutzername steht zur VerfÃ¼gung, nun kann geprÃ¼ft werden wer versucht das Passwort zu Ã¤ndern.
 				// Ist es ein Admin
 				// oder
-				// versucht der Besitzer des Accounts das Passwort zu ändern
+				// versucht der Besitzer des Accounts das Passwort zu Ã¤ndern
 
 				if(((isAdmin(username)) || (username.equals(userNameForPasswordChange)))) {
 					try {
 						_userAccounts.get(userNameForPasswordChange).setPassword(newPassword);
 					}
 					catch(Exception e) {
-						_debug.error("Passwort ändern", e);
+						_debug.error("Passwort Ã¤ndern", e);
 						throw new RequestException(e);
 					}
 				}
 				else {
-					// Der Benutzer hat nicht das Recht das Passwort zu ändern
-					throw new ConfigurationTaskException("Passwortänderung verworfen");
+					// Der Benutzer hat nicht das Recht das Passwort zu Ã¤ndern
+					throw new ConfigurationTaskException("PasswortÃ¤nderung verworfen");
 				}
 			}
 			else if(hasUserObject && (!_userAccounts.containsKey(userNameForPasswordChange))) {
@@ -878,13 +895,13 @@ public class ConfigAuthentication implements Authentication {
 						createUserXML(userNameForPasswordChange, newPassword, false);
 					}
 					catch(Exception e) {
-						_debug.error("Passwort ändern", e);
+						_debug.error("Passwort Ã¤ndern", e);
 						throw new RequestException(e);
 					}
 				}
 				else {
 					// Der Benutzer hat nicht das Recht neue Benutzerkonten zu erzeugen
-					throw new ConfigurationTaskException("Passwortänderung verworfen, da benötigte Rechte fehlen");
+					throw new ConfigurationTaskException("PasswortÃ¤nderung verworfen, da benÃ¶tigte Rechte fehlen");
 				}
 			}
 			else {
@@ -903,22 +920,22 @@ public class ConfigAuthentication implements Authentication {
 
 	/**
 	 * @param username             Benutzer, der den Auftrag erteilt hat (dieser muss Adminrechte besitzen)
-	 * @param usernameChangeRights Benutzer, dessen Rechte geändert werden soll
+	 * @param usernameChangeRights Benutzer, dessen Rechte geÃ¤ndert werden soll
 	 * @param newUserRights        Neue Rechte des Benutzers (true = Admin-Rechte, false = normaler Benutzerrechte
 	 *
-	 * @throws ConfigurationTaskException Der Benutzer ist unbekannt oder der Auftraggeber besitzt nicht die nötigen Rechte
+	 * @throws ConfigurationTaskException Der Benutzer ist unbekannt oder der Auftraggeber besitzt nicht die nÃ¶tigen Rechte
 	 * @throws RequestException           Fehler beim Zugriff auf die XML-Datei
 	 */
 	private void changeUserRights(String username, String usernameChangeRights, boolean newUserRights) throws ConfigurationTaskException, RequestException {
 		if(isAdmin(username)) {
-			// Admin versucht die Rechte zu ändern
+			// Admin versucht die Rechte zu Ã¤ndern
 			if(_userAccounts.containsKey(usernameChangeRights)) {
 				// Der Benutzer existiert
 				try {
 					_userAccounts.get(usernameChangeRights).setAdminRights(newUserRights);
 				}
 				catch(Exception e) {
-					_debug.error("Benutzerrechte ändern", e);
+					_debug.error("Benutzerrechte Ã¤ndern", e);
 					throw new RequestException(e);
 				}
 			}
@@ -927,21 +944,21 @@ public class ConfigAuthentication implements Authentication {
 			}
 		}
 		else {
-			// Der Benutzer besitzt nicht die nötigen Rechte
-			throw new ConfigurationTaskException("Der Benutzer besitzt nicht die nötgen Rechte");
+			// Der Benutzer besitzt nicht die nÃ¶tigen Rechte
+			throw new ConfigurationTaskException("Der Benutzer besitzt nicht die nÃ¶tgen Rechte");
 		}
 	}
 
 	/**
-	 * Erzeugt einen Desirialisierer auf den mit den üblichen Methoden zugegriffen werden kann. Dafür wird der übergebene, verschlüsselte Text entschlüsselt.
+	 * Erzeugt einen Desirialisierer auf den mit den Ã¼blichen Methoden zugegriffen werden kann. DafÃ¼r wird der Ã¼bergebene, verschlÃ¼sselte Text entschlÃ¼sselt.
 	 *
-	 * @param encryptedMessage            Verschlüsselte Nachricht, diese wird entschlüsselt
-	 * @param decryptenText               Text, mit dem die verschlüsselte Nachricht entschlüsselt wird
-	 * @param authentificationProcessName Verfahren, mit dem die Nachricht verschlüsselt wurde
+	 * @param encryptedMessage            VerschlÃ¼sselte Nachricht, diese wird entschlÃ¼sselt
+	 * @param decryptenText               Text, mit dem die verschlÃ¼sselte Nachricht entschlÃ¼sselt wird
+	 * @param authentificationProcessName Verfahren, mit dem die Nachricht verschlÃ¼sselt wurde
 	 *
 	 * @return Deserialisierer
 	 *
-	 * @throws Exception Fehler beim entschlüsseln oder beim erstellen des Desirialisierers
+	 * @throws Exception Fehler beim entschlÃ¼sseln oder beim erstellen des Desirialisierers
 	 */
 	private final Deserializer getDeserializer(byte[] encryptedMessage, String decryptenText, String authentificationProcessName) throws Exception {
 		final byte[] decryptedMessage = DecryptFactory.getDecryptInstance(isEncryptDecryptProcedureAllowed(authentificationProcessName)).decrypt(
@@ -957,11 +974,11 @@ public class ConfigAuthentication implements Authentication {
 	}
 
 	/**
-	 * Löscht einen angegebenen Benutzer. Diese Aktion kann nur von Administratoren ausgeführt werden.
+	 * LÃ¶scht einen angegebenen Benutzer. Diese Aktion kann nur von Administratoren ausgefÃ¼hrt werden.
 	 * @param username Veranlasser der Aktion
-	 * @param userToDelete Benutzername des Benutzers, der gelöscht werden soll
-	 * @throws RequestException Das Löschen kann aufgrund eines Problems nicht durchgeführt werden
-	 * @throws ConfigurationTaskException Die Anfrage ist fehlerhaft weil der Veranlasser nicht die nötigen Rechte hat oder der zu löschende Benutzer nicht existiert
+	 * @param userToDelete Benutzername des Benutzers, der gelÃ¶scht werden soll
+	 * @throws RequestException Das LÃ¶schen kann aufgrund eines Problems nicht durchgefÃ¼hrt werden
+	 * @throws ConfigurationTaskException Die Anfrage ist fehlerhaft weil der Veranlasser nicht die nÃ¶tigen Rechte hat oder der zu lÃ¶schende Benutzer nicht existiert
 	 */
 	private void deleteUser(String username, String userToDelete) throws  RequestException , ConfigurationTaskException{
 		if(isAdmin(username)) {
@@ -973,7 +990,7 @@ public class ConfigAuthentication implements Authentication {
 					deleteUserXML(userToDelete);
 				}
 				catch(Exception e) {
-					_debug.error("Benutzer löschen, XML und Objekt", e);
+					_debug.error("Benutzer lÃ¶schen, XML und Objekt", e);
 					throw new RequestException(e);
 				}
 			}
@@ -987,7 +1004,7 @@ public class ConfigAuthentication implements Authentication {
 					deleteUserXML(userToDelete);
 				}
 				catch(Exception e) {
-					_debug.error("Benutzer löschen, XML", e);
+					_debug.error("Benutzer lÃ¶schen, XML", e);
 					throw new RequestException(e);
 				}
 			}
@@ -996,13 +1013,13 @@ public class ConfigAuthentication implements Authentication {
 			}
 		}
 		else {
-			throw new ConfigurationTaskException("Der Benutzer hat nicht die nötigen Rechte");
+			throw new ConfigurationTaskException("Der Benutzer hat nicht die nÃ¶tigen Rechte");
 		}
 	}
 
 	/**
-	 * Löscht einen Benutzer aus der XML-Datei
-	 * @param userToDelete Benutzer, der gelöscht werden soll
+	 * LÃ¶scht einen Benutzer aus der XML-Datei
+	 * @param userToDelete Benutzer, der gelÃ¶scht werden soll
 	 * @throws TransformerException Fehler beim XML-Zugriff
 	 * @throws FileNotFoundException XMl-Datei nciht gefunden
 	 */
@@ -1023,7 +1040,7 @@ public class ConfigAuthentication implements Authentication {
 					}
 				}
 			}
-			_debug.error("deleteUserXML: Konnte Benutzer nicht aus XML-Datei löschen. Knoten wurde nicht gefunden.", userToDelete);
+			_debug.error("deleteUserXML: Konnte Benutzer nicht aus XML-Datei lÃ¶schen. Knoten wurde nicht gefunden.", userToDelete);
 		}
 		finally
 		{
@@ -1033,8 +1050,8 @@ public class ConfigAuthentication implements Authentication {
 
 	/**
 	 * Entfernt das dynamische Benutzerobjekt aus dem Datenmodell
-	 * @param userToDelete Benutzer, der gelöscht werden soll
-	 * @throws ConfigurationChangeException Fehler beim durchführen der Aktion
+	 * @param userToDelete Benutzer, der gelÃ¶scht werden soll
+	 * @throws ConfigurationChangeException Fehler beim durchfÃ¼hren der Aktion
 	 */
 	private void deleteUserObject(final String userToDelete) throws ConfigurationChangeException {
 		Iterator i = _dataModel.getType("typ.benutzer").getObjects().iterator();
@@ -1058,7 +1075,7 @@ public class ConfigAuthentication implements Authentication {
 
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
-		transformer.setOutputProperty(OutputKeys.ENCODING, "ISO-8859-1"); // ISO-Kodierung für westeuropäische Sprachen
+		transformer.setOutputProperty(OutputKeys.ENCODING, "ISO-8859-1"); // ISO-Kodierung fÃ¼r westeuropÃ¤ische Sprachen
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 		transformer.setOutputProperty(OutputKeys.STANDALONE, "no");	   // DTD ist in einer separaten Datei
 
@@ -1162,7 +1179,7 @@ public class ConfigAuthentication implements Authentication {
 	}
 
 	/**
-	 * Erzeugt ein XML Objekt, das einem Benutzerkonto entspricht. Einmal-Passwörter müssen mit der entsprechenden Methode erzeugt werden.
+	 * Erzeugt ein XML Objekt, das einem Benutzerkonto entspricht. Einmal-PasswÃ¶rter mÃ¼ssen mit der entsprechenden Methode erzeugt werden.
 	 *
 	 * @param name     Name des Benutzers
 	 * @param password Passwort des Benutzers (in Klarschrift)
@@ -1181,19 +1198,19 @@ public class ConfigAuthentication implements Authentication {
 	}
 
 	/**
-	 * Diese Klasse Speichert alle Informationen, die zu Benutzerkonto gehören. Dies beinhaltet:
-	 * <p/>
+	 * Diese Klasse Speichert alle Informationen, die zu Benutzerkonto gehÃ¶ren. Dies beinhaltet:
+	 * <p>
 	 * Benutzername
-	 * <p/>
+	 * <p>
 	 * Benutzerpasswort
-	 * <p/>
+	 * <p>
 	 * Adminrechte
-	 * <p/>
-	 * Liste von Einmal-Passwörtern (siehe TPuK1-130)
-	 * <p/>
-	 * Sollen Änderungen an einem dieser Informationen vorgenommen werden, führt dies erst dazu, dass die Daten persistent in einer XML-Datei gespeichert werden.
-	 * Ist dies erfolgreich, wird die Änderung auch an den Objekten durchgeführt. Kann die Änderungen nicht gespeichert werden, wird ein entsprechender Fehler
-	 * ausgegeben und die Änderung nicht durchgeführt
+	 * <p>
+	 * Liste von Einmal-PasswÃ¶rtern (siehe TPuK1-130)
+	 * <p>
+	 * Sollen Ã„nderungen an einem dieser Informationen vorgenommen werden, fÃ¼hrt dies erst dazu, dass die Daten persistent in einer XML-Datei gespeichert werden.
+	 * Ist dies erfolgreich, wird die Ã„nderung auch an den Objekten durchgefÃ¼hrt. Kann die Ã„nderungen nicht gespeichert werden, wird ein entsprechender Fehler
+	 * ausgegeben und die Ã„nderung nicht durchgefÃ¼hrt
 	 */
 	private final class UserAccount {
 
@@ -1207,28 +1224,28 @@ public class ConfigAuthentication implements Authentication {
 		private boolean _admin;
 
 		/**
-		 * Liste, die alle benutzbaren Einmalpasswörter enthält. An Index 0 steht immer das als nächstes zu benutzende Passwort. Am Ende der Liste wird jedes neue
-		 * Passwort eingefügt. Wird ein Passwort benutzt, wird das Passwort vom Anfang der Liste entfernt (FIFO).
+		 * Liste, die alle benutzbaren EinmalpasswÃ¶rter enthÃ¤lt. An Index 0 steht immer das als nÃ¤chstes zu benutzende Passwort. Am Ende der Liste wird jedes neue
+		 * Passwort eingefÃ¼gt. Wird ein Passwort benutzt, wird das Passwort vom Anfang der Liste entfernt (FIFO).
 		 */
 		private final LinkedList<SingleServingPassword> _usableSingleServingPasswords = new LinkedList<SingleServingPassword>();
 
 		/**
-		 * Speichert alle Passwörter der Einmal-Passwörter (Als Schlüssel dient das Passwort in Klarschrift). Soll ein neues Einmal-Passwort erzeugt werden, und das
+		 * Speichert alle PasswÃ¶rter der Einmal-PasswÃ¶rter (Als SchlÃ¼ssel dient das Passwort in Klarschrift). Soll ein neues Einmal-Passwort erzeugt werden, und das
 		 * Passwort befindet sich bereits in dieser Menge, dann darf das neue Einmal-Passwort nicht angelegt werden.
 		 */
 		private final Set<String> _allSingleServingPasswords = new HashSet<String>();
 
 		/**
-		 * Speichert den größten Index, der bisher für ein Einmal-Passwort benutzt wurde. Das nächste Einmal-Passwort hätte als Index
+		 * Speichert den grÃ¶ÃŸten Index, der bisher fÃ¼r ein Einmal-Passwort benutzt wurde. Das nÃ¤chste Einmal-Passwort hÃ¤tte als Index
 		 * "_greatestSingleServingPasswordIndex++".
-		 * <p/>
-		 * Wird mit -1 initialisiert. Das erste Passwort erhält also Index 0.
-		 * <p/>
-		 * Der Wert wird im Konstruktor, falls Einmal-Passwörter vorhanden sind, auf den größten vergebenen Index gesetzt.
+		 * <p>
+		 * Wird mit -1 initialisiert. Das erste Passwort erhÃ¤lt also Index 0.
+		 * <p>
+		 * Der Wert wird im Konstruktor, falls Einmal-PasswÃ¶rter vorhanden sind, auf den grÃ¶ÃŸten vergebenen Index gesetzt.
 		 */
 		private int _greatestSingleServingPasswordIndex = -1;
 
-		/** XML-Objekt, dieses muss zuerst verändert und gespeichert werden, bevor die Objekte im Speicher geändert werden */
+		/** XML-Objekt, dieses muss zuerst verÃ¤ndert und gespeichert werden, bevor die Objekte im Speicher geÃ¤ndert werden */
 		private final Element _xmlObject;
 
 		private static final int NO_RESULT = -1;
@@ -1237,7 +1254,7 @@ public class ConfigAuthentication implements Authentication {
 		 * @param username                  Benutzername
 		 * @param xmlPassword               Passwort, wie es in der XML-Datei gespeichert wurde
 		 * @param admin                     Ob der Benutzer Admin_Rechte hat
-		 * @param allSingleServingPasswords Alle Einmal-Passwörter
+		 * @param allSingleServingPasswords Alle Einmal-PasswÃ¶rter
 		 * @param xmlObject                 XML-Objekt, aus dem die obigen Daten ausgelesen wurden
 		 */
 		public UserAccount(String username, String xmlPassword, boolean admin, List<SingleServingPassword> allSingleServingPasswords, Element xmlObject) {
@@ -1271,7 +1288,7 @@ public class ConfigAuthentication implements Authentication {
 		}
 
 		/**
-		 * Unverschlüsseltes Passwort des Benutzers
+		 * UnverschlÃ¼sseltes Passwort des Benutzers
 		 *
 		 * @return s.o.
 		 */
@@ -1280,7 +1297,7 @@ public class ConfigAuthentication implements Authentication {
 		}
 
 		/**
-		 * Ändert das Passwort und speichert das neue Passwort in einer XML-Datei
+		 * Ã„ndert das Passwort und speichert das neue Passwort in einer XML-Datei
 		 *
 		 * @param password Neues Passwort
 		 */
@@ -1288,17 +1305,17 @@ public class ConfigAuthentication implements Authentication {
 			_xmlObject.setAttribute("passwort", password);
 			saveXMLFile();
 
-			// Erst nach dem das neue Passwort gespeichert wurde, wird die Änderung im Speicher übernommen
+			// Erst nach dem das neue Passwort gespeichert wurde, wird die Ã„nderung im Speicher Ã¼bernommen
 			_password = password;
 		}
 
-		/** @return true = Der Benutzer darf die Eigenschaften anderer Benutzer ändern; false = Der Benutzer darf nur sein Passwort ändern */
+		/** @return true = Der Benutzer darf die Eigenschaften anderer Benutzer Ã¤ndern; false = Der Benutzer darf nur sein Passwort Ã¤ndern */
 		public boolean isAdmin() {
 			return _admin;
 		}
 
 		/**
-		 * Legt fest, ob ein Benutzer Admin-Rechte besitzt. Die Änderung wird sofort in der XML-Datei gespeichert.
+		 * Legt fest, ob ein Benutzer Admin-Rechte besitzt. Die Ã„nderung wird sofort in der XML-Datei gespeichert.
 		 *
 		 * @param adminRights true = Der Benutzer besitzt Admin Rechte; false = Der Benutzer besitzt keine Admin-Rechte
 		 */
@@ -1327,7 +1344,7 @@ public class ConfigAuthentication implements Authentication {
 			if(!_allSingleServingPasswords.contains(newPassword)) {
 				// Das Passwort wurde noch nicht vergeben.
 
-				// An das XML-Objekt ein neues Element hängen
+				// An das XML-Objekt ein neues Element hÃ¤ngen
 				final Element xmlSingleServingPassword = createXMLSingleServingPasswort(newPassword, ((_greatestSingleServingPasswordIndex + 1)), "ja");
 				_xmlObject.appendChild(xmlSingleServingPassword);
 
@@ -1335,7 +1352,7 @@ public class ConfigAuthentication implements Authentication {
 				try {
 					saveXMLFile();
 
-					// Das Speichern hat geklappt, nun alle Objekte im Speicher ändern
+					// Das Speichern hat geklappt, nun alle Objekte im Speicher Ã¤ndern
 
 					// Jetzt wird es gesperrt, damit es nicht noch einmal vergeben
 					// werden kann.
@@ -1360,15 +1377,15 @@ public class ConfigAuthentication implements Authentication {
 		}
 
 		/**
-		 * Versucht ein Einmal-Passwort zu benutzen. Ist dies möglich, wird das Einmal-Passwort als gebraucht markiert. Wurde eine falsches Passwort übergeben,
+		 * Versucht ein Einmal-Passwort zu benutzen. Ist dies mÃ¶glich, wird das Einmal-Passwort als gebraucht markiert. Wurde eine falsches Passwort Ã¼bergeben,
 		 * so wird eine Exception geworfen.
 		 *
 		 * @param encryptedPassword           Einmal-Passwort, das vom Benutzer eingegeben wurde
-		 * @param authentificationText        Text mit dem das Einmal-Passwort verschlüsselt wurde
-		 * @param authentificationProcessName Name des benutzten Verschlüsslungsverfahrens
+		 * @param authentificationText        Text mit dem das Einmal-Passwort verschlÃ¼sselt wurde
+		 * @param authentificationProcessName Name des benutzten VerschlÃ¼sslungsverfahrens
 		 *
 		 * @throws IllegalArgumentException     Falsches Einmal-Passwort
-		 * @throws NoSuchAlgorithmException     Unbekantes Verschlüsslungsverfahren
+		 * @throws NoSuchAlgorithmException     Unbekantes VerschlÃ¼sslungsverfahren
 		 * @throws UnsupportedEncodingException
 		 * @throws InvalidKeyException
 		 * @throws FileNotFoundException
@@ -1382,7 +1399,7 @@ public class ConfigAuthentication implements Authentication {
 				mac.init(secretKey);
 
 				if(Arrays.equals(encryptedPassword, mac.doFinal(authentificationText.getBytes("ISO-8859-1")))) {
-					// Das Passwort ist gültig. Also das Passwort sperren
+					// Das Passwort ist gÃ¼ltig. Also das Passwort sperren
 					singleServingPassword.setPasswortInvalid();
 					// Speichern war erfolgreich, also kann das Passwort entfernt werden
 					_usableSingleServingPasswords.remove(singleServingPassword);
@@ -1394,7 +1411,7 @@ public class ConfigAuthentication implements Authentication {
 		}
 
 		/**
-		 * Löscht alle Einmalpasswörter eines Benutzers und markiert diese als ungültig
+		 * LÃ¶scht alle EinmalpasswÃ¶rter eines Benutzers und markiert diese als ungÃ¼ltig
 		 * @throws TransformerException
 		 * @throws FileNotFoundException
 		 */
@@ -1406,8 +1423,8 @@ public class ConfigAuthentication implements Authentication {
 		}
 
 		/**
-		 * Gibt die Anzahl der verbleidenden, gültigen Einmalpasswörter zurück
-		 * @return die Anzahl der verbleidenden, gültigen Einmalpasswörter
+		 * Gibt die Anzahl der verbleidenden, gÃ¼ltigen EinmalpasswÃ¶rter zurÃ¼ck
+		 * @return die Anzahl der verbleidenden, gÃ¼ltigen EinmalpasswÃ¶rter
 		 */
 		public int countSingleServingPasswords() {
 			return _usableSingleServingPasswords.size();
@@ -1470,7 +1487,7 @@ public class ConfigAuthentication implements Authentication {
 			return _passwordUsable;
 		}
 
-		/** Setzt ein Einmal-Passwort auf ungültig und speichert diese Information in der XML-Datei (erst speichern, dann Objekte im Speicher ändern) */
+		/** Setzt ein Einmal-Passwort auf ungÃ¼ltig und speichert diese Information in der XML-Datei (erst speichern, dann Objekte im Speicher Ã¤ndern) */
 		synchronized public void setPasswortInvalid() throws FileNotFoundException, TransformerException {
 			_xmlObject.setAttribute("gueltig", "nein");
 			saveXMLFile();
@@ -1485,15 +1502,15 @@ public class ConfigAuthentication implements Authentication {
 	private class ConfigAuthenticationEntityResolver implements EntityResolver {
 
 		/**
-		 * Löst Referenzen auf external entities wie z.B. DTD-Dateien auf.
-		 * <p/>
+		 * LÃ¶st Referenzen auf external entities wie z.B. DTD-Dateien auf.
+		 * <p>
 		 * Angegebene Dateien werden, falls sie im Suchverzeichnis gefunden werden, von dort geladen. Ansonsten wird der normale Mechanismus zum Laden von externen
 		 * Entities benutzt.
 		 *
-		 * @param publicId Der public identifier der externen Entity oder null falls dieser nicht verfügbar ist.
+		 * @param publicId Der public identifier der externen Entity oder null falls dieser nicht verfÃ¼gbar ist.
 		 * @param systemId Der system identifier aus dem XML-Dokument.
 		 *
-		 * @return Für Referenzen im Suchverzeichnis wird ein InputSource-Objekt, das mit der entsprechenden Datei im Suchverzeichnis verbunden ist, zurückgegeben.
+		 * @return FÃ¼r Referenzen im Suchverzeichnis wird ein InputSource-Objekt, das mit der entsprechenden Datei im Suchverzeichnis verbunden ist, zurÃ¼ckgegeben.
 		 *
 		 * @throws org.xml.sax.SAXException Bei Fehlern beim Zugriff auf externe Entities.
 		 * @throws java.io.IOException

@@ -2,13 +2,13 @@
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -17,8 +17,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.preselection.lists;
@@ -41,12 +47,12 @@ import java.util.*;
 
 /**
  * Die Klasse <code>PreselectionLists</code> ist ein Teil der Datenidentifikationsauswahl. Sie stellt die konkreten Auswahloptionen anhand von Listen zur
- * Verfügung. Folgende Listen helfen dem Anwender dabei: Objekttyp, Attributgruppe, Aspekt und Objekt. Außerdem kann die Simulationsvariante angegeben werden.
- * <p/>
- * Der Konstruktor <code>PreselectionLists</code> erstellt das Panel und mit der Methode <code>setObjects</code> werden die Listen gefüllt.
+ * VerfÃ¼gung. Folgende Listen helfen dem Anwender dabei: Objekttyp, Attributgruppe, Aspekt und Objekt. AuÃŸerdem kann die Simulationsvariante angegeben werden.
+ * <p>
+ * Der Konstruktor <code>PreselectionLists</code> erstellt das Panel und mit der Methode <code>setObjects</code> werden die Listen gefÃ¼llt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 12610 $
+ * @version $Revision$
  * @see #PreselectionLists
  * @see #setObjects
  */
@@ -58,7 +64,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	/** Der PreselectionListsHandler verwaltet die Daten und aktualisiert die Listen. */
 	private final PreselectionListsHandler _preselectionListsHandler;
 
-	/** Diese Liste wird für den Listener benötigt. */
+	/** Diese Liste wird fÃ¼r den Listener benÃ¶tigt. */
 	private List<PreselectionListsListener> _listenerList = new LinkedList<PreselectionListsListener>();
 
 	/** speichert ein Objekt zum Filtern der anzuzeigenden Listen */
@@ -91,7 +97,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	/** speichert die Simulationsvariante */
 	private int _simulationsVariant = -1;
 
-	/** speichert den JSpinner zum Anzeigen und Ändern der Simulationsvariante */
+	/** speichert den JSpinner zum Anzeigen und Ã„ndern der Simulationsvariante */
 	private JSpinner _simulationVariantSpinner;
 
 	private JSplitPane _divideLists;
@@ -116,7 +122,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	}
 
 	/**
-	 * Mit dieser Methode werden zur Initialisierung Objekte (z.B. vom {@link de.bsvrz.pat.sysbed.preselection.tree.PreselectionTree} übergeben. Aus diesen Werten
+	 * Mit dieser Methode werden zur Initialisierung Objekte (z.B. vom {@link de.bsvrz.pat.sysbed.preselection.tree.PreselectionTree} Ã¼bergeben. Aus diesen Werten
 	 * werden dann die Objekttypen, Attributgruppen und Aspekte rekonstruiert und dargestellt.
 	 *
 	 * @param systemObjects die darzustellenden Systemobjekte
@@ -238,8 +244,8 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	}
 
 	/**
-	 * Die Methode wird vom Konstruktor aufgerufen und stellt konkrete Auswahloptionen für die Datenidentifikationsauswahl in Form von Auswahllisten für
-	 * Objekttypen, Attributgruppen, Aspekte und Objekte zur Verfügung.
+	 * Die Methode wird vom Konstruktor aufgerufen und stellt konkrete Auswahloptionen fÃ¼r die Datenidentifikationsauswahl in Form von Auswahllisten fÃ¼r
+	 * Objekttypen, Attributgruppen, Aspekte und Objekte zur VerfÃ¼gung.
 	 */
 	private void createAndShowGui() {
 		setPreferredSize(new Dimension(500, 350));
@@ -255,7 +261,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 //		_leftBox.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 		_leftBox.setMinimumSize(new Dimension(0, 0));
 
-		// Rechte Seite des SplitPane wird gefüllt
+		// Rechte Seite des SplitPane wird gefÃ¼llt
 		_objList = new SystemObjectSelectionList("Objekte", "Objekte");
 		_objtypList.addListSelectionListener(
 				new ListSelectionListener() {
@@ -342,14 +348,14 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 		_divideLists.setLeftComponent(_leftBox);
 		_divideLists.setRightComponent(_objList);
 
-		// fügt den SplitPane zum JPanel PreselectionLists
+		// fÃ¼gt den SplitPane zum JPanel PreselectionLists
 		setLayout(new BorderLayout());
 		add(_divideLists, BorderLayout.CENTER);
 	}
 	/**
-	 * Mit dieser Methode können Objekte angegeben werden, die beim Füllen der Listen vorselektiert sein sollen.
+	 * Mit dieser Methode kÃ¶nnen Objekte angegeben werden, die beim FÃ¼llen der Listen vorselektiert sein sollen.
 	 *
-	 * @param preselectedObjectTypes Objekte, die vorselektiert sein sollen. Wird <code>null</code> übergeben, wird die Selektion gelöscht.
+	 * @param preselectedObjectTypes Objekte, die vorselektiert sein sollen. Wird <code>null</code> Ã¼bergeben, wird die Selektion gelÃ¶scht.
 	 */
 	public void setPreselectedObjectTypes(final List<SystemObjectType> preselectedObjectTypes) {
 		SwingUtilities.invokeLater(
@@ -368,9 +374,9 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	}
 
 	/**
-	 * Mit dieser Methode können Attributgruppen angegeben werden, die beim Füllen der Listen vorselektiert sein sollen.
+	 * Mit dieser Methode kÃ¶nnen Attributgruppen angegeben werden, die beim FÃ¼llen der Listen vorselektiert sein sollen.
 	 *
-	 * @param preselectedAttributeGroups Attributgruppen, die vorselektiert sein sollen. Wird <code>null</code> übergeben, wird die Selektion gelöscht.
+	 * @param preselectedAttributeGroups Attributgruppen, die vorselektiert sein sollen. Wird <code>null</code> Ã¼bergeben, wird die Selektion gelÃ¶scht.
 	 */
 	public void setPreselectedAttributeGroups(final List<AttributeGroup> preselectedAttributeGroups) {
 		SwingUtilities.invokeLater(
@@ -389,9 +395,9 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	}
 
 	/**
-	 * Mit dieser Methode können Aspekte angegeben werden, die beim Füllen der Listen vorselektiert sein sollen.
+	 * Mit dieser Methode kÃ¶nnen Aspekte angegeben werden, die beim FÃ¼llen der Listen vorselektiert sein sollen.
 	 *
-	 * @param preselectedAspects Aspekte, die vorselektiert sein sollen. Wird <code>null</code> übergeben, wird die Selektion gelöscht.
+	 * @param preselectedAspects Aspekte, die vorselektiert sein sollen. Wird <code>null</code> Ã¼bergeben, wird die Selektion gelÃ¶scht.
 	 */
 	public void setPreselectedAspects(final List<Aspect> preselectedAspects) {
 		SwingUtilities.invokeLater(
@@ -410,9 +416,9 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	}
 
 	/**
-	 * Mit dieser Methode können Objekte angegeben werden, die beim Füllen der Listen vorselektiert sein sollen.
+	 * Mit dieser Methode kÃ¶nnen Objekte angegeben werden, die beim FÃ¼llen der Listen vorselektiert sein sollen.
 	 *
-	 * @param preselectedObjects Objekte, die vorselektiert sein sollen. Wird <code>null</code> übergeben, wird die Selektion gelöscht.
+	 * @param preselectedObjects Objekte, die vorselektiert sein sollen. Wird <code>null</code> Ã¼bergeben, wird die Selektion gelÃ¶scht.
 	 */
 	public void setPreselectedObjects(final List<SystemObject> preselectedObjects) {
 		SwingUtilities.invokeLater(
@@ -431,7 +437,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	}
 
 	/**
-	 * Selektiert die gewünschten Objekte in der übergebenen Liste, falls sie vorhanden sind.
+	 * Selektiert die gewÃ¼nschten Objekte in der Ã¼bergebenen Liste, falls sie vorhanden sind.
 	 *
 	 * @param list    die Liste, in der die Objekte selektiert sein sollen
 	 * @param objects die zu selektierenden Objekte
@@ -474,7 +480,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 					}
 					else {
 						_debug.error(
-								"Bei der Bearbeitung der darzustellenden Objekte durch ein Filter-Plugin wurde in der Ergebnisliste statt einem SystemObjekt eine Null-Referenz zurückgeliefert."
+								"Bei der Bearbeitung der darzustellenden Objekte durch ein Filter-Plugin wurde in der Ergebnisliste statt einem SystemObjekt eine Null-Referenz zurÃ¼ckgeliefert."
 						);
 						iterator.remove();
 					}
@@ -482,7 +488,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 			}
 			else {
 				_debug.error(
-						"Bei der Bearbeitung der darzustellenden Objekte durch ein Filter-Plugin wurde statt der Ergebnisliste eine Null-Referenz zurückgeliefert."
+						"Bei der Bearbeitung der darzustellenden Objekte durch ein Filter-Plugin wurde statt der Ergebnisliste eine Null-Referenz zurÃ¼ckgeliefert."
 				);
 				objectList = new LinkedList();
 			}
@@ -510,7 +516,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 					}
 					else {
 						_debug.error(
-								"Bei der Bearbeitung der darzustellenden Objekttypen durch ein Filter-Plugin wurde in der Ergebnisliste statt einem Objekttypen eine Null-Referenz zurückgeliefert."
+								"Bei der Bearbeitung der darzustellenden Objekttypen durch ein Filter-Plugin wurde in der Ergebnisliste statt einem Objekttypen eine Null-Referenz zurÃ¼ckgeliefert."
 						);
 						iterator.remove();
 					}
@@ -518,7 +524,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 			}
 			else {
 				_debug.error(
-						"Bei der Bearbeitung der darzustellenden Objekttypen durch ein Filter-Plugin wurde statt der Ergebnisliste eine Null-Referenz zurückgeliefert."
+						"Bei der Bearbeitung der darzustellenden Objekttypen durch ein Filter-Plugin wurde statt der Ergebnisliste eine Null-Referenz zurÃ¼ckgeliefert."
 				);
 				objecttypeList = new LinkedList();
 			}
@@ -546,7 +552,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 					}
 					else {
 						_debug.error(
-								"Bei der Bearbeitung der darzustellenden Attributgruppen durch ein Filter-Plugin wurde in der Ergebnisliste statt einer Attributgruppe eine Null-Referenz zurückgeliefert."
+								"Bei der Bearbeitung der darzustellenden Attributgruppen durch ein Filter-Plugin wurde in der Ergebnisliste statt einer Attributgruppe eine Null-Referenz zurÃ¼ckgeliefert."
 						);
 						iterator.remove();
 					}
@@ -554,7 +560,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 			}
 			else {
 				_debug.error(
-						"Bei der Bearbeitung der darzustellenden Attributgruppen durch ein Filter-Plugin wurde statt der Ergebnisliste eine Null-Referenz zurückgeliefert."
+						"Bei der Bearbeitung der darzustellenden Attributgruppen durch ein Filter-Plugin wurde statt der Ergebnisliste eine Null-Referenz zurÃ¼ckgeliefert."
 				);
 				atgList = new LinkedList();
 			}
@@ -582,7 +588,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 					}
 					else {
 						_debug.error(
-								"Bei der Bearbeitung der darzustellenden Aspekte durch ein Filter-Plugin wurde in der Ergebnisliste statt einem Aspekt eine Null-Referenz zurückgeliefert."
+								"Bei der Bearbeitung der darzustellenden Aspekte durch ein Filter-Plugin wurde in der Ergebnisliste statt einem Aspekt eine Null-Referenz zurÃ¼ckgeliefert."
 						);
 						iterator.remove();
 					}
@@ -590,7 +596,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 			}
 			else {
 				_debug.error(
-						"Bei der Bearbeitung der darzustellenden Aspekte durch ein Filter-Plugin wurde statt der Ergebnisliste eine Null-Referenz zurückgeliefert."
+						"Bei der Bearbeitung der darzustellenden Aspekte durch ein Filter-Plugin wurde statt der Ergebnisliste eine Null-Referenz zurÃ¼ckgeliefert."
 				);
 				aspList = new LinkedList();
 			}
@@ -600,9 +606,9 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 
 
 	/**
-	 * Legt Einfach- oder Mehrfachauswahl für die Liste Objekttyp fest.
+	 * Legt Einfach- oder Mehrfachauswahl fÃ¼r die Liste Objekttyp fest.
 	 *
-	 * @param selectionMode Als Argument kann eine der folgenden Konstanten übergeben werden:<br/> {@link ListSelectionModel#SINGLE_SELECTION} {@link
+	 * @param selectionMode Als Argument kann eine der folgenden Konstanten Ã¼bergeben werden:<br/> {@link ListSelectionModel#SINGLE_SELECTION} {@link
 	 *                      ListSelectionModel#SINGLE_INTERVAL_SELECTION} {@link ListSelectionModel#MULTIPLE_INTERVAL_SELECTION}
 	 */
 	public void setObjectTypeSelectionMode(int selectionMode) {
@@ -610,9 +616,9 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	}
 
 	/**
-	 * Legt Einfach- oder Mehrfachauswahl für die Liste Attributgruppe fest.
+	 * Legt Einfach- oder Mehrfachauswahl fÃ¼r die Liste Attributgruppe fest.
 	 *
-	 * @param selectionMode Als Argument kann eine der folgenden Konstanten übergeben werden:<br/> {@link ListSelectionModel#SINGLE_SELECTION} {@link
+	 * @param selectionMode Als Argument kann eine der folgenden Konstanten Ã¼bergeben werden:<br/> {@link ListSelectionModel#SINGLE_SELECTION} {@link
 	 *                      ListSelectionModel#SINGLE_INTERVAL_SELECTION} {@link ListSelectionModel#MULTIPLE_INTERVAL_SELECTION}
 	 */
 	public void setAtgSelectionMode(int selectionMode) {
@@ -620,9 +626,9 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	}
 
 	/**
-	 * Legt Einfach- oder Mehrfachauswahl für die Liste Aspekt fest.
+	 * Legt Einfach- oder Mehrfachauswahl fÃ¼r die Liste Aspekt fest.
 	 *
-	 * @param selectionMode Als Argument kann eine der folgenden Konstanten übergeben werden:<br/> {@link ListSelectionModel#SINGLE_SELECTION} {@link
+	 * @param selectionMode Als Argument kann eine der folgenden Konstanten Ã¼bergeben werden:<br/> {@link ListSelectionModel#SINGLE_SELECTION} {@link
 	 *                      ListSelectionModel#SINGLE_INTERVAL_SELECTION} {@link ListSelectionModel#MULTIPLE_INTERVAL_SELECTION}
 	 */
 	public void setAspSelectionMode(int selectionMode) {
@@ -630,9 +636,9 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	}
 
 	/**
-	 * Legt Einfach- oder Mehrfachauswahl für die Liste Objekte fest.
+	 * Legt Einfach- oder Mehrfachauswahl fÃ¼r die Liste Objekte fest.
 	 *
-	 * @param selectionMode Als Argument kann eine der folgenden Konstanten übergeben werden:<br/> {@link ListSelectionModel#SINGLE_SELECTION} {@link
+	 * @param selectionMode Als Argument kann eine der folgenden Konstanten Ã¼bergeben werden:<br/> {@link ListSelectionModel#SINGLE_SELECTION} {@link
 	 *                      ListSelectionModel#SINGLE_INTERVAL_SELECTION} {@link ListSelectionModel#MULTIPLE_INTERVAL_SELECTION}
 	 */
 	public void setObjectSelectionMode(int selectionMode) {
@@ -640,7 +646,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	}
 
 	/**
-	 * Gibt die selektierten Objekte zurück.
+	 * Gibt die selektierten Objekte zurÃ¼ck.
 	 *
 	 * @return die selektierten Objekte
 	 */
@@ -649,7 +655,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	}
 
 	/**
-	 * Gibt die selektierten Objekttypen zurück.
+	 * Gibt die selektierten Objekttypen zurÃ¼ck.
 	 *
 	 * @return die selektierten Objekttypen
 	 */
@@ -661,7 +667,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 					systemObjectTypes.add(objectType);
 				}
 				else {
-					_debug.error("Ausgewähltes Objekt ist kein Objekt-Type", object);
+					_debug.error("AusgewÃ¤hltes Objekt ist kein Objekt-Type", object);
 				}
 			}
 			//			Object[] objects = _objtypList.getSelectedValues();
@@ -670,7 +676,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	}
 
 	/**
-	 * Gibt die selektierten Attributgruppen zurück.
+	 * Gibt die selektierten Attributgruppen zurÃ¼ck.
 	 *
 	 * @return die selektierten Attributgruppen
 	 */
@@ -682,7 +688,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 					atgGroups.add(attributeGroup);
 				}
 				else {
-					_debug.error("Ausgewähltes Objekt ist keine Attributgruppe", object);
+					_debug.error("AusgewÃ¤hltes Objekt ist keine Attributgruppe", object);
 				}
 			}
 			//			Object[] objects = _atgList.getSelectedValues();
@@ -691,7 +697,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	}
 
 	/**
-	 * Gibt die selektierten Aspekte zurück.
+	 * Gibt die selektierten Aspekte zurÃ¼ck.
 	 *
 	 * @return die selektierten Aspekte
 	 */
@@ -703,7 +709,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 					aspects.add(aspect);
 				}
 				else {
-					_debug.error("Ausgewähltes Objekt ist kein Aspekt", object);
+					_debug.error("AusgewÃ¤hltes Objekt ist kein Aspekt", object);
 				}
 			}
 			//			Object[] objects = _aspList.getSelectedValues();
@@ -712,7 +718,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	}
 
 	/**
-	 * Gibt die eingestellte Simulationsvariante zurück.
+	 * Gibt die eingestellte Simulationsvariante zurÃ¼ck.
 	 *
 	 * @return die eingestellte Simulationsvariante
 	 */
@@ -721,9 +727,9 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	}
 
 	/**
-	 * Fügt einen <code>PreselectionListsListener</code> hinzu.
+	 * FÃ¼gt einen <code>PreselectionListsListener</code> hinzu.
 	 *
-	 * @param listener der hinzuzufügende PreselectionListsListener
+	 * @param listener der hinzuzufÃ¼gende PreselectionListsListener
 	 */
 	public void addPreselectionListener(PreselectionListsListener listener) {
 		_listenerList.add(listener);
@@ -738,7 +744,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 		_listenerList.remove(listener);
 	}
 
-	/** Gibt dem Listener Bescheid, ob bei der Selektion einer der vier Listen des PreselectionLists-Panels eine Änderung eingetreten ist. */
+	/** Gibt dem Listener Bescheid, ob bei der Selektion einer der vier Listen des PreselectionLists-Panels eine Ã„nderung eingetreten ist. */
 	private void notifyListSelectionChanged() {
 		for(PreselectionListsListener preselectionListsListener : _listenerList) {
 			preselectionListsListener.listSelectionChanged(this);
@@ -746,8 +752,8 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	}
 
 	/**
-	 * Setzt einen Filter, welcher vor Anzeige der Listen diese bei Bedarf filtert. Ist der Übergabeparameter <code>null</code>, dann wird das gesetzte
-	 * Filter-Objekt gelöscht.
+	 * Setzt einen Filter, welcher vor Anzeige der Listen diese bei Bedarf filtert. Ist der Ãœbergabeparameter <code>null</code>, dann wird das gesetzte
+	 * Filter-Objekt gelÃ¶scht.
 	 *
 	 * @param listsFilter der Filter
 	 */
@@ -771,7 +777,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	/**
 	 * Ruft die Methode <code>applyFilter</code> des {@link PreselectionListsFilter} Interfaces auf.
 	 *
-	 * @param whichList Konstante, die angibt, welche der vier Listen übergeben wird
+	 * @param whichList Konstante, die angibt, welche der vier Listen Ã¼bergeben wird
 	 * @param list      die zu filternde Liste
 	 *
 	 * @return die gefilterte Liste
@@ -781,7 +787,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	}
 
 	/**
-	 * Mit dieser Methode können die maximal anzuzeigenden Objekt-Typen der entsprechenden Liste eingeschränkt werden.
+	 * Mit dieser Methode kÃ¶nnen die maximal anzuzeigenden Objekt-Typen der entsprechenden Liste eingeschrÃ¤nkt werden.
 	 *
 	 * @param objectTypes die maximal anzuzeigenden Objekt-Typen
 	 */
@@ -796,7 +802,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	}
 
 	/**
-	 * Mit dieser Methode können die maximal anzuzeigenden Attributgruppen der entsprechenden Liste eingeschränkt werden.
+	 * Mit dieser Methode kÃ¶nnen die maximal anzuzeigenden Attributgruppen der entsprechenden Liste eingeschrÃ¤nkt werden.
 	 *
 	 * @param attributeGroups die maximal anzuzeigenden Attributgruppen
 	 */
@@ -811,7 +817,7 @@ public class PreselectionLists extends JPanel implements PreselectionTreeListene
 	}
 
 	/**
-	 * Mit dieser Methode können die maximal anzuzeigenden Aspekte der entsprechenden Liste eingeschränkt werden.
+	 * Mit dieser Methode kÃ¶nnen die maximal anzuzeigenden Aspekte der entsprechenden Liste eingeschrÃ¤nkt werden.
 	 *
 	 * @param aspects die maximal anzuzeigenden Aspekte
 	 */

@@ -1,12 +1,12 @@
 /*
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel.telegrams;
@@ -32,7 +38,7 @@ import java.io.IOException;
  * DAV zu DAV und von DAF zu DAV.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5825 $
+ * @version $Revision$
  */
 
 
@@ -67,7 +73,7 @@ public abstract class DataTelegram implements QueueableTelegram {
 	/** Telegrammtyp: Terminierungsbefehl */
 	public static final byte TERMINATE_ORDER_TYPE = 9;
 
-	/** Telegrammtyp: Schließungsnachricht */
+	/** Telegrammtyp: SchlieÃŸungsnachricht */
 	public static final byte CLOSING_TYPE = 10;
 
 	/** Telegrammtyp: Sendedatenaufforderung */
@@ -94,7 +100,7 @@ public abstract class DataTelegram implements QueueableTelegram {
 	/** Telegrammtyp: Empfangsabmeldung */
 	public static final byte RECEIVE_UNSUBSCRIPTION_TYPE = 18;
 
-	/** Telegrammtyp: Austausch von Datensätzen */
+	/** Telegrammtyp: Austausch von DatensÃ¤tzen */
 	public static final byte APPLICATION_DATA_TELEGRAM_TYPE = 19;
 
 	/* Die DAV-DAV Typen */
@@ -110,10 +116,10 @@ public abstract class DataTelegram implements QueueableTelegram {
 	/** Telegrammtyp: Aufforderung zur Authentifizierung */
 	public static final byte TRANSMITTER_AUTHENTIFICATION_TEXT_ANSWER_TYPE = 68;
 
-	/** Telegrammtyp: Übermittelung der Authentifizierungsdaten */
+	/** Telegrammtyp: Ãœbermittelung der Authentifizierungsdaten */
 	public static final byte TRANSMITTER_AUTHENTIFICATION_REQUEST_TYPE = 69;
 
-	/** Telegrammtyp: Informationen, die nach der erfolgreichen Authentifizierung übergeben werden */
+	/** Telegrammtyp: Informationen, die nach der erfolgreichen Authentifizierung Ã¼bergeben werden */
 	public static final byte TRANSMITTER_AUTHENTIFICATION_ANSWER_TYPE = 70;
 
 	/** Telegrammtyp: Verhandlung der Verbindungsparameter (Client). */
@@ -137,19 +143,19 @@ public abstract class DataTelegram implements QueueableTelegram {
 	/** Telegrammtyp: Keep-Alive Telegramm */
 	public static final byte TRANSMITTER_KEEP_ALIVE_TYPE = 77;
 
-	/** Der Datenverteiler meldet Daten für Empfänger oder Sender an */
+	/** Der Datenverteiler meldet Daten fÃ¼r EmpfÃ¤nger oder Sender an */
 	public static final byte TRANSMITTER_DATA_SUBSCRIPTION_TYPE = 78;
 
 	/** Der Datenverteiler quittiert eine an ihn gerichtete Datenanmeldung */
 	public static final byte TRANSMITTER_DATA_SUBSCRIPTION_RECEIPT_TYPE = 79;
 
-	/** Der Datenverteiler meldet Daten für Empfänger oder Sender bei einem anderen Datenverteiler ab */
+	/** Der Datenverteiler meldet Daten fÃ¼r EmpfÃ¤nger oder Sender bei einem anderen Datenverteiler ab */
 	public static final byte TRANSMITTER_DATA_UNSUBSCRIPTION_TYPE = 80;
 
-	/** Telegramm zur Übertragung der Anwendungsdaten */
+	/** Telegramm zur Ãœbertragung der Anwendungsdaten */
 	public static final byte TRANSMITTER_DATA_TELEGRAM_TYPE = 81;
 
-	/** Telegramm zur Aktualisierung der Matrix der günstigsten Wege */
+	/** Telegramm zur Aktualisierung der Matrix der gÃ¼nstigsten Wege */
 	public static final byte TRANSMITTER_BEST_WAY_UPDATE_TYPE = 82;
 
 	/** Telegramm zur Anmeldung von Anmeldungslisten Abonnements */
@@ -158,26 +164,26 @@ public abstract class DataTelegram implements QueueableTelegram {
 	/** Telegrammtyp: Abmeldung von Anmeldungslisten Abonnements */
 	public static final byte TRANSMITTER_LISTS_UNSUBSCRIPTION_TYPE = 84;
 
-	/** Telegrammtyp: Kündigung von Anmeldungslisten Abonnements. */
+	/** Telegrammtyp: KÃ¼ndigung von Anmeldungslisten Abonnements. */
 	public static final byte TRANSMITTER_LISTS_DELIVERY_UNSUBSCRIPTION_TYPE = 85;
 
-	/** Telegrammtyp: Änderungsmitteilung zu Anmeldungslisten. */
+	/** Telegrammtyp: Ã„nderungsmitteilung zu Anmeldungslisten. */
 	public static final byte TRANSMITTER_LISTS_UPDATE_TYPE = 86;
 
-	/** Telegrammtyp: Änderungsmitteilung zu Anmeldungslisten. */
+	/** Telegrammtyp: Ã„nderungsmitteilung zu Anmeldungslisten. */
 	public static final byte TRANSMITTER_LISTS_UPDATE_2_TYPE = 87;
 
 	/** Der Telegrammtyp. */
 	protected byte type;
 
-	/** Die Telegrammpriorität. */
+	/** Die TelegrammprioritÃ¤t. */
 	protected byte priority;
 
-	/** Die Länge des Telegrams. */
+	/** Die LÃ¤nge des Telegrams. */
 	protected int length;
 
 	/**
-	 * Liest ein Telegramm vom übergegebenen DataInputStream.
+	 * Liest ein Telegramm vom Ã¼bergegebenen DataInputStream.
 	 *
 	 * @param in Der DataInputStream.
 	 *
@@ -186,7 +192,7 @@ public abstract class DataTelegram implements QueueableTelegram {
 	public abstract void read(DataInputStream in) throws IOException;
 
 	/**
-	 * Schreibt ein Telegramm in den übergegebenen DataOutputStream.
+	 * Schreibt ein Telegramm in den Ã¼bergegebenen DataOutputStream.
 	 *
 	 * @param out Der DataOutputStream.
 	 *
@@ -195,25 +201,25 @@ public abstract class DataTelegram implements QueueableTelegram {
 	public abstract void write(DataOutputStream out) throws IOException;
 
 	/**
-	 * Gibt eine String-Repräsentation dieses Datensatzes zurück.
+	 * Gibt eine String-ReprÃ¤sentation dieses Datensatzes zurÃ¼ck.
 	 *
-	 * @return Eine String-Repräsentation dieses Datensatzes.
+	 * @return Eine String-ReprÃ¤sentation dieses Datensatzes.
 	 */
 	public abstract String parseToString();
 
 	/**
-	 * Gibt die Länge des Telegramms an.
+	 * Gibt die LÃ¤nge des Telegramms an.
 	 *
-	 * @return Die Länge des Telegrams.
+	 * @return Die LÃ¤nge des Telegrams.
 	 */
 	public int getLength() {
 		return length;
 	}
 
 	/**
-	 * Liefert die Gesamtgröße des Telegramms einschließlich des führenden Typ-Bytes und der Länge des Telegramminhalts.
+	 * Liefert die GesamtgrÃ¶ÃŸe des Telegramms einschlieÃŸlich des fÃ¼hrenden Typ-Bytes und der LÃ¤nge des Telegramminhalts.
 	 *
-	 * @return Gesamtgröße des Telegrams in Bytes.
+	 * @return GesamtgrÃ¶ÃŸe des Telegrams in Bytes.
 	 */
 	public int getSize() {
 		return 1 + 2 + length;
@@ -229,20 +235,20 @@ public abstract class DataTelegram implements QueueableTelegram {
 	}
 
 	/**
-	 * Gibt die Priorität des Telegramms an. Je größer der Wert, desto größer die Priorität.
+	 * Gibt die PrioritÃ¤t des Telegramms an. Je grÃ¶ÃŸer der Wert, desto grÃ¶ÃŸer die PrioritÃ¤t.
 	 *
-	 * @return Priorität des Telegramms.
+	 * @return PrioritÃ¤t des Telegramms.
 	 */
 	public final byte getPriority() {
 		return priority;
 	}
 
 	/**
-	 * Erstellt ein leeres Telegramm vom Typ des Übergabeparameters.
+	 * Erstellt ein leeres Telegramm vom Typ des Ãœbergabeparameters.
 	 *
 	 * @param _type Typ eines Telegramms.
 	 *
-	 * @return gibt eine Instanz des von <code>DataTelegram</code> abgeleiteten Typs zurück.
+	 * @return gibt eine Instanz des von <code>DataTelegram</code> abgeleiteten Typs zurÃ¼ck.
 	 */
 	public static DataTelegram getTelegram(byte _type) {
 		switch(_type) {
@@ -379,7 +385,7 @@ public abstract class DataTelegram implements QueueableTelegram {
 	}
 
 	/**
-	 * Gibt eine kurze Beschreibung des Objektes zurück.
+	 * Gibt eine kurze Beschreibung des Objektes zurÃ¼ck.
 	 *
 	 * @return Beschreibung des Objektes
 	 */
@@ -388,7 +394,7 @@ public abstract class DataTelegram implements QueueableTelegram {
 	}
 
 	/**
-	 * Gibt eine kurze Beschreibung des Objektes zurück.
+	 * Gibt eine kurze Beschreibung des Objektes zurÃ¼ck.
 	 *
 	 * @return Beschreibung des Objektes
 	 */

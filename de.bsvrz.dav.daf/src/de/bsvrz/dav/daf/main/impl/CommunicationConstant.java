@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,17 +15,23 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl;
 
 /**
- * Enth‰lt Konstanten, die f¸r die Kommunikation mit dem Datenverteiler benˆtigt werden.
+ * Enth√§lt Konstanten, die f√ºr die Kommunikation mit dem Datenverteiler ben√∂tigt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13144 $
+ * @version $Revision$
  */
 public class CommunicationConstant {
 
@@ -50,7 +56,7 @@ public class CommunicationConstant {
 	/** Prozentualer Anteil des Cache, um die Flusskontrolle zu starten. */
 	public static float FLOW_CONTROL_FACTOR = 0.75f;
 
-	/** Die Intervalldauer f¸r die Durchsatzmessung bei aktivierter Durchsatzpr¸fung. */
+	/** Die Intervalldauer f√ºr die Durchsatzmessung bei aktivierter Durchsatzpr√ºfung. */
 	public static long THROUGHPUT_CONTROL_INTERVAL = 60000;// 1 minute
 
 	/** Minimale Verbindungsdurchsatz */
@@ -59,28 +65,28 @@ public class CommunicationConstant {
 	/** Die maximale Anzahl in Bytes, die ein Teiltelegramm an Daten haben kann. */
 	public static int MAX_SPLIT_THRESHOLD = 3000;
 
-	/** Die Verzˆgerungszeit zur ‹bertragung von gepufferten und zu versendenden Telegrammen. */
+	/** Die Verz√∂gerungszeit zur √úbertragung von gepufferten und zu versendenden Telegrammen. */
 	public static long MAX_SEND_DELAY_TIME = 0;
 
-	/** Der maximale Priorit‰tswert in diesem System */
+	/** Der maximale Priorit√§tswert in diesem System */
 	public static final byte MAX_PRIORITY = 7;
 
-	/** Die Priorit‰t f¸r bestimmte Systemtelegramme. Der Wert ist hˆher als der von {@link #SYSTEM_TELEGRAM_PRIORITY}. */
+	/** Die Priorit√§t f√ºr bestimmte Systemtelegramme. Der Wert ist h√∂her als der von {@link #SYSTEM_TELEGRAM_PRIORITY}. */
 	public static byte SYSTEM_HIGH_TELEGRAM_PRIORITY = 7;
 
-	/** Die Priorit‰t der Systemtelegramme. */
+	/** Die Priorit√§t der Systemtelegramme. */
 	public static byte SYSTEM_TELEGRAM_PRIORITY = 5;
 
-	/** Die Priorit‰t der Konfigurationsanfrage. */
+	/** Die Priorit√§t der Konfigurationsanfrage. */
 	public static byte CONFIGURATION_DATA_TELEGRAM_PRIORITY = 5;
 
-	/** Die Priorit‰t der Onlinedatentelegramme. */
+	/** Die Priorit√§t der Onlinedatentelegramme. */
 	public static byte ONLINE_DATA_TELEGRAM_PRIORITY = 5;
 
-	/** Die Priorit‰t der nachgelieferte Datentelegramme. */
+	/** Die Priorit√§t der nachgelieferte Datentelegramme. */
 	public static byte DELAYED_DATA_TELEGRAM_PRIORITY = 5;
 
-	/** Die Priorit‰t der Simulationsdatentelegramme. */
+	/** Die Priorit√§t der Simulationsdatentelegramme. */
 	public static byte SIMULATION_DATA_TELEGRAM_PRIORITY = 5;
 
 	/** Die Startzeit der Applikation. */

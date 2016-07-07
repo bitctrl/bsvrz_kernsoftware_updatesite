@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel.telegrams;
@@ -28,19 +34,19 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Der Datenverteiler meldet Daten f¸r Empf‰nger oder Sender bei einem anderen Datenverteiler ab.
+ * Der Datenverteiler meldet Daten f√ºr Empf√§nger oder Sender bei einem anderen Datenverteiler ab.
  * @author Kappich Systemberatung
- * @version $Revision: 11783 $
+ * @version $Revision$
  */
 public class TransmitterDataUnsubscription extends DataTelegram {
 
 	/** Die Basisinformationen eine Anmeldung */
 	private BaseSubscriptionInfo baseSubscriptionInfo;
 
-	/** Die Information ob die Anmeldung als Sender- oder Empf‰ngeranmeldung ist 0: Senderanmeldung 1: Empf‰ngeranmeldung */
+	/** Die Information ob die Anmeldung als Sender- oder Empf√§ngeranmeldung ist 0: Senderanmeldung 1: Empf√§ngeranmeldung */
 	private byte subscriptionType;
 
-	/** Die Liste der zu ber¸cksichtigenden Datenverteiler */
+	/** Die Liste der zu ber√ºcksichtigenden Datenverteiler */
 	private long transmitterList[];
 
 	public TransmitterDataUnsubscription() {
@@ -51,8 +57,8 @@ public class TransmitterDataUnsubscription extends DataTelegram {
 	/**
 	 * TBD Dokumentation
 	 * @param _baseSubscriptionInfo Basisinformationen
-	 * @param _subscriptionState    Anmeldung als Sender oder Empf‰nger
-	 * @param _transmitterList      Liste der zu ber¸cksichtigenden Datenverteiler
+	 * @param _subscriptionState    Anmeldung als Sender oder Empf√§nger
+	 * @param _transmitterList      Liste der zu ber√ºcksichtigenden Datenverteiler
 	 */
 	public TransmitterDataUnsubscription(BaseSubscriptionInfo _baseSubscriptionInfo, byte _subscriptionState, long _transmitterList[]) {
 		type = TRANSMITTER_DATA_UNSUBSCRIPTION_TYPE;
@@ -67,7 +73,7 @@ public class TransmitterDataUnsubscription extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die Basisanmeldeinformationen zur¸ck.
+	 * Gibt die Basisanmeldeinformationen zur√ºck.
 	 *
 	 * @return die Basisanmeldeinformationen
 	 */
@@ -76,7 +82,7 @@ public class TransmitterDataUnsubscription extends DataTelegram {
 	}
 
 	/**
-	 * Gibt der Typ der Anmeldung zur¸ck 0: Senderanmeldung 1: Empf‰ngeranmeldung
+	 * Gibt der Typ der Anmeldung zur√ºck 0: Senderanmeldung 1: Empf√§ngeranmeldung
 	 *
 	 * @return der Typ der Anmeldung
 	 */
@@ -85,7 +91,7 @@ public class TransmitterDataUnsubscription extends DataTelegram {
 	}
 
 	/**
-	 * Gibt der Typ der Anmeldung zur¸ck 0: Senderanmeldung 1: Empf‰ngeranmeldung
+	 * Gibt der Typ der Anmeldung zur√ºck 0: Senderanmeldung 1: Empf√§ngeranmeldung
 	 *
 	 * @return der Typ der Anmeldung
 	 */
@@ -93,9 +99,9 @@ public class TransmitterDataUnsubscription extends DataTelegram {
 		return subscriptionType;
 	}
 	/**
-	 * Gibt die Liste der zu ber¸cksichtigenden Datenverteiler zur¸ck
+	 * Gibt die Liste der zu ber√ºcksichtigenden Datenverteiler zur√ºck
 	 *
-	 * @return die Liste der zu ber¸cksichtigenden Datenverteiler
+	 * @return die Liste der zu ber√ºcksichtigenden Datenverteiler
 	 */
 	public final long[] getTransmitters() {
 		return transmitterList;
@@ -108,7 +114,7 @@ public class TransmitterDataUnsubscription extends DataTelegram {
 			str += ", Anmeldung als Sender";
 		}
 		else {
-			str += ", Anmeldung als Empf‰nger";
+			str += ", Anmeldung als Empf√§nger";
 		}
 		if(transmitterList != null) {
 			str += ", Potentielle Datenverteiler [ ";
@@ -150,7 +156,7 @@ public class TransmitterDataUnsubscription extends DataTelegram {
 			length += (transmitterList.length * 8);
 		}
 		if(length != _length) {
-			throw new IOException("Falsche Telegramml‰nge");
+			throw new IOException("Falsche Telegramml√§nge");
 		}
 	}
 }

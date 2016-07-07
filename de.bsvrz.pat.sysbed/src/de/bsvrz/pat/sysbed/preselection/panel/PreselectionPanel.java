@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.preselection.panel;
@@ -32,11 +38,11 @@ import java.awt.*;
 import java.util.*;
 
 /**
- * Die Klasse <code>PreselectionPanel</code> stellt die gesamte Datenidentifikationsauswahl zur Verfügung. Hierzu gehören die Klassen
+ * Die Klasse <code>PreselectionPanel</code> stellt die gesamte Datenidentifikationsauswahl zur VerfÃ¼gung. Hierzu gehÃ¶ren die Klassen
  * <code>PreselectionTree</code> und <code>PreselectionLists</code>.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
+ * @version $Revision$
  * @see de.bsvrz.pat.sysbed.preselection.tree.PreselectionTree
  * @see PreselectionLists
  */
@@ -51,7 +57,7 @@ public class PreselectionPanel extends JPanel {
 	/** speichert die Verbindung zum Datenverteiler */
 	private final ClientDavInterface _connection;
 
-	/** speichert die Parameter für die Vorauswahl */
+	/** speichert die Parameter fÃ¼r die Vorauswahl */
 	private final Collection<Object> _treeNodes;
 
 	/**
@@ -94,7 +100,7 @@ public class PreselectionPanel extends JPanel {
 	}
 
 	/**
-	 * Delegiert das Hinzufügen des <code>PreselectionListsListener</code>s weiter an die Klasse {@link PreselectionLists}
+	 * Delegiert das HinzufÃ¼gen des <code>PreselectionListsListener</code>s weiter an die Klasse {@link PreselectionLists}
 	 *
 	 * @param listener der anzumeldende Listener
 	 */
@@ -138,7 +144,7 @@ public class PreselectionPanel extends JPanel {
 	}
 
 	/**
-	 * Gibt die eingestellte Simulationsvariante zurück.
+	 * Gibt die eingestellte Simulationsvariante zurÃ¼ck.
 	 *
 	 * @return die eingestellte Simulationsvariante
 	 */
@@ -157,7 +163,7 @@ public class PreselectionPanel extends JPanel {
 
 	/**
 	 * Mit dieser Methode kann man sich das Objekt der Klasse <code>PreselectionLists</code> holen, welches auch vom <code>PreselectionPanel</code> benutzt wird,
-	 * um auf seine <code>public</code>-Methoden zugreifen zu können.
+	 * um auf seine <code>public</code>-Methoden zugreifen zu kÃ¶nnen.
 	 *
 	 * @return ein Objekt der Klasse <code>PreselectionLists</code>
 	 */
@@ -167,7 +173,7 @@ public class PreselectionPanel extends JPanel {
 
 	/**
 	 * Mit dieser Methode kann man sich das Objekt der Klasse <code>PreselectionTree</code> holen, welches vom <code> PreselectionPanel</code> benutzt wird, um auf
-	 * seine <code>public</code>-Methoden zugreifen zu können.
+	 * seine <code>public</code>-Methoden zugreifen zu kÃ¶nnen.
 	 *
 	 * @return ein Objekt der Klasse <code>PreselectionPanel</code>
 	 */
@@ -176,7 +182,7 @@ public class PreselectionPanel extends JPanel {
 	}
 
 	/**
-	 * Delegiert an die Klasse <code>PreselectionLists</code>, ob und welcher Filter zusätzlich die Listen filtern soll.
+	 * Delegiert an die Klasse <code>PreselectionLists</code>, ob und welcher Filter zusÃ¤tzlich die Listen filtern soll.
 	 *
 	 * @param listsFilter der Filter
 	 */

@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2006 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -36,21 +42,21 @@ import java.util.*;
 import static de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentifications.CONFIGURATION_ELEMENTS_IN_NON_MUTABLE_SET;
 
 /**
- * Implementierung des Interfaces {@link de.bsvrz.dav.daf.main.config.NonMutableSet} für nicht veränderbare Mengen auf Seiten der Konfiguration.
+ * Implementierung des Interfaces {@link de.bsvrz.dav.daf.main.config.NonMutableSet} fÃ¼r nicht verÃ¤nderbare Mengen auf Seiten der Konfiguration.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 13068 $ / $Date: 2015-01-09 13:34:54 +0100 (Fri, 09 Jan 2015) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSet {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
-	/** enthält alle aktuellen Elemente dieser Menge - diese Menge kann sich nur durch Versionswechsel, also Neustart der Konfiguration ändern! */
+	/** enthÃ¤lt alle aktuellen Elemente dieser Menge - diese Menge kann sich nur durch Versionswechsel, also Neustart der Konfiguration Ã¤ndern! */
 //	private List<SystemObject> _elements;
 
 	/**
-	 * Konstruktor für eine Konfigurationsmenge.
+	 * Konstruktor fÃ¼r eine Konfigurationsmenge.
 	 *
 	 * @param configurationArea Konfigurationsbereich dieser Menge
 	 * @param systemObjectInfo  das korrespondierende Objekt aus den Konfigurationsdateien
@@ -65,11 +71,11 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 
 	public List<SystemObject> getElementsInVersion(short version) {
 		final List<SystemObject> elements = new ArrayList<SystemObject>();
-		// alle Elemente überprüfen, wann sie gültig bzw. ungültig werden
+		// alle Elemente Ã¼berprÃ¼fen, wann sie gÃ¼ltig bzw. ungÃ¼ltig werden
 		for(NonMutableElement nonMutableElement : getNonMutableElements()) {
 			if(nonMutableElement.getFromVersion() <= version && (nonMutableElement.getToVersion() > version || nonMutableElement.getToVersion() == 0)) {
-				// das Element gehört mindestens seit dieser Version dazu und
-				// das Element ist auch noch in der angegebenen Version gültig
+				// das Element gehÃ¶rt mindestens seit dieser Version dazu und
+				// das Element ist auch noch in der angegebenen Version gÃ¼ltig
 				// (d.h. wird erst in einer nachfolgenden Version aus der Menge entfernt bzw. wurde noch nie entfernt und soll auch noch nicht entfernt werden.)
 				final long elementId = nonMutableElement.getElementId();
 				final SystemObject element = getDataModel().getObject(elementId);
@@ -78,13 +84,13 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 				}
 			}
 		}
-		// alle Elemente, die in der nächsten Version gültig sind werden zurückgegeben
+		// alle Elemente, die in der nÃ¤chsten Version gÃ¼ltig sind werden zurÃ¼ckgegeben
 		return Collections.unmodifiableList(elements);
 	}
 
 	public List<SystemObject> getElementsInAllVersions(short fromVersion, short toVersion) {
 		final List<SystemObject> elements = new ArrayList<SystemObject>();
-		// alle Elemente, die zur Version fromVersion bis zur Version toVersion gültig waren
+		// alle Elemente, die zur Version fromVersion bis zur Version toVersion gÃ¼ltig waren
 		for(NonMutableElement nonMutableElement : getNonMutableElements()) {
 			if(nonMutableElement.getFromVersion() <= fromVersion && (nonMutableElement.getToVersion() > toVersion || nonMutableElement.getToVersion() == 0)) {
 				final long elementId = nonMutableElement.getElementId();
@@ -99,7 +105,7 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 
 	public List<SystemObject> getElementsInAnyVersions(short fromVersion, short toVersion) {
 		final List<SystemObject> elements = new ArrayList<SystemObject>();
-		// alle Elemente, die mindestens während einer der Versionen zwischen fromVersion und toVersion gültig waren
+		// alle Elemente, die mindestens wÃ¤hrend einer der Versionen zwischen fromVersion und toVersion gÃ¼ltig waren
 		for(NonMutableElement nonMutableElement : getNonMutableElements()) {
 			if(nonMutableElement.getFromVersion() <= toVersion && (nonMutableElement.getToVersion() > fromVersion || nonMutableElement.getToVersion() == 0)) {
 				final long elementId = nonMutableElement.getElementId();
@@ -113,12 +119,12 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 	}
 
 	public List<SystemObject> getElements() {
-		// die Elemente dürfen nicht gecached werden, da sonst neu hinzugefügte Elemente nicht erkannt und zurückgegeben werden.
+		// die Elemente dÃ¼rfen nicht gecached werden, da sonst neu hinzugefÃ¼gte Elemente nicht erkannt und zurÃ¼ckgegeben werden.
 		return Collections.unmodifiableList(getElementsInVersion(getConfigurationArea().getActiveVersion()));
 	}
 
 	public List<SystemObject> getElements(long time) {
-		// ermitteln, welche Version dieses Konfigurationsbereichs zum angegebenen Zeitpunkt gültig ist
+		// ermitteln, welche Version dieses Konfigurationsbereichs zum angegebenen Zeitpunkt gÃ¼ltig ist
 		short version = getConfigurationArea().getVersionAtAssignedTime(time);
 		return Collections.unmodifiableList(getElementsInVersion(version));
 	}
@@ -127,29 +133,29 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 		// Versionsnummern ermitteln
 		short fromVersion = getConfigurationArea().getVersionAtAssignedTime(startTime);
 		short toVersion = getConfigurationArea().getVersionAtAssignedTime(endTime);
-		// Elemente ermitteln und zurückgeben
+		// Elemente ermitteln und zurÃ¼ckgeben
 		return Collections.unmodifiableList(getElementsInAnyVersions(fromVersion, toVersion));
 	}
 
 	public List<SystemObject> getElementsDuringPeriod(long startTime, long endTime) {
 		short fromVersion = getConfigurationArea().getVersionAtAssignedTime(startTime);
 		short toVersion = getConfigurationArea().getVersionAtAssignedTime(endTime);
-		// Elemente ermitteln und zurückgeben
+		// Elemente ermitteln und zurÃ¼ckgeben
 		return Collections.unmodifiableList(getElementsInAllVersions(fromVersion, toVersion));
 	}
 
 	public void add(SystemObject[] objects) throws ConfigurationChangeException {
 		if(checkChangePermit()) {
-			// wenn die Menge bereits aktiviert oder freigegeben wurde, dann darf nichts mehr geändert werden, es sei denn
-			// die Referenzierungsart ist "Gerichtete Assoziation", dann darf in der in Bearbeitung befindlichen Version Elemente hinzugefügt werden
+			// wenn die Menge bereits aktiviert oder freigegeben wurde, dann darf nichts mehr geÃ¤ndert werden, es sei denn
+			// die Referenzierungsart ist "Gerichtete Assoziation", dann darf in der in Bearbeitung befindlichen Version Elemente hinzugefÃ¼gt werden
 			if(!(getObjectSetType().getReferenceType() == ReferenceType.ASSOCIATION)
 					&& !RelaxedModelChanges.getInstance(getDataModel()).allowObjectSetAdd(this)) {
 				// also Komposition und Aggregation
 				if(getValidSince() < getConfigurationArea().getModifiableVersion()) {
 					// die Menge wurde bereits aktiviert
 					throw new ConfigurationChangeException(
-							"Die Menge " + getNameOrPidOrId() + " darf nicht mehr verändert werden, "
-							+ "da sie bereits aktiviert oder zur Übernahme / Aktivierung freigegeben wurde und die Referenzierungsart "
+							"Die Menge " + getNameOrPidOrId() + " darf nicht mehr verÃ¤ndert werden, "
+							+ "da sie bereits aktiviert oder zur Ãœbernahme / Aktivierung freigegeben wurde und die Referenzierungsart "
 							+ getObjectSetType().getReferenceType() + " lautet."
 					);
 				}
@@ -159,7 +165,7 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 			// ermitteln, welche Elemente sich in der in Bearbeitung befindlichen Version befinden
 			final Set<SystemObject> elementsInModifiableVersion = new HashSet<SystemObject>(getElementsInModifiableVersion());
 
-			// Typ-Überprüfung der Elemente wird nur in der Konsistenzprüfung vorgenommen, da hier die zu betrachtende Version des Mengen-Typs nicht bekannt ist.
+			// Typ-ÃœberprÃ¼fung der Elemente wird nur in der KonsistenzprÃ¼fung vorgenommen, da hier die zu betrachtende Version des Mengen-Typs nicht bekannt ist.
 			// ermitteln, welche Typen in der Menge zugelassen sind
 //			final Set<SystemObjectType> objectTypes = new HashSet<SystemObjectType>();
 //			final List<SystemObject> objectTypesInModifiableVersion = getObjectSetType().getNonMutableSet("ObjektTypen").getElementsInModifiableVersion();
@@ -168,14 +174,14 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 //				objectTypes.add(objType);
 //			}
 
-			// folgende Menge enthält die Elemente, die tatsächlich hinzugefügt werden
-			final Set<SystemObject> addSet = new HashSet<SystemObject>();
+			// folgende Menge enthÃ¤lt die Elemente, die tatsÃ¤chlich hinzugefÃ¼gt werden
+			final Set<SystemObject> addSet = new LinkedHashSet<SystemObject>();
 
-			// hinzuzufügende Elemente werden überprüft
+			// hinzuzufÃ¼gende Elemente werden Ã¼berprÃ¼ft
 			for(SystemObject systemObject : objects) {
-				// Typ-Überprüfung
+				// Typ-ÃœberprÃ¼fung
 //				if(isTypeOfObjectAllowed(systemObject.getType(), objectTypes)) {
-				// prüfen, ob das Objekt bereits in der Menge ist
+				// prÃ¼fen, ob das Objekt bereits in der Menge ist
 				if(!elementsInModifiableVersion.contains(systemObject)) {
 					addSet.add(systemObject);
 				}
@@ -188,24 +194,24 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 //				}
 			}
 
-			// hinzufügen der Elemente zu der Menge
+			// hinzufÃ¼gen der Elemente zu der Menge
 			if(!addSet.isEmpty()) {
 				setConfigurationData(addSet.toArray(new SystemObject[addSet.size()]), null, getConfigurationArea().getModifiableVersion());
 			}
 		}
 		else {
 			throw new ConfigurationChangeException(
-					"Es liegt keine Berechtigung zum Verändern dieser Menge '" + getNameOrPidOrId() + "' vor."
-					+ " Der Verantwortliche der Konfiguration ist nicht für den Konfigurationsbereich '" + getConfigurationArea().getNameOrPidOrId()
-					+ "' zuständig."
+					"Es liegt keine Berechtigung zum VerÃ¤ndern dieser Menge '" + getNameOrPidOrId() + "' vor."
+					+ " Der Verantwortliche der Konfiguration ist nicht fÃ¼r den Konfigurationsbereich '" + getConfigurationArea().getNameOrPidOrId()
+					+ "' zustÃ¤ndig."
 			);
 		}
 	}
 
 //	/**
-//	 * Prüft, ob der angegebene Typ in der Menge der erlaubten Typen vorkommt, oder einen dieser Typen erweitert.
+//	 * PrÃ¼ft, ob der angegebene Typ in der Menge der erlaubten Typen vorkommt, oder einen dieser Typen erweitert.
 //	 *
-//	 * @param type        zu überprüfender Typ
+//	 * @param type        zu Ã¼berprÃ¼fender Typ
 //	 * @param objectTypes Menge der erlaubten Typen
 //	 *
 //	 * @return <code>true</code>, falls der angegebene Typ in der Menge der erlaubten Typen vorkommt, oder einen dieser Typen erweitert, sonst <code>false</code>
@@ -217,8 +223,8 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 //		else {
 //			for(SystemObjectType systemObjectType : objectTypes) {
 //				if(type.inheritsFrom(systemObjectType)) {
-//					// da dieser Typ von einem der anderen abgeleitet ist, kann dieser der Menge der erlaubten Typen hinzugefügt werden,
-//					// dies hat den Vorteil, dass bei einem weiteren Element die contains-Abfrage direkt zuschlägt
+//					// da dieser Typ von einem der anderen abgeleitet ist, kann dieser der Menge der erlaubten Typen hinzugefÃ¼gt werden,
+//					// dies hat den Vorteil, dass bei einem weiteren Element die contains-Abfrage direkt zuschlÃ¤gt
 //					objectTypes.add(type);
 //					return true;
 //				}
@@ -229,15 +235,15 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 
 	public void remove(SystemObject[] objects) throws ConfigurationChangeException {
 		if(checkChangePermit()) {
-			// wenn die Menge bereits aktiviert wurde, dann darf nichts mehr geändert werden, es sei denn
+			// wenn die Menge bereits aktiviert wurde, dann darf nichts mehr geÃ¤ndert werden, es sei denn
 			// die Referenzierungsart ist "Gerichtete Assoziation", dann darf in der in Bearbeitung befindlichen Version Elemente entfernt werden
 			if(!(getObjectSetType().getReferenceType() == ReferenceType.ASSOCIATION)) {
 				// also Komposition und Aggregation
 				if(getValidSince() < getConfigurationArea().getModifiableVersion()) {
 					// die Menge wurde bereits aktiviert
 					throw new ConfigurationChangeException(
-							"Die Menge " + getNameOrPidOrId() + " darf nicht mehr verändert werden, "
-							+ "da sie bereits aktiviert oder zur Übernahme / Aktivierung freigegeben wurde und die Referenzierungsart "
+							"Die Menge " + getNameOrPidOrId() + " darf nicht mehr verÃ¤ndert werden, "
+							+ "da sie bereits aktiviert oder zur Ãœbernahme / Aktivierung freigegeben wurde und die Referenzierungsart "
 							+ getObjectSetType().getReferenceType() + " lautet."
 					);
 				}
@@ -247,12 +253,12 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 			// ermitteln, welche Element sich in der in Bearbeitung befindlichen Version befinden
 			final Set<SystemObject> elementsInModifiableVersion = new HashSet<SystemObject>(getElementsInModifiableVersion());
 
-			// folgende Menge enthält die Elemente, die tatsächlich entfernt werden
+			// folgende Menge enthÃ¤lt die Elemente, die tatsÃ¤chlich entfernt werden
 			final Set<SystemObject> removeSet = new HashSet<SystemObject>();
 
-			// zu entfernende Elemente werden überprüft
+			// zu entfernende Elemente werden Ã¼berprÃ¼ft
 			for(SystemObject systemObject : objects) {
-				// prüfen, ob die Elemente überhaupt in der Menge sind
+				// prÃ¼fen, ob die Elemente Ã¼berhaupt in der Menge sind
 				if(elementsInModifiableVersion.contains(systemObject)) {
 					removeSet.add(systemObject);
 				}
@@ -265,9 +271,9 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 		}
 		else {
 			throw new ConfigurationChangeException(
-					"Es liegt keine Berechtigung zum Verändern dieser Menge '" + getNameOrPidOrId() + "' vor."
-					+ " Der Verantwortliche der Konfiguration ist nicht für den Konfigurationsbereich '" + getConfigurationArea().getNameOrPidOrId()
-					+ "' zuständig."
+					"Es liegt keine Berechtigung zum VerÃ¤ndern dieser Menge '" + getNameOrPidOrId() + "' vor."
+					+ " Der Verantwortliche der Konfiguration ist nicht fÃ¼r den Konfigurationsbereich '" + getConfigurationArea().getNameOrPidOrId()
+					+ "' zustÃ¤ndig."
 			);
 		}
 	}
@@ -275,28 +281,28 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 	/**
 	 * Der konfigurierende Datensatz mit den Elementen wird aktualisiert.
 	 *
-	 * @param addedElements   hinzugefügte Elemente oder <code>null</code>, falls es keine Elemente zum Hinzufügen gab
+	 * @param addedElements   hinzugefÃ¼gte Elemente oder <code>null</code>, falls es keine Elemente zum HinzufÃ¼gen gab
 	 * @param removedElements entfernte Elemente oder <code>null</code>, falls es keine Elemente zum Entfernen gab
-	 * @param changeVersion   die Version, in der die Änderung stattfindet
+	 * @param changeVersion   die Version, in der die Ã„nderung stattfindet
 	 *
 	 * @throws ConfigurationChangeException Falls der Datensatz nicht geschrieben werden konnte.
 	 */
 	private void setConfigurationData(SystemObject[] addedElements, SystemObject[] removedElements, short changeVersion) throws ConfigurationChangeException {
-		// alle Elemente aus der Menge holen einschließlich der nicht aktuellen (versionierten)
+		// alle Elemente aus der Menge holen einschlieÃŸlich der nicht aktuellen (versionierten)
 		final List<NonMutableElement> nonMutableElements = getNonMutableElements();
 		// Elementliste auf den neuesten Stand bringen
 		if(addedElements != null) {
-			// neue Elemente hinzufügen
+			// neue Elemente hinzufÃ¼gen
 			for(SystemObject systemObject : addedElements) {
 				nonMutableElements.add(new NonMutableElement(systemObject.getId(), changeVersion, (short)0));
 			}
 		}
 		if(removedElements != null) {
-			// Elemente löschen
+			// Elemente lÃ¶schen
 			for(SystemObject systemObject : removedElements) {
 				// richtige Element finden
 				for(NonMutableElement nonMutableElement : nonMutableElements) {
-					// da Elemente mehrfach in die Menge eingefügt und entfernt werden können, muss auf toVersion == 0 abgefragt werden
+					// da Elemente mehrfach in die Menge eingefÃ¼gt und entfernt werden kÃ¶nnen, muss auf toVersion == 0 abgefragt werden
 					if(nonMutableElement.getElementId()==systemObject.getId() && nonMutableElement.getToVersion() == 0) {
 						nonMutableElement.setToVersion(changeVersion);
 					}
@@ -335,7 +341,7 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 	}
 
 	public void removeNullElements() throws ConfigurationChangeException {
-		// alle Elemente aus der Menge holen einschließlich der nicht aktuellen (versionierten)
+		// alle Elemente aus der Menge holen einschlieÃŸlich der nicht aktuellen (versionierten)
 		final List<NonMutableElement> nonMutableElements = getNonMutableElements();
 		for(Iterator<NonMutableElement> iterator = nonMutableElements.iterator(); iterator.hasNext();) {
 			final NonMutableElement nonMutableElement = iterator.next();
@@ -377,18 +383,18 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 	}
 
 	/**
-	 * Gibt zurück, ob es an der Menge eine Änderung in der in Bearbeitung befindlichen Version gibt.
+	 * Gibt zurÃ¼ck, ob es an der Menge eine Ã„nderung in der in Bearbeitung befindlichen Version gibt.
 	 *
 	 * @param modifiableVersion in Bearbeitung befindliche Version dieses Bereichs
 	 *
-	 * @return <code>true</code>, wenn es eine Änderung gab, sonst <code>false</code>
+	 * @return <code>true</code>, wenn es eine Ã„nderung gab, sonst <code>false</code>
 	 */
 	public boolean isSetChanged(short modifiableVersion) {
 		final List<NonMutableElement> nonMutableElements = getNonMutableElements();
 		for(NonMutableElement nonMutableElement : nonMutableElements) {
 			final short fromVersion = nonMutableElement.getFromVersion();
 			final short toVersion = nonMutableElement.getToVersion();
-			// wurde ein Element hinzugefügt ?
+			// wurde ein Element hinzugefÃ¼gt ?
 			if(fromVersion == modifiableVersion) return true;
 			// wurde ein Element entfernt ?
 			if(toVersion == modifiableVersion) return true;
@@ -397,20 +403,20 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 	}
 
 	/**
-	 * Diese Methode liest den konfigurierenden Datensatz für die Elemente dieser Menge ein und gibt sie in einer Liste zurück.
+	 * Diese Methode liest den konfigurierenden Datensatz fÃ¼r die Elemente dieser Menge ein und gibt sie in einer Liste zurÃ¼ck.
 	 *
-	 * @return eine Liste von Elementen mit Versionsnummern, die die Zugehörigkeitszeiträume kennzeichnen
+	 * @return eine Liste von Elementen mit Versionsnummern, die die ZugehÃ¶rigkeitszeitrÃ¤ume kennzeichnen
 	 */
 	private synchronized List<NonMutableElement> getNonMutableElements() {
 		final List<NonMutableElement> nonMutableElements = new ArrayList<NonMutableElement>();
 		try {
-			byte[] bytes = _systemObjectInfo.getConfigurationData(CONFIGURATION_ELEMENTS_IN_NON_MUTABLE_SET);  // feste ID für die Attributgruppenverwendung um die Elemente einer Menge zu erhalten
+			byte[] bytes = _systemObjectInfo.getConfigurationData(CONFIGURATION_ELEMENTS_IN_NON_MUTABLE_SET);  // feste ID fÃ¼r die Attributgruppenverwendung um die Elemente einer Menge zu erhalten
 			final ByteArrayInputStream in = new ByteArrayInputStream(bytes);
 			final Deserializer deserializer = SerializingFactory.createDeserializer(getSerializerVersion(), in);
 			ReferenceType referenceType;
 			if(("menge.attributgruppenVerwendungen").equals(getObjectSetType().getPid())) {
-				// Sonderbehandlung für die Attributgruppenverwendungen
-				// (um an die Referenzierungsart zu gelangen benötigt man die Attributgruppenverwendung und umgekehrt)
+				// Sonderbehandlung fÃ¼r die Attributgruppenverwendungen
+				// (um an die Referenzierungsart zu gelangen benÃ¶tigt man die Attributgruppenverwendung und umgekehrt)
 				referenceType = ReferenceType.ASSOCIATION;
 			}
 			else {
@@ -419,8 +425,8 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 
 			if(referenceType == ReferenceType.ASSOCIATION) {
 				// lose Kopplung (versioniert)
-				assert bytes.length % 12 == 0 : "Format des Byte-Arrays für die Elemente einer Menge " + getNameOrPidOrId()
-				                                + " hat sich geändert. Länge muss durch 12 teilbar sein.";
+				assert bytes.length % 12 == 0 : "Format des Byte-Arrays fÃ¼r die Elemente einer Menge " + getNameOrPidOrId()
+				                                + " hat sich geÃ¤ndert. LÃ¤nge muss durch 12 teilbar sein.";
 				int numberOfElements = bytes.length / 12;
 				for(int i = 0; i < numberOfElements; i++) {
 					long id = deserializer.readLong();
@@ -431,8 +437,8 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 			}
 			else {
 				// starke Kopplung (Aggregation, Komposition)
-				assert bytes.length % 8 == 0 : "Format des Byte-Arrays für die Elemente einer Menge " + getNameOrPidOrId()
-				                               + " hat sich geändert. Länge muss durch 8 teilbar sein.";
+				assert bytes.length % 8 == 0 : "Format des Byte-Arrays fÃ¼r die Elemente einer Menge " + getNameOrPidOrId()
+				                               + " hat sich geÃ¤ndert. LÃ¤nge muss durch 8 teilbar sein.";
 				int numberOfElements = bytes.length / 8;	// ein Eintrag ist 8 Byte lang (Objekt-ID)
 				for(int i = 0; i < numberOfElements; i++) {
 					long id = deserializer.readLong();
@@ -455,8 +461,8 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 	}
 
 	/**
-	 * Repräsentiert ein Element der Menge mit einer Versionsnummer, ab der das Element zur Menge gehört und einer Versionsnummer, ab der das Element nicht mehr
-	 * zur Menge gehört.
+	 * ReprÃ¤sentiert ein Element der Menge mit einer Versionsnummer, ab der das Element zur Menge gehÃ¶rt und einer Versionsnummer, ab der das Element nicht mehr
+	 * zur Menge gehÃ¶rt.
 	 */
 	private class NonMutableElement {
 
@@ -466,18 +472,18 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 		/** Objekt-ID des Elements */
 		private long _elementId;
 
-		/** Version, seit der das Element zur Menge gehört */
+		/** Version, seit der das Element zur Menge gehÃ¶rt */
 		private short _fromVersion;
 
-		/** Version, seit der das Element nicht mehr zur Menge gehört */
+		/** Version, seit der das Element nicht mehr zur Menge gehÃ¶rt */
 		private short _toVersion;
 
 		/**
 		 * Erzeugt einen Elementeintrag einer nicht-dynamischen Menge.
 		 *
 		 * @param elementId   Objekt-ID des Elements
-		 * @param fromVersion Version, seit der das Element zur Menge gehört
-		 * @param toVersion   Version, seit der das Element nicht mehr zur Menge gehört
+		 * @param fromVersion Version, seit der das Element zur Menge gehÃ¶rt
+		 * @param toVersion   Version, seit der das Element nicht mehr zur Menge gehÃ¶rt
 		 */
 		private NonMutableElement(long elementId, short fromVersion, short toVersion) {
 			_elementId = elementId;
@@ -486,9 +492,9 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 		}
 
 		/**
-		 * Gibt die Version zurück, seit der das Element zur Menge gehört.
+		 * Gibt die Version zurÃ¼ck, seit der das Element zur Menge gehÃ¶rt.
 		 *
-		 * @return Version, seit der das Element zur Menge gehört
+		 * @return Version, seit der das Element zur Menge gehÃ¶rt
 		 */
 		public short getFromVersion() {
 			// fromVersion <= aktuelle Version -> es wurde bereits aktiviert
@@ -496,9 +502,9 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 		}
 
 		/**
-		 * Gibt die Version zurück, seit der das Element nicht mehr zur Menge gehört.
+		 * Gibt die Version zurÃ¼ck, seit der das Element nicht mehr zur Menge gehÃ¶rt.
 		 *
-		 * @return Version, seit der das Element nicht mehr zur Menge gehört oder <code>0</code>, falls das Objekt noch aktuell ist.
+		 * @return Version, seit der das Element nicht mehr zur Menge gehÃ¶rt oder <code>0</code>, falls das Objekt noch aktuell ist.
 		 */
 		public short getToVersion() {
 			// toVersion == 0 -> es wurde bisher nicht aus der Menge genommen
@@ -506,9 +512,9 @@ public class ConfigNonMutableSet extends ConfigObjectSet implements NonMutableSe
 		}
 
 		/**
-		 * Setzt die Version, ab der das Element nicht mehr zur Menge gehört.
+		 * Setzt die Version, ab der das Element nicht mehr zur Menge gehÃ¶rt.
 		 *
-		 * @param toVersion Version, ab der das Element nicht mehr zur Menge gehört
+		 * @param toVersion Version, ab der das Element nicht mehr zur Menge gehÃ¶rt
 		 */
 		public void setToVersion(short toVersion) {
 			_toVersion = toVersion;

@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.main.impl.config.request.telegramManager;
 
@@ -28,13 +34,13 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dav.daf.main.config.ConfigurationAuthority;
 
 /**
- * Ermöglicht es, Anfragen an di Konfiguration zu stellen, die die Benutzer der Konfiguration betreffen. Beispiele
- * hierfür sind, neue Benutzer anlegen, Passwörter ändern, Einmal-Passwörter erzeugen, usw.. Für die meisten Anfragen
- * sind spezielle Benutzerrechte erforderlich, die durch die Konfiguration vor der Ausführung automatisch geprüft
+ * ErmÃ¶glicht es, Anfragen an di Konfiguration zu stellen, die die Benutzer der Konfiguration betreffen. Beispiele
+ * hierfÃ¼r sind, neue Benutzer anlegen, PasswÃ¶rter Ã¤ndern, Einmal-PasswÃ¶rter erzeugen, usw.. FÃ¼r die meisten Anfragen
+ * sind spezielle Benutzerrechte erforderlich, die durch die Konfiguration vor der AusfÃ¼hrung automatisch geprÃ¼ft
  * werden.
  *
  * @author Achim Wullenkord (AW), Kappich Systemberatung
- * @version $Revision: 5060 $ / $Date: 2007-09-01 15:04:35 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigurationRequestUserAdministration extends AbstractSenderReceiverCommunication implements SenderReceiverCommunication {
 	private final ClientDavInterface _connection;
@@ -54,7 +60,7 @@ public class ConfigurationRequestUserAdministration extends AbstractSenderReceiv
 		_responseAspect = dataModel.getAspect("asp.antwort");
 		_responseAtg = dataModel.getAttributeGroup("atg.konfigurationsBenutzerverwaltungsAnfrageSchnittstelle");
 
-		// Sender und Empfänger anmelden
+		// Sender und EmpfÃ¤nger anmelden
 		init(_requestAtg, _requestAspect, _responseAtg, _responseAspect, null);
 	}
 }

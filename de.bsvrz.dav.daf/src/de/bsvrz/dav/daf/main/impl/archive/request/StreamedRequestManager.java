@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.archive.request;
@@ -40,25 +46,25 @@ import de.bsvrz.dav.daf.main.DataDescription;
 import de.bsvrz.dav.daf.main.impl.NonQueueingReceiver;
 
 /**
- * Diese Klasse verwaltet Archivantworten, die an unterschiedliche StreamedArchiveRequester gerichtet sind und sorgt dafür, dass jeder StreamedArchivRequester
- * nur die Archivantworten bekommt, die für ihn sind. Somit werden die Antworten des Archivs nicht an alle StreamedArchiveRequester geschickt, sondern an diesen
+ * Diese Klasse verwaltet Archivantworten, die an unterschiedliche StreamedArchiveRequester gerichtet sind und sorgt dafÃ¼r, dass jeder StreamedArchivRequester
+ * nur die Archivantworten bekommt, die fÃ¼r ihn sind. Somit werden die Antworten des Archivs nicht an alle StreamedArchiveRequester geschickt, sondern an diesen
  * Manager und dieser verteilt die Antworten.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5064 $
+ * @version $Revision$
  */
 public class StreamedRequestManager {
 
 	/**
-	 * Hier werden alle StreamedArchiveRequester gespeichert, als Key wird das Archivsystem genommen, das die Daten versendet. Das Archivsystem trägt sich selber
+	 * Hier werden alle StreamedArchiveRequester gespeichert, als Key wird das Archivsystem genommen, das die Daten versendet. Das Archivsystem trÃ¤gt sich selber
 	 * in den Datensatz ein den es verschickt. Somit kann der Datensatz, der empfangen wird, wieder einem StreamedArchiveRequester zugeordnet werden.
 	 */
 	private final Map _streamedArchiveRequesterMap;
 
-	/** Connection, über die Archivdaten für die Empfängerapplikation übertragen werden. */
+	/** Connection, Ã¼ber die Archivdaten fÃ¼r die EmpfÃ¤ngerapplikation Ã¼bertragen werden. */
 	private final ClientDavInterface _connection;
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	private final short _defaultSimulationVariant;
@@ -77,8 +83,8 @@ public class StreamedRequestManager {
 	}
 
 	/**
-	 * Diese Methode gibt ein StreamedArchiveRequester zurück, falls noch kein Objekt vorhanden ist, wird ein Objekt angelegt. Der StreamedArchiveRequester bekommt
-	 * ein Archivsystem übergeben und kann somit Daten anfordern
+	 * Diese Methode gibt ein StreamedArchiveRequester zurÃ¼ck, falls noch kein Objekt vorhanden ist, wird ein Objekt angelegt. Der StreamedArchiveRequester bekommt
+	 * ein Archivsystem Ã¼bergeben und kann somit Daten anfordern
 	 *
 	 * @param archiveSystem Von diesem Archivsystem kann der StreamedArchiveRequester Daten anfordern
 	 *
@@ -90,7 +96,7 @@ public class StreamedRequestManager {
 			StreamedArchiveRequester streamedArchiveRequester = (StreamedArchiveRequester)_streamedArchiveRequesterMap.get(archiveSystem);
 
 			if(streamedArchiveRequester != null) {
-				// Es gab schon einen streamedArchiveRequester für dieses Archivsystem
+				// Es gab schon einen streamedArchiveRequester fÃ¼r dieses Archivsystem
 				return streamedArchiveRequester;
 			}
 			else {
@@ -107,11 +113,11 @@ public class StreamedRequestManager {
 	}
 
 	/**
-	 * Diese Methode meldet das StreamedRequestManager Objekt als Empfänger für Datensätze an. Die Datensätze werden vom Archive verschickt und sind für einen
+	 * Diese Methode meldet das StreamedRequestManager Objekt als EmpfÃ¤nger fÃ¼r DatensÃ¤tze an. Die DatensÃ¤tze werden vom Archive verschickt und sind fÃ¼r einen
 	 * bestimmten StreamedArchiveRequester gedacht.
 	 *
 	 * @throws de.bsvrz.dav.daf.main.DataNotSubscribedException
-	 *                                Senden von Datensätzen ohne entsprechende Sendeanmeldungen
+	 *                                Senden von DatensÃ¤tzen ohne entsprechende Sendeanmeldungen
 	 */
 	private void subscribeReceiver() throws DataNotSubscribedException {
 
@@ -121,7 +127,7 @@ public class StreamedRequestManager {
 		// Auf die Attributgruppe anmelden
 		final AttributeGroup attributeGroup = configuration.getAttributeGroup("atg.archivAnfrageSchnittstelle");
 
-		// In diesem Aspekt stehen die Antworten des Archivs, diese müssen empfangen werden
+		// In diesem Aspekt stehen die Antworten des Archivs, diese mÃ¼ssen empfangen werden
 		final Aspect aspectReceiver = configuration.getAspect("asp.antwort");
 
 		final short simulationVariant = 0;
@@ -134,7 +140,7 @@ public class StreamedRequestManager {
 				clientReceiver, _connection.getLocalApplicationObject(), dataDescriptionReceiver, ReceiveOptions.normal(), ReceiverRole.drain()
 		);
 		_debug.info(
-				"StreamRequestManager meldet sich als Empfänger von Archivdaten an, Empfänger: " + _connection.getLocalApplicationObject().getNameOrPidOrId()
+				"StreamRequestManager meldet sich als EmpfÃ¤nger von Archivdaten an, EmpfÃ¤nger: " + _connection.getLocalApplicationObject().getNameOrPidOrId()
 		);
 	}
 
@@ -148,34 +154,34 @@ public class StreamedRequestManager {
 		// Welches Archiv hat den Datensatz verschickt
 		final SystemObject archiveReference = data.getReferenceValue("absender").getSystemObject();
 
-		// Das StreamedArchiveRequester Objekt suchen, dass diesen Datensatz haben möchte
+		// Das StreamedArchiveRequester Objekt suchen, dass diesen Datensatz haben mÃ¶chte
 		StreamedArchiveRequester streamedArchiveRequester = getArchiveRequester(archiveReference);
-		assert streamedArchiveRequester != null : "Es kamen Archivadaten für einen SAR, der noch gar nicht angemeldet wurde";
+		assert streamedArchiveRequester != null : "Es kamen Archivadaten fÃ¼r einen SAR, der noch gar nicht angemeldet wurde";
 		streamedArchiveRequester.dataReceiver(data);
 	}
 
 	/**
-	 * Diese Klasse implementiert ein ClientReceiverInterface. Dieses wird von der Klasse StreamedRequestManager benötigt um sich als Empfänger von Datensätzen
-	 * anzumelden, die vom Archiv versendet werden und für die StreamedArchiveRequester Objekte gedacht sind. TBD NonQueueingReceiver kann deadlock erzeugen !!
+	 * Diese Klasse implementiert ein ClientReceiverInterface. Dieses wird von der Klasse StreamedRequestManager benÃ¶tigt um sich als EmpfÃ¤nger von DatensÃ¤tzen
+	 * anzumelden, die vom Archiv versendet werden und fÃ¼r die StreamedArchiveRequester Objekte gedacht sind. TBD NonQueueingReceiver kann deadlock erzeugen !!
 	 * drauf achten
 	 */
 	private final class ClientReceiver implements ClientReceiverInterface, NonQueueingReceiver {
 
 		/**
-		 * Diese Klasse wird vom DaV aufgerufen sobald Datensätze zur Verfügung stehen, auf die sich dieses Objekt als Empfänger angemeldet hat.
+		 * Diese Klasse wird vom DaV aufgerufen sobald DatensÃ¤tze zur VerfÃ¼gung stehen, auf die sich dieses Objekt als EmpfÃ¤nger angemeldet hat.
 		 *
-		 * @param results Datensätze, die empfangen wurden
+		 * @param results DatensÃ¤tze, die empfangen wurden
 		 */
 		public void update(ResultData results[]) {
 			for(int i = 0; i < results.length; i++) {
-				_debug.finer("StreamedRequestManager erhält Datensatz");
+				_debug.finer("StreamedRequestManager erhÃ¤lt Datensatz");
 
 				Data data = results[i].getData();
 				if(data != null) {
 					receivingData(data);
 				}
 				else {
-					_debug.finer("StreamedRequestManager erhält leerern Datensatz");
+					_debug.finer("StreamedRequestManager erhÃ¤lt leerern Datensatz");
 				}
 			}
 		}

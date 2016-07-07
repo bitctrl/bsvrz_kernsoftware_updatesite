@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel.telegrams;
@@ -29,12 +35,12 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 /**
- * Übermittelung der Authentifizierungsdaten. Mit diesem Systemtelegramm authentifiziert sich der Datenverteiler bei seinem Kommunikationspartner. Er sendet
- * dazu den Namen des eingesetzten Authentifizierungsverfahrens und die Benutzerkennung, mit der er gestartet wurde, zusammen mit dem verschlüsselten
+ * Ãœbermittelung der Authentifizierungsdaten. Mit diesem Systemtelegramm authentifiziert sich der Datenverteiler bei seinem Kommunikationspartner. Er sendet
+ * dazu den Namen des eingesetzten Authentifizierungsverfahrens und die Benutzerkennung, mit der er gestartet wurde, zusammen mit dem verschlÃ¼sselten
  * Zufallstext an seinen Kommunikationspartner.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5059 $
+ * @version $Revision$
  */
 public class TransmitterAuthentificationRequest extends DataTelegram {
 
@@ -44,7 +50,7 @@ public class TransmitterAuthentificationRequest extends DataTelegram {
 	/** Der Benutzernname */
 	private String _userName;
 
-	/** Das verschlüsselte Benutzerpasswort */
+	/** Das verschlÃ¼sselte Benutzerpasswort */
 	private byte _userPassword[];
 
 	public TransmitterAuthentificationRequest() {
@@ -57,7 +63,7 @@ public class TransmitterAuthentificationRequest extends DataTelegram {
 	 *
 	 * @param authentificationProcess Authentifikationsverfahren-Name
 	 * @param userName                Benutzername
-	 * @param userPassword            Passwort(veschlüsselt)
+	 * @param userPassword            Passwort(veschlÃ¼sselt)
 	 */
 	public TransmitterAuthentificationRequest(String authentificationProcess, String userName, byte userPassword[]) {
 		type = TRANSMITTER_AUTHENTIFICATION_REQUEST_TYPE;
@@ -86,7 +92,7 @@ public class TransmitterAuthentificationRequest extends DataTelegram {
 	}
 
 	/**
-	 * Gibt den Authentifikationsverfahren-Namen zurück.
+	 * Gibt den Authentifikationsverfahren-Namen zurÃ¼ck.
 	 *
 	 * @return Authentifikationsverfahren-Namen
 	 */
@@ -95,7 +101,7 @@ public class TransmitterAuthentificationRequest extends DataTelegram {
 	}
 
 	/**
-	 * Gibt den Benutzername zurück.
+	 * Gibt den Benutzername zurÃ¼ck.
 	 *
 	 * @return Benutzername
 	 */
@@ -104,7 +110,7 @@ public class TransmitterAuthentificationRequest extends DataTelegram {
 	}
 
 	/**
-	 * Gibt das verschlüsselte Benutzerpasswort zurück.
+	 * Gibt das verschlÃ¼sselte Benutzerpasswort zurÃ¼ck.
 	 *
 	 * @return Benutzerpasswort
 	 */
@@ -143,7 +149,7 @@ public class TransmitterAuthentificationRequest extends DataTelegram {
 		length += _authentificationProcess.getBytes("UTF-8").length + 2;
 		length += _userName.getBytes("UTF-8").length + 2;
 		if(length != _length) {
-			throw new IOException("Falsche Telegrammlänge");
+			throw new IOException("Falsche TelegrammlÃ¤nge");
 		}
 	}
 }

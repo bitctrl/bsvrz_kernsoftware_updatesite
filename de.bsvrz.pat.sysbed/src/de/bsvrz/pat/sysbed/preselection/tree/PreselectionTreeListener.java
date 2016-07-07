@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.preselection.tree;
@@ -29,15 +35,15 @@ import java.util.*;
  * Listener zum Anmelden bei einem Objekt der Klasse {@link PreselectionTree}.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5052 $
+ * @version $Revision$
  * @see PreselectionTreeListener#setObjects(java.util.Collection)
  */
 public interface PreselectionTreeListener {
 
 	/**
-	 * Methode zum ‹bergeben der Systemobjekte (z.B. an das PreselectionLists-Panel)
+	 * Methode zum √úbergeben der Systemobjekte (z.B. an das PreselectionLists-Panel)
 	 *
-	 * @param systemObjects die zu ¸bergebenden Systemobjekte
+	 * @param systemObjects die zu √ºbergebenden Systemobjekte
 	 */
 	void setObjects(Collection<SystemObject> systemObjects);
 }

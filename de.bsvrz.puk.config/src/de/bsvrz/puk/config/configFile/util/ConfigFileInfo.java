@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.util;
@@ -41,28 +47,28 @@ import java.nio.charset.Charset;
 import java.util.*;
 
 /**
- * Diese Klasse bestimmt Informationen über einen Konfigurationsbereich anhand einer Config-Datei. Über die main()-Methode lässt sich das
+ * Diese Klasse bestimmt Informationen Ã¼ber einen Konfigurationsbereich anhand einer Config-Datei. Ãœber die main()-Methode lÃ¤sst sich das
  * Modul als Kommandozeilenprogramm nutzen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11678 $
+ * @version $Revision$
  */
 public class ConfigFileInfo {
 
 	private static final Debug _debug = Debug.getLogger();
 
 	/**
-	 * ID der atgv.atg.konfigurationsBereichÜbernahmeInformationen.asp.eigenschaften
+	 * ID der atgv.atg.konfigurationsBereichÃœbernahmeInformationen.asp.eigenschaften
 	 */
 	private static final long VERSIONS_ID = 239615L;
 
 	/**
-	 * ID der atgv.atg.konfigurationsÄnderungen.asp.eigenschaften
+	 * ID der atgv.atg.konfigurationsÃ„nderungen.asp.eigenschaften
 	 */
 	private static final long CHANGES_ID = 282967L;
 
 	/**
-	 * ID der atgv.atg.konfigurationsBereichAbhängigkeiten.asp.eigenschaften
+	 * ID der atgv.atg.konfigurationsBereichAbhÃ¤ngigkeiten.asp.eigenschaften
 	 */
 	private static final long DEPENDENCIES_ID = 14636698789434546L;
 
@@ -90,7 +96,7 @@ public class ConfigFileInfo {
 			if(!pid.equals(headerpid)) {
 				System.err
 						.println(
-								"##### ACHTUNG ##### : Der Name der Datei " + file + " wurde falsch gebildet. Richtig wäre:  '" + headerpid + ".config'"
+								"##### ACHTUNG ##### : Der Name der Datei " + file + " wurde falsch gebildet. Richtig wÃ¤re:  '" + headerpid + ".config'"
 						);
 			}
 			_pid = areaFile.getConfigAreaPid();
@@ -128,12 +134,12 @@ public class ConfigFileInfo {
 
 
 	/**
-	 * Diese Methode liest aus dem SystemObjectInformationInterface die ÄnderungsHistorie. Identifiziert wird der Datensatz anhand der
+	 * Diese Methode liest aus dem SystemObjectInformationInterface die Ã„nderungsHistorie. Identifiziert wird der Datensatz anhand der
 	 * Konstanten CHANGES_ID.
 	 *
 	 * @param informationInterface Informationen die Dynamisches und Konfigurierendes Objekt gemeinsamm haben
-	 * @return ÄnderungsHistorie
-	 * @throws IOException falls beim lesen des Übergabeparametrs in Fehler auftritt
+	 * @return Ã„nderungsHistorie
+	 * @throws IOException falls beim lesen des Ãœbergabeparametrs in Fehler auftritt
 	 */
 	private static List<ChangeHistoryItem> fetchHistoryItems(final SystemObjectInformationInterface informationInterface) throws IOException {
 		final List<ChangeHistoryItem> changeHistoryLog = new ArrayList<ChangeHistoryItem>();
@@ -157,12 +163,12 @@ public class ConfigFileInfo {
 	}
 
 	/**
-	 * Diese Methode liest aus dem SystemObjectInformationInterface die Abängigkeiten. Identifiziert wird der Datensatz anhand der Konstanten
+	 * Diese Methode liest aus dem SystemObjectInformationInterface die AbÃ¤ngigkeiten. Identifiziert wird der Datensatz anhand der Konstanten
 	 * DEPENDENCIES_ID.
 	 *
 	 * @param informationInterface Informationen die Dynamisches und Konfigurierendes Objekt gemeinsamm haben
-	 * @return Abhängigkeiten
-	 * @throws IOException falls beim lesen des Übergabeparametrs in Fehler auftritt
+	 * @return AbhÃ¤ngigkeiten
+	 * @throws IOException falls beim lesen des Ãœbergabeparametrs in Fehler auftritt
 	 */
 	private static List<ConfigAreaDependency> fetchDependencies(final SystemObjectInformationInterface informationInterface) throws IOException {
 		final List<ConfigAreaDependency> dependencies = new ArrayList<ConfigAreaDependency>();
@@ -186,13 +192,13 @@ public class ConfigFileInfo {
 	}
 
 	/**
-	 * Entfernt XML-Tags und überflüssigen Whitespace aus dem übergebenem Text, wandelt XML-Entitäten um.
+	 * Entfernt XML-Tags und Ã¼berflÃ¼ssigen Whitespace aus dem Ã¼bergebenem Text, wandelt XML-EntitÃ¤ten um.
 	 *
 	 * @param stringToBeTrimmed zu formatierender String
 	 * @return formatierter String
 	 */
 	public static String readXmlString(String stringToBeTrimmed) {
-		// XML-Klasse braucht ein Root-Element, also Dummy hier einfügen.
+		// XML-Klasse braucht ein Root-Element, also Dummy hier einfÃ¼gen.
 		String str = "<x>" + stringToBeTrimmed + "</x>";
 
 		try {
@@ -295,18 +301,18 @@ public class ConfigFileInfo {
 		boolean displayShortInfo = argumentList.fetchArgument("-kurzInfo=nein").booleanValue();
 		boolean displayDescription = argumentList.fetchArgument("-beschreibung=nein").booleanValue();
 		boolean displayTransferVersion = argumentList.fetchArgument("-uebernahmeVersion=nein").booleanValue()
-				|| argumentList.fetchArgument("-übernahmeVersion=nein").booleanValue();
+				|| argumentList.fetchArgument("-Ã¼bernahmeVersion=nein").booleanValue();
 		boolean displayActivatableVersion = argumentList.fetchArgument("-aktivierungVersion=ja").booleanValue();
 		boolean displayDependencies = argumentList.fetchArgument("-abhaengigkeiten=nein").booleanValue()
-				|| argumentList.fetchArgument("-abhängigkeiten=nein").booleanValue();
+				|| argumentList.fetchArgument("-abhÃ¤ngigkeiten=nein").booleanValue();
 		boolean displayChanges = argumentList.fetchArgument("-aenderungen=nein").booleanValue()
-				|| argumentList.fetchArgument("-änderungen=nein").booleanValue();
+				|| argumentList.fetchArgument("-Ã¤nderungen=nein").booleanValue();
 		boolean dependencySummary = argumentList.fetchArgument("-zusammenfassung=ja").booleanValue();
 		boolean displayAll = argumentList.fetchArgument("-alles=nein").booleanValue();
 		if(displayAll) {
 			dependencySummary = displayShortInfo = displayDescription = displayTransferVersion = displayActivatableVersion = displayDependencies = displayChanges = true;
 		}
-		boolean verbose = argumentList.fetchArgument("-ausführlich=nein").booleanValue()
+		boolean verbose = argumentList.fetchArgument("-ausfÃ¼hrlich=nein").booleanValue()
 				|| argumentList.fetchArgument("-ausfuehrlich=nein").booleanValue();
 		int terminalWidth = argumentList.fetchArgument("-terminalBreite=80").intValueBetween(80, Integer.MAX_VALUE);
 
@@ -316,7 +322,7 @@ public class ConfigFileInfo {
 			for(ArgumentList.Argument argument : arguments) {
 				String name = argument.getName();
 				if(argument.hasValue()) {
-					usage("Ungültiges Argument: " + name + "=" + argument.getValue());
+					usage("UngÃ¼ltiges Argument: " + name + "=" + argument.getValue());
 				}
 				File file = new File(name);
 				if(!file.exists()) {
@@ -452,21 +458,21 @@ public class ConfigFileInfo {
 		System.err.print("java " + ConfigFileInfo.class.getCanonicalName() + " ");
 		System.err.println("[Optionen]... [Konfigurationsdateien/Ordner]...");
 		System.err.println("");
-		System.err.println("Gültige Optionen:");
+		System.err.println("GÃ¼ltige Optionen:");
 		System.err.println("\t-kurzInfo=ja              Kurzinfos ausgeben");
 		System.err.println("\t-beschreibung=ja          Beschreibungen ausgeben");
-		System.err.println("\t-übernahmeVersion=ja      Zur Übernahme freigegebene Version ausgeben");
+		System.err.println("\t-Ã¼bernahmeVersion=ja      Zur Ãœbernahme freigegebene Version ausgeben");
 		System.err.println("\t-aktivierungVersion=nein  Zur Aktivierung freigegebene Version nicht ausgeben");
-		System.err.println("\t-abhängigkeiten=ja        Abhängigkeiten ausgeben");
-		System.err.println("\t-änderungen=ja            Änderungsvermerke ausgeben");
+		System.err.println("\t-abhÃ¤ngigkeiten=ja        AbhÃ¤ngigkeiten ausgeben");
+		System.err.println("\t-Ã¤nderungen=ja            Ã„nderungsvermerke ausgeben");
 		System.err.println(
-				"\t-zusammenfassung=nein     Zusammenfassung über benötige Konfigurationsbereiche nicht ausgeben " +
+				"\t-zusammenfassung=nein     Zusammenfassung Ã¼ber benÃ¶tige Konfigurationsbereiche nicht ausgeben " +
 						"(nur bei mehreren Dateien)"
 		);
 		System.err.println("\t-alles=ja                 Alles oben genannte ausgeben");
 		System.err.println("\t-terminalBreite=80        Breite der Ausgabe anpassen");
-		System.err.println("\t-ausführlich=ja           Ausführliche Ausgabe der Abhängigkeiten und Änderungsvermerke");
-		System.err.println("(Umlaute können bei Bedarf durch ae, oe, ue ersetzt werden)");
+		System.err.println("\t-ausfÃ¼hrlich=ja           AusfÃ¼hrliche Ausgabe der AbhÃ¤ngigkeiten und Ã„nderungsvermerke");
+		System.err.println("(Umlaute kÃ¶nnen bei Bedarf durch ae, oe, ue ersetzt werden)");
 		System.exit(1);
 	}
 }

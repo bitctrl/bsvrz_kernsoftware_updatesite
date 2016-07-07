@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config.telegrams;
@@ -61,17 +67,17 @@ public class TransmitterConnectionInfo {
 
 	/**
 	 * Benutzername mit dem sich der erste Datenverteiler beim zweiten Datenverteiler authentifizieren soll oder leerer String, wenn der Standardbenutzer des
-	 * Datenverteilers für die Authentifizierung benutzt werden soll.
+	 * Datenverteilers fÃ¼r die Authentifizierung benutzt werden soll.
 	 */
 	private String _userName;
 
 	/**
 	 * Benutzername mit dem sich der zweite Datenverteiler beim ersten Datenverteiler authentifizieren soll oder leerer String, wenn der Standardbenutzer des
-	 * Datenverteilers für die Authentifizierung benutzt werden soll.
+	 * Datenverteilers fÃ¼r die Authentifizierung benutzt werden soll.
 	 */
 	private String _remoteUserName;
 
-	/** Erzeugt ein neues Objekt, dessen Eigenschaften anschließend mit der read-Methode eingelesen werden sollten. */
+	/** Erzeugt ein neues Objekt, dessen Eigenschaften anschlieÃŸend mit der read-Methode eingelesen werden sollten. */
 	public TransmitterConnectionInfo() {
 	}
 
@@ -87,9 +93,9 @@ public class TransmitterConnectionInfo {
 	 *                                Ersatzverbindungen automatisch etablieren
 	 * @param exchangeTransmitterList Liste der Erssatzverbindungen.
 	 * @param userName                Benutzername mit dem sich der erste Datenverteiler beim zweiten Datenverteiler authentifizieren soll oder leerer String, wenn
-	 *                                der Standardbenutzer des Datenverteilers für die Authentifizierung benutzt werden soll.
+	 *                                der Standardbenutzer des Datenverteilers fÃ¼r die Authentifizierung benutzt werden soll.
 	 * @param remoteUserName          Benutzername mit dem sich der zweite Datenverteiler beim ersten Datenverteiler authentifizieren soll oder leerer String, wenn
-	 *                                der Standardbenutzer des Datenverteilers für die Authentifizierung benutzt werden soll.
+	 *                                der Standardbenutzer des Datenverteilers fÃ¼r die Authentifizierung benutzt werden soll.
 	 */
 	public TransmitterConnectionInfo(
 			TransmitterInfo transmitter_1,
@@ -113,7 +119,8 @@ public class TransmitterConnectionInfo {
 	}
 
 	/**
-	 * Gibt den ersten Datenverteiler der Verbindung zurück.
+	 * Gibt den ersten Datenverteiler der Verbindung zurÃ¼ck.
+	 * Dieser Datenverteiler baut typischerweise die Verbindung auf.
 	 *
 	 * @return erster DAV
 	 */
@@ -122,7 +129,8 @@ public class TransmitterConnectionInfo {
 	}
 
 	/**
-	 * Gibt den zweiten Datenverteiler der Verbindung zurück
+	 * Gibt den zweiten Datenverteiler der Verbindung zurÃ¼ck.
+	 * Dieser Datenverteiler wartet typischerweise auf Verbindungen vom Datenverteiler 1. 
 	 *
 	 * @return zweiter DAV
 	 */
@@ -131,7 +139,7 @@ public class TransmitterConnectionInfo {
 	}
 
 	/**
-	 * Gibt die Gewichtung der Verbindung zurück
+	 * Gibt die Gewichtung der Verbindung zurÃ¼ck
 	 *
 	 * @return Gewichtung
 	 */
@@ -140,7 +148,7 @@ public class TransmitterConnectionInfo {
 	}
 
 	/**
-	 * Diese Methode wir für automtisierte Tests benötigt.
+	 * Diese Methode wir fÃ¼r automtisierte Tests benÃ¶tigt.
 	 *
 	 * @return Art der Verbindung
 	 */
@@ -166,6 +174,8 @@ public class TransmitterConnectionInfo {
 		if(_connectionType < 2) {
 			return true;
 		}
+		// FÃ¼r jede unidirektionale Verbindung gibt es 2 TransmitterConnectionInfo-Objekte.
+		// Die Verbinung wird hier immer von dem Datenverteiler mit der niedrigeren Id aufgebaut.
 		return _transmitter_1.getTransmitterId() < _transmitter_2.getTransmitterId();
 	}
 
@@ -179,7 +189,7 @@ public class TransmitterConnectionInfo {
 	}
 
 	/**
-	 * Gibt die Liste der Ersatzverbindungen zurück
+	 * Gibt die Liste der Ersatzverbindungen zurÃ¼ck
 	 *
 	 * @return Array mit Liste der Ersatzverbindungen.
 	 */
@@ -199,7 +209,7 @@ public class TransmitterConnectionInfo {
 	/**
 	 * Bestimmt den Benutzernamen mit dem sich der erste Datenverteiler beim zweiten Datenverteiler authentifizieren soll.
 	 *
-	 * @return Benutzername für die Authentifizierung oder leerer String, wenn der Standardbenutzer des Datenverteilers für die Authentifizierung benutzt werden
+	 * @return Benutzername fÃ¼r die Authentifizierung oder leerer String, wenn der Standardbenutzer des Datenverteilers fÃ¼r die Authentifizierung benutzt werden
 	 *         soll.
 	 */
 	public String getUserName() {
@@ -209,7 +219,7 @@ public class TransmitterConnectionInfo {
 	/**
 	 * Bestimmt den Benutzernamen mit dem sich der zweite Datenverteiler beim ersten Datenverteiler authentifizieren soll.
 	 *
-	 * @return Benutzername für die Authentifizierung oder leerer String, wenn der Standardbenutzer des Datenverteilers für die Authentifizierung benutzt werden
+	 * @return Benutzername fÃ¼r die Authentifizierung oder leerer String, wenn der Standardbenutzer des Datenverteilers fÃ¼r die Authentifizierung benutzt werden
 	 *         soll.
 	 */
 	public String getRemoteUserName() {
@@ -217,7 +227,7 @@ public class TransmitterConnectionInfo {
 	}
 
 	/**
-	 * Gibt ein String zurück, der diesen Datensatz beschreibt
+	 * Gibt ein String zurÃ¼ck, der diesen Datensatz beschreibt
 	 *
 	 * @return Beschreibung des Datensatzes
 	 */
@@ -259,8 +269,8 @@ public class TransmitterConnectionInfo {
 	 * Schreibt einen Datensatz in den gegebenen DataOutputStream.
 	 *
 	 * @param out     DataOutputStream
-	 * @param version Version des übergeordneten Antworttelegramms. Der Wert 0 kennzeichnet, dass nur die ursprüngliche Version ohne Benutzernamen für die
-	 *                Authentifizierung übertragen wird; der Wert 1 kennzeichnet, dass die neue Version mit Benutzernamen für die Authentifizierung übertragen
+	 * @param version Version des Ã¼bergeordneten Antworttelegramms. Der Wert 0 kennzeichnet, dass nur die ursprÃ¼ngliche Version ohne Benutzernamen fÃ¼r die
+	 *                Authentifizierung Ã¼bertragen wird; der Wert 1 kennzeichnet, dass die neue Version mit Benutzernamen fÃ¼r die Authentifizierung Ã¼bertragen
 	 *                wird.
 	 *
 	 * @throws IOException muss geworfen werden.
@@ -294,8 +304,8 @@ public class TransmitterConnectionInfo {
 	 * Liest einen Datensatz aus dem gegebenen DataInputStream
 	 *
 	 * @param in      DataInputStream
-	 * @param version Version des übergeordneten Antworttelegramms. Der Wert 0 kennzeichnet, dass nur die ursprüngliche Version ohne Benutzernamen für die
-	 *                Authentifizierung übertragen wird; der Wert 1 kennzeichnet, dass die neue Version mit Benutzernamen für die Authentifizierung übertragen
+	 * @param version Version des Ã¼bergeordneten Antworttelegramms. Der Wert 0 kennzeichnet, dass nur die ursprÃ¼ngliche Version ohne Benutzernamen fÃ¼r die
+	 *                Authentifizierung Ã¼bertragen wird; der Wert 1 kennzeichnet, dass die neue Version mit Benutzernamen fÃ¼r die Authentifizierung Ã¼bertragen
 	 *                wird.
 	 *
 	 * @throws IOException muss geworfen werden
@@ -330,6 +340,25 @@ public class TransmitterConnectionInfo {
 				tmp.read(in);
 				_exchangeTransmitterList[i] = tmp;
 			}
+		}
+	}
+
+	@Override
+	public String toString() {
+		return _transmitter_1.getAdress() + ":" + _transmitter_1.getSubAdress()
+				+ getArrow()
+				+ _transmitter_2.getAdress() + ":" + _transmitter_2.getSubAdress();
+	}
+
+	private String getArrow() {
+		if(_connectionType == 0){
+			return " Â·Â·> ";
+		}
+		else if(isActiveConnection()){
+			return " ==> ";
+		}
+		else {
+			return " Â·Â·Â· ";
 		}
 	}
 }

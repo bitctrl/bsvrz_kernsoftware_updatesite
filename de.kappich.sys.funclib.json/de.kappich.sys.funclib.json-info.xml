@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package name="de.kappich.sys.funclib.json">
+  <license name="GPL" />
+  <release name="Kernsoftware 3.8.0" />
+  <version number="3.8.0-201605310843" />
+  <revision number="d58abd853623583ae993aeaddb28ed369c11fc37" />
+  <compile time="31.05.2016 08:50:00" />
+  <depends-on-compiled packages="de.bsvrz.sys.funclib.kappich" />
+  <depends-on-source packages="" />
+  <depends-on-lib jars="" />
+  <jvm version="1.8" />
+</package>

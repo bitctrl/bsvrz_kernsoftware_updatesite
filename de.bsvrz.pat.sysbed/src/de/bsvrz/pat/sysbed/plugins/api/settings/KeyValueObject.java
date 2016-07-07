@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -15,37 +15,43 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.plugins.api.settings;
 
 /**
- * Diese Klasse dient dazu Schlüssel-Wert-Paare zu speichern. Jedes Objekt repräsentiert ein solches Paar. Schlüssel als auch Wert werden als Zeichenkette
- * (String) abgelegt. Mittels Getter- und Setter-Methoden kann auf den Schlüssel/Wert zugegriffen werden.
+ * Diese Klasse dient dazu SchlÃ¼ssel-Wert-Paare zu speichern. Jedes Objekt reprÃ¤sentiert ein solches Paar. SchlÃ¼ssel als auch Wert werden als Zeichenkette
+ * (String) abgelegt. Mittels Getter- und Setter-Methoden kann auf den SchlÃ¼ssel/Wert zugegriffen werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5001 $
+ * @version $Revision$
  */
 public class KeyValueObject {
 
-	/** speichert den Schlüssel */
+	/** speichert den SchlÃ¼ssel */
 	private String _key;
 
 	/** speichert den Wert */
 	private String _value;
 
 
-	/** Standardkonstruktor. Ein Objekt dieser Klasse mit leerem Schlüssel und Wert wird erzeugt. */
+	/** Standardkonstruktor. Ein Objekt dieser Klasse mit leerem SchlÃ¼ssel und Wert wird erzeugt. */
 	public KeyValueObject() {
 		this("", "");
 	}
 
 	/**
-	 * Mit diesem Konstruktor wird ein Schlüssel-Wert-Paar erzeugt.
+	 * Mit diesem Konstruktor wird ein SchlÃ¼ssel-Wert-Paar erzeugt.
 	 *
-	 * @param key   der Schlüssel
+	 * @param key   der SchlÃ¼ssel
 	 * @param value der Wert
 	 */
 	public KeyValueObject(String key, String value) {
@@ -54,25 +60,25 @@ public class KeyValueObject {
 	}
 
 	/**
-	 * Gibt den Schlüssel zurück.
+	 * Gibt den SchlÃ¼ssel zurÃ¼ck.
 	 *
-	 * @return der Schlüssel
+	 * @return der SchlÃ¼ssel
 	 */
 	public String getKey() {
 		return _key;
 	}
 
 	/**
-	 * Setzt den Schlüssel auf den übergebenen Parameter.
+	 * Setzt den SchlÃ¼ssel auf den Ã¼bergebenen Parameter.
 	 *
-	 * @param key der Schlüssel
+	 * @param key der SchlÃ¼ssel
 	 */
 	public void setKey(String key) {
 		_key = key;
 	}
 
 	/**
-	 * Gibt den Wert zurück.
+	 * Gibt den Wert zurÃ¼ck.
 	 *
 	 * @return der Wert
 	 */
@@ -81,7 +87,7 @@ public class KeyValueObject {
 	}
 
 	/**
-	 * Setzt den Wert auf den übergebenen Parameter.
+	 * Setzt den Wert auf den Ã¼bergebenen Parameter.
 	 *
 	 * @param value der Wert
 	 */
@@ -90,9 +96,9 @@ public class KeyValueObject {
 	}
 
 	/**
-	 * Gibt eine String-Repräsentation dieses Objekts zurück.
+	 * Gibt eine String-ReprÃ¤sentation dieses Objekts zurÃ¼ck.
 	 *
-	 * @return gibt die String-Repräsentation dieses Objekts zurück
+	 * @return gibt die String-ReprÃ¤sentation dieses Objekts zurÃ¼ck
 	 */
 	public String toString() {
 		return "KeyValueObject{" + "_key='" + _key + "'" + ", _value='" + _value + "'" + "}";

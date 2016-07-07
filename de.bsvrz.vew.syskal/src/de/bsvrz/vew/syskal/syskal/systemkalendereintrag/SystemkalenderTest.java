@@ -61,7 +61,7 @@ public class SystemkalenderTest implements StandardApplication,
     BenachrichtigeListener
 {
   /**
-   * DebugLogger für Debug-Ausgaben
+   * DebugLogger fÃ¼r Debug-Ausgaben
    */
   private static Debug _debug;
 
@@ -107,7 +107,7 @@ public class SystemkalenderTest implements StandardApplication,
 
   /**
    * Konstruktor.<br>
-   * Öffnen der Log-Datei.
+   * Ã–ffnen der Log-Datei.
    */
   public SystemkalenderTest()
   {
@@ -127,8 +127,8 @@ public class SystemkalenderTest implements StandardApplication,
    * @see sys.funclib.application.StandardApplication#parseArguments(sys.funclib.ArgumentList)
    */
   /**
-   * Überschriebene Methode von StandardApplication, die die speziellen Startparameter auswertet.<br>
-   * Die Liste der Konfigurationsbereiche wird durch Aufspaltung des übergebenen Strings erstellt und die speziellen
+   * Ãœberschriebene Methode von StandardApplication, die die speziellen Startparameter auswertet.<br>
+   * Die Liste der Konfigurationsbereiche wird durch Aufspaltung des Ã¼bergebenen Strings erstellt und die speziellen
    * Startparameter werden in die Log-Datei eingetragen.
    * 
    * @param argumentList
@@ -153,7 +153,7 @@ public class SystemkalenderTest implements StandardApplication,
    * @see sys.funclib.application.StandardApplication#initialize(stauma.dav.clientside.ClientDavInterface)
    */
   /**
-   * Überschriebene Methode von StandardApplication, die die Initialisierung durchführt.<br>
+   * Ãœberschriebene Methode von StandardApplication, die die Initialisierung durchfÃ¼hrt.<br>
    * Entsprechend dem Argument -layer wird die entsprechende Methode aufgerufen und danach die Log-Datei geschlossen.<br>
    * 
    * @param connection
@@ -181,7 +181,7 @@ public class SystemkalenderTest implements StandardApplication,
     list.add(_connection.getDataModel().getObject("ske._"));
     list.add(_connection.getDataModel().getObject("ske.#"));
     list.add(_connection.getDataModel().getObject("ske.^"));
-    list.add(_connection.getDataModel().getObject("ske.º"));
+    list.add(_connection.getDataModel().getObject("ske.Âº"));
     list.add(_connection.getDataModel().getObject("ske.\\"));
     list.add(_connection.getDataModel().getObject("ske./"));
     

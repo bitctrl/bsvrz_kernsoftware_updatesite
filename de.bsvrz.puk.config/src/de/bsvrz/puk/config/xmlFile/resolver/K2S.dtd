@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ============================================================= -->
-<!--                    DTD für K2S Dokumente                      -->
+<!--                    DTD fÃ¼r K2S Dokumente                      -->
 <!-- ============================================================= -->
 <!-- =================================================================
     Autor:      cw, rs
     Beschreibung:
-    Die Document Type Definition K2S enthält
+    Die Document Type Definition K2S enthÃ¤lt
     - Elemente zur allgemeinen Dokumenterstellung
     - Elemente zur  Beschreibung des Datenmodells
     - Elemente zur Beschreibung von Schnittstellen
@@ -41,11 +41,11 @@
 <!ENTITY nStrich          "&#x2013;"> <!-- EN DASH -->
 <!ENTITY kleinerGleich    "&lt;=">
 <!ENTITY kleiner          "&lt;">
-<!ENTITY größerGleich     "&gt;=">
-<!ENTITY größer	          "&gt;">
+<!ENTITY grÃ¶ÃŸerGleich     "&gt;=">
+<!ENTITY grÃ¶ÃŸer	          "&gt;">
 
 <!-- =================================================================
-	Weitere Sonderzeichen können bei Bedarf included werden
+	Weitere Sonderzeichen kÃ¶nnen bei Bedarf included werden
 	und sind deshalb hier nicht mehr enthalten.
 ================================================================== -->
 <!--
@@ -54,7 +54,7 @@
 -->
 
 <!-- =================================================================
-    Entities für die Auszeichnung von Textpassagen
+    Entities fÃ¼r die Auszeichnung von Textpassagen
     - tief
         Zur Auszeichnung von tiefgestellten Textpassagen (Indizes)
     - hoch
@@ -136,13 +136,13 @@
 
 
 <!-- =================================================================
-    Entities für die möglichen Absatzgestaltungen
+    Entities fÃ¼r die mÃ¶glichen Absatzgestaltungen
     - absatz
         Normaler Absatz
     - abbildung
         Zur Eingabe einer Abbildung
     - liste
-        Zur Eingabe von Aufzählungslisten
+        Zur Eingabe von AufzÃ¤hlungslisten
     - numListe
         Zur Eingabe von nummerierten Listen
     - sektion
@@ -247,22 +247,22 @@
 >
 
 <!-- =================================================================
-    Entities für die möglichen Verzeichnisse
+    Entities fÃ¼r die mÃ¶glichen Verzeichnisse
     - inhaltsverzeichnis
-        fügt an der Stelle ein Inhaltsverzeichnis ein
+        fÃ¼gt an der Stelle ein Inhaltsverzeichnis ein
     - abbildungsverzeichnis
-        fügt an der Stelle ein Abbildungsverzeichnis ein
+        fÃ¼gt an der Stelle ein Abbildungsverzeichnis ein
     - anforderungsverzeichnis
-        fügt an der Stelle ein Verzeichnis der Anforderungen ein
+        fÃ¼gt an der Stelle ein Verzeichnis der Anforderungen ein
     - tabellenverzeichnis
-        fügt an der Stelle ein Tabellenverzeichnis ein
+        fÃ¼gt an der Stelle ein Tabellenverzeichnis ein
     - referenzverzeichnis
-        Fügt an der angegebenen Stelle eine Tabelle der
+        FÃ¼gt an der angegebenen Stelle eine Tabelle der
         referenzierten Dokumente ein.
     - versionsuebersicht
-        Fügt an der angegebenen Stelle die Versionsübersicht ein
+        FÃ¼gt an der angegebenen Stelle die VersionsÃ¼bersicht ein
     - aenderungsuebersicht
-        Fügt an der angegebenen Stelle die Änderungsübersicht ein
+        FÃ¼gt an der angegebenen Stelle die Ã„nderungsÃ¼bersicht ein
 ================================================================== -->
 <!ENTITY % local.verzeichnis.klasse "">
 <!ENTITY % verzeichnis.klasse
@@ -353,7 +353,7 @@
             tag CDATA #REQUIRED
 >
 
-<!--                    Änderungsverwaltung                        -->
+<!--                    Ã„nderungsverwaltung                        -->
 <!ELEMENT  historie     (autor+, grund, aenderung+)                         >
 <!ATTLIST  historie
             version    CDATA                                #REQUIRED
@@ -510,7 +510,7 @@
 			attributgruppe NMTOKEN #REQUIRED
 >
 
-<!-- Das XML-Attribut "pid" hat historische Gründe und wird durch das XML-Attribut "attributgruppe" ersetzt.-->
+<!-- Das XML-Attribut "pid" hat historische GrÃ¼nde und wird durch das XML-Attribut "attributgruppe" ersetzt.-->
 <!ELEMENT datensatz ((datum|datenliste|datenfeld)+) >
 <!ATTLIST datensatz
 			pid NMTOKEN #IMPLIED
@@ -539,7 +539,7 @@
 			pid ID #REQUIRED
 			name CDATA #IMPLIED
 			objektNamenPermanent (ja|nein) "nein"
-			persistenzModus ( transient | persistent | persistentUndUngültigNachNeustart ) #IMPLIED
+			persistenzModus ( transient | persistent | persistentUndUngÃ¼ltigNachNeustart ) #IMPLIED
 >
 
 <!ELEMENT attributgruppenDefinition ( info, aspekt*, (attribut|attributliste|attributauswahl)+ ) >
@@ -552,18 +552,18 @@
 >
 			<!-- code CDATA #REQUIRED --> <!-- wird durch Konfiguration festgelegt -->
 
-<!ELEMENT transaktionsDefinition ( info, aspekt*, akzeptiert?, benötigt? ) >
+<!ELEMENT transaktionsDefinition ( info, aspekt*, akzeptiert?, benÃ¶tigt? ) >
 <!ATTLIST transaktionsDefinition
 			pid ID #REQUIRED
 			name CDATA #IMPLIED
 >
 
-<!ELEMENT akzeptiert (transaktionsEinschränkung*)>
+<!ELEMENT akzeptiert (transaktionsEinschrÃ¤nkung*)>
 
-<!ELEMENT benötigt (transaktionsEinschränkung*)>
+<!ELEMENT benÃ¶tigt (transaktionsEinschrÃ¤nkung*)>
 
-<!ELEMENT transaktionsEinschränkung EMPTY>
-<!ATTLIST transaktionsEinschränkung
+<!ELEMENT transaktionsEinschrÃ¤nkung EMPTY>
+<!ATTLIST transaktionsEinschrÃ¤nkung
 	nurTransaktionsObjekt (ja|nein) "nein"
 	objektTyp NMTOKEN #IMPLIED
 	attributGruppe NMTOKEN #IMPLIED
@@ -573,11 +573,11 @@
 <!ELEMENT aspekt (info?)>
 <!ATTLIST aspekt
 	pid NMTOKEN #REQUIRED
-	konfigurationsModus ( datensatzNotwendig | datensatzNotwendigUndÄnderbar | datensatzOptional | datensatzOptionalUndÄnderbar ) #IMPLIED
+	konfigurationsModus ( datensatzNotwendig | datensatzNotwendigUndÃ„nderbar | datensatzOptional | datensatzOptionalUndÃ„nderbar ) #IMPLIED
 	onlineModus (quelle | senke | quelleUndSenke ) #IMPLIED
 >
 <!--	persistent (ja|nein) "nein"  -->
-<!-- TODO klären: Eigenschaft "persistent" gehört in die aspektDefinition oder? -->
+<!-- TODO klÃ¤ren: Eigenschaft "persistent" gehÃ¶rt in die aspektDefinition oder? -->
 
 <!ELEMENT aspektDefinition (info)>
 <!ATTLIST aspektDefinition
@@ -761,8 +761,8 @@
 
 <!ELEMENT schnittstellen ((schnittstelle|xi:include)*) >
 
-<!-- Eigentlich müßte bei den beteiligten Elementen ein sw-element referenziert werden.
-     Damit könnte bei den eingang/ausgang definitionen der logischen Schnittstellen
+<!-- Eigentlich mÃ¼ÃŸte bei den beteiligten Elementen ein sw-element referenziert werden.
+     Damit kÃ¶nnte bei den eingang/ausgang definitionen der logischen Schnittstellen
      auch eine Referenz auf diese SW-Elemente erfolgen (Typ ApplikationX-Applikation),
      wenn spezielle Kommunikationspartner explizit gemeint sind.
 <!ELEMENT sw-elementDefinitionen ((swEinheit|xi:include)*) >
@@ -814,7 +814,7 @@
 		<!ELEMENT sw-element (info?) >
 		<!ATTLIST sw-element pid NMTOKEN #IMPLIED >
 		<!--Namenskonvention der pid einer swe: "swe.<segment>.<swe>", Beispiel: "swe.dav.datenverteiler" -->
-		<!--XSLT-Hint: aus der pid könnte ein Verweis auf das entsprechende Kapitel in TAnf generiert werden-->
+		<!--XSLT-Hint: aus der pid kÃ¶nnte ein Verweis auf das entsprechende Kapitel in TAnf generiert werden-->
 		<!ATTLIST sw-element name CDATA #IMPLIED >
 		<!ATTLIST sw-element typ (applikation|bibliothek|konfiguration|datenverteiler|swe|modul|komponente) "applikation" >
 
@@ -844,7 +844,7 @@
         <!ATTLIST feldtyp typDimension    CDATA    #IMPLIED >
 
 		<!ELEMENT klasse ( info, (feld|methode|konstruktor|anker)* ) >
-        <!-- name muß den vollständigen Klassenname incl paket enthalten -->
+        <!-- name muÃŸ den vollstÃ¤ndigen Klassenname incl paket enthalten -->
 		<!ATTLIST klasse name             NMTOKEN     #REQUIRED >
 		<!ATTLIST klasse pid              ID     #REQUIRED >
 		<!ATTLIST klasse abgeleitetVon  IDREFS #IMPLIED >
@@ -888,9 +888,9 @@
 	    	<!ATTLIST eingang attributgruppe IDREF #REQUIRED >
 		    <!ATTLIST eingang aspekt IDREF #REQUIRED >
 		    <!--<!ATTLIST eingang objekte IDREFS #IMPLIED >-->
-        <!ATTLIST eingang typ (Senke|Empfänger) #REQUIRED >
-        <!-- Für den Fall, daß es sich bei dem Kommunikationspartner um eine Applikation handelt, die
-             detaillierter spezifiziert werden kann, diese Information wird beí der Auswertung der Datenflusses
+        <!ATTLIST eingang typ (Senke|EmpfÃ¤nger) #REQUIRED >
+        <!-- FÃ¼r den Fall, daÃŸ es sich bei dem Kommunikationspartner um eine Applikation handelt, die
+             detaillierter spezifiziert werden kann, diese Information wird beÃ­ der Auswertung der Datenflusses
              aus Sicht der Attributgruppen verwendet. -->
         <!ATTLIST eingang partner CDATA #IMPLIED >
 
@@ -901,8 +901,8 @@
   		  <!ATTLIST ausgang attributgruppe  IDREF    #REQUIRED >
 		    <!ATTLIST ausgang aspekt          IDREF  #REQUIRED >
         <!ATTLIST ausgang typ (Quelle|Sender) #REQUIRED >
-        <!-- Für den Fall, daß es sich bei dem Kommunikationspartner um eine Applikation handelt, die
-             detaillierter spezifiziert werden kann, diese Information wird beí der Auswertung der Datenflusses
+        <!-- FÃ¼r den Fall, daÃŸ es sich bei dem Kommunikationspartner um eine Applikation handelt, die
+             detaillierter spezifiziert werden kann, diese Information wird beÃ­ der Auswertung der Datenflusses
              aus Sicht der Attributgruppen verwendet. -->
         <!ATTLIST ausgang partner CDATA #IMPLIED >
 
@@ -919,11 +919,11 @@
 			<!ATTLIST telegrammElement name NMTOKEN #REQUIRED>
 			<!ATTLIST telegrammElement typ (byte|short|int|long|double|text|datensatz) #REQUIRED>
 			<!ATTLIST telegrammElement wertVorgabe CDATA #IMPLIED>
-			<!ATTLIST telegrammElement anzahl CDATA #IMPLIED> <!-- Zahl oder * für beliebig, default ist 1-->
+			<!ATTLIST telegrammElement anzahl CDATA #IMPLIED> <!-- Zahl oder * fÃ¼r beliebig, default ist 1-->
 
 			<!ELEMENT telegrammBlock (titel?, info?, (telegrammElement|telegrammBlock)* ) >
 			<!ATTLIST telegrammBlock name NMTOKEN #REQUIRED>
-			<!ATTLIST telegrammBlock anzahl CDATA #IMPLIED> <!-- Zahl oder * für beliebig, default ist 1-->
+			<!ATTLIST telegrammBlock anzahl CDATA #IMPLIED> <!-- Zahl oder * fÃ¼r beliebig, default ist 1-->
 
 	<!ELEMENT nutzerSchnittstelle (info?) >
     <!ATTLIST nutzerSchnittstelle name CDATA #IMPLIED >

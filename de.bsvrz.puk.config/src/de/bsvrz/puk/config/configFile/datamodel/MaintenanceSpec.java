@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -24,19 +30,19 @@ import de.bsvrz.dav.daf.main.config.ObjectSetType;
 import de.bsvrz.puk.config.configFile.fileaccess.DynamicObjectInfo;
 
 /**
- * Interface zur Definition, wann historische Objekte und Mengenelemente gelöscht werden dürfen
+ * Interface zur Definition, wann historische Objekte und Mengenelemente gelÃ¶scht werden dÃ¼rfen
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13103 $
+ * @version $Revision$
  */
 public interface MaintenanceSpec {
 
 	/**
-	 * Diese Methode gibt zurück, ob ein historisches dynamisches Objekt gelöscht werden darf. Es wurde bereits sichergestellt, dass das
-	 * Objekt ungültig ist und nicht mehr referenziert wird.
+	 * Diese Methode gibt zurÃ¼ck, ob ein historisches dynamisches Objekt gelÃ¶scht werden darf. Es wurde bereits sichergestellt, dass das
+	 * Objekt ungÃ¼ltig ist und nicht mehr referenziert wird.
 	 *
 	 * @param object Dynamisches Objekt
-	 * @return true wenn es gelöscht werden farf, sonst false
+	 * @return true wenn es gelÃ¶scht werden farf, sonst false
 	 */
 	public boolean canDeleteObject(DynamicObjectInfo object);
 

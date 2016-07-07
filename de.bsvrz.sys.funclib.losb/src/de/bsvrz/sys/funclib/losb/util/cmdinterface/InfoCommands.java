@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.sys.funclib.losb.
  * 
- * de.bsvrz.sys.funclib.losb is free software; you can redistribute it and/or modify
+ * de.bsvrz.sys.funclib.losb is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.losb is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.sys.funclib.losb; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.losb.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.losb.util.cmdinterface;
@@ -33,18 +39,18 @@ import java.util.jar.Manifest;
 import java.util.logging.Level;
 
 /**
- * Klasse die Kommandos und Menüs für Statusinformationen zur verwendeten Software bereitstellt.
+ * Klasse die Kommandos und MenÃ¼s fÃ¼r Statusinformationen zur verwendeten Software bereitstellt.
  *
  * @author beck et al. projects GmbH
  * @author Phil Schrettenbrunner
- * @version $Revision: 6420 $ / $Date: 2009-03-10 23:19:01 +0100 (Tue, 10 Mar 2009) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class InfoCommands {
 
 	private static final DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
 	/**
-	 * Kommando zur Anzeige von Informationen über die Speicherauslastung.
+	 * Kommando zur Anzeige von Informationen Ã¼ber die Speicherauslastung.
 	 *
 	 * @return Kommando.
 	 */
@@ -66,7 +72,7 @@ public class InfoCommands {
 	 */
 	public static Command runtimeInfo() {
 		return new Command("Laufzeitinformation", "") {
-			// TODO prüfen, ob MXBean vorhanden und notfalls Exception abfangen!
+			// TODO prÃ¼fen, ob MXBean vorhanden und notfalls Exception abfangen!
 			public void execute() throws Exception {
 				printlnPlain(String.format("Classpath:          %s", System.getProperty("java.class.path")));
 				printlnPlain(String.format("VM Argumente:       %s", ManagementFactory.getRuntimeMXBean().getInputArguments()));
@@ -111,7 +117,7 @@ public class InfoCommands {
 	 */
 	public static Command systemInfo() {
 		return new Command("Systeminformation und Versionen", "") {
-			// TODO prüfen, ob MXBean vorhanden und notfalls Exception abfangen!
+			// TODO prÃ¼fen, ob MXBean vorhanden und notfalls Exception abfangen!
 			public void execute() throws Exception {
 				printlnPlain(String.format("Java Hersteller:          %s", System.getProperty("java.vendor")));
 				printlnPlain(String.format("Java Version:             %s", System.getProperty("java.version")));
@@ -142,27 +148,27 @@ public class InfoCommands {
 					catch(Exception e) {
 					} // Fehler -> return unten beendet Methode
 				}
-				return "(nicht verfügbar)";
+				return "(nicht verfÃ¼gbar)";
 			}
 		};
 	}
 
 	/**
-	 * Liefert ein Menu zum Ändern des StdErr Debug-Levels.
+	 * Liefert ein Menu zum Ã„ndern des StdErr Debug-Levels.
 	 *
-	 * @param desc Beschreibung des Menüs.
-	 * @param help Hilfetext zum Menü.
+	 * @param desc Beschreibung des MenÃ¼s.
+	 * @param help Hilfetext zum MenÃ¼.
 	 *
-	 * @return Menü.
+	 * @return MenÃ¼.
 	 */
 	public static CmdMenu getDebugLevelMenu(String desc, String help) {
 		return new DebugLevelMenu(desc, help);
 	}
 
 	/**
-	 * Liefert ein Menu zum Ändern des StdErr Debug Levels. Die Beschreibung des Menüs ist 'Debug-Level fuer StdErr aendern'.
+	 * Liefert ein Menu zum Ã„ndern des StdErr Debug Levels. Die Beschreibung des MenÃ¼s ist 'Debug-Level fuer StdErr aendern'.
 	 *
-	 * @return Menü.
+	 * @return MenÃ¼.
 	 */
 	public static CmdMenu getDebugLevelMenu() {
 		return new DebugLevelMenu("Debug-Level fuer StdErr aendern", "");
@@ -170,7 +176,7 @@ public class InfoCommands {
 }
 
 /**
- * Subemü zum Ändern des Log-Levels zur Laufzeit.
+ * SubemÃ¼ zum Ã„ndern des Log-Levels zur Laufzeit.
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
@@ -192,7 +198,7 @@ class DebugLevelMenu extends CmdMenu {
 	}
 
 	/**
-	 * Fügt ein Kommando hinzu.
+	 * FÃ¼gt ein Kommando hinzu.
 	 *
 	 * @param level Debug Level.
 	 */

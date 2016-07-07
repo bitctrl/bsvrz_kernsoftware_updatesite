@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.xmlFile.properties;
@@ -30,7 +36,7 @@ import java.util.List;
  * Diese Klasse bildet eine typeDefinition ab, die in der K2S.DTD definiert ist
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8624 $
+ * @version $Revision$
  */
 public class SystemObjectTypeProperties extends ConfigurationObjectProperties {
 
@@ -38,10 +44,10 @@ public class SystemObjectTypeProperties extends ConfigurationObjectProperties {
 
 	private PersistenceMode _persistenceMode = PersistenceMode.UNDEFINED;
 
-	/** Speichert alle Pids, aller Objekte, die das Objekt erweitern. Hat das Array die Größe 0, so ist kein Wert vorhanden (gehört zu erweitert) */
+	/** Speichert alle Pids, aller Objekte, die das Objekt erweitern. Hat das Array die GrÃ¶ÃŸe 0, so ist kein Wert vorhanden (gehÃ¶rt zu erweitert) */
 	private String[] _extendedPids = new String[0];
 
-	/** Konfigurierend, ja/nein oder "" falls der Wert nicht gesetzt wurde (gehört zu basis) */
+	/** Konfigurierend, ja/nein oder "" falls der Wert nicht gesetzt wurde (gehÃ¶rt zu basis) */
 	private boolean _configuring;
 
 	/**
@@ -92,7 +98,7 @@ public class SystemObjectTypeProperties extends ConfigurationObjectProperties {
 	/**
 	 * Parameter "persistenzMode"
 	 *
-	 * @param persistenceMode transient/persistent/persistentUndUngültigNachNeustart. Wird "" übergeben, so wird dies als "undefiniert" interpretiert und gesetzt.
+	 * @param persistenceMode transient/persistent/persistentUndUngÃ¼ltigNachNeustart. Wird "" Ã¼bergeben, so wird dies als "undefiniert" interpretiert und gesetzt.
 	 */
 	public void setPersistenceMode(String persistenceMode) {
 		if(!"".equals(persistenceMode)) {
@@ -102,7 +108,7 @@ public class SystemObjectTypeProperties extends ConfigurationObjectProperties {
 			else if(persistenceMode.equals("persistent")) {
 				_persistenceMode = PersistenceMode.PERSISTENT_OBJECTS;
 			}
-			else if(persistenceMode.equals("persistentUndUngültigNachNeustart")) {
+			else if(persistenceMode.equals("persistentUndUngÃ¼ltigNachNeustart")) {
 				_persistenceMode = PersistenceMode.PERSISTENT_AND_INVALID_ON_RESTART;
 			}
 			else {
@@ -127,7 +133,7 @@ public class SystemObjectTypeProperties extends ConfigurationObjectProperties {
 	/**
 	 * Parameter "persistenzMode"
 	 *
-	 * @return Der gesetzte Persistenzmodus, wurde kein Modus gesetzt (oder "") wird PersistenceMode.UNDEFINED zurückgegeben
+	 * @return Der gesetzte Persistenzmodus, wurde kein Modus gesetzt (oder "") wird PersistenceMode.UNDEFINED zurÃ¼ckgegeben
 	 */
 	public PersistenceMode getPersistenceMode() {
 		return _persistenceMode;
@@ -143,7 +149,7 @@ public class SystemObjectTypeProperties extends ConfigurationObjectProperties {
 	}
 
 	/**
-	 * Alle Pids, die im Element "erweitert" aufgezählt wurden
+	 * Alle Pids, die im Element "erweitert" aufgezÃ¤hlt wurden
 	 *
 	 * @return Array mit Pids oder ein leeres Array
 	 */
@@ -164,7 +170,7 @@ public class SystemObjectTypeProperties extends ConfigurationObjectProperties {
 			_configuring = false;
 		}
 		else {
-			throw new IllegalArgumentException("Konfigurierend wird mit einem ungültigen Wert gesetzt: " + configuring + " gültig sind \"ja\" und \"nein\"");
+			throw new IllegalArgumentException("Konfigurierend wird mit einem ungÃ¼ltigen Wert gesetzt: " + configuring + " gÃ¼ltig sind \"ja\" und \"nein\"");
 		}
 	}
 
@@ -187,18 +193,18 @@ public class SystemObjectTypeProperties extends ConfigurationObjectProperties {
 	}
 
 	/**
-	 * Speichert Attributgruppe und "Menge". Das Array enthält Objekte vom Typ "String", jeder String-Eintrag spiegelt eine Attributgruppe wieder und Objekte vom
+	 * Speichert Attributgruppe und "Menge". Das Array enthÃ¤lt Objekte vom Typ "String", jeder String-Eintrag spiegelt eine Attributgruppe wieder und Objekte vom
 	 * Typ ConfigurationSet,dies entspricht einem Eintrag vom Typ "Menge". Das erste Element, das eingelesen wurden, steht an Position [0]. Wurden keine Elemente
 	 * gelesen, so ist das Array leer.
 	 *
-	 * @return Array, das Elemente vom Typ String oder ConfigurationSet enthält. Sind keine Elemente vorhanden, ist das Array leer
+	 * @return Array, das Elemente vom Typ String oder ConfigurationSet enthÃ¤lt. Sind keine Elemente vorhanden, ist das Array leer
 	 */
 	public Object[] getAtgAndSet() {
 		return _atgAndSet;
 	}
 
 	/**
-	 * @param atgAndSet Speichert Attributgruppe und "Menge". Das Array enthält Objekte vom Typ "String", jeder String-Eintrag spiegelt eine Attributgruppe wieder
+	 * @param atgAndSet Speichert Attributgruppe und "Menge". Das Array enthÃ¤lt Objekte vom Typ "String", jeder String-Eintrag spiegelt eine Attributgruppe wieder
 	 *                  und Objekte vom Typ ConfigurationSet,dies entspricht einem Eintrag vom Typ "Menge". Das erste Element, das eingelesen wurden, steht an
 	 *                  Position [0]. Wurden keine Elemente gelesen, so ist das Array leer.
 	 */
@@ -209,7 +215,7 @@ public class SystemObjectTypeProperties extends ConfigurationObjectProperties {
 	}
 
 	/**
-	 * Diese Methode gibt die Default-Parameter dieses Objekt-Typs zurück.
+	 * Diese Methode gibt die Default-Parameter dieses Objekt-Typs zurÃ¼ck.
 	 *
 	 * @return die Default-Parameter dieses Objekt-Typs
 	 */

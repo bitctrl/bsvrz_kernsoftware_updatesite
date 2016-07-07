@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,26 +14,32 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config.request;
 
 /**
- * Enth‰lt alle Typen von Telegrammen, die von der Konfiguration verschickt werden um anzuzeigen, dass sich Werte von Objekten ge‰ndert haben.
- * <p/>
+ * Enth√§lt alle Typen von Telegrammen, die von der Konfiguration verschickt werden um anzuzeigen, dass sich Werte von Objekten ge√§ndert haben.
+ * <p>
  * Anhand des Typs kann erkannt werden, wie der Byte-Strom zu interpretieren ist, der im Datensatz enthalten ist.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5060 $
+ * @version $Revision$
  */
 public enum KindOfUpdateTelegramm {
 
-	/** Der Name eines Objekts hat sich ge‰ndert. */
-	UPDATE_NAME("Name ge‰ndert", (byte)1),
-	/** Der Zeitpunkt, an dem das Objekt ung¸ltig wurde, hat sich ge‰ndert */
-	UPDATE_NOT_VALID_SINCE("Objekt ung¸ltig ab", (byte)2),
+	/** Der Name eines Objekts hat sich ge√§ndert. */
+	UPDATE_NAME("Name ge√§ndert", (byte)1),
+	/** Der Zeitpunkt, an dem das Objekt ung√ºltig wurde, hat sich ge√§ndert */
+	UPDATE_NOT_VALID_SINCE("Objekt ung√ºltig ab", (byte)2),
 
 	/** Es wurde ein neues dynamisches Objekt erzeugt */
 	CREATED("Neues Objekt", (byte)3);

@@ -35,7 +35,7 @@ import de.bsvrz.vew.syskal.syskal.systemkalendereintrag.SystemkalenderEintrag;
 
 /**
  * Die Klasse zum Versenden der Ereigniszustaende. Erweitert die Klasse TimerTask. Die run() Methode wird ausgefuehrt
- * wenn die im ReminderService eingestellte Zeit abgelaufen ist. Sie implentiert zusätzlich das ClientSenderInterface
+ * wenn die im ReminderService eingestellte Zeit abgelaufen ist. Sie implentiert zusÃ¤tzlich das ClientSenderInterface
  * welches die Methoden zum Versenden der Daten bereitstellt.
  * 
  * @version $Revision: 1.1 $ / $Date: 2009/09/24 12:49:16 $ / ($Author: Pittner $)
@@ -60,7 +60,7 @@ public class BenachrichtigeFunktion extends TimerTask
   private String pid;
 
   /**
-   * Der Debugger, stellt verschiedene Protokollierungsfunktionen zur Verfügung
+   * Der Debugger, stellt verschiedene Protokollierungsfunktionen zur VerfÃ¼gung
    */
   private Debug _debug;
 
@@ -111,11 +111,11 @@ public class BenachrichtigeFunktion extends TimerTask
     String meldung;
     if (ske.isGueltig(time_now))
     {
-      meldung = datum + " " + ske.getPid() + "(" + ske.getName() + ")" + " : gültig";
+      meldung = datum + " " + ske.getPid() + "(" + ske.getName() + ")" + " : gÃ¼ltig";
     }
     else
     {
-      meldung = datum + " " + ske.getPid() + "(" + ske.getName() + ")" + " : nicht gültig";
+      meldung = datum + " " + ske.getPid() + "(" + ske.getName() + ")" + " : nicht gÃ¼ltig";
     }
 
     BenachrichtigeEvent event = new BenachrichtigeEvent(this, meldung);

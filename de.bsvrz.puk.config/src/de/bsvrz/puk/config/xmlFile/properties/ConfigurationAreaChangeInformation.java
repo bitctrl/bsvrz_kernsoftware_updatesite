@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.xmlFile.properties;
@@ -30,11 +36,11 @@ import java.text.SimpleDateFormat;
  * Diese Klasse stellt ein Element "konfigurationsAenderung" dar, siehe K2S.dtd.
  *
  * @author Achim Wullenkord (AW), Kappich Systemberatung
- * @version $Revision: 5091 $ / $Date: 2007-09-03 15:31:49 +0200 (Mon, 03 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigurationAreaChangeInformation {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	/** Zeitpunkt */
@@ -43,20 +49,20 @@ public class ConfigurationAreaChangeInformation {
 	/** Version */
 	private final int _version;
 
-	/** Autor der Änderung */
+	/** Autor der Ã„nderung */
 	private final String _author;
 
-	/** Grund der Änderung. Der Leerstring deutet an, das der Grund nicht angegeben wurde. */
+	/** Grund der Ã„nderung. Der Leerstring deutet an, das der Grund nicht angegeben wurde. */
 	private final String _reason;
 
-	/** Text, den der Autor zusätzlich geschrieben hat. */
+	/** Text, den der Autor zusÃ¤tzlich geschrieben hat. */
 	private final String _text;
 
 	/**
 	 * @param condition Zeitpunkt
 	 * @param version   Version, ist dieser Wert unbekannt muss "-1" gesetzt werden
 	 * @param author    Autor
-	 * @param reason    Grund der Änderunge, ist der Grund unbekannt, muss der Leerstring "" gesetzt werden
+	 * @param reason    Grund der Ã„nderunge, ist der Grund unbekannt, muss der Leerstring "" gesetzt werden
 	 */
 	public ConfigurationAreaChangeInformation(long condition, int version, String author, String reason, String text) {
 		_condition = condition;
@@ -67,10 +73,10 @@ public class ConfigurationAreaChangeInformation {
 	}
 
 	/**
-	 * @param condition Zeitpunkt, die Zeichenkette wird in ein "Date" umgewandelt. Das erzeugte Date enthält "Tag, Monat, Jahr".
-	 * @param version   Version, ist diese unbekannt, wird der Leerstring "" übergeben. Dies wird dann als -1 gespeichert
-	 * @param author    Autor der Änderungen
-	 * @param reason    Grund der Änderungen. Ist der Grund unbekannt, wird "" übergeben und auch so am Objekt gespeichert
+	 * @param condition Zeitpunkt, die Zeichenkette wird in ein "Date" umgewandelt. Das erzeugte Date enthÃ¤lt "Tag, Monat, Jahr".
+	 * @param version   Version, ist diese unbekannt, wird der Leerstring "" Ã¼bergeben. Dies wird dann als -1 gespeichert
+	 * @param author    Autor der Ã„nderungen
+	 * @param reason    Grund der Ã„nderungen. Ist der Grund unbekannt, wird "" Ã¼bergeben und auch so am Objekt gespeichert
 	 */
 	public ConfigurationAreaChangeInformation(String condition, String version, String author, String reason, String text) {
 
@@ -85,7 +91,7 @@ public class ConfigurationAreaChangeInformation {
 		}
 
 		if(!"".equals(version)) {
-			// Es wurde nicht der Leerstring übergeben
+			// Es wurde nicht der Leerstring Ã¼bergeben
 			_version = Integer.parseInt(version);
 		}
 		else {
@@ -110,18 +116,18 @@ public class ConfigurationAreaChangeInformation {
 	/**
 	 * #
 	 *
-	 * @return Autor der Änderungen
+	 * @return Autor der Ã„nderungen
 	 */
 	public String getAuthor() {
 		return _author;
 	}
 
-	/** @return Grund der Änderungen. Wurden keine Änderungen eingetragen, so wird der Leerstring "" zurückgegeben */
+	/** @return Grund der Ã„nderungen. Wurden keine Ã„nderungen eingetragen, so wird der Leerstring "" zurÃ¼ckgegeben */
 	public String getReason() {
 		return _reason;
 	}
 
-	/** @return Text, der zusätzlich eingegeben wurde */
+	/** @return Text, der zusÃ¤tzlich eingegeben wurde */
 	public String getText() {
 		// trim() schneidet die vorherigen Leerzeichen ab
 		return _text.trim();

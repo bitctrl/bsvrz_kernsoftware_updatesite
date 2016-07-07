@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.plugins.datareceiver;
@@ -43,24 +49,24 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Implementiert das Modul, um aktuelle Daten anzuzeigen. Anmeldeoptionen, wie die Rolle und die Anmeldeart können mit Hilfe eines Dialogs angegeben werden. Die
- * ausgewählte Datenidentifikation wird mit dem Dateneditor angezeigt. Jedoch ist eine Veränderung der Daten nicht möglich.
+ * Implementiert das Modul, um aktuelle Daten anzuzeigen. Anmeldeoptionen, wie die Rolle und die Anmeldeart kÃ¶nnen mit Hilfe eines Dialogs angegeben werden. Die
+ * ausgewÃ¤hlte Datenidentifikation wird mit dem Dateneditor angezeigt. Jedoch ist eine VerÃ¤nderung der Daten nicht mÃ¶glich.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5055 $
+ * @version $Revision$
  */
 public class ShowCurrentDataModule extends ExternalModuleAdapter {
 
 	/** speichert den aktuellen Text des Tooltips */
 	private String _tooltipText;
 
-	/** speichert den Dialog, wo Parameter für die Datenanzeige eingestellt werden können */
+	/** speichert den Dialog, wo Parameter fÃ¼r die Datenanzeige eingestellt werden kÃ¶nnen */
 	private static ShowCurrentDataDialog _dialog;
 
 
 	/* ############# Methoden ############# */
 	/**
-	 * Gibt den Namen des Moduls zurück.
+	 * Gibt den Namen des Moduls zurÃ¼ck.
 	 *
 	 * @return der Name des Moduls
 	 */
@@ -69,7 +75,7 @@ public class ShowCurrentDataModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Gibt den Text des Buttons zurück.
+	 * Gibt den Text des Buttons zurÃ¼ck.
 	 *
 	 * @return Text des Buttons
 	 */
@@ -78,7 +84,7 @@ public class ShowCurrentDataModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Gibt den aktuellen Text des Tooltips zurück.
+	 * Gibt den aktuellen Text des Tooltips zurÃ¼ck.
 	 *
 	 * @return Text des Tooltips
 	 */
@@ -87,10 +93,10 @@ public class ShowCurrentDataModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Diese Methode erhält die ausgewählte Datenidentifikation und startet den {@link ShowCurrentDataDialog Dialog}, damit die Anmeldeoptionen angegeben werden
-	 * können.
+	 * Diese Methode erhÃ¤lt die ausgewÃ¤hlte Datenidentifikation und startet den {@link ShowCurrentDataDialog Dialog}, damit die Anmeldeoptionen angegeben werden
+	 * kÃ¶nnen.
 	 *
-	 * @param settingsData enthält die ausgewählte Datenidentifikation
+	 * @param settingsData enthÃ¤lt die ausgewÃ¤hlte Datenidentifikation
 	 */
 	public void startModule(final SettingsData settingsData) {
 		_dialog = new ShowCurrentDataDialog();
@@ -98,7 +104,7 @@ public class ShowCurrentDataModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Diese Methode erhält alle Einstellungen und startet direkt den Dateneditor, um die aktuellen Daten anzuzeigen.
+	 * Diese Methode erhÃ¤lt alle Einstellungen und startet direkt den Dateneditor, um die aktuellen Daten anzuzeigen.
 	 *
 	 * @param settingsData die Einstellungsdaten
 	 */
@@ -108,7 +114,7 @@ public class ShowCurrentDataModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Diese Methode erhält alle Einstellungen des {@link ShowCurrentDataDialog Dialogs} und startet diesen.
+	 * Diese Methode erhÃ¤lt alle Einstellungen des {@link ShowCurrentDataDialog Dialogs} und startet diesen.
 	 *
 	 * @param settingsData die Einstellungsdaten
 	 */
@@ -118,33 +124,33 @@ public class ShowCurrentDataModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Gibt zurück, ob die Bedingungen für dieses Modul erfüllt sind.
+	 * Gibt zurÃ¼ck, ob die Bedingungen fÃ¼r dieses Modul erfÃ¼llt sind.
 	 *
-	 * @param settingsData enthält die ausgewählte Datenidentifikation
+	 * @param settingsData enthÃ¤lt die ausgewÃ¤hlte Datenidentifikation
 	 *
-	 * @return gibt zurück, ob die Bedingungen für diese Modul erfüllt sind
+	 * @return gibt zurÃ¼ck, ob die Bedingungen fÃ¼r diese Modul erfÃ¼llt sind
 	 */
 	public boolean isPreselectionValid(final SettingsData settingsData) {
 		if(!super.isPreselectionValid(settingsData) || settingsData.getObjects().size() != 1) {
-			_tooltipText = "Genau eine Attributgruppe, ein Aspekt und ein Objekt müssen ausgewählt sein.";
+			_tooltipText = "Genau eine Attributgruppe, ein Aspekt und ein Objekt mÃ¼ssen ausgewÃ¤hlt sein.";
 			return false;
 		}
 
-		// ATGV prüfen
+		// ATGV prÃ¼fen
 		final AttributeGroupUsage atgUsage = settingsData.getAttributeGroup().getAttributeGroupUsage(settingsData.getAspect());
 		if(atgUsage == null || atgUsage.isConfigurating()) {
-			_tooltipText = "Es muss eine Online-Attributgruppenverwendung ausgewählt werden.";
+			_tooltipText = "Es muss eine Online-Attributgruppenverwendung ausgewÃ¤hlt werden.";
 			return false;
 		}
-		_tooltipText = "Auswahl übernehmen";
+		_tooltipText = "Auswahl Ã¼bernehmen";
 		return true;
 	}
 
 
 	/* ############### Klasse ShowCurrentDataDialog ############## */
 	/**
-	 * Stellt einen Dialog zur Verfügung, mit dem Anmeldeoptionen, wie die Rolle und die Anmeldeart, festgelegt werden können. Diese Einstellungen können
-	 * gespeichert werden. Durch betätigen des "OK"-Buttons wird der aktuelle Datensatz angezeigt.
+	 * Stellt einen Dialog zur VerfÃ¼gung, mit dem Anmeldeoptionen, wie die Rolle und die Anmeldeart, festgelegt werden kÃ¶nnen. Diese Einstellungen kÃ¶nnen
+	 * gespeichert werden. Durch betÃ¤tigen des "OK"-Buttons wird der aktuelle Datensatz angezeigt.
 	 */
 	private class ShowCurrentDataDialog implements DialogInterface {
 
@@ -154,16 +160,16 @@ public class ShowCurrentDataModule extends ExternalModuleAdapter {
 		/** speichert eine Instanz der Datenidentifikationsauswahl */
 		private DataIdentificationChoice _dataIdentificationChoice;
 
-		/** gibt an, welche Rollen zur Verfügung stehen */
-		private final String[] _roleUnit = {"Empfänger", "Senke"};
+		/** gibt an, welche Rollen zur VerfÃ¼gung stehen */
+		private final String[] _roleUnit = {"EmpfÃ¤nger", "Senke"};
 
-		/** gibt an, welche Anmeldearten zur Verfügung stehen */
-		private final String[] _applyModeEntries = {"Online", "Nur geänderte Datensätze", "Auch nachgelieferte Datensätze"};
+		/** gibt an, welche Anmeldearten zur VerfÃ¼gung stehen */
+		private final String[] _applyModeEntries = {"Online", "Nur geÃ¤nderte DatensÃ¤tze", "Auch nachgelieferte DatensÃ¤tze"};
 
-		/** hier kann die Rolle ausgewählt werden */
+		/** hier kann die Rolle ausgewÃ¤hlt werden */
 		private JComboBox _roleComboBox;
 
-		/** hier kann die Anmeldeart ausgewählt werden */
+		/** hier kann die Anmeldeart ausgewÃ¤hlt werden */
 		private JComboBox _applyModeCombo;
 
 
@@ -173,9 +179,9 @@ public class ShowCurrentDataModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Mit dieser Methode können die Datenidentifikationsdaten übergeben werden. Der Dialog wird mit der Default-Einstellung dargestellt.
+		 * Mit dieser Methode kÃ¶nnen die Datenidentifikationsdaten Ã¼bergeben werden. Der Dialog wird mit der Default-Einstellung dargestellt.
 		 *
-		 * @param data enthält die ausgewählte Datenidentifikation
+		 * @param data enthÃ¤lt die ausgewÃ¤hlte Datenidentifikation
 		 */
 		public void setDataIdentification(final SettingsData data) {
 			if(_dialog == null) {
@@ -189,7 +195,7 @@ public class ShowCurrentDataModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Diese Methode zeigt den Dialog an und trägt die Einstellungsdaten in die entsprechenden Felder ein.
+		 * Diese Methode zeigt den Dialog an und trÃ¤gt die Einstellungsdaten in die entsprechenden Felder ein.
 		 *
 		 * @param data die Einstellungsdaten
 		 */
@@ -315,9 +321,9 @@ public class ShowCurrentDataModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Gibt die ausgewählte Rolle für die Datenanzeige zurück.
+		 * Gibt die ausgewÃ¤hlte Rolle fÃ¼r die Datenanzeige zurÃ¼ck.
 		 *
-		 * @return die ausgewählte Rolle
+		 * @return die ausgewÃ¤hlte Rolle
 		 */
 		private String getRole() {
 			String item = (String)_roleComboBox.getSelectedItem();
@@ -330,7 +336,7 @@ public class ShowCurrentDataModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Setzt die Rolle für die Datenanzeige.
+		 * Setzt die Rolle fÃ¼r die Datenanzeige.
 		 *
 		 * @param role die Rolle
 		 */
@@ -346,7 +352,7 @@ public class ShowCurrentDataModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Gibt die Anmeldeart zurück.
+		 * Gibt die Anmeldeart zurÃ¼ck.
 		 *
 		 * @return die Anmeldeart
 		 */
@@ -390,7 +396,7 @@ public class ShowCurrentDataModule extends ExternalModuleAdapter {
 		/**
 		 * Erstellt die Einstellungsdaten.
 		 *
-		 * @param title der Name für die Einstellungen
+		 * @param title der Name fÃ¼r die Einstellungen
 		 *
 		 * @return die Einstellungsdaten
 		 */
@@ -424,7 +430,7 @@ public class ShowCurrentDataModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Durch betätigen des "OK"-Buttons werden die ausgewählten Objekte mit den eingestellten Parametern beim Datenverteiler angemeldet und angezeigt. Dieser
+		 * Durch betÃ¤tigen des "OK"-Buttons werden die ausgewÃ¤hlten Objekte mit den eingestellten Parametern beim Datenverteiler angemeldet und angezeigt. Dieser
 		 * Dialog wird geschlossen.
 		 */
 		public void doOK() {
@@ -434,14 +440,14 @@ public class ShowCurrentDataModule extends ExternalModuleAdapter {
 			saveSettings(settingsData);
 		}
 
-		/** Durch betätigen des "Abbrechen"-Buttons wird der Dialog geschlossen. */
+		/** Durch betÃ¤tigen des "Abbrechen"-Buttons wird der Dialog geschlossen. */
 		public void doCancel() {
 			_dialog.setVisible(false);
 			_dialog.dispose();
 		}
 
 		/**
-		 * Durch betätigen des "Speichern unter ..."-Buttons werden die Einstellungen gespeichert.
+		 * Durch betÃ¤tigen des "Speichern unter ..."-Buttons werden die Einstellungen gespeichert.
 		 *
 		 * @param title Titel der Einstellungen
 		 */

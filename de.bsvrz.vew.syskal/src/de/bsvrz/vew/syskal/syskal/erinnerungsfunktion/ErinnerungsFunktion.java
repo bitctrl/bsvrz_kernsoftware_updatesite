@@ -50,12 +50,12 @@ public class ErinnerungsFunktion
   private Timer timer = new Timer();
 
   /**
-   * Das Ereignis, wird dem Sender-Instanz übergeben
+   * Das Ereignis, wird dem Sender-Instanz Ã¼bergeben
    */
   private SystemkalenderEintrag ske;
 
   /**
-   * Der Debugger, stellt verschiedene Protokollierungsfunktionen zur Verfügung
+   * Der Debugger, stellt verschiedene Protokollierungsfunktionen zur VerfÃ¼gung
    */
   private Debug _debug;
 

@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.main.impl.archive.request;
 
@@ -45,12 +51,12 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Diese Klasse stellt ein Objekt zur Verf¸gung, mit dem das Archivsystem beauftragt werden kann Daten nachzufordern.
+ * Diese Klasse stellt ein Objekt zur Verf√ºgung, mit dem das Archivsystem beauftragt werden kann Daten nachzufordern.
  * Diese Klasse wird von der Klasse {@link StreamedArchiveRequester} benutzt.
  *
- * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * @author Kappich+Kni√ü Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 5064 $ / $Date: 2007-09-01 22:25:35 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class RequestData implements ArchiveQueryResult {
 	/**
@@ -59,7 +65,7 @@ public class RequestData implements ArchiveQueryResult {
 	private final ArchiveQueryID _archiveRequestID;
 
 	/**
-	 * Konnte der Auftrag zum nachfordern der Daten ausgef¸hrt werden
+	 * Konnte der Auftrag zum nachfordern der Daten ausgef√ºhrt werden
 	 */
 	private boolean _requestSuccessful;
 
@@ -69,7 +75,7 @@ public class RequestData implements ArchiveQueryResult {
 	private String _errorString;
 
 	/**
-	 * DebugLogger f¸r Debug-Ausgaben
+	 * DebugLogger f√ºr Debug-Ausgaben
 	 */
 	private static final Debug _debug = Debug.getLogger();
 
@@ -109,7 +115,7 @@ public class RequestData implements ArchiveQueryResult {
 		if (isRequestSuccessful() == false) {
 			return _errorString;
 		} else {
-			return "Die Archivanfrage(lˆschen) (" + _archiveRequestID.getIndexOfRequest() + ") war erfolgreich";
+			return "Die Archivanfrage(l√∂schen) (" + _archiveRequestID.getIndexOfRequest() + ") war erfolgreich";
 		}
 	}
 
@@ -163,8 +169,8 @@ public class RequestData implements ArchiveQueryResult {
 		Serializer serializer = SerializingFactory.createSerializer(out);
 
 		try {
-			// Anzahl Eintr‰ge der Liste speichern, beim auspacken ist dann bekannt, wie viele Eintr‰ge
-			// entpackt werden m¸ssen.
+			// Anzahl Eintr√§ge der Liste speichern, beim auspacken ist dann bekannt, wie viele Eintr√§ge
+			// entpackt werden m√ºssen.
 			serializer.writeInt(requiredData.size());
 
 			// Datenidentifikationen speichern
@@ -250,8 +256,8 @@ public class RequestData implements ArchiveQueryResult {
 				// Dabei tritt ein Sonderfall auf, wenn die Simulationsvariante auf
 				// <code>NO_SIMULATION_VARIANT_SET</code> , dies entspricht einer
 				// <code>-1</code>, gesetzt wurde. In diesem Fall muss der default Wert
-				// f¸r die Simulationsvariante gew‰hlt werden. Der default-Wert wurde im Konstruktor dieser
-				// Klasse ¸bergeben.
+				// f√ºr die Simulationsvariante gew√§hlt werden. Der default-Wert wurde im Konstruktor dieser
+				// Klasse √ºbergeben.
 				if (dataDescription.getSimulationVariant() != -1) {
 					serializer.writeShort(dataDescription.getSimulationVariant());
 				} else {
@@ -311,7 +317,7 @@ public class RequestData implements ArchiveQueryResult {
 			// Startzeit, long
 			// Endzeit, long
 			// Anzahl der anzufragenden Archivsysteme, int
-			//	 Anzahl viele Eintr‰ge f¸r Referenzen
+			//	 Anzahl viele Eintr√§ge f√ºr Referenzen
 
 			serializer.writeLong(startTime);
 			serializer.writeLong(endTime);
@@ -349,7 +355,7 @@ public class RequestData implements ArchiveQueryResult {
 	}
 
 	/**
-	 * Speichert eine Collection, die SystemObjecs enth‰lt, in einem Serializer. Der erste Wert stellt die Anzahl von
+	 * Speichert eine Collection, die SystemObjecs enth√§lt, in einem Serializer. Der erste Wert stellt die Anzahl von
 	 * Referenzen dar, die gespeichert werden sollen. Danach werden die Referenzen gespeichert.
 	 *
 	 * @param references Alle Referenenzen, die gespeichert werden sollen

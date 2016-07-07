@@ -1,13 +1,13 @@
 /*
  * Copyright 2008 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2006 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -32,42 +38,42 @@ import java.io.File;
 import java.util.*;
 
 /**
- * Implementierung des Interfaces {@link MutableSet} für dynamische Mengen auf Seiten der Konfiguration.
+ * Implementierung des Interfaces {@link MutableSet} fÃ¼r dynamische Mengen auf Seiten der Konfiguration.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13131 $
+ * @version $Revision$
  */
 public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 	
-	/** Objekt zur Verwaltung von Anmeldungen auf Änderungen der Elemente dieser Menge. */
+	/** Objekt zur Verwaltung von Anmeldungen auf Ã„nderungen der Elemente dieser Menge. */
 	private ConfigMutableCollectionSupport _mutableCollectionSupport = new ConfigMutableCollectionSupport(this);
 
-	/** Speichert alle angemeldeten Beobachter in Abhängigkeit zur Simulationsvariante. */
+	/** Speichert alle angemeldeten Beobachter in AbhÃ¤ngigkeit zur Simulationsvariante. */
 	private Map<Short, Set<MutableSetChangeListener>> _changeListeners;
 	
-	/** Objekt für den synchronisierten Zugriff auf die {@link #_changeListeners Listener}. */
+	/** Objekt fÃ¼r den synchronisierten Zugriff auf die {@link #_changeListeners Listener}. */
 	private final Object _lockListeners = new Object();
 	
 	/** Die aktuellen Elemente dieser dynamischen Menge. */
 	private Set<SystemObject> _elements;
 	
-	/** Objekt für den synchronisierten Zugriff auf die {@link #_elements Elemente}. */
+	/** Objekt fÃ¼r den synchronisierten Zugriff auf die {@link #_elements Elemente}. */
 	private final Object _lockElements = new Object();
 	
-	/** Objekt für den synchronisierten Zugriff auf die Fields _elementAccessFieldsInitialized, _elementChangesAllowed und _elementsFile. */
+	/** Objekt fÃ¼r den synchronisierten Zugriff auf die Fields _elementAccessFieldsInitialized, _elementChangesAllowed und _elementsFile. */
 	private final Object _lockElementAccessProperties = new Object();
 	
 	/** Wurden die Fields _elementChangesAllowed und _elementsFile schon initialisiert ? */
 	private boolean _elementAccessFieldsInitialized;
 	
-	/** Dürfen Änderungen an der Elementzugehörigkeit durch diese Konfiguration durchgeführt werden? */
+	/** DÃ¼rfen Ã„nderungen an der ElementzugehÃ¶rigkeit durch diese Konfiguration durchgefÃ¼hrt werden? */
 	private boolean _elementChangesAllowed;
 
 	
-	/** Delegations-Klasse für das Interface {@link ConfigurationCommunicationInterface} */
+	/** Delegations-Klasse fÃ¼r das Interface {@link ConfigurationCommunicationInterface} */
 	ConfigurationCommunicationListenerSupport _configComHelper;
 
 	private String _elementsManagementPid = "";
@@ -97,7 +103,7 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 			if(_changeListeners == null) {
 				_changeListeners = new HashMap<Short, Set<MutableSetChangeListener>>();
 			}
-			// gibt es schon eine Liste für die angegebenen Simulationsvariante?
+			// gibt es schon eine Liste fÃ¼r die angegebenen Simulationsvariante?
 			Set<MutableSetChangeListener> listeners = _changeListeners.get(simulationVariant);
 			if(listeners == null) {
 				listeners = new HashSet<MutableSetChangeListener>();
@@ -126,11 +132,11 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	}
 	
 	/**
-	 * Bei Änderungen an der dynamischen Menge werden alle angemeldeten Beobachter informiert. Die hinzugefügten und entfernten Elemente werden den Beobachtern
+	 * Bei Ã„nderungen an der dynamischen Menge werden alle angemeldeten Beobachter informiert. Die hinzugefÃ¼gten und entfernten Elemente werden den Beobachtern
 	 * ebenfalls mitgeteilt.
 	 * 
 	 * @param addedObjects
-	 *            hinzugefügte Elemente
+	 *            hinzugefÃ¼gte Elemente
 	 * @param removedObjects
 	 *            entfernte Elemente
 	 * @param simulationVariant
@@ -157,17 +163,17 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	}
 
 	/**
-	 * Löscht alle Elemente permanent aus dieser dynamischen Menge.
+	 * LÃ¶scht alle Elemente permanent aus dieser dynamischen Menge.
 	 *
 	 * @param simulationVariant
 	 *            die Simulationsvariante
 	 *
 	 * @throws ConfigurationChangeException
-	 *             Falls die Elemente zur Simulationsvariante nicht gelöscht werden konnten oder nicht gelöscht werden dürfen (bei Simulationsvariante 0).
+	 *             Falls die Elemente zur Simulationsvariante nicht gelÃ¶scht werden konnten oder nicht gelÃ¶scht werden dÃ¼rfen (bei Simulationsvariante 0).
 	 */
 	public void deleteElements(short simulationVariant) throws ConfigurationChangeException {
 		if(simulationVariant == 0) {
-			throw new ConfigurationChangeException("Elemente mit Simulationsvariante '0' dürfen nicht aus einer dynamischen Menge gelöscht werden.");
+			throw new ConfigurationChangeException("Elemente mit Simulationsvariante '0' dÃ¼rfen nicht aus einer dynamischen Menge gelÃ¶scht werden.");
 		}
 		loadElementAccessProperties();
 		synchronized(_lockElements) {
@@ -179,7 +185,7 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 
 
 	/**
-	 * Entfernt alle historischen Elemente, die vor dem angegebenen Zeitstempel auf ungültig gesetzt wurden
+	 * Entfernt alle historischen Elemente, die vor dem angegebenen Zeitstempel auf ungÃ¼ltig gesetzt wurden
 	 * @param deletionTime Zeitstempel analog zu System.currentTimeMillis()
 	 * @return Alle aus den Referenzen bereinigten Systemobjekte
 	 */
@@ -196,7 +202,7 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	public List<SystemObject> getElements() {
 		synchronized(_lockElements) {
 			if(_elements == null) {
-				_elements = new HashSet<SystemObject>(getElementsWithSimulationVariant((short)0));
+				_elements = new LinkedHashSet<SystemObject>(getElementsWithSimulationVariant((short)0));
 			}
 			return Collections.unmodifiableList(new ArrayList<SystemObject>(_elements));
 		}
@@ -222,7 +228,7 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 					}
 				}
 			}
-			// gibt alle Elemente zurück, die zu dieser Zeit mit dieser Simulationsvariante gültig sind
+			// gibt alle Elemente zurÃ¼ck, die zu dieser Zeit mit dieser Simulationsvariante gÃ¼ltig sind
 			return Collections.unmodifiableList(elements);
 		}
 	}
@@ -232,7 +238,7 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	}
 	
 	/**
-	 * Bestimmt die Elemente, die an mindestens einem Zeitpunkt des angegebenen Zeitbereichs zur Zusammenstellung gehört haben in Abhängigkeit der
+	 * Bestimmt die Elemente, die an mindestens einem Zeitpunkt des angegebenen Zeitbereichs zur Zusammenstellung gehÃ¶rt haben in AbhÃ¤ngigkeit der
 	 * Simulationsvariante.
 	 * 
 	 * @param startTime
@@ -242,11 +248,11 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	 * @param simulationVariant
 	 *            die Simulationsvariante
 	 * 
-	 * @return Liste mit den zu mindestens einem Zeitpunkt des Zeitbereichs zur Zusammenstellung gehörenden System-Objekten.
+	 * @return Liste mit den zu mindestens einem Zeitpunkt des Zeitbereichs zur Zusammenstellung gehÃ¶renden System-Objekten.
 	 */
 	public List<SystemObject> getElementsInPeriod(long startTime, long endTime, short simulationVariant) {
 		synchronized(_lockElements) {
-			// Set, damit doppelte Elemente eliminiert werden (Ein Element kann im Zeitbereich mehrmals eingefügt und wieder gelöscht werden)
+			// Set, damit doppelte Elemente eliminiert werden (Ein Element kann im Zeitbereich mehrmals eingefÃ¼gt und wieder gelÃ¶scht werden)
 			final Set<SystemObject> elements = new LinkedHashSet<SystemObject>();
 			for(MutableSetStorage.MutableElement mutableElement : getMutableElements()) {
 				if(mutableElement.getSimulationVariant() == simulationVariant && mutableElement.getStartTime() <= endTime
@@ -263,7 +269,7 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	}
 	
 	/**
-	 * Bestimmt die Elemente, die während des gesamten angegebenen Zeitbereichs zur Zusammenstellung gehört haben in Abhängigkeit der Simulationsvariante.
+	 * Bestimmt die Elemente, die wÃ¤hrend des gesamten angegebenen Zeitbereichs zur Zusammenstellung gehÃ¶rt haben in AbhÃ¤ngigkeit der Simulationsvariante.
 	 * 
 	 * @param startTime
 	 *            Erster Zeitpunkt des Zeitbereichs in Millisekunden seit 1970.
@@ -272,7 +278,7 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	 * @param simulationVariant
 	 *            die Simulationsvariante
 	 * 
-	 * @return Liste mit den während des gesamten Zeitbereichs zur Zusammenstellung gehörenden System-Objekten.
+	 * @return Liste mit den wÃ¤hrend des gesamten Zeitbereichs zur Zusammenstellung gehÃ¶renden System-Objekten.
 	 */
 	public List<SystemObject> getElementsDuringPeriod(long startTime, long endTime, short simulationVariant) {
 		synchronized(_lockElements) {
@@ -288,15 +294,15 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	}
 
 	/**
-	 * Fügt ein Element zur dynamischen Menge in Abhängigkeit der Simulationsvariante.
+	 * FÃ¼gt ein Element zur dynamischen Menge in AbhÃ¤ngigkeit der Simulationsvariante.
 	 * 
 	 * @param object
-	 *            Element, welches hinzugefügt werden soll
+	 *            Element, welches hinzugefÃ¼gt werden soll
 	 * @param simulationVariant
 	 *            die Simulationsvariante
 	 * 
 	 * @throws ConfigurationChangeException
-	 *             Falls das Objekt nicht hinzugefügt werden kann/darf.
+	 *             Falls das Objekt nicht hinzugefÃ¼gt werden kann/darf.
 	 */
 	public void add(SystemObject object, short simulationVariant) throws ConfigurationChangeException {
 		add(new SystemObject[]{object}, simulationVariant);
@@ -307,22 +313,22 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	}
 	
 	/**
-	 * Erweitert die add-Methode um eine Simulationsvariante, die angibt, in welcher Simulation diese Objekte der Menge hinzugefügt werden.
+	 * Erweitert die add-Methode um eine Simulationsvariante, die angibt, in welcher Simulation diese Objekte der Menge hinzugefÃ¼gt werden.
 	 * 
 	 * @param objects
-	 *            die hinzuzufügenden Elemente
+	 *            die hinzuzufÃ¼genden Elemente
 	 * @param simulationVariant
 	 *            die Simulationsvariante
 	 * 
 	 * @throws ConfigurationChangeException
-	 *             Wenn mindestens eines der übergebenen Objekte nicht in die Menge aufgenommen werden konnte und noch nicht in der Menge enthalten war.
+	 *             Wenn mindestens eines der Ã¼bergebenen Objekte nicht in die Menge aufgenommen werden konnte und noch nicht in der Menge enthalten war.
 	 * @see #add(de.bsvrz.dav.daf.main.config.SystemObject[])
 	 */
 	public void add(SystemObject[] objects, short simulationVariant) throws ConfigurationChangeException {
 		loadElementAccessProperties();
 
 		if(checkChangeElementsPermit()) {
-			// Typ der Elemente prüfen
+			// Typ der Elemente prÃ¼fen
 			checkObjectTypeOfElements(objects);
 			
 			synchronized(_lockElements) {
@@ -335,7 +341,7 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 					currentElements.addAll(getElementsWithSimulationVariant(simulationVariant));
 				}
 				
-				// nur die Elemente hinzufügen, die noch nicht enthalten sind
+				// nur die Elemente hinzufÃ¼gen, die noch nicht enthalten sind
 				final Set<SystemObject> elementsToAdd = new HashSet<SystemObject>();
 				for(SystemObject systemObject : objects) {
 					if(!currentElements.contains(systemObject)) {
@@ -343,21 +349,21 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 					}
 				}
 				
-				// zukünftige Anzahl der Elemente in der Menge prüfen
+				// zukÃ¼nftige Anzahl der Elemente in der Menge prÃ¼fen
 				final int maximumElements = getObjectSetType().getMaximumElementCount();
 				if(maximumElements > 0 && currentElements.size() + elementsToAdd.size() > maximumElements) {
 					throw new ConfigurationChangeException(
-					        "Elemente können nicht der dynamischen Menge hinzugefügt werden, da sonst die maximale Elementanzahl (" + maximumElements
-					                + ") überschritten wird.");
+					        "Elemente kÃ¶nnen nicht der dynamischen Menge hinzugefÃ¼gt werden, da sonst die maximale Elementanzahl (" + maximumElements
+					                + ") Ã¼berschritten wird.");
 				}
 
 				for(SystemObject systemObject : elementsToAdd) {
 					if(!getDataModel().referenceAllowed(systemObject)) {
-						throw new ConfigurationChangeException("Das referenzierte Objekt \"" + systemObject + "\" ist nicht mehr gültig");
+						throw new ConfigurationChangeException("Das referenzierte Objekt \"" + systemObject + "\" ist nicht mehr gÃ¼ltig");
 					}
 				}
 				
-				// Elemente der Menge hinzufügen, wenn welche hinzuzufügen sind
+				// Elemente der Menge hinzufÃ¼gen, wenn welche hinzuzufÃ¼gen sind
 				if(!elementsToAdd.isEmpty()) {
 					try {
 						final SystemObject[] systemObjectsToAdd = elementsToAdd.toArray(new SystemObject[elementsToAdd.size()]);
@@ -367,30 +373,30 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 						
 						// aktuelle Menge auf den neuesten Stand bringen
 						if(_elements != null && simulationVariant == 0) {
-							_elements.addAll(elementsToAdd); // repräsentiert die aktuelle Menge
+							_elements.addAll(elementsToAdd); // reprÃ¤sentiert die aktuelle Menge
 						}
 						
 						// die angemeldeten Listener informieren
 						informListeners(systemObjectsToAdd, new SystemObject[0], simulationVariant);
 					}
 					catch(ConfigurationChangeException ex) {
-						_elements = null; // die eingeladene Menge passt evtl. nicht mehr, deshalb löschen, damit sie neu eingeladen wird
+						_elements = null; // die eingeladene Menge passt evtl. nicht mehr, deshalb lÃ¶schen, damit sie neu eingeladen wird
 						throw new ConfigurationChangeException(ex);
 					}
 				}
 			}
 		}
 		else {
-			throw new ConfigurationChangeException("Es liegt keine Berechtigung zum Verändern dieser Menge '" + getNameOrPidOrId() + "' vor."
-			        + " Der Verantwortliche der Konfiguration ist nicht für den Konfigurationsbereich '" + getConfigurationArea().getNameOrPidOrId()
-			        + "' zuständig.");
+			throw new ConfigurationChangeException("Es liegt keine Berechtigung zum VerÃ¤ndern dieser Menge '" + getNameOrPidOrId() + "' vor."
+			        + " Der Verantwortliche der Konfiguration ist nicht fÃ¼r den Konfigurationsbereich '" + getConfigurationArea().getNameOrPidOrId()
+			        + "' zustÃ¤ndig.");
 		}
 	}
 	
 	/**
-	 * Prüft, ob die Konfiguration berechtigt ist an der Elementzugehörigkeit dieser Menge eine Änderung durchzuführen.
+	 * PrÃ¼ft, ob die Konfiguration berechtigt ist an der ElementzugehÃ¶rigkeit dieser Menge eine Ã„nderung durchzufÃ¼hren.
 	 * 
-	 * @return <code>true</code>, falls die Konfiguration die Berechtigung hat, Änderungen an der Elementzugehörigkeit dieser Menge durchzuführen, <br/>
+	 * @return <code>true</code>, falls die Konfiguration die Berechtigung hat, Ã„nderungen an der ElementzugehÃ¶rigkeit dieser Menge durchzufÃ¼hren, <br/>
 	 *         <code>false</code>, falls die Konfiguration diese Berechtigung nicht hat.
 	 */
 	private boolean checkChangeElementsPermit() {
@@ -434,6 +440,10 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 		}
 	}
 
+	public MutableSetStorage getMutableSetStorage() {
+		loadElementAccessProperties();
+		return _mutableSetStorage;
+	}
 
 	public String getElementsManagementPid() {
 		loadElementAccessProperties();
@@ -441,10 +451,10 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	}
 
 	/**
-	 * Prüft, ob alle Objekte vom richtigen Typ sind.
+	 * PrÃ¼ft, ob alle Objekte vom richtigen Typ sind.
 	 * 
 	 * @param objects
-	 *            zu prüfende Elemente
+	 *            zu prÃ¼fende Elemente
 	 * 
 	 * @throws ConfigurationChangeException
 	 *             Falls ein Objekt nicht vom erlaubten Typ der Menge ist.
@@ -454,9 +464,9 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 		final Set<SystemObjectType> objectTypes = new HashSet<SystemObjectType>(getObjectSetType().getObjectTypes());
 		for(SystemObject systemObject : objects) {
 			boolean superTypesOk = false;
-			// prüfen, ob das hinzuzufügende Element vom richtigen Typ ist
-			// da die dynamische Menge ein konfigurierendes Objekt ist, kann die Typ-Überprüfung wegfallen, wenn sie noch nicht gültig (valid) ist
-			// die Überprüfung findet dann in der Konsistenzprüfung statt
+			// prÃ¼fen, ob das hinzuzufÃ¼gende Element vom richtigen Typ ist
+			// da die dynamische Menge ein konfigurierendes Objekt ist, kann die Typ-ÃœberprÃ¼fung wegfallen, wenn sie noch nicht gÃ¼ltig (valid) ist
+			// die ÃœberprÃ¼fung findet dann in der KonsistenzprÃ¼fung statt
 			if(!isValid() || objectTypes.contains(systemObject.getType())) {
 				superTypesOk = true;
 			}
@@ -466,10 +476,10 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 					// evtl. handelt es sich um einen abgeleiteten Typen
 					if(systemObject.getType().inheritsFrom(objectType)) {
 						superTypesOk = true;
-						// da dieser Typ von einem der anderen abgeleitet ist, kann dieser der Menge der erlaubten Typen hinzugefügt werden,
-						// dies hat den Vorteil, dass bei einem weiteren Element die contains-Abfrage direkt zuschlägt
+						// da dieser Typ von einem der anderen abgeleitet ist, kann dieser der Menge der erlaubten Typen hinzugefÃ¼gt werden,
+						// dies hat den Vorteil, dass bei einem weiteren Element die contains-Abfrage direkt zuschlÃ¤gt
 						objectTypes.add(systemObject.getType());
-						break; // länger braucht nicht gesucht werden
+						break; // lÃ¤nger braucht nicht gesucht werden
 					}
 				}
 			}
@@ -483,7 +493,7 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	}
 	
 	/**
-	 * Entfernt ein Element aus der dynamischen Menge in Abhängigkeit der Simulationsvariante.
+	 * Entfernt ein Element aus der dynamischen Menge in AbhÃ¤ngigkeit der Simulationsvariante.
 	 * 
 	 * @param object
 	 *            Element, welches aus der dynamischen Menge entfernt werden soll
@@ -510,7 +520,7 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	 *            die Simulationsvariante
 	 * 
 	 * @throws ConfigurationChangeException
-	 *             Falls die Elemente nicht entfernt werden können.
+	 *             Falls die Elemente nicht entfernt werden kÃ¶nnen.
 	 */
 	public void remove(SystemObject[] objects, short simulationVariant) throws ConfigurationChangeException {
 		loadElementAccessProperties();
@@ -526,7 +536,7 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 					currentElements.addAll(getElementsWithSimulationVariant(simulationVariant));
 				}
 				
-				// prüfen, ob auch alle Elemente in der Menge vorhanden sind
+				// prÃ¼fen, ob auch alle Elemente in der Menge vorhanden sind
 				final Set<SystemObject> elementsToRemove = new HashSet<SystemObject>();
 				for(SystemObject systemObject : objects) {
 					if(currentElements.contains(systemObject)) {
@@ -534,15 +544,15 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 					}
 				}
 				
-				// Anzahl der minimalen Elemente prüfen
+				// Anzahl der minimalen Elemente prÃ¼fen
 				final int minimumElements = getObjectSetType().getMinimumElementCount();
 				if((currentElements.size() - elementsToRemove.size()) < minimumElements) {
 					throw new ConfigurationChangeException(
-					        "Elemente können nicht aus der dynamischen Menge entfernt werden, da sonst die minimale Elementanzahl (" + minimumElements
+					        "Elemente kÃ¶nnen nicht aus der dynamischen Menge entfernt werden, da sonst die minimale Elementanzahl (" + minimumElements
 					                + ") unterschritten wird.");
 				}
 				
-				// zu entfernende Elemente löschen
+				// zu entfernende Elemente lÃ¶schen
 				if(!elementsToRemove.isEmpty()) {
 					try {
 						final SystemObject[] systemObjectsToRemove = elementsToRemove.toArray(new SystemObject[elementsToRemove.size()]);
@@ -552,34 +562,34 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 						
 						// aktuelle Menge auf den neuesten Stand bringen
 						if(_elements != null && simulationVariant == 0) {
-							_elements.removeAll(elementsToRemove); // repräsentiert die aktuelle Menge
+							_elements.removeAll(elementsToRemove); // reprÃ¤sentiert die aktuelle Menge
 						}
 						
 						// die angemeldeten Listener informieren
 						informListeners(new SystemObject[0], systemObjectsToRemove, simulationVariant);
 					}
 					catch(ConfigurationChangeException ex) {
-						_elements = null; // die eingeladene Menge passt evtl. nicht mehr, deshalb löschen, damit sie neu eingeladen wird
+						_elements = null; // die eingeladene Menge passt evtl. nicht mehr, deshalb lÃ¶schen, damit sie neu eingeladen wird
 						throw new ConfigurationChangeException(ex);
 					}
 				}
 			}
 		}
 		else {
-			throw new ConfigurationChangeException("Es liegt keine Berechtigung zum Verändern dieser Menge '" + getNameOrPidOrId() + "' vor."
-			        + " Der Verantwortliche der Konfiguration ist nicht für den Konfigurationsbereich '" + getConfigurationArea().getNameOrPidOrId()
-			        + "' zuständig.");
+			throw new ConfigurationChangeException("Es liegt keine Berechtigung zum VerÃ¤ndern dieser Menge '" + getNameOrPidOrId() + "' vor."
+			        + " Der Verantwortliche der Konfiguration ist nicht fÃ¼r den Konfigurationsbereich '" + getConfigurationArea().getNameOrPidOrId()
+			        + "' zustÃ¤ndig.");
 		}
 	}
 
 
 	/**
-	 * Diese Methode liest den konfigurierenden Datensatz für die Elemente dieser Menge ein und gibt sie in einer Liste zurück.
+	 * Diese Methode liest den konfigurierenden Datensatz fÃ¼r die Elemente dieser Menge ein und gibt sie in einer Liste zurÃ¼ck.
 	 *
-	 * @return eine Liste von Elementen mit Zeitstempeln, die die Zugehörigkeitszeiträume repräsentieren
+	 * @return eine Liste von Elementen mit Zeitstempeln, die die ZugehÃ¶rigkeitszeitrÃ¤ume reprÃ¤sentieren
 	 */
 	private List<MutableSetStorage.MutableElement> getMutableElements() {
-		// Muss synchronisiert auf _lockElements ausgeführt werden
+		// Muss synchronisiert auf _lockElements ausgefÃ¼hrt werden
 		assert Thread.holdsLock(_lockElements);
 
 		loadElementAccessProperties();
@@ -610,8 +620,8 @@ public class ConfigMutableSet extends ConfigObjectSet implements MutableSet {
 	}
 
 	/**
-	 * Wird aufgerufen, wenn das Objekt verändert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zurücksetzen. Erbende Klassen müssen diese
-	 * Funktion überschreiben, wenn sie Daten cachen.
+	 * Wird aufgerufen, wenn das Objekt verÃ¤ndert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zurÃ¼cksetzen. Erbende Klassen mÃ¼ssen diese
+	 * Funktion Ã¼berschreiben, wenn sie Daten cachen.
 	 */
 	@Override
 	void invalidateCache() {

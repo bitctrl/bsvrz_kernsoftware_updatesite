@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.sys.funclib.losb.
  * 
- * de.bsvrz.sys.funclib.losb is free software; you can redistribute it and/or modify
+ * de.bsvrz.sys.funclib.losb is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.losb is distributed in the hope that it will be useful,
@@ -15,19 +15,25 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.sys.funclib.losb; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.losb.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.losb.messages;
 
 
 /**
- * Diverse Fehlermeldungen für Protokolle und Auswertungen.
+ * Diverse Fehlermeldungen fÃ¼r Protokolle und Auswertungen.
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 12795 $ / $Date: 2014-09-25 10:25:21 +0200 (Thu, 25 Sep 2014) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ErrorMessage {
 
@@ -35,7 +41,7 @@ public class ErrorMessage {
 
 	public static final String NO_DATA = "Keine Daten. ";
 
-	public static final String MULIPLE_SUBSCRIPTIONS = "Es existiert bereits eine Sendeanmeldung für diese Datenidentifikation: ";
+	public static final String MULIPLE_SUBSCRIPTIONS = "Es existiert bereits eine Sendeanmeldung fÃ¼r diese Datenidentifikation: ";
 
 	public static final String SENDING_NOT_ALLOWED = "Keine positive Sendesteuerung erhalten. ";
 
@@ -57,7 +63,7 @@ public class ErrorMessage {
 
 	public static final String CAN_NOT_ACCESS_FILE = "Kann auf Datei nicht zugreifen: ";
 
-	public static final String INVALID_PID = "Ungültige PID: ";
+	public static final String INVALID_PID = "UngÃ¼ltige PID: ";
 
 	public static final String FILE_NOT_FOUND = "Datei existiert nicht: ";
 
@@ -75,17 +81,17 @@ public class ErrorMessage {
 
 	public static final String PARAM_IS_NULL = "Parameter ist null: ";
 
-	public static final String INVALID_PARAM_VALUE = "Ungültiger Parameterwert: ";
+	public static final String INVALID_PARAM_VALUE = "UngÃ¼ltiger Parameterwert: ";
 
-	public static final String INCOMPATIBLE_TYPES = "Typen stimmen nicht überein: ";
+	public static final String INCOMPATIBLE_TYPES = "Typen stimmen nicht Ã¼berein: ";
 
 	public static final String NO_PERIODS = "Es wurde kein Zeitbereich angegeben.";
 
-	public static final String OLD_DATAMODEL = "Der Auftrag konnte aufgrund eines veralteten Datenmodells nicht ausgeführt werden. Benötigt wird kb.tmVewProtokolleGlobal in mindestens Version 5.";
+	public static final String OLD_DATAMODEL = "Der Auftrag konnte aufgrund eines veralteten Datenmodells nicht ausgefÃ¼hrt werden. BenÃ¶tigt wird kb.tmVewProtokolleGlobal in mindestens Version 5.";
 
 	public static final String NULL = "Es wurde ein null-Wert verwendet!";
 
 	public static final String MULTIPLE_OBJECTS = "Es kann pro Typ nur ein Objekt definiert werden, aber es wurden mehrere Objekte angegeben: ";
 
-	public static final String INVALID_PERIOD = "Ungültiger Zeitbereich";
+	public static final String INVALID_PERIOD = "UngÃ¼ltiger Zeitbereich";
 }

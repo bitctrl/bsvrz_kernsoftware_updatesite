@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config;
@@ -33,14 +39,14 @@ import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import java.util.*;
 
 /**
- * Klasse, die den Zugriff auf Attributgruppen seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
+ * Klasse, die den Zugriff auf Attributgruppen seitens der Datenverteiler-Applikationsfunktionen ermÃ¶glicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13173 $
+ * @version $Revision$
  */
 public class DafAttributeGroup extends DafAttributeSet implements AttributeGroup {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	/** Die Aspekte dieser Attributgruppe */
@@ -50,7 +56,7 @@ public class DafAttributeGroup extends DafAttributeSet implements AttributeGroup
 	private final Object _lockAtgUsageMap = new Object();
 
 	/**
-	 * Speichert alle Attributgruppenverwendungen. Als Schlüssel dient der Aspekt. Die Map wird erst initialisiert, wenn das erste mal auf eine
+	 * Speichert alle Attributgruppenverwendungen. Als SchlÃ¼ssel dient der Aspekt. Die Map wird erst initialisiert, wenn das erste mal auf eine
 	 * Attributgruppenverwendungen zugegriffen wird.
 	 */
 	private Map<Aspect, AttributeGroupUsage> _atgUsageMap = null;
@@ -147,7 +153,7 @@ public class DafAttributeGroup extends DafAttributeSet implements AttributeGroup
 			}
 			AttributeGroupUsage attributeGroupUsage = _atgUsageMap.get(asp);
 			if(attributeGroupUsage == null) {
-				_debug.fine("Attributgruppenverwendung für " + this.getPidOrNameOrId() + " und " + asp.getPidOrNameOrId() + " nicht gefunden");
+				_debug.fine("Attributgruppenverwendung fÃ¼r " + this.getPidOrNameOrId() + " und " + asp.getPidOrNameOrId() + " nicht gefunden");
 			}
 			return attributeGroupUsage;
 		}
@@ -157,7 +163,7 @@ public class DafAttributeGroup extends DafAttributeSet implements AttributeGroup
 		synchronized(_lockAtgUsageMap) {
 			if((aspects == null) || (aspects.size() == 0)) {
 				aspects = new ArrayList<Aspect>();
-				// Die Aspekte müssen über die Attributgruppenverwendung gefunden werden
+				// Die Aspekte mÃ¼ssen Ã¼ber die Attributgruppenverwendung gefunden werden
 				final Collection<AttributeGroupUsage> atgUsages;
 				atgUsages = getAttributeGroupUsages();
 				for(AttributeGroupUsage attributeGroupUsage : atgUsages) {

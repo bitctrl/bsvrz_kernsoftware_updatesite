@@ -6,7 +6,7 @@
  * 
  * de.bsvrz.sys.funclib.crypt is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.crypt is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.crypt; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.crypt; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.sys.funclib.crypt;
 
@@ -33,7 +39,7 @@ import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.KeySpec;
 
 /**
- * Klasse, die Methoden zur Ent/Verschlüssung nach PBE With MD5 And DES zur Verfügung
+ * Klasse, die Methoden zur Ent/VerschlÃ¼ssung nach PBE With MD5 And DES zur VerfÃ¼gung
  *
  * @author Kappich Systemberatung
  * @version $Revision: 0 $
@@ -60,7 +66,7 @@ public class PBEWithMD5AndDES implements Encrypt, Decrypt {
 	/**
 	 * Erzeugt aus einem String ein byte-Array. Der String wird nach ISO-8859-1 zerlegt.
 	 * @param text String, der in ein byte-Array zerlegt werden soll
-	 * @return byte-Array, das den übergebenen String enthält
+	 * @return byte-Array, das den Ã¼bergebenen String enthÃ¤lt
 	 * @throws UnsupportedEncodingException Falls der String nicht ISO-8859-1 konform ist
 	 */
 	final private byte[] getBytes(String text) throws UnsupportedEncodingException {

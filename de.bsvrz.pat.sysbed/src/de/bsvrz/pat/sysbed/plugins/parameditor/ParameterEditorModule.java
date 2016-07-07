@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.plugins.parameditor;
@@ -39,11 +45,11 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Implementiert das Modul für den {@link ParameterEditor Parametereditor}. Mit der ausgewählten Datenidentifikation wird der Parametereditor
+ * Implementiert das Modul fÃ¼r den {@link ParameterEditor Parametereditor}. Mit der ausgewÃ¤hlten Datenidentifikation wird der Parametereditor
  * gestartet.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
+ * @version $Revision$
  */
 public class ParameterEditorModule extends ExternalModuleAdapter {
 
@@ -56,7 +62,7 @@ public class ParameterEditorModule extends ExternalModuleAdapter {
 
 	/* ############# Methoden ############ */
 	/**
-	 * Gibt den Namen des Moduls zurück.
+	 * Gibt den Namen des Moduls zurÃ¼ck.
 	 *
 	 * @return der Name des Moduls
 	 */
@@ -65,7 +71,7 @@ public class ParameterEditorModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Gibt den Text des Buttons zurück.
+	 * Gibt den Text des Buttons zurÃ¼ck.
 	 *
 	 * @return Text des Buttons
 	 */
@@ -74,7 +80,7 @@ public class ParameterEditorModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Gibt den Text des Tooltips zurück.
+	 * Gibt den Text des Tooltips zurÃ¼ck.
 	 *
 	 * @return Text des Tooltips
 	 */
@@ -83,9 +89,9 @@ public class ParameterEditorModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Diese Methode erhält die ausgewählte Datenidentifikation und startet den Parametereditor.
+	 * Diese Methode erhÃ¤lt die ausgewÃ¤hlte Datenidentifikation und startet den Parametereditor.
 	 *
-	 * @param settingsData enthält die ausgewählte Datenidentifikation
+	 * @param settingsData enthÃ¤lt die ausgewÃ¤hlte Datenidentifikation
 	 */
 	public void startModule(final SettingsData settingsData) {
 		_dialog = new EditParameterDialog();
@@ -93,7 +99,7 @@ public class ParameterEditorModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Diese Methode erhält alle Einstellungen für die Anzeige des Parametereditors.
+	 * Diese Methode erhÃ¤lt alle Einstellungen fÃ¼r die Anzeige des Parametereditors.
 	 *
 	 * @param settingsData die Einstellungsdaten
 	 */
@@ -103,7 +109,7 @@ public class ParameterEditorModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Diese Methode erhält alle Einstellungen für den Parametereditor und startet den {@link EditParameterDialog Dialog}. Dieser wird mit den Einstellungen
+	 * Diese Methode erhÃ¤lt alle Einstellungen fÃ¼r den Parametereditor und startet den {@link EditParameterDialog Dialog}. Dieser wird mit den Einstellungen
 	 * initialisiert.
 	 *
 	 * @param settingsData die Einstellungsdaten
@@ -114,34 +120,34 @@ public class ParameterEditorModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Gibt an, ob die Vorauswahl den Anforderungen des Parametereditors genügen.
+	 * Gibt an, ob die Vorauswahl den Anforderungen des Parametereditors genÃ¼gen.
 	 *
-	 * @param settingsData enthält die ausgewählte Datenidentifikation
+	 * @param settingsData enthÃ¤lt die ausgewÃ¤hlte Datenidentifikation
 	 *
-	 * @return gibt an, ob die Vorauswahl den Anforderungen des Parametereditors genügen
+	 * @return gibt an, ob die Vorauswahl den Anforderungen des Parametereditors genÃ¼gen
 	 */
 	public boolean isPreselectionValid(final SettingsData settingsData) {
 		final AttributeGroup atg = settingsData.getAttributeGroup();
 		final List<SystemObject> objects = settingsData.getObjects();
 
 		if(atg != null && objects != null && settingsData.getObjects().size() == 1) {
-			// prüfen, ob die Attributgruppe die richtigen Aspekte enthält
+			// prÃ¼fen, ob die Attributgruppe die richtigen Aspekte enthÃ¤lt
 			Collection aspects = atg.getAspects();
 			if(checkAspects(aspects)) {
-				_tooltipText = "Auswahl übernehmen";
+				_tooltipText = "Auswahl Ã¼bernehmen";
 				return true;
 			}
 		}
-		_tooltipText = "Genau eine Parameterattributgruppe und ein Objekt müssen ausgewählt sein.";
+		_tooltipText = "Genau eine Parameterattributgruppe und ein Objekt mÃ¼ssen ausgewÃ¤hlt sein.";
 		return false;
 	}
 
 	/**
-	 * Prüft, ob die für den Parametereditor benötigten Aspekte auch in der Liste der Aspekte vorkommen.
+	 * PrÃ¼ft, ob die fÃ¼r den Parametereditor benÃ¶tigten Aspekte auch in der Liste der Aspekte vorkommen.
 	 *
 	 * @param aspects zu durchsuchende Liste von Aspekten
 	 *
-	 * @return gibt an, ob die benötigten Aspekte in der Liste vorhanden sind
+	 * @return gibt an, ob die benÃ¶tigten Aspekte in der Liste vorhanden sind
 	 */
 	private boolean checkAspects(Collection aspects) {
 		DataModel configuration = getConnection().getDataModel();
@@ -158,8 +164,8 @@ public class ParameterEditorModule extends ExternalModuleAdapter {
 
 	/* ################# Klasse EditParameterDialog #################### */
 	/**
-	 * Stellt einen Dialog zur Verfügung, mit dem Einstellungen für den Parametereditor gemacht werden können. Diese Einstellungen können gespeichert werden. Durch
-	 * betätigen des "OK"-Buttons wird der Parametereditor gestartet.
+	 * Stellt einen Dialog zur VerfÃ¼gung, mit dem Einstellungen fÃ¼r den Parametereditor gemacht werden kÃ¶nnen. Diese Einstellungen kÃ¶nnen gespeichert werden. Durch
+	 * betÃ¤tigen des "OK"-Buttons wird der Parametereditor gestartet.
 	 */
 	private class EditParameterDialog implements DialogInterface {
 
@@ -176,9 +182,9 @@ public class ParameterEditorModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Mit dieser Methode können die Datenidentifikationsdaten übergeben werden.
+		 * Mit dieser Methode kÃ¶nnen die Datenidentifikationsdaten Ã¼bergeben werden.
 		 *
-		 * @param data enthält die ausgewählte Datenidentifikation
+		 * @param data enthÃ¤lt die ausgewÃ¤hlte Datenidentifikation
 		 */
 		public void setDataIdentification(final SettingsData data) {
 			Class moduleClass = ParameterEditorModule.class;
@@ -193,7 +199,7 @@ public class ParameterEditorModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Diese Methode zeigt den Dialog an und trägt die Einstellungsdaten in die entsprechenden Felder.
+		 * Diese Methode zeigt den Dialog an und trÃ¤gt die Einstellungsdaten in die entsprechenden Felder.
 		 *
 		 * @param data die Einstellungsdaten
 		 */
@@ -291,7 +297,7 @@ public class ParameterEditorModule extends ExternalModuleAdapter {
 			return settingsData;
 		}
 
-		/** Durch betätigen des "OK"-Buttons wird der Parametereditor gestartet. Die ausgewählten Einstellungen werden gespeichert. */
+		/** Durch betÃ¤tigen des "OK"-Buttons wird der Parametereditor gestartet. Die ausgewÃ¤hlten Einstellungen werden gespeichert. */
 		public void doOK() {
 			SettingsData settingsData = getSettings("");
 			startSettings(settingsData);
@@ -299,14 +305,14 @@ public class ParameterEditorModule extends ExternalModuleAdapter {
 			saveSettings(settingsData);
 		}
 
-		/** diese Methode schließt den Dialog */
+		/** diese Methode schlieÃŸt den Dialog */
 		public void doCancel() {
 			_dialog.setVisible(false);
 			_dialog.dispose();
 		}
 
 		/**
-		 * Durch betätigen des "Speichern unter ..."-Buttons werden die Einstellungen gespeichert.
+		 * Durch betÃ¤tigen des "Speichern unter ..."-Buttons werden die Einstellungen gespeichert.
 		 *
 		 * @param title Titel der Einstellungen
 		 */

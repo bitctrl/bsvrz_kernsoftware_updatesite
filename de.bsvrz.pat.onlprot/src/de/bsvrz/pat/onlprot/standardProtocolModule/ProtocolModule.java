@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2003 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2003 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.onlprot.
  * 
- * de.bsvrz.pat.onlprot is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.onlprot is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.onlprot is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.onlprot; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.onlprot.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.onlprot.standardProtocolModule;
@@ -28,32 +34,32 @@ import de.bsvrz.sys.funclib.commandLineArgs.ArgumentList;
 import java.io.PrintWriter;
 
 /**
- * Abstrakte Klasse, die Funktionalität für Protokollierungsmodule zur Verfügung stellt.
- * <p/>
- * Folgende Methoden werden zur Vergügung gestellt: <ul> <li> <code>initProtocol</code>	- Initialisierung <li> <code>update</code>			- Ausgabe der empfangenen
- * Daten <li> <code>closeProtocol</code>	- Abschluß der Protokollierung </ul>
+ * Abstrakte Klasse, die FunktionalitÃ¤t fÃ¼r Protokollierungsmodule zur VerfÃ¼gung stellt.
+ * <p>
+ * Folgende Methoden werden zur VergÃ¼gung gestellt: <ul> <li> <code>initProtocol</code>	- Initialisierung <li> <code>update</code>			- Ausgabe der empfangenen
+ * Daten <li> <code>closeProtocol</code>	- AbschluÃŸ der Protokollierung </ul>
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5058 $
+ * @version $Revision$
  */
 public abstract class ProtocolModule implements ProtocolModuleInterface {
 
 	/** Name der Datei, in der die protokollierten Datensequenzen gespeichert werden. */
 	private PrintWriter protocolFileWriter = null;
 
-	/** Der Protokollierer, der das gewünschte Protokoll erstellt. */
+	/** Der Protokollierer, der das gewÃ¼nschte Protokoll erstellt. */
 	private ClientProtocollerInterface protocoller = null;
 
 
-	/** Einziger Konstruktor. (Für den üblicherweise impliziten Aufruf durch abgeleitete Klassen.) */
+	/** Einziger Konstruktor. (FÃ¼r den Ã¼blicherweise impliziten Aufruf durch abgeleitete Klassen.) */
 	protected ProtocolModule() {
 	}
 
-	/** Führt Aufräumarbeiten nach Beendigung des Protokollierens aus. */
+	/** FÃ¼hrt AufrÃ¤umarbeiten nach Beendigung des Protokollierens aus. */
 	public abstract void closeProtocol();
 
 	/**
-	 * Gibt Information über die Aufrufparameter des Protokollierungsmoduls zurück
+	 * Gibt Information Ã¼ber die Aufrufparameter des Protokollierungsmoduls zurÃ¼ck
 	 *
 	 * @return String mit der Beschreibung der erlaubten Aufrufparameter und deren erwartetes Format
 	 */
@@ -78,7 +84,7 @@ public abstract class ProtocolModule implements ProtocolModuleInterface {
 	}
 
 	/**
-	 * Führt die Initialisierungsschritte des Protokollierungsmoduls aus.
+	 * FÃ¼hrt die Initialisierungsschritte des Protokollierungsmoduls aus.
 	 *
 	 * @return ClientReceiverInterface-Handle auf den benutzten Protokollierer
 	 *
@@ -102,7 +108,7 @@ public abstract class ProtocolModule implements ProtocolModuleInterface {
 	/**
 	 * Protokollierer setzen.
 	 *
-	 * @param	cpi	Ausgewählter Protokollierer
+	 * @param	cpi	AusgewÃ¤hlter Protokollierer
 	 */
 	public void setProtocoller(ClientProtocollerInterface cpi) {
 		protocoller = cpi;
@@ -111,7 +117,7 @@ public abstract class ProtocolModule implements ProtocolModuleInterface {
 	/**
 	 * Aktualisierungsmethode, die nach Empfang eines angemeldeten Datensatzes von den Datenverteiler-Applikationsfunktionen aufgerufen wird.
 	 *
-	 * @param	results	{@link ResultData}[] mit den empfangenen Ergebnisdatensätzen.
+	 * @param	results	{@link ResultData}[] mit den empfangenen ErgebnisdatensÃ¤tzen.
 	 * @see				de.bsvrz.dav.daf.main.ClientReceiverInterface#update
 	 */
 	public abstract void update(ResultData[] results);

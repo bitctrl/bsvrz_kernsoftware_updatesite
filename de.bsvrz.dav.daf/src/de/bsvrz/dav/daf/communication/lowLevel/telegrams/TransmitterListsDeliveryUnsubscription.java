@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel.telegrams;
@@ -29,11 +35,11 @@ import java.io.IOException;
 
 /**
  * Mit diesem Systemtelegramm fordert Datenverteiler A seinen Nachbardatenverteiler B auf, ihm aus seiner lokalen Anmeldungsliste zu bestimmten erreichbaren
- * Datenverteilern die Objekt- und Attributgruppenliste nicht mehr zur Verfügung zu stellen. Datenverteiler A meldet ein zuvor bei Datenverteiler B angemeldetes
+ * Datenverteilern die Objekt- und Attributgruppenliste nicht mehr zur VerfÃ¼gung zu stellen. Datenverteiler A meldet ein zuvor bei Datenverteiler B angemeldetes
  * Abonnement wieder ab.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5059 $
+ * @version $Revision$
  */
 public class TransmitterListsDeliveryUnsubscription extends DataTelegram {
 
@@ -61,7 +67,7 @@ public class TransmitterListsDeliveryUnsubscription extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die Liste der Datenverteiler zurück
+	 * Gibt die Liste der Datenverteiler zurÃ¼ck
 	 *
 	 * @return die Liste der Datenverteiler
 	 */
@@ -70,7 +76,7 @@ public class TransmitterListsDeliveryUnsubscription extends DataTelegram {
 	}
 
 	public final String parseToString() {
-		String str = "Systemtelegramm Datenverteileranmeldelisten Zulieferer Kündigung:\n";
+		String str = "Systemtelegramm Datenverteileranmeldelisten Zulieferer KÃ¼ndigung:\n";
 		if(transmitterList != null) {
 			str += "Datenverteilerliste: [ ";
 			for(int i = 0; i < transmitterList.length; ++i) {
@@ -106,7 +112,7 @@ public class TransmitterListsDeliveryUnsubscription extends DataTelegram {
 			length += (transmitterList.length * 8);
 		}
 		if(length != _length) {
-			throw new IOException("Falsche Telegram Länge");
+			throw new IOException("Falsche Telegram LÃ¤nge");
 		}
 	}
 }

@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,18 +15,24 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.main.archive;
 
 /**
- * Ein Objekt dieser Klasse bestimmt, ob die nachgelieferten Archivdaten, die zu einer Archivanfrage gehören, nach ihrem
+ * Ein Objekt dieser Klasse bestimmt, ob die nachgelieferten Archivdaten, die zu einer Archivanfrage gehÃ¶ren, nach ihrem
  * Datenindex oder nach ihrer Datenzeit sortiert und in Strom von nicht nachgelieferten Archivdaten einsortiert werden
  * sollen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5064 $
+ * @version $Revision$
  */
 public class ArchiveOrder {
 	/**
@@ -39,7 +45,7 @@ public class ArchiveOrder {
 	public static final ArchiveOrder BY_DATA_TIME = new ArchiveOrder("nach Datenzeit sortiert", 2);
 
 	/**
-	 * Diese Methode wandelt den übergebenen Parameter in ein Objekt dieser Klasse um
+	 * Diese Methode wandelt den Ã¼bergebenen Parameter in ein Objekt dieser Klasse um
 	 *
 	 * @param code Der Code bestimmt welches Objekt dieser Klasse erzeugt wird
 	 * @return eindeutiges Objekt dieser Klasse

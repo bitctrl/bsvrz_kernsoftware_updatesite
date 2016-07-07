@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.main.impl.archive.request;
 
@@ -38,14 +44,14 @@ import de.bsvrz.sys.funclib.dataSerializer.Serializer;
 
 /**
  * Diese Klasse kann benutzt werden um ein Archivsystem aufzufordern seine Verwaltungsinformationen mit einem
- * Datenträger der Sicherung abzugleichen. Dies kann nötig werden, wenn die Verwaltungsinformationen des Archivsystems
- * nicht mehr auf dem neusten Stand sind, für eine genaue Beschreibung siehe {@link
+ * DatentrÃ¤ger der Sicherung abzugleichen. Dies kann nÃ¶tig werden, wenn die Verwaltungsinformationen des Archivsystems
+ * nicht mehr auf dem neusten Stand sind, fÃ¼r eine genaue Beschreibung siehe {@link
  * de.bsvrz.dav.daf.main.archive.ArchiveRequestManager#archiveFileSaverAlignment}.
  * Diese Klasse wird von der Klasse {@link StreamedArchiveRequester} benutzt.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 5064 $ / $Date: 2007-09-01 22:25:35 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ArchiveAlignment implements ArchiveQueryResult {
 
@@ -55,24 +61,24 @@ public class ArchiveAlignment implements ArchiveQueryResult {
 	private final ArchiveQueryID _archiveRequestID;
 
 	/**
-	 * Konnte der Abgleich ausgeführt werden
+	 * Konnte der Abgleich ausgefÃ¼hrt werden
 	 */
 	private boolean _alignmentSuccessful;
 
 	/**
-	 * Fehler, der beim löschen von Daten aufgetreten sein kann
+	 * Fehler, der beim lÃ¶schen von Daten aufgetreten sein kann
 	 */
 	private String _errorString;
 
 	/**
-	 * DebugLogger für Debug-Ausgaben
+	 * DebugLogger fÃ¼r Debug-Ausgaben
 	 */
 	private static final Debug _debug = Debug.getLogger();
 
 	private final StreamedArchiveRequester _streamedArchiveRequester;
 
 	/**
-	 * Speichert die Simulationsvariante, die gelöscht werden soll
+	 * Speichert die Simulationsvariante, die gelÃ¶scht werden soll
 	 */
 	private final int _volumeIdTypB;
 
@@ -148,13 +154,13 @@ public class ArchiveAlignment implements ArchiveQueryResult {
 	}
 
 	/**
-	 * Der Aufruf dieser Methode stößt die Abgleichsmethode des Archivsystems mit einem Speichermedium der Sicherung an.
-	 * Die genaue Identifikation des Speichermediums der Sicherung wurde im Konstruktor übergeben.
+	 * Der Aufruf dieser Methode stÃ¶ÃŸt die Abgleichsmethode des Archivsystems mit einem Speichermedium der Sicherung an.
+	 * Die genaue Identifikation des Speichermediums der Sicherung wurde im Konstruktor Ã¼bergeben.
 	 */
 	public void archiveAlignment() {
 
 		// Im byte-Array wird die Serialisiererversion gespeichert, die Antwort des Archivs wird dann ebenfalls
-		// mit dieser Version serialisiert, und die Simulationsvariante, die gelöscht werden soll.
+		// mit dieser Version serialisiert, und die Simulationsvariante, die gelÃ¶scht werden soll.
 
 		// Die benutzte Serialisiererversion anfordern
 		final int serializerVersion = SerializingFactory.getDefaultVersion();

@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta http-equiv="Content-Style-Type" content="text/css">
 	<title></title>
 	<meta name="Generator" content="Cocoa HTML Writer">
@@ -23,27 +23,27 @@
 <body>
 <p class="p1"><b>Modul Protokollierungsmodul anbinden</b></p>
 
-<p class="p2">Das Modul <i>Protokollierungsmodul anbinden </i>implementiert die Schnittstelle <i>OnlineProtokollierer &#x2013; Applikation </i>und ist für die
-	Kommunikation mit beliebigen Protokollierungsmodulen zuständig.</p>
+<p class="p2">Das Modul <i>Protokollierungsmodul anbinden </i>implementiert die Schnittstelle <i>OnlineProtokollierer &#x2013; Applikation </i>und ist fÃ¼r die
+	Kommunikation mit beliebigen Protokollierungsmodulen zustÃ¤ndig.</p>
 
 <p class="p2">Beim Start der Applikation extrahiert sie aus den Aufrufparametern den Namen des Protokollierungsmoduls und den Namen der Protokolldatei aus der
-	Kommandozeile. Ist eine Datei angegeben, so wird sie angelegt (falls sie noch nicht existiert) bzw. überschrieben. Wenn die Protokollierungsdatei nicht
+	Kommandozeile. Ist eine Datei angegeben, so wird sie angelegt (falls sie noch nicht existiert) bzw. Ã¼berschrieben. Wenn die Protokollierungsdatei nicht
 	beschreibbar ist, wird die Applikation durch eine Ausnahme beendet.</p>
 
 <p class="p2">Ist der Parameter nicht angegeben bzw. wird er leergelassen, so wird die Ausgabe des Protokollierungsmoduls auf den Standardausgabe-Stream
-	geschrieben. Das Modul <i>Standardprotokollierer </i>bekommt ein Handle auf diese Datei (bzw. den Standardausgabe-Stream) übergeben, damit es die Ausgabe
-	durchführen kann.</p>
+	geschrieben. Das Modul <i>Standardprotokollierer </i>bekommt ein Handle auf diese Datei (bzw. den Standardausgabe-Stream) Ã¼bergeben, damit es die Ausgabe
+	durchfÃ¼hren kann.</p>
 
 <p class="p2">Danach wird das Protokollierungsmodul aufgefordert, der Kommandozeile seine Aufrufparameter zu entnehmen.</p>
 
 <p class="p2">Das Protokollierungsmodul wird aufgefordert, einen Protokollkopf zu generieren. Dieser wird dann ausgegeben.</p>
 
-<p class="p2">Nach diesen initialisierenden Schritten wird auf den Empfang von Telegrammen gewartet. Diese werden an das Protokollierungsmodul übergeben. Dies
+<p class="p2">Nach diesen initialisierenden Schritten wird auf den Empfang von Telegrammen gewartet. Diese werden an das Protokollierungsmodul Ã¼bergeben. Dies
 	wird wiederholt, bis die Applikation abgebrochen wird oder die DaV-Verbindung terminiert.</p>
 
-<p class="p2">Zum Schluss wird das Protokollierungsmodul aufgefordert, einen Protokollfuß zu generieren, der dann ausgegeben wird.</p>
+<p class="p2">Zum Schluss wird das Protokollierungsmodul aufgefordert, einen ProtokollfuÃŸ zu generieren, der dann ausgegeben wird.</p>
 
 <p class="p2"><i>Protokollierungsmodul anbinden </i>wird als eigenes Modul realisiert, weil es bei den SW-Einheiten <i>System-Protokollierer </i>und <i>Datengenerator </i>wiederverwendet
-	werden kann und verschiedene zusammenhängende Funktionalitäten durch eine einfache Schnittstelle zur Verfügung stellt.</p>
+	werden kann und verschiedene zusammenhÃ¤ngende FunktionalitÃ¤ten durch eine einfache Schnittstelle zur VerfÃ¼gung stellt.</p>
 </body>
 </html>

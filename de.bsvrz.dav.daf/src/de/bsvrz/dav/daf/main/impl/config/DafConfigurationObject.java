@@ -1,13 +1,13 @@
 /*
  * Copyright 2008 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config;
@@ -36,14 +42,14 @@ import java.util.*;
  * Applikationsseitige Implementierung der Schnittstelle zum Zugriff auf die Eigenschaften eines Konfigurationsobjekts.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13141 $
+ * @version $Revision$
  */
 public class DafConfigurationObject extends DafSystemObject implements ConfigurationObject {
 
-	/** Version ab der dieses Objekt g¸ltig ist. */
+	/** Version ab der dieses Objekt g√ºltig ist. */
 	private short _validSince;
 
-	/** Version ab der dieses Objekt nicht mehr g¸ltig ist. */
+	/** Version ab der dieses Objekt nicht mehr g√ºltig ist. */
 	private short _notValidSince;
 
 	/** Die IDs der Mengen dieses Objekts */
@@ -52,7 +58,7 @@ public class DafConfigurationObject extends DafSystemObject implements Configura
 	/** Liste der Mengen dieses Objekts */
 	private List<ObjectSet> _sets;
 
-	/** DebugLogger f¸r Debug-Ausgaben */
+	/** DebugLogger f√ºr Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 
@@ -90,8 +96,8 @@ public class DafConfigurationObject extends DafSystemObject implements Configura
 
 	public String parseToString() {
 		String str = super.parseToString();
-		str += "G¸ltig ab Version: " + _validSince + "\n";
-		str += "G¸ltig bis Version: " + _notValidSince + "\n";
+		str += "G√ºltig ab Version: " + _validSince + "\n";
+		str += "G√ºltig bis Version: " + _notValidSince + "\n";
 		str += "Mengen: \n";
 		if(_sets == null) {
 			getObjectSets();
@@ -137,7 +143,7 @@ public class DafConfigurationObject extends DafSystemObject implements Configura
 		super.read(deserializer);
 		_validSince = deserializer.readShort();
 		_notValidSince = deserializer.readShort();
-		_configurationAreaId = deserializer.readLong();  // muss hier gelesen werden, da nach G¸ltigkeit serialisiert
+		_configurationAreaId = deserializer.readLong();  // muss hier gelesen werden, da nach G√ºltigkeit serialisiert
 		int size = deserializer.readInt();
 		if(size > 0) {
 			_setIds = new long[size];
@@ -151,13 +157,13 @@ public class DafConfigurationObject extends DafSystemObject implements Configura
 	public final boolean isValid() {
 		short activeVersion = getConfigurationArea().getActiveVersion();
 		if(activeVersion < getValidSince()) {
-			return false;	// wurde noch nicht g¸ltig
+			return false;	// wurde noch nicht g√ºltig
 		}
 		if(getNotValidSince() == 0) {
-			return true;	// ist g¸ltig und wurde noch nicht auf ung¸ltig gesetzt
+			return true;	// ist g√ºltig und wurde noch nicht auf ung√ºltig gesetzt
 		}
 		if(getNotValidSince() <= activeVersion) {
-			return false; // wurde bereits auf ung¸ltig gesetzt
+			return false; // wurde bereits auf ung√ºltig gesetzt
 		}
 		return true;
 	}
@@ -184,7 +190,7 @@ public class DafConfigurationObject extends DafSystemObject implements Configura
 		}
 		catch(RequestException e) {
 			final String errorText =
-					"Von einem Objekt konnte kein Duplikat erstellt werden, da das nˆtige Telegramm nicht an den Datenverteiler verschickt werden konnte oder die R¸ckantwort konnte nicht entschl¸sselt werden. Betroffenes Objekt: "
+					"Von einem Objekt konnte kein Duplikat erstellt werden, da das n√∂tige Telegramm nicht an den Datenverteiler verschickt werden konnte oder die R√ºckantwort konnte nicht entschl√ºsselt werden. Betroffenes Objekt: "
 					+ getPid();
 			_debug.error(errorText, e);
 			throw new IllegalStateException(e);

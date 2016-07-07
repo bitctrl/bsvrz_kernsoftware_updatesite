@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.pat.sysbed.dataview;
 
@@ -30,10 +36,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Eine CellKeyColumn steht für eine Spalte eines CellKeys. 
+ * Eine CellKeyColumn steht fÃ¼r eine Spalte eines CellKeys. 
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 13173 $
+ * @version $Revision$
  * 
  */
 public class CellKeyColumn {
@@ -45,7 +51,7 @@ public class CellKeyColumn {
 	
 	/**
 	 * Konstruiert die CellKeyColumn aus einem String, der keine Array-Informationen
-	 * enthälten darf und einem Indikator, ob es sich um eine übergreifende Spalte
+	 * enthÃ¤lten darf und einem Indikator, ob es sich um eine Ã¼bergreifende Spalte
 	 * handelt.
 	 *  
 	 * @param columnString die String-Darstellung
@@ -66,7 +72,7 @@ public class CellKeyColumn {
 	}
 	
 	/**
-	 * Gibt an, ob es sich um eine übergreifende Spalte handelt.
+	 * Gibt an, ob es sich um eine Ã¼bergreifende Spalte handelt.
 	 * 
 	 * @return ist die Spalte eine Super-Spalte?
 	 */
@@ -75,22 +81,22 @@ public class CellKeyColumn {
 	}
 	
 	/**
-	 * Vergleicht die CellKeyColumn this mit dem String, ohne zunächst eine CellKeyColumn
-	 * dafür anzulegen - und natürlich ohne den übergreifenden Spaltenstatus zu berücksichtigen.
+	 * Vergleicht die CellKeyColumn this mit dem String, ohne zunÃ¤chst eine CellKeyColumn
+	 * dafÃ¼r anzulegen - und natÃ¼rlich ohne den Ã¼bergreifenden Spaltenstatus zu berÃ¼cksichtigen.
 	 * 
 	 * @param columnString eine String-Darstellung einer CellKeyColumn
-	 * @return sind die CellKeyColumns gmäß String-Darstellung gleich?
+	 * @return sind die CellKeyColumns gmÃ¤ÃŸ String-Darstellung gleich?
 	 */
 	public boolean isEqualTo( final String columnString) {
 		return _columnString.equals( columnString);
 	}
 	
 	/**
-	 * Gibt die Spaltenliste der Attributgruppe zurück, und zwar mit oder ohne die
-	 * übergeordneten Spalten, die die Listen definieren.
+	 * Gibt die Spaltenliste der Attributgruppe zurÃ¼ck, und zwar mit oder ohne die
+	 * Ã¼bergeordneten Spalten, die die Listen definieren.
 	 * 
 	 * @param attributeGroup die Attributgruppe
-	 * @param withColumnsForArrayListDefinitions mit oder ohne übergeordneten Spalten
+	 * @param withColumnsForArrayListDefinitions mit oder ohne Ã¼bergeordneten Spalten
 	 * @return die Spaltenliste mit Namen
 	 */
 	public static List<String> getColumnList( final AttributeGroup attributeGroup,
@@ -114,12 +120,12 @@ public class CellKeyColumn {
 	}
 	
 	/**
-	 * Gibt den Index der CellKeyColumn in der Attributgruppe zurück, wobei dies
-	 * der Wert in der entsprechenden Liste mit oder ohne Spalten für Listen-Definitione
-	 * ist. Wird kein Index gefunden, gibt die Methode <code>null</code> zurück.
+	 * Gibt den Index der CellKeyColumn in der Attributgruppe zurÃ¼ck, wobei dies
+	 * der Wert in der entsprechenden Liste mit oder ohne Spalten fÃ¼r Listen-Definitione
+	 * ist. Wird kein Index gefunden, gibt die Methode <code>null</code> zurÃ¼ck.
 	 * 
 	 * @param attributeGroup die Attributgruppe
-	 * @param withColumnsForArrayListDefinitions mit oder ohne übergeordneten Spalten
+	 * @param withColumnsForArrayListDefinitions mit oder ohne Ã¼bergeordneten Spalten
 	 * @return ein Index oder <code>null</code>
 	 */
 	public Integer getIndexInColumnList( final AttributeGroup attributeGroup,
@@ -224,7 +230,7 @@ public class CellKeyColumn {
 		final AttributeType attributeType = attribute.getAttributeType();
 		if (  attributeType instanceof AttributeListDefinition) {
 			if ( withColumnsForArrayListDefinitions) {
-				if ( attribute.isArray()) {	// Arrays können leer sein, und dann ist es von Vorteil einen Eintrag zu haben.
+				if ( attribute.isArray()) {	// Arrays kÃ¶nnen leer sein, und dann ist es von Vorteil einen Eintrag zu haben.
 					columnList.add( prefix);
 				}
 			}

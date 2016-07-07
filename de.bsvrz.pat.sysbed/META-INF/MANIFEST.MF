@@ -4,10 +4,10 @@ Created-By: Kappich Systemberatung
 Bundle-ManifestVersion: 2
 Bundle-Name: de.bsvrz.pat.sysbed
 Bundle-SymbolicName: de.bsvrz.pat.sysbed
-Bundle-Version: 3.6.5.qualifier
+Bundle-Version: 3.8.0.qualifier
 Bundle-Vendor: Kappich Systemberatung
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .
 Export-Package: de.bsvrz.pat.sysbed,
  de.bsvrz.pat.sysbed.dataEditor,
@@ -42,6 +42,7 @@ Require-Bundle: de.bsvrz.sys.funclib.consoleProcessFrame;bundle-version="[3.6.5,
  de.bsvrz.sys.funclib.concurrent;bundle-version="[3.6.5,4.0.0)",
  de.bsvrz.pat.onlprot;bundle-version="[3.6.5,4.0.0)",
  de.bsvrz.pat.datgen;bundle-version="[3.6.5,4.0.0)",
- de.bsvrz.pat.sysprot;bundle-version="[3.6.5,4.0.0)"
+ de.bsvrz.pat.sysprot;bundle-version="[3.6.5,4.0.0)",
+ de.kappich.sys.funclib.json;bundle-version="3.8.0"
 Eclipse-BuddyPolicy: dependent
 

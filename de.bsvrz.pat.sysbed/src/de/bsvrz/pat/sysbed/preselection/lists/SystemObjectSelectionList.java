@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Straße 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.preselection.lists;
@@ -40,7 +46,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
- * Klasse, die eine Gruppe zur Objektauswahl kapselt. Oben befindet sich eine �berschrift mit der Anzahl der ausgew�hlten Objekte
+ * Klasse, die eine Gruppe zur Objektauswahl kapselt. Oben befindet sich eine Überschrift mit der Anzahl der ausgewählten Objekte
  * und einem Button zum deselektieren, darunter befindet sich die Liste der Objekte
  *
  * @author Kappich Systemberatung
@@ -48,7 +54,7 @@ import java.util.regex.PatternSyntaxException;
  */
 public class SystemObjectSelectionList extends Box {
 
-	/** Icon f�r die Schalter zum Deselektieren */
+	/** Icon für die Schalter zum Deselektieren */
 	private final Icon _deselectIcon = new ImageIcon(PreselectionListsHandler.class.getResource("active-close-button.png"));
 
 	private static final Debug _debug = Debug.getLogger();
@@ -208,9 +214,21 @@ public class SystemObjectSelectionList extends Box {
 		_deselectObjects.setEnabled(selectedIndices.length > 0 || _filterTextField.getText().length() > 0);
 	}
 
+	/**
+	 * Liefert alle sichtbaren selektierten Systemobekte zurück
+	 * @return
+	 */
 	public List<SystemObject> getSelectedValues() {
 		List list = Arrays.asList(_jlist.getSelectedValues());
 		return list;
+	}
+
+	/**
+	 * Liefert alle selektierten Systemobejkte zurück, auch solche, die durch einen aktiven Filter aktuell nicht sichtbar sind 
+	 * @return Liste mit Systemobjekten
+	 */
+	public List<? extends SystemObject> getPreSelectedValues() {
+		return Collections.unmodifiableList(_preSelectedValues);
 	}
 
 	public void addListSelectionListener(final ListSelectionListener listSelectionListener) {
@@ -222,7 +240,6 @@ public class SystemObjectSelectionList extends Box {
 	}
 
 	public void selectElements(final List<? extends SystemObject> objects) {
-		_preSelectedValues = objects;
 		ListSelectionModel selectionModel = _jlist.getSelectionModel();
 		selectionModel.setValueIsAdjusting(true);
 		selectionModel.clearSelection();
@@ -236,7 +253,7 @@ public class SystemObjectSelectionList extends Box {
 		}
 		selectionModel.setValueIsAdjusting(false);
 		_jlist.ensureIndexIsVisible(_jlist.getSelectedIndex());
-
+		_preSelectedValues = objects;
 	}
 
 	public void setElements(final List<? extends SystemObject> objects) {

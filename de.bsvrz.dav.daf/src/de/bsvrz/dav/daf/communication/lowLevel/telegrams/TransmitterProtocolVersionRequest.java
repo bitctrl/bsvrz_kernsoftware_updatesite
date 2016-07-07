@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel.telegrams;
@@ -30,11 +36,11 @@ import java.io.IOException;
 
 /**
  * Verhandlung der Protokollversion (Client). Der den Verbindungsaufbau einleitende Datenverteiler sendet dem Datenverteiler, zu dem eine Verbindung hergestellt
- * werden soll, eine priorisierte Liste von unterstützten Versionsnummern aus denen dieser Datenverteiler im Normalfall die Version der höchsten Priorität
- * auswählt, die auch von ihm unterstützt wird. Diese wird dann zu dem Datenverteiler, der die Verbindung aufbauen will, gesendet.
+ * werden soll, eine priorisierte Liste von unterstÃ¼tzten Versionsnummern aus denen dieser Datenverteiler im Normalfall die Version der hÃ¶chsten PrioritÃ¤t
+ * auswÃ¤hlt, die auch von ihm unterstÃ¼tzt wird. Diese wird dann zu dem Datenverteiler, der die Verbindung aufbauen will, gesendet.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5059 $
+ * @version $Revision$
  */
 public class TransmitterProtocolVersionRequest extends DataTelegram {
 
@@ -62,9 +68,9 @@ public class TransmitterProtocolVersionRequest extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die unterstützten Protokoll-Versionen zurück.
+	 * Gibt die unterstÃ¼tzten Protokoll-Versionen zurÃ¼ck.
 	 *
-	 * @return Eine Liste der unterstützten Protokoll-Versionen.
+	 * @return Eine Liste der unterstÃ¼tzten Protokoll-Versionen.
 	 */
 	public final int[] getVersions() {
 		if(_versions == null) {
@@ -76,9 +82,9 @@ public class TransmitterProtocolVersionRequest extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die höchste Protokoll-Version zurück.
+	 * Gibt die hÃ¶chste Protokoll-Version zurÃ¼ck.
 	 *
-	 * @return die höchste Protokoll-Version oder <code>-1</code>, wenn keine Protokollversionen spezifiziert wurden.
+	 * @return die hÃ¶chste Protokoll-Version oder <code>-1</code>, wenn keine Protokollversionen spezifiziert wurden.
 	 */
 	public final int getPreferredVersion() {
 		if(_versions == null) {
@@ -89,7 +95,7 @@ public class TransmitterProtocolVersionRequest extends DataTelegram {
 
 	public final String parseToString() {
 		String str = "Systemtelegramm VersionsProtokoll Anfrage: \n";
-		str += "Unterstützte Versionen     : ";
+		str += "UnterstÃ¼tzte Versionen     : ";
 		if(_versions != null) {
 			for(int i = 0; i < _versions.length; ++i) {
 				str += _versions[i];
@@ -126,7 +132,7 @@ public class TransmitterProtocolVersionRequest extends DataTelegram {
 			length += _versions.length * 4;
 		}
 		if(length != _length) {
-			throw new IOException("Falsche Telegram Länge");
+			throw new IOException("Falsche Telegram LÃ¤nge");
 		}
 	}
 }

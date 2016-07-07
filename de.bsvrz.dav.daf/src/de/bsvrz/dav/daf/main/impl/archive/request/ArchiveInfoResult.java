@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.main.impl.archive.request;
 
@@ -24,18 +30,18 @@ import de.bsvrz.dav.daf.main.archive.ArchiveDataSpecification;
 import de.bsvrz.dav.daf.main.archive.ArchiveInformationResult;
 
 /**
- * Ein Objekt dieser Klasse enthält Informationen darüber welche Zeitbereiche/Indexbereiche sich im direkten Zugriff des
+ * Ein Objekt dieser Klasse enthÃ¤lt Informationen darÃ¼ber welche Zeitbereiche/Indexbereiche sich im direkten Zugriff des
  * Archivsystems befinden. Das Objekt bezieht sich sich dabei auf eine Datenidentifikation {@link
- * de.bsvrz.dav.daf.main.archive.ArchiveDataSpecification}. Zu jedem Zeitbereich/Indexbereich wird außerdem das Speichermedium vom Typ B
- * angegeben, auf dem die Informationen persistent gespeichert sind. In den Fällen wo das Archivsystem den
- * Zeitbereich/Indexbereich nicht identifizieren kann, wird das Flag "Datenlücke" gesetzt.
+ * de.bsvrz.dav.daf.main.archive.ArchiveDataSpecification}. Zu jedem Zeitbereich/Indexbereich wird auÃŸerdem das Speichermedium vom Typ B
+ * angegeben, auf dem die Informationen persistent gespeichert sind. In den FÃ¤llen wo das Archivsystem den
+ * Zeitbereich/Indexbereich nicht identifizieren kann, wird das Flag "DatenlÃ¼cke" gesetzt.
  *
- * Zu dem oben beschriebenen Zeitbereich/Indexbereich wird außerdem noch ein Objekt vom Typ {@link de.bsvrz.dav.daf.main.archive.ArchiveDataSpecification}
+ * Zu dem oben beschriebenen Zeitbereich/Indexbereich wird auÃŸerdem noch ein Objekt vom Typ {@link de.bsvrz.dav.daf.main.archive.ArchiveDataSpecification}
  * gespeichert.
  * 
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 5064 $ / $Date: 2007-09-01 22:25:35 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ArchiveInfoResult implements ArchiveInformationResult {
 
@@ -52,7 +58,7 @@ public class ArchiveInfoResult implements ArchiveInformationResult {
 	 */
 	private final TimingType _timingType;
 	/**
-	 * true = potentielle Datenlücke, dieser Zeitbereich befindet sich weder im direkten Zugriff des Archivsystems, noch
+	 * true = potentielle DatenlÃ¼cke, dieser Zeitbereich befindet sich weder im direkten Zugriff des Archivsystems, noch
 	 * auf einem Speichermedium Tyb B false = Dieser Zeitbereich befindet sich entweder im direkten Zugriff des
 	 * Archivsystems oder ist auf einem Speichermedium Typ B vorhanden.
 	 */
@@ -76,7 +82,7 @@ public class ArchiveInfoResult implements ArchiveInformationResult {
 	 * @param intervalStart Auf welchen Intervallteil beziehen sich die Informationen
 	 * @param intervalEnd   Auf welchen Intervallteil beziehen sich die Informationen
 	 * @param timingType    Datenindex oder Datenzeit oder Archivzeit
-	 * @param dataGap       potentielle Datenlücke
+	 * @param dataGap       potentielle DatenlÃ¼cke
 	 * @param labelTypB     Eindeutige Identifikation des Speichermediums Typ B, auf dem das angegebene Intervall
 	 *                      persistent gespeichert wurde
 	 */
@@ -118,10 +124,10 @@ public class ArchiveInfoResult implements ArchiveInformationResult {
 	}
 
 	/**
-	 * Ist eine potentielle Datenlücke vorhanden
+	 * Ist eine potentielle DatenlÃ¼cke vorhanden
 	 *
-	 * @return true = potentielle Datenlücke (Daten befinden sich nicht im direkten Zugriff und sind auch auf einem
-	 *         Speichermedium Typ B nicht vorhanden); false = alle Daten des Intervalls sind verfügbar
+	 * @return true = potentielle DatenlÃ¼cke (Daten befinden sich nicht im direkten Zugriff und sind auch auf einem
+	 *         Speichermedium Typ B nicht vorhanden); false = alle Daten des Intervalls sind verfÃ¼gbar
 	 */
 	public boolean isDataGap() {
 		return _dataGap;
@@ -132,7 +138,7 @@ public class ArchiveInfoResult implements ArchiveInformationResult {
 	}
 
 	/**
-	 * Gibt die eindeutige Identifikation des Speichermediums Tyb B zurück, auf dem das angegebene Intervall gesichert
+	 * Gibt die eindeutige Identifikation des Speichermediums Tyb B zurÃ¼ck, auf dem das angegebene Intervall gesichert
 	 * wurde.
 	 *
 	 * @return eindeutige Identifikation des Speichermediums Tyb B oder <code>null</code> falls die Identifikation
@@ -143,7 +149,7 @@ public class ArchiveInfoResult implements ArchiveInformationResult {
 	}
 
 	/**
-	 * Gibt die zugehörige Archivanfrage zurück.
+	 * Gibt die zugehÃ¶rige Archivanfrage zurÃ¼ck.
 	 * @return Archivanfrage
 	 */
 	public ArchiveDataSpecification getArchiveDataSpecification() {

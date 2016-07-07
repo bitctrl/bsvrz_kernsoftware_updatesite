@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.main.archive;
 
@@ -24,10 +30,10 @@ import de.bsvrz.dav.daf.main.DataDescription;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 
 /**
- * Ein Objekt dieser Klasse spiegelt eine Archivanfrage (ohne Priorität) wieder.
+ * Ein Objekt dieser Klasse spiegelt eine Archivanfrage (ohne PrioritÃ¤t) wieder.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11955 $
+ * @version $Revision$
  */
 public class ArchiveDataSpecification {
 	private final ArchiveTimeSpecification _timeSpec;
@@ -39,7 +45,7 @@ public class ArchiveDataSpecification {
 	private boolean _queryWithPid = false;
 
 	/**
-	 * Erzeugt eine Definition für eine Archivanfrage, die Archivdaten für ein Systemobjekt abfragt
+	 * Erzeugt eine Definition fÃ¼r eine Archivanfrage, die Archivdaten fÃ¼r ein Systemobjekt abfragt
 	 * @param timeSpec Definition des angefragten Zeitbereichs/Indexbereichs
 	 * @param dataKinds Datenarten
 	 * @param sortOrder Sortierung
@@ -62,15 +68,15 @@ public class ArchiveDataSpecification {
 	}
 
 	/**
-	 * Erzeugt eine Definition für eine Archivanfrage, die Archivdaten für ein Systemobjekt und optional historische Objekte mit gleicher Pid abfragt.
-	 * Dieser Konstruktor ist möglicherweise bei älteren DAF nicht vorhanden.
+	 * Erzeugt eine Definition fÃ¼r eine Archivanfrage, die Archivdaten fÃ¼r ein Systemobjekt und optional historische Objekte mit gleicher Pid abfragt.
+	 * Dieser Konstruktor ist mÃ¶glicherweise bei Ã¤lteren DAF nicht vorhanden.
 	 * @param timeSpec Definition des angefragten Zeitbereichs/Indexbereichs
 	 * @param dataKinds Datenarten
 	 * @param sortOrder Sortierung
 	 * @param requestOption Anfrageart
 	 * @param dataDescription Angefragte Datenart (Attributguppe/Aspekt/Simulationsvariante-Kombination)
 	 * @param object Systemobjekt, von dem die Daten abgefragt werden sollen
-	 * @param queryWithPid Bestimmt ob anhand der Objekt-Pid eventuell noch Daten von zusätzlichen historischen Objekten abgefragt werden sollen. Siehe {@link #setQueryWithPid()}.
+	 * @param queryWithPid Bestimmt ob anhand der Objekt-Pid eventuell noch Daten von zusÃ¤tzlichen historischen Objekten abgefragt werden sollen. Siehe {@link #setQueryWithPid()}.
 	 */
 	public ArchiveDataSpecification(ArchiveTimeSpecification timeSpec,
 									ArchiveDataKindCombination dataKinds,
@@ -89,9 +95,9 @@ public class ArchiveDataSpecification {
 	}
 
 	/**
-	 * Sorgt dafür, dass anhand der Objekt-Pid eventuell noch Daten von zusätzlichen historischen Objekten abgefragt werden sollen.
+	 * Sorgt dafÃ¼r, dass anhand der Objekt-Pid eventuell noch Daten von zusÃ¤tzlichen historischen Objekten abgefragt werden sollen.
 	 * Archivsystemseitig oder bei Systemobjekten ohne Pid hat dieses Flag keine Funktion.
-	 * Diese Methode ist möglicherweise bei älteren DAF nicht vorhanden. Es kann daher aus Kompatibilitätsgründen sinnvoll sein,
+	 * Diese Methode ist mÃ¶glicherweise bei Ã¤lteren DAF nicht vorhanden. Es kann daher aus KompatibilitÃ¤tsgrÃ¼nden sinnvoll sein,
 	 * den klassischen Konstruktor ohne <code>queryWithPid</code>-Parameter zu verwenden und nachher diese Funktion in einem try-catch-Block aufzurufen:
 	 * <pre>{@code
 	 * ArchiveDataSpecification ads = new ArchiveDataSpecification(...);
@@ -107,10 +113,10 @@ public class ArchiveDataSpecification {
 	}
 
 	/**
-	 * Gibt zurück, ob anhand der Objekt-Pid eventuell noch Daten von zusätzlichen historischen Objekten abgefragt werden sollen.
+	 * Gibt zurÃ¼ck, ob anhand der Objekt-Pid eventuell noch Daten von zusÃ¤tzlichen historischen Objekten abgefragt werden sollen.
 	 * Archivsystemseitig oder bei Systemobjekten ohne Pid hat dieses Flag keine Funktion.
-	 * Diese Methode ist möglicherweise bei älteren DAF nicht vorhanden.
-	 * @return true wenn anhand der Pid historische Objekte berücksichtigt werden sollen, sonst false
+	 * Diese Methode ist mÃ¶glicherweise bei Ã¤lteren DAF nicht vorhanden.
+	 * @return true wenn anhand der Pid historische Objekte berÃ¼cksichtigt werden sollen, sonst false
 	 */
 	public boolean getQueryWithPid() {
 		return _queryWithPid;
@@ -125,7 +131,7 @@ public class ArchiveDataSpecification {
 	}
 
 	/**
-	 * String-Repräsentation des Objektes.
+	 * String-ReprÃ¤sentation des Objektes.
 	 *
 	 * @return Beschreibung des Objektes.
 	 */
@@ -159,7 +165,7 @@ public class ArchiveDataSpecification {
 
 	/**
 	 *
-	 * @return Wie sollen die nachgelieferten Datensätze einsortiert werden (Zeit, Index)
+	 * @return Wie sollen die nachgelieferten DatensÃ¤tze einsortiert werden (Zeit, Index)
 	 */
 	public ArchiveOrder getSortOrder() {
 		return _sortOrder;

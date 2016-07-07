@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main;
@@ -29,7 +35,7 @@ import java.util.List;
  * Interface mit dem auf die Daten einer Transaktion zugegriffen werden kann
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8953 $
+ * @version $Revision$
  */
 public interface Transaction {
 
@@ -71,8 +77,8 @@ public interface Transaction {
 	/**
 	 * Bestimmt den eigentlichen Datensatzes mit den von der jeweiligen Attributgruppe definierten Attributwerten dieses Datensatzes.
 	 *
-	 * @return Collection mit Attributwerten oder leere Liste im Falle eines leeren Datensatzes. Der R¸ckgabewert kann in Spezialf‰llen eine leere Liste sein, auch
-	 *         wenn hasData true zur¸ckgibt. Das ist der Fall, wenn die Transaktion auch irgendeinem Grund keine inneren Datens‰tze enth‰lt, es sich aber um einen
+	 * @return Collection mit Attributwerten oder leere Liste im Falle eines leeren Datensatzes. Der R√ºckgabewert kann in Spezialf√§llen eine leere Liste sein, auch
+	 *         wenn hasData true zur√ºckgibt. Das ist der Fall, wenn die Transaktion auch irgendeinem Grund keine inneren Datens√§tze enth√§lt, es sich aber um einen
 	 *         normalen Datensatz handelt, der von einer Quelle /einem Sender gesendet wurde.
 	 */
 	List<TransactionDataset> getData();
@@ -80,12 +86,12 @@ public interface Transaction {
 	/**
 	 * Bestimmt ob ein Transaktionsdatensatz vorliegt
 	 *
-	 * @return false, wenn der Transaktionsdatensatz ein leerer Datensatz ist. True wenn er vorhanden ist (auch wenn keine inneren Datens‰tze vorhanden sind).
+	 * @return false, wenn der Transaktionsdatensatz ein leerer Datensatz ist. True wenn er vorhanden ist (auch wenn keine inneren Datens√§tze vorhanden sind).
 	 */
 	boolean hasData();
 
 	/**
-	 * Bestimmt das System-Objekt zu dem die im Ergebnis enthaltenen Daten gehˆren.
+	 * Bestimmt das System-Objekt zu dem die im Ergebnis enthaltenen Daten geh√∂ren.
 	 *
 	 * @return System-Objekt der enthaltenen Daten
 	 */

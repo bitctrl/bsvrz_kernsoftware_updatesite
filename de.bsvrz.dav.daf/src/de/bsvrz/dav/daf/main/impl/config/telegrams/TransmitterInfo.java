@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config.telegrams;
@@ -26,11 +32,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Diese Klasse stellt verschiedene Informationen zu einem Datenverteiler zur Verfügung. Die Informationen werden entweder im Konstruktor übergeben oder können
- * später mittels eines Byte-Stroms gesetzt werden.
+ * Diese Klasse stellt verschiedene Informationen zu einem Datenverteiler zur VerfÃ¼gung. Die Informationen werden entweder im Konstruktor Ã¼bergeben oder kÃ¶nnen
+ * spÃ¤ter mittels eines Byte-Stroms gesetzt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5054 $
+ * @version $Revision$
  */
 public class TransmitterInfo {
 
@@ -45,14 +51,14 @@ public class TransmitterInfo {
 
 	/**
 	 * Erstellt ein Objekt legt aber die Werte TransmitterId, Adresse des Datenverteilers und die Subadresse nicht fest.
-	 * <p/>
+	 * <p>
 	 * Diese werden mit dem Aufruf von {@link #read(java.io.DataInputStream)} gesetzt.
 	 */
 	public TransmitterInfo() {
 	}
 
 	/**
-	 * Legt ein Objekt an und setzt die übergebenen Parameter am Objekt.
+	 * Legt ein Objekt an und setzt die Ã¼bergebenen Parameter am Objekt.
 	 *
 	 * @param _transmitterId Id des Datenverteilers
 	 * @param _adress        Adresse des Datenverteilers
@@ -65,7 +71,7 @@ public class TransmitterInfo {
 	}
 
 	/**
-	 * Gibt die Id des Datenverteilers zurück.
+	 * Gibt die Id des Datenverteilers zurÃ¼ck.
 	 *
 	 * @return Id des Datenverteilers
 	 */
@@ -74,7 +80,7 @@ public class TransmitterInfo {
 	}
 
 	/**
-	 * Gibt die Adresse des Datenverteilers zurück.
+	 * Gibt die Adresse des Datenverteilers zurÃ¼ck.
 	 *
 	 * @return Adresse des Datenverteilers
 	 */
@@ -83,7 +89,7 @@ public class TransmitterInfo {
 	}
 
 	/**
-	 * Gibt die Subadresse des Datenverteilers zurück
+	 * Gibt die Subadresse des Datenverteilers zurÃ¼ck
 	 *
 	 * @return Subadresse des Datenverteilers
 	 */
@@ -92,7 +98,7 @@ public class TransmitterInfo {
 	}
 
 	/**
-	 * Gibt einen String zurück, der die Id des Datenverteilers, die Adresse des Datenverteilers und die Subadresse enthält.
+	 * Gibt einen String zurÃ¼ck, der die Id des Datenverteilers, die Adresse des Datenverteilers und die Subadresse enthÃ¤lt.
 	 *
 	 * @return s.o.
 	 */
@@ -104,7 +110,7 @@ public class TransmitterInfo {
 	}
 
 	/**
-	 * Schreibt die Informationen des Objekt in den übergebenen Stream.
+	 * Schreibt die Informationen des Objekt in den Ã¼bergebenen Stream.
 	 *
 	 * @param out Stream, in den die Informationen des Objekt abgelegt werden. Reihenfolge: 1) Long (TransmitterId), 2) UTF (Adresse des Datenverteilers), 3) Int
 	 *            (Subadresse)
@@ -118,7 +124,7 @@ public class TransmitterInfo {
 	}
 
 	/**
-	 * Ließt die Informationen des Objekts aus dem übergebenen Stream aus. Reihenfolge: 1) Long (TransmitterId), 2) UTF (Adresse des Datenverteilers), 3) Int
+	 * LieÃŸt die Informationen des Objekts aus dem Ã¼bergebenen Stream aus. Reihenfolge: 1) Long (TransmitterId), 2) UTF (Adresse des Datenverteilers), 3) Int
 	 * (Subadresse)
 	 *
 	 * @param in Stream, aus dem die Daten in folgender Reihenfolge ausgelesen werden.
@@ -133,5 +139,26 @@ public class TransmitterInfo {
 
 	public String toString() {
 		return "Datenverteiler{id: " + getTransmitterId() + ", Adresse: " + getAdress() + ":" + getSubAdress() + "}";
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+
+		final TransmitterInfo that = (TransmitterInfo) o;
+
+		if(transmitterId != that.transmitterId) return false;
+		if(subadress != that.subadress) return false;
+		return adress.equals(that.adress);
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = (int) (transmitterId ^ (transmitterId >>> 32));
+		result = 31 * result + adress.hashCode();
+		result = 31 * result + subadress;
+		return result;
 	}
 }

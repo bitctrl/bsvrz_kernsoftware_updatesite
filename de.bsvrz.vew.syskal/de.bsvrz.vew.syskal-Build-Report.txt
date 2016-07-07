@@ -5,29 +5,29 @@
 Version: 1.2.0 (20100803)
 
 
-Übersicht
+Ãœbersicht
 =========
 
 Die SW-Einheit Systemkalender ist eine allgemein einsetzbare Funktionsbibliothek, die
-Methoden zur Auswertung von Systemkalendereinträgen zur Verfügung stellt.
+Methoden zur Auswertung von SystemkalendereintrÃ¤gen zur VerfÃ¼gung stellt.
 Eine weitere Anwendung dieser Funktionen findet sich in der SWE Ereigniskalender.
-Die Systemkalendereinträge werden durch dynamische Objekte repräsentiert und damit
+Die SystemkalendereintrÃ¤ge werden durch dynamische Objekte reprÃ¤sentiert und damit
 durch die Konfiguration persistent vorgehalten. Die Definition der 
-Systemkalendereinträge ist parametrierbar.
+SystemkalendereintrÃ¤ge ist parametrierbar.
 
 
 Versionsgeschichte
 ==================
 Stand 03.08.2010 Version 1.2.0
-Bugfix: Ungültiger Datumeintrag wurde in gültiges Datum umgewandelt und in die Liste der 
-Gültigkeiten aufgenommen. 
-Bugfix: Überlappende Zeitbereiche führen in den Berechnungsmethoden mit Rückgabewert 
+Bugfix: UngÃ¼ltiger Datumeintrag wurde in gÃ¼ltiges Datum umgewandelt und in die Liste der 
+GÃ¼ltigkeiten aufgenommen. 
+Bugfix: Ãœberlappende Zeitbereiche fÃ¼hren in den Berechnungsmethoden mit RÃ¼ckgabewert 
 <Long, Long> zu Fehlern. 
-Test: Unit-Tests wurden um Tests der Berechnungsmethoden mit Rückgabewert <Long, Long> erweitert.
+Test: Unit-Tests wurden um Tests der Berechnungsmethoden mit RÃ¼ckgabewert <Long, Long> erweitert.
 
 Stand 26.05.2010 Version 1.1.0
 Bugfix: Methode berecheneIntervallVonBis liefert keinen Zeitbereich, wenn das Abfrageintervall 
-vollständig in zeitlich gültigem Intervall oder Teilintervall liegt
+vollstÃ¤ndig in zeitlich gÃ¼ltigem Intervall oder Teilintervall liegt
 
 Stand 12.11.2009 Version 1.0.1
 Erste Version mit neuer Paketstruktur
@@ -45,7 +45,7 @@ benutzt.
 Jar-Datei der Bibliothek:
 de.bsvrz.vew.syskal.jar
 
-Benötigte Dateien im Klassenpfad:
+BenÃ¶tigte Dateien im Klassenpfad:
 DaV-Standard-Disributionspakete
 de.bsvrz.dav.daf.jar
 de.bsvrz.sys.funclib.application.jar
@@ -59,11 +59,11 @@ de.bsvrz.sys.funclib.operatingMessage.jar
 de.bsvrz.sys.funclib.timeout.jar
 de.bsvrz.sys.funclib.communicationStreams.jar
 de.bsvrz.sys.funclib.dambach.jar
-Zusätzliche Bibliotheken
+ZusÃ¤tzliche Bibliotheken
 commons-collections-3.2.1.jar
 
 Auf die Bibliothek kann auch mit de.bsvrz.vew.syskal-runtime.jar zugegriffen werden.
-Hier sind die Abhängigkeiten bereits berücksichtigt.
+Hier sind die AbhÃ¤ngigkeiten bereits berÃ¼cksichtigt.
 
 
 Disclaimer
@@ -91,7 +91,7 @@ Kontakt
 =======
 
 Dambach-Werke GmbH
-Adolf-Dambach-Straße
+Adolf-Dambach-StraÃŸe
 D-76571 Gaggenau
 T. +49-7225-64-10
 F. +49-7225-64-300

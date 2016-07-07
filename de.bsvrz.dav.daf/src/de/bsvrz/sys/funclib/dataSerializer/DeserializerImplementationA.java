@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.dataSerializer;
@@ -35,24 +41,24 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Implementierung eines Deserialisierers zum deserialisieren von Datens‰tzen. Die Klasse ist nicht ˆffentlich
- * zug‰nglich. Ein Objekt dieser Klasse kann mit der Methode {@link SerializingFactory#createDeserializer}
+ * Implementierung eines Deserialisierers zum deserialisieren von Datens√§tzen. Die Klasse ist nicht √∂ffentlich
+ * zug√§nglich. Ein Objekt dieser Klasse kann mit der Methode {@link SerializingFactory#createDeserializer}
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13141 $
+ * @version $Revision$
  */
 final class DeserializerImplementationA implements Deserializer {
-	/** DebugLogger f¸r Debug-Ausgaben */
+	/** DebugLogger f√ºr Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 	private final int _version;
 	private InputStream _inputStream;
 
 	/**
-	 * Erzeugt ein neues Deserialisierungsobjekt mit der gew¸nschten Version.
+	 * Erzeugt ein neues Deserialisierungsobjekt mit der gew√ºnschten Version.
 	 *
-	 * @param version     Gew¸nschte Version
+	 * @param version     Gew√ºnschte Version
 	 * @param inputStream Eingabe-Stream, der beim deserialisieren zu verwenden ist.
-	 * @throws RuntimeException Wenn die gew¸nschte Version nicht durch diese Klasse implementiert werden kann.
+	 * @throws RuntimeException Wenn die gew√ºnschte Version nicht durch diese Klasse implementiert werden kann.
 	 */
 	DeserializerImplementationA(final int version, final InputStream inputStream) throws RuntimeException {
 		_version = version;
@@ -91,7 +97,7 @@ final class DeserializerImplementationA implements Deserializer {
 	 * Deserialisiert einen Datensatz aus dem Eingabe-Stream.
 	 *
 	 * @param data Neuer Datensatz, der mit der AttributGruppe der erwarteten Daten initialisiert wurde.
-	 * @throws EOFException Wenn das Ende des Eingabe-Streams w‰hrend des Lesen erkannt wurde.
+	 * @throws EOFException Wenn das Ende des Eingabe-Streams w√§hrend des Lesen erkannt wurde.
 	 * @throws IOException  Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 * @see ClientDavConnection#createData
 	 */
@@ -103,8 +109,8 @@ final class DeserializerImplementationA implements Deserializer {
 	 * Deserialisiert einen Datensatz aus dem Eingabe-Stream.
 	 *
 	 * @param data Neuer Datensatz, der mit der AttributGruppe der erwarteten Daten initialisiert wurde.
-	 * @param objectLookup Wird f¸r die Auflˆsung von Objektreferenzen benutzt.
-	 * @throws EOFException Wenn das Ende des Eingabe-Streams w‰hrend des Lesen erkannt wurde.
+	 * @param objectLookup Wird f√ºr die Aufl√∂sung von Objektreferenzen benutzt.
+	 * @throws EOFException Wenn das Ende des Eingabe-Streams w√§hrend des Lesen erkannt wurde.
 	 * @throws IOException  Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 * @see ClientDavConnection#createData
 	 */
@@ -128,7 +134,7 @@ final class DeserializerImplementationA implements Deserializer {
 							unscaledValue.set(readLong());
 							break;
 						default:
-							throw new RuntimeException("Ganzzahlattribut mit ung¸ltiger Byte-Anzahl: " + integerAtt.getNameOrPidOrId());
+							throw new RuntimeException("Ganzzahlattribut mit ung√ºltiger Byte-Anzahl: " + integerAtt.getNameOrPidOrId());
 					}
 				} else if (att instanceof ReferenceAttributeType) {
 					final ReferenceAttributeType referenceAttributeType = (ReferenceAttributeType)att;
@@ -138,7 +144,7 @@ final class DeserializerImplementationA implements Deserializer {
 							data.asReferenceValue().setSystemObjectPid(pid, objectLookup);
 						}
 						catch(RuntimeException e) {
-							throw new RuntimeException("Am Referenzattribut " + data.getName() + " konnte die Pid " + pid + " nicht aufgelˆst werden", e);
+							throw new RuntimeException("Am Referenzattribut " + data.getName() + " konnte die Pid " + pid + " nicht aufgel√∂st werden", e);
 						}
 					}
 					else {
@@ -163,7 +169,7 @@ final class DeserializerImplementationA implements Deserializer {
 						data.asUnscaledValue().set(readFloat());
 					}
 				} else {
-					throw new RuntimeException("Deserialisierung einer unbekannten Attributart nicht mˆglich");
+					throw new RuntimeException("Deserialisierung einer unbekannten Attributart nicht m√∂glich");
 				}
 		} else {
 			if (data.isArray()) {
@@ -199,7 +205,7 @@ final class DeserializerImplementationA implements Deserializer {
 	 * Liest und deserialisiert einen <code>byte</code>-Wert vom Eingabe-Stream dieses Deserialisierers.
 	 *
 	 * @return Der eingelesene Wert.
-	 * @throws EOFException Wenn das Ende des Eingabe-Streams w‰hrend des Lesen erkannt wurde.
+	 * @throws EOFException Wenn das Ende des Eingabe-Streams w√§hrend des Lesen erkannt wurde.
 	 * @throws IOException  Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 */
 	public byte readByte() throws EOFException, IOException {
@@ -215,7 +221,7 @@ final class DeserializerImplementationA implements Deserializer {
 	 *
 	 * @return Eingelesener Datensatz
 	 *
-	 * @throws EOFException Wenn das Ende des Eingabe-Streams w‰hrend des Lesen erkannt wurde.
+	 * @throws EOFException Wenn das Ende des Eingabe-Streams w√§hrend des Lesen erkannt wurde.
 	 * @throws IOException  Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 */
 	public Data readData(final AttributeGroup atg) throws EOFException, IOException {
@@ -226,11 +232,11 @@ final class DeserializerImplementationA implements Deserializer {
 	 * Liest und deserialisiert einen Datensatz aus dem Eingabe-Stream dieses Deserialisierers.
 	 *
 	 * @param atg          Attributgruppe des einzulesenden Datensatzes.
-	 * @param objectLookup Wird f¸r die Auflˆsung von Objektreferenzen benutzt.
+	 * @param objectLookup Wird f√ºr die Aufl√∂sung von Objektreferenzen benutzt.
 	 *
 	 * @return Eingelesener Datensatz
 	 *
-	 * @throws EOFException Wenn das Ende des Eingabe-Streams w‰hrend des Lesen erkannt wurde.
+	 * @throws EOFException Wenn das Ende des Eingabe-Streams w√§hrend des Lesen erkannt wurde.
 	 * @throws IOException  Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 */
 	public Data readData(final AttributeGroup atg, ObjectLookup objectLookup) throws EOFException, IOException {
@@ -243,7 +249,7 @@ final class DeserializerImplementationA implements Deserializer {
 	 * Liest und deserialisiert einen <code>boolean</code>-Wert vom Eingabe-Stream dieses Deserialisierers.
 	 *
 	 * @return Der eingelesene Wert.
-	 * @throws EOFException Wenn das Ende des Eingabe-Streams w‰hrend des Lesens erkannt wurde.
+	 * @throws EOFException Wenn das Ende des Eingabe-Streams w√§hrend des Lesens erkannt wurde.
 	 * @throws IOException  Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 */
 	public boolean readBoolean() throws EOFException, IOException {
@@ -257,7 +263,7 @@ final class DeserializerImplementationA implements Deserializer {
 	 * Liest und deserialisiert einen <code>double</code>-Wert vom Eingabe-Stream dieses Deserialisierers.
 	 *
 	 * @return Der eingelesene Wert.
-	 * @throws EOFException Wenn das Ende des Eingabe-Streams w‰hrend des Lesen erkannt wurde.
+	 * @throws EOFException Wenn das Ende des Eingabe-Streams w√§hrend des Lesen erkannt wurde.
 	 * @throws IOException  Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 */
 	public double readDouble() throws EOFException, IOException {
@@ -268,7 +274,7 @@ final class DeserializerImplementationA implements Deserializer {
 	 * Liest und deserialisiert einen <code>float</code>-Wert vom Eingabe-Stream dieses Deserialisierers.
 	 *
 	 * @return Der eingelesene Wert.
-	 * @throws EOFException Wenn das Ende des Eingabe-Streams w‰hrend des Lesen erkannt wurde.
+	 * @throws EOFException Wenn das Ende des Eingabe-Streams w√§hrend des Lesen erkannt wurde.
 	 * @throws IOException  Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 */
 	public float readFloat() throws EOFException, IOException {
@@ -279,7 +285,7 @@ final class DeserializerImplementationA implements Deserializer {
 	 * Liest und deserialisiert einen <code>int</code>-Wert vom Eingabe-Stream dieses Deserialisierers.
 	 *
 	 * @return Der eingelesene Wert.
-	 * @throws EOFException Wenn das Ende des Eingabe-Streams w‰hrend des Lesen erkannt wurde.
+	 * @throws EOFException Wenn das Ende des Eingabe-Streams w√§hrend des Lesen erkannt wurde.
 	 * @throws IOException  Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 */
 	public int readInt() throws EOFException, IOException {
@@ -295,7 +301,7 @@ final class DeserializerImplementationA implements Deserializer {
 	 * Liest und deserialisiert einen <code>long</code>-Wert vom Eingabe-Stream dieses Deserialisierers.
 	 *
 	 * @return Der eingelesene Wert.
-	 * @throws EOFException Wenn das Ende des Eingabe-Streams w‰hrend des Lesen erkannt wurde.
+	 * @throws EOFException Wenn das Ende des Eingabe-Streams w√§hrend des Lesen erkannt wurde.
 	 * @throws IOException  Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 */
 	public long readLong() throws EOFException, IOException {
@@ -306,7 +312,7 @@ final class DeserializerImplementationA implements Deserializer {
 	 * Liest und deserialisiert einen <code>short</code>-Wert vom Eingabe-Stream dieses Deserialisierers.
 	 *
 	 * @return Der eingelesene Wert.
-	 * @throws EOFException Wenn das Ende des Eingabe-Streams w‰hrend des Lesen erkannt wurde.
+	 * @throws EOFException Wenn das Ende des Eingabe-Streams w√§hrend des Lesen erkannt wurde.
 	 * @throws IOException  Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 */
 	public short readShort() throws EOFException, IOException {
@@ -317,11 +323,11 @@ final class DeserializerImplementationA implements Deserializer {
 	}
 
 	/**
-	 * Liest und deserialisiert einen <code>String</code>-Wert mit einer maximalen L‰nge von 65535 vom Eingabe-Stream
+	 * Liest und deserialisiert einen <code>String</code>-Wert mit einer maximalen L√§nge von 65535 vom Eingabe-Stream
 	 * dieses Deserialisierers.
 	 *
 	 * @return Der eingelesene String.
-	 * @throws EOFException Wenn das Ende des Eingabe-Streams w‰hrend des Lesen erkannt wurde.
+	 * @throws EOFException Wenn das Ende des Eingabe-Streams w√§hrend des Lesen erkannt wurde.
 	 * @throws IOException  Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 */
 	public String readString() throws EOFException, IOException {
@@ -329,14 +335,14 @@ final class DeserializerImplementationA implements Deserializer {
 	}
 
 	/**
-	 * Liest und deserialisiert einen <code>String</code>-Wert mit einer vorgegebenen Maximal-L‰nge vom Eingabe-Stream
-	 * dieses Deserialisierers. Es ist zu beachten, dass beim deserialiseren die gleiche Maximalgrˆﬂe wie beim
+	 * Liest und deserialisiert einen <code>String</code>-Wert mit einer vorgegebenen Maximal-L√§nge vom Eingabe-Stream
+	 * dieses Deserialisierers. Es ist zu beachten, dass beim deserialiseren die gleiche Maximalgr√∂√üe wie beim
 	 * serialisieren angegeben wird.
 	 *
-	 * @param maxLength Maximale L‰nge des zu serialisierenden Strings oder <code>0</code> wenn keine Begrenzung vorgegeben
+	 * @param maxLength Maximale L√§nge des zu serialisierenden Strings oder <code>0</code> wenn keine Begrenzung vorgegeben
 	 *                  werden kann.
 	 * @return Der eingelesene String.
-	 * @throws EOFException Wenn das Ende des Eingabe-Streams w‰hrend des Lesen erkannt wurde.
+	 * @throws EOFException Wenn das Ende des Eingabe-Streams w√§hrend des Lesen erkannt wurde.
 	 * @throws IOException  Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 */
 	public String readString(final int maxLength) throws EOFException, IOException {
@@ -359,10 +365,10 @@ final class DeserializerImplementationA implements Deserializer {
 	/**
 	 * Liest und deserialisiert eine Referenz auf ein Systemobjekt vom Eingabe-Stream dieses Deserialisierers.
 	 *
-	 * @param objectLookup Wird f¸r die Auflˆsung von Objektreferenzen benutzt.
+	 * @param objectLookup Wird f√ºr die Aufl√∂sung von Objektreferenzen benutzt.
 	 * @return Das referenzierte Systemobjekt oder <code>null</code>, wenn das referenzierte Objekt nicht bestimmt werden
 	 *         kann.
-	 * @throws EOFException Wenn das Ende des Eingabe-Streams w‰hrend des Lesen erkannt wurde.
+	 * @throws EOFException Wenn das Ende des Eingabe-Streams w√§hrend des Lesen erkannt wurde.
 	 * @throws IOException  Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 */
 	public SystemObject readObjectReference(final ObjectLookup objectLookup) throws EOFException, IOException {
@@ -382,7 +388,7 @@ final class DeserializerImplementationA implements Deserializer {
 	 * den Wert als vorzeichenlose Zahl.
 	 *
 	 * @return Der eingelesene Wert als vorzeichenlose Zahl.
-	 * @throws EOFException Wenn das Ende des Eingabe-Streams w‰hrend des Lesen erkannt wurde.
+	 * @throws EOFException Wenn das Ende des Eingabe-Streams w√§hrend des Lesen erkannt wurde.
 	 * @throws IOException  Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 */
 	public int readUnsignedByte() throws EOFException, IOException {
@@ -396,7 +402,7 @@ final class DeserializerImplementationA implements Deserializer {
 	 * den Wert als vorzeichenlose Zahl.
 	 *
 	 * @return Der eingelesene Wert als vorzeichenlose Zahl.
-	 * @throws EOFException Wenn das Ende des Eingabe-Streams w‰hrend des Lesen erkannt wurde.
+	 * @throws EOFException Wenn das Ende des Eingabe-Streams w√§hrend des Lesen erkannt wurde.
 	 * @throws IOException  Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 */
 	public long readUnsignedInt() throws EOFException, IOException {
@@ -413,7 +419,7 @@ final class DeserializerImplementationA implements Deserializer {
 	 * den Wert als vorzeichenlose Zahl.
 	 *
 	 * @return Der eingelesene Wert als vorzeichenlose Zahl.
-	 * @throws EOFException Wenn das Ende des Eingabe-Streams w‰hrend des Lesen erkannt wurde.
+	 * @throws EOFException Wenn das Ende des Eingabe-Streams w√§hrend des Lesen erkannt wurde.
 	 * @throws IOException  Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 */
 	public int readUnsignedShort() throws EOFException, IOException {
@@ -424,7 +430,7 @@ final class DeserializerImplementationA implements Deserializer {
 	}
 
 	/**
-	 * Liefert eine textuelle Beschreibung dieses Objekts f¸r Debug-Zwecke.
+	 * Liefert eine textuelle Beschreibung dieses Objekts f√ºr Debug-Zwecke.
 	 *
 	 * @return Beschreibung dieses Objekts.
 	 */
@@ -436,10 +442,10 @@ final class DeserializerImplementationA implements Deserializer {
 	}
 
 	/**
-	 * Liest ein Byte-Array mit vorgegebener L‰nge vom Eingabe-Stream dieses Deserialisierers. Es ist zu beachten, das als
-	 * L‰nge exakt die Grˆﬂe des entsprechenden serialisierten Arrays angegeben werden muss.
+	 * Liest ein Byte-Array mit vorgegebener L√§nge vom Eingabe-Stream dieses Deserialisierers. Es ist zu beachten, das als
+	 * L√§nge exakt die Gr√∂√üe des entsprechenden serialisierten Arrays angegeben werden muss.
 	 *
-	 * @param length L‰nge des einzulesenden Byte-Arrays
+	 * @param length L√§nge des einzulesenden Byte-Arrays
 	 * @return Das eingelesene Byte-Array
 	 * @throws java.io.IOException Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 */
@@ -451,7 +457,7 @@ final class DeserializerImplementationA implements Deserializer {
 
 	/**
 	 * Liest eine vorgegebene Anzahl von Bytes vom Eingabe-Stream dieses Deserialisierers ein und speichert diese an einem
-	 * vorgegebenen Offset in ein vorhandenes Byte-Array. Es ist zu beachten, das als L‰nge exakt die Grˆﬂe des
+	 * vorgegebenen Offset in ein vorhandenes Byte-Array. Es ist zu beachten, das als L√§nge exakt die Gr√∂√üe des
 	 * entsprechenden serialisierten Arrays angegeben werden muss.
 	 *
 	 * @param buffer Byte-Array in das die eingelesenen Bytes gespeichert werden sollen.

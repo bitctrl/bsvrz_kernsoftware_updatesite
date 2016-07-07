@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config;
@@ -33,23 +39,23 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Klasse, die den Zugriff auf dynamische Objekte seitens der Datenverteiler-Applikationsfunktionen ermöglicht.
+ * Klasse, die den Zugriff auf dynamische Objekte seitens der Datenverteiler-Applikationsfunktionen ermÃ¶glicht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13141 $
+ * @version $Revision$
  */
 public class DafDynamicObject extends DafSystemObject implements DynamicObject {
 
 	/** Seit wann existiert das Objekt */
 	private long _validSince;
 
-	/** Seit wann existiert das Objekt nicht mehr. Der Wert 0 bedeutet, dass das Objekt noch immer gültig ist. */
+	/** Seit wann existiert das Objekt nicht mehr. Der Wert 0 bedeutet, dass das Objekt noch immer gÃ¼ltig ist. */
 	private long _notValidSince = 0;
 
-	/** Alle Objekte, die benachrichtigt werden sollen sobald das dynamische Objekt ungültig wird. */
+	/** Alle Objekte, die benachrichtigt werden sollen sobald das dynamische Objekt ungÃ¼ltig wird. */
 	private Set<InvalidationListener> _invalidationListeners = new HashSet<InvalidationListener>();
 	
-	/**Delegations-Klasse für das Interface {@link ConfigurationCommunicationInterface} */
+	/**Delegations-Klasse fÃ¼r das Interface {@link ConfigurationCommunicationInterface} */
 	DafConfigurationCommunicationListenerSupport _configComHelper;
 
 
@@ -88,8 +94,8 @@ public class DafDynamicObject extends DafSystemObject implements DynamicObject {
 
 	public String parseToString() {
 		String str = super.parseToString();
-		str += "Gültig ab: " + new Date(_validSince) + "\n";
-		str += "Gültig bis: " + new Date(_notValidSince) + "\n";
+		str += "GÃ¼ltig ab: " + new Date(_validSince) + "\n";
+		str += "GÃ¼ltig bis: " + new Date(_notValidSince) + "\n";
 		return str;
 	}
 
@@ -110,7 +116,7 @@ public class DafDynamicObject extends DafSystemObject implements DynamicObject {
 		super.read(deserializer);
 		_validSince = deserializer.readLong();
 		_notValidSince = deserializer.readLong();
-		_configurationAreaId = deserializer.readLong(); // muss hier gelesen werden, da nach Gültigkeit serialisiert
+		_configurationAreaId = deserializer.readLong(); // muss hier gelesen werden, da nach GÃ¼ltigkeit serialisiert
 	}
 
 	public final long getValidSince() {
@@ -133,7 +139,7 @@ public class DafDynamicObject extends DafSystemObject implements DynamicObject {
 		}
 	}
 
-	/** Benachrichtigt alle Observer, dass sich der Zustand dieses Objektes auf "ungültig" geändert hat. */
+	/** Benachrichtigt alle Observer, dass sich der Zustand dieses Objektes auf "ungÃ¼ltig" geÃ¤ndert hat. */
 	private void informInvalidationListeners() {
 		final List<InvalidationListener> invalidationListenersCopy;
 		synchronized(_invalidationListeners) {
@@ -145,15 +151,15 @@ public class DafDynamicObject extends DafSystemObject implements DynamicObject {
 	}
 
 	/**
-	 * Dieser Aufruf setzt den Zeitpunkt, ab dem das Objekt nicht mehr gültig ist.
-	 * <p/>
-	 * Dieser Wert wird nicht an die Konfiguration weitergereicht sondern nur am Objekt vermerkt. Außerdem werden die angemeldeten InvalidationListener
+	 * Dieser Aufruf setzt den Zeitpunkt, ab dem das Objekt nicht mehr gÃ¼ltig ist.
+	 * <p>
+	 * Dieser Wert wird nicht an die Konfiguration weitergereicht sondern nur am Objekt vermerkt. AuÃŸerdem werden die angemeldeten InvalidationListener
 	 * aufgerufen.
 	 *
-	 * @param notValidSince Zeitpunkt an dem das Objekt ungültig wurde
+	 * @param notValidSince Zeitpunkt an dem das Objekt ungÃ¼ltig wurde
 	 */
 	void storeNotValidSince(final long notValidSince) {
-		// Verhindert, dass ein Listener sich einträgt während der Wert gesetzt wird und somit nicht informiert wird
+		// Verhindert, dass ein Listener sich eintrÃ¤gt wÃ¤hrend der Wert gesetzt wird und somit nicht informiert wird
 		synchronized(_invalidationListeners) {
 			_notValidSince = notValidSince;
 			informInvalidationListeners();
@@ -161,12 +167,12 @@ public class DafDynamicObject extends DafSystemObject implements DynamicObject {
 	}
 
 	/**
-	 * Dieser Aufruf setzt den Zeitpunkt, ab dem das Objekt nicht mehr gültig ist.
-	 * <p/>
+	 * Dieser Aufruf setzt den Zeitpunkt, ab dem das Objekt nicht mehr gÃ¼ltig ist.
+	 * <p>
 	 * Dieser Wert wird nicht an die Konfiguration weitergereicht sondern nur am Objekt vermerkt. Die angemeldeten InvalidationListener werden durch diesen Aufruf
 	 * nicht aufgerufen.
 	 *
-	 * @param notValidSince Zeitpunkt an dem das Objekt ungültig wurde
+	 * @param notValidSince Zeitpunkt an dem das Objekt ungÃ¼ltig wurde
 	 */
 	public void setNotValidSince(final long notValidSince) {
 		_notValidSince = notValidSince;
@@ -174,7 +180,7 @@ public class DafDynamicObject extends DafSystemObject implements DynamicObject {
 
 	public final boolean isValid() {
 		if(_notValidSince == 0) {
-			// Der Wert 0 bedeutet, dass das Objekt noch gültig ist. Jeder Wert größer 0 bedeutet, dass das Objekt zu diesem zeitpunkt ungültig geworden ist.
+			// Der Wert 0 bedeutet, dass das Objekt noch gÃ¼ltig ist. Jeder Wert grÃ¶ÃŸer 0 bedeutet, dass das Objekt zu diesem zeitpunkt ungÃ¼ltig geworden ist.
 			return true;
 		}
 		else {

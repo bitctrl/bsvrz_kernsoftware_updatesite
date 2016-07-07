@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.dataview;
@@ -54,10 +60,10 @@ import java.nio.charset.Charset;
 import java.util.*;
 
 /**
- * Klasse zum Anlegen der Menüleiste.
+ * Klasse zum Anlegen der MenÃ¼leiste.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8369 $
+ * @version $Revision$
  */
 public class CreateMenuBar {
 
@@ -135,7 +141,7 @@ public class CreateMenuBar {
 		);
 
 		final JMenuItem saveSelectionAsCSVItem = new JMenuItem("Auswahl in CSV-Datei speichern ...");
-		saveSelectionAsCSVItem.setToolTipText("Speichert nur die ausgewählten Inhalte");
+		saveSelectionAsCSVItem.setToolTipText("Speichert nur die ausgewÃ¤hlten Inhalte");
 
 		saveSelectionAsCSVItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, menuShortcutKeyWithAltMask));
 		saveSelectionAsCSVItem.getAccessibleContext().setAccessibleDescription("Speichert die Auswahl in einer CSV-Datei.");
@@ -189,10 +195,10 @@ public class CreateMenuBar {
 				}
 		);
 
-		final JMenuItem printSelectionItem = new JMenuItem("Ausgewählte Zeilen drucken ...");
-		printSelectionItem.setToolTipText("Druckt alle Zeilen, in denen mindestens ein Feld ausgewählt ist");
+		final JMenuItem printSelectionItem = new JMenuItem("AusgewÃ¤hlte Zeilen drucken ...");
+		printSelectionItem.setToolTipText("Druckt alle Zeilen, in denen mindestens ein Feld ausgewÃ¤hlt ist");
 		printSelectionItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, menuShortcutKeyWithAltMask));
-		printSelectionItem.getAccessibleContext().setAccessibleDescription("Druckt die ausgewählten Zeilen.");
+		printSelectionItem.getAccessibleContext().setAccessibleDescription("Druckt die ausgewÃ¤hlten Zeilen.");
 		fileMenu.add(printSelectionItem);
 		printSelectionItem.addActionListener(
 				new ActionListener() {
@@ -202,34 +208,34 @@ public class CreateMenuBar {
 				}
 		);
 
-		_highlightSelectionButton.setToolTipText("Ausgewählte Zellen werden in den Auswahlfarben gedruckt");
-		_highlightSelectionButton.getAccessibleContext().setAccessibleDescription("Ausgewählte Zellen werden in den Auswahlfarben gedruckt.");
+		_highlightSelectionButton.setToolTipText("AusgewÃ¤hlte Zellen werden in den Auswahlfarben gedruckt");
+		_highlightSelectionButton.getAccessibleContext().setAccessibleDescription("AusgewÃ¤hlte Zellen werden in den Auswahlfarben gedruckt.");
 		fileMenu.add(_highlightSelectionButton);
 
 		if(System.getProperty("os.name").toLowerCase().startsWith("mac")) {
 			_printPreviewInVisibleRegion.setState(true);
 			_printPreviewInVisibleRegion.setEnabled(false);
 		}
-		_printPreviewInVisibleRegion.setToolTipText("Während der Erstellung der Druckvorlage wird die Vorschau gezeigt");
-		_printPreviewInVisibleRegion.getAccessibleContext().setAccessibleDescription("Während der Erstellung der Druckvorlage wird die Vorschau gezeigt.");
+		_printPreviewInVisibleRegion.setToolTipText("WÃ¤hrend der Erstellung der Druckvorlage wird die Vorschau gezeigt");
+		_printPreviewInVisibleRegion.getAccessibleContext().setAccessibleDescription("WÃ¤hrend der Erstellung der Druckvorlage wird die Vorschau gezeigt.");
 		fileMenu.add(_printPreviewInVisibleRegion);
 
 		fileMenu.addSeparator();
 
-		final JMenuItem closeItem = new JMenuItem("Schließen");
+		final JMenuItem closeItem = new JMenuItem("SchlieÃŸen");
 		if(_archive) {
-			closeItem.setToolTipText("Schließt die streambasierte Archivanfrage");
+			closeItem.setToolTipText("SchlieÃŸt die streambasierte Archivanfrage");
 		}
 		else {
-			closeItem.setToolTipText("Schließt die Onlinetabelle");
+			closeItem.setToolTipText("SchlieÃŸt die Onlinetabelle");
 		}
 		closeItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, menuShortcutKeyMask));
 
 		if(_archive) {
-			closeItem.getAccessibleContext().setAccessibleDescription("Schließt die streambasierte Archivanfrage.");
+			closeItem.getAccessibleContext().setAccessibleDescription("SchlieÃŸt die streambasierte Archivanfrage.");
 		}
 		else {
-			closeItem.getAccessibleContext().setAccessibleDescription("Schließt die Onlinetabelle.");
+			closeItem.getAccessibleContext().setAccessibleDescription("SchlieÃŸt die Onlinetabelle.");
 		}
 		fileMenu.add(closeItem);
 		closeItem.addActionListener(
@@ -244,10 +250,10 @@ public class CreateMenuBar {
 		fileMenu.setMnemonic(KeyEvent.VK_B);
 		fileMenu.getAccessibleContext().setAccessibleDescription("Das Bearbeiten-Menue");
 
-		final JMenuItem deleteAllItem = new JMenuItem("Alles löschen");
-		deleteAllItem.setToolTipText("Löscht alle Inhalte der Tabelle");
+		final JMenuItem deleteAllItem = new JMenuItem("Alles lÃ¶schen");
+		deleteAllItem.setToolTipText("LÃ¶scht alle Inhalte der Tabelle");
 		deleteAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, menuShortcutKeyMask));
-		deleteAllItem.getAccessibleContext().setAccessibleDescription("Löscht alle Inhalte der Tabelle.");
+		deleteAllItem.getAccessibleContext().setAccessibleDescription("LÃ¶scht alle Inhalte der Tabelle.");
 		editMenu.add(deleteAllItem);
 		deleteAllItem.addActionListener(
 				new ActionListener() {
@@ -259,10 +265,10 @@ public class CreateMenuBar {
 
 		editMenu.addSeparator();
 
-		final JMenuItem selectAllItem = new JMenuItem("Alles auswählen");
-		selectAllItem.setToolTipText("Wählt alle Inhalte der Tabelle aus");
+		final JMenuItem selectAllItem = new JMenuItem("Alles auswÃ¤hlen");
+		selectAllItem.setToolTipText("WÃ¤hlt alle Inhalte der Tabelle aus");
 		selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, menuShortcutKeyMask));
-		selectAllItem.getAccessibleContext().setAccessibleDescription("Wählt alle Inhalte der Tabelle aus.");
+		selectAllItem.getAccessibleContext().setAccessibleDescription("WÃ¤hlt alle Inhalte der Tabelle aus.");
 		editMenu.add(selectAllItem);
 		selectAllItem.addActionListener(
 				new ActionListener() {
@@ -272,7 +278,7 @@ public class CreateMenuBar {
 				}
 		);
 
-		final JMenuItem deselectAllItem = new JMenuItem("Nichts auswählen");
+		final JMenuItem deselectAllItem = new JMenuItem("Nichts auswÃ¤hlen");
 		deselectAllItem.setToolTipText("Deselektiert alle Inhalte der Tabelle");
 		deselectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, menuShortcutKeyWithAltMask));
 		deselectAllItem.getAccessibleContext().setAccessibleDescription("Deselektiert alle Inhalte der Tabelle.");
@@ -288,7 +294,7 @@ public class CreateMenuBar {
 		editMenu.addSeparator();
 
 		final JMenuItem copyCSVToClipboardItem = new JMenuItem("Auswahl in die Zwischenablage kopieren");
-		copyCSVToClipboardItem.setToolTipText("Kopiert die ausgewählten Inhalte in die Zwischenablage");
+		copyCSVToClipboardItem.setToolTipText("Kopiert die ausgewÃ¤hlten Inhalte in die Zwischenablage");
 		copyCSVToClipboardItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		copyCSVToClipboardItem.getAccessibleContext().setAccessibleDescription("Kopiert die Auswahl in die Zwischenablage.");
 		editMenu.add(copyCSVToClipboardItem);
@@ -324,10 +330,10 @@ public class CreateMenuBar {
 	 * Eine eigene Klasse, die analog zu FileNameExtensionFilter funktioniert, welche aber erst ab Java 1.6 vorhanden ist.
 	 *
 	 * @author Kappich Systemberatung
-	 * @version $Revision: 8369 $
+	 * @version $Revision$
 	 */
 	class MyFileNameExtensionFilter extends FileFilter {
-		// Ähnlich zu FileNameExtensionFilter aus java.swing.JFileChooser.
+		// Ã„hnlich zu FileNameExtensionFilter aus java.swing.JFileChooser.
 
 		final String _description;
 
@@ -400,7 +406,7 @@ public class CreateMenuBar {
 
 				if(csvFile.exists()) {
 					int n = JOptionPane.showConfirmDialog(
-							new JFrame(), "Die Datei '" + csvFile.getName() + "' existiert bereits.\nDatei überschreiben?", "Warning", JOptionPane.YES_NO_OPTION
+							new JFrame(), "Die Datei '" + csvFile.getName() + "' existiert bereits.\nDatei Ã¼berschreiben?", "Warning", JOptionPane.YES_NO_OPTION
 					);
 					if(n == JOptionPane.YES_OPTION) {
 						break;
@@ -420,13 +426,13 @@ public class CreateMenuBar {
 	private void saveAsCSV(final File csvFile, final CSVManager csvManager) {
 		if(csvFile == null) {
 			JOptionPane.showMessageDialog(
-					null, "Fehler in DataViewFrame.saveAsCSV: es wurde keine CSV-Datei übergeben.", "Fehlermeldung", JOptionPane.ERROR_MESSAGE
+					null, "Fehler in DataViewFrame.saveAsCSV: es wurde keine CSV-Datei Ã¼bergeben.", "Fehlermeldung", JOptionPane.ERROR_MESSAGE
 			);
 			return;
 		}
 		if(csvManager == null) {
 			JOptionPane.showMessageDialog(
-					null, "Fehler in DataViewFrame.saveAsCSV: es wurde kein CSV-Manager übergeben.", "Fehlermeldung", JOptionPane.ERROR_MESSAGE
+					null, "Fehler in DataViewFrame.saveAsCSV: es wurde kein CSV-Manager Ã¼bergeben.", "Fehlermeldung", JOptionPane.ERROR_MESSAGE
 			);
 			return;
 		}
@@ -449,11 +455,11 @@ public class CreateMenuBar {
 			fileWriter = new OutputStreamWriter(new FileOutputStream(csvFile), charset);
 		}
 		catch(IOException e) {
-			System.err.println("Es wurde eine IOException beim Öffnen der Datei " + csvFile.getName() + " ausgelöst.");
-			System.err.println("Möglicherweise wird die Datei von einem anderen Programm verwendet.");
+			System.err.println("Es wurde eine IOException beim Ã–ffnen der Datei " + csvFile.getName() + " ausgelÃ¶st.");
+			System.err.println("MÃ¶glicherweise wird die Datei von einem anderen Programm verwendet.");
 			System.err.println("Die Nachricht der IOException ist: " + e.getMessage());
 			JOptionPane.showMessageDialog(
-					null, "Fehler beim Öffnen der Datei " + csvFile.getName(), "Fehlermeldung", JOptionPane.ERROR_MESSAGE
+					null, "Fehler beim Ã–ffnen der Datei " + csvFile.getName(), "Fehlermeldung", JOptionPane.ERROR_MESSAGE
 			);
 			return;
 		}
@@ -463,7 +469,7 @@ public class CreateMenuBar {
 			fileWriter.write(csvManager.getCSVLines(_rowHeaderButtonForCSVExport.isSelected()));
 		}
 		catch(IOException e) {
-			System.err.println("Es wurde eine IOException beim Schreiben der Datei " + csvFile.getName() + " ausgelöst.");
+			System.err.println("Es wurde eine IOException beim Schreiben der Datei " + csvFile.getName() + " ausgelÃ¶st.");
 			System.err.println("Die Nachricht der IOException ist: " + e.getMessage());
 			JOptionPane.showMessageDialog(
 					null, "Fehler beim Schreiben der Datei " + csvFile.getName(), "Fehlermeldung", JOptionPane.ERROR_MESSAGE
@@ -474,10 +480,10 @@ public class CreateMenuBar {
 			fileWriter.close();
 		}
 		catch(IOException e) {
-			System.err.println("Es wurde eine IOException beim Schließen der Datei " + csvFile.getName() + " ausgelöst.");
+			System.err.println("Es wurde eine IOException beim SchlieÃŸen der Datei " + csvFile.getName() + " ausgelÃ¶st.");
 			System.err.println("Die Nachricht der IOException ist: " + e.getMessage());
 			JOptionPane.showMessageDialog(
-					null, "Fehler beim Schließen der Datei " + csvFile.getName(), "Fehlermeldung", JOptionPane.ERROR_MESSAGE
+					null, "Fehler beim SchlieÃŸen der Datei " + csvFile.getName(), "Fehlermeldung", JOptionPane.ERROR_MESSAGE
 			);
 		}
 	}
@@ -486,7 +492,7 @@ public class CreateMenuBar {
 		final File csvFile = getCSVFileForExport();
 		if(csvFile == null) {
 			JOptionPane.showMessageDialog(
-					null, "Fehler: es wurde keine CSV-Datei geöffnet.", "Fehlermeldung", JOptionPane.ERROR_MESSAGE
+					null, "Fehler: es wurde keine CSV-Datei geÃ¶ffnet.", "Fehlermeldung", JOptionPane.ERROR_MESSAGE
 			);
 			return;
 		}
@@ -496,7 +502,7 @@ public class CreateMenuBar {
 		);
 		if(csvManager == null) {
 			JOptionPane.showMessageDialog(
-					null, "Fehler: es wurde keine CSV-Manager geöffnet.", "Fehlermeldung", JOptionPane.ERROR_MESSAGE
+					null, "Fehler: es wurde keine CSV-Manager geÃ¶ffnet.", "Fehlermeldung", JOptionPane.ERROR_MESSAGE
 			);
 			return;
 		}
@@ -508,7 +514,7 @@ public class CreateMenuBar {
 		final File csvFile = getCSVFileForExport();
 		if(csvFile == null) {
 			JOptionPane.showMessageDialog(
-					null, "Fehler: es wurde keine CSV-Datei geöffnet.", "Fehlermeldung", JOptionPane.ERROR_MESSAGE
+					null, "Fehler: es wurde keine CSV-Datei geÃ¶ffnet.", "Fehlermeldung", JOptionPane.ERROR_MESSAGE
 			);
 			return;
 		}
@@ -518,7 +524,7 @@ public class CreateMenuBar {
 		);
 		if(csvManager == null) {
 			JOptionPane.showMessageDialog(
-					null, "Fehler: es wurde keine CSV-Manager geöffnet.", "Fehlermeldung", JOptionPane.ERROR_MESSAGE
+					null, "Fehler: es wurde keine CSV-Manager geÃ¶ffnet.", "Fehlermeldung", JOptionPane.ERROR_MESSAGE
 			);
 			return;
 		}
@@ -574,7 +580,7 @@ public class CreateMenuBar {
 		);
 
 		/** Diese komische Verschachtelung ist notwendig, da innerhalb von initPrintFrame()
-		 * weitere invokeLater-Aufrufe stattfinden, deren Ergebnis für das unten zu konstruierende
+		 * weitere invokeLater-Aufrufe stattfinden, deren Ergebnis fÃ¼r das unten zu konstruierende
 		 * Book notwendig sind! Toll ist anders.
 		 */
 		SwingUtilities.invokeLater(
@@ -601,7 +607,7 @@ public class CreateMenuBar {
 						int value = 0;
 
 						final Book book = new Book();
-						while(value < maximumValue - visibleAmount) {	// alle außer der letzten Seite
+						while(value < maximumValue - visibleAmount) {	// alle auÃŸer der letzten Seite
 							book.append(new PageDescription(value), pageFormat);
 							value += printPanel.getVisibleViewPortHeight();
 							if(value == 0) {
@@ -610,10 +616,10 @@ public class CreateMenuBar {
 						}
 						book.append(new PageDescription(value), pageFormat); // Darf man nicht vergessen!
 
-						// Die nächsten drei Zeilen bedürfen einer Erklärung: die in initPrintPanel dem
-						// printPanel hinzugefügten DataTableobjects werden ab dem zweiten erst durch
+						// Die nÃ¤chsten drei Zeilen bedÃ¼rfen einer ErklÃ¤rung: die in initPrintPanel dem
+						// printPanel hinzugefÃ¼gten DataTableobjects werden ab dem zweiten erst durch
 						// den Adjustmentlistener der vertikalen Scrollbar erstellt. Wenn alles auf eine
-						// Seite passt, kommt aber kein AdjustmentChangedEvent; diesen lösen wir nun hier
+						// Seite passt, kommt aber kein AdjustmentChangedEvent; diesen lÃ¶sen wir nun hier
 						// aus, indem wir um 1 herunterscrollen (0 tut es nicht).
 						if(book.getNumberOfPages() == 1) {
 							printPanel.setVerticalScrollBarsMaximumValue(maximumValue + 1);
@@ -638,7 +644,7 @@ public class CreateMenuBar {
 
 		/**
 		 * Eine PageDescription wird aus dem Wert des Scrollbalkens gebildet. Dieser ist zur Beschreibung der auszudruckenden Seite ausreichend, da die
-		 * Swing-Komponente anderweitig nicht geändert wird.
+		 * Swing-Komponente anderweitig nicht geÃ¤ndert wird.
 		 */
 		public PageDescription(final int scrollValue) {
 			_scrollValue = scrollValue;
@@ -646,7 +652,7 @@ public class CreateMenuBar {
 
 		public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
 			if(_scrollValue < 0) {
-				return Printable.PAGE_EXISTS;	// macht eine leere Seite, NO_SUCH_PAGE führt dagegen zum Abbruch
+				return Printable.PAGE_EXISTS;	// macht eine leere Seite, NO_SUCH_PAGE fÃ¼hrt dagegen zum Abbruch
 			}
 			if(_printFrame == null) {
 				System.err.println("Fehler in PageDescription.print(): der Print-Frame wurde nicht initialisiert!");
@@ -655,7 +661,7 @@ public class CreateMenuBar {
 			final DataViewPanel printPanel = _printFrame.getDataViewPanel();
 			final int maximumValue = printPanel.getVerticalScrollBarsMaximumValue();
 			final int visibleAmount = printPanel.getVerticalScrollBarsVisibleAmount();
-			if(_scrollValue > maximumValue - visibleAmount) { // Panel muss unten verlängert werden!
+			if(_scrollValue > maximumValue - visibleAmount) { // Panel muss unten verlÃ¤ngert werden!
 				final int missingSize = _scrollValue - (maximumValue - visibleAmount);
 				printPanel.increaseLowerPanel(missingSize);
 				_printFrame.getFrame().validate();	// total wichtig!
@@ -713,8 +719,8 @@ public class CreateMenuBar {
 	}
 
 	/**
-	 * Das hier ist keine Software, auf die man stolz sein kann; dies ist schlicht ein funktionaler Anbau, damit das Drucken klappt, wobei möglichst wenig der
-	 * bestehenden Software geändert werden sollte.
+	 * Das hier ist keine Software, auf die man stolz sein kann; dies ist schlicht ein funktionaler Anbau, damit das Drucken klappt, wobei mÃ¶glichst wenig der
+	 * bestehenden Software geÃ¤ndert werden sollte.
 	 */
 
 	private void initPrintFrame(final boolean selectedDataTableObjectsOnly) {
@@ -729,7 +735,7 @@ public class CreateMenuBar {
 			);
 		}
 
-		// leere Menue-Leiste hinzufügen:
+		// leere Menue-Leiste hinzufÃ¼gen:
 		createDummyMenuBar();
 		// kopiere die Breiten aller Spalten und ihren offen/geschlossen-Status:
 		final HeaderGrid printFrameHeaderGrid = _printFrame.getDataViewPanel().getHeaderGrid();
@@ -776,7 +782,7 @@ public class CreateMenuBar {
 				}
 			}
 		}
-		// Präpariere den SelectionManager:
+		// PrÃ¤pariere den SelectionManager:
 		final SelectionManager selectionManager = _printFrame.getDataViewPanel().getSelectionManager();
 		if(_highlightSelectionButton.isSelected()) {
 			selectionManager.setSelectedCellKeys(_dataViewPanel.getSelectionManager().getSelectedCellKeysAsSet());
@@ -793,9 +799,9 @@ public class CreateMenuBar {
 		final Container pane = _printFrame.getFrame().getContentPane();
 		pane.add(_printFrame.getDataViewPanel(), BorderLayout.CENTER);
 
-		// Ein generelles JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED hätte wohl den Nachteil, dass bei
-		// sich ändernden Spaltenbreiten der Zeilenköpfe, mal eine ScrollBar da sein könnte wäre und mal nicht,
-		// was entweder zu verdecktem oder doppelten Darstellungen führen würde, je nachdem ob die Seiten des
+		// Ein generelles JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED hÃ¤tte wohl den Nachteil, dass bei
+		// sich Ã¤ndernden Spaltenbreiten der ZeilenkÃ¶pfe, mal eine ScrollBar da sein kÃ¶nnte wÃ¤re und mal nicht,
+		// was entweder zu verdecktem oder doppelten Darstellungen fÃ¼hren wÃ¼rde, je nachdem ob die Seiten des
 		// Books mit oder ohne Scrollbar berechent wurden.
 		if(_dataViewPanel.isHorizontalScrollBarVisible()) {
 			_printFrame.getDataViewPanel().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);

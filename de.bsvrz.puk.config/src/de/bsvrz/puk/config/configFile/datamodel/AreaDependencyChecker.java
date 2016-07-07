@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -29,11 +35,11 @@ import java.util.*;
 
 /**
  * @author Kappich Systemberatung
- * @version $Revision: 6053 $
+ * @version $Revision$
  */
 public class AreaDependencyChecker implements AreaDependencyCheck {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 
@@ -41,68 +47,68 @@ public class AreaDependencyChecker implements AreaDependencyCheck {
 			List<ConfigAreaAndVersion> areas
 	) {
 
-		// Prüfen ob gültige Versionen übergeben wurden.
+		// PrÃ¼fen ob gÃ¼ltige Versionen Ã¼bergeben wurden.
 		checkRightVersions(areas);
 		return check(areas);
 	}
 
 	/**
-	 * Prüft, ob für jeden der übergebenen Bereich die Abhängigkeiten zu anderen Bereichen erfüllt ist und gibt das Ergebnis der Prüfung zurück.
+	 * PrÃ¼ft, ob fÃ¼r jeden der Ã¼bergebenen Bereich die AbhÃ¤ngigkeiten zu anderen Bereichen erfÃ¼llt ist und gibt das Ergebnis der PrÃ¼fung zurÃ¼ck.
 	 *
-	 * @param areas Bereiche, die in den übergenen Versionen, zum Start der Konfiguration genutzt werden sollen
+	 * @param areas Bereiche, die in den Ã¼bergenen Versionen, zum Start der Konfiguration genutzt werden sollen
 	 *
-	 * @return Ergebnis der Prüfung ob alle Abhängigkeiten, wie gefordert, aufgelöst werden können.
+	 * @return Ergebnis der PrÃ¼fung ob alle AbhÃ¤ngigkeiten, wie gefordert, aufgelÃ¶st werden kÃ¶nnen.
 	 */
 	private AreaDependencyCheckResult check(List<ConfigAreaAndVersion> areas) {
 		// Speichert alle gefundenen Fehler
 		final CheckResult result = new CheckResult();
 
-		// Alle Bereiche, die zur Verfügung stehen
+		// Alle Bereiche, die zur VerfÃ¼gung stehen
 		final Map<String, Short> usedAreasAndVersions = getUsedAreasWithVersionMap(areas);
 
 		for(ConfigAreaAndVersion area : areas) {
 
-			// Bei alten Bereichen kann es sein, das die Abhängigkeiten noch gar nicht vorliegen
+			// Bei alten Bereichen kann es sein, das die AbhÃ¤ngigkeiten noch gar nicht vorliegen
 			final ConfigConfigurationAreaInterface configArea = (ConfigConfigurationAreaInterface)area.getConfigArea();
 
 				if(configArea.dependenciesChecked() == false) {
 					result.addUnknownArea(configArea);
-					// Da es keine Abhängigkeiten zum prüfen gibt, kann der nächste Bereich betrachtet werden
+					// Da es keine AbhÃ¤ngigkeiten zum prÃ¼fen gibt, kann der nÃ¤chste Bereich betrachtet werden
 					continue;
 				}
 
-			// Alle Abhängigkeiten des Bereichs anfordern und die Abhängigkeiten sortieren
+			// Alle AbhÃ¤ngigkeiten des Bereichs anfordern und die AbhÃ¤ngigkeiten sortieren
 			final Map<String, List<ConfigurationAreaDependency>> sortedDependencies = getAllDependencies(configArea.getDependencyFromOtherConfigurationAreas());
 
 			// Der betrachtete Bereich soll gestartet werden.
-			// Die Version in der das geschehen soll bestimmt die nötigen Abhängigkeiten.
+			// Die Version in der das geschehen soll bestimmt die nÃ¶tigen AbhÃ¤ngigkeiten.
 
-			// Welche Abhängigkeiten sind in dieser Version aufgetreten. Diese müssen gefunden werden.
+			// Welche AbhÃ¤ngigkeiten sind in dieser Version aufgetreten. Diese mÃ¼ssen gefunden werden.
 			short startVersion = usedAreasAndVersions.get(configArea.getPid());
 
-			// Bereiche, von dem der Bereich abhängig ist
+			// Bereiche, von dem der Bereich abhÃ¤ngig ist
 			final Set<String> areasDependentFrom = sortedDependencies.keySet();
 
 			for(String areaDependentFrom : areasDependentFrom) {
-				// In dieser Liste steht, in welcher Version der Bereich vom Bereich areaDependentFrom abhängig wurde
+				// In dieser Liste steht, in welcher Version der Bereich vom Bereich areaDependentFrom abhÃ¤ngig wurde
 				final List<ConfigurationAreaDependency> dependencies = sortedDependencies.get(areaDependentFrom);
 
-				// Das letzte Element in der Liste besitzt die Größte "OccurredAtVersion"
+				// Das letzte Element in der Liste besitzt die GrÃ¶ÃŸte "OccurredAtVersion"
 				for(int nr = dependencies.size() - 1; nr >= 0; nr--) {
 					final ConfigurationAreaDependency areaDependency = dependencies.get(nr);
 					if(areaDependency.getDependencyOccurredAtVersion() <= startVersion) {
-						// Es wurde eine Abhängigkeit gefunden.
-						// Der Bereich muss in der richtigen Version vorliegen, bzw. überhaupt verfügbar sein.
+						// Es wurde eine AbhÃ¤ngigkeit gefunden.
+						// Der Bereich muss in der richtigen Version vorliegen, bzw. Ã¼berhaupt verfÃ¼gbar sein.
 
-						// In diesem Bereich liegt der abhängige Bereich vor
+						// In diesem Bereich liegt der abhÃ¤ngige Bereich vor
 
 						final Short versionDependentAreaIsUsed = usedAreasAndVersions.get(areaDependentFrom);
 						if(versionDependentAreaIsUsed != null) {
 
-							// Der Bereich liegt vor, aber wird er in einer Version genutzt, die größer gleich der benötigten Version ist ?
+							// Der Bereich liegt vor, aber wird er in einer Version genutzt, die grÃ¶ÃŸer gleich der benÃ¶tigten Version ist ?
 							if(versionDependentAreaIsUsed >= areaDependency.getNeededVersion()) {
-								// Ja, der Bereich liegt in der Version vor, die benötigt wird um die Abhängigkeiten aufzulösen.
-								// Es kann der nächste Bereich betrachtet werden.
+								// Ja, der Bereich liegt in der Version vor, die benÃ¶tigt wird um die AbhÃ¤ngigkeiten aufzulÃ¶sen.
+								// Es kann der nÃ¤chste Bereich betrachtet werden.
 								break;
 							}
 							else {
@@ -115,7 +121,7 @@ public class AreaDependencyChecker implements AreaDependencyCheck {
 									result.addNeededDependencyError(configArea, areaDependency);
 								}
 								else {
-									throw new IllegalArgumentException("Unbekannte Abhängigkeit: " + areaDependency.getKind());
+									throw new IllegalArgumentException("Unbekannte AbhÃ¤ngigkeit: " + areaDependency.getKind());
 								}
 							}
 						}
@@ -128,7 +134,7 @@ public class AreaDependencyChecker implements AreaDependencyCheck {
 								result.addNeededDependencyError(configArea, areaDependency);
 							}
 							else {
-								throw new IllegalArgumentException("Unbekannte Abhängigkeit: " + areaDependency.getKind());
+								throw new IllegalArgumentException("Unbekannte AbhÃ¤ngigkeit: " + areaDependency.getKind());
 							}
 						}
 					}
@@ -140,10 +146,10 @@ public class AreaDependencyChecker implements AreaDependencyCheck {
 	}
 
 	/**
-	 * @param areaDependencies Alle Abhängigkeiten des Bereichs.
+	 * @param areaDependencies Alle AbhÃ¤ngigkeiten des Bereichs.
 	 *
-	 * @return Als Schlüssel dient der Bereich, von dem ein anderer Bereich Abhängig ist. Als Wert wird die Abhängigkeit selbst zurückgegeben (beinhaltet den
-	 *         Bereich noch einmal). Die Liste ist sortiert. Die letzte Abhängigkeit, die entdeckt wurde, ist am Ende der Liste gespeichert.
+	 * @return Als SchlÃ¼ssel dient der Bereich, von dem ein anderer Bereich AbhÃ¤ngig ist. Als Wert wird die AbhÃ¤ngigkeit selbst zurÃ¼ckgegeben (beinhaltet den
+	 *         Bereich noch einmal). Die Liste ist sortiert. Die letzte AbhÃ¤ngigkeit, die entdeckt wurde, ist am Ende der Liste gespeichert.
 	 */
 	private Map<String, List<ConfigurationAreaDependency>> getAllDependencies(Collection<ConfigurationAreaDependency> areaDependencies) {
 		final Map<String, List<ConfigurationAreaDependency>> result = new HashMap<String, List<ConfigurationAreaDependency>>();
@@ -171,17 +177,17 @@ public class AreaDependencyChecker implements AreaDependencyCheck {
 				}
 			}
 			);
-		}//for, über alle Listen, die sortiert werden müssen
+		}//for, Ã¼ber alle Listen, die sortiert werden mÃ¼ssen
 
 		return result;
 	}
 
 	/**
-	 * Erzeugt eine Map in der alle Bereiche gespeichert sind, die der Konfiguration zur Verfügung und die Version, in der der Bereich zur Verfügung steht.
-	 * <p/>
-	 * Als Schlüssel dient die Pid des Konfigurationsbereichs, als Wert wird die Version zurückgegeben.
+	 * Erzeugt eine Map in der alle Bereiche gespeichert sind, die der Konfiguration zur VerfÃ¼gung und die Version, in der der Bereich zur VerfÃ¼gung steht.
+	 * <p>
+	 * Als SchlÃ¼ssel dient die Pid des Konfigurationsbereichs, als Wert wird die Version zurÃ¼ckgegeben.
 	 *
-	 * @param areas Alle Bereiche und deren Versionen, die der Konfiguration zur Verfügung stehen.
+	 * @param areas Alle Bereiche und deren Versionen, die der Konfiguration zur VerfÃ¼gung stehen.
 	 *
 	 * @return s.o.
 	 */
@@ -195,15 +201,15 @@ public class AreaDependencyChecker implements AreaDependencyCheck {
 	}
 
 	/**
-	 * Methode, die prüft, ob alle Versionen >= 0 sind.
+	 * Methode, die prÃ¼ft, ob alle Versionen >= 0 sind.
 	 *
-	 * @param areas Bereiche mit Versionsnummern, die >= 0 sein müssen
+	 * @param areas Bereiche mit Versionsnummern, die >= 0 sein mÃ¼ssen
 	 *
 	 * @throws IllegalArgumentException Wenn eine Version < 0 ist.
 	 */
 	private void checkRightVersions(List<ConfigAreaAndVersion> areas) {
 		for(ConfigAreaAndVersion area : areas) {
-			if(area.getVersion() < 0) throw new IllegalArgumentException("Für einen Bereich wurde keine gültige Versionsnummer angegeben: " + area);
+			if(area.getVersion() < 0) throw new IllegalArgumentException("FÃ¼r einen Bereich wurde keine gÃ¼ltige Versionsnummer angegeben: " + area);
 		}
 	}
 
@@ -216,8 +222,8 @@ public class AreaDependencyChecker implements AreaDependencyCheck {
 		private final List<ConfigurationArea> _unknownAreas = new ArrayList<ConfigurationArea>();
 
 		/**
-		 * @param area       Bereich, für den die Abhängigkeit gilt, die nicht aufgelöst werden konnte.
-		 * @param dependency Abhängigkeit
+		 * @param area       Bereich, fÃ¼r den die AbhÃ¤ngigkeit gilt, die nicht aufgelÃ¶st werden konnte.
+		 * @param dependency AbhÃ¤ngigkeit
 		 */
 		public void addOptionalDependencyError(final ConfigurationArea area, ConfigurationAreaDependency dependency) {
 			List<ConfigurationAreaDependency> list = _optionalDependencyErrors.get(area);
@@ -252,7 +258,7 @@ public class AreaDependencyChecker implements AreaDependencyCheck {
 		}
 
 		/**
-		 * Fügt einen Bereich hinzu, dessen Abhängigkeiten zu anderen Bereichen noch nicht erfasst wurden.
+		 * FÃ¼gt einen Bereich hinzu, dessen AbhÃ¤ngigkeiten zu anderen Bereichen noch nicht erfasst wurden.
 		 *
 		 * @param area s.o.
 		 */
@@ -261,24 +267,24 @@ public class AreaDependencyChecker implements AreaDependencyCheck {
 		}
 
 		public String toString() {
-			return "Optionale Abhängigkeiten: " + _optionalDependencyErrors.toString() + " Notwendige Abhängigkeiten: " + _neededDependencyErrors.toString();
+			return "Optionale AbhÃ¤ngigkeiten: " + _optionalDependencyErrors.toString() + " Notwendige AbhÃ¤ngigkeiten: " + _neededDependencyErrors.toString();
 		}
 	}
 
 	/**
-	 * Gibt das Ergebnis einer Prüfung mittel {@link de.bsvrz.sys.funclib.debug.Debug} aus.
-	 * <p/>
-	 * Fehlen Bereiche deren Abhängigkeit optionale ist, wird eine Warnung ausgegeben.
-	 * <p/>
-	 * Wurden die Abhängigkeiten eines Bereichs noch nicht erfasst, so wird eine Warnung ausgegeben.
-	 * <p/>
-	 * Fehlen Bereiche deren Abhängigkeit notwenig ist, wird ein Error ausgegeben.
-	 * <p/>
+	 * Gibt das Ergebnis einer PrÃ¼fung mittel {@link de.bsvrz.sys.funclib.debug.Debug} aus.
+	 * <p>
+	 * Fehlen Bereiche deren AbhÃ¤ngigkeit optionale ist, wird eine Warnung ausgegeben.
+	 * <p>
+	 * Wurden die AbhÃ¤ngigkeiten eines Bereichs noch nicht erfasst, so wird eine Warnung ausgegeben.
+	 * <p>
+	 * Fehlen Bereiche deren AbhÃ¤ngigkeit notwenig ist, wird ein Error ausgegeben.
+	 * <p>
 	 * Wird auch nur ein Error ausgegeben, wird nach Ausgabe aller Warnungen und Errors eine Exception geworfen.
 	 *
-	 * @param dependencyCheckResult Egebnis einer Prüfung
+	 * @param dependencyCheckResult Egebnis einer PrÃ¼fung
 	 *
-	 * @throws IllegalStateException Es wurden notwendige Abhängigkeiten zwischen Bereichen gefunden, die nicht aufgelöst werden konnten.
+	 * @throws IllegalStateException Es wurden notwendige AbhÃ¤ngigkeiten zwischen Bereichen gefunden, die nicht aufgelÃ¶st werden konnten.
 	 */
 	public void printAndVerifyAreaDependencyCheckResult(AreaDependencyCheck.AreaDependencyCheckResult dependencyCheckResult) {
 
@@ -287,10 +293,10 @@ public class AreaDependencyChecker implements AreaDependencyCheck {
 
 		final Map<ConfigurationArea, List<ConfigurationAreaDependency>> occuredOptionalErrors = dependencyCheckResult.getOptionalDependencyErrors();
 		if(occuredOptionalErrors.isEmpty() == false) {
-			// Es sind einige Abhängigkeiten zwischen den Bereichen nicht erfüllt. Allerdings sind diese Abhängigkeiten optional und führen deshalb zu einer
+			// Es sind einige AbhÃ¤ngigkeiten zwischen den Bereichen nicht erfÃ¼llt. Allerdings sind diese AbhÃ¤ngigkeiten optional und fÃ¼hren deshalb zu einer
 			// Warnung.
 			final Set<ConfigurationArea> areas = occuredOptionalErrors.keySet();
-			// Alle Bereich, deren Abhängigkeiten nicht erfüllt sind (optionale Abhängigkeit)
+			// Alle Bereich, deren AbhÃ¤ngigkeiten nicht erfÃ¼llt sind (optionale AbhÃ¤ngigkeit)
 
 			final StringBuffer text = new StringBuffer();
 			for(ConfigurationArea area : areas) {
@@ -298,7 +304,7 @@ public class AreaDependencyChecker implements AreaDependencyCheck {
 
 				text.append(
 						"Der Bereich " + area.getPid()
-						+ " besitzt folgende optionale Abhängigkeiten zu anderen Bereichen:"
+						+ " besitzt folgende optionale AbhÃ¤ngigkeiten zu anderen Bereichen:"
 						+ "\n"
 				);
 
@@ -306,7 +312,7 @@ public class AreaDependencyChecker implements AreaDependencyCheck {
 					text.append(dependency.toString());
 					text.append("\n");
 				}
-			}// alle optionalen Abhängigkeiten
+			}// alle optionalen AbhÃ¤ngigkeiten
 			_debug.warning(text.toString());
 		}
 
@@ -315,12 +321,12 @@ public class AreaDependencyChecker implements AreaDependencyCheck {
 			final StringBuffer text = new StringBuffer();
 
 			for(ConfigurationArea areaWithUnknownDependency : areasWithUnknownDependencies) {
-				text.append("Für den Bereich ").append(areaWithUnknownDependency.getPid()).append(" wurden mögliche Abhängigkeiten noch nicht erfasst. \n");
+				text.append("FÃ¼r den Bereich ").append(areaWithUnknownDependency.getPid()).append(" wurden mÃ¶gliche AbhÃ¤ngigkeiten noch nicht erfasst. \n");
 			}
 			_debug.warning(text.toString());
 		}
 
-		// Alle Abhängigkeiten, die benötigt werden, aber nicht vorhanden sind.
+		// Alle AbhÃ¤ngigkeiten, die benÃ¶tigt werden, aber nicht vorhanden sind.
 		final Map<ConfigurationArea, List<ConfigurationAreaDependency>> occuredNeededDependencyErrors = dependencyCheckResult.getNeededDependencyErrors();
 		if(occuredNeededDependencyErrors.isEmpty() == false) {
 			// Es fehlen Bereiche, die gebraucht werden. Bereiche ausgeben und eine Exception werfen, da in diesem Fall die Konfiguration nicht gestartet werden
@@ -332,7 +338,7 @@ public class AreaDependencyChecker implements AreaDependencyCheck {
 			for(ConfigurationArea area : areas) {
 
 				text.append(
-						"Der Bereich " + area.getPid() + " benötigt folgende Bereiche in den angegebenen Versionen:" + "\n"
+						"Der Bereich " + area.getPid() + " benÃ¶tigt folgende Bereiche in den angegebenen Versionen:" + "\n"
 				);
 
 				final List<ConfigurationAreaDependency> list = occuredNeededDependencyErrors.get(area);
@@ -340,7 +346,7 @@ public class AreaDependencyChecker implements AreaDependencyCheck {
 					text.append(dependency.toString());
 					text.append("\n");
 				}
-			}// alle benötigen Bereiche
+			}// alle benÃ¶tigen Bereiche
 			throw new IllegalStateException(text.toString());
 		}
 	}

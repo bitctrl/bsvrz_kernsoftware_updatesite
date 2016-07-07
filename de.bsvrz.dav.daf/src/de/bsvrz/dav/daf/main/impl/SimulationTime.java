@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl;
@@ -41,13 +47,13 @@ import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.communication.dataRepresentation.AttributeBaseValue;
 
 /**
- * Klasse zum Zugriff auf den Zeitfluﬂ einer Simulation. Nach dem Erzeugen eines Objekts dieser Klasse kann mit der Methode {@link #getTime()} auf die
- * simulierte Zeit der jeweiligen Simulation zugegriffen werden und mit den Methoden {@link #sleep} und {@link #sleepUntil} kann der aufrufende Thread f¸r eine
- * bestimmte Zeit im Zeitfluﬂ der Simulation blockiert werden. Die Methode {@link #close()} sollte aufgerufen werden, wenn das Objekt zum Zugriff auf den
- * Zeitfluﬂ einer Simulation nicht mehr benˆtigt wird.
+ * Klasse zum Zugriff auf den Zeitflu√ü einer Simulation. Nach dem Erzeugen eines Objekts dieser Klasse kann mit der Methode {@link #getTime()} auf die
+ * simulierte Zeit der jeweiligen Simulation zugegriffen werden und mit den Methoden {@link #sleep} und {@link #sleepUntil} kann der aufrufende Thread f√ºr eine
+ * bestimmte Zeit im Zeitflu√ü der Simulation blockiert werden. Die Methode {@link #close()} sollte aufgerufen werden, wenn das Objekt zum Zugriff auf den
+ * Zeitflu√ü einer Simulation nicht mehr ben√∂tigt wird.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 6200 $
+ * @version $Revision$
  */
 public class SimulationTime {
 
@@ -70,11 +76,11 @@ public class SimulationTime {
 	private InternalReceiver _internalReceiver;
 
 	/**
-	 * Erzeugt ein neues Objekt zum Zugriff auf den Zeitfluﬂ einer bestimmten Simulation. Im Falle einer Offline-Simulation findet eine Anmeldung auf die
-	 * Simulationszeit der entsprechenden Simulationsvariante statt, die vom Simulationsdatengenerator zur Verf¸gung gestellt wird.
+	 * Erzeugt ein neues Objekt zum Zugriff auf den Zeitflu√ü einer bestimmten Simulation. Im Falle einer Offline-Simulation findet eine Anmeldung auf die
+	 * Simulationszeit der entsprechenden Simulationsvariante statt, die vom Simulationsdatengenerator zur Verf√ºgung gestellt wird.
 	 *
 	 * @param simulationVariant Simulationsvariante der zu betrachtenden Simulation.
-	 * @param connection        Datenverteilerverbindung ¸ber die die Kommunikation mit dem Simulationsdatengenerator durchgef¸hrt wird.
+	 * @param connection        Datenverteilerverbindung √ºber die die Kommunikation mit dem Simulationsdatengenerator durchgef√ºhrt wird.
 	 *
 	 * @throws ConfigurationException Wenn bei der Kommunikation mit der Konfiguration Fehler aufgetreten sind.
 	 */
@@ -128,7 +134,7 @@ public class SimulationTime {
 	}
 
 	/**
-	 * Bestimmt die Zeit einer Simulation. Bei einer Online-Simulation wird die aktuelle Zeit zur¸ckgegeben und bei einer Offline-Simulation die simulierte Zeit.
+	 * Bestimmt die Zeit einer Simulation. Bei einer Online-Simulation wird die aktuelle Zeit zur√ºckgegeben und bei einer Offline-Simulation die simulierte Zeit.
 	 *
 	 * @return Zeitpunkt in Millisekunden seit 1970.
 	 *
@@ -166,8 +172,8 @@ public class SimulationTime {
 	}
 
 	/**
-	 * Blockiert den aufrufenden Thread f¸r die spezifizierte Zeit. Die angegebene Dauer der Pause wird im Falle einer Online-Simulation in Realzeit und im Falle
-	 * einer Offline-Simulation im Zeitfluss der Simulation ber¸cksichtigt.
+	 * Blockiert den aufrufenden Thread f√ºr die spezifizierte Zeit. Die angegebene Dauer der Pause wird im Falle einer Online-Simulation in Realzeit und im Falle
+	 * einer Offline-Simulation im Zeitfluss der Simulation ber√ºcksichtigt.
 	 *
 	 * @param timeToSleep Wartezeit in Millisekunden seit 1970.
 	 *
@@ -199,7 +205,7 @@ public class SimulationTime {
 
 	/**
 	 * Blockiert den aufrufenden Thread bis die spezifizierte Zeit erreicht ist. Der angegebene Zeitpunkt wird im Falle einer Online-Simulation in Realzeit und im
-	 * Falle einer Offline-Simulation im Zeitfluss der Simulation ber¸cksichtigt.
+	 * Falle einer Offline-Simulation im Zeitfluss der Simulation ber√ºcksichtigt.
 	 *
 	 * @param absoluteTime Abzuwartender Zeitpunkt in Millisekunden seit 1970.
 	 *
@@ -251,9 +257,9 @@ public class SimulationTime {
 
 		/**
 		 * Aktualisierungsmethode, die nach Empfang eines angemeldeten Datensatzes von den Datenverteiler-Applikationsfunktionen aufgerufen wird. Diese Methode muss
-		 * von der Applikation zur Verarbeitung der empfangenen Datens‰tze implementiert werden.
+		 * von der Applikation zur Verarbeitung der empfangenen Datens√§tze implementiert werden.
 		 *
-		 * @param results Feld mit den empfangenen Ergebnisdatens‰tzen.
+		 * @param results Feld mit den empfangenen Ergebnisdatens√§tzen.
 		 */
 		public final void update(ResultData results[]) {
 			if(results == null) {

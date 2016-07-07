@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config;
@@ -35,107 +41,107 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Implementierung der Schnittstelle zum Zugriff auf die Eigenschaften eines System-Objekts. Datensätze, die vom Datenverteiler transportiert werden, sind immer
+ * Implementierung der Schnittstelle zum Zugriff auf die Eigenschaften eines System-Objekts. DatensÃ¤tze, die vom Datenverteiler transportiert werden, sind immer
  * genau einem System-Objekt zugeordnet. Zur internen Identifizierung eines System-Objekts wird die <code>id</code> des Objekts benutzt. Das ist ein 64-Bit-Wert
  * der systemweit eindeutig ist. Zur expliziten Referenzierung von Objekten (z.B. in Aufrufparametern von Applikationen, Versorgungsskripten etc.) kann die
  * permanente ID (PID) eines Objekts verwendet werden. Diese ist optional und muss nur bei den Objekten gesetzt werden, bei denen sie gebraucht wird. Die PID
- * ist eine leicht zu merkende Zeichenkette, die systemweit eindeutig ist und sich (wenn sie einmal vergeben wurde) nie mehr ändern kann. Außerdem kann jedem
- * System-Objekt ein Name zugeordnet werden, der zu Darstellungszwecken benutzt werden kann. Der Name eines Objekts kann i.a. jederzeit geändert werden und
+ * ist eine leicht zu merkende Zeichenkette, die systemweit eindeutig ist und sich (wenn sie einmal vergeben wurde) nie mehr Ã¤ndern kann. AuÃŸerdem kann jedem
+ * System-Objekt ein Name zugeordnet werden, der zu Darstellungszwecken benutzt werden kann. Der Name eines Objekts kann i.a. jederzeit geÃ¤ndert werden und
  * sollte aus diesem Grund nicht zur Referenzierung von Objekten eingesetzt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13145 $ / $Date: 2015-02-04 16:45:41 +0100 (Wed, 04 Feb 2015) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public abstract class DafSystemObject implements SystemObject {
 
-	/** Typfeld für die Serialisierung von <code>null</code>-Referenzen */
+	/** Typfeld fÃ¼r die Serialisierung von <code>null</code>-Referenzen */
 	public static final byte NULL_OBJECT = 0;
 
-	/** Typfeld für die Serialisierung von Konfigurationsobjekten */
+	/** Typfeld fÃ¼r die Serialisierung von Konfigurationsobjekten */
 	public static final byte CONFIGURATION_OBJECT = 1;
 
-	/** Typfeld für die Serialisierung von dynamischen Objekten */
+	/** Typfeld fÃ¼r die Serialisierung von dynamischen Objekten */
 	public static final byte DYNAMIC_OBJECT = 2;
 
-	/** Typfeld für die Serialisierung von Typen von Systemobjekten */
+	/** Typfeld fÃ¼r die Serialisierung von Typen von Systemobjekten */
 	public static final byte SYSTEM_OBJECT_TYPE = 3;
 
-	/** Typfeld für die Serialisierung von Typen von dynamischen Objekten */
+	/** Typfeld fÃ¼r die Serialisierung von Typen von dynamischen Objekten */
 	public static final byte DYNAMIC_OBJECT_TYPE = SYSTEM_OBJECT_TYPE;
 
-	/** Typfeld für die Serialisierung von Typen von Konfigurationsobjekten */
+	/** Typfeld fÃ¼r die Serialisierung von Typen von Konfigurationsobjekten */
 	public static final byte CONFIGURATION_OBJECT_TYPE = 4;
 
-	/** Typfeld für die Serialisierung von Mengentypen */
+	/** Typfeld fÃ¼r die Serialisierung von Mengentypen */
 	public static final byte OBJECT_SET_TYPE = 5;
 
-	/** Typfeld für die Serialisierung von Attributgruppen */
+	/** Typfeld fÃ¼r die Serialisierung von Attributgruppen */
 	public static final byte ATTRIBUTE_GROUP = 6;
 
-	/** Typfeld für die Serialisierung von Aspekten */
+	/** Typfeld fÃ¼r die Serialisierung von Aspekten */
 	public static final byte ASPECT = 7;
 
-	/** Typfeld für die Serialisierung von Mengenverwendungen */
+	/** Typfeld fÃ¼r die Serialisierung von Mengenverwendungen */
 	public static final byte OBJECT_SET_USE = 8;
 
-	/** Typfeld für die Serialisierung von dynamischen Mengen */
+	/** Typfeld fÃ¼r die Serialisierung von dynamischen Mengen */
 	public static final byte MUTABLE_SET = 9;
 
-	/** Typfeld für die Serialisierung von konfigurierenden Mengen */
+	/** Typfeld fÃ¼r die Serialisierung von konfigurierenden Mengen */
 	public static final byte NON_MUTABLE_SET = 10;
 
-	/** Typfeld für die Serialisierung von Attributen */
+	/** Typfeld fÃ¼r die Serialisierung von Attributen */
 	public static final byte ATTRIBUTE = 11;
 
-	/** Typfeld für die Serialisierung von Ganzzahlattributtypen */
+	/** Typfeld fÃ¼r die Serialisierung von Ganzzahlattributtypen */
 	public static final byte INTEGER_ATTRIBUTE_TYPE = 13;
 
-	/** Typfeld für die Serialisierung von Kommazahlattributtypen */
+	/** Typfeld fÃ¼r die Serialisierung von Kommazahlattributtypen */
 	public static final byte FLOATING_POINT_NUMBER_ATTRIBUTE_TYPE = 14;
 
-	/** Typfeld für die Serialisierung von Referenzattributtypen */
+	/** Typfeld fÃ¼r die Serialisierung von Referenzattributtypen */
 	public static final byte REFERENCE_ATTRIBUTE_TYPE = 15;
 
-	/** Typfeld für die Serialisierung von Zeichenkettenattributtypen */
+	/** Typfeld fÃ¼r die Serialisierung von Zeichenkettenattributtypen */
 	public static final byte STRING_ATTRIBUTE_TYPE = 16;
 
-	/** Typfeld für die Serialisierung von Zeitstempelattributtypen */
+	/** Typfeld fÃ¼r die Serialisierung von Zeitstempelattributtypen */
 	public static final byte TIME_ATTRIBUTE_TYPE = 17;
 
-	/** Typfeld für die Serialisierung von Attributlistendefinitionen */
+	/** Typfeld fÃ¼r die Serialisierung von Attributlistendefinitionen */
 	public static final byte ATTRIBUTE_LIST_TYPE = 18;
 
-	/** Typfeld für die Serialisierung von Konfigurationsverantwortliche */
+	/** Typfeld fÃ¼r die Serialisierung von Konfigurationsverantwortliche */
 	public static final byte CONFIGURATION_AUTHORITY = 19;
 
-	/** Typfeld für die Serialisierung von Datenverteilerobjekte */
+	/** Typfeld fÃ¼r die Serialisierung von Datenverteilerobjekte */
 	public static final byte DAV_APPLICATION = 20;
 
-	/** Typfeld für die Serialisierung von Konfigurationsapplikationen */
+	/** Typfeld fÃ¼r die Serialisierung von Konfigurationsapplikationen */
 	public static final byte CONFIGURATION_APPLICATION = 21;
 
-	/** Typfeld für die Serialisierung von Applikationen */
+	/** Typfeld fÃ¼r die Serialisierung von Applikationen */
 	public static final byte CLIENT_APPLICATION = 22;
 
-	/** Typfeld für die Serialisierung von Aufzählungswerten von Ganzzahlattributtypen */
+	/** Typfeld fÃ¼r die Serialisierung von AufzÃ¤hlungswerten von Ganzzahlattributtypen */
 	public static final byte INTEGER_VALUE_STATE = 23;
 
-	/** Typfeld für die Serialisierung von Wertebereichen von Ganzzahlattributtypen */
+	/** Typfeld fÃ¼r die Serialisierung von Wertebereichen von Ganzzahlattributtypen */
 	public static final byte INTEGER_VALUE_RANGE = 24;
 
-	/** Typfeld für die Serialisierung von Konfigurationsbereichen */
+	/** Typfeld fÃ¼r die Serialisierung von Konfigurationsbereichen */
 	public static final byte CONFIGURATION_AREA = 25;
 
-	/** Typfeld für die Serialisierung von Attributgruppenverwendungen */
+	/** Typfeld fÃ¼r die Serialisierung von Attributgruppenverwendungen */
 	public static final byte ATTRIBUTE_GROUP_USAGE = 26;
 
-	/** Statusfeld für ungültig gewordene (dynamische) Objekte */
+	/** Statusfeld fÃ¼r ungÃ¼ltig gewordene (dynamische) Objekte */
 	public static final byte OBJECT_DELETED = 0;
 
-	/** Statusfeld für gültige Objekte */
+	/** Statusfeld fÃ¼r gÃ¼ltige Objekte */
 	public static final byte OBJECT_EXISTS = 1;
 
-	/** Statusfeld für nicht gültige (Konfigurations-) Objekte */
+	/** Statusfeld fÃ¼r nicht gÃ¼ltige (Konfigurations-) Objekte */
 	public static final byte OBJECT_INVALID = 2;
 
 	/** Die ID dieses Objekts */
@@ -170,10 +176,10 @@ public abstract class DafSystemObject implements SystemObject {
 	/** Objekt zum Zugriff auf die Konfiguration */
 	protected DafDataModel _dataModel;
 
-	/** Id des Konfigurationsbereichs zu dem dieses Objekt gehört. */
+	/** Id des Konfigurationsbereichs zu dem dieses Objekt gehÃ¶rt. */
 	protected long _configurationAreaId;
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	/**
@@ -186,7 +192,7 @@ public abstract class DafSystemObject implements SystemObject {
 	}
 
 	/**
-	 * Konstruktor, zur Erzeugung eines neuen Stellvertreterobjekts für ein Systemobjekt.
+	 * Konstruktor, zur Erzeugung eines neuen Stellvertreterobjekts fÃ¼r ein Systemobjekt.
 	 *
 	 * @param id                  Id des Systemobjekts
 	 * @param pid                 Pid des Systemobjekts
@@ -245,7 +251,7 @@ public abstract class DafSystemObject implements SystemObject {
 	}
 
 	/**
-	 * Liefert eine textuelle Beschreibung dieses Objekts für Debug-Zwecke zurück.
+	 * Liefert eine textuelle Beschreibung dieses Objekts fÃ¼r Debug-Zwecke zurÃ¼ck.
 	 *
 	 * @return Beschreibender Text dieses Objekts.
 	 */
@@ -258,7 +264,7 @@ public abstract class DafSystemObject implements SystemObject {
 	}
 
 	/**
-	 * Liefert eine textuelle Beschreibung dieses Objekts zurück. Es wird der Name des Objekts gefolgt von der Pid in runden Klammern oder der Id in eckigen
+	 * Liefert eine textuelle Beschreibung dieses Objekts zurÃ¼ck. Es wird der Name des Objekts gefolgt von der Pid in runden Klammern oder der Id in eckigen
 	 * Klammern, falls keine Pid vergeben ist.
 	 */
 	public String toString() {
@@ -305,7 +311,7 @@ public abstract class DafSystemObject implements SystemObject {
 	}
 
 	/**
-	 * Deserialisiert dieses Objekt über die alte Methode.
+	 * Deserialisiert dieses Objekt Ã¼ber die alte Methode.
 	 *
 	 * @param in Stream von dem das Objekt gelesen werden soll.
 	 *
@@ -339,7 +345,7 @@ public abstract class DafSystemObject implements SystemObject {
 		_typeId = deserializer.readLong();
 		byte flag = deserializer.readByte();
 		if((flag & 1) != 0){
-			// Objekt ist gültig
+			// Objekt ist gÃ¼ltig
 			_state = OBJECT_EXISTS;
 		}
 		else if(this instanceof DynamicObjectType){
@@ -359,12 +365,12 @@ public abstract class DafSystemObject implements SystemObject {
 	/**
 	 * Bestimmt den Status dieses Objektes
 	 *
-	 * @return Liefert den Wert <code>OBJECT_INVALID</code>, <code>OBJECT_DELETED</code> für ungültige
-	 * oder <code>OBJECT_EXISTS</code> für gültige Objekte zurück.
+	 * @return Liefert den Wert <code>OBJECT_INVALID</code>, <code>OBJECT_DELETED</code> fÃ¼r ungÃ¼ltige
+	 * oder <code>OBJECT_EXISTS</code> fÃ¼r gÃ¼ltige Objekte zurÃ¼ck.
 	 *
-	 * @see #OBJECT_EXISTS Objekt ist gültig.
-	 * @see #OBJECT_INVALID Ungültiges Konfigurationsobjekt
-	 * @see #OBJECT_DELETED Dynamisches Objekt wurde auf ungültig gesetzt
+	 * @see #OBJECT_EXISTS Objekt ist gÃ¼ltig.
+	 * @see #OBJECT_INVALID UngÃ¼ltiges Konfigurationsobjekt
+	 * @see #OBJECT_DELETED Dynamisches Objekt wurde auf ungÃ¼ltig gesetzt
 	 */
 	public final byte getState() {
 		return _state;
@@ -374,12 +380,12 @@ public abstract class DafSystemObject implements SystemObject {
 	/**
 	 * Setzt den Status dieses Objektes.
 	 *
-	 * @param state <code>OBJECT_INVALID</code>, <code>OBJECT_DELETED</code> für ungültige
-	 * oder <code>OBJECT_EXISTS</code> für gültige Objekte.
+	 * @param state <code>OBJECT_INVALID</code>, <code>OBJECT_DELETED</code> fÃ¼r ungÃ¼ltige
+	 * oder <code>OBJECT_EXISTS</code> fÃ¼r gÃ¼ltige Objekte.
 	 *
-	 * @see #OBJECT_EXISTS Objekt ist gültig.
-	 * @see #OBJECT_INVALID Ungültiges Konfigurationsobjekt
-	 * @see #OBJECT_DELETED Dynamisches Objekt wurde auf ungültig gesetzt
+	 * @see #OBJECT_EXISTS Objekt ist gÃ¼ltig.
+	 * @see #OBJECT_INVALID UngÃ¼ltiges Konfigurationsobjekt
+	 * @see #OBJECT_DELETED Dynamisches Objekt wurde auf ungÃ¼ltig gesetzt
 	 */
 	void setState(byte state) {
 		_state = state;
@@ -390,8 +396,8 @@ public abstract class DafSystemObject implements SystemObject {
 	 *
 	 * @param o Systemobjekt mit dem dieses Objekt verglichen werden sollte.
 	 *
-	 * @return Negative Zahl, wenn dieses Objekt kleiner ist als das Vergleichsobjekt; positive Zahl, wenn dieses Objekt größer ist als das Vergleichsobjekt;
-	 *         <code>0</code>, wenn dieses Objekt mit dem Vergleichsobjekt übereinstimmt.
+	 * @return Negative Zahl, wenn dieses Objekt kleiner ist als das Vergleichsobjekt; positive Zahl, wenn dieses Objekt grÃ¶ÃŸer ist als das Vergleichsobjekt;
+	 *         <code>0</code>, wenn dieses Objekt mit dem Vergleichsobjekt Ã¼bereinstimmt.
 	 */
 	public final int compareTo(Object o) {
 		DafSystemObject other = (DafSystemObject)o;
@@ -438,19 +444,19 @@ public abstract class DafSystemObject implements SystemObject {
 
 		if(name.length() > 255) {
 			throw new ConfigurationChangeException(
-					"Der Name des Objekts ist zu lang, es sind nur 255 Zeichen erlaubt. Name, der gesetzt werden sollte: " + _name + " Länge des Strings: "
+					"Der Name des Objekts ist zu lang, es sind nur 255 Zeichen erlaubt. Name, der gesetzt werden sollte: " + _name + " LÃ¤nge des Strings: "
 					+ name.length()
 			);
 		}
 
 		_dataModel.setName(this, name); // Hier kann eine ConfigurationChangeException auftreten...
-		this._name = name; // ...dann wird das hier nicht mehr ausgeführt
+		this._name = name; // ...dann wird das hier nicht mehr ausgefÃ¼hrt
 	}
 
 	/**
-	 * Diese Methode wird aufgerufen, wenn die Konfiguration den Namen des Objekts auf den aktuellen Stand bringen möchte. Der Aufruf der Methode führt nicht zu
+	 * Diese Methode wird aufgerufen, wenn die Konfiguration den Namen des Objekts auf den aktuellen Stand bringen mÃ¶chte. Der Aufruf der Methode fÃ¼hrt nicht zu
 	 * einer Anfrage an die Konfiguration wie bei {@link #setName(String)}.
-	 * <p/>
+	 * <p>
 	 * Eventuell angemeldete Listener werden nicht informiert, soll dies geschehen muss die Methode {@link DafDynamicObjectType#updateName(long,String)} benutzt
 	 * werden.
 	 *
@@ -529,7 +535,7 @@ public abstract class DafSystemObject implements SystemObject {
 	}
 
 	/**
-	 * Gibt den internen Typ zurück
+	 * Gibt den internen Typ zurÃ¼ck
 	 *
 	 * @return der interne Typ
 	 */
@@ -538,9 +544,9 @@ public abstract class DafSystemObject implements SystemObject {
 	}
 
 	/**
-	 * Gibt ein neues nicht initialisiertes Objekt der richtigen Klasse abhängig vom angegebenen Typfeld zurück
+	 * Gibt ein neues nicht initialisiertes Objekt der richtigen Klasse abhÃ¤ngig vom angegebenen Typfeld zurÃ¼ck
 	 *
-	 * @param internType Typfeld des gewünschten Systemobjekts
+	 * @param internType Typfeld des gewÃ¼nschten Systemobjekts
 	 * @param dataModel  Objekt zum Zugriff auf die Konfiguration
 	 *
 	 * @return Neues nicht initialisiertes Systemobjekt

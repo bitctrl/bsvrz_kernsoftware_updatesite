@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main.simulation;
@@ -35,10 +41,10 @@ import de.bsvrz.sys.funclib.debug.Debug;
 import java.util.*;
 
 /**
- * Diese Klasse stellt den Zustand "Bereit" der Konfiguration für eine Simulation dar. Es sind alle Zustandsübergänge vorhanden um in die Zustände NichtBereit
- * und Gelöscht zu wechseln.
- * <p/>
- * Einige Zustandsübergänge, zu Beispiel das erneute Aufrufen von Start, führen zu keinem Zustandswechsel.
+ * Diese Klasse stellt den Zustand "Bereit" der Konfiguration fÃ¼r eine Simulation dar. Es sind alle ZustandsÃ¼bergÃ¤nge vorhanden um in die ZustÃ¤nde NichtBereit
+ * und GelÃ¶scht zu wechseln.
+ * <p>
+ * Einige ZustandsÃ¼bergÃ¤nge, zu Beispiel das erneute Aufrufen von Start, fÃ¼hren zu keinem Zustandswechsel.
  *
  * @author Achim Wullenkord (AW), Kappich Systemberatung
  * @version $Revision:5077 $ / $Date:2007-09-02 14:48:31 +0200 (So, 02 Sep 2007) $ / ($Author:rs $)
@@ -46,9 +52,9 @@ import java.util.*;
 public class Ready implements SimulationStates {
 
 	/**
-	 * Sobald die Methode {@link #noSource()} aufgerufen wird, wird ein Timer gestartet. Dieser Timer läuft parametrierbare Zeitspanne, läuft der Timer ab, wird
+	 * Sobald die Methode {@link #noSource()} aufgerufen wird, wird ein Timer gestartet. Dieser Timer lÃ¤uft parametrierbare Zeitspanne, lÃ¤uft der Timer ab, wird
 	 * der Zustand "NotReady" gewechselt. Wird die Methode {@link #noSource()} erneut aufgerufen, wird kein neuer Timer gestartet, da dies zum erneuten Wechsel
-	 * führen könnte.
+	 * fÃ¼hren kÃ¶nnte.
 	 */
 	private static final Timer _noSourceTimer = new Timer("ConfigurationSimulationNoSourceTimer");
 
@@ -56,11 +62,11 @@ public class Ready implements SimulationStates {
 
 	private boolean _timerIsRunning = false;
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	/**
-	 * Bestimmt wie lang gewartet wird, sobald die Verbindung zur Simulationssteuerung nicht mehr zur Verfügung steht. Läuft die Zeit ab, wird in den Zustand
+	 * Bestimmt wie lang gewartet wird, sobald die Verbindung zur Simulationssteuerung nicht mehr zur VerfÃ¼gung steht. LÃ¤uft die Zeit ab, wird in den Zustand
 	 * "nicht bereit" gewechselt.
 	 */
 	private long _timeout = 30000;
@@ -97,11 +103,11 @@ public class Ready implements SimulationStates {
 	}
 
 	public void preStart() {
-		// Der Zustand wird nicht geändert
+		// Der Zustand wird nicht geÃ¤ndert
 	}
 
 	public void start() {
-		// Der Zustand wird nicht geändert
+		// Der Zustand wird nicht geÃ¤ndert
 	}
 
 	public void stop() {
@@ -113,32 +119,32 @@ public class Ready implements SimulationStates {
 			
 			sendSubscriptionNotConfirmed.printStackTrace();
 			_debug.error(
-					"Die Konfiguration kann mögliche Applikationen nicht benachrichtigen, dass für eine Simuation ein Zustandwechsel stattgefunden hat.",
+					"Die Konfiguration kann mÃ¶gliche Applikationen nicht benachrichtigen, dass fÃ¼r eine Simuation ein Zustandwechsel stattgefunden hat.",
 					sendSubscriptionNotConfirmed
 			);
 		}
 	}
 
 	public void pause() {
-		// Der Zustand wird nicht geändert
+		// Der Zustand wird nicht geÃ¤ndert
 	}
 
 	public void delete() {
 		try {
 			_util.sendNotReady();
 			_util.doDelete();
-			// Die Konfiguration für die Simulation in den Zustand "gelöscht" überführen
+			// Die Konfiguration fÃ¼r die Simulation in den Zustand "gelÃ¶scht" Ã¼berfÃ¼hren
 			_simulationObject.setState(_simulationObject.getDeletedState());
 		}
 		catch(SendSubscriptionNotConfirmed sendSubscriptionNotConfirmed) {
 			sendSubscriptionNotConfirmed.printStackTrace();
-			_debug.error("Beim Wechsel einer  Simulation in den Zustand Löschen ist ein unerwarteter Fehler aufgetreten", sendSubscriptionNotConfirmed);
+			_debug.error("Beim Wechsel einer  Simulation in den Zustand LÃ¶schen ist ein unerwarteter Fehler aufgetreten", sendSubscriptionNotConfirmed);
 		}
 	}
 
 	public void noSource() {
 		if(!_timerIsRunning) {
-			// Einen neuen Timer anlegen, vielleicht wurde der alte Bereits durchgeführt oder terminiert.
+			// Einen neuen Timer anlegen, vielleicht wurde der alte Bereits durchgefÃ¼hrt oder terminiert.
 			_timer = new NoSourceEvent();
 			_noSourceTimer.schedule(_timer, getTimeout());
 		}
@@ -159,9 +165,9 @@ public class Ready implements SimulationStates {
 	public void removedFromSet() {
 		try {
 			_util.sendNotReady();
-			// Alle Daten der Simulation löschen
+			// Alle Daten der Simulation lÃ¶schen
 			_util.doDelete();
-			// Die Konfiguration für die Simulation in den Zustand "gelöscht" überführen
+			// Die Konfiguration fÃ¼r die Simulation in den Zustand "gelÃ¶scht" Ã¼berfÃ¼hren
 			_simulationObject.setState(_simulationObject.getDeletedState());
 		}
 		catch(SendSubscriptionNotConfirmed sendSubscriptionNotConfirmed) {
@@ -175,7 +181,7 @@ public class Ready implements SimulationStates {
 		return "Zustand: Bereit";
 	}
 
-	/** Wird ausgeführt, wenn eine parametrierbare Zeitspanne abgelaufen ist. Ist dies der Fall, wird der Zustand "nicht bereit" angenommen */
+	/** Wird ausgefÃ¼hrt, wenn eine parametrierbare Zeitspanne abgelaufen ist. Ist dies der Fall, wird der Zustand "nicht bereit" angenommen */
 	private final class NoSourceEvent extends TimerTask {
 
 		public void run() {
@@ -185,7 +191,7 @@ public class Ready implements SimulationStates {
 		}
 	}
 
-	/** Empfängt einen Datenatz von der Parametrierung in dem die Zeit gespeichert ist. */
+	/** EmpfÃ¤ngt einen Datenatz von der Parametrierung in dem die Zeit gespeichert ist. */
 	private class TimeOutValueReceiver implements ClientReceiverInterface {
 
 		public void update(ResultData results[]) {
@@ -199,7 +205,7 @@ public class Ready implements SimulationStates {
 						final long newTimeOut = data.getTimeValue("Wartezeit").getMillis();
 						final long oldValue = getTimeout();
 						setTimeout(newTimeOut);
-						_debug.info("Alter Timeout für keine Quelle: " + oldValue + " neuer Wert: " + getTimeout());
+						_debug.info("Alter Timeout fÃ¼r keine Quelle: " + oldValue + " neuer Wert: " + getTimeout());
 					}
 				}
 			}

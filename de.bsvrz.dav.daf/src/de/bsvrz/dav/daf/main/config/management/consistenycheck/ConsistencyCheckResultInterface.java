@@ -6,7 +6,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.config.management.consistenycheck;
@@ -24,52 +30,52 @@ package de.bsvrz.dav.daf.main.config.management.consistenycheck;
 import java.util.*;
 
 /**
- * Dieses Interface wird von Klassen implementiert, die das Ergebnis einer Konsistenzprüfung enthalten (siehe TPuK1-138).
+ * Dieses Interface wird von Klassen implementiert, die das Ergebnis einer KonsistenzprÃ¼fung enthalten (siehe TPuK1-138).
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5060 $
+ * @version $Revision$
  */
 public interface ConsistencyCheckResultInterface {
 
 	/**
-	 * Die Implementierung dieser Methode gibt an, ob es bei der Konsistenzprüfung zu lokalen Fehlern gekommen ist.
+	 * Die Implementierung dieser Methode gibt an, ob es bei der KonsistenzprÃ¼fung zu lokalen Fehlern gekommen ist.
 	 *
 	 * @return true = Es ist zu lokalen Fehlern gekommen; false = Es ist zu keinem lokalen Fehler gekommen
 	 */
 	boolean localError();
 
 	/**
-	 * Die Implementierung dieser Methode gibt an, ob es bei der Konsistenzprüfung zu Interferenzfehlern gekommen ist.
+	 * Die Implementierung dieser Methode gibt an, ob es bei der KonsistenzprÃ¼fung zu Interferenzfehlern gekommen ist.
 	 *
 	 * @return true = Es ist zu Interferenzfehlern gekommen; false = Es ist zu keinem Interferenzfehler gekommen
 	 */
 	boolean interferenceErrors();
 
 	/**
-	 * Die Implementierung dieser Methode gibt an, ob es bei der Konsistenzprüfung zu Warnungen gekommen ist.
+	 * Die Implementierung dieser Methode gibt an, ob es bei der KonsistenzprÃ¼fung zu Warnungen gekommen ist.
 	 *
 	 * @return true = Es gab Warnungen; false = Es gab keine Warnungen
 	 */
 	boolean warnings();
 
 	/**
-	 * Die Implementierung dieser Methode gibt alle aufgetretenen lokalen Fehler zurück.
+	 * Die Implementierung dieser Methode gibt alle aufgetretenen lokalen Fehler zurÃ¼ck.
 	 *
 	 * @return Liste mit lokalen Fehlern. Sind keine lokalen Fehler aufgetreten, ist die Liste leer.
 	 */
 	List<ConsistencyCheckResultEntry> getLocalErrors();
 
 	/**
-	 * Die Implementierung dieser Methode gibt alle aufgetretenen Interferenzfehler zurück.
+	 * Die Implementierung dieser Methode gibt alle aufgetretenen Interferenzfehler zurÃ¼ck.
 	 *
 	 * @return Liste mit allen Interferenzfehlern. Sind keine Interferenzfehler aufgetreten ist die Liste leer.
 	 */
 	List<ConsistencyCheckResultEntry> getInterferenceErrors();
 
 	/**
-	 * Die Implementierung dieser Methode gibt alle aufgetretenen Warnungen zurück.
+	 * Die Implementierung dieser Methode gibt alle aufgetretenen Warnungen zurÃ¼ck.
 	 *
-	 * @return Warnungen, die bei der Konsistenzprüfung aufgetreten sind. Die Liste ist leer, falls es keine Warnungen gegeben hat.
+	 * @return Warnungen, die bei der KonsistenzprÃ¼fung aufgetreten sind. Die Liste ist leer, falls es keine Warnungen gegeben hat.
 	 */
 	List<ConsistencyCheckResultEntry> getWarnings();
 }

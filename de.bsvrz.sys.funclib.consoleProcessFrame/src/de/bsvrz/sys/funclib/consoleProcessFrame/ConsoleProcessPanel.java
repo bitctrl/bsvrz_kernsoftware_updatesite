@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.sys.funclib.consoleProcessFrame.
  * 
  * de.bsvrz.sys.funclib.consoleProcessFrame is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.consoleProcessFrame is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.consoleProcessFrame; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.consoleProcessFrame; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.consoleProcessFrame;
@@ -37,7 +43,7 @@ import java.util.List;
  * Implementiert ein JPanel, das mit einem externen Prozess verbunden ist. Der Prozess kann gestartet und beendet werden. Die Textausgaben des Prozesses werden
  * im JPanel dargestellt.
  * @author Kappich Systemberatung
- * @version $Revision: 5019 $
+ * @version $Revision$
  */
 public class ConsoleProcessPanel extends JPanel {
 
@@ -171,16 +177,16 @@ public class ConsoleProcessPanel extends JPanel {
 							int selectionStart = _textPane.getSelectionStart();
 							int selectionEnd = _textPane.getSelectionEnd();
 							if(textLength > MAX_TEXT_LENGTH) {
-								// Zuviel Text => obere H‰lfte lˆschen
+								// Zuviel Text => obere H√§lfte l√∂schen
 								final int deleteLength = textLength / 2;
 								_textPane.select(0, deleteLength);
-								_textPane.replaceSelection("(Anfang gelˆscht)...");
+								_textPane.replaceSelection("(Anfang gel√∂scht)...");
 								final int newLength = _textPane.getDocument().getLength();
 								final int deletedLength = textLength - newLength;
 								selectionStart -= deletedLength;
 								selectionEnd -= deletedLength;
 								textLength = newLength;
-								// wenn Selektion im gelˆschten Bereich lag, dann Selektion auf Ende setzen
+								// wenn Selektion im gel√∂schten Bereich lag, dann Selektion auf Ende setzen
 								if(selectionStart < 0 || selectionEnd < 0) {
 									selectionStart = textLength;
 									selectionEnd = textLength;

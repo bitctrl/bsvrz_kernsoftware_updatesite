@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.sys.funclib.losb.
  * 
- * de.bsvrz.sys.funclib.losb is free software; you can redistribute it and/or modify
+ * de.bsvrz.sys.funclib.losb is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.losb is distributed in the hope that it will be useful,
@@ -15,24 +15,30 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.sys.funclib.losb; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.losb.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.losb.ringbuffer;
 
 
 /**
- * Diese Klasse führt einen zweiten Ringpuffer, um neben dem einzufügenden Objekt auch den Einfügezeitpunkt festzuhalten (für die Archivzeit). Sinn dieser
- * Klasse ist es, staendiges erzeugen und loeschen von Objekten zu vermeiden. Dies wäre der Fall, wenn man jedesmal ein Objekt erzeugt, das das Wertepaar
- * enthält.
+ * Diese Klasse fÃ¼hrt einen zweiten Ringpuffer, um neben dem einzufÃ¼genden Objekt auch den EinfÃ¼gezeitpunkt festzuhalten (fÃ¼r die Archivzeit). Sinn dieser
+ * Klasse ist es, staendiges erzeugen und loeschen von Objekten zu vermeiden. Dies wÃ¤re der Fall, wenn man jedesmal ein Objekt erzeugt, das das Wertepaar
+ * enthÃ¤lt.
  */
 public class ArchiveRingBuffer extends RingBuffer<ArchiveRingBuffer.PopObject> {
 
 	private long[] timeBuf;
 
 	/**
-	 * @param chunkSize: Größe der Blöcke, um die das Feld der Warteschlange wächst und schrumpft.
+	 * @param chunkSize: GrÃ¶ÃŸe der BlÃ¶cke, um die das Feld der Warteschlange wÃ¤chst und schrumpft.
 	 * @param mxSize:    Maximale Groesse der Warteschlange. Wird diese ueberschritten, liefert {@link #push(E)} false
 	 */
 	public ArchiveRingBuffer(int chunkSize, int mxsize) {
@@ -41,10 +47,10 @@ public class ArchiveRingBuffer extends RingBuffer<ArchiveRingBuffer.PopObject> {
 	}
 
 	/**
-	 * Fügt ein Objekt in die Warteschlange an letzter Stelle ein. Ein Thread, der in pop() wartet, wird fortgesetzt.
+	 * FÃ¼gt ein Objekt in die Warteschlange an letzter Stelle ein. Ein Thread, der in pop() wartet, wird fortgesetzt.
 	 *
-	 * @param elem: Einzufügendes Objekt
-	 * @param time: Einfügezeitpunkt
+	 * @param elem: EinzufÃ¼gendes Objekt
+	 * @param time: EinfÃ¼gezeitpunkt
 	 *
 	 * @return Wahr, wenn Platz in der Queue war und das Datum eingefuegt wurde, falsch sonst
 	 */
@@ -70,10 +76,10 @@ public class ArchiveRingBuffer extends RingBuffer<ArchiveRingBuffer.PopObject> {
 	}
 
 	/**
-	 * Fügt die ersten Element der beiden Warteschlange in das uebergebene PopObject ein. Dieses Objekt muss vorher angelegt worden sein und wird nur zur Uebergabe
-	 * der beiden Werte verwendet. Wenn die Warteschlange leer ist, blockiert der aufrufende Thread bis zum nächsten pop()-Aufruf.
+	 * FÃ¼gt die ersten Element der beiden Warteschlange in das uebergebene PopObject ein. Dieses Objekt muss vorher angelegt worden sein und wird nur zur Uebergabe
+	 * der beiden Werte verwendet. Wenn die Warteschlange leer ist, blockiert der aufrufende Thread bis zum nÃ¤chsten pop()-Aufruf.
 	 *
-	 * @param pobj: vorher zu erzeugendes Objekt zur Übergabe der Werte.
+	 * @param pobj: vorher zu erzeugendes Objekt zur Ãœbergabe der Werte.
 	 *
 	 * @return Die jeweils ersten Elemente beider Warteschlangen.
 	 *

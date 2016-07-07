@@ -5,9 +5,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main.importexport;
@@ -43,13 +49,13 @@ import java.util.regex.Pattern;
 /**
  * Diese Klasse vergleicht ein {@link SystemObjectProperties Versorgungsobjekt} mit einem {@link SystemObject System-Objekt}. Diese Klasse dient dem Import von
  * Versorgungsdateien in eine Konfiguration. Mit dem Konstruktor wird ein Objekt der Klasse {@link ConfigurationImport} und das aktuelle {@link de.bsvrz.dav.daf.main.config.DataModel
- * Datenmodell} übergeben.
- * <p/>
+ * Datenmodell} Ã¼bergeben.
+ * <p>
  * Zwei Arten von Methoden werden hier angeboten (<code>isXYDifferent(Objekt1, Objekt2)</code>, <code>isXYProcessable(Objekt1, Objekt2)</code>). Die erste
- * Methodenart vergleicht zwei Objekte miteinander und gibt zurück, ob diese unterschiedlich sind. Die zweite Methodenart prüft, ob das angegebene System-Objekt
- * im Import weiterverwendet werden darf (Rückgabewert <code>true</code>). Dies ist der Fall, wenn das Objekt nicht verändert werden muss, weil das
- * Versorgungs-Objekt und das System-Objekt gleich sind und wenn das Objekt geändert werden darf, falls es geändert werden muss. Wenn das Objekt allerdings
- * geändert werden muss, aber nicht geändert werden darf, dann wird <code>false</code> zurückgegeben.
+ * Methodenart vergleicht zwei Objekte miteinander und gibt zurÃ¼ck, ob diese unterschiedlich sind. Die zweite Methodenart prÃ¼ft, ob das angegebene System-Objekt
+ * im Import weiterverwendet werden darf (RÃ¼ckgabewert <code>true</code>). Dies ist der Fall, wenn das Objekt nicht verÃ¤ndert werden muss, weil das
+ * Versorgungs-Objekt und das System-Objekt gleich sind und wenn das Objekt geÃ¤ndert werden darf, falls es geÃ¤ndert werden muss. Wenn das Objekt allerdings
+ * geÃ¤ndert werden muss, aber nicht geÃ¤ndert werden darf, dann wird <code>false</code> zurÃ¼ckgegeben.
  *
  * @author Kappich Systemberatung
  * @version $Revision:5077 $
@@ -81,7 +87,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Konstruktor erzeugt ein Objekt dieser Klasse und erhält das Import-Modul und das Datenmodell. Diese werden für die Vergleichsmethoden benötigt.
+	 * Konstruktor erzeugt ein Objekt dieser Klasse und erhÃ¤lt das Import-Modul und das Datenmodell. Diese werden fÃ¼r die Vergleichsmethoden benÃ¶tigt.
 	 *
 	 * @param configurationImport das Import-Modul der Konfiguration
 	 * @param dataModel           das Datenmodell
@@ -92,23 +98,23 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param property     ein Versorgungsobjekt
 	 * @param systemObject ein System-Objekt
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isObjectProcessable(SystemObjectProperties property, SystemObject systemObject) {
-		// bei konfigurierenden Objekten, muss das Objekt noch überprüft werden, ob es in der in Bearbeitung befindlichen Version noch gültig ist.
+		// bei konfigurierenden Objekten, muss das Objekt noch Ã¼berprÃ¼ft werden, ob es in der in Bearbeitung befindlichen Version noch gÃ¼ltig ist.
 		if(systemObject instanceof ConfigurationObject) {
 			ConfigurationObject configObject = (ConfigurationObject)systemObject;
 			if(configObject.getNotValidSince() != 0 && configObject.getNotValidSince() < configObject.getConfigurationArea().getModifiableVersion()) {
 				return false;
 			}
 		}
-		// für alle Properties müssen die Pid, der Name und die Info überprüft werden
+		// fÃ¼r alle Properties mÃ¼ssen die Pid, der Name und die Info Ã¼berprÃ¼ft werden
 		if(isPidDifferent(property, systemObject)) return false;
 		if(!isNameProcessable(property.getName(), systemObject)) return false;
 		if(!isInfoProcessable(property.getInfo(), systemObject.getInfo())) return false;
@@ -140,7 +146,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zurück, ob sich die Import-Definition vom System-Objekt unterscheidet.
+	 * Gibt zurÃ¼ck, ob sich die Import-Definition vom System-Objekt unterscheidet.
 	 *
 	 * @param property     ein Versorgungsobjekt
 	 * @param systemObject ein System-Objekt
@@ -148,7 +154,7 @@ class ComparePropertiesWithSystemObjects {
 	 * @return <code>true</code>, falls sich die Definition und das System-Objekt unterscheidet<br> <code>false</code>, sonst
 	 */
 	boolean isObjectDifferent(SystemObjectProperties property, SystemObject systemObject) {
-		// für alle Objekt muss gelten:
+		// fÃ¼r alle Objekt muss gelten:
 		if(isPidDifferent(property, systemObject) || isNameDifferent(property.getName(), systemObject.getName())) {
 			return true;
 		}
@@ -183,10 +189,10 @@ class ComparePropertiesWithSystemObjects {
 		}
 	}
 
-	/* ############### Allgemeine Überprüfungen ############## */
+	/* ############### Allgemeine ÃœberprÃ¼fungen ############## */
 
 	/**
-	 * Prüft, ob die Pid des Versorgungsobjekts und die Pid des System-Objekts unterschiedlich ist.
+	 * PrÃ¼ft, ob die Pid des Versorgungsobjekts und die Pid des System-Objekts unterschiedlich ist.
 	 *
 	 * @param property     ein Versorgungsobjekt
 	 * @param systemObject ein System-Objekt
@@ -198,12 +204,12 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob der angegebene Name mit dem des System-Objekts übereinstimmt. Wenn nicht, wird geprüft, ob der Name verändert werden darf.
+	 * PrÃ¼ft, ob der angegebene Name mit dem des System-Objekts Ã¼bereinstimmt. Wenn nicht, wird geprÃ¼ft, ob der Name verÃ¤ndert werden darf.
 	 *
-	 * @param name         der zu überprüfende Name
+	 * @param name         der zu Ã¼berprÃ¼fende Name
 	 * @param systemObject ein System-Objekt
 	 *
-	 * @return <code>true</code>, falls der Name gleich ist, oder falls der Name unterschiedlich ist, ob das System-Objekt geändert werden darf<br>
+	 * @return <code>true</code>, falls der Name gleich ist, oder falls der Name unterschiedlich ist, ob das System-Objekt geÃ¤ndert werden darf<br>
 	 *         <code>false</code>, sonst
 	 */
 	boolean isNameProcessable(String name, SystemObject systemObject) {
@@ -216,7 +222,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob die beiden angegebenen Namen unterschiedlich sind.
+	 * PrÃ¼ft, ob die beiden angegebenen Namen unterschiedlich sind.
 	 *
 	 * @param name1 der erste zu vergleichende Name
 	 * @param name2 der zweite zu vergleichende Name
@@ -228,12 +234,12 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zurück, ob die beiden Info-Objekte gleich sind, oder falls nicht, ob das Info-Objekt verändert werden darf.
+	 * Gibt zurÃ¼ck, ob die beiden Info-Objekte gleich sind, oder falls nicht, ob das Info-Objekt verÃ¤ndert werden darf.
 	 *
 	 * @param info1 das erste Info-Objekt
 	 * @param info2 das zweite Info-Objekt
 	 *
-	 * @return <code>true</code>, falls die Info-Objekte gleich sind, oder falls sie nicht gleich sind, ob der Datensatz geändert werden darf<br>
+	 * @return <code>true</code>, falls die Info-Objekte gleich sind, oder falls sie nicht gleich sind, ob der Datensatz geÃ¤ndert werden darf<br>
 	 *         <code>false</code>, sonst
 	 */
 	boolean isInfoProcessable(SystemObjectInfo info1, SystemObjectInfo info2) {
@@ -246,7 +252,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob die beiden angegebenen Info-Objekte unterschiedlich sind.
+	 * PrÃ¼ft, ob die beiden angegebenen Info-Objekte unterschiedlich sind.
 	 *
 	 * @param info1 das erste Info-Objekt
 	 * @param info2 das zweite Info-Objekt
@@ -260,21 +266,21 @@ class ComparePropertiesWithSystemObjects {
 	/* ############### Aspekt ############## */
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param property die Aspektdefinition einer Versorgungsdatei
 	 * @param aspect   ein Aspekt (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isAspectProcessable(AspectProperties property, Aspect aspect) {
-		// es gibt nichts zu prüfen
+		// es gibt nichts zu prÃ¼fen
 		return true;
 	}
 
 	/**
-	 * Gibt zurück, ob sich die Import-Definition vom System-Objekt unterscheidet.
+	 * Gibt zurÃ¼ck, ob sich die Import-Definition vom System-Objekt unterscheidet.
 	 *
 	 * @param property die Aspektdefinition einer Versorgungsdatei
 	 * @param aspect   ein Aspekt (System-Objekt)
@@ -282,28 +288,28 @@ class ComparePropertiesWithSystemObjects {
 	 * @return <code>true</code>, falls die Aspektdefinition zum angegebenen Aspekt unterschiedlich ist, sonst <code>false</code>
 	 */
 	boolean isAspectDifferent(AspectProperties property, Aspect aspect) {
-		// nur die Kodierung muss geprüft werden - und die gibt es nicht mehr
+		// nur die Kodierung muss geprÃ¼ft werden - und die gibt es nicht mehr
 		return false;
 	}
 
 	/* ############### Attributliste ############## */
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param property die Attributlistendefinition einer Versorgungsdatei
 	 * @param atl      eine Attributliste (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isAttributeListProcessable(AttributeListProperties property, AttributeListDefinition atl) {
-		// hier muss nur das AttributeSet überprüft werden
+		// hier muss nur das AttributeSet Ã¼berprÃ¼ft werden
 		return isAttributeSetProcessable(property.getAttributeAndAttributeList(), atl);
 	}
 
 	/**
-	 * Prüft, ob die Attributlistendefinition und die Attributliste unterschiedlich sind.
+	 * PrÃ¼ft, ob die Attributlistendefinition und die Attributliste unterschiedlich sind.
 	 *
 	 * @param property die Attributlistendefinition einer Versorgungsdatei
 	 * @param atl      eine Attributliste (System-Objekt)
@@ -311,27 +317,27 @@ class ComparePropertiesWithSystemObjects {
 	 * @return <code>true</code>, falls die Definition und die Attributliste unterschiedlich ist, sonst <code>false</code>
 	 */
 	boolean isAttributeListDifferent(AttributeListProperties property, AttributeListDefinition atl) {
-		// hier muss nur das AttributeSet überprüft werden
+		// hier muss nur das AttributeSet Ã¼berprÃ¼ft werden
 		return isAttributeSetDifferent(property.getAttributeAndAttributeList(), atl);
 	}
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param configurationAttributes die zu importierenden Attribute einer Attributmenge
-	 * @param attributeSet            die zu überprüfende Attributmenge
+	 * @param attributeSet            die zu Ã¼berprÃ¼fende Attributmenge
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isAttributeSetProcessable(AttributeProperties[] configurationAttributes, AttributeSet attributeSet) {
-		// In Bearbeitung befindliche Objekte können nach belieben geändert werden, deshalb braucht dieser Fall hier nicht berücksichtigt werden.
+		// In Bearbeitung befindliche Objekte kÃ¶nnen nach belieben geÃ¤ndert werden, deshalb braucht dieser Fall hier nicht berÃ¼cksichtigt werden.
 		final ObjectSet objectSet = attributeSet.getObjectSet("Attribute");
 
-		// Eine Menge kann nicht hinzugefügt werden, wenn sie nicht da ist.
+		// Eine Menge kann nicht hinzugefÃ¼gt werden, wenn sie nicht da ist.
 		if(objectSet == null) return false;
 
-		// Stimmen die Mengen überein?
+		// Stimmen die Mengen Ã¼berein?
 		final NonMutableSet nonMutableAttributeSet = (NonMutableSet)objectSet;
 		final List<SystemObject> attributes = nonMutableAttributeSet.getElementsInVersion(attributeSet.getConfigurationArea().getModifiableVersion());
 
@@ -370,12 +376,12 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob die zu importierenden Attribute und die Attribute der angegebenen Attributmenge unterschiedlich sind.
+	 * PrÃ¼ft, ob die zu importierenden Attribute und die Attribute der angegebenen Attributmenge unterschiedlich sind.
 	 *
 	 * @param configurationAttributes die zu importierenden Attribute
-	 * @param attributeSet            die zu überprüfende Attributmenge
+	 * @param attributeSet            die zu Ã¼berprÃ¼fende Attributmenge
 	 *
-	 * @return <code>true</code>, falls die zu importierenden Attribute nicht mit den Attributen der Menge übereinstimmen, sonst <code>false</code>
+	 * @return <code>true</code>, falls die zu importierenden Attribute nicht mit den Attributen der Menge Ã¼bereinstimmen, sonst <code>false</code>
 	 */
 	boolean isAttributeSetDifferent(AttributeProperties[] configurationAttributes, AttributeSet attributeSet) {
 		final ObjectSet objectSet = attributeSet.getObjectSet("Attribute");
@@ -386,7 +392,7 @@ class ComparePropertiesWithSystemObjects {
 			return true;
 		}
 
-		// Stimmen die Mengen überein?
+		// Stimmen die Mengen Ã¼berein?
 		final NonMutableSet nonMutableAttributeSet = (NonMutableSet)objectSet;
 		final List<SystemObject> attributes = nonMutableAttributeSet.getElementsInModifiableVersion();
 
@@ -430,20 +436,20 @@ class ComparePropertiesWithSystemObjects {
 	/* ############### Attribut ############## */
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param attributeProperties zu importierendes Attribut
-	 * @param attribute               zu überprüfendes Attribut
+	 * @param attribute               zu Ã¼berprÃ¼fendes Attribut
 	 * @param position                die Position des Attributs
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isAttributeProcessable(AttributeProperties attributeProperties, Attribute attribute, int position) {
 		// Attribut ist gar nicht vorhanden
 		if(attribute == null) return false;
 
-		// Attribut auf Gleichheit prüfen
+		// Attribut auf Gleichheit prÃ¼fen
 		String name;
 		SystemObjectInfo info;
 		int maxCount;
@@ -470,9 +476,9 @@ class ComparePropertiesWithSystemObjects {
 
 		if(!isNameProcessable(name, attribute)) {
 			_debug.finer(
-					"Ist der Name dieses Attributs " + attribute.getName() + " änderbar? " + attribute.getAttributeType().getType().isNameOfObjectsPermanent()
+					"Ist der Name dieses Attributs " + attribute.getName() + " Ã¤nderbar? " + attribute.getAttributeType().getType().isNameOfObjectsPermanent()
 			);
-			_debug.finer("Ist der Name dieses Attributs " + attribute.getName() + " änderbar? " + attribute.getType().isNameOfObjectsPermanent());
+			_debug.finer("Ist der Name dieses Attributs " + attribute.getName() + " Ã¤nderbar? " + attribute.getType().isNameOfObjectsPermanent());
 			return false;
 		}
 		if(!isInfoProcessable(info, attribute.getInfo())) return false;
@@ -491,17 +497,17 @@ class ComparePropertiesWithSystemObjects {
 			}
 		}
 
-		// Default-Wert überprüfen
+		// Default-Wert Ã¼berprÃ¼fen
 		if(!isDefaultProcessable(attribute, aDefault)) return false;
 
 		return true;
 	}
 
 	/**
-	 * Prüft, ob das zu importierende Attribut und das zu überprüfende Attribut unterschiedlich ist.
+	 * PrÃ¼ft, ob das zu importierende Attribut und das zu Ã¼berprÃ¼fende Attribut unterschiedlich ist.
 	 *
 	 * @param attributeProperties das zu importierende Attribut
-	 * @param attribute               das zu überprüfende Attribut
+	 * @param attribute               das zu Ã¼berprÃ¼fende Attribut
 	 * @param position                die Position des Attributs
 	 *
 	 * @return <code>true</code>, falls die Attribute unterschiedlich sind, sonst <code>false</code>
@@ -513,7 +519,7 @@ class ComparePropertiesWithSystemObjects {
 			return true;
 		}
 
-		// Attribut auf Gleichheit prüfen
+		// Attribut auf Gleichheit prÃ¼fen
 		String name;
 		SystemObjectInfo info;
 		int maxCount;
@@ -551,7 +557,7 @@ class ComparePropertiesWithSystemObjects {
 		if(attributeType != attribute.getAttributeType()) return true;
 		if(position != attribute.getPosition()) return true;
 
-		// Default-Werte überprüfen
+		// Default-Werte Ã¼berprÃ¼fen
 		if(isDefaultDifferent(attribute, aDefault)) return true;
 
 		return false;
@@ -560,16 +566,16 @@ class ComparePropertiesWithSystemObjects {
 	/* ############### Attribut-Typ ############## */
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param property      die Attribut-Typ-Definition einer Versorgungsdatei
 	 * @param attributeType ein Attribut-Typ (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isAttributeTypeProcessable(AttributeTypeProperties property, AttributeType attributeType) {
-		// Falls der Default nicht verändert werden darf, braucht nicht weiter geprüft werden.
+		// Falls der Default nicht verÃ¤ndert werden darf, braucht nicht weiter geprÃ¼ft werden.
 		if(!isDefaultProcessable(attributeType, property.getDefault())) return false;
 
 		final ConfigurationAttributeType configurationAttributeType = property.getAttributeType();
@@ -592,7 +598,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob der zu importierende Attribut-Typ und der zu überprüfende Attribut-Typ unterschiedlich sind.
+	 * PrÃ¼ft, ob der zu importierende Attribut-Typ und der zu Ã¼berprÃ¼fende Attribut-Typ unterschiedlich sind.
 	 *
 	 * @param property      die Attribut-Typ-Definition einer Versorgungsdatei
 	 * @param attributeType ein Attribut-Typ (System-Objekt)
@@ -600,7 +606,7 @@ class ComparePropertiesWithSystemObjects {
 	 * @return <code>true</code>, falls der Attribut-Typ sich von der Definition unterscheidet, sonst <code>false</code>
 	 */
 	boolean isAttributeTypeDifferent(AttributeTypeProperties property, AttributeType attributeType) {
-		// Default-Werte überprüfen
+		// Default-Werte Ã¼berprÃ¼fen
 		if(!isDefaultDifferent(attributeType, property.getDefault())) return false;
 
 		final ConfigurationAttributeType configurationAttributeType = property.getAttributeType();
@@ -623,24 +629,24 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob der Datensatz für die Default-Werte geändert werden darf, falls sich der Default-Wert des System-Objekts vom zweiten Parameter unterscheidet.
+	 * PrÃ¼ft, ob der Datensatz fÃ¼r die Default-Werte geÃ¤ndert werden darf, falls sich der Default-Wert des System-Objekts vom zweiten Parameter unterscheidet.
 	 *
-	 * @param systemObject bestehendes System-Objekt, dessen Default-Wert überprüft werden muss
+	 * @param systemObject bestehendes System-Objekt, dessen Default-Wert Ã¼berprÃ¼ft werden muss
 	 * @param aDefault     zu importierender Default-Wert
 	 *
-	 * @return <code>true</code>, falls die Default-Werte gleich sind und nicht verändert werden müssen und falls sie nicht gleich sind, ob sich der Datensatz
-	 *         ändern lässt <br> <code>false</code>, falls die Default-Werte unterschiedlich sind und der Datensatz nicht geändert werden darf.
+	 * @return <code>true</code>, falls die Default-Werte gleich sind und nicht verÃ¤ndert werden mÃ¼ssen und falls sie nicht gleich sind, ob sich der Datensatz
+	 *         Ã¤ndern lÃ¤sst <br> <code>false</code>, falls die Default-Werte unterschiedlich sind und der Datensatz nicht geÃ¤ndert werden darf.
 	 */
 	boolean isDefaultProcessable(SystemObject systemObject, String aDefault) {
-		// Default-Wert ist verschieden, aber nicht änderbar.
+		// Default-Wert ist verschieden, aber nicht Ã¤nderbar.
 		if(isDefaultDifferent(systemObject, aDefault) && !isConfigurationDataChangeable("atg.defaultAttributwert", "asp.eigenschaften")) return false;
 		return true;
 	}
 
 	/**
-	 * Prüft, ob der Default-Wert am System-Objekt gleich mit dem zu importierenden Default-Wert ist.
+	 * PrÃ¼ft, ob der Default-Wert am System-Objekt gleich mit dem zu importierenden Default-Wert ist.
 	 *
-	 * @param systemObject bestehendes System-Objekt, dessen Default-Wert überprüft werden muss
+	 * @param systemObject bestehendes System-Objekt, dessen Default-Wert Ã¼berprÃ¼ft werden muss
 	 * @param aDefault     zu importierender Default-Wert
 	 *
 	 * @return <code>true</code>, falls die Default-Werte unterschiedlich sind, sonst <code>false</code>
@@ -656,7 +662,7 @@ class ComparePropertiesWithSystemObjects {
 		// kein Default soll gesetzt werden und es ist kein Default am Typ vorhanden
 		if(aDefault == null && data == null) return false;
 
-		// prüfen, ob die Default-Werte gleich sind
+		// prÃ¼fen, ob die Default-Werte gleich sind
 		if(aDefault != null && data != null) {
 			if(aDefault.equals(data.getTextValue("wert").getText())) return false;
 		}
@@ -666,13 +672,13 @@ class ComparePropertiesWithSystemObjects {
 	/* ############### String - Attribut-Typ ############## */
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param configurationString zu importierende Zeichenketten-Attribut-Typ-Definition
 	 * @param stringAttributeType ein Zeichenketten-Attribut-Typ (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isStringAttributeTypeProcessable(ConfigurationString configurationString, StringAttributeType stringAttributeType) {
 		if(isStringAttributeTypeDifferent(configurationString, stringAttributeType) && !isConfigurationDataChangeable(
@@ -686,7 +692,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob die Zeichenketten-Attribut-Typ-Definition sich von dem Zeichenketten-Attribut-Typen unterscheidet.
+	 * PrÃ¼ft, ob die Zeichenketten-Attribut-Typ-Definition sich von dem Zeichenketten-Attribut-Typen unterscheidet.
 	 *
 	 * @param configurationString eine Zeichenketten-Attribut-Typ-Definition
 	 * @param stringAttributeType ein Zeichenketten-Attribut-Typ
@@ -694,7 +700,7 @@ class ComparePropertiesWithSystemObjects {
 	 * @return <code>true</code>, falls sich die Definition vom Attribut-Typen unterscheidet, sonst <code>false</code>
 	 */
 	boolean isStringAttributeTypeDifferent(ConfigurationString configurationString, StringAttributeType stringAttributeType) {
-		// gibt es diesen Datensatz überhaupt?
+		// gibt es diesen Datensatz Ã¼berhaupt?
 		final AttributeGroup atg = getAttributeGroup("atg.zeichenkettenAttributTypEigenschaften");
 		final Aspect asp = getAspect("asp.eigenschaften");
 
@@ -713,13 +719,13 @@ class ComparePropertiesWithSystemObjects {
 	/* ############### Integer - Attribut-Typ ############## */
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param configurationIntegerDef eine Ganzzahl-Attribut-Typ-Definition einer Versorgungsdatei
 	 * @param integerAttributeType    ein Ganzzahl-Attribut-Typ (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isIntegerAttributeTypeProcessable(ConfigurationIntegerDef configurationIntegerDef, IntegerAttributeType integerAttributeType) {
 		if(isIntegerAttributeTypePropertiesDifferent(configurationIntegerDef, integerAttributeType) && !isIntegerAttributeTypePropertiesProcessble(
@@ -740,14 +746,14 @@ class ComparePropertiesWithSystemObjects {
 			return false;
 		}
 		if(!isIntegerAttributeTypeValueStatesProcessable(configurationIntegerDef.getValueRangeAndState(), integerAttributeType)) {
-			_debug.finer("Ganzzahl-Attribut-Typ-Zustände");
+			_debug.finer("Ganzzahl-Attribut-Typ-ZustÃ¤nde");
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Prüft, ob sich die Ganzzahl-Attribut-Typ-Definition vom Ganzzahl-Attribut-Typ (System-Objekt) unterscheidet.
+	 * PrÃ¼ft, ob sich die Ganzzahl-Attribut-Typ-Definition vom Ganzzahl-Attribut-Typ (System-Objekt) unterscheidet.
 	 *
 	 * @param configurationIntegerDef eine Ganzzahl-Attribut-Typ-Definition einer Versorgungsdatei
 	 * @param integerAttributeType    ein Ganzzahl-Attribut-Typ (System-Objekt)
@@ -769,13 +775,13 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param configurationIntegerDef eine Ganzzahl-Attribut-Typ-Definition einer Versorgungsdatei
 	 * @param integerAttributeType    ein Ganzzahl-Attribut-Typ (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isIntegerAttributeTypePropertiesProcessble(ConfigurationIntegerDef configurationIntegerDef, IntegerAttributeType integerAttributeType) {
 		if(isIntegerAttributeTypePropertiesDifferent(configurationIntegerDef, integerAttributeType) && !isConfigurationDataChangeable(
@@ -789,7 +795,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob sich die Eigenschaften einer Ganzzahl-Attribut-Typ-Definition von den Eigenschaften eines Ganzzahl-Attribut-Typs (System-Objekt) unterscheidet.
+	 * PrÃ¼ft, ob sich die Eigenschaften einer Ganzzahl-Attribut-Typ-Definition von den Eigenschaften eines Ganzzahl-Attribut-Typs (System-Objekt) unterscheidet.
 	 *
 	 * @param configurationIntegerDef eine Ganzzahl-Attribut-Typ-Definition einer Versorgungsdatei
 	 * @param integerAttributeType    ein Ganzzahl-Attribut-Typ (System-Objekt)
@@ -817,13 +823,13 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param configurationValueRange eine Definition eines Wertebereichs eines Ganzzahl-Attribut-Typs
 	 * @param integerValueRange       ein Wertebereich eines Ganzzahl-Attribut-Typs (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isIntegerAttributeTypeValueRangeProcessable(ConfigurationValueRange configurationValueRange, IntegerValueRange integerValueRange) {
 		if(!isConfigurationDataChangeable("atg.ganzzahlAttributTypEigenschaften")) {
@@ -848,7 +854,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob sich die Definition eines Wertebereichs eines Ganzzahl-Attribut-Typs vom entsprechenden System-Objekt unterscheidet.
+	 * PrÃ¼ft, ob sich die Definition eines Wertebereichs eines Ganzzahl-Attribut-Typs vom entsprechenden System-Objekt unterscheidet.
 	 *
 	 * @param configurationValueRange eine Definition eines Wertebereichs eines Ganzzahl-Attribut-Typs
 	 * @param integerValueRange       ein Wertebereich eines Ganzzahl-Attribut-Typs (System-Objekt)
@@ -860,7 +866,7 @@ class ComparePropertiesWithSystemObjects {
 			return false;
 		}
 		else if(configurationValueRange != null && integerValueRange != null) {
-			// Info überprüfen
+			// Info Ã¼berprÃ¼fen
 			if(isInfoDifferent(configurationValueRange.getInfo(), integerValueRange.getInfo())) return true;
 			if(isIntegerAttributeTypeValueRangePropertiesDifferent(configurationValueRange, integerValueRange)) return true;
 		}
@@ -871,13 +877,13 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param configurationValueRange eine Definition eines Wertebereichs eines Ganzzahl-Attribut-Typs
 	 * @param integerValueRange       ein Wertebereich eines Ganzzahl-Attribut-Typs (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isIntegerAttributeTypeValueRangePropertiesProcessable(ConfigurationValueRange configurationValueRange, IntegerValueRange integerValueRange) {
 		if(!isIntegerAttributeTypeValueRangePropertiesDifferent(configurationValueRange, integerValueRange)) {
@@ -891,7 +897,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob sich die Eigenschaften eines Wertebereichs eines Ganzzahl-Attribut-Typ vom entsprechenden System-Objekt unterscheidet.
+	 * PrÃ¼ft, ob sich die Eigenschaften eines Wertebereichs eines Ganzzahl-Attribut-Typ vom entsprechenden System-Objekt unterscheidet.
 	 *
 	 * @param configurationValueRange eine Definition eines Wertebereichs eines Ganzzahl-Attribut-Typs
 	 * @param integerValueRange       ein Wertebereich eines Ganzzahl-Attribut-Typs (System-Objekt)
@@ -899,7 +905,7 @@ class ComparePropertiesWithSystemObjects {
 	 * @return <code>true</code>, falls die Definition und das System-Objekt unterschiedlich sind <br><code>false</code>, sonst
 	 */
 	boolean isIntegerAttributeTypeValueRangePropertiesDifferent(ConfigurationValueRange configurationValueRange, IntegerValueRange integerValueRange) {
-		// gibt es diesen Datensatz überhaupt?
+		// gibt es diesen Datensatz Ã¼berhaupt?
 		final AttributeGroup atg = getAttributeGroup("atg.werteBereichsEigenschaften");
 		final Aspect asp = getAspect("asp.eigenschaften");
 
@@ -907,7 +913,7 @@ class ComparePropertiesWithSystemObjects {
 		if(_configurationImport.getConfigurationData(integerValueRange, atgUsage) == null) return true;
 //		if(integerValueRange.getConfigurationData(atgUsage) == null) return true;
 
-		// Eigenschaften überprüfen
+		// Eigenschaften Ã¼berprÃ¼fen
 		if(configurationValueRange.getMinimum() != integerValueRange.getMinimum() || configurationValueRange.getMaximum() != integerValueRange.getMaximum()
 		   || configurationValueRange.getScale() != integerValueRange.getConversionFactor()
 		   || !configurationValueRange.getUnit().equals(integerValueRange.getUnit())) {
@@ -919,42 +925,42 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
-	 * @param rangeAndStates       eine Menge von Definition von Zuständen eines Ganzzahl-Attribut-Typs
+	 * @param rangeAndStates       eine Menge von Definition von ZustÃ¤nden eines Ganzzahl-Attribut-Typs
 	 * @param integerAttributeType ein Ganzzahl-Attribut-Typ (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isIntegerAttributeTypeValueStatesProcessable(ConfigurationIntegerValueRange[] rangeAndStates, IntegerAttributeType integerAttributeType) {
-		// Elemente in der Menge sind durch Komposition an die Menge gebunden. D.h. die Menge kann und darf nicht verändert werden
+		// Elemente in der Menge sind durch Komposition an die Menge gebunden. D.h. die Menge kann und darf nicht verÃ¤ndert werden
 		if(isIntegerAttributeTypeValueStatesDifferent(rangeAndStates, integerAttributeType)) {
-			// Anzahl der Zustände ermitteln
+			// Anzahl der ZustÃ¤nde ermitteln
 			int counter = 0;
 			for(ConfigurationIntegerValueRange integerValueRange : rangeAndStates) {
 				if(integerValueRange instanceof ConfigurationState) {
 					counter++;
 				}
 			}
-			if(counter > 0 && integerAttributeType.getObjectSet("zustände") == null) {
-				_debug.finer("Es sollen Zustände vorhanden sein, sind aber nicht", integerAttributeType.getPidOrNameOrId());
+			if(counter > 0 && integerAttributeType.getObjectSet("zustÃ¤nde") == null) {
+				_debug.finer("Es sollen ZustÃ¤nde vorhanden sein, sind aber nicht", integerAttributeType.getPidOrNameOrId());
 				return false;
 			}
 
-			// Zustände bestimmen
+			// ZustÃ¤nde bestimmen
 			List<IntegerValueState> states = integerAttributeType.getStates();
 
 			// stimmt die Anzahl?
 			boolean sizeOk = RelaxedModelChanges.getInstance(_dataModel).isAddStatesProcessable(integerAttributeType) ? states.size() > counter : states.size() != counter;
-			if(sizeOk && !isSetChangeable(integerAttributeType, "zustände")) {
+			if(sizeOk && !isSetChangeable(integerAttributeType, "zustÃ¤nde")) {
 				_debug.finer("Anzahl stimmt nicht", integerAttributeType.getPidOrNameOrId());
 				return false;
 			}
 
 			for(IntegerValueState valueState : states) {
 				ConfigurationState configurationState = null;
-				// passendes Gegenstück raussuchen
+				// passendes GegenstÃ¼ck raussuchen
 				for(ConfigurationIntegerValueRange rangeOrState : rangeAndStates) {
 						if(rangeOrState instanceof ConfigurationState) {
 							ConfigurationState tmp = (ConfigurationState) rangeOrState;
@@ -965,7 +971,7 @@ class ComparePropertiesWithSystemObjects {
 						}
 					}
 				}
-				if(configurationState == null && !isSetChangeable(integerAttributeType, "zustände")) {
+				if(configurationState == null && !isSetChangeable(integerAttributeType, "zustÃ¤nde")) {
 					_debug.finer("Hier fehlt ein Zustand " + valueState.getName() + " Typ: " + integerAttributeType.getPidOrNameOrId());
 					return false;	// Der State muss vorhanden sein!
 				}
@@ -988,29 +994,29 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob sich die definierten Zustände von den Zuständen des Ganzzahl-Attribut-Typs (System-Objekt) unterscheiden.
+	 * PrÃ¼ft, ob sich die definierten ZustÃ¤nde von den ZustÃ¤nden des Ganzzahl-Attribut-Typs (System-Objekt) unterscheiden.
 	 *
-	 * @param rangeAndStates       eine Menge von Definition von Zuständen eines Ganzzahl-Attribut-Typs
+	 * @param rangeAndStates       eine Menge von Definition von ZustÃ¤nden eines Ganzzahl-Attribut-Typs
 	 * @param integerAttributeType ein Ganzzahl-Attribut-Typ (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls sich die definierten Zustände von den Zuständen des Ganzzahl-Attribut-Typs unterscheiden <br><code>false</code>, sonst
+	 * @return <code>true</code>, falls sich die definierten ZustÃ¤nde von den ZustÃ¤nden des Ganzzahl-Attribut-Typs unterscheiden <br><code>false</code>, sonst
 	 */
 	boolean isIntegerAttributeTypeValueStatesDifferent(ConfigurationIntegerValueRange[] rangeAndStates, IntegerAttributeType integerAttributeType) {
-		// Elemente in der Menge sind durch Komposition an die Menge gebunden. D.h. die Menge kann und darf nicht verändert werden
+		// Elemente in der Menge sind durch Komposition an die Menge gebunden. D.h. die Menge kann und darf nicht verÃ¤ndert werden
 
-		// Anzahl der Zustände ermitteln
+		// Anzahl der ZustÃ¤nde ermitteln
 		int counter = 0;
 		for(ConfigurationIntegerValueRange integerValueRange : rangeAndStates) {
 			if(integerValueRange instanceof ConfigurationState) {
 				counter++;
 			}
 		}
-		if(counter > 0 && integerAttributeType.getObjectSet("zustände") == null) {
-			_debug.finer("Es sollen Zustände vorhanden sein, sind aber nicht", integerAttributeType.getPidOrNameOrId());
+		if(counter > 0 && integerAttributeType.getObjectSet("zustÃ¤nde") == null) {
+			_debug.finer("Es sollen ZustÃ¤nde vorhanden sein, sind aber nicht", integerAttributeType.getPidOrNameOrId());
 			return true;
 		}
 
-		// Zustände bestimmen
+		// ZustÃ¤nde bestimmen
 		List<IntegerValueState> states = integerAttributeType.getStates();
 
 		// stimmt die Anzahl?
@@ -1022,7 +1028,7 @@ class ComparePropertiesWithSystemObjects {
 		for(ConfigurationIntegerValueRange rangeOrState : rangeAndStates) {
 			if(rangeOrState instanceof ConfigurationState) {
 				ConfigurationState configurationState = (ConfigurationState)rangeOrState;
-				// passendes Gegenstück raussuchen
+				// passendes GegenstÃ¼ck raussuchen
 				IntegerValueState valueState = null;
 				for(IntegerValueState integerValueState : states) {
 					if(integerValueState.getName().equals(configurationState.getName())) {
@@ -1052,13 +1058,13 @@ class ComparePropertiesWithSystemObjects {
 	/* ############### Double - Attribut-Typ ############## */
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
-	 * @param configurationDoubleDef eine Definition eines Fließkomma-Attribut-Typs
-	 * @param doubleAttributeType    ein Fließkomma-Attribut-Typ (System-Objekt)
+	 * @param configurationDoubleDef eine Definition eines FlieÃŸkomma-Attribut-Typs
+	 * @param doubleAttributeType    ein FlieÃŸkomma-Attribut-Typ (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isDoubleAttributeTypeProcessable(ConfigurationDoubleDef configurationDoubleDef, DoubleAttributeType doubleAttributeType) {
 		if(isDoubleAttributeTypeDifferent(configurationDoubleDef, doubleAttributeType)
@@ -1071,16 +1077,16 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob sich die Definition eines Fließkomma-Attribut-Typs von einem Fließkomma-Attribut-Typ (System-Objekt) unterscheidet.
+	 * PrÃ¼ft, ob sich die Definition eines FlieÃŸkomma-Attribut-Typs von einem FlieÃŸkomma-Attribut-Typ (System-Objekt) unterscheidet.
 	 *
-	 * @param configurationDoubleDef eine Definition eines Fließkomma-Attribut-Typs
-	 * @param doubleAttributeType    ein Fließkomma-Attribut-Typ (System-Objekt)
+	 * @param configurationDoubleDef eine Definition eines FlieÃŸkomma-Attribut-Typs
+	 * @param doubleAttributeType    ein FlieÃŸkomma-Attribut-Typ (System-Objekt)
 	 *
-	 * @return <code>true</code>, wenn sich die Definition eines Fließkomma-Attribut-Typs von einem Fließkomma-Attribut-Typ (System-Objekt) unterscheidet
+	 * @return <code>true</code>, wenn sich die Definition eines FlieÃŸkomma-Attribut-Typs von einem FlieÃŸkomma-Attribut-Typ (System-Objekt) unterscheidet
 	 *         <br><code>false</code>, sonst
 	 */
 	boolean isDoubleAttributeTypeDifferent(ConfigurationDoubleDef configurationDoubleDef, DoubleAttributeType doubleAttributeType) {
-		// gibt es diesen Datensatz überhaupt?
+		// gibt es diesen Datensatz Ã¼berhaupt?
 		final AttributeGroup atg = getAttributeGroup("atg.kommazahlAttributTypEigenschaften");
 		final Aspect asp = getAspect("asp.eigenschaften");
 
@@ -1088,7 +1094,7 @@ class ComparePropertiesWithSystemObjects {
 		if(_configurationImport.getConfigurationData(doubleAttributeType, atgUsage) == null) return true;
 //		if(doubleAttributeType.getConfigurationData(atgUsage) == null) return true;
 
-		// Genauigkeit überprüfen
+		// Genauigkeit Ã¼berprÃ¼fen
 		switch(configurationDoubleDef.getAccuracy()) {
 			case DOUBLE:
 				if(doubleAttributeType.getAccuracy() != 1) return true;
@@ -1097,9 +1103,9 @@ class ComparePropertiesWithSystemObjects {
 				if(doubleAttributeType.getAccuracy() != 0) return true;
 				break;
 			default:
-				throw new IllegalStateException("Dieser Genauigkeitstyp '" + configurationDoubleDef.getAccuracy() + "' wird beim Import nicht unterstützt");
+				throw new IllegalStateException("Dieser Genauigkeitstyp '" + configurationDoubleDef.getAccuracy() + "' wird beim Import nicht unterstÃ¼tzt");
 		}
-		// Einheit überprüfen
+		// Einheit Ã¼berprÃ¼fen
 		if(!configurationDoubleDef.getUnit().equals(doubleAttributeType.getUnit())) return true;
 		return false;
 	}
@@ -1107,13 +1113,13 @@ class ComparePropertiesWithSystemObjects {
 	/* ############### Time - Attribut-Typ ############## */
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param configurationTimeStamp eine Definition eines Zeitstempel-Attribut-Typs
 	 * @param timeAttributeType      ein Zeitstempel-Attribut-Typ (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isTimeAttributeTypeProcessable(ConfigurationTimeStamp configurationTimeStamp, TimeAttributeType timeAttributeType) {
 		if(isTimeAttributeTypeDifferent(configurationTimeStamp, timeAttributeType)
@@ -1126,7 +1132,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob sich die Definition eines Zeitstempel-Attribut-Typs von einem Zeitstempel-Attribut-Typ (System-Objekt) unterscheidet.
+	 * PrÃ¼ft, ob sich die Definition eines Zeitstempel-Attribut-Typs von einem Zeitstempel-Attribut-Typ (System-Objekt) unterscheidet.
 	 *
 	 * @param configurationTimeStamp eine Definition eines Zeitstempel-Attribut-Typs
 	 * @param timeAttributeType      ein Zeitstempel-Attribut-Typ (System-Objekt)
@@ -1135,7 +1141,7 @@ class ComparePropertiesWithSystemObjects {
 	 *         <code>false</code>, sonst
 	 */
 	boolean isTimeAttributeTypeDifferent(ConfigurationTimeStamp configurationTimeStamp, TimeAttributeType timeAttributeType) {
-		// gibt es diesen Datensatz überhaupt?
+		// gibt es diesen Datensatz Ã¼berhaupt?
 		final AttributeGroup atg = getAttributeGroup("atg.zeitstempelAttributTypEigenschaften");
 		final Aspect asp = getAspect("asp.eigenschaften");
 
@@ -1143,7 +1149,7 @@ class ComparePropertiesWithSystemObjects {
 		if(_configurationImport.getConfigurationData(timeAttributeType, atgUsage) == null) return true;
 //		if(timeAttributeType.getConfigurationData(atgUsage) == null) return true;
 
-		// Genauigkeit überprüfen
+		// Genauigkeit Ã¼berprÃ¼fen
 		switch(configurationTimeStamp.getAccuracy()) {
 			case MILLISECONDS:
 				if(timeAttributeType.getAccuracy() != 1) return true;
@@ -1152,9 +1158,9 @@ class ComparePropertiesWithSystemObjects {
 				if(timeAttributeType.getAccuracy() != 0) return true;
 				break;
 			default:
-				throw new IllegalStateException("Dieser Genauigkeitstyp '" + configurationTimeStamp.getAccuracy() + "' wird beim Import nicht unterstützt");
+				throw new IllegalStateException("Dieser Genauigkeitstyp '" + configurationTimeStamp.getAccuracy() + "' wird beim Import nicht unterstÃ¼tzt");
 		}
-		// Prüfen, ob relative Zeitangaben benutzt werden, oder nicht.
+		// PrÃ¼fen, ob relative Zeitangaben benutzt werden, oder nicht.
 		if(configurationTimeStamp.getRelative() != timeAttributeType.isRelative()) return true;
 		return false;
 	}
@@ -1162,13 +1168,13 @@ class ComparePropertiesWithSystemObjects {
 	/* ############### Reference - Attribut-Typ ############## */
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param configurationObjectReference eine Definition eines Referenz-Attribut-Typs
 	 * @param referenceAttributeType       ein Referenz-Attribut-Typ (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isReferenceAttributeTypeProcessable(ConfigurationObjectReference configurationObjectReference, ReferenceAttributeType referenceAttributeType) {
 		if(isReferenceAttributeTypeDifferent(configurationObjectReference, referenceAttributeType) && !isConfigurationDataChangeable(
@@ -1182,7 +1188,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob sich die Definition eines Referenz-Attribut-Typs von einem Referenz-Attribut-Typ (System-Objekt) unterscheidet.
+	 * PrÃ¼ft, ob sich die Definition eines Referenz-Attribut-Typs von einem Referenz-Attribut-Typ (System-Objekt) unterscheidet.
 	 *
 	 * @param configurationObjectReference eine Definition eines Referenz-Attribut-Typs
 	 * @param referenceAttributeType       ein Referenz-Attribut-Typ (System-Objekt)
@@ -1195,10 +1201,10 @@ class ComparePropertiesWithSystemObjects {
 			return true;
 		}
 //		if(referenceAttributeType.getConfigurationData(getAttributeGroup("atg.objektReferenzAttributTypEigenschaften")) == null) return true;
-		// Referenzierungsart überprüfen
+		// Referenzierungsart Ã¼berprÃ¼fen
 		if(configurationObjectReference.getReferenceType() != referenceAttributeType.getReferenceType()) return true;
 
-		// Referenzierungs-Typ überprüfen
+		// Referenzierungs-Typ Ã¼berprÃ¼fen
 		if(configurationObjectReference.getReferenceObjectType().equals("")) {
 			if(referenceAttributeType.getReferencedObjectType() != null) return true;
 		}
@@ -1206,7 +1212,7 @@ class ComparePropertiesWithSystemObjects {
 			if(getType(configurationObjectReference.getReferenceObjectType()) != referenceAttributeType.getReferencedObjectType()) return true;
 		}
 
-		// Prüfe, ob undefinierte Objekte erlaubt sind.
+		// PrÃ¼fe, ob undefinierte Objekte erlaubt sind.
 		switch(configurationObjectReference.getUndefined()) {
 			case ALLOWED:
 				if(!referenceAttributeType.isUndefinedAllowed()) return true;
@@ -1221,13 +1227,13 @@ class ComparePropertiesWithSystemObjects {
 	/*############## Attributgruppe ############## */
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param property       eine Definition einer Attributgruppe einer Versorgungsdatei
 	 * @param attributeGroup eine Attributgruppe (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isAttributeGroupProcessable(AttributeGroupProperties property, AttributeGroup attributeGroup) {
 		// ATG ein Parameter
@@ -1236,13 +1242,13 @@ class ComparePropertiesWithSystemObjects {
 			return false;
 		}
 
-		// Attribute und Attributlisten überprüfen
+		// Attribute und Attributlisten Ã¼berprÃ¼fen
 		if(!isAttributeSetProcessable(property.getAttributeAndAttributeList(), attributeGroup)) {
 			_debug.finer("Attribute");
 			return false;
 		}
 
-		// Attributgruppenverwendungen überprüfen
+		// Attributgruppenverwendungen Ã¼berprÃ¼fen
 		if(!isAttributeGroupUsageSetProcessable(property, attributeGroup)) {
 			_debug.finer("Attributgruppenverwendungen");
 			return false;
@@ -1252,7 +1258,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob sich die Definition von dem System-Objekt unterscheidet.
+	 * PrÃ¼ft, ob sich die Definition von dem System-Objekt unterscheidet.
 	 *
 	 * @param property       eine Definition einer Attributgruppe einer Versorgungsdatei
 	 * @param attributeGroup eine Attributgruppe (System-Objekt)
@@ -1266,13 +1272,13 @@ class ComparePropertiesWithSystemObjects {
 			return true;
 		}
 
-		// Attribute und Attributlisten überprüfen
+		// Attribute und Attributlisten Ã¼berprÃ¼fen
 		if(isAttributeSetDifferent(property.getAttributeAndAttributeList(), attributeGroup)) {
 			_debug.finer("Attribute der Attributgruppe sind unterschiedlich", attributeGroup.getPid());
 			return true;
 		}
 
-		// Attributgruppenverwendungen überprüfen
+		// Attributgruppenverwendungen Ã¼berprÃ¼fen
 		if(isAttributeGroupUsageSetDifferent(property, attributeGroup)) {
 			_debug.finer("Attributgruppenverwendungen sind unterschiedlich", attributeGroup.getPid());
 			return true;
@@ -1297,20 +1303,20 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param property       eine Definition einer Attributgruppe einer Versorgungsdatei
 	 * @param attributeGroup eine Attributgruppe (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Attributgruppenverwendungs-Menge mit der des System-Objekts übereinstimmt, oder falls nicht, ob sich das System-Objekt
-	 *         ändern lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Attributgruppenverwendungs-Menge mit der des System-Objekts Ã¼bereinstimmt, oder falls nicht, ob sich das System-Objekt
+	 *         Ã¤ndern lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isAttributeGroupUsageSetProcessable(AttributeGroupProperties property, AttributeGroup attributeGroup) {
 		// Die Menge der Attributgruppenverwendungen
 		final NonMutableSet atgUsageSet = attributeGroup.getNonMutableSet("AttributgruppenVerwendungen");
 		final List<SystemObject> atgUsages = atgUsageSet.getElementsInModifiableVersion();
 
-		// Aspekte überprüfen
+		// Aspekte Ã¼berprÃ¼fen
 		int counter = 0;
 		// Sind alle Aspekte vorhanden?
 		for(ConfigurationAspect configurationAspect : property.getConfigurationAspect()) {
@@ -1318,16 +1324,16 @@ class ComparePropertiesWithSystemObjects {
 			if(property.isParameter() && (pid.equals("asp.parameterSoll") || pid.equals("asp.parameterIst") || pid.equals("asp.parameterVorgabe") || pid.equals(
 					"asp.parameterDefault"
 			))) {
-				// diese Aspekte ignorieren - werden durch die Methode isParameter() geprüft
+				// diese Aspekte ignorieren - werden durch die Methode isParameter() geprÃ¼ft
 			}
 			else {
 				// passende Attributgruppenverwendung raussuchen
 				final AttributeGroupUsage attributeGroupUsage = getAttributeGroupUsage(atgUsages, pid);
-				if(attributeGroupUsage != null) {   // Prüfen, ob es eine ATGV hierzu gibt
+				if(attributeGroupUsage != null) {   // PrÃ¼fen, ob es eine ATGV hierzu gibt
 					if(isAttributeGroupUsageDifferent(configurationAspect, attributeGroupUsage) && !isAttributeGroupUsageProcessable(
 							configurationAspect, attributeGroupUsage
 					)) {
-						_debug.finer("Attributgruppenverwendung kann nicht geändert werden.");
+						_debug.finer("Attributgruppenverwendung kann nicht geÃ¤ndert werden.");
 						return false;
 					}
 					counter++;
@@ -1335,7 +1341,7 @@ class ComparePropertiesWithSystemObjects {
 			}
 		}
 		if(property.isParameter()) {
-			// die vier Parameter-Aspekte müssen vorhanden sein
+			// die vier Parameter-Aspekte mÃ¼ssen vorhanden sein
 			final AttributeGroupUsage atgUsageTarget = getAttributeGroupUsage(atgUsages, "asp.parameterSoll");
 			final AttributeGroupUsage atgUsageActual = getAttributeGroupUsage(atgUsages, "asp.parameterIst");
 			final AttributeGroupUsage atgUsageDemand = getAttributeGroupUsage(atgUsages, "asp.parameterVorgabe");
@@ -1378,24 +1384,24 @@ class ComparePropertiesWithSystemObjects {
 				return false;
 			}
 		}
-		// Anzahl der Elemente prüfen
+		// Anzahl der Elemente prÃ¼fen
 		return true;
 	}
 
 	/**
-	 * Prüft, ob die definierten Attributgruppenverwendungen mit der Menge der Attributgruppenverwendungen der Attributgruppe übereinstimmen.
+	 * PrÃ¼ft, ob die definierten Attributgruppenverwendungen mit der Menge der Attributgruppenverwendungen der Attributgruppe Ã¼bereinstimmen.
 	 *
 	 * @param property       eine Definition einer Attributgruppe einer Versorgungsdatei
 	 * @param attributeGroup eine Attributgruppe (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die definierten Attributgruppenverwendungen mit der Menge der Attributgruppenverwendungen der Attributgruppe übereinstimmen
+	 * @return <code>true</code>, falls die definierten Attributgruppenverwendungen mit der Menge der Attributgruppenverwendungen der Attributgruppe Ã¼bereinstimmen
 	 *         <br> <code>false</code>, sonst
 	 */
 	boolean isAttributeGroupUsageSetDifferent(AttributeGroupProperties property, AttributeGroup attributeGroup) {
 		// Die Menge der Attributgruppenverwendungen
 		final NonMutableSet atgUsageSet = attributeGroup.getNonMutableSet("AttributgruppenVerwendungen");
 		final List<SystemObject> atgUsages = atgUsageSet.getElementsInModifiableVersion();
-		// Aspekte überprüfen
+		// Aspekte Ã¼berprÃ¼fen
 		int counter = 0;
 		// Sind alle Aspekte vorhanden?
 		for(ConfigurationAspect configurationAspect : property.getConfigurationAspect()) {
@@ -1403,7 +1409,7 @@ class ComparePropertiesWithSystemObjects {
 			if(property.isParameter() && (pid.equals("asp.parameterSoll") || pid.equals("asp.parameterIst") || pid.equals("asp.parameterVorgabe") || pid.equals(
 					"asp.parameterDefault"
 			))) {
-				// diese Aspekte ignorieren - werden durch die Methode isParameter() geprüft
+				// diese Aspekte ignorieren - werden durch die Methode isParameter() geprÃ¼ft
 			}
 			else {
 				// passende Attributgruppenverwendung raussuchen
@@ -1418,7 +1424,7 @@ class ComparePropertiesWithSystemObjects {
 			}
 		}
 		if(property.isParameter()) {
-			// die drei Parameter-Aspekte müssen vorhanden sein
+			// die drei Parameter-Aspekte mÃ¼ssen vorhanden sein
 			final AttributeGroupUsage atgUsageTarget = getAttributeGroupUsage(atgUsages, "asp.parameterSoll");
 			final AttributeGroupUsage atgUsageActual = getAttributeGroupUsage(atgUsages, "asp.parameterIst");
 			final AttributeGroupUsage atgUsageDemand = getAttributeGroupUsage(atgUsages, "asp.parameterVorgabe");
@@ -1441,9 +1447,9 @@ class ComparePropertiesWithSystemObjects {
 			}
 		}
 
-		// Anzahl der Elemente prüfen
+		// Anzahl der Elemente prÃ¼fen
 		if(counter != atgUsages.size()) {
-			_debug.finer("Die Anzahl der Attributgruppenverwendungen stimmt nicht überein");
+			_debug.finer("Die Anzahl der Attributgruppenverwendungen stimmt nicht Ã¼berein");
 			return true;
 		}
 
@@ -1454,13 +1460,13 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
-	 * @param configurationAspect Definition eines Aspekts für eine Attributgruppenverwendung
+	 * @param configurationAspect Definition eines Aspekts fÃ¼r eine Attributgruppenverwendung
 	 * @param attributeGroupUsage eine Attributgruppenverwendung (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isAttributeGroupUsageProcessable(ConfigurationAspect configurationAspect, AttributeGroupUsage attributeGroupUsage) {
 		if(!configurationAspect.getPid().equals(attributeGroupUsage.getPid())) return false;
@@ -1470,12 +1476,12 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob die Definition eines Aspekts zu einer Attributgruppenverwendung unterschiedlich ist.
+	 * PrÃ¼ft, ob die Definition eines Aspekts zu einer Attributgruppenverwendung unterschiedlich ist.
 	 *
-	 * @param configurationAspect Definition eines Aspekts für eine Attributgruppenverwendung
+	 * @param configurationAspect Definition eines Aspekts fÃ¼r eine Attributgruppenverwendung
 	 * @param attributeGroupUsage eine Attributgruppenverwendung (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Attributgruppenverwendung und die Definition nicht übereinstimmen <br> <code>false</code>, sonst
+	 * @return <code>true</code>, falls die Attributgruppenverwendung und die Definition nicht Ã¼bereinstimmen <br> <code>false</code>, sonst
 	 */
 	boolean isAttributeGroupUsageDifferent(ConfigurationAspect configurationAspect, AttributeGroupUsage attributeGroupUsage) {
 		if(attributeGroupUsage == null) {
@@ -1486,12 +1492,12 @@ class ComparePropertiesWithSystemObjects {
 			_debug.finer("Aspekt ist unterschiedlich");
 			return true;
 		}
-		// Info überprüfen
+		// Info Ã¼berprÃ¼fen
 		if(isInfoDifferent(configurationAspect.getInfo(), attributeGroupUsage.getInfo())) {
 			_debug.finer("Info ist unterschiedlich");
 			return true;
 		}
-		// die Verwendung überprüfen
+		// die Verwendung Ã¼berprÃ¼fen
 		if(configurationAspect.getUsage() != attributeGroupUsage.getUsage()) {
 			_debug.finer("Die Verwendung der ATGV ist unterschiedlich");
 			return true;
@@ -1502,20 +1508,20 @@ class ComparePropertiesWithSystemObjects {
 	/*############## ConfigurationArea ############## */
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param property          eine Definition eines Konfigurationsbereichs einer Versorgungsdatei
 	 * @param configurationArea ein Konfigurationsbereich (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isConfigurationAreaProcessable(ConfigurationAreaProperties property, ConfigurationArea configurationArea) {
-		// den Konfigurationsverantwortlichen überprüfen
+		// den Konfigurationsverantwortlichen Ã¼berprÃ¼fen
 		if(isConfigurationAreaAuthorityProcessable(property.getAuthority(), configurationArea.getConfigurationAuthority())) {
 			return false;
 		}
-		// KonfigurationsÄnderung überprüfen
+		// KonfigurationsÃ„nderung Ã¼berprÃ¼fen
 		if(isConfigurationAreaChangeInformationProcessable(property.getConfigurationAreaChangeInformation(), configurationArea)) {
 			return false;
 		}
@@ -1523,7 +1529,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob die Definition und das System-Objekt unterschiedlich sind.
+	 * PrÃ¼ft, ob die Definition und das System-Objekt unterschiedlich sind.
 	 *
 	 * @param property          eine Definition eines Konfigurationsbereichs einer Versorgungsdatei
 	 * @param configurationArea ein Konfigurationsbereich (System-Objekt)
@@ -1531,11 +1537,11 @@ class ComparePropertiesWithSystemObjects {
 	 * @return <code>true</code>, falls die Definition und das System-Objekt unterschiedlich sind, sonst <code>false</code>
 	 */
 	boolean isConfigurationAreaDifferent(ConfigurationAreaProperties property, ConfigurationArea configurationArea) {
-		// den Konfigurationsverantwortlichen überprüfen
+		// den Konfigurationsverantwortlichen Ã¼berprÃ¼fen
 		if(isConfigurationAreaAuthorityDifferent(property.getAuthority(), configurationArea.getConfigurationAuthority())) {
 			return true;
 		}
-		// KonfigurationsÄnderung überprüfen
+		// KonfigurationsÃ„nderung Ã¼berprÃ¼fen
 		if(isConfigurationAreaChangeInformationDifferent(property.getConfigurationAreaChangeInformation(), configurationArea)) {
 			return true;
 		}
@@ -1543,13 +1549,13 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob die Pid zum Konfigurationsverantwortlichen passt und wenn nicht, ob sich der Konfigurationsverantwortliche am Konfigurationsbereich ändern lässt.
+	 * PrÃ¼ft, ob die Pid zum Konfigurationsverantwortlichen passt und wenn nicht, ob sich der Konfigurationsverantwortliche am Konfigurationsbereich Ã¤ndern lÃ¤sst.
 	 *
 	 * @param authority              die Pid des Konfigurationsverantwortlichen aus den Versorgungsdateien
 	 * @param configurationAuthority der Konfigurationsverantwortliche des Konfigurationsbereichs
 	 *
 	 * @return <code>true</code>, falls die Pid zum Konfigurationsverantwortlichen passt und wenn nicht, ob sich der Konfigurationsverantwortliche am
-	 *         Konfigurationsbereich ändern lässt <br> <code>false</code>, sonst
+	 *         Konfigurationsbereich Ã¤ndern lÃ¤sst <br> <code>false</code>, sonst
 	 */
 	boolean isConfigurationAreaAuthorityProcessable(String authority, ConfigurationAuthority configurationAuthority) {
 		if(isConfigurationAreaAuthorityDifferent(authority, configurationAuthority)
@@ -1560,7 +1566,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob die Pid zum Konfigurationsverantwortlichen passt.
+	 * PrÃ¼ft, ob die Pid zum Konfigurationsverantwortlichen passt.
 	 *
 	 * @param authority              die Pid des Konfigurationsverantwortlichen aus den Versorgungsdateien
 	 * @param configurationAuthority der Konfigurationsverantwortliche des Konfigurationsbereichs
@@ -1577,21 +1583,21 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob die KonfigurationsÄnderungen aus der Versorgungsdatei mit den Änderungen des Konfigurationsbereichs übereinstimmen und wenn nicht, ob sich der
-	 * Datensatz, der die Änderungen speichert, ändern lässt.
+	 * PrÃ¼ft, ob die KonfigurationsÃ„nderungen aus der Versorgungsdatei mit den Ã„nderungen des Konfigurationsbereichs Ã¼bereinstimmen und wenn nicht, ob sich der
+	 * Datensatz, der die Ã„nderungen speichert, Ã¤ndern lÃ¤sst.
 	 *
 	 * @param configurationAreaChangeInformation
-	 *                          die KonfigurationsÄnderungen aus der Versorgungsdatei
+	 *                          die KonfigurationsÃ„nderungen aus der Versorgungsdatei
 	 * @param configurationArea Konfigurationsbereich
 	 *
-	 * @return <code>true</code>, falls die KonfigurationsÄnderungen aus der Versorgungsdatei mit den Änderungen des Konfigurationsbereichs übereinstimmen und wenn
-	 *         nicht, ob sich der Datensatz, der die Änderungen speichert, ändern lässt <br> <code>false</code>, sonst
+	 * @return <code>true</code>, falls die KonfigurationsÃ„nderungen aus der Versorgungsdatei mit den Ã„nderungen des Konfigurationsbereichs Ã¼bereinstimmen und wenn
+	 *         nicht, ob sich der Datensatz, der die Ã„nderungen speichert, Ã¤ndern lÃ¤sst <br> <code>false</code>, sonst
 	 */
 	boolean isConfigurationAreaChangeInformationProcessable(
 			ConfigurationAreaChangeInformation[] configurationAreaChangeInformation, ConfigurationArea configurationArea
 	) {
 		if(isConfigurationAreaChangeInformationDifferent(configurationAreaChangeInformation, configurationArea) && !isConfigurationDataChangeable(
-				"atg.konfigurationsÄnderungen"
+				"atg.konfigurationsÃ„nderungen"
 		)) {
 			return false;
 		}
@@ -1599,20 +1605,20 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob die KonfigurationsÄnderungen aus der Versorgungsdatei mit den Änderungen des Konfigurationsbereichs übereinstimmen.
+	 * PrÃ¼ft, ob die KonfigurationsÃ„nderungen aus der Versorgungsdatei mit den Ã„nderungen des Konfigurationsbereichs Ã¼bereinstimmen.
 	 *
 	 * @param configurationAreaChangeInformation
-	 *                          die KonfigurationsÄnderungen aus der Versorgungsdatei
+	 *                          die KonfigurationsÃ„nderungen aus der Versorgungsdatei
 	 * @param configurationArea Konfigurationsbereich
 	 *
-	 * @return <code>true</code>, falls die KonfigurationsÄnderungen aus der Versorgungsdatei mit den Änderungen des Konfigurationsbereichs nicht übereinstimmen
+	 * @return <code>true</code>, falls die KonfigurationsÃ„nderungen aus der Versorgungsdatei mit den Ã„nderungen des Konfigurationsbereichs nicht Ã¼bereinstimmen
 	 *         <br> <code>false</code>, sonst
 	 */
 	boolean isConfigurationAreaChangeInformationDifferent(
 			ConfigurationAreaChangeInformation[] configurationAreaChangeInformation, ConfigurationArea configurationArea
 	) {
-		Data data = _configurationImport.getConfigurationData(configurationArea, getAttributeGroup("atg.konfigurationsÄnderungen"));
-//		Data data = configurationArea.getConfigurationData(getAttributeGroup("atg.konfigurationsÄnderungen"));
+		Data data = _configurationImport.getConfigurationData(configurationArea, getAttributeGroup("atg.konfigurationsÃ„nderungen"));
+//		Data data = configurationArea.getConfigurationData(getAttributeGroup("atg.konfigurationsÃ„nderungen"));
 		if(data == null) {
 			// diesen Datensatz gibt es noch nicht
 			if(configurationAreaChangeInformation.length > 0) {
@@ -1622,7 +1628,7 @@ class ComparePropertiesWithSystemObjects {
 		}
 		else {
 			// den Datensatz gibt es, also -> Daten vergleichen
-			Data.Array array = data.getArray("KonfigurationsÄnderung");
+			Data.Array array = data.getArray("KonfigurationsÃ„nderung");
 			if(array.getLength() != configurationAreaChangeInformation.length) return true;
 			int i = 0;
 			final short lastModifiedVersion = ((ConfigConfigurationArea)configurationArea).getLastModifiedVersion();
@@ -1634,7 +1640,7 @@ class ComparePropertiesWithSystemObjects {
 				if(!item.getTextValue("Grund").getText().equals(information.getReason())) return true;
 				if(!item.getTextValue("Text").getText().equals(information.getText())) return true;
 				if(item.getUnscaledValue("Version").intValue() != information.getVersion()) return true;
-				// Beide Versionen sind gleich, aber wenn sie zu groß ist, dann muss das korrigiert werden
+				// Beide Versionen sind gleich, aber wenn sie zu groÃŸ ist, dann muss das korrigiert werden
 				if(information.getVersion() > lastModifiedVersion) return true;
 			}
 		}
@@ -1644,13 +1650,13 @@ class ComparePropertiesWithSystemObjects {
 	/*############## ObjectSetType ############## */
 
 	/**
-	 * Gibt zurück, ob die Mengen-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Mengen-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param property      eine Mengendefinition einer Versorgungsdatei
 	 * @param objectSetType ein Mengen-Typ (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isObjectSetTypeProcessable(ObjectSetTypeProperties property, ObjectSetType objectSetType) {
 		if(!isObjectSetTypePropertiesProcessable(property, objectSetType)) return false;
@@ -1660,7 +1666,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob die Mengen-Definition und der Mengen-Typ unterschiedlich sind.
+	 * PrÃ¼ft, ob die Mengen-Definition und der Mengen-Typ unterschiedlich sind.
 	 *
 	 * @param property      eine Mengendefinition einer Versorgungsdatei
 	 * @param objectSetType ein Mengen-Typ (System-Objekt)
@@ -1668,10 +1674,10 @@ class ComparePropertiesWithSystemObjects {
 	 * @return <code>true</code>, wenn die Mengen-Definition und der Mengen-Typ unterschiedlich sind, sonst <code>false</code>
 	 */
 	boolean isObjectSetTypeDifferent(ObjectSetTypeProperties property, ObjectSetType objectSetType) {
-		// Eigenschaften überprüfen
+		// Eigenschaften Ã¼berprÃ¼fen
 		if(isObjectSetTypePropertiesDifferent(property, objectSetType)) return true;
 
-		// Objekt-Typen überprüfen
+		// Objekt-Typen Ã¼berprÃ¼fen
 		if(isObjectSetTypeObjectTypesDifferent(property.getElements(), objectSetType)) return true;
 		if(isObjectSetTypeSuperTypesDifferent(objectSetType)) return true;
 		return false;
@@ -1703,13 +1709,13 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zurück, ob die Eigenschaften der Mengen-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Eigenschaften der Mengen-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param property      eine Mengendefinition einer Versorgungsdatei
 	 * @param objectSetType ein Mengen-Typ (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Eigenschaften der Definition mit den Eigenschaften des System-Objekts übereinstimmen, oder falls nicht, ob sich das
-	 *         System-Objekt ändern lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Eigenschaften der Definition mit den Eigenschaften des System-Objekts Ã¼bereinstimmen, oder falls nicht, ob sich das
+	 *         System-Objekt Ã¤ndern lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isObjectSetTypePropertiesProcessable(ObjectSetTypeProperties property, ObjectSetType objectSetType) {
 		if(isObjectSetTypePropertiesDifferent(property, objectSetType) && !isConfigurationDataChangeable("atg.mengenTypEigenschaften")) {
@@ -1721,7 +1727,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob die Eigenschaften der Mengen-Definition und die Eigenschaften des Mengen-Typs unterschiedlich sind.
+	 * PrÃ¼ft, ob die Eigenschaften der Mengen-Definition und die Eigenschaften des Mengen-Typs unterschiedlich sind.
 	 *
 	 * @param property      eine Mengendefinition einer Versorgungsdatei
 	 * @param objectSetType ein Mengen-Typ (System-Objekt)
@@ -1740,13 +1746,13 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param elements      Definition der Menge der erlaubten Objekt-Typen
 	 * @param objectSetType ein Mengen-Typ (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isObjectSetTypeObjectTypesProcessable(String[] elements, ObjectSetType objectSetType) {
 		if(isObjectSetTypeObjectTypesDifferent(elements, objectSetType) && !isSetChangeable(objectSetType, "ObjektTypen")) {
@@ -1758,7 +1764,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob die Definition der Menge der erlaubten Objekt-Typen mit der Menge des Mengen-Typs unterschiedlich ist.
+	 * PrÃ¼ft, ob die Definition der Menge der erlaubten Objekt-Typen mit der Menge des Mengen-Typs unterschiedlich ist.
 	 *
 	 * @param elements      Definition der Menge der erlaubten Objekt-Typen
 	 * @param objectSetType ein Mengen-Typ (System-Objekt)
@@ -1772,7 +1778,7 @@ class ComparePropertiesWithSystemObjects {
 		final List<SystemObject> elementsInVersion = objectTypes.getElementsInVersion(objectSetType.getConfigurationArea().getModifiableVersion());
 		// Stimmt die Anzahl
 		if(elements.length != elementsInVersion.size()) return true;
-		// Stimmen die Elemente überein
+		// Stimmen die Elemente Ã¼berein
 		for(String pid : elements) {
 			final SystemObjectType objectType = getType(pid);
 			if(objectType == null || !elementsInVersion.contains(objectType)) return true;
@@ -1783,26 +1789,26 @@ class ComparePropertiesWithSystemObjects {
 	/*############## SystemObjectType ############## */
 
 	/**
-	 * Gibt zurück, ob die Import-Definition mit dem System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Import-Definition mit dem System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param property         eine Definition eines Objekt-Typen
 	 * @param systemObjectType ein Objekt-Typ (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition und das System-Objekt übereinstimmen, oder falls nicht, ob sich das System-Objekt ändern
-	 *         lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition und das System-Objekt Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt Ã¤ndern
+	 *         lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isSystemObjectTypeProcessable(SystemObjectTypeProperties property, SystemObjectType systemObjectType) {
-		// Eigenschaften überprüfen
+		// Eigenschaften Ã¼berprÃ¼fen
 		if(!isSystemObjectTypePropertiesProcessable(property, systemObjectType)) {
 			_debug.finer("Objekt-Typ-Eigenschaften");
 			return false;
 		}
-		// SuperTypen überprüfen
+		// SuperTypen Ã¼berprÃ¼fen
 		if(!isSystemObjectTypeSuperTypesProcessable(property.getExtendedPids(), systemObjectType)) {
 			_debug.finer("SuperTypen");
 			return false;
 		}
-		// Bei dynamischen Objekt-Typen den Persistenz-Modus überprüfen.
+		// Bei dynamischen Objekt-Typen den Persistenz-Modus Ã¼berprÃ¼fen.
 		boolean isConfigurating = property.getConfiguring();
 		if(property.getExtendedPids().length > 0) {
 			// Anhand der SuperTypen ermitteln, ob es ein dynamischer oder konfigurierender Typ ist.
@@ -1818,20 +1824,20 @@ class ComparePropertiesWithSystemObjects {
 			}
 		}
 		else {
-			// Mengenverwendungen überprüfen
+			// Mengenverwendungen Ã¼berprÃ¼fen
 			if(!isSystemObjectTypeObjectSetUsesProcessable(property, systemObjectType)) {
 				_debug.finer("Mengenverwendungen");
 				return false;
 			}
 		}
 
-		// Attributgruppen überprüfen
+		// Attributgruppen Ã¼berprÃ¼fen
 		if(!isSystemObjectTypeAttributeGroupProcessable(property, systemObjectType)) {
 			_debug.finer("Attributgruppen");
 			return false;
 		}
 
-		// Default-Parameter-Datensätze prüfen
+		// Default-Parameter-DatensÃ¤tze prÃ¼fen
 		if(!isDefaultParameterProcessable(property.getDefaultParameters(), systemObjectType)) {
 			_debug.finer("Default-Parameter-Datensatz");
 			return false;
@@ -1841,7 +1847,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob sich die Definition und das System-Objekt unterscheiden.
+	 * PrÃ¼ft, ob sich die Definition und das System-Objekt unterscheiden.
 	 *
 	 * @param property         eine Definition eines Objekt-Typen
 	 * @param systemObjectType ein Objekt-Typ (System-Objekt)
@@ -1849,17 +1855,17 @@ class ComparePropertiesWithSystemObjects {
 	 * @return <code>true</code>, falls sich die Definition und das System-Objekt unterscheiden, sonst <code>false</code>
 	 */
 	boolean isSystemObjectTypeDifferent(SystemObjectTypeProperties property, SystemObjectType systemObjectType) {
-		// Eigenschaften überprüfen
+		// Eigenschaften Ã¼berprÃ¼fen
 		if(isSystemObjectTypePropertiesDifferent(property, systemObjectType)) {
 			_debug.finer("Die Eigenschaften des Objekt-Typen sind unterschiedlich", property.getPid());
 			return true;
 		}
-		// SuperTypen überprüfen
+		// SuperTypen Ã¼berprÃ¼fen
 		if(isSystemObjectTypeSuperTypesDifferent(property.getExtendedPids(), systemObjectType)) {
 			_debug.finer("Die Super-Typen unterscheiden sich bei", property.getPid());
 			return true;
 		}
-		// Bei dynamischen Objekt-Typen den Persistenz-Modus überprüfen.
+		// Bei dynamischen Objekt-Typen den Persistenz-Modus Ã¼berprÃ¼fen.
 		boolean isConfigurating = property.getConfiguring();
 		if(property.getExtendedPids().length > 0) {
 			// Anhand der SuperTypen ermitteln, ob es ein dynamischer oder konfigurierender Typ ist.
@@ -1875,14 +1881,14 @@ class ComparePropertiesWithSystemObjects {
 			}
 		}
 		else {
-			// Mengenverwendunge überprüfen
+			// Mengenverwendunge Ã¼berprÃ¼fen
 			if(isSystemObjectTypeObjectSetUsesDifferent(property, systemObjectType)) {
 				_debug.finer("Die Mengenverwendungen unterscheiden sich bei", property.getPid());
 				return true;
 			}
 		}
 
-		// Attributgruppen überprüfen
+		// Attributgruppen Ã¼berprÃ¼fen
 		if(isSystemObjectTypeAttributeGroupDifferent(property, systemObjectType)) {
 			_debug.finer("Die Menge der Attributgruppen unterscheiden sich am Objekt-Typ", property.getPid());
 			return true;
@@ -1890,7 +1896,7 @@ class ComparePropertiesWithSystemObjects {
 
 		// Default-Parameter-Datensatz
 		if(isDefaultParameterDifferent(property.getDefaultParameters(), systemObjectType)) {
-			_debug.finer("Die Default-Parameter-Datensätze unterscheiden sich am Objekt-Typ", property.getPid());
+			_debug.finer("Die Default-Parameter-DatensÃ¤tze unterscheiden sich am Objekt-Typ", property.getPid());
 			return true;
 		}
 
@@ -1898,14 +1904,14 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zurück, ob die Definition eines Objekt-Typen mit den Eigenschaften eines System-Objekts übereinstimmt, oder falls nicht, ob das System-Objekt sich
-	 * verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Definition eines Objekt-Typen mit den Eigenschaften eines System-Objekts Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich
+	 * verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param property         eine Definition eines Objekt-Typen
 	 * @param systemObjectType ein Objekt-Typ (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition der Eigenschaften eines Objekt-Typs und die Eigenschaften des System-Objekts übereinstimmen, oder falls
-	 *         nicht, ob sich das System-Objekt ändern lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition der Eigenschaften eines Objekt-Typs und die Eigenschaften des System-Objekts Ã¼bereinstimmen, oder falls
+	 *         nicht, ob sich das System-Objekt Ã¤ndern lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isSystemObjectTypePropertiesProcessable(SystemObjectTypeProperties property, SystemObjectType systemObjectType) {
 		if(isSystemObjectTypePropertiesDifferent(property, systemObjectType) && !isConfigurationDataChangeable("atg.typEigenschaften")) {
@@ -1917,7 +1923,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob sich die Definition der Eigenschaften eines Objekt-Typs mit den Eigenschaften eines Objekt-Typs unterscheiden.
+	 * PrÃ¼ft, ob sich die Definition der Eigenschaften eines Objekt-Typs mit den Eigenschaften eines Objekt-Typs unterscheiden.
 	 *
 	 * @param property         eine Definition eines Objekt-Typen
 	 * @param systemObjectType ein Objekt-Typ (System-Objekt)
@@ -1940,7 +1946,7 @@ class ComparePropertiesWithSystemObjects {
 		// speichert, ob die Namen von Objekten dieses Typs permanent sind
 		if(property.getObjectNamesPermanent() != systemObjectType.isNameOfObjectsPermanent()) {
 			_debug.finer(
-					"Name von " + systemObjectType.getPidOrNameOrId() + " änderbar? (alt|neu): (" + systemObjectType.isNameOfObjectsPermanent() + "|"
+					"Name von " + systemObjectType.getPidOrNameOrId() + " Ã¤nderbar? (alt|neu): (" + systemObjectType.isNameOfObjectsPermanent() + "|"
 					+ property.getObjectNamesPermanent() + ")"
 			);
 			return true;
@@ -1949,14 +1955,14 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zurück, ob die Definition der Super-Typen mit den Super-Typen des System-Objekts übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern
-	 * lässt.
+	 * Gibt zurÃ¼ck, ob die Definition der Super-Typen mit den Super-Typen des System-Objekts Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern
+	 * lÃ¤sst.
 	 *
 	 * @param extendedPids     Definition der Super-Typen eines Objekt-Typs
 	 * @param systemObjectType ein Objekt-Typ (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition der Super-Typen mit den Super-Typen des System-Objekts übereinstimmt, oder falls nicht, ob sich das
-	 *         System-Objekt ändern lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition der Super-Typen mit den Super-Typen des System-Objekts Ã¼bereinstimmt, oder falls nicht, ob sich das
+	 *         System-Objekt Ã¤ndern lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isSystemObjectTypeSuperTypesProcessable(String[] extendedPids, SystemObjectType systemObjectType) {
 		if(isSystemObjectTypeSuperTypesDifferent(extendedPids, systemObjectType) && !isSetChangeable(systemObjectType, "SuperTypen")) {
@@ -1968,7 +1974,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob sich die Definition der Super-Typen von den Super-Typen des System-Objekts unterscheidet.
+	 * PrÃ¼ft, ob sich die Definition der Super-Typen von den Super-Typen des System-Objekts unterscheidet.
 	 *
 	 * @param extendedPids     Definition der Super-Typen eines Objekt-Typs
 	 * @param systemObjectType ein Objekt-Typ (System-Objekt)
@@ -1988,7 +1994,7 @@ class ComparePropertiesWithSystemObjects {
 			superTypes.addAll(createSuperTypes(extendedPids));
 		}
 
-		// Menge der Super-Typen überprüfen
+		// Menge der Super-Typen Ã¼berprÃ¼fen
 		final NonMutableSet superTypeSet = systemObjectType.getNonMutableSet("SuperTypen");
 		final List<SystemObject> elementsInVersion = superTypeSet.getElementsInVersion(systemObjectType.getConfigurationArea().getModifiableVersion());
 		// Anzahl miteinander vergleichen
@@ -2007,12 +2013,12 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zurück, ob die beiden Persistenzmodi gleich sind, oder falls nicht, ob der Datensatz, welcher die Eigenschaft speichert, verändert werden darf.
+	 * Gibt zurÃ¼ck, ob die beiden Persistenzmodi gleich sind, oder falls nicht, ob der Datensatz, welcher die Eigenschaft speichert, verÃ¤ndert werden darf.
 	 *
 	 * @param property        eine Definition eines Objekt-Typen einer Versorgungsdatei
 	 * @param persistenceMode zu vergleichender Persistenzmodus
 	 *
-	 * @return <code>true</code>, falls die beiden Persistenzmodi gleich sind, oder falls nicht, ob der Datensatz, welcher die Eigenschaft speichert, verändert
+	 * @return <code>true</code>, falls die beiden Persistenzmodi gleich sind, oder falls nicht, ob der Datensatz, welcher die Eigenschaft speichert, verÃ¤ndert
 	 *         werden darf <br> <code>false</code>, sonst
 	 */
 	boolean isDynamicTypePersistenceModeProcessable(SystemObjectTypeProperties property, DynamicObjectType.PersistenceMode persistenceMode) {
@@ -2025,7 +2031,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob sich die beiden Persistenzmodi unterscheiden.
+	 * PrÃ¼ft, ob sich die beiden Persistenzmodi unterscheiden.
 	 *
 	 * @param property        eine Definition eines Objekt-Typen einer Versorgungsdatei
 	 * @param persistenceMode zu vergleichender Persistenzmodus
@@ -2054,14 +2060,14 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zurück, ob die Definition mit der Menge der Attributgruppen eines Objekt-Typen übereinstimmt, oder falls nicht, ob der Objekt-Typ sich verändern
-	 * lässt.
+	 * Gibt zurÃ¼ck, ob die Definition mit der Menge der Attributgruppen eines Objekt-Typen Ã¼bereinstimmt, oder falls nicht, ob der Objekt-Typ sich verÃ¤ndern
+	 * lÃ¤sst.
 	 *
 	 * @param property         eine Definition eines Objekt-Typen einer Versorgungsdatei
 	 * @param systemObjectType ein Objekt-Typ (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition mit der Menge der Attributgruppen eines Objekt-Typen übereinstimmt, oder falls nicht, ob der Objekt-Typ sich
-	 *         verändern lässt <br> <code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition mit der Menge der Attributgruppen eines Objekt-Typen Ã¼bereinstimmt, oder falls nicht, ob der Objekt-Typ sich
+	 *         verÃ¤ndern lÃ¤sst <br> <code>false</code>, sonst
 	 */
 	boolean isSystemObjectTypeAttributeGroupProcessable(SystemObjectTypeProperties property, SystemObjectType systemObjectType) {
 		if(isSystemObjectTypeAttributeGroupDifferent(property, systemObjectType) && !isSetChangeable(systemObjectType, "Attributgruppen")) {
@@ -2073,7 +2079,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob sich die Definition mit der Menge der Attributgruppen eines Objekt-Typen unterscheiden.
+	 * PrÃ¼ft, ob sich die Definition mit der Menge der Attributgruppen eines Objekt-Typen unterscheiden.
 	 *
 	 * @param property         eine Definition eines Objekt-Typen einer Versorgungsdatei
 	 * @param systemObjectType ein Objekt-Typ (System-Objekt)
@@ -2093,10 +2099,10 @@ class ComparePropertiesWithSystemObjects {
 			}
 		}
 
-		// Anzahl der Elemente überprüfen
+		// Anzahl der Elemente Ã¼berprÃ¼fen
 		if(attributeGroups.size() != directAttributeGroups.size()) return true;
 
-		// Elemente überprüfen
+		// Elemente Ã¼berprÃ¼fen
 		for(AttributeGroup attributeGroup : attributeGroups) {
 			if(!directAttributeGroups.contains(attributeGroup)) return true;
 		}
@@ -2105,13 +2111,13 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zurück, ob die Definition mit den Mengenverwendungen eines Objekt-Typen übereinstimmen, oder falls nicht, ob das System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Definition mit den Mengenverwendungen eines Objekt-Typen Ã¼bereinstimmen, oder falls nicht, ob das System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param property         eine Definition eines Objekt-Typen einer Versorgungsdatei
 	 * @param systemObjectType ein Objekt-Typ (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition mit den Mengenverwendungen eines Objekt-Typen übereinstimmen, oder falls nicht, ob sich das System-Objekt
-	 *         ändern lässt <br> <code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition mit den Mengenverwendungen eines Objekt-Typen Ã¼bereinstimmen, oder falls nicht, ob sich das System-Objekt
+	 *         Ã¤ndern lÃ¤sst <br> <code>false</code>, sonst
 	 */
 	boolean isSystemObjectTypeObjectSetUsesProcessable(SystemObjectTypeProperties property, SystemObjectType systemObjectType) {
 		boolean setChangeable = isSetChangeable(systemObjectType, "Mengen");
@@ -2126,10 +2132,10 @@ class ComparePropertiesWithSystemObjects {
 			}
 		}
 
-		// Anzahl überprüfen
+		// Anzahl Ã¼berprÃ¼fen
 		if(objectSetUses.size() != directObjectSetUses.size() && !setChangeable) return false;
 
-		// Elemente überprüfen
+		// Elemente Ã¼berprÃ¼fen
 		for(ConfigurationSet configurationSet : objectSetUses) {
 			final String objectSetName = configurationSet.getObjectSetName();
 			ObjectSetUse checkObjectSetUse = null;
@@ -2154,7 +2160,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob sich die Definition und die Mengenverwendungen eines Objekt-Typen unterscheiden.
+	 * PrÃ¼ft, ob sich die Definition und die Mengenverwendungen eines Objekt-Typen unterscheiden.
 	 *
 	 * @param property         eine Definition eines Objekt-Typen einer Versorgungsdatei
 	 * @param systemObjectType ein Objekt-Typ (System-Objekt)
@@ -2173,10 +2179,10 @@ class ComparePropertiesWithSystemObjects {
 			}
 		}
 
-		// Anzahl überprüfen
+		// Anzahl Ã¼berprÃ¼fen
 		if(objectSetUses.size() != directObjectSetUses.size()) return true;
 
-		// Elemente überprüfen
+		// Elemente Ã¼berprÃ¼fen
 		for(ConfigurationSet configurationSet : objectSetUses) {
 			final String objectSetName = configurationSet.getObjectSetName();
 			ObjectSetUse checkObjectSetUse = null;
@@ -2193,19 +2199,19 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zurück, ob die Definition einer Mengenverwendung mit dem System-Objekt einer Mengenverwendung übereinstimmt, oder falls nicht, ob das System-Objekt
-	 * sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Definition einer Mengenverwendung mit dem System-Objekt einer Mengenverwendung Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt
+	 * sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param configurationSet eine Definition einer Mengenverwendung
 	 * @param objectSetUse     eine Mengenverwendung (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Definition einer Mengenverwendung mit dem System-Objekt einer Mengenverwendung übereinstimmt, oder falls nicht, ob sich
-	 *         das System-Objekt ändern lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition einer Mengenverwendung mit dem System-Objekt einer Mengenverwendung Ã¼bereinstimmt, oder falls nicht, ob sich
+	 *         das System-Objekt Ã¤ndern lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isObjectSetUseProcessable(ConfigurationSet configurationSet, ObjectSetUse objectSetUse) {
-		// Info überprüfen
+		// Info Ã¼berprÃ¼fen
 		if(!isInfoProcessable(configurationSet.getInfo(), objectSetUse.getInfo())) return false;
-		// Eigenschaften überprüfen
+		// Eigenschaften Ã¼berprÃ¼fen
 		if(!isConfigurationDataChangeable("atg.mengenVerwendungsEigenschaften")) {
 			if(configurationSet.getRequired() != objectSetUse.isRequired()) return false;
 			if(getObjectSetType(configurationSet.getSetTypePid()) != objectSetUse.getObjectSetType()) return false;
@@ -2214,7 +2220,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob sich die Definition einer Mengenverwendung und die Mengenverwendung eines System-Objekts unterscheiden.
+	 * PrÃ¼ft, ob sich die Definition einer Mengenverwendung und die Mengenverwendung eines System-Objekts unterscheiden.
 	 *
 	 * @param configurationSet eine Definition einer Mengenverwendung
 	 * @param objectSetUse     eine Mengenverwendung (System-Objekt)
@@ -2228,9 +2234,9 @@ class ComparePropertiesWithSystemObjects {
 			return true;
 		}
 		else {
-			// Info überprüfen
+			// Info Ã¼berprÃ¼fen
 			if(isInfoDifferent(configurationSet.getInfo(), objectSetUse.getInfo())) return true;
-			// Eigenschaften überprüfen
+			// Eigenschaften Ã¼berprÃ¼fen
 			if(configurationSet.getRequired() != objectSetUse.isRequired()) return true;
 			if(getObjectSetType(configurationSet.getSetTypePid()) != objectSetUse.getObjectSetType()) return true;
 		}
@@ -2240,14 +2246,14 @@ class ComparePropertiesWithSystemObjects {
 	/*############## SystemObject ############## */
 
 	/**
-	 * Gibt zurück, ob die Definition eines Objekts mit dem entsprechenden System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern
-	 * lässt.
+	 * Gibt zurÃ¼ck, ob die Definition eines Objekts mit dem entsprechenden System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern
+	 * lÃ¤sst.
 	 *
 	 * @param property     eine Definition eines Objekts einer Versorgungsdatei
 	 * @param systemObject ein System-Objekt
 	 *
-	 * @return <code>true</code>, falls die Definition eines Objekts mit dem angegebenen System-Objekt übereinstimmt, oder falls nicht, ob sich das System-Objekt
-	 *         ändern lässt <br> <code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition eines Objekts mit dem angegebenen System-Objekt Ã¼bereinstimmt, oder falls nicht, ob sich das System-Objekt
+	 *         Ã¤ndern lÃ¤sst <br> <code>false</code>, sonst
 	 */
 	boolean isSystemObjectProcessable(SystemObjectProperties property, SystemObject systemObject) {
 		final SystemObjectType propertyType = getType(property.getType());
@@ -2268,19 +2274,19 @@ class ComparePropertiesWithSystemObjects {
 			}
 		}
 
-		// Datensätze prüfen
+		// DatensÃ¤tze prÃ¼fen
 		if(!isDatasetsProcessable(datasets, systemObject)) {
 			return false;
 		}
 
 		// wenn es sich um ein konfigurierendes Objekt handelt ...
 		if(propertyType.isConfigurating()) {
-			// Mengen prüfen
+			// Mengen prÃ¼fen
 			if(!isSystemObjectSetsProcessable(objectSets, (ConfigurationObject)systemObject)) {
 				return false;
 			}
 
-			// Default-Parameter-Datensatz prüfen
+			// Default-Parameter-Datensatz prÃ¼fen
 			if(!isDefaultParameterProcessable(configProperty.getDefaultParameters(), systemObject)) {
 				return false;
 			}
@@ -2289,7 +2295,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob sich die Definition eines Objekts von einem System-Objekt unterscheidet.
+	 * PrÃ¼ft, ob sich die Definition eines Objekts von einem System-Objekt unterscheidet.
 	 *
 	 * @param property     eine Definition eines Objekts einer Versorgungsdatei
 	 * @param systemObject ein System-Objekt
@@ -2317,23 +2323,23 @@ class ComparePropertiesWithSystemObjects {
 				objectSets.add((ConfigurationObjectSet)elements);
 			}
 		}
-		// Datensätze prüfen
+		// DatensÃ¤tze prÃ¼fen
 		if(isDatasetsDifferent(datasets, systemObject)) {
-			_debug.finer("Die Datensätze am Objekt sind unterschiedlich", systemObject.getPidOrNameOrId());
+			_debug.finer("Die DatensÃ¤tze am Objekt sind unterschiedlich", systemObject.getPidOrNameOrId());
 			return true;
 		}
 
 		// wenn es sich um ein konfigurierendes Objekt handelt ...
 		if(propertyType.isConfigurating()) {
-			// Mengen prüfen
+			// Mengen prÃ¼fen
 			if(isSystemObjectSetsDifferent(objectSets, (ConfigurationObject)systemObject)) {
 				_debug.finer("Die Mengen am Objekt sind unterschiedlich", systemObject.getPidOrNameOrId());
 				return true;
 			}
 
-			// Default-Parameter-Datensätze
+			// Default-Parameter-DatensÃ¤tze
 			if(isDefaultParameterDifferent(configProperty.getDefaultParameters(), systemObject)) {
-				_debug.finer("Die Default-Parameter-Datensätze sind unterschiedlich", systemObject.getPidOrNameOrId());
+				_debug.finer("Die Default-Parameter-DatensÃ¤tze sind unterschiedlich", systemObject.getPidOrNameOrId());
 				return true;
 			}
 		}
@@ -2341,23 +2347,23 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zurück, ob die Definition von konfigurierenden Datensätzen mit den Datensätzen eines System-Objekts übereinstimmt, oder falls nicht, ob das
-	 * System-Objekt sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob die Definition von konfigurierenden DatensÃ¤tzen mit den DatensÃ¤tzen eines System-Objekts Ã¼bereinstimmt, oder falls nicht, ob das
+	 * System-Objekt sich verÃ¤ndern lÃ¤sst.
 	 *
-	 * @param datasets     eine Definition von konfigurierenden Datensätzen einer Versorgungsdatei
+	 * @param datasets     eine Definition von konfigurierenden DatensÃ¤tzen einer Versorgungsdatei
 	 * @param systemObject ein System-Objekt
 	 *
-	 * @return <code>true</code>, falls die Definition von konfigurierenden Datensätzen mit den Datensätzen eines System-Objekts übereinstimmt, oder falls nicht,
-	 *         ob sich das System-Objekt ändern lässt<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition von konfigurierenden DatensÃ¤tzen mit den DatensÃ¤tzen eines System-Objekts Ã¼bereinstimmt, oder falls nicht,
+	 *         ob sich das System-Objekt Ã¤ndern lÃ¤sst<br><code>false</code>, sonst
 	 */
 	boolean isDatasetsProcessable(List<ConfigurationDataset> datasets, SystemObject systemObject) {
-		// Hinzufügen von Datensätzen ist kein Problem
+		// HinzufÃ¼gen von DatensÃ¤tzen ist kein Problem
 		if(systemObject.getType().isConfigurating()) {
-			// Wegnehmen von Datensätzen könnte zum Problem führen, diese müssten geprüft werden, ob sie geändert werden dürfen
-			// prüfen, ob am Objekt Datensätze stehen, die nicht daran gespeichert werden dürfen
+			// Wegnehmen von DatensÃ¤tzen kÃ¶nnte zum Problem fÃ¼hren, diese mÃ¼ssten geprÃ¼ft werden, ob sie geÃ¤ndert werden dÃ¼rfen
+			// prÃ¼fen, ob am Objekt DatensÃ¤tze stehen, die nicht daran gespeichert werden dÃ¼rfen
 			final Collection<AttributeGroupUsage> futureAtgUsages = new ArrayList<AttributeGroupUsage>();
 			final Collection<AttributeGroupUsage> usedAtgUsages = systemObject.getUsedAttributeGroupUsages();
-			// Datensätze überpüfen
+			// DatensÃ¤tze Ã¼berpÃ¼fen
 			for(ConfigurationDataset dataset : datasets) {
 				final AttributeGroup atg = getAttributeGroup(dataset.getPidATG());
 				final Aspect asp = getAspect(dataset.getPidAspect());
@@ -2366,27 +2372,24 @@ class ComparePropertiesWithSystemObjects {
 				final AttributeGroupUsage atgUsage = _configurationImport.getAttributeGroupUsage(atg, asp);
 				if(atgUsage != null) futureAtgUsages.add(atgUsage);
 
-				// ein Datensatz muss überprüft werden
+				// ein Datensatz muss Ã¼berprÃ¼ft werden
 				if(!isDatasetProcessable(dataset, systemObject)) {
 					return false;
 				}
 			}
 
 			for(AttributeGroupUsage atgUsage : usedAtgUsages) {
-				if(!futureAtgUsages.contains(atgUsage) && !(atgUsage.getAttributeGroup().getPid().equals("atg.info")
-				                                            || atgUsage.getAttributeGroup().getPid().equals(
-						"atg.konfigurationsVerantwortlicherLaufendeNummer"
-				))) {
+				if(!futureAtgUsages.contains(atgUsage) && !isHiddenInExport(atgUsage)) {
 
-					// ist der Datensatz änderbar?
+					// ist der Datensatz Ã¤nderbar?
 					if(!isConfigurationDataChangeable(atgUsage)) return false;
 				}
 			}
 		}
 		else {
 			final Collection<AttributeGroupUsage> futureAtgUsages = new ArrayList<AttributeGroupUsage>();
-			// bei dynamischen Objekten, führen notwendige DS zur Neuerstellung des Objekts
-			// notwendige und änderbare DS dürfen nicht gelöscht werden
+			// bei dynamischen Objekten, fÃ¼hren notwendige DS zur Neuerstellung des Objekts
+			// notwendige und Ã¤nderbare DS dÃ¼rfen nicht gelÃ¶scht werden
 			for(ConfigurationDataset dataset : datasets) {
 				final AttributeGroup atg = getAttributeGroup(dataset.getPidATG());
 				final Aspect asp = getAspect(dataset.getPidAspect());
@@ -2412,33 +2415,30 @@ class ComparePropertiesWithSystemObjects {
 					futureAtgUsages.add(atgUsage);
 				}
 
-				// Datensatz überprüfen
+				// Datensatz Ã¼berprÃ¼fen
 				if(isDataDifferent(dataset.getDataAnddataListAndDataField(), _configurationImport.getConfigurationData(systemObject, atgUsage))) {
 					// Datensatz ist unterschiedlich
 					if(!isConfigurationDataChangeable(atgUsage)) {
-						// Datensatz ist nicht änderbar
+						// Datensatz ist nicht Ã¤nderbar
 						return false;
 					}
 					else if(atgUsage.getUsage() == AttributeGroupUsage.Usage.ChangeableRequiredConfigurationData
 							&& dataset.getDataAnddataListAndDataField().length == 0) {
-						// Datensatz ist zwar änderbar, allerdings soll er gelöscht werden
+						// Datensatz ist zwar Ã¤nderbar, allerdings soll er gelÃ¶scht werden
 						return false;
 					}
 				}
 			}
 
-			// nicht mehr verwendete DS - dürfen sie gelöscht werden?
+			// nicht mehr verwendete DS - dÃ¼rfen sie gelÃ¶scht werden?
 			for(AttributeGroupUsage atgUsage : systemObject.getUsedAttributeGroupUsages()) {
-				if(!futureAtgUsages.contains(atgUsage) && !(atgUsage.getAttributeGroup().getPid().equals("atg.info")
-				                                            || atgUsage.getAttributeGroup().getPid().equals(
-						"atg.konfigurationsVerantwortlicherLaufendeNummer"
-				))) {
+				if(!futureAtgUsages.contains(atgUsage) && !(isHiddenInExport(atgUsage))) {
 					if(atgUsage.getUsage() == AttributeGroupUsage.Usage.ChangeableRequiredConfigurationData
 					   || atgUsage.getUsage() == AttributeGroupUsage.Usage.RequiredConfigurationData) {
-						throw new IllegalStateException("Am Objekt " + systemObject + " darf der notwendige Datensatz " + atgUsage.getAttributeGroup().getPid() + ":" + atgUsage.getAspect().getPid() + " nicht gelöscht werden");
+						throw new IllegalStateException("Am Objekt " + systemObject + " darf der notwendige Datensatz " + atgUsage.getAttributeGroup().getPid() + ":" + atgUsage.getAspect().getPid() + " nicht gelÃ¶scht werden");
 					}
 					else {
-						// ist der Datensatz änderbar?
+						// ist der Datensatz Ã¤nderbar?
 						if(!isConfigurationDataChangeable(atgUsage)) return false;
 					}
 				}
@@ -2447,22 +2447,23 @@ class ComparePropertiesWithSystemObjects {
 		return true;
 	}
 
+
 	/**
-	 * Prüft, ob sich die konfigurierenden Datensätze einer Definition eines Objekts von den Datensätzen eines System-Objekts unterscheiden.
+	 * PrÃ¼ft, ob sich die konfigurierenden DatensÃ¤tze einer Definition eines Objekts von den DatensÃ¤tzen eines System-Objekts unterscheiden.
 	 *
-	 * @param datasets     eine Definition von konfigurierenden Datensätzen einer Versorgungsdatei
+	 * @param datasets     eine Definition von konfigurierenden DatensÃ¤tzen einer Versorgungsdatei
 	 * @param systemObject ein System-Objekt
 	 *
-	 * @return <code>true</code>, falls sich die konfigurierenden Datensätze einer Definition eines Objekts von den Datensätzen eines System-Objekts unterscheiden
+	 * @return <code>true</code>, falls sich die konfigurierenden DatensÃ¤tze einer Definition eines Objekts von den DatensÃ¤tzen eines System-Objekts unterscheiden
 	 *         <br> <code>false</code>, sonst
 	 */
 	boolean isDatasetsDifferent(List<ConfigurationDataset> datasets, SystemObject systemObject) {
 		if(systemObject.getType().isConfigurating()) {
-			// sind Datensätze vorhanden, die später nicht mehr dran sein sollen?
+			// sind DatensÃ¤tze vorhanden, die spÃ¤ter nicht mehr dran sein sollen?
 			final Collection<AttributeGroupUsage> futureAtgUsages = new ArrayList<AttributeGroupUsage>();
 			final Collection<AttributeGroupUsage> usedAtgUsages = systemObject.getUsedAttributeGroupUsages();
 
-			// Datensätze und Mengen überpüfen
+			// DatensÃ¤tze und Mengen Ã¼berpÃ¼fen
 			for(ConfigurationDataset dataset : datasets) {
 				final AttributeGroup atg = getAttributeGroup(dataset.getPidATG());
 				final Aspect asp = getAspect(dataset.getPidAspect());
@@ -2471,24 +2472,21 @@ class ComparePropertiesWithSystemObjects {
 				final AttributeGroupUsage atgUsage = _configurationImport.getAttributeGroupUsage(atg, asp);
 				if(atgUsage != null) futureAtgUsages.add(atgUsage);
 
-				// ein Datensatz muss überprüft werden
+				// ein Datensatz muss Ã¼berprÃ¼ft werden
 				if(isDatasetDifferent(dataset, systemObject)) return true;
 			}
 
 			for(AttributeGroupUsage atgUsage : usedAtgUsages) {
-				if(!futureAtgUsages.contains(atgUsage) && !(atgUsage.getAttributeGroup().getPid().equals("atg.info")
-				                                            || atgUsage.getAttributeGroup().getPid().equals(
-						"atg.konfigurationsVerantwortlicherLaufendeNummer"
-				))) {
-					// es gibt Datensätze, die nicht mehr an das Objekt gehören.
+				if(!futureAtgUsages.contains(atgUsage) && !(isHiddenInExport(atgUsage))) {
+					// es gibt DatensÃ¤tze, die nicht mehr an das Objekt gehÃ¶ren.
 					return true;
 				}
 			}
 		}
 		else {
 			final Collection<AttributeGroupUsage> futureAtgUsages = new ArrayList<AttributeGroupUsage>();
-			// bei dynamischen Objekten, führen notwendige DS zur Neuerstellung des Objekts
-			// notwendige und änderbare DS dürfen nicht gelöscht werden
+			// bei dynamischen Objekten, fÃ¼hren notwendige DS zur Neuerstellung des Objekts
+			// notwendige und Ã¤nderbare DS dÃ¼rfen nicht gelÃ¶scht werden
 			for(ConfigurationDataset dataset : datasets) {
 				final AttributeGroup atg = getAttributeGroup(dataset.getPidATG());
 				final Aspect asp = getAspect(dataset.getPidAspect());
@@ -2508,24 +2506,21 @@ class ComparePropertiesWithSystemObjects {
 					futureAtgUsages.add(atgUsage);
 				}
 
-				// Datensatz überprüfen
+				// Datensatz Ã¼berprÃ¼fen
 				if(isDataDifferent(dataset.getDataAnddataListAndDataField(), _configurationImport.getConfigurationData(systemObject, atgUsage))) {
 					return true;
 				}
 			}
 
-			// nicht mehr verwendete DS - dürfen sie gelöscht werden?
+			// nicht mehr verwendete DS - dÃ¼rfen sie gelÃ¶scht werden?
 			for(AttributeGroupUsage atgUsage : systemObject.getUsedAttributeGroupUsages()) {
 				if(atgUsage.getUsage() == AttributeGroupUsage.Usage.ChangeableRequiredConfigurationData
 				   || atgUsage.getUsage() == AttributeGroupUsage.Usage.RequiredConfigurationData) {
 					// nicht weiter beachten
 				}
 				else {
-					if(!futureAtgUsages.contains(atgUsage) && !(atgUsage.getAttributeGroup().getPid().equals("atg.info")
-					                                            || atgUsage.getAttributeGroup().getPid().equals(
-							"atg.konfigurationsVerantwortlicherLaufendeNummer"
-					))) {
-						// es gibt Datensätze, die nicht mehr an das Objekt gehören.
+					if(!futureAtgUsages.contains(atgUsage) && !isHiddenInExport(atgUsage)) {
+						// es gibt DatensÃ¤tze, die nicht mehr an das Objekt gehÃ¶ren.
 						return true;
 					}
 				}
@@ -2534,15 +2529,23 @@ class ComparePropertiesWithSystemObjects {
 		return false;
 	}
 
+	static boolean isHiddenInExport(final AttributeGroupUsage atgUsage) {
+		String pid = atgUsage.getAttributeGroup().getPid();
+		return pid.equals("atg.info") ||
+				pid.equals("atg.defaultParameterdatensÃ¤tze") ||
+				pid.equals("atg.konfigurationsVerantwortlicherLaufendeNummer") ||
+				pid.equals("atg.konfigurationsBereichUnversionierteÃ„nderungen");
+	}
+
 	/**
-	 * Gibt zurück, ob der konfigurierende Datensatz einer Definition mit dem Datensatz eines System-Objekt übereinstimmt, oder falls nicht, ob das System-Objekt
-	 * sich verändern lässt.
+	 * Gibt zurÃ¼ck, ob der konfigurierende Datensatz einer Definition mit dem Datensatz eines System-Objekt Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt
+	 * sich verÃ¤ndern lÃ¤sst.
 	 *
 	 * @param dataset      Definition eines konfigurierenden Datensatzes
 	 * @param systemObject ein System-Objekt
 	 *
-	 * @return <code>true</code>, falls die Definition eines konfigurierenden Datensatzes mit dem Datensatz eines System-Objekts übereinstimmt, oder falls nicht,
-	 *         ob sich das System-Objekt ändern lässt <br> <code>false</code>, sonst
+	 * @return <code>true</code>, falls die Definition eines konfigurierenden Datensatzes mit dem Datensatz eines System-Objekts Ã¼bereinstimmt, oder falls nicht,
+	 *         ob sich das System-Objekt Ã¤ndern lÃ¤sst <br> <code>false</code>, sonst
 	 */
 	boolean isDatasetProcessable(ConfigurationDataset dataset, SystemObject systemObject) {
 		final AttributeGroup atg = getAttributeGroup(dataset.getPidATG());
@@ -2560,26 +2563,26 @@ class ComparePropertiesWithSystemObjects {
 
 
 	/**
-	 * Prüft, ob der Datensatz änderbar ist, falls er unterschiedlich zum bestehenden SystemObjekt ist.
+	 * PrÃ¼ft, ob der Datensatz Ã¤nderbar ist, falls er unterschiedlich zum bestehenden SystemObjekt ist.
 	 *
-	 * @param defaultParameters zu prüfender Default-Parameter-Datensatz
+	 * @param defaultParameters zu prÃ¼fender Default-Parameter-Datensatz
 	 * @param systemObject      das SystemObjekt mit dem zu vergleichenden Default-Parameter-Datensatz
 	 *
 	 * @return <code>true</code>, falls der Datensatz des Objekts weiterverarbeitet werden kann, sonst <code>false</code>.
 	 */
 	boolean isDefaultParameterProcessable(final ConfigurationDefaultParameter[] defaultParameters, final SystemObject systemObject) {
-		if(isDefaultParameterDifferent(defaultParameters, systemObject) && !isConfigurationDataChangeable("atg.defaultParameterdatensätze")) return false;
+		if(isDefaultParameterDifferent(defaultParameters, systemObject) && !isConfigurationDataChangeable("atg.defaultParameterdatensÃ¤tze")) return false;
 
 		return true;
 	}
 
 	/**
-	 * Prüft, ob der zu setzende Default-Parameter-Datensatz sich vom Datensatz des SystemObjekts unterscheidet.
+	 * PrÃ¼ft, ob der zu setzende Default-Parameter-Datensatz sich vom Datensatz des SystemObjekts unterscheidet.
 	 *
-	 * @param defaultParameters zu prüfenden Default-Parameter-Datensatz
+	 * @param defaultParameters zu prÃ¼fenden Default-Parameter-Datensatz
 	 * @param systemObject      das SystemObjekt mit dem zu vergleichenden Default-Parameter-Datensatz
 	 *
-	 * @return <code>true</code>, wenn sich die Datensätze unterscheiden, sonst <code>false</code>.
+	 * @return <code>true</code>, wenn sich die DatensÃ¤tze unterscheiden, sonst <code>false</code>.
 	 */
 	boolean isDefaultParameterDifferent(final ConfigurationDefaultParameter[] defaultParameters, final SystemObject systemObject) {
 		final Map<String, ConfigurationDefaultParameter> atg2DefaultParameters = new HashMap<String, ConfigurationDefaultParameter>();
@@ -2587,21 +2590,23 @@ class ComparePropertiesWithSystemObjects {
 			atg2DefaultParameters.put(defaultParameter.getPidAtg(), defaultParameter);
 		}
 
-		// prüfen, ob ein Default-Parameter unterschiedlich ist
-//		final Data data = systemObject.getConfigurationData(getAttributeGroup("atg.defaultParameterdatensätze"));
+		// prÃ¼fen, ob ein Default-Parameter unterschiedlich ist
+//		final Data data = systemObject.getConfigurationData(getAttributeGroup("atg.defaultParameterdatensÃ¤tze"));
 		final Data data = ((ConfigSystemObject)systemObject).getConfigurationData(
 				_configurationImport.getAttributeGroupUsage(
-						getAttributeGroup("atg.defaultParameterdatensätze"), getAspect("asp.eigenschaften")
+						getAttributeGroup("atg.defaultParameterdatensÃ¤tze"), getAspect("asp.eigenschaften")
 				), _configurationImport
 		);
-		if(data == null && defaultParameters.length > 0) return true;
+		if(data == null && defaultParameters.length > 0)
+			return true;
 		if(data != null) {
 			final Data.Array array = data.getArray("Default-Parameterdatensatz");
-			if(defaultParameters.length != array.getLength()) return true;
+			if(defaultParameters.length != array.getLength())
+				return true;
 
 			for(int i = 0; i < array.getLength(); i++) {
 				final Data item = array.getItem(i);
-				// Attributgruppe prüfen
+				// Attributgruppe prÃ¼fen
 				final AttributeGroup atg = (AttributeGroup)item.getReferenceValue("attributgruppe").getSystemObject();
 				if(atg == null) {
 					throw new IllegalStateException(
@@ -2614,13 +2619,14 @@ class ComparePropertiesWithSystemObjects {
 //				System.out.println("getObject(atgPid).getId() = " + getObject(atgPid).getId());
 //				System.out.println("getObject(atgPid).isValid() = " + getObject(atgPid).isValid());
 				if(getObject(atgPid) != atg) {
-					_debug.fine("Attributgruppe " + atgPid + " im Defaultparameter von " + systemObject.getPidOrNameOrId() + " hat sich geändert");
+					_debug.fine("Attributgruppe " + atgPid + " im Defaultparameter von " + systemObject.getPidOrNameOrId() + " hat sich geÃ¤ndert");
 					return true;
 				}
 				final ConfigurationDefaultParameter defaultParameter = atg2DefaultParameters.get(atgPid);
-				if(defaultParameter == null) return true;  // gibt es also noch nicht - Datensatz muss neu geschrieben werden
+				if(defaultParameter == null)
+					return true;  // gibt es also noch nicht - Datensatz muss neu geschrieben werden
 
-				// Typ überprüfen
+				// Typ Ã¼berprÃ¼fen
 				final SystemObject objectType = item.getReferenceValue("typ").getSystemObject();
 				if(objectType == null) {
 					throw new IllegalStateException("Ein Default-Parameter-Datensatz besitzt keinen Typen. Am Objekt " + systemObject.getPidOrNameOrId());
@@ -2635,10 +2641,11 @@ class ComparePropertiesWithSystemObjects {
 						typePid = systemObject.getType().getPid();
 					}
 				}
-				if(!typePid.equals(objectType.getPid())) return true;
+				if(!typePid.equals(objectType.getPid()))
+					return true;
 
 				try {
-					// Datensätze miteinander vergleichen
+					// DatensÃ¤tze miteinander vergleichen
 					// Datensatz mit der angegebenen ATG erstellen
 					final Data defaultData = AttributeBaseValueDataFactory.createAdapter(atg, AttributeHelper.getAttributesValues(atg));
 					defaultData.setToDefault();
@@ -2656,7 +2663,8 @@ class ComparePropertiesWithSystemObjects {
 					// byte-Arrays vergleichen
 					final Data.Array datasetArray = item.getArray("datensatz");
 					for(int j = 0; j < datasetArray.getLength(); j++) {
-						if(bytes[j] != datasetArray.getScaledValue(j).byteValue()) return true;
+						if(bytes[j] != datasetArray.getScaledValue(j).byteValue())
+							return true;
 					}
 				}
 				catch(Exception ex) {
@@ -2670,7 +2678,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob sich der konfigurierende Datensatz einer Definition von einem Datensatz eines System-Objekts unterscheidet.
+	 * PrÃ¼ft, ob sich der konfigurierende Datensatz einer Definition von einem Datensatz eines System-Objekts unterscheidet.
 	 *
 	 * @param dataset      Definition eines konfigurierenden Datensatzes
 	 * @param systemObject ein System-Objekt
@@ -2686,31 +2694,31 @@ class ComparePropertiesWithSystemObjects {
 		if(atgUsage == null) return true; // wenn es noch nicht mal die ATGV gibt, dann kann der Datensatz auch nicht am Objekt stehen
 
 		if(isDataDifferent(dataset.getDataAnddataListAndDataField(), _configurationImport.getConfigurationData(systemObject, atgUsage))) {
-			_debug.finer("Die konfigurierenden Datensätze der ATG '" + atg.getPid() + "' am Objekt sind unterschiedlich", systemObject.getPidOrNameOrId());
+			_debug.finer("Die konfigurierenden DatensÃ¤tze der ATG '" + atg.getPid() + "' am Objekt sind unterschiedlich", systemObject.getPidOrNameOrId());
 			return true;
 		}
 		return false;
 	}
 
 	/**
-	 * Gibt zurück, ob die Mengen einer Objekt-Definition mit den Mengen eines System-Objekts übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern
-	 * lässt.
+	 * Gibt zurÃ¼ck, ob die Mengen einer Objekt-Definition mit den Mengen eines System-Objekts Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern
+	 * lÃ¤sst.
 	 *
 	 * @param configurationObjectSets Liste von Mengen einer Objekt-Definition
 	 * @param configurationObject     ein konfigurierendes Objekt (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls die Mengen einer Objekt-Definition mit den Mengen eines System-Objekts übereinstimmt, oder falls nicht, ob sich das
-	 *         System-Objekt ändern lässt <br> <code>false</code>, sonst
+	 * @return <code>true</code>, falls die Mengen einer Objekt-Definition mit den Mengen eines System-Objekts Ã¼bereinstimmt, oder falls nicht, ob sich das
+	 *         System-Objekt Ã¤ndern lÃ¤sst <br> <code>false</code>, sonst
 	 */
 	boolean isSystemObjectSetsProcessable(List<ConfigurationObjectSet> configurationObjectSets, ConfigurationObject configurationObject) {
-		// Anzahl der Mengen überprüfen - wenn das Objekt bereits aktiviert wurde (davon gehen wir hier aus) kann sie nicht mehr verändert werden.
+		// Anzahl der Mengen Ã¼berprÃ¼fen - wenn das Objekt bereits aktiviert wurde (davon gehen wir hier aus) kann sie nicht mehr verÃ¤ndert werden.
 		if(configurationObjectSets.size() != configurationObject.getObjectSets().size()) return false;
 
 		// Gibt es auch alle Mengen, die importiert werden sollen?
 		for(ConfigurationObjectSet configurationObjectSet : configurationObjectSets) {
 			final ObjectSet objectSet = configurationObject.getObjectSet(configurationObjectSet.getName());
 			if(objectSet != null) {
-				// Elemente der Menge überprüfen
+				// Elemente der Menge Ã¼berprÃ¼fen
 				if(!isSystemObjectSetProcessable(configurationObjectSet, objectSet)) return false;
 			}
 			else {
@@ -2722,7 +2730,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob sich die Mengen einer Objekt-Definition von den Mengen eines System-Objekts unterscheiden.
+	 * PrÃ¼ft, ob sich die Mengen einer Objekt-Definition von den Mengen eines System-Objekts unterscheiden.
 	 *
 	 * @param configurationObjectSets Liste von Mengen einer Objekt-Definition
 	 * @param configurationObject     ein konfigurierendes Objekt (System-Objekt)
@@ -2730,7 +2738,7 @@ class ComparePropertiesWithSystemObjects {
 	 * @return <code>true</code>, falls sich die Mengen einer Objekt-Definition von den Mengen eines System-Objekts unterscheiden <br> <code>false</code>, sonst
 	 */
 	boolean isSystemObjectSetsDifferent(List<ConfigurationObjectSet> configurationObjectSets, ConfigurationObject configurationObject) {
-		// Anzahl der Mengen überprüfen - wenn das Objekt bereits aktiviert wurde (davon gehen wir hier aus) kann sie nicht mehr verändert werden.
+		// Anzahl der Mengen Ã¼berprÃ¼fen - wenn das Objekt bereits aktiviert wurde (davon gehen wir hier aus) kann sie nicht mehr verÃ¤ndert werden.
 		if(configurationObjectSets.size() != configurationObject.getObjectSets().size()) {
 			return true;
 		}
@@ -2739,7 +2747,7 @@ class ComparePropertiesWithSystemObjects {
 		for(ConfigurationObjectSet configurationObjectSet : configurationObjectSets) {
 			final ObjectSet objectSet = configurationObject.getObjectSet(configurationObjectSet.getName());
 			if(objectSet != null) {
-				// Elemente der Menge überprüfen
+				// Elemente der Menge Ã¼berprÃ¼fen
 				if(isSystemObjectSetDifferent(configurationObjectSet, objectSet)) {
 					return true;
 				}
@@ -2753,14 +2761,14 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zurück, ob eine Menge einer Objekt-Definition mit einer Menge eines System-Objekts übereinstimmt, oder falls nicht, ob das System-Objekt sich verändern
-	 * lässt.
+	 * Gibt zurÃ¼ck, ob eine Menge einer Objekt-Definition mit einer Menge eines System-Objekts Ã¼bereinstimmt, oder falls nicht, ob das System-Objekt sich verÃ¤ndern
+	 * lÃ¤sst.
 	 *
 	 * @param configurationObjectSet Menge einer Objekt-Definition
 	 * @param objectSet              Menge eines konfigurierendes Objekts (System-Objekt)
 	 *
-	 * @return <code>true</code>, falls eine Menge einer Objekt-Definition mit einer Menge eines System-Objekts übereinstimmt, oder falls nicht, ob sich das
-	 *         System-Objekt ändern lässt <br> <code>false</code>, sonst
+	 * @return <code>true</code>, falls eine Menge einer Objekt-Definition mit einer Menge eines System-Objekts Ã¼bereinstimmt, oder falls nicht, ob sich das
+	 *         System-Objekt Ã¤ndern lÃ¤sst <br> <code>false</code>, sonst
 	 */
 	boolean isSystemObjectSetProcessable(ConfigurationObjectSet configurationObjectSet, ObjectSet objectSet) {
 		final ObjectSetType objectSetType = objectSet.getObjectSetType();
@@ -2787,7 +2795,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob sich die Menge einer Objekt-Definition von einer Menge eines System-Objekts unterscheidet.
+	 * PrÃ¼ft, ob sich die Menge einer Objekt-Definition von einer Menge eines System-Objekts unterscheidet.
 	 *
 	 * @param configurationObjectSet Menge einer Objekt-Definition
 	 * @param objectSet              Menge eines konfigurierendes Objekts (System-Objekt)
@@ -2799,7 +2807,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob sich die Eigenschaften der Menge einer Objekt-Definition von den Eigenschaften einer Menge eines System-Objekts unterscheidet.
+	 * PrÃ¼ft, ob sich die Eigenschaften der Menge einer Objekt-Definition von den Eigenschaften einer Menge eines System-Objekts unterscheidet.
 	 *
 	 * @param configurationObjectSet Menge einer Objekt-Definition
 	 * @param objectSet              Menge eines konfigurierendes Objekts (System-Objekt)
@@ -2816,7 +2824,7 @@ class ComparePropertiesWithSystemObjects {
 			final String importManagementPid = configurationObjectSet.getManagementPid();
 			if(dynamicSetPropertiesAtg == null) {
 				if(!importManagementPid.equals("")) {
-					_debug.warning("Zugriff auf Verwaltungsinformationen von dynamischen Mengen nicht möglich, da die eingesetzte Version des Bereichs"
+					_debug.warning("Zugriff auf Verwaltungsinformationen von dynamischen Mengen nicht mÃ¶glich, da die eingesetzte Version des Bereichs"
 				               + " kb.metaModellGlobal zu alt ist (mindestens Version 10 notwendig).");
 				}
 			}
@@ -2831,7 +2839,7 @@ class ComparePropertiesWithSystemObjects {
 		return false;
 	}
 	/**
-	 * Prüft, ob sich die Elemente der Menge einer Objekt-Definition von den Elementen einer Menge eines System-Objekts unterscheidet.
+	 * PrÃ¼ft, ob sich die Elemente der Menge einer Objekt-Definition von den Elementen einer Menge eines System-Objekts unterscheidet.
 	 *
 	 * @param configurationObjectSet Menge einer Objekt-Definition
 	 * @param objectSet              Menge eines konfigurierendes Objekts (System-Objekt)
@@ -2854,11 +2862,11 @@ class ComparePropertiesWithSystemObjects {
 			return true;
 		}
 
-		// Anzahl überprüfen
+		// Anzahl Ã¼berprÃ¼fen
 		if(configurationObjectSet.getElements().length != elements.size()) {
 			return true;
 		}
-		// Elemente überprüfen
+		// Elemente Ã¼berprÃ¼fen
 		for(String pid : configurationObjectSet.getElements()) {
 			if(!elements.contains(getObject(pid))) {
 				return true;
@@ -2870,7 +2878,7 @@ class ComparePropertiesWithSystemObjects {
 	/* ############# Fragen an die Konfiguration bzw. an die neu importierten Objekte. ############## */
 
 	/**
-	 * Ermittelt ein System-Objekt anhand der angegebenen Pid. Dabei werden auch die Objekte berücksichtigt, die bei diesem Import-Vorgang erstellt wurden.
+	 * Ermittelt ein System-Objekt anhand der angegebenen Pid. Dabei werden auch die Objekte berÃ¼cksichtigt, die bei diesem Import-Vorgang erstellt wurden.
 	 *
 	 * @param pid die Pid eines System-Objekts
 	 *
@@ -2881,7 +2889,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zur angegebenen Pid die gesuchte Attributgruppe zurück.
+	 * Gibt zur angegebenen Pid die gesuchte Attributgruppe zurÃ¼ck.
 	 *
 	 * @param pid die Pid einer Attributgruppe
 	 *
@@ -2898,7 +2906,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zur angegebenen Pid den gesuchten Aspekt zurück.
+	 * Gibt zur angegebenen Pid den gesuchten Aspekt zurÃ¼ck.
 	 *
 	 * @param pid die Pid des Aspekts
 	 *
@@ -2915,7 +2923,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zur angegebenen Pid den gesuchten Objekt-Typen zurück.
+	 * Gibt zur angegebenen Pid den gesuchten Objekt-Typen zurÃ¼ck.
 	 *
 	 * @param pid die Pid eines Objekt-Typen
 	 *
@@ -2932,7 +2940,7 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Gibt zur angegebenen Pid den gesuchten Mengen-Typ zurück.
+	 * Gibt zur angegebenen Pid den gesuchten Mengen-Typ zurÃ¼ck.
 	 *
 	 * @param pid die Pid eines Mengen-Typs
 	 *
@@ -3021,15 +3029,15 @@ class ComparePropertiesWithSystemObjects {
 					else {
 						final Data.TextValue itemTextValue = item.asTextValue();
 						if(!itemTextValue.getText().equals(value)) {
-							// evtl. wurde lediglich die Einheit weggelassen, dann stimmen aber noch die Werte überein
+							// evtl. wurde lediglich die Einheit weggelassen, dann stimmen aber noch die Werte Ã¼berein
 							if(!itemTextValue.getValueText().equals(value)) {
 								boolean isProbablyDifferent = true;
-								// Bestimmte Unterschiede werden toleriert, weil sie zum gleichen Ergebnis führen würden
+								// Bestimmte Unterschiede werden toleriert, weil sie zum gleichen Ergebnis fÃ¼hren wÃ¼rden
 								if(item.getAttributeType() instanceof IntegerAttributeType) {
 									final IntegerAttributeType integerAttributeType = (IntegerAttributeType)item.getAttributeType();
-									// Bei GanzzahlAttributen können die Werte auch im Locationcode-Distance Format angegeben werden.
-									// Ist der Text im location-distance Format? Dieses Format wird für Knotennummern in der TLS-Versorgung von Geräten benutzt.
-									// Es enthält den Locationcode und mit einem Minuszeichen getrennt eine Distance. Der Locationcode ist eine Zahl zwischen
+									// Bei GanzzahlAttributen kÃ¶nnen die Werte auch im Locationcode-Distance Format angegeben werden.
+									// Ist der Text im location-distance Format? Dieses Format wird fÃ¼r Knotennummern in der TLS-Versorgung von GerÃ¤ten benutzt.
+									// Es enthÃ¤lt den Locationcode und mit einem Minuszeichen getrennt eine Distance. Der Locationcode ist eine Zahl zwischen
 									// 0 und 65535, Distance ist eine Zahl zwischen 0 und 255. Die beiden Zahlen werden mit folgender Formel in eine Zahl konvertiert:
 									// (Locationcode * 256) + Distance
 									// Das Ergebnis wird dann mit dem unskalierten Attributwert verglichen
@@ -3053,13 +3061,14 @@ class ComparePropertiesWithSystemObjects {
 												ParsePosition parsePosition = new ParsePosition(0);
 												number = _parseNumberFormat.parse(value.replace('.', ','), parsePosition);
 												if(number != null && item.asScaledValue().isNumber()) {
-													if(range.getConversionFactor() == 1) {
+													double conversionFactor = range.getConversionFactor();
+													if(conversionFactor == 1) {
 														if(number.longValue() == item.asScaledValue().longValue()) {
 															isProbablyDifferent = false;
 														}
 													}
 													else {
-														if(number.doubleValue() == item.asScaledValue().doubleValue()) {
+														if((number.doubleValue() == item.asScaledValue().doubleValue()) || ((Math.abs(number.doubleValue() - item.asScaledValue().doubleValue()) * 2) < conversionFactor)) {
 															isProbablyDifferent = false;
 														}
 													}
@@ -3067,7 +3076,7 @@ class ComparePropertiesWithSystemObjects {
 											}
 										}
 										catch(Exception e) {
-											// Vergleich auf Zahl-Basis nicht möglich
+											// Vergleich auf Zahl-Basis nicht mÃ¶glich
 										}
 									}
 								}
@@ -3090,7 +3099,7 @@ class ComparePropertiesWithSystemObjects {
 			}
 			else if(datasetElement instanceof ConfigurationDataField) {
 				ConfigurationDataField dataField = (ConfigurationDataField)datasetElement;
-				// Größe des Arrays beachten
+				// GrÃ¶ÃŸe des Arrays beachten
 				Data item = data.getItem(dataField.getName());
 				if(item.asArray().getLength() != dataField.getDataAndDataList().length) return true;
 				if(isDataDifferent(dataField.getDataAndDataList(), item)) return true;
@@ -3100,11 +3109,11 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Diese Methode prüft, ob ein konfigurierender Datensatz verändert werden darf. Als Aspekt wird "asp.eigenschaften" angenommen.
+	 * Diese Methode prÃ¼ft, ob ein konfigurierender Datensatz verÃ¤ndert werden darf. Als Aspekt wird "asp.eigenschaften" angenommen.
 	 *
 	 * @param attributeGroup Die Attributgruppe des Datensatzes.
 	 *
-	 * @return <code>true</code>, falls der Datensatz geändert werden darf<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls der Datensatz geÃ¤ndert werden darf<br><code>false</code>, sonst
 	 *
 	 * @see #isConfigurationDataChangeable(String,String)
 	 */
@@ -3113,12 +3122,12 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Diese Methode prüft, ob ein konfigurierender Datensatz verändert werden darf.
+	 * Diese Methode prÃ¼ft, ob ein konfigurierender Datensatz verÃ¤ndert werden darf.
 	 *
 	 * @param attributeGroup Die Attributgruppe des Datensatzes.
 	 * @param aspect         Der Aspekt des Datensatzes.
 	 *
-	 * @return <code>true</code>, falls der Datensatz geändert werden darf<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls der Datensatz geÃ¤ndert werden darf<br><code>false</code>, sonst
 	 */
 	private boolean isConfigurationDataChangeable(String attributeGroup, String aspect) {
 		final AttributeGroup atg = _dataModel.getAttributeGroup(attributeGroup);
@@ -3128,11 +3137,11 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Diese Methode prüft, ob ein konfigurierender Datensatz verändert werden darf.
+	 * Diese Methode prÃ¼ft, ob ein konfigurierender Datensatz verÃ¤ndert werden darf.
 	 *
 	 * @param atgUsage Die Attributgruppenverwendung des Datensatzes.
 	 *
-	 * @return <code>true</code>, falls der Datensatz geändert werden darf<br><code>false</code>, sonst
+	 * @return <code>true</code>, falls der Datensatz geÃ¤ndert werden darf<br><code>false</code>, sonst
 	 */
 	private boolean isConfigurationDataChangeable(final AttributeGroupUsage atgUsage) {
 		if(atgUsage.getUsage() == AttributeGroupUsage.Usage.OptionalConfigurationData
@@ -3145,12 +3154,12 @@ class ComparePropertiesWithSystemObjects {
 	}
 
 	/**
-	 * Prüft, ob die angegebene Menge eines Konfigurationsobjekts änderbar ist.
+	 * PrÃ¼ft, ob die angegebene Menge eines Konfigurationsobjekts Ã¤nderbar ist.
 	 *
 	 * @param object  ein Konfigurationsobjekt
 	 * @param setName Name einer Menge
 	 *
-	 * @return <code>true</code>, falls die Menge änderbar ist, sonst <code>false</code>
+	 * @return <code>true</code>, falls die Menge Ã¤nderbar ist, sonst <code>false</code>
 	 */
 	private boolean isSetChangeable(ConfigurationObject object, String setName) {
 		final ObjectSet objectSet = object.getObjectSet(setName);

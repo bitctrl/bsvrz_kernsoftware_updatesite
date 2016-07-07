@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.plugins.api;
@@ -38,11 +44,11 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Diese Klasse dient zur Darstellung der Datenidentifikationsauswahl. Es können eine ausgewählte Attributgruppe, ein ausgewählter Aspekt und beliebig viele
- * Objekte angezeigt werden. Außerdem gibt es einen "Ändern" - Button, welches einen Dialog öffnet, um seine Auswahl zu ändern.
+ * Diese Klasse dient zur Darstellung der Datenidentifikationsauswahl. Es kÃ¶nnen eine ausgewÃ¤hlte Attributgruppe, ein ausgewÃ¤hlter Aspekt und beliebig viele
+ * Objekte angezeigt werden. AuÃŸerdem gibt es einen "Ã„ndern" - Button, welches einen Dialog Ã¶ffnet, um seine Auswahl zu Ã¤ndern.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 12610 $
+ * @version $Revision$
  */
 public class DataIdentificationChoice extends JPanel {
 
@@ -59,49 +65,49 @@ public class DataIdentificationChoice extends JPanel {
 	/** speichert den Label "Objekte" */
 	private final JLabel _objLabel = new JLabel("Objekte");
 
-	/** zeigt die ausgewählte Attributgruppe an */
+	/** zeigt die ausgewÃ¤hlte Attributgruppe an */
 	private final JTextField _atgTextField = new JTextField();
 
-	/** zeigt den ausgewählten Aspekt an */
+	/** zeigt den ausgewÃ¤hlten Aspekt an */
 	private final JTextField _aspTextField = new JTextField();
 
 	/** zeigt die Simulationsvariante an */
 	private JTextField _simTextField = new JTextField();
 
-	/** zeigt die ausgewählten Objekte an */
+	/** zeigt die ausgewÃ¤hlten Objekte an */
 	private final JList _objList = new SystemObjectList();
 
-	/** speichert den "Ändern..." - Button */
-	private final JButton _changeButton = new JButton("Ändern...");
+	/** speichert den "Ã„ndern..." - Button */
+	private final JButton _changeButton = new JButton("Ã„ndern...");
 
-	/** speichert die ausgewählten Objekttypen */
+	/** speichert die ausgewÃ¤hlten Objekttypen */
 	private List<SystemObjectType> _objectTypes = new LinkedList<SystemObjectType>();
 
-	/** speichert die ausgewählte Attributgruppe */
+	/** speichert die ausgewÃ¤hlte Attributgruppe */
 	private final List<AttributeGroup> _attributeGroups = new LinkedList<AttributeGroup>();
 
-	/** speichert den ausgewählten Aspekt */
+	/** speichert den ausgewÃ¤hlten Aspekt */
 	private final List<Aspect> _aspects = new LinkedList<Aspect>();
 
-	/** speichert die ausgewählten Objekte */
+	/** speichert die ausgewÃ¤hlten Objekte */
 	private final List<SystemObject> _objects = new LinkedList<SystemObject>();
 
-	/** speichert den Änderndialog */
+	/** speichert den Ã„nderndialog */
 	private PreselectionDialog _preselectionDialog;
 
 	/** speichert das Layout des Panels */
 	private final GridBagLayout _gridBagLayout;
 
-	/** merkt sich, wieviele Aspekte beim PreselectionDialog ausgewählt werden müssen */
+	/** merkt sich, wieviele Aspekte beim PreselectionDialog ausgewÃ¤hlt werden mÃ¼ssen */
 	private int _numberOfSelectedAspects = 0;
 	
-	/** merkt sich, wieviele Attribute beim PreselectionDialog ausgewählt werden müssen */
+	/** merkt sich, wieviele Attribute beim PreselectionDialog ausgewÃ¤hlt werden mÃ¼ssen */
 	private int _numberOfSelectedAttributeGroups = 0;
 
-	/** gibt an, wieviele Objekte beim PreselectionDialog mindestens ausgewählt werden müssen */
+	/** gibt an, wieviele Objekte beim PreselectionDialog mindestens ausgewÃ¤hlt werden mÃ¼ssen */
 	private int _minimumSelectedObjects = 1;
 
-	/** gibt an, wieviele Objekte beim PreselectionDialog maximal ausgewählt sein dürfen */
+	/** gibt an, wieviele Objekte beim PreselectionDialog maximal ausgewÃ¤hlt sein dÃ¼rfen */
 	private int _maximumSelectedObjects = Integer.MAX_VALUE;
 
 	/** speichert die Knoten im PreselectionTree */
@@ -119,9 +125,9 @@ public class DataIdentificationChoice extends JPanel {
 
 	/* ############# Methoden ############### */
 	/**
-	 * Dem Konstruktor können Filter für den {@link PreselectionDialog Änderndialog} übergeben werden.
+	 * Dem Konstruktor kÃ¶nnen Filter fÃ¼r den {@link PreselectionDialog Ã„nderndialog} Ã¼bergeben werden.
 	 *
-	 * @param listsFilter ein Objekt, welches die Listen des Änderndialogs filtert
+	 * @param listsFilter ein Objekt, welches die Listen des Ã„nderndialogs filtert
 	 * @param filterType  Typ der Objekte, die zur Auswahl angeboten werden sollen
 	 */
 	public DataIdentificationChoice(final PreselectionListsFilter listsFilter, final SystemObjectType filterType) {
@@ -129,9 +135,9 @@ public class DataIdentificationChoice extends JPanel {
 	}
 
 	/**
-	 * Dem Konstruktor können Filter für den {@link de.bsvrz.pat.sysbed.preselection.panel.PreselectionDialog Änderndialog} übergeben werden.
+	 * Dem Konstruktor kÃ¶nnen Filter fÃ¼r den {@link de.bsvrz.pat.sysbed.preselection.panel.PreselectionDialog Ã„nderndialog} Ã¼bergeben werden.
 	 *
-	 * @param listsFilter ein Objekt, welches die Listen des Änderndialogs filtert
+	 * @param listsFilter ein Objekt, welches die Listen des Ã„nderndialogs filtert
 	 * @param filterTypes Typen der Objekte, die zur Auswahl angeboten werden sollen
 	 */
 	public DataIdentificationChoice(final PreselectionListsFilter listsFilter, final SystemObjectType[] filterTypes) {
@@ -139,9 +145,9 @@ public class DataIdentificationChoice extends JPanel {
 	}
 
 	/**
-	 * Dem Konstruktor können Filter für den {@link PreselectionDialog Änderndialog} übergeben werden.
+	 * Dem Konstruktor kÃ¶nnen Filter fÃ¼r den {@link PreselectionDialog Ã„nderndialog} Ã¼bergeben werden.
 	 *
-	 * @param listsFilter ein Objekt, welches die Listen des Änderndialogs filtert
+	 * @param listsFilter ein Objekt, welches die Listen des Ã„nderndialogs filtert
 	 * @param filterTypes Typen der Objekte, die zur Auswahl angeboten werden sollen
 	 */
 	public DataIdentificationChoice(final PreselectionListsFilter listsFilter, final List filterTypes) {
@@ -150,7 +156,7 @@ public class DataIdentificationChoice extends JPanel {
 		setBorder(BorderFactory.createTitledBorder("Datenidentifikation"));
 
 		//Tooltip vergeben
-//		_simLabel.setToolTipText("Simulationsvariante");   wird nicht mehr benötigt
+//		_simLabel.setToolTipText("Simulationsvariante");   wird nicht mehr benÃ¶tigt
 
 		// zuordnen der Label zu den Feldern
 		_atgLabel.setLabelFor(_atgTextField);
@@ -167,7 +173,7 @@ public class DataIdentificationChoice extends JPanel {
 		_simTextField.setFocusable(false);
 		_objList.setFocusable(false);
 
-		// Ändern - Button implementieren
+		// Ã„ndern - Button implementieren
 		_changeButton.addActionListener(
 				new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -197,8 +203,8 @@ public class DataIdentificationChoice extends JPanel {
 						_preselectionDialog.setSelectedAttributeGroups(_attributeGroups);
 						_preselectionDialog.setSelectedAspects(_aspects);
 						_preselectionDialog.setSelectedObjects(_objects);
-						if(_preselectionDialog.show()) {      // OK-Button wurde gedrückt
-							// Werte übernehmen
+						if(_preselectionDialog.show()) {      // OK-Button wurde gedrÃ¼ckt
+							// Werte Ã¼bernehmen
 							setObjectTypes(_preselectionDialog.getSelectedObjectTypes());
 							setAttributeGroups(_preselectionDialog.getSelectedAttributeGroups());
 							setAspects(_preselectionDialog.getSelectedAspects());
@@ -216,7 +222,7 @@ public class DataIdentificationChoice extends JPanel {
 	private void createAndShowGui() {
 		GridBagConstraints gbc;
 
-		// Zeile für Zeile hinzufügen
+		// Zeile fÃ¼r Zeile hinzufÃ¼gen
 		// Attributgruppe
 		gbc = makegbc(0, 0, 1, 1);
 		gbc.anchor = GridBagConstraints.NORTHWEST;
@@ -267,7 +273,7 @@ public class DataIdentificationChoice extends JPanel {
 		_gridBagLayout.setConstraints(scrollPane, gbc);
 		add(scrollPane);
 
-		// Ändern - Button
+		// Ã„ndern - Button
 		gbc = makegbc(2, 0, 1, 4);
 		gbc.anchor = GridBagConstraints.SOUTHEAST;
 		_gridBagLayout.setConstraints(_changeButton, gbc);
@@ -275,9 +281,9 @@ public class DataIdentificationChoice extends JPanel {
 	}
 
 	/**
-	 * Übergibt die Objekttypen an die Datenauswahl. Sie werden benötigt, damit eine Vorauswahl beim "Änder"-Button getroffen wird.
+	 * Ãœbergibt die Objekttypen an die Datenauswahl. Sie werden benÃ¶tigt, damit eine Vorauswahl beim "Ã„nder"-Button getroffen wird.
 	 *
-	 * @param objectTypes die vorauszuwählenden Objekttypen
+	 * @param objectTypes die vorauszuwÃ¤hlenden Objekttypen
 	 */
 	private void setObjectTypes(final List<SystemObjectType> objectTypes) {
 		_objectTypes.clear();
@@ -287,7 +293,7 @@ public class DataIdentificationChoice extends JPanel {
 	}
 
 	/**
-	 * Fragt die ausgewählten Objekttypen ab.
+	 * Fragt die ausgewÃ¤hlten Objekttypen ab.
 	 *
 	 * @return Liste der Objekttypen
 	 */
@@ -296,7 +302,7 @@ public class DataIdentificationChoice extends JPanel {
 	}
 
 	/**
-	 * Gibt die Simulationsvariante zurück.
+	 * Gibt die Simulationsvariante zurÃ¼ck.
 	 *
 	 * @return die Simulationsvariante
 	 */
@@ -305,9 +311,9 @@ public class DataIdentificationChoice extends JPanel {
 	}
 
 	/**
-	 * Methode, um die ausgewählten Attributgruppen zu übergeben.
+	 * Methode, um die ausgewÃ¤hlten Attributgruppen zu Ã¼bergeben.
 	 *
-	 * @param attributeGroups ausgewählte Attributgruppen
+	 * @param attributeGroups ausgewÃ¤hlte Attributgruppen
 	 */
 	private void setAttributeGroups(List<AttributeGroup> attributeGroups) {
 		_attributeGroups.clear();
@@ -334,9 +340,9 @@ public class DataIdentificationChoice extends JPanel {
 	}
 
 	/**
-	 * Gibt die ausgewählte Attributgruppe zurück.
+	 * Gibt die ausgewÃ¤hlte Attributgruppe zurÃ¼ck.
 	 *
-	 * @return die ausgewählte Attributgruppe
+	 * @return die ausgewÃ¤hlte Attributgruppe
 	 */
 	public AttributeGroup getAttributeGroup() {
 		if(!_attributeGroups.isEmpty()) {
@@ -348,9 +354,9 @@ public class DataIdentificationChoice extends JPanel {
 	}
 
 	/**
-	 * Methode, um die ausgewählten Aspekte zu übergeben.
+	 * Methode, um die ausgewÃ¤hlten Aspekte zu Ã¼bergeben.
 	 *
-	 * @param aspects die ausgewählten Aspekte
+	 * @param aspects die ausgewÃ¤hlten Aspekte
 	 */
 	private void setAspects(List<Aspect> aspects) {
 		_aspects.clear();
@@ -378,9 +384,9 @@ public class DataIdentificationChoice extends JPanel {
 	}
 
 	/**
-	 * Gibt den ausgewählten Aspekt zurück.
+	 * Gibt den ausgewÃ¤hlten Aspekt zurÃ¼ck.
 	 *
-	 * @return den ausgewählten Aspekt
+	 * @return den ausgewÃ¤hlten Aspekt
 	 */
 	public Aspect getAspect() {
 		if(!_aspects.isEmpty()) {
@@ -392,9 +398,9 @@ public class DataIdentificationChoice extends JPanel {
 	}
 
 	/**
-	 * Methode, um die ausgewählten Objekte zu übergeben.
+	 * Methode, um die ausgewÃ¤hlten Objekte zu Ã¼bergeben.
 	 *
-	 * @param objects die ausgewählten Objekte
+	 * @param objects die ausgewÃ¤hlten Objekte
 	 */
 	private void setObjects(List<SystemObject> objects) {
 		_objects.clear();
@@ -409,7 +415,7 @@ public class DataIdentificationChoice extends JPanel {
 	}
 
 	/**
-	 * Methode, um die angezeigten Objekte zurückzugeben.
+	 * Methode, um die angezeigten Objekte zurÃ¼ckzugeben.
 	 *
 	 * @return die angezeigten Objekte
 	 */
@@ -418,7 +424,7 @@ public class DataIdentificationChoice extends JPanel {
 	}
 
 	/**
-	 * Gibt das oberste Systemobjekt zurück.
+	 * Gibt das oberste Systemobjekt zurÃ¼ck.
 	 *
 	 * @return das oberste Systemobjekt
 	 */
@@ -427,12 +433,12 @@ public class DataIdentificationChoice extends JPanel {
 	}
 
 	/**
-	 * Die vollständige Datenidentifikation, bestehend aus Objekttypen, Attributgruppe, Aspekt und Objekte können übergeben werden.
+	 * Die vollstÃ¤ndige Datenidentifikation, bestehend aus Objekttypen, Attributgruppe, Aspekt und Objekte kÃ¶nnen Ã¼bergeben werden.
 	 *
-	 * @param objectTypes       die ausgewählten Objekttypen
-	 * @param attributeGroups   die ausgewählten Attributgruppen
-	 * @param aspects           die ausgewählten Aspekte
-	 * @param objects           die ausgewählten Objekte
+	 * @param objectTypes       die ausgewÃ¤hlten Objekttypen
+	 * @param attributeGroups   die ausgewÃ¤hlten Attributgruppen
+	 * @param aspects           die ausgewÃ¤hlten Aspekte
+	 * @param objects           die ausgewÃ¤hlten Objekte
 	 * @param simulationVariant die Simulationsvariante
 	 */
 	public void setDataIdentification(
@@ -450,7 +456,7 @@ public class DataIdentificationChoice extends JPanel {
 	}
 
 	/**
-	 * Die Datenidentifikation kann hiermit übergeben werden.
+	 * Die Datenidentifikation kann hiermit Ã¼bergeben werden.
 	 *
 	 * @param objectTypes       die Objekttypen
 	 * @param attributeGroup    die Attributgruppe
@@ -495,28 +501,28 @@ public class DataIdentificationChoice extends JPanel {
 	}
 
 	/**
-	 * Gibt an, wieviele Objekte mindestens im {@link PreselectionDialog} ausgewählt sein müssen.
+	 * Gibt an, wieviele Objekte mindestens im {@link PreselectionDialog} ausgewÃ¤hlt sein mÃ¼ssen.
 	 *
-	 * @param min Anzahl der Objekte, die mindestens ausgewählt sein müssen
+	 * @param min Anzahl der Objekte, die mindestens ausgewÃ¤hlt sein mÃ¼ssen
 	 */
 	public void setMinimumSelectedObjects(int min) {
 		_minimumSelectedObjects = min;
 	}
 
 	/**
-	 * Gibt an, wieviele Objekte maximal im {@link PreselectionDialog} ausgewählt sein dürfen.
+	 * Gibt an, wieviele Objekte maximal im {@link PreselectionDialog} ausgewÃ¤hlt sein dÃ¼rfen.
 	 *
-	 * @param max Anzahl der Objekte, die maximal ausgewählt sein dürfen
+	 * @param max Anzahl der Objekte, die maximal ausgewÃ¤hlt sein dÃ¼rfen
 	 */
 	public void setMaximumSelectedObjects(int max) {
 		_maximumSelectedObjects = max;
 	}
 
 	/**
-	 * Gibt an, wieviele Objekte minimal und maximal im {@link PreselectionDialog} ausgewählt werden müssen / dürfen.
+	 * Gibt an, wieviele Objekte minimal und maximal im {@link PreselectionDialog} ausgewÃ¤hlt werden mÃ¼ssen / dÃ¼rfen.
 	 *
-	 * @param minimum Anzahl der Objekte, die minimal ausgewählt sein müssen
-	 * @param maximum Anzahl der Objekte, die maximal ausgewählt sein dürfen
+	 * @param minimum Anzahl der Objekte, die minimal ausgewÃ¤hlt sein mÃ¼ssen
+	 * @param maximum Anzahl der Objekte, die maximal ausgewÃ¤hlt sein dÃ¼rfen
 	 */
 	public void setNumberOfSelectedObjects(final int minimum, final int maximum) {
 		_minimumSelectedObjects = minimum;
@@ -525,13 +531,13 @@ public class DataIdentificationChoice extends JPanel {
 
 	/**
 	 * Soll der Baum im {@link de.bsvrz.pat.sysbed.preselection.panel.PreselectionDialog} angezeigt werden, dann muss diese Methode
-	 * aufgerufen werden. Hierfür werden die Parameter <code>treeNodes</code> und <code>connection</code> auf jeden Fall
-	 * benötigt.
+	 * aufgerufen werden. HierfÃ¼r werden die Parameter <code>treeNodes</code> und <code>connection</code> auf jeden Fall
+	 * benÃ¶tigt.
 	 */
 	/**
 	 * @param treeNodes  Gibt an, welche Knoten im Baum dargestellt werden sollen. Knoten vom Typ <code>SystemObject</code> oder <code>TreeNodeObject</code>.
 	 * @param connection Verbindung zum Datenverteiler
-	 * @param treePath   optional - gibt an, welcher Pfad im Baum vorausgewählt sein soll, sonst <code>null</code> falls kein Pfad ausgewählt werden soll
+	 * @param treePath   optional - gibt an, welcher Pfad im Baum vorausgewÃ¤hlt sein soll, sonst <code>null</code> falls kein Pfad ausgewÃ¤hlt werden soll
 	 */
 	public void showTree(final Collection treeNodes, final ClientDavInterface connection, final String treePath) {
 		_treeNodes = treeNodes;
@@ -545,7 +551,7 @@ public class DataIdentificationChoice extends JPanel {
 	}
 
 	/**
-	 * Gibt den selektierten Pfad des Baumes zurück, der evtl. durch den {@link PreselectionDialog} geändert wurde.
+	 * Gibt den selektierten Pfad des Baumes zurÃ¼ck, der evtl. durch den {@link PreselectionDialog} geÃ¤ndert wurde.
 	 *
 	 * @return den selektierten Pfad des Baumes
 	 */
@@ -554,14 +560,14 @@ public class DataIdentificationChoice extends JPanel {
 	}
 
 	/**
-	 * Hilfsmethode für das GridBagLayout zur Positionierung der Elemente.
+	 * Hilfsmethode fÃ¼r das GridBagLayout zur Positionierung der Elemente.
 	 *
 	 * @param x      die x-Position im Grid
 	 * @param y      die y-Position im Grid
 	 * @param width  gibt die Anzahl der Spalten an, die die Komponente nutzen soll
 	 * @param height gibt die Anzahl der Zeilen an, die die Komponente nutzen soll
 	 *
-	 * @return die Rahmenbedingungen für eine Komponente
+	 * @return die Rahmenbedingungen fÃ¼r eine Komponente
 	 */
 	private GridBagConstraints makegbc(int x, int y, int width, int height) {
 		GridBagConstraints gbc = new GridBagConstraints();

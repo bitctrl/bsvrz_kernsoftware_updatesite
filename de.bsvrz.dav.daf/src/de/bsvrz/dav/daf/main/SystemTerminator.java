@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,18 +16,24 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main;
 
 /**
  * Standardimplementierung zur Behandlung von Fehlern der Kommunikationsverbindung. Wenn ein Objekt dieser Klasse an die Methode {@link
- * ClientDavInterface#setCloseHandler} übergeben wird, dann führen Verbindungsfehler zur Terminierung der Applikation.
+ * ClientDavInterface#setCloseHandler} Ã¼bergeben wird, dann fÃ¼hren Verbindungsfehler zur Terminierung der Applikation.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5055 $
+ * @version $Revision$
  */
 public class SystemTerminator implements ApplicationCloseActionHandler {
 
@@ -39,7 +45,7 @@ public class SystemTerminator implements ApplicationCloseActionHandler {
 	}
 
 	/**
-	 * Fehlerbehandlungsmethode, die zur Terminierung der Applikation führt.
+	 * Fehlerbehandlungsmethode, die zur Terminierung der Applikation fÃ¼hrt.
 	 *
 	 * @param error Textliche Beschreibung des aufgetreten Fehlers.
 	 */
@@ -48,7 +54,7 @@ public class SystemTerminator implements ApplicationCloseActionHandler {
 			System.out.flush();
 		}
 		if(!_terminated) {
-			// Es soll nicht noch einmal System.exit aufgerufen werden können.
+			// Es soll nicht noch einmal System.exit aufgerufen werden kÃ¶nnen.
 			_terminated = true;
 			System.exit(1);
 		}

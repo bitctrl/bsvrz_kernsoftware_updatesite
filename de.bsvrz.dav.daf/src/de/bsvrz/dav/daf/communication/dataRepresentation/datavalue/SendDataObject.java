@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.dataRepresentation.datavalue;
@@ -28,10 +34,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Diese Klasse stellt die Attribute und Funktionalitäten des Datentyps SendDataObject zur Verfügung.
+ * Diese Klasse stellt die Attribute und FunktionalitÃ¤ten des Datentyps SendDataObject zur VerfÃ¼gung.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13173 $
+ * @version $Revision$
  */
 public class SendDataObject {
 
@@ -44,7 +50,7 @@ public class SendDataObject {
 	/** Laufende Nummer des Datensatzes */
 	private long _dataNumber;
 
-	/** Die Zeit der Datensätze */
+	/** Die Zeit der DatensÃ¤tze */
 	private long _dataTime;
 
 	/**
@@ -53,13 +59,13 @@ public class SendDataObject {
 	 */
 	private byte _errorFlag;
 
-	/** Der Indikator zu Änderungen der einzelnen Attribute der Attributgruppe */
+	/** Der Indikator zu Ã„nderungen der einzelnen Attribute der Attributgruppe */
 	private byte _attributesIndicator[] = null;
 
 	/** Der zu sendende Bytestrom */
 	private byte _data[] = null;
 
-	/** Erzeugt ein neues Objekt ohne Parameter. Die Parameter werden zu einem Späteren Zeitpunkt über die read-Methode eingelesen. */
+	/** Erzeugt ein neues Objekt ohne Parameter. Die Parameter werden zu einem SpÃ¤teren Zeitpunkt Ã¼ber die read-Methode eingelesen. */
 	public SendDataObject() {
 	}
 
@@ -69,9 +75,9 @@ public class SendDataObject {
 	 * @param baseSubscriptionInfo Anmeldeinformationen
 	 * @param delayedDataFlag      Besagt das die zu sendenden Daten nachgelieferte Daten sind.
 	 * @param dataNumber           Laufende Nummer des Datensatzes
-	 * @param time                 Die Zeit der Datensätze
+	 * @param time                 Die Zeit der DatensÃ¤tze
 	 * @param errorFlag            Fehlerkennung
-	 * @param attributesIndicator  Indikator zu der Änderungen der einzelnen Attributen
+	 * @param attributesIndicator  Indikator zu der Ã„nderungen der einzelnen Attributen
 	 * @param data                 Der zu sendende Bytestrom
 	 */
 	public SendDataObject(
@@ -93,7 +99,7 @@ public class SendDataObject {
 	}
 
 	/**
-	 * Gibt die Basisanmeldeinformationen zurück
+	 * Gibt die Basisanmeldeinformationen zurÃ¼ck
 	 *
 	 * @return Basisanmeldeinformationen
 	 */
@@ -102,16 +108,16 @@ public class SendDataObject {
 	}
 
 	/**
-	 * Gibt an, ob Interesse an nachgelieferte oder an aktuelle Datensätze besteht.
+	 * Gibt an, ob Interesse an nachgelieferte oder an aktuelle DatensÃ¤tze besteht.
 	 *
-	 * @return true: verspätet, false: pünktlich
+	 * @return true: verspÃ¤tet, false: pÃ¼nktlich
 	 */
 	public final boolean getDalayedDataFlag() {
 		return _delayedDataFlag;
 	}
 
 	/**
-	 * Gibt die Laufende Nummer des Datensatzes zurück.
+	 * Gibt die Laufende Nummer des Datensatzes zurÃ¼ck.
 	 *
 	 * @return laufende Nummer des Datensatzes
 	 */
@@ -120,7 +126,7 @@ public class SendDataObject {
 	}
 
 	/**
-	 * Die Zeit der Datensätze.
+	 * Die Zeit der DatensÃ¤tze.
 	 *
 	 * @return Zeitstempel
 	 */
@@ -129,7 +135,7 @@ public class SendDataObject {
 	}
 
 	/**
-	 * Gibt der Fehlercode wenn vorhanden zurück.
+	 * Gibt der Fehlercode wenn vorhanden zurÃ¼ck.
 	 *
 	 * @return Fehlercode
 	 */
@@ -138,7 +144,7 @@ public class SendDataObject {
 	}
 
 	/**
-	 * Gibt den Indikator zu den einzelnen Attributen der Attributgruppe zurück.
+	 * Gibt den Indikator zu den einzelnen Attributen der Attributgruppe zurÃ¼ck.
 	 *
 	 * @return Indikator der Attributgruppe
 	 */
@@ -147,7 +153,7 @@ public class SendDataObject {
 	}
 
 	/**
-	 * Gibt den Datensatz zurrück.
+	 * Gibt den Datensatz zurrÃ¼ck.
 	 *
 	 * @return Datensatz
 	 */
@@ -156,7 +162,7 @@ public class SendDataObject {
 	}
 
 	/**
-	 * Gibt ein String zurrück, der diesen Datensatz beschreibt.
+	 * Gibt ein String zurrÃ¼ck, der diesen Datensatz beschreibt.
 	 *
 	 * @return Der String, der diesen Datensatz beschreibt
 	 */
@@ -168,33 +174,33 @@ public class SendDataObject {
 		str += "Sendedaten Zeit      : " + _dataTime + "\n";
 		str += "Fehler Information   : " + _errorFlag + "\n";
 		if(_attributesIndicator != null) {
-			str += "----------Attributsänderungsindikator----------\n";
+			str += "----------AttributsÃ¤nderungsindikator----------\n";
 			for(int i = 0; i < _attributesIndicator.length; ++i) {
 				byte b = _attributesIndicator[i];
 				int j = i * 8;
 				if((b & 0x01) == 0x01) {
-					str += "Attribut an der Position " + (j) + " hat sich geändert.";
+					str += "Attribut an der Position " + (j) + " hat sich geÃ¤ndert.";
 				}
 				if((b & 0x02) == 0x02) {
-					str += "Attribut an der Position " + (j + 1) + " hat sich geändert.";
+					str += "Attribut an der Position " + (j + 1) + " hat sich geÃ¤ndert.";
 				}
 				if((b & 0x04) == 0x04) {
-					str += "Attribut an der Position " + (j + 2) + " hat sich geändert.";
+					str += "Attribut an der Position " + (j + 2) + " hat sich geÃ¤ndert.";
 				}
 				if((b & 0x08) == 0x08) {
-					str += "Attribut an der Position " + (j + 3) + " hat sich geändert.";
+					str += "Attribut an der Position " + (j + 3) + " hat sich geÃ¤ndert.";
 				}
 				if((b & 0x10) == 0x10) {
-					str += "Attribut an der Position " + (j + 4) + " hat sich geändert.";
+					str += "Attribut an der Position " + (j + 4) + " hat sich geÃ¤ndert.";
 				}
 				if((b & 0x20) == 0x20) {
-					str += "Attribut an der Position " + (j + 5) + " hat sich geändert.";
+					str += "Attribut an der Position " + (j + 5) + " hat sich geÃ¤ndert.";
 				}
 				if((b & 0x40) == 0x40) {
-					str += "Attribut an der Position " + (j + 6) + " hat sich geändert.";
+					str += "Attribut an der Position " + (j + 6) + " hat sich geÃ¤ndert.";
 				}
 				if((b & 0x80) == 0x80) {
-					str += "Attribut an der Position " + (j + 7) + " hat sich geändert.";
+					str += "Attribut an der Position " + (j + 7) + " hat sich geÃ¤ndert.";
 				}
 			}
 		}
@@ -272,9 +278,9 @@ public class SendDataObject {
 	}
 
 	/**
-	 * Gibt die Länge dieses Telegrams zurück
+	 * Gibt die LÃ¤nge dieses Telegrams zurÃ¼ck
 	 *
-	 * @return die Länge dieses Telegrams
+	 * @return die LÃ¤nge dieses Telegrams
 	 */
 	public int getLength() {
 		return 37 + (_attributesIndicator == null ? 0 : _attributesIndicator.length) + (_data == null ? 0 : _data.length);

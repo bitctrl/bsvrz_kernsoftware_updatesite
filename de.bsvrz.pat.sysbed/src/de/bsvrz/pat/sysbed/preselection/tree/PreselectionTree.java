@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.preselection.tree;
@@ -45,14 +51,14 @@ import java.util.List;
 
 /**
  * Die Klasse <code>PreselectionTree</code> ist ein Teil der Datenidentifikationsauswahl. Sie stellt die spezifizierte Vorauswahl in Form eines Baumes zur
- * Verfügung.
- * <p/>
- * Durch die spezifizierte Vorauswahl wird die Anzahl der durch den Benutzer auswählbaren Datenidentifikationen durch verschiedene Filter eingeschränkt.<p/> Die
- * Objekte werden nach der Filterung wieder zur Verfügung gestellt und können beispielsweise mit Hilfe der Klasse {@link de.bsvrz.pat.sysbed.preselection.lists.PreselectionLists} dargestellt und
- * weiter eingeschränkt werden.
+ * VerfÃ¼gung.
+ * <p>
+ * Durch die spezifizierte Vorauswahl wird die Anzahl der durch den Benutzer auswÃ¤hlbaren Datenidentifikationen durch verschiedene Filter eingeschrÃ¤nkt.<p> Die
+ * Objekte werden nach der Filterung wieder zur VerfÃ¼gung gestellt und kÃ¶nnen beispielsweise mit Hilfe der Klasse {@link de.bsvrz.pat.sysbed.preselection.lists.PreselectionLists} dargestellt und
+ * weiter eingeschrÃ¤nkt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 6199 $
+ * @version $Revision$
  * @see #PreselectionTree
  * @see #addPreselectionListener
  */
@@ -67,10 +73,10 @@ public class PreselectionTree extends JPanel {
 	/** speichert angemeldete Listener-Objekte */
 	private List<PreselectionTreeListener> _listenerList = new LinkedList<PreselectionTreeListener>();
 
-	/** Speichert alle Systemobjekte. Die Collection wird automatisch beim Erzeugen und Löschen von dynamischen Objekten aktualisiert. */
+	/** Speichert alle Systemobjekte. Die Collection wird automatisch beim Erzeugen und LÃ¶schen von dynamischen Objekten aktualisiert. */
 	private Collection<SystemObject> _systemObjects;
 
-	/** Speichert den Stand der zuletzt für die Filterung verwendeten Collection der Systemobjekte. Referenz auf das Objekt, das bei der letzten Filterung in
+	/** Speichert den Stand der zuletzt fÃ¼r die Filterung verwendeten Collection der Systemobjekte. Referenz auf das Objekt, das bei der letzten Filterung in
 	 * der Variablen {@link #_systemObjects} enthalten war.
 	 */
 	private Collection<SystemObject> _lastUsedSystemObjects;
@@ -99,13 +105,13 @@ public class PreselectionTree extends JPanel {
 		_dataModel = connection.getDataModel();
 		_preselectionTreeHandler = new PreselectionTreeHandler(this, connection);
 		createAndShowGui();
-		// erst die Oberfläche erstellen, dann die Anmeldung beim DaV und das Darstellen der Knoten
+		// erst die OberflÃ¤che erstellen, dann die Anmeldung beim DaV und das Darstellen der Knoten
 		registerDynamicObjectType();
 		_preselectionTreeHandler.setTreeNodes(treeNodes);
 	}
 
 	/**
-	 * Die Methode wird vom Konstruktor aufgerufen und stellt einen JTree für die spezifizierte Vorauswahl zur Verfügung. Bei Auswahl eines Knotens im Baum werden
+	 * Die Methode wird vom Konstruktor aufgerufen und stellt einen JTree fÃ¼r die spezifizierte Vorauswahl zur VerfÃ¼gung. Bei Auswahl eines Knotens im Baum werden
 	 * alle Filter auf dem Pfad von der Wurzel bis zum Knoten auf die Systemobjekte angewendet.
 	 */
 	private void createAndShowGui() {
@@ -132,7 +138,7 @@ public class PreselectionTree extends JPanel {
 						/*
 						{
 							_filterObjects = _systemObjects;
-							// einen Knoten ausgewählt:
+							// einen Knoten ausgewÃ¤hlt:
 							//  -> Filter von jedem Knoten auf dem selektierten Pfad auf die Objekte anwenden
 							//     (brauche ich dazu erst alle Objekte? Oder gibt mir
 							//     der Filter vor, welche Objekte ich laden soll?
@@ -206,7 +212,7 @@ public class PreselectionTree extends JPanel {
 		}
 
 		public void objectCreated(DynamicObject createdObject) {
-			// Objekt hinzufügen
+			// Objekt hinzufÃ¼gen
 			if(_systemObjects != null) {
 				final List<SystemObject> newList = new LinkedList<SystemObject>(_systemObjects);
 				newList.add(createdObject);
@@ -230,7 +236,7 @@ public class PreselectionTree extends JPanel {
 	private void filterObjects(final TreePath tp) {
 		_lastUsedSystemObjects = _systemObjects;
 		_selectedTreePath = tp;
-		// einen Knoten ausgewählt:
+		// einen Knoten ausgewÃ¤hlt:
 		//  -> Filter von jedem Knoten auf dem selektierten Pfad auf die Objekte anwenden
 		//     (brauche ich dazu erst alle Objekte? Oder gibt mir
 		//     der Filter vor, welche Objekte ich laden soll?
@@ -266,7 +272,7 @@ public class PreselectionTree extends JPanel {
 	}
 
 	/**
-	 * Ändert den aktuellen Baum in der JTree-Komponente.
+	 * Ã„ndert den aktuellen Baum in der JTree-Komponente.
 	 *
 	 * @param newModel das TreeModel, welches angezeigt werden soll
 	 */
@@ -290,7 +296,7 @@ public class PreselectionTree extends JPanel {
 //		_debug.finest("notify: " + (System.currentTimeMillis() - start));
 	}
 
-	/** Selektiert anhand des Strings _treePath (enthält kommaseparierte PIDs) den Pfad im Baum. */
+	/** Selektiert anhand des Strings _treePath (enthÃ¤lt kommaseparierte PIDs) den Pfad im Baum. */
 	private void selectTreePath() {
 		if(_treePath != null) {
 			String[] paths = _treePath.split(",");
@@ -314,8 +320,8 @@ public class PreselectionTree extends JPanel {
 	}
 
 	/**
-	 * Gibt die Parameter für die Vorauswahl (Baum) zurück. Die Collection enthält Systemobjekte und {@link TreeNodeObject Knotenobjekte}. Anhand der Objekte wird
-	 * der Baum für die Vorauswahl erzeugt.
+	 * Gibt die Parameter fÃ¼r die Vorauswahl (Baum) zurÃ¼ck. Die Collection enthÃ¤lt Systemobjekte und {@link TreeNodeObject Knotenobjekte}. Anhand der Objekte wird
+	 * der Baum fÃ¼r die Vorauswahl erzeugt.
 	 *
 	 * @return die Sammlung von System- und Knotenobjekten
 	 */
@@ -324,7 +330,7 @@ public class PreselectionTree extends JPanel {
 	}
 
 	/**
-	 * Gibt den selektierten Pfad des Baums als kommaseparierten String zurück. Jedes Objekt wird durch eine PID repräsentiert.
+	 * Gibt den selektierten Pfad des Baums als kommaseparierten String zurÃ¼ck. Jedes Objekt wird durch eine PID reprÃ¤sentiert.
 	 *
 	 * @return Pfad des Baums als kommaseparierten String
 	 */
@@ -349,7 +355,7 @@ public class PreselectionTree extends JPanel {
 	}
 
 	/**
-	 * Kommaseparierte PIDs werden als String übergeben, die einen Pfad im Baum des PreselectionTrees darstellen. Ist der Pfad vorhanden, dann wird er selektiert.
+	 * Kommaseparierte PIDs werden als String Ã¼bergeben, die einen Pfad im Baum des PreselectionTrees darstellen. Ist der Pfad vorhanden, dann wird er selektiert.
 	 *
 	 * @param treePath Pfad des Baums als kommaseparierten String
 	 */
@@ -369,7 +375,7 @@ public class PreselectionTree extends JPanel {
 	}
 
 	/**
-	 * Fügt einen <code>PreselectionTreeListener</code> hinzu.
+	 * FÃ¼gt einen <code>PreselectionTreeListener</code> hinzu.
 	 *
 	 * @param listener ein Objekt, welches den Listener implementiert
 	 */
@@ -386,7 +392,7 @@ public class PreselectionTree extends JPanel {
 		_listenerList.remove(listener);
 	}
 
-	/** Gibt dem Listener-Objekt bekannt, ob ein Koten im Baum angewählt wurde. Die gefilterten Systemobjekte werden dann an das Listener-Objekt übergeben. */
+	/** Gibt dem Listener-Objekt bekannt, ob ein Koten im Baum angewÃ¤hlt wurde. Die gefilterten Systemobjekte werden dann an das Listener-Objekt Ã¼bergeben. */
 	private void notifyTreeSelectionChanged() {
 		final Collection<SystemObject> unmodifiableCollection = Collections.unmodifiableCollection(_filterObjects);
 		for(Iterator iterator = _listenerList.iterator(); iterator.hasNext();) {

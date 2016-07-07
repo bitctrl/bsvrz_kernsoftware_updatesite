@@ -1,13 +1,13 @@
 /*
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.dataview;
@@ -42,11 +48,11 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 /**
- * Diese Klasse bietet eine hierarchische Struktur für einen Datensatz aus dem Datenverteiler. 
- * Es werden Attribute, Listen, Arrays von Attributen und Arrays von Listen berücksichtigt.
+ * Diese Klasse bietet eine hierarchische Struktur fÃ¼r einen Datensatz aus dem Datenverteiler. 
+ * Es werden Attribute, Listen, Arrays von Attributen und Arrays von Listen berÃ¼cksichtigt.
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 12195 $
+ * @version $Revision$
  * @see Dataset
  */
 public class RowData implements ColumnWidthChangeListener {
@@ -94,7 +100,7 @@ public class RowData implements ColumnWidthChangeListener {
 	}
 	
 	/**
-	 * Gibt den CellKey des Objekts zurück.
+	 * Gibt den CellKey des Objekts zurÃ¼ck.
 	 * 
 	 * @return CellKey
 	 */
@@ -117,7 +123,7 @@ public class RowData implements ColumnWidthChangeListener {
 	}
 	
 	/**
-	 * Gibt die Komponente zurück, die sich selbst und alle ihre Nachfolger darstellt.
+	 * Gibt die Komponente zurÃ¼ck, die sich selbst und alle ihre Nachfolger darstellt.
 	 * 
 	 * @return Komponente, die sich selbst und alle ihre Nachfolger darstellt
 	 */
@@ -136,7 +142,7 @@ public class RowData implements ColumnWidthChangeListener {
 	}
 	
 	/**
-	 * Gibt die initiale Spaltenbreite zurück.
+	 * Gibt die initiale Spaltenbreite zurÃ¼ck.
 	 * 
 	 * @return initiale Spaltenbreite
 	 */
@@ -156,7 +162,7 @@ public class RowData implements ColumnWidthChangeListener {
 				_cellKey.setCellText( _value);
 			}
 			else {
-				if(!_isArray) { // handelt sich um eine Liste - Einträge sind RowData
+				if(!_isArray) { // handelt sich um eine Liste - EintrÃ¤ge sind RowData
 					JPanel panel = new JPanel(new BorderLayout());
 					GridBagLayout gbl = new GridBagLayout();
 					JPanel listPanel = new JPanel();
@@ -175,7 +181,7 @@ public class RowData implements ColumnWidthChangeListener {
 							listPanel.add(row);
 						}
 						else {
-							_debug.error("Daten müssen vom Typ RowData sein!");
+							_debug.error("Daten mÃ¼ssen vom Typ RowData sein!");
 						}
 					}
 					panel.add(listPanel, BorderLayout.CENTER);
@@ -214,7 +220,7 @@ public class RowData implements ColumnWidthChangeListener {
 							arrayPanel.add(succPanel);
 						}
 						else {
-							_debug.error("Daten müssen vom Typ RowSuccessor sein!");
+							_debug.error("Daten mÃ¼ssen vom Typ RowSuccessor sein!");
 						}
 					}
 					panel.add(arrayPanel, BorderLayout.CENTER);
@@ -275,22 +281,22 @@ public class RowData implements ColumnWidthChangeListener {
 	}
 	
 	/**
-	 * Hilfsfunktion zur Konstruktion des Panels. Hierüber werden die Bedingungen für die Anordnung der Elemente gesetzt.
+	 * Hilfsfunktion zur Konstruktion des Panels. HierÃ¼ber werden die Bedingungen fÃ¼r die Anordnung der Elemente gesetzt.
 	 * 
 	 * @param gridx
 	 *            Spaltennummer
 	 * @param gridy
 	 *            Zeilennummer
 	 * @param gridwidth
-	 *            Anzahl der Spalten über die das Element reicht
+	 *            Anzahl der Spalten Ã¼ber die das Element reicht
 	 * @param gridheight
-	 *            Anzahl der Zeilen über die das Element reicht
+	 *            Anzahl der Zeilen Ã¼ber die das Element reicht
 	 * @param weightx
-	 *            Verteilung von zur Verfügung stehendem Platz (horizontal)
+	 *            Verteilung von zur VerfÃ¼gung stehendem Platz (horizontal)
 	 * @param weighty
-	 *            Verteilung von zur Verfügung stehendem Platz (vertikal)
+	 *            Verteilung von zur VerfÃ¼gung stehendem Platz (vertikal)
 	 * 
-	 * @return die Bedingungen für die Anordnung des Elements
+	 * @return die Bedingungen fÃ¼r die Anordnung des Elements
 	 */
 	private GridBagConstraints makeGBC(int gridx, int gridy, int gridwidth, int gridheight, double weightx, double weighty) {
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -314,7 +320,7 @@ public class RowData implements ColumnWidthChangeListener {
 	}
 	
 	/**
-	 * Gibt zurück, ob es sich um ein Array von Listen/Attributen handelt, oder nicht.
+	 * Gibt zurÃ¼ck, ob es sich um ein Array von Listen/Attributen handelt, oder nicht.
 	 * 
 	 * @return <code>true</code>, falls es sich um ein Array von Listen/Attributen handelt, sonst <code>false</code>
 	 */
@@ -333,7 +339,7 @@ public class RowData implements ColumnWidthChangeListener {
 	}
 	
 	/**
-	 * Gibt den anzuzeigenden Text zurück.
+	 * Gibt den anzuzeigenden Text zurÃ¼ck.
 	 * 
 	 * @return anzuzeigender Text
 	 */
@@ -342,7 +348,7 @@ public class RowData implements ColumnWidthChangeListener {
 	}
 	
 	/**
-	 * Fügt einen Nachfolger vom Typ <code>RowSuccessor</code> oder <code>RowData</code> hinzu.
+	 * FÃ¼gt einen Nachfolger vom Typ <code>RowSuccessor</code> oder <code>RowData</code> hinzu.
 	 * 
 	 * @param object
 	 *            Nachfolger vom Typ <code>RowSuccessor</code> oder <code>RowData</code>
@@ -355,7 +361,7 @@ public class RowData implements ColumnWidthChangeListener {
 	}
 	
 	/**
-	 * Gibt alle Nachfolger zurück. Sie können vom Typ RowSuccessor oder vom Typ RowData sein, je nachdem, ob es sich um ein Array von Listen/Attributen
+	 * Gibt alle Nachfolger zurÃ¼ck. Sie kÃ¶nnen vom Typ RowSuccessor oder vom Typ RowData sein, je nachdem, ob es sich um ein Array von Listen/Attributen
 	 * handelt, oder nicht.
 	 * 
 	 * @return alle Nachfolger
@@ -366,7 +372,7 @@ public class RowData implements ColumnWidthChangeListener {
 	
 	/* ############# implementiert die Methoden des RowListener-Interfaces ############## */
 	/**
-	 * Gibt die für diese Komponente optimale Spaltenbreite zurück.
+	 * Gibt die fÃ¼r diese Komponente optimale Spaltenbreite zurÃ¼ck.
 	 * 
 	 * @return die optimale Spaltenbreite
 	 */
@@ -375,7 +381,7 @@ public class RowData implements ColumnWidthChangeListener {
 	}
 	
 	/**
-	 * Setzt die Breite der Komponente, die diese Daten repräsentiert.
+	 * Setzt die Breite der Komponente, die diese Daten reprÃ¤sentiert.
 	 * 
 	 * @param width
 	 *            neue Breite der Komponente

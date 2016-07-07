@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main.consistencycheck;
@@ -34,20 +40,20 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * Hilfsklasse f¸r die Spezialbehandlungen bei unversionierten Datenmodell‰nderungen.
+ * Hilfsklasse f√ºr die Spezialbehandlungen bei unversionierten Datenmodell√§nderungen.
  *
- * Der Import l‰uft in zwei Schritten ab. Zurerst wird mit den Processable-Methoden gepr¸ft, ob unversionierte ƒnderungen
- * mˆglich sind (true) oder nicht (false). Wenn unversionierte ƒnderungen mˆglich sind und auch keine anderen ƒnderungen dagegen sprechen wird
- * sp‰ter dann bei den entsprechenden allow...-Methoden nocheinmal gepr¸ft, ob die ƒnderugnen durchgef¸hrt werden d¸rfen (die Logik muss
- * nat¸rlich identisch sein). Da die allow...-Methoden direkt vor dem ƒndern der Konfigurationsdateien ausgef¸hrt werden, wird in den allow...-
- * Methoden auch der entsprechende Datensatz am Konfigurationsbereich erg‰nzt, der Informationen ¸ber unversionierte ƒnderungen enth‰lt.
+ * Der Import l√§uft in zwei Schritten ab. Zurerst wird mit den Processable-Methoden gepr√ºft, ob unversionierte √Ñnderungen
+ * m√∂glich sind (true) oder nicht (false). Wenn unversionierte √Ñnderungen m√∂glich sind und auch keine anderen √Ñnderungen dagegen sprechen wird
+ * sp√§ter dann bei den entsprechenden allow...-Methoden nocheinmal gepr√ºft, ob die √Ñnderugnen durchgef√ºhrt werden d√ºrfen (die Logik muss
+ * nat√ºrlich identisch sein). Da die allow...-Methoden direkt vor dem √Ñndern der Konfigurationsdateien ausgef√ºhrt werden, wird in den allow...-
+ * Methoden auch der entsprechende Datensatz am Konfigurationsbereich erg√§nzt, der Informationen √ºber unversionierte √Ñnderungen enth√§lt.
  *
- * Dieser Datensatz darf noch nicht bei den Processable-Methoden erg‰nzt werden, da dort noch niocht feststeht, dass nicht auch andere
- * Aktionen durchgef¸hrt werden, die trotzdem eine neue Objektversion bewirken w¸rden (z.B. hinzuf¸gen vo nStatuswerten (w¸rde erlaubt werden)
- * mit gleichzeitigem Lˆschen von Statuswerten.
+ * Dieser Datensatz darf noch nicht bei den Processable-Methoden erg√§nzt werden, da dort noch niocht feststeht, dass nicht auch andere
+ * Aktionen durchgef√ºhrt werden, die trotzdem eine neue Objektversion bewirken w√ºrden (z.B. hinzuf√ºgen vo nStatuswerten (w√ºrde erlaubt werden)
+ * mit gleichzeitigem L√∂schen von Statuswerten.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11583 $
+ * @version $Revision$
  */
 public class RelaxedModelChanges {
 
@@ -57,47 +63,47 @@ public class RelaxedModelChanges {
 	private final AttributeGroup _attributeGroup;
 
 	public RelaxedModelChanges(final DataModel dataModel) {
-		_attributeGroup = dataModel.getAttributeGroup("atg.konfigurationsBereichUnversionierteƒnderungen");
+		_attributeGroup = dataModel.getAttributeGroup("atg.konfigurationsBereichUnversionierte√Ñnderungen");
 		if(_attributeGroup == null){
 			_debug.fine(
-					"Unversionierte ƒnderungen nicht mˆglich, atg.konfigurationsBereichUnversionierteƒnderungen nicht gefunden. Bitte kb.metaModellGlobal in Mindestversion 16 installieren."
+					"Unversionierte √Ñnderungen nicht m√∂glich, atg.konfigurationsBereichUnversionierte√Ñnderungen nicht gefunden. Bitte kb.metaModellGlobal in Mindestversion 16 installieren."
 			);
 			_isEnabled = false;
 		}
 		else {
 			_debug.fine(
-					"Unversionierte ƒnderungen aktiviert."
+					"Unversionierte √Ñnderungen aktiviert."
 			);
 			_isEnabled = true;
 		}
 	}
 
 	/**
-	 * Sonderbehandlung f¸r Wertebereiche. Das ƒndern, wird erlaubt, wenn der Bereich nicht verkleinert wird und Einheit und Skalierung beibehalten werden.
+	 * Sonderbehandlung f√ºr Wertebereiche. Das √Ñndern, wird erlaubt, wenn der Bereich nicht verkleinert wird und Einheit und Skalierung beibehalten werden.
 	 * @param importedValueRange Eingelesene Bereichsdefinition
 	 * @param existingValueRange Existierende Bereichsdefinition
-	 * @return true: die ƒnderung wird erlaubt, false: keine Sonderbehandlung, hier nicht erlaubt
+	 * @return true: die √Ñnderung wird erlaubt, false: keine Sonderbehandlung, hier nicht erlaubt
 	 */
 	public boolean isValueRangeChangeProcessable(final ConfigurationValueRange importedValueRange, final IntegerValueRange existingValueRange) {
 
 		if(!_isEnabled) return false;
 
-		// Skalierung pr¸fen
+		// Skalierung pr√ºfen
 		if(importedValueRange.getScale() != existingValueRange.getConversionFactor()) return false;
 
-		// Einheit pr¸fen
+		// Einheit pr√ºfen
 		if(!importedValueRange.getUnit().equals(existingValueRange.getUnit())) return false;
 
-		// Bereich pr¸fen
+		// Bereich pr√ºfen
 		if(importedValueRange.getMinimum() > existingValueRange.getMinimum()) return false;
 		if(importedValueRange.getMaximum() < existingValueRange.getMaximum()) return false;
 
 		return true;
 	}
 	/**
-	 * Gibt zur¸ck, ob zu dem angegebenen IntegerAttributeType neue Statuswerte hinzugef¸gt werden d¸rfen
+	 * Gibt zur√ºck, ob zu dem angegebenen IntegerAttributeType neue Statuswerte hinzugef√ºgt werden d√ºrfen
 	 * @param integerAttributeType IntegerAttributeType
-	 * @return true falls neue Statuswerte hinzugef¸gt werden d¸rfen, sonst false
+	 * @return true falls neue Statuswerte hinzugef√ºgt werden d√ºrfen, sonst false
 	 */
 	public boolean isAddStatesProcessable(final IntegerAttributeType integerAttributeType) {
 		if(!_isEnabled) return false;
@@ -105,11 +111,11 @@ public class RelaxedModelChanges {
 	}
 
 	/**
-	 * Gibt zur¸ck, ob die maximale L‰nge eines Feldes ge‰ndert werden darf. Vorraussetzung: oldMaxCount != newMaxCount und das
-	 * Feld hat eine variable L‰nge.
-	 * @param oldMaxCount Alte L‰nge
-	 * @param newMaxCount Neue L‰nge
-	 * @return Darf die Feldl‰nge ohne Versionierung ge‰ndert werden?
+	 * Gibt zur√ºck, ob die maximale L√§nge eines Feldes ge√§ndert werden darf. Vorraussetzung: oldMaxCount != newMaxCount und das
+	 * Feld hat eine variable L√§nge.
+	 * @param oldMaxCount Alte L√§nge
+	 * @param newMaxCount Neue L√§nge
+	 * @return Darf die Feldl√§nge ohne Versionierung ge√§ndert werden?
 	 */
 	public boolean isChangeArrayMaxCountProcessable(final int oldMaxCount, final int newMaxCount) {
 		if(!_isEnabled) return false;
@@ -117,14 +123,14 @@ public class RelaxedModelChanges {
 	}
 
 	/**
-	 * Gibt zur¸ck, ob das ƒndern eines Wert-Namens erlaubt sein soll, ohne eine neue Version zu erstellen.
+	 * Gibt zur√ºck, ob das √Ñndern eines Wert-Namens erlaubt sein soll, ohne eine neue Version zu erstellen.
 	 * @param integerValueState Statuswert
-	 * @return Darf der Name ge‰dnert werden?
+	 * @return Darf der Name ge√§dnert werden?
 	 */
 	public boolean isChangeValueNameProcessable(final IntegerValueState integerValueState) {
 		if(!_isEnabled) return false;
 
-		// Zugehˆrigen Attributtyp suchen
+		// Zugeh√∂rigen Attributtyp suchen
 		IntegerAttributeType integerAttributeType = null;
 		for(SystemObject systemObject : integerValueState.getConfigurationArea().getCurrentObjects()) {
 			if(systemObject instanceof IntegerAttributeType) {
@@ -141,12 +147,12 @@ public class RelaxedModelChanges {
 	}
 
 	/**
-	 * Gibt true zur¸ck sofern der Wertebereich bearbeitet werden darf und markiert den zugehˆrigen Attributtyp als durch unversionierte ƒnderungen bearbeitet.
+	 * Gibt true zur√ºck sofern der Wertebereich bearbeitet werden darf und markiert den zugeh√∂rigen Attributtyp als durch unversionierte √Ñnderungen bearbeitet.
 	 *
 	 * @param configSystemObject
 	 * @param oldData Existierende Bereichsdefinition Alter Datensatz
 	 * @param newData Eingelesene Bereichsdefinition Neuer Datensatz
-	 * @return true: die ƒnderung wird erlaubt, false: keine Sonderbehandlung, hier nicht erlaubt
+	 * @return true: die √Ñnderung wird erlaubt, false: keine Sonderbehandlung, hier nicht erlaubt
 	 */
 	public boolean allowChangeValueRange(final ConfigSystemObject configSystemObject, final Data oldData, final Data newData) {
 
@@ -154,7 +160,7 @@ public class RelaxedModelChanges {
 
 		if(oldData == null || newData == null) return false;
 
-		// Zugehˆrigen Attributtyp suchen
+		// Zugeh√∂rigen Attributtyp suchen
 		IntegerAttributeType integerAttributeType = null;
 		for(SystemObject systemObject : configSystemObject.getConfigurationArea().getCurrentObjects()) {
 			if(systemObject instanceof IntegerAttributeType) {
@@ -167,13 +173,13 @@ public class RelaxedModelChanges {
 
 		if(integerAttributeType == null) return false;
 
-		// Skalierung pr¸fen
+		// Skalierung pr√ºfen
 		if(newData.getScaledValue("skalierung").doubleValue() != oldData.getScaledValue("skalierung").doubleValue()) return false;
 
-		// Einheit pr¸fen
+		// Einheit pr√ºfen
 		if(!newData.getTextValue("einheit").getValueText().equals(oldData.getTextValue("einheit").getValueText())) return false;
 
-		// Bereich pr¸fen
+		// Bereich pr√ºfen
 		if(newData.getUnscaledValue("minimum").longValue() > oldData.getUnscaledValue("minimum").longValue()) return false;
 		if(newData.getUnscaledValue("maximum").longValue() < oldData.getUnscaledValue("maximum").longValue()) return false;
 
@@ -181,14 +187,14 @@ public class RelaxedModelChanges {
 		return true;
 	}
 	/**
-	* Gibt zur¸ck, ob das ƒndern eines Wert-Namens erlaubt sein soll und markiert den zugehˆrigen Attributtyp als durch unversionierte ƒnderungen bearbeitet.
+	* Gibt zur√ºck, ob das √Ñndern eines Wert-Namens erlaubt sein soll und markiert den zugeh√∂rigen Attributtyp als durch unversionierte √Ñnderungen bearbeitet.
 	* @param integerValueState Statuswert
-	* @return Darf der Name ge‰ndert werden?
+	* @return Darf der Name ge√§ndert werden?
 	*/
 	public boolean allowChangeValueName(final IntegerValueState integerValueState) {
 		if(!_isEnabled) return false;
 
-		// Zugehˆrigen Attributtyp suchen
+		// Zugeh√∂rigen Attributtyp suchen
 		IntegerAttributeType integerAttributeType = null;
 		for(SystemObject systemObject : integerValueState.getConfigurationArea().getCurrentObjects()) {
 			if(systemObject instanceof IntegerAttributeType) {
@@ -207,7 +213,7 @@ public class RelaxedModelChanges {
 
 
 	/**
-	 * Gibt true zur¸ck, sofern der Wertezustand hinzugef¸gt werden darf und markiert den zugehˆrigen Attributtyp als durch unversionierte ƒnderungen bearbeitet.
+	 * Gibt true zur√ºck, sofern der Wertezustand hinzugef√ºgt werden darf und markiert den zugeh√∂rigen Attributtyp als durch unversionierte √Ñnderungen bearbeitet.
 	 * @param objectSet Objekt-Menge
 	 * @return
 	 */
@@ -230,12 +236,12 @@ public class RelaxedModelChanges {
 	}
 
 	/**
-	 * Gibt true zur¸ck, falls die L‰nge des Daten-Arrays ge‰ndert werden darf und markiert den zugehˆrigen Attributtyp als durch unversionierte ƒnderungen bearbeitet.
+	 * Gibt true zur√ºck, falls die L√§nge des Daten-Arrays ge√§ndert werden darf und markiert den zugeh√∂rigen Attributtyp als durch unversionierte √Ñnderungen bearbeitet.
 	 *
 	 * @param configSystemObject SystemObjekt des Attributes
 	 * @param oldData Existierende Attributtypeigenschaften Alter Datensatz
 	 * @param newData Eingelesene Attributtypeigenschaften Neuer Datensatz
-	 * @return true: die ƒnderung wird erlaubt, false: keine Sonderbehandlung, hier nicht erlaubt
+	 * @return true: die √Ñnderung wird erlaubt, false: keine Sonderbehandlung, hier nicht erlaubt
 	 */
 	public boolean allowChangeArrayMaxCount(final ConfigSystemObject configSystemObject, final Data oldData, final Data newData) {
 		if(!_isEnabled) return false;
@@ -250,18 +256,18 @@ public class RelaxedModelChanges {
 		AttributeType attributeType = attribute.getAttributeType();
 
 
-		// Position muss ¸bereinstimmen
+		// Position muss √ºbereinstimmen
 		if(newData.getScaledValue("position").doubleValue() != oldData.getScaledValue("position").doubleValue()) return false;
 
-		// Anzahl-Variabel muss ¸bereinstimmen...
+		// Anzahl-Variabel muss √ºbereinstimmen...
 		if(!newData.getTextValue("anzahlVariabel").getValueText().equals(oldData.getTextValue("anzahlVariabel").getValueText())) return false;
 		// ... und auf "Ja" stehen.
 		if(!newData.getTextValue("anzahlVariabel").getValueText().equals("Ja")) return false;
 
-		// Attributtyp muss ¸bereinstimmen
+		// Attributtyp muss √ºbereinstimmen
 		if(!(newData.getReferenceValue("attributTyp").getId() == oldData.getReferenceValue("attributTyp").getId())) return false;
 
-		// L‰nge darf nur grˆﬂer werden, muss aber im selben Wertebereich bleiben
+		// L√§nge darf nur gr√∂√üer werden, muss aber im selben Wertebereich bleiben
 		if(!isChangeArrayMaxCountProcessable(oldData.getUnscaledValue("anzahl").intValue(), newData.getUnscaledValue("anzahl").intValue())) {
 			return false;
 		}
@@ -279,13 +285,13 @@ public class RelaxedModelChanges {
 		Data configurationData = configurationArea.getConfigurationData(_attributeGroup);
 		if(configurationData == null){
 			_debug.warning(
-					"F¸hre unversionierte ƒnderung am Attributtyp " + attributeType + " durch. Der Konfigurationsbereich wird kb.metaModellGlobal in Mindestversion 16 voraussetzen."
+					"F√ºhre unversionierte √Ñnderung am Attributtyp " + attributeType + " durch. Der Konfigurationsbereich wird kb.metaModellGlobal in Mindestversion 16 voraussetzen."
 			);
 			configurationData = AttributeBaseValueDataFactory.createAdapter(_attributeGroup, AttributeHelper.getAttributesValues(_attributeGroup));
 		}
 		else {
 			_debug.fine(
-					"F¸hre unversionierte ƒnderung am Attributtyp " + attributeType + " durch."
+					"F√ºhre unversionierte √Ñnderung am Attributtyp " + attributeType + " durch."
 			);
 		}
 		boolean added = false;
@@ -310,14 +316,14 @@ public class RelaxedModelChanges {
 			configurationArea.setConfigurationData(_attributeGroup, configurationData);
 		}
 		catch(ConfigurationChangeException e) {
-			_debug.warning("Konnte unversionierte ƒnderung nicht durchf¸hren. Der Datensatz am Konfigurationsbereich konnte nicht geschrieben werden", e);
+			_debug.warning("Konnte unversionierte √Ñnderung nicht durchf√ºhren. Der Datensatz am Konfigurationsbereich konnte nicht geschrieben werden", e);
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Gibt f¸r jeden Wertebereich (Byte, Short, Integer) eine eindeutige Nummer (0,1,2) zur¸ck.
+	 * Gibt f√ºr jeden Wertebereich (Byte, Short, Integer) eine eindeutige Nummer (0,1,2) zur√ºck.
 	 * @param maxCount
 	 */
 	private static int getDataType(final int maxCount) {
@@ -328,7 +334,7 @@ public class RelaxedModelChanges {
 	}
 
 	public static RelaxedModelChanges getInstance(final DataModel dataModel) {
-		// Objekt sehr klein, halten der Objekte in einer HashMap o.‰. vorerst unnˆtig.
+		// Objekt sehr klein, halten der Objekte in einer HashMap o.√§. vorerst unn√∂tig.
 		return new RelaxedModelChanges(dataModel);
 	}
 }

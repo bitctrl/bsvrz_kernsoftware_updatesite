@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.communication.dataRepresentation.data.info.version1;
 
@@ -39,17 +45,17 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 /**
- * Klasse, die zum Erzeugen von Datensätzen aus einem Byte-Array für die Serialisiererversion 1 verwendet wird.
+ * Klasse, die zum Erzeugen von DatensÃ¤tzen aus einem Byte-Array fÃ¼r die Serialisiererversion 1 verwendet wird.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5063 $
+ * @version $Revision$
  */
 public final class ConcreteDataFactory extends DataFactory {
 	private static DataFactory _Instance = new ConcreteDataFactory();
 
 	/**
-	 * Löscht die für eine Datenverteilerverbindung bzw. eine DataModel-Implementierung zwischengespeicherten Datenstrukturen. Diese Methode sollte
-	 * aufgerufen werden, wenn eine Datenverteilerverbindung bzw. eine DataModel-Implementierung nicht mehr zur Verfügung steht und die zwischengespeicherten
+	 * LÃ¶scht die fÃ¼r eine Datenverteilerverbindung bzw. eine DataModel-Implementierung zwischengespeicherten Datenstrukturen. Diese Methode sollte
+	 * aufgerufen werden, wenn eine Datenverteilerverbindung bzw. eine DataModel-Implementierung nicht mehr zur VerfÃ¼gung steht und die zwischengespeicherten
 	 * Datenstrukturen freigegeben werden sollen.
 	 * @param dataModel DataModel
 	 */
@@ -59,7 +65,7 @@ public final class ConcreteDataFactory extends DataFactory {
 	}
 
 	/**
-	 * Liefert die einzige Objekt dieser Klasse zurück.
+	 * Liefert die einzige Objekt dieser Klasse zurÃ¼ck.
 	 * @return Einziges Objekt dieser Klasse.
 	 */
 	public static DataFactory getInstance() {
@@ -76,11 +82,11 @@ public final class ConcreteDataFactory extends DataFactory {
 
 	public Data createModifiableData(AttributeGroup atg, byte[] bytes) {
 		try {
-			// Erzeugt eine Liste von AttributeBaseValue Objekte, für jedes Attribut auf oberstem Level der ATG jeweils
-			// ein Objekt. Der Quasi-Datensatz enthält zwar schon Struktur aber keine Werte.
+			// Erzeugt eine Liste von AttributeBaseValue Objekte, fÃ¼r jedes Attribut auf oberstem Level der ATG jeweils
+			// ein Objekt. Der Quasi-Datensatz enthÃ¤lt zwar schon Struktur aber keine Werte.
 			final List attributeBaseValues = AttributeHelper.getAttributesValues(atg);
 
-			// Stream über den der Datensatz im Byte-Array gelesen wird.
+			// Stream Ã¼ber den der Datensatz im Byte-Array gelesen wird.
 			final DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes));
 
 			// Jetzt werden die einzelnen Attribut-Werte des Datensatzes aus dem Stream gelesen.

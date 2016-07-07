@@ -2,13 +2,13 @@
  * Copyright 2011 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2006 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -17,8 +17,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -49,6 +55,7 @@ import de.bsvrz.sys.funclib.debug.Debug;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.text.Collator;
 import java.util.*;
 
 import static de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentifications.CONFIGURATION_SETS;
@@ -57,11 +64,11 @@ import static de.bsvrz.dav.daf.main.impl.config.AttributeGroupUsageIdentificatio
  * Implementierung des Interfaces {@link ConfigurationObject} auf Seiten der Konfiguration.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8940 $
+ * @version $Revision$
  */
 public class ConfigConfigurationObject extends ConfigSystemObject implements ConfigurationObject {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	/** Wird genutzt um den Zugriff auf das Objekt _sets zu synchronisieren. */
@@ -70,7 +77,7 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 	/** Speichert die Mengen dieses Objekts. */
 	private Map<String, ObjectSet> _sets;
 
-	/** Ein Enum zur Unterscheidung von Löschen und Wiederbeleben von Konfigurationsobjekten. */
+	/** Ein Enum zur Unterscheidung von LÃ¶schen und Wiederbeleben von Konfigurationsobjekten. */
 	private enum Modification {
 
 		INVALIDATE,
@@ -78,10 +85,10 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 	}
 
 	/**
-	 * Konstruktor für ein KonfigurationsObjekt.
+	 * Konstruktor fÃ¼r ein KonfigurationsObjekt.
 	 *
 	 * @param configurationArea der Konfigurationsbereich dieses KonfigurationsObjekts
-	 * @param systemObjectInfo  das korrespondierende Objekt für die Dateioperationen dieses KonfigurationsObjekts
+	 * @param systemObjectInfo  das korrespondierende Objekt fÃ¼r die Dateioperationen dieses KonfigurationsObjekts
 	 */
 	public ConfigConfigurationObject(ConfigurationArea configurationArea, SystemObjectInformationInterface systemObjectInfo) {
 		super(configurationArea, systemObjectInfo);
@@ -98,23 +105,23 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 	public boolean isValid() {
 		short activeVersion = getConfigurationArea().getActiveVersion();
 		if(getValidSince() > activeVersion) {
-			// Objekt wurde noch nicht gültig
+			// Objekt wurde noch nicht gÃ¼ltig
 			return false;
 		}
 		final short notValidSince = getNotValidSince();
 		if(notValidSince != 0 && notValidSince <= activeVersion) {
-			// Objekt wurde bereits auf ungültig gesetzt
+			// Objekt wurde bereits auf ungÃ¼ltig gesetzt
 			return false;
 		}
-		// Objekt ist gültig und wurde noch nicht auf ungültig gesetzt oder wird erst in einer späteren Version ungültig
+		// Objekt ist gÃ¼ltig und wurde noch nicht auf ungÃ¼ltig gesetzt oder wird erst in einer spÃ¤teren Version ungÃ¼ltig
 		return true;
 	}
 
 	public void invalidate() throws ConfigurationChangeException {
 		super.invalidate();
-		// prüfen, ob es sich bei diesem Objekt um ein freies Objekt handelt.
+		// prÃ¼fen, ob es sich bei diesem Objekt um ein freies Objekt handelt.
 		if(!isFreeObject()) {
-			final String message = "Das Objekt '" + getPidOrNameOrId() + "' ist kein freies Objekt und kann deshalb nicht gelöscht werden.";
+			final String message = "Das Objekt '" + getPidOrNameOrId() + "' ist kein freies Objekt und kann deshalb nicht gelÃ¶scht werden.";
 			_debug.warning(message);
 			throw new ConfigurationChangeException(message);
 		}
@@ -122,10 +129,10 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 	}
 
 	/**
-	 * Löscht oder wiederbelebt das Objekt ohne zu prüfen, ob der Konfigurationsverantwortliche das Objekt ändern darf und unabhängig davon, ob es sich um ein
+	 * LÃ¶scht oder wiederbelebt das Objekt ohne zu prÃ¼fen, ob der Konfigurationsverantwortliche das Objekt Ã¤ndern darf und unabhÃ¤ngig davon, ob es sich um ein
 	 * freies Objekt handelt.
 	 *
-	 * @param mod gibt an, ob die Objekt-Einheit gelöscht oder wiederbelebt werden soll
+	 * @param mod gibt an, ob die Objekt-Einheit gelÃ¶scht oder wiederbelebt werden soll
 	 */
 	void directModification(final Modification mod) {
 		// die Mengen und bei Komposition auch die Elemente werden betrachtet
@@ -155,12 +162,12 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 
 		ObjectLookup lookup = new VersionedView(dataModel, configurationVersions);
 
-		// alle Datensätze prüfen
+		// alle DatensÃ¤tze prÃ¼fen
 		final Collection<AttributeGroupUsage> atgUsages = getUsedAttributeGroupUsages();
 		for(AttributeGroupUsage atgUsage : atgUsages) {
 			final Data data = getConfigurationData(atgUsage, lookup);
 			if(data != null) {
-				// vorhandene Referenzen auf Komposition prüfen und Objekte bearbeiten
+				// vorhandene Referenzen auf Komposition prÃ¼fen und Objekte bearbeiten
 				modifyDependentObjects(data, mod);
 			}
 		}
@@ -173,10 +180,10 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 	}
 
 	/**
-	 * Objekte, die via Komposition referenziert werden, werden auf {@link #invalidate() ungültig} gesetzt.
+	 * Objekte, die via Komposition referenziert werden, werden auf {@link #invalidate() ungÃ¼ltig} gesetzt.
 	 *
-	 * @param data der zu prüfende Datensatz
-	 * @param mod  gibt an, ob die Objekt-Einheit gelöscht, wiederbelebt oder dupliziert werden soll
+	 * @param data der zu prÃ¼fende Datensatz
+	 * @param mod  gibt an, ob die Objekt-Einheit gelÃ¶scht, wiederbelebt oder dupliziert werden soll
 	 */
 	private void modifyDependentObjects(final Data data, final Modification mod) {
 		if(data.isPlain()) {
@@ -200,19 +207,19 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 	}
 
 	/**
-	 * Ermittelt, ob dieses Objekt ein freies Objekt ist. Ein freies Objekt ist ein Objekt, welches nicht Komponente eines anderen übergeordneten Objekts ist.
+	 * Ermittelt, ob dieses Objekt ein freies Objekt ist. Ein freies Objekt ist ein Objekt, welches nicht Komponente eines anderen Ã¼bergeordneten Objekts ist.
 	 *
 	 * @return <code>true</code>, wenn dieses Objekt ein freies Objekt ist, sonst <code>false</code>
 	 *
 	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException
-	 *          Nicht mehr gültige Objekte, können nicht geprüft werden, ob sie freie Objekte sind.
+	 *          Nicht mehr gÃ¼ltige Objekte, kÃ¶nnen nicht geprÃ¼ft werden, ob sie freie Objekte sind.
 	 */
 	private boolean isFreeObject() throws ConfigurationChangeException {
 		// gibt es einen Datensatz, der mittels Komposition auf dieses Objekt zeigt?
-		// alle Objekte (in der Version des Objekts) dieses Bereichs müssen betrachtet werden!
+		// alle Objekte (in der Version des Objekts) dieses Bereichs mÃ¼ssen betrachtet werden!
 		final Collection<SystemObject> systemObjects = new LinkedList<SystemObject>();
 		if(isValid()) {
-			// Sans, STS, KonfigAss: Zukünftig ungültig werdende Objekte werde nicht betrachtet
+			// Sans, STS, KonfigAss: ZukÃ¼nftig ungÃ¼ltig werdende Objekte werde nicht betrachtet
 			
 
 
@@ -223,7 +230,7 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 				if (object instanceof ConfigurationObject)
 				{
 					if (!(((ConfigurationObject)object).getNotValidSince() >= configurationArea.getModifiableVersion()))
-					// Objekt wird in zukünftiger Version nicht ungültig
+					// Objekt wird in zukÃ¼nftiger Version nicht ungÃ¼ltig
 					{
 						systemObjects.add(object);
 					}
@@ -231,7 +238,7 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 				else if (object instanceof DynamicObject)
 				{
 					if (!(((DynamicObject)object).getNotValidSince() >= configurationArea.getModifiableVersion()))
-					// Objekt wird in zukünftiger Version nicht ungültig
+					// Objekt wird in zukÃ¼nftiger Version nicht ungÃ¼ltig
 					{
 						systemObjects.add(object);
 					}
@@ -242,7 +249,7 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 			systemObjects.addAll(getConfigurationArea().getNewObjects());
 		}
 		else {
-			throw new ConfigurationChangeException("Nicht mehr gültige Objekte, können nicht geprüft werden, ob sie freie Objekte sind.");
+			throw new ConfigurationChangeException("Nicht mehr gÃ¼ltige Objekte, kÃ¶nnen nicht geprÃ¼ft werden, ob sie freie Objekte sind.");
 		}
 
 		// Sans, STS, KonfigAss: lookup erstellen und benutzen
@@ -258,7 +265,7 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 		ObjectLookup lookup = new VersionedView(dataModel, configurationVersions);
 
 		for(SystemObject systemObject : systemObjects) {
-			// dieses Objekt selbst muss nicht überprüft werden
+			// dieses Objekt selbst muss nicht Ã¼berprÃ¼ft werden
 			if(systemObject == this) continue;
 
 			// gibt es eine Menge mit Komposition, die auf dieses Objekt zeigt?
@@ -272,13 +279,13 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 				}
 			}
 
-			// Referenzen in Datensätzen der Objekte überprüfen
+			// Referenzen in DatensÃ¤tzen der Objekte Ã¼berprÃ¼fen
 			final Collection<AttributeGroupUsage> atgUsages = systemObject.getUsedAttributeGroupUsages();
 			for(AttributeGroupUsage atgUsage : atgUsages) {
 				final Data data = ((ConfigSystemObject)systemObject).getConfigurationData(atgUsage, lookup);
-				// rekursiv auf Abhängigkeit prüfen
+				// rekursiv auf AbhÃ¤ngigkeit prÃ¼fen
 				if(data != null && isObjectDependsOnDataset(data)) {
-					// es gibt eine Abhängigkeit, damit ist das Objekt kein freies Objekt
+					// es gibt eine AbhÃ¤ngigkeit, damit ist das Objekt kein freies Objekt
 					return false;
 				}
 			}
@@ -287,9 +294,9 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 	}
 
 	/**
-	 * Prüft, ob in dem angegebenen Datensatz eine Referenz mittels Komposition auf dieses Objekt verweist.
+	 * PrÃ¼ft, ob in dem angegebenen Datensatz eine Referenz mittels Komposition auf dieses Objekt verweist.
 	 *
-	 * @param data zu prüfenden Datensatz
+	 * @param data zu prÃ¼fenden Datensatz
 	 *
 	 * @return <code>true</code>, wenn es eine Referenz mittels Komposition auf dieses Objekt gibt, sonst <code>false</code>
 	 */
@@ -317,22 +324,22 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 
 	public void revalidate() throws ConfigurationChangeException {
 		if(!checkChangePermit()) {
-			final String errorMessage = "Das Objekt '" + getNameOrPidOrId() + "' darf nicht wiederbelebt werden, da keine Berechtigung hierfür vorliegt.";
+			final String errorMessage = "Das Objekt '" + getNameOrPidOrId() + "' darf nicht wiederbelebt werden, da keine Berechtigung hierfÃ¼r vorliegt.";
 			_debug.warning(errorMessage);
 			throw new ConfigurationChangeException(errorMessage);
 		}
-		// prüfen, ob es sich bei diesem Objekt um ein freies Objekt handelt.
+		// prÃ¼fen, ob es sich bei diesem Objekt um ein freies Objekt handelt.
 		if(!isFreeObject()) {
 			throw new ConfigurationChangeException("Dieses Objekt '" + getPidOrNameOrId() + "' ist kein freies Objekt und darf nicht wiederbelebt werden.");
 		}
 
-		// wenn das Objekt noch gültig ist, mache nichts
+		// wenn das Objekt noch gÃ¼ltig ist, mache nichts
 		if(getNotValidSince() == 0) return;
 
-		// das Objekt kann nur in einer Version wiederbelebt werden, in der es auch ungültig wurde (die modifiableVersion also)
+		// das Objekt kann nur in einer Version wiederbelebt werden, in der es auch ungÃ¼ltig wurde (die modifiableVersion also)
 		if(getNotValidSince() != getConfigurationArea().getModifiableVersion()) {
 			throw new ConfigurationChangeException(
-					"Das Objekt " + getPidOrNameOrId() + " wurde in einer früheren Version ungültig. Es kann nicht wiederbelebt werden."
+					"Das Objekt " + getPidOrNameOrId() + " wurde in einer frÃ¼heren Version ungÃ¼ltig. Es kann nicht wiederbelebt werden."
 			);
 		}
 		directModification(Modification.REVALIDATE);
@@ -348,18 +355,18 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 
 	public SystemObject duplicate(Map<String, String> substitudePids) throws ConfigurationChangeException {
 		if(!checkChangePermit()) {
-			final String errorMessage = "Das Objekt '" + getNameOrPidOrId() + "' darf nicht dupliziert werden, da keine Berechtigung hierfür vorliegt.";
+			final String errorMessage = "Das Objekt '" + getNameOrPidOrId() + "' darf nicht dupliziert werden, da keine Berechtigung hierfÃ¼r vorliegt.";
 			_debug.warning(errorMessage);
 			throw new ConfigurationChangeException(errorMessage);
 		}
-		// prüfen, ob es sich bei diesem Objekt um ein freies Objekt handelt.
+		// prÃ¼fen, ob es sich bei diesem Objekt um ein freies Objekt handelt.
 		if(!isFreeObject()) {
 			throw new ConfigurationChangeException("Dieses Objekt '" + getPidOrNameOrId() + "' ist kein freies Objekt und darf nicht dupliziert werden.");
 		}
 
 		// das Objekt wird bereits hier erstellt, denn falls ein Fehler in der Methode directDuplicate vorkommt, kann dieses Objekt mit der
-		// gesamten Objekt-Einheit gelöscht werden
-		final String pid = substitudePids.get(this.getPid());   // gibt es einen Ersatz für diese Pid?
+		// gesamten Objekt-Einheit gelÃ¶scht werden
+		final String pid = substitudePids.get(this.getPid());   // gibt es einen Ersatz fÃ¼r diese Pid?
 		final ConfigurationObject duplicatedObject = getConfigurationArea().createConfigurationObject(
 				(ConfigurationObjectType)this.getType(), pid == null ? this.getPid() : pid, this.getName(), null
 		);
@@ -367,7 +374,7 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 			directDuplicate(this, duplicatedObject, substitudePids);
 		}
 		catch(ConfigurationChangeException e) {
-			// dupliziertes Objekt wieder löschen, da es nicht vollständig dupliziert werden konnte
+			// dupliziertes Objekt wieder lÃ¶schen, da es nicht vollstÃ¤ndig dupliziert werden konnte
 			duplicatedObject.invalidate();
 			throw e;
 		}
@@ -375,11 +382,11 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 	}
 
 	/**
-	 * Diese Methode erhält ein KonfigurationsObjekt und gibt ein Duplikat zurück.
+	 * Diese Methode erhÃ¤lt ein KonfigurationsObjekt und gibt ein Duplikat zurÃ¼ck.
 	 *
 	 * @param object           zu duplizierendes KonfigurationsObjekt
 	 * @param duplicatedObject dupliziertes Objekt oder <code>null</code>, falls es noch dupliziert werden soll
-	 * @param substitudePids   Map, die die Wert-Paare (altePid, neuePid) enthält.
+	 * @param substitudePids   Map, die die Wert-Paare (altePid, neuePid) enthÃ¤lt.
 	 *
 	 * @return Duplikat
 	 *
@@ -396,7 +403,7 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 			);
 		}
 
-		// Mengen werden dupliziert und dem Objekt hinzugefügt
+		// Mengen werden dupliziert und dem Objekt hinzugefÃ¼gt
 		final List<ObjectSet> sets = object.getObjectSets();
 		for(ObjectSet set : sets) {
 			// neue Menge erstellen
@@ -405,7 +412,7 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 					set.getObjectSetType(), pid == null ? set.getPid() : pid, set.getName(), null
 			);
 			if(set.getObjectSetType().getReferenceType() == ReferenceType.COMPOSITION) {
-				// bei Komposition müssen die Elemente selber dupliziert werden
+				// bei Komposition mÃ¼ssen die Elemente selber dupliziert werden
 				final List<SystemObject> elements = set.getElements();
 				for(SystemObject element : elements) {
 					// jedes Element wird dupliziert
@@ -413,11 +420,11 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 				}
 			}
 			else {
-				// alle aktuellen Elemente aus der alten Menge nehmen und der neuen Menge hinzufügen
+				// alle aktuellen Elemente aus der alten Menge nehmen und der neuen Menge hinzufÃ¼gen
 				final List<SystemObject> elements = set.getElements();
 				duplicatedSet.add(elements.toArray(new SystemObject[elements.size()]));
 			}
-			// Menge dem Objekt hinzufügen
+			// Menge dem Objekt hinzufÃ¼gen
 			duplicatedObject.addSet(duplicatedSet);
 		}
 
@@ -432,7 +439,7 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 
 		ObjectLookup lookup = new VersionedView(dataModel, configurationVersions);
 
-		// alle Datensätze prüfen
+		// alle DatensÃ¤tze prÃ¼fen
 		final Collection<AttributeGroupUsage> atgUsages = object.getUsedAttributeGroupUsages();
 		for(AttributeGroupUsage atgUsage : atgUsages) {
 			final Data data = ((ConfigSystemObject)object).getConfigurationData(atgUsage, lookup);
@@ -440,7 +447,7 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 				final Data modifiableData = data.createModifiableCopy();
 				// Kompositionen ersetzen
 				duplicateDependentObjects(modifiableData, substitudePids);
-				// geänderten Datensatz speichern
+				// geÃ¤nderten Datensatz speichern
 				duplicatedObject.setConfigurationData(atgUsage, modifiableData);
 			}
 		}
@@ -451,7 +458,7 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 	 * Objekte, die via Komposition referenziert werden, werden dupliziert.
 	 *
 	 * @param data           der zu duplizierende Datensatz
-	 * @param substitudePids Map, die die Wert-Paare (altePid, neuePid) enthält.
+	 * @param substitudePids Map, die die Wert-Paare (altePid, neuePid) enthÃ¤lt.
 	 *
 	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException
 	 *          Falls ein via Komposition referenziertes Objekt nicht dupliziert werden konnte.
@@ -502,9 +509,9 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 	private Map<String, ObjectSet> getObjectSetMap() {
 		synchronized(_lockObject) {
 			if(_sets == null) {
-				Map<String, ObjectSet> sets = new HashMap<String, ObjectSet>();
+				Map<String, ObjectSet> sets = new TreeMap<String, ObjectSet>(Collator.getInstance(Locale.GERMAN)::compare);
 				try {
-					// feste ID für die Attributgruppenverwendung um alle Mengen zu erhalten
+					// feste ID fÃ¼r die Attributgruppenverwendung um alle Mengen zu erhalten
 					byte[] bytes = _systemObjectInfo.getConfigurationData(CONFIGURATION_SETS);
 					final ByteArrayInputStream in = new ByteArrayInputStream(bytes);
 					final Deserializer deserializer = SerializingFactory.createDeserializer(getSerializerVersion(), in);
@@ -522,7 +529,7 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 				catch(IllegalArgumentException ex) {
 					final String errorMessage = "Die Mengen des Objekts " + getPidOrNameOrId() + " konnten nicht ermittelt werden";
 					_debug.finest(errorMessage);
-					// es wird eine leere Map zurückgegeben.
+					// es wird eine leere Map zurÃ¼ckgegeben.
 				}
 				catch(Exception ex) {
 					final String errorMessage = "Die Mengen des Objekts " + getPidOrNameOrId() + " konnten nicht ermittelt werden";
@@ -540,26 +547,26 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 	}
 
 	public void addSet(ObjectSet set) throws ConfigurationChangeException {
-		// darf hinzugefügt werden ?
+		// darf hinzugefÃ¼gt werden ?
 		if(checkChangePermit()) {
 			// wurde das Objekt bereits aktiviert?
 			if(getValidSince() < getConfigurationArea().getModifiableVersion()) {
-				// Objekt darf nicht mehr verändert werden
+				// Objekt darf nicht mehr verÃ¤ndert werden
 				throw new ConfigurationChangeException(
-						"Das Konfigurationsobjekt " + getNameOrPidOrId() + " darf nicht mehr verändert werden, "
-						+ " da es bereits aktiviert oder zur Übernahme / Aktivierung freigegeben wurde."
+						"Das Konfigurationsobjekt " + getNameOrPidOrId() + " darf nicht mehr verÃ¤ndert werden, "
+						+ " da es bereits aktiviert oder zur Ãœbernahme / Aktivierung freigegeben wurde."
 				);
 			}
-			// das Objekt darf verändert werden
+			// das Objekt darf verÃ¤ndert werden
 			synchronized(_lockObject) {
 				getObjectSetMap();  // Mengen wurden eingeladen, falls sie noch nicht da waren
 				if(_sets.containsKey(set.getName())) {
 					throw new ConfigurationChangeException(
-							"Die Menge " + set.getNameOrPidOrId() + " gibt es bereits am Konfigurationsobjekt. " + "Sie wurde nicht hinzugefügt."
+							"Die Menge " + set.getNameOrPidOrId() + " gibt es bereits am Konfigurationsobjekt. " + "Sie wurde nicht hinzugefÃ¼gt."
 					);
 				}
 				else {
-					// Menge hinzufügen
+					// Menge hinzufÃ¼gen
 					_sets.put(set.getName(), set);
 
 					// den konfigurierenden Datensatz schreiben
@@ -575,9 +582,9 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 		}
 		else {
 			throw new ConfigurationChangeException(
-					"Es liegt keine Berechtigung zum Verändern dieses Objekts '" + getNameOrPidOrId() + "' vor."
-					+ " Der Verantwortliche der Konfiguration ist nicht für den Konfigurationsbereich '" + getConfigurationArea().getNameOrPidOrId()
-					+ "' zuständig."
+					"Es liegt keine Berechtigung zum VerÃ¤ndern dieses Objekts '" + getNameOrPidOrId() + "' vor."
+					+ " Der Verantwortliche der Konfiguration ist nicht fÃ¼r den Konfigurationsbereich '" + getConfigurationArea().getNameOrPidOrId()
+					+ "' zustÃ¤ndig."
 			);
 		}
 	}
@@ -587,18 +594,18 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 		if(checkChangePermit()) {
 			// wurde das Objekt bereits aktiviert?
 			if(getValidSince() < getConfigurationArea().getModifiableVersion()) {
-				// Objekt darf nicht mehr verändert werden
+				// Objekt darf nicht mehr verÃ¤ndert werden
 				throw new ConfigurationChangeException(
-						"Das Konfigurationsobjekt " + getNameOrPidOrId() + " darf nicht mehr verändert werden, "
-						+ " da es bereits aktiviert oder zur Übernahme / Aktivierung freigegeben wurde."
+						"Das Konfigurationsobjekt " + getNameOrPidOrId() + " darf nicht mehr verÃ¤ndert werden, "
+						+ " da es bereits aktiviert oder zur Ãœbernahme / Aktivierung freigegeben wurde."
 				);
 			}
-			// das Objekt darf also verändert werden
+			// das Objekt darf also verÃ¤ndert werden
 			synchronized(_lockObject) {
 				getObjectSetMap();   // Mengen wurden eingeladen, falls sie noch nicht da waren
 				ObjectSet returnedSet = _sets.remove(set.getName());
 				if(returnedSet != null) {
-					// es wurde tatsächlich eine Menge gelöscht
+					// es wurde tatsÃ¤chlich eine Menge gelÃ¶scht
 					// -> den konfigurierenden Datensatz schreiben
 					try {
 						setConfigurationData(_sets.values());
@@ -612,15 +619,15 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 		}
 		else {
 			throw new ConfigurationChangeException(
-					"Es liegt keine Berechtigung zum Verändern dieses Objekts '" + getNameOrPidOrId() + "' vor."
-					+ " Der Verantwortliche der Konfiguration ist nicht für den Konfigurationsbereich '" + getConfigurationArea().getNameOrPidOrId()
-					+ "' zuständig."
+					"Es liegt keine Berechtigung zum VerÃ¤ndern dieses Objekts '" + getNameOrPidOrId() + "' vor."
+					+ " Der Verantwortliche der Konfiguration ist nicht fÃ¼r den Konfigurationsbereich '" + getConfigurationArea().getNameOrPidOrId()
+					+ "' zustÃ¤ndig."
 			);
 		}
 	}
 
 	/**
-	 * Speichert den konfigurierenden Datensatz, der die Mengen enthält, am Objekt und gibt dem Konfigurationsbereich Bescheid, dass sich ein Datensatz geändert
+	 * Speichert den konfigurierenden Datensatz, der die Mengen enthÃ¤lt, am Objekt und gibt dem Konfigurationsbereich Bescheid, dass sich ein Datensatz geÃ¤ndert
 	 * hat.
 	 *
 	 * @param sets Die Mengen, die in einem Datensatz gespeichert werden sollen.
@@ -646,8 +653,8 @@ public class ConfigConfigurationObject extends ConfigSystemObject implements Con
 	}
 
 	/**
-	 * Wird aufgerufen, wenn das Objekt verändert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zurücksetzen. Erbende Klassen müssen
-	 * diese Funktion überschreiben, wenn sie Daten cachen.
+	 * Wird aufgerufen, wenn das Objekt verÃ¤ndert wird. Soll alle zwischengespeicherten Daten neu anfordern bzw. zurÃ¼cksetzen. Erbende Klassen mÃ¼ssen
+	 * diese Funktion Ã¼berschreiben, wenn sie Daten cachen.
 	 */
 	void invalidateCache() {
 		super.invalidateCache();

@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.sys.funclib.losb.
  * 
- * de.bsvrz.sys.funclib.losb is free software; you can redistribute it and/or modify
+ * de.bsvrz.sys.funclib.losb is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.losb is distributed in the hope that it will be useful,
@@ -14,30 +14,36 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.sys.funclib.losb; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.losb.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.losb.datk;
 
 /**
- * Definiert den Typ der Kennzeichnungsart von Keine-Änderungen-Markierungen bei Zustandsprotokollen
+ * Definiert den Typ der Kennzeichnungsart von Keine-Ã„nderungen-Markierungen bei Zustandsprotokollen
  *
  * @author Kappich Systemberatung
- * @version $Revision: 12816 $
+ * @version $Revision$
  */
 public enum NoChangeMarker {
 	/**
-	 * Gibt an, dass die Information, dass sich die Daten nicht geändert haben, zeilenweise übertragen wird.
+	 * Gibt an, dass die Information, dass sich die Daten nicht geÃ¤ndert haben, zeilenweise Ã¼bertragen wird.
 	 */
 	Row,
 	/**
-	 * Gibt an, dass die Information, dass sich die Daten nicht geändert haben, für jede Zelle einzeln übertragen wird.
+	 * Gibt an, dass die Information, dass sich die Daten nicht geÃ¤ndert haben, fÃ¼r jede Zelle einzeln Ã¼bertragen wird.
 	 */
 	Cell,
 	/**
 	 * Gibt an, dass der Default-Wert des Skriptes beibehalten werden soll, Wenn das Skript keine explizite Vorgabe macht, wird
-	 * die Information zeilenweise übertragen ({@link #Row}).
+	 * die Information zeilenweise Ã¼bertragen ({@link #Row}).
 	 */
 	Undefined
 

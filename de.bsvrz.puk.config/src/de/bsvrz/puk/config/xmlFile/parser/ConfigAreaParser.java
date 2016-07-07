@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.xmlFile.parser;
@@ -76,11 +82,11 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Diese Klasse erzeugt aus einer XML-Versorgungsdatei Objekte, die in die Konfiguration per Import eingebracht werden können. Die XML-Datei wird mit der
+ * Diese Klasse erzeugt aus einer XML-Versorgungsdatei Objekte, die in die Konfiguration per Import eingebracht werden kÃ¶nnen. Die XML-Datei wird mit der
  * K2S.dtd bearbeitet.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11100 $
+ * @version $Revision$
  */
 public class ConfigAreaParser {
 
@@ -97,11 +103,11 @@ public class ConfigAreaParser {
 	/**
 	 * @param areaFile Versorungsdatei
 	 *
-	 * @return Objekte, die aus der Versorungsdatei erzeugt wurden und mit Hilfe des Imports in die Konfiguration importiert werden können
+	 * @return Objekte, die aus der Versorungsdatei erzeugt wurden und mit Hilfe des Imports in die Konfiguration importiert werden kÃ¶nnen
 	 *
 	 * @throws SAXException             Fehler beim parsen der Versorgungsdatei
 	 * @throws IllegalArgumentException Der Dateiname (ohne die Endung ".xml"), der die Pid des zu importierenden Bereichs darstellt, stimmt nicht mit dem Bereich
-	 *                                  überein, der durch die Datei importiert werden soll.
+	 *                                  Ã¼berein, der durch die Datei importiert werden soll.
 	 */
 	public ConfigurationAreaProperties parse(File areaFile) throws SAXException {
 		CountingErrorHandler errorHandler = new CountingErrorHandler();
@@ -113,7 +119,7 @@ public class ConfigAreaParser {
 			_saxPullAdapter.stop();
 		}
 		catch(IllegalStateException e) {
-			_debug.error("Ungültiger Zustand beim Parsen " + _xmlStream.getLocationHint(), e);
+			_debug.error("UngÃ¼ltiger Zustand beim Parsen " + _xmlStream.getLocationHint(), e);
 			exception = new SAXException(e);
 		}
 		catch(InterruptedException e) {
@@ -149,7 +155,7 @@ public class ConfigAreaParser {
 			// Der Dateinamen spiegelt nicht die Pid des Bereichs wieder, der durch die Datei importiert werden soll
 			throw new IllegalArgumentException(
 					"Der Bereich, der importiert werden sollte, besitzt die Pid: " + pidConfigArea + ". Der Name, der zu importierenden Datei lautet aber: "
-					+ areaFile.getName() + " (" + pidFile + "). Der Dateiname paßt also nicht zur Pid des zu importierenden Bereichs."
+					+ areaFile.getName() + " (" + pidFile + "). Der Dateiname paÃŸt also nicht zur Pid des zu importierenden Bereichs."
 			);
 		}
 
@@ -157,9 +163,9 @@ public class ConfigAreaParser {
 	}
 
 	/**
-	 * @param inputStream InputStream mit XML-Inhalt. Wird für Tests und andere Fälle benutzt, um nicht unnötigerweise temporäre Dateien anlegen zu müssen.
+	 * @param inputStream InputStream mit XML-Inhalt. Wird fÃ¼r Tests und andere FÃ¤lle benutzt, um nicht unnÃ¶tigerweise temporÃ¤re Dateien anlegen zu mÃ¼ssen.
 	 *
-	 * @return Objekte, die aus den XML-Daten erzeugt wurden und mit Hilfe des Imports in die Konfiguration importiert werden können
+	 * @return Objekte, die aus den XML-Daten erzeugt wurden und mit Hilfe des Imports in die Konfiguration importiert werden kÃ¶nnen
 	 *
 	 * @throws SAXException             Fehler beim parsen der XML-Daten
 	 */
@@ -173,7 +179,7 @@ public class ConfigAreaParser {
 			_saxPullAdapter.stop();
 		}
 		catch(IllegalStateException e) {
-			_debug.error("Ungültiger Zustand beim Parsen " + _xmlStream.getLocationHint(), e);
+			_debug.error("UngÃ¼ltiger Zustand beim Parsen " + _xmlStream.getLocationHint(), e);
 			exception = new SAXException(e);
 		}
 		catch(InterruptedException e) {
@@ -201,9 +207,9 @@ public class ConfigAreaParser {
 	}
 
 	/**
-	 * Beginnt die XML-Versorgungsdatei zu parsen und erstellt die benötigten Objekte
+	 * Beginnt die XML-Versorgungsdatei zu parsen und erstellt die benÃ¶tigten Objekte
 	 *
-	 * @return Objekte, die aus der XML-Datei erzeugt wurden und in die Konfiguration importiert werden können
+	 * @return Objekte, die aus der XML-Datei erzeugt wurden und in die Konfiguration importiert werden kÃ¶nnen
 	 *
 	 * @throws SAXException         Fehler beim parsen
 	 * @throws InterruptedException Thread wurde mit Interrupt unterbrochen
@@ -256,7 +262,7 @@ public class ConfigAreaParser {
 				}
 				else if(_xmlStream.matchStartElement("attributauswahlDefinition")) {
 //					System.out.println("attributauswahlDefinition");
-					// Wird nicht unterstützt
+					// Wird nicht unterstÃ¼tzt
 					ignoreElementStructureAndWarn();
 				}
 				else if(_xmlStream.matchStartElement("mengenDefinition")) {
@@ -387,10 +393,10 @@ public class ConfigAreaParser {
 		final String pid = attributes.getValue("pid");
 		final String name = attributes.getValue("name");
 
-		// Attribut konfigurierend wird nicht mehr benötigt und deshalb ignoriert.
+		// Attribut konfigurierend wird nicht mehr benÃ¶tigt und deshalb ignoriert.
 		final String configuring = attributes.getValue("konfigurierend");
 		final String parametrierend = attributes.getValue("parametrierend");
-		// Code wird nicht mehr benötigt und darum ignoriert
+		// Code wird nicht mehr benÃ¶tigt und darum ignoriert
 //		final String code = attributes.getValue("code");
 
 		final SystemObjectInfo info = parseInfo();
@@ -401,7 +407,7 @@ public class ConfigAreaParser {
 		attributeGroupProperties.setParameter(parametrierend);
 		final boolean isParameter = attributeGroupProperties.isParameter();
 
-		// Code wird nicht mehr benötigt und darum ignoriert
+		// Code wird nicht mehr benÃ¶tigt und darum ignoriert
 //		attributeGroupProperties.setCode(code);
 
 		if(_xmlStream.matchStartElement("aspekt")) {
@@ -433,7 +439,7 @@ public class ConfigAreaParser {
 							+ " wurde weder der konfigurationsModus noch der onlineModus angegeben. Betroffener Aspekt, pid " + attributesAspect.getValue("pid")
 					);
 
-					// Wenn konfigurierend auf "ja" gesetzt wurde, wird datensatzOptional gewählt.
+					// Wenn konfigurierend auf "ja" gesetzt wurde, wird datensatzOptional gewÃ¤hlt.
 					// Wenn konfigurierend auf "nein" gesetzt wurde (oder der default-Wert benutzt wird), dann wird quelleUndSenke benutzt
 //					if (attributeGroupProperties.getConfiguring()) {
 //						// entspricht "ja"
@@ -447,7 +453,7 @@ public class ConfigAreaParser {
 					// Es wurden zwei Werte angegeben
 					throw new SAXException(
 							"In der Attributgruppendefinition, pid " + pid
-							+ " wurde sowohl für den konfigurationsModus als auch für den onlineModus ein Wert festgelegt festgelegt. Betroffener Aspekt, pid "
+							+ " wurde sowohl fÃ¼r den konfigurationsModus als auch fÃ¼r den onlineModus ein Wert festgelegt festgelegt. Betroffener Aspekt, pid "
 							+ attributesAspect.getValue("pid")
 					);
 				}
@@ -480,9 +486,9 @@ public class ConfigAreaParser {
 			attributeAndAttributeList.add(attributeProperties);
 		}
 
-		// Bei Parameterattributgruppen wird falls noch nicht vorhanden automatisch ein Urlasser-Attribut als erstes Attribut ergänzt
+		// Bei Parameterattributgruppen wird falls noch nicht vorhanden automatisch ein Urlasser-Attribut als erstes Attribut ergÃ¤nzt
 		if(isParameter && !hasSeenInitiatorAndCauseAttribute) {
-			_debug.info("Urlasser-Attributliste wird in der Attributgruppe " + attributeGroupProperties.getPid() + " automatisch an erster Stelle eingefügt");
+			_debug.info("Urlasser-Attributliste wird in der Attributgruppe " + attributeGroupProperties.getPid() + " automatisch an erster Stelle eingefÃ¼gt");
 			final AttributeProperties syntheticInitiatorAndCauseAttribute = new ListAttributeProperties("atl.urlasser");
 			syntheticInitiatorAndCauseAttribute.setName("Urlasser");
 			syntheticInitiatorAndCauseAttribute.setMaxCount(1);
@@ -530,7 +536,7 @@ public class ConfigAreaParser {
 				if(!"".equals(configurationMode)) {
 					throw new SAXException(
 							"In der Transaktionsdefinition, pid " + pid
-							+ " wurde ein konfigurationsModus angegeben. Transaktionen können nur im onlineModus definiert werden."
+							+ " wurde ein konfigurationsModus angegeben. Transaktionen kÃ¶nnen nur im onlineModus definiert werden."
 							+ " Betroffener Aspekt, pid " + attributesAspect.getValue("pid")
 					);
 				}
@@ -557,7 +563,7 @@ public class ConfigAreaParser {
 			_xmlStream.pullEndElement();
 		}
 
-		if(_xmlStream.matchStartElement("benötigt")) {
+		if(_xmlStream.matchStartElement("benÃ¶tigt")) {
 			_xmlStream.pullStartElement();
 			// Alle Elemente(Pids) einlesen
 			final List<TransactionProperties.DataIdentification> dids = parseTransactionConstraint();
@@ -573,7 +579,7 @@ public class ConfigAreaParser {
 	private List<TransactionProperties.DataIdentification> parseTransactionConstraint() throws InterruptedException, SAXException {
 		final List<TransactionProperties.DataIdentification> dids = new ArrayList<TransactionProperties.DataIdentification>();
 
-		while(_xmlStream.matchStartElement("transaktionsEinschränkung")) {
+		while(_xmlStream.matchStartElement("transaktionsEinschrÃ¤nkung")) {
 			final AttributeMap attributesElement = _xmlStream.pullStartElement().getAttributes();
 			dids.add(
 					new TransactionProperties.DataIdentification(
@@ -602,11 +608,11 @@ public class ConfigAreaParser {
 
 		final String pid = aspectDefinitionAttributes.getValue("pid");
 		final String name = aspectDefinitionAttributes.getValue("name");
-		// Code wird nicht mehr benötigt
+		// Code wird nicht mehr benÃ¶tigt
 //		final String code = aspectDefinitionAttributes.getValue("code");
 		final SystemObjectInfo info = parseInfo();
 		AspectProperties aspectProperties = new AspectProperties(name, pid, 0, "", info);
-		// Code wird nicht mehr benötigt
+		// Code wird nicht mehr benÃ¶tigt
 //		aspectProperties.setCode(code);
 		_xmlStream.pullEndElement();
 
@@ -649,15 +655,15 @@ public class ConfigAreaParser {
 			integerDef.setBits(attributesInteger.getValue("bits"));
 
 			final int definedBitCount = integerDef.getBits();
-			// Liste, die alle Bereiche und Zustände speichert
+			// Liste, die alle Bereiche und ZustÃ¤nde speichert
 			final List<ConfigurationIntegerValueRange> regionAndState = new ArrayList<ConfigurationIntegerValueRange>();
 
 			long maximum = 0;
 			long minimum = 0;
 
-			// Wenn die Anzahl Bits nicht vorgegeben ist, wird minimum und maximum aus den Zuständen und Bereichen ermittelt und die Anzahl Bits berechnet
-			// Wenn die Anzahl Bits vorgegeben ist, wird das Maximum und Minimum berechnet und die definierten Zuständen und Wertebereich werden gegen diese
-			// Werte geprüft.
+			// Wenn die Anzahl Bits nicht vorgegeben ist, wird minimum und maximum aus den ZustÃ¤nden und Bereichen ermittelt und die Anzahl Bits berechnet
+			// Wenn die Anzahl Bits vorgegeben ist, wird das Maximum und Minimum berechnet und die definierten ZustÃ¤nden und Wertebereich werden gegen diese
+			// Werte geprÃ¼ft.
 			if(definedBitCount > 0) {
 				maximum = Long.MAX_VALUE >> (64 - definedBitCount);
 				minimum = Long.MIN_VALUE >> (64 - definedBitCount);
@@ -670,7 +676,7 @@ public class ConfigAreaParser {
 
 					configurationValueRange.setScale(configRegionAttributes.getValue("skalierung"));
 					if("".equals(configRegionAttributes.getValue("minimum"))) {
-						// Es gibt keinen Wert für das Minimum. Also kann dieser Wert aus dem Attribut bits berechnet werden
+						// Es gibt keinen Wert fÃ¼r das Minimum. Also kann dieser Wert aus dem Attribut bits berechnet werden
 
 						if(definedBitCount > 0) {
 							configurationValueRange.setMinimum(minimum);
@@ -678,8 +684,8 @@ public class ConfigAreaParser {
 						else {
 							// Es wurde kein Wert angegeben, also kann nichts sinnvolles Berechnet werden
 							throw new SAXException(
-									"Für ein Element attributDefinition pid " + pid
-									+ " kann für das Element ganzzahl kein gültiges minimum berechnet werden, da das Attribut bits nicht sinnvoll gesetzt wurde"
+									"FÃ¼r ein Element attributDefinition pid " + pid
+									+ " kann fÃ¼r das Element ganzzahl kein gÃ¼ltiges minimum berechnet werden, da das Attribut bits nicht sinnvoll gesetzt wurde"
 							);
 						}
 					}
@@ -689,7 +695,7 @@ public class ConfigAreaParser {
 					}
 
 					if("".equals(configRegionAttributes.getValue("maximum"))) {
-						// Es gibt keinen Wert für das Maximum. Also kann dieser Wert aus dem Attribut bits berechnet werden
+						// Es gibt keinen Wert fÃ¼r das Maximum. Also kann dieser Wert aus dem Attribut bits berechnet werden
 
 						if(definedBitCount > 0) {
 							// Das Maximum kann berechnet werden. 2^(Bits-1) - 1
@@ -698,8 +704,8 @@ public class ConfigAreaParser {
 						else {
 							// Es wurde kein Wert angegeben, also kann nichts sinnvolles Berechnet werden
 							throw new SAXException(
-									"Für ein Element attributDefinition pid " + pid
-									+ " kann für das Element ganzzahl kein gültiges maximum berechnet werden, da das Attribut bits nicht sinnvoll gesetzt wurde"
+									"FÃ¼r ein Element attributDefinition pid " + pid
+									+ " kann fÃ¼r das Element ganzzahl kein gÃ¼ltiges maximum berechnet werden, da das Attribut bits nicht sinnvoll gesetzt wurde"
 							);
 						}
 					}
@@ -715,7 +721,7 @@ public class ConfigAreaParser {
 					if(configurationValueRange.getMinimum() < minimum) {
 						if(definedBitCount >= 0) {
 							throw new SAXException(
-									"Für das Element attributDefinition pid " + pid + " ist das vorgegebene Minimum (" + configurationValueRange.getMinimum()
+									"FÃ¼r das Element attributDefinition pid " + pid + " ist das vorgegebene Minimum (" + configurationValueRange.getMinimum()
 									+ ") kleiner als der kleinste Wert (" + minimum + "), der mit der definierten Anzahl Bits (" + definedBitCount
 									+ ") dargestellt werden kann"
 							);
@@ -728,8 +734,8 @@ public class ConfigAreaParser {
 					if(configurationValueRange.getMaximum() > maximum) {
 						if(definedBitCount >= 0) {
 							throw new SAXException(
-									"Für das Element attributDefinition pid " + pid + " ist das vorgegebene Maximum (" + configurationValueRange.getMaximum()
-									+ ") größer als der größte Wert (" + maximum + "), der mit der definierten Anzahl Bits (" + definedBitCount
+									"FÃ¼r das Element attributDefinition pid " + pid + " ist das vorgegebene Maximum (" + configurationValueRange.getMaximum()
+									+ ") grÃ¶ÃŸer als der grÃ¶ÃŸte Wert (" + maximum + "), der mit der definierten Anzahl Bits (" + definedBitCount
 									+ ") dargestellt werden kann"
 							);
 						}
@@ -749,7 +755,7 @@ public class ConfigAreaParser {
 					if(configurationState.getValue() < minimum) {
 						if(definedBitCount >= 0) {
 							throw new SAXException(
-									"Für das Element attributDefinition pid " + pid + " ist der Wertezustand " + configurationState.getName() + " ("
+									"FÃ¼r das Element attributDefinition pid " + pid + " ist der Wertezustand " + configurationState.getName() + " ("
 									+ configurationState.getValue() + ") kleiner als der kleinste Wert (" + minimum + "), der mit der definierten Anzahl Bits ("
 									+ definedBitCount + ") dargestellt werden kann"
 							);
@@ -762,8 +768,8 @@ public class ConfigAreaParser {
 					if(configurationState.getValue() > maximum) {
 						if(definedBitCount >= 0) {
 							throw new SAXException(
-									"Für das Element attributDefinition pid " + pid + " ist der Wertezustand " + configurationState.getName() + " ("
-									+ configurationState.getValue() + ") größer als der größte Wert (" + maximum + "), der mit der definierten Anzahl Bits ("
+									"FÃ¼r das Element attributDefinition pid " + pid + " ist der Wertezustand " + configurationState.getName() + " ("
+									+ configurationState.getValue() + ") grÃ¶ÃŸer als der grÃ¶ÃŸte Wert (" + maximum + "), der mit der definierten Anzahl Bits ("
 									+ definedBitCount + ") dargestellt werden kann"
 							);
 						}
@@ -778,7 +784,7 @@ public class ConfigAreaParser {
 			} // while(_xmlStream.matchStartElement())
 
 			// Falls bits nicht gesetzt wurde, stehen in den Variablen minimum und maximum Werte, mit denen bits
-			// berechnet werden können
+			// berechnet werden kÃ¶nnen
 			if(definedBitCount <= 0) {
 				if(minimum < Integer.MIN_VALUE || maximum > Integer.MAX_VALUE) {
 					integerDef.setBits(8 * 8);
@@ -794,7 +800,7 @@ public class ConfigAreaParser {
 				}
 			}
 
-			// Ende für Attribute der Ganzzahl
+			// Ende fÃ¼r Attribute der Ganzzahl
 			_xmlStream.pullEndElement();
 
 			integerDef.setValueRangeAndState(regionAndState.toArray(new ConfigurationIntegerValueRange[regionAndState.size()]));
@@ -861,7 +867,7 @@ public class ConfigAreaParser {
 
 		AttributeListProperties attributeListProperties = new AttributeListProperties(name, pid, 0, "", info);
 
-		// Liste, die alle Attribute und Attributlisten enthält
+		// Liste, die alle Attribute und Attributlisten enthÃ¤lt
 		final List<AttributeProperties> attributesAndAttributeLists = new ArrayList<AttributeProperties>();
 
 		while(_xmlStream.matchStartElement()) {
@@ -914,14 +920,14 @@ public class ConfigAreaParser {
 		// Assoziation gesetzt (dies wird in PuK gefordert).
 
 		if(objectSetTypeProperties.getMutable()) {
-			// Die Menge ist änderbar, somit ist sie automatisch eine dynamische Menge
+			// Die Menge ist Ã¤nderbar, somit ist sie automatisch eine dynamische Menge
 			if(objectSetTypeProperties.getReferenceType() == null) {
 				objectSetTypeProperties.setReferenceType(ReferenceType.ASSOCIATION);
 			}
 			else if(objectSetTypeProperties.getReferenceType() != ReferenceType.ASSOCIATION) {
 				// Fehler
 				throw new IllegalArgumentException(
-						"Referenzierungsart bei der Mengendefinitaion einer dynamischen Menge ist fehlerhaft, erlaubt Assoziation, gewählt wurde "
+						"Referenzierungsart bei der Mengendefinitaion einer dynamischen Menge ist fehlerhaft, erlaubt Assoziation, gewÃ¤hlt wurde "
 						+ objectSetTypeProperties.getReferenceType() + " Pid " + pid
 				);
 			}
@@ -976,30 +982,30 @@ public class ConfigAreaParser {
 
 				final AttributeMap attributesDataset = _xmlStream.pullStartElement().getAttributes();
 
-				// Es gibt 2 Möglichkeiten einen Datensatz zu definieren.
-				// 1) Über die Pid der ATG (Attribut "pid") (veraltet)
-				// 2) Über die Attribute "attributgruppe" und "aspekt" (neu)
+				// Es gibt 2 MÃ¶glichkeiten einen Datensatz zu definieren.
+				// 1) Ãœber die Pid der ATG (Attribut "pid") (veraltet)
+				// 2) Ãœber die Attribute "attributgruppe" und "aspekt" (neu)
 
-				// Pid der Attributgruppe, dies wird in beiden Fällen benötigt, aber unterschiedlich eingelesen
+				// Pid der Attributgruppe, dies wird in beiden FÃ¤llen benÃ¶tigt, aber unterschiedlich eingelesen
 				String pidDataSet = attributesDataset.getValue("attributgruppe");
 				// Pid des zu nutzenden Aspekts
 				String pidAspect = attributesDataset.getValue("aspekt");
 
 				
 				if("".equals(pidDataSet)) {
-					// Die Attributgruppe soll über den alten Weg 1) definiert werden.
+					// Die Attributgruppe soll Ã¼ber den alten Weg 1) definiert werden.
 					// Der Aspekt muss nicht eingelesen werden
 					pidDataSet = attributesDataset.getValue("pid");
 				}
 
 				final List<DatasetElement> dateAndDataListAndDateField = parseDatasetElements();
 
-				// Ende für Datensatz
+				// Ende fÃ¼r Datensatz
 				_xmlStream.pullEndElement();
 				final ConfigurationDataset configurationDataset = new ConfigurationDataset(pidDataSet, pidAspect);
 				// eingelesene Elemente
 				configurationDataset.setDataAndDataListAndDataField(dateAndDataListAndDateField.toArray(new DatasetElement[dateAndDataListAndDateField.size()]));
-				// Das Element "datensatz" hinzufügen
+				// Das Element "datensatz" hinzufÃ¼gen
 				dataSetAndObjectSet.add(configurationDataset);
 			}
 			else if(_xmlStream.matchStartElement("defaultParameter")) {
@@ -1101,7 +1107,7 @@ public class ConfigAreaParser {
 	/**
 	 * Liest die "konfigurationsAenderung" aus einer XML-Versorgungsdatei ein (mit Start und Endtag).
 	 *
-	 * @return Objekt, das mittels Import in die Konfiguration übernommen werden kann
+	 * @return Objekt, das mittels Import in die Konfiguration Ã¼bernommen werden kann
 	 *
 	 * @throws SAXException         Fehler beim parsen
 	 * @throws InterruptedException
@@ -1150,7 +1156,7 @@ public class ConfigAreaParser {
 			// Ende konfigurationsAenderung
 			_xmlStream.pullEndElement();
 
-			// Es stehen alle Informationen zur Verfügung um ein Objekt zu erzeugen
+			// Es stehen alle Informationen zur VerfÃ¼gung um ein Objekt zu erzeugen
 			areaChangeInformations.add(
 					new ConfigurationAreaChangeInformation(
 							attributes.getValue("stand"),
@@ -1260,7 +1266,7 @@ public class ConfigAreaParser {
 	private void ignoreElementStructureAndWarn() throws SAXException, InterruptedException {
 		final StartElementEvent startElement = ignoreElementStructure();
 		_debug.warning(
-				"Element <" + startElement.getLocalName() + "> mit Attributen " + startElement.getAttributes() + " wird nicht unterstützt und ignoriert"
+				"Element <" + startElement.getLocalName() + "> mit Attributen " + startElement.getAttributes() + " wird nicht unterstÃ¼tzt und ignoriert"
 		);
 	}
 
@@ -1300,7 +1306,7 @@ public class ConfigAreaParser {
 	private String parseStyledTextStructure() throws InterruptedException, SAXException {
 		final StringBuilder textBuffer = new StringBuilder();
 		if(parseStyledTextStructure(textBuffer)) {
-			// textBuffer enthält HTML-Formatierungen, deshalb mit "<html><body>" und "</body></html>" einklammern
+			// textBuffer enthÃ¤lt HTML-Formatierungen, deshalb mit "<html><body>" und "</body></html>" einklammern
 			textBuffer.insert(0, "<html><body>").append("</body></html>");
 		}
 		return textBuffer.toString();
@@ -1349,7 +1355,7 @@ public class ConfigAreaParser {
 	}
 
 	/**
-	 * Liest ein "datenliste" Objekt aus der XML-Datei und gibt es als Java-Objekt zurück.
+	 * Liest ein "datenliste" Objekt aus der XML-Datei und gibt es als Java-Objekt zurÃ¼ck.
 	 *
 	 * @return s.o.
 	 */
@@ -1403,7 +1409,7 @@ public class ConfigAreaParser {
 		// Die Variable ist immer gesetzt, da der default-Wert "fest" ist
 		attribute.setTargetValue(attributesAttribute.getValue("anzahlIst"));
 
-		// Wie das attribut "anzahl" gesetzt wird, hängt davon ab, ob es bereits einen Wert enthält oder
+		// Wie das attribut "anzahl" gesetzt wird, hÃ¤ngt davon ab, ob es bereits einen Wert enthÃ¤lt oder
 		// ob kein Wert gesetzt wurde. Wurde kein Wert gesetzt, so wird der Wert mit dem Attribut "anzahlIst"
 		// bestimmt.
 
@@ -1417,7 +1423,7 @@ public class ConfigAreaParser {
 				attribute.setMaxCount(1);
 			}
 			else {
-				// 0 steht für unbegrenzt
+				// 0 steht fÃ¼r unbegrenzt
 				attribute.setMaxCount(0);
 			}
 		}
@@ -1450,7 +1456,7 @@ public class ConfigAreaParser {
 		// Die Variable ist immer gesetzt, da der default-Wert "fest" ist
 		oneAttributeList.setTargetValue(attributeListAttributes.getValue("anzahlIst"));
 
-		// Wie das attribut "anzahl" gesetzt wird, hängt davon ab, ob es bereits einen Wert enthält oder
+		// Wie das attribut "anzahl" gesetzt wird, hÃ¤ngt davon ab, ob es bereits einen Wert enthÃ¤lt oder
 		// ob kein Wert gesetzt wurde. Wurde kein Wert gesetzt, so wird der Wert mit dem Attribut "anzahlIst"
 		// bestimmt.
 
@@ -1464,7 +1470,7 @@ public class ConfigAreaParser {
 				oneAttributeList.setMaxCount(1);
 			}
 			else {
-				// 0 steht für unbegrenzt
+				// 0 steht fÃ¼r unbegrenzt
 				oneAttributeList.setMaxCount(0);
 			}
 		}

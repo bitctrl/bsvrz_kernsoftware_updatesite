@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.dataRepresentation;
@@ -40,7 +46,7 @@ import java.util.regex.Pattern;
  * Diese abstarkte Klasse stellt eine Oberklasse zur Erstellung der Basisattributwerte dar. Hier werden weiter Subklassen definiert, die zur
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13226 $
+ * @version $Revision$
  */
 public abstract class AttributeBaseValueDataFactory {
 
@@ -65,7 +71,7 @@ public abstract class AttributeBaseValueDataFactory {
 		_precisionTestNumberFormat.setMaximumFractionDigits(999);
 	}
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 
@@ -89,7 +95,7 @@ public abstract class AttributeBaseValueDataFactory {
 			return new AttributeListValueAdapter((AttributeListValue)attributeBaseValue);
 		}
 		else {
-			throw new IllegalArgumentException("Nicht unterstützte AttributeBaseValue Erweiterung: " + attributeBaseValue.getClass().getName());
+			throw new IllegalArgumentException("Nicht unterstÃ¼tzte AttributeBaseValue Erweiterung: " + attributeBaseValue.getClass().getName());
 		}
 	}
 
@@ -98,10 +104,10 @@ public abstract class AttributeBaseValueDataFactory {
 	}
 
 	private static void setToDefault(Attribute attribute, Data data) {
-		// Als erstes muss geprüft werden, ob an dem Attribut ein Default-Wert festgelegt wurde. Wurde
+		// Als erstes muss geprÃ¼ft werden, ob an dem Attribut ein Default-Wert festgelegt wurde. Wurde
 		// ein Default-Wert festgelegt, wird dieser benutzt.
 		// Wurde am Attribut kein Default-Wert festgelegt, muss am Attributtyp geschaut werden.
-		// Wurde am Attributtyp ein Default-Wert festgelegt, so wird dieser für das Attribut benutzt.
+		// Wurde am Attributtyp ein Default-Wert festgelegt, so wird dieser fÃ¼r das Attribut benutzt.
 		// Wurde am Attributtype kein Default-Wert festgelegt, so wird der "undefiniert Wert" des
 		// Attributtyps benutzt.
 
@@ -113,7 +119,7 @@ public abstract class AttributeBaseValueDataFactory {
 		}
 		else {
 			// Am Attribut wurde kein Default-Wert gefunden. Der Typ des Attributes muss auf einen Default-Wert
-			// geprüft werden.
+			// geprÃ¼ft werden.
 			final AttributeType attributeType = attribute.getAttributeType();
 			defaultValueString = attributeType.getDefaultAttributeValue();
 			if(defaultValueString != null) {
@@ -128,8 +134,8 @@ public abstract class AttributeBaseValueDataFactory {
 					undefinedAttributeValueAccess.setToUndefined(data);
 				}
 				else {
-					// Für diesen Attributtyp ist kein Default definiert, aber es ist auch kein
-					// "undefiniert Wert" definiert. Dies darf nicht passieren, es müßte ein Default-Wert
+					// FÃ¼r diesen Attributtyp ist kein Default definiert, aber es ist auch kein
+					// "undefiniert Wert" definiert. Dies darf nicht passieren, es mÃ¼ÃŸte ein Default-Wert
 					// definiert sein.
 					throw new IllegalStateException(
 							"Es wurde kein Default-Wert definiert, auch ein undefiniert Wert ist nicht definiert. Attributtyp: "
@@ -142,21 +148,21 @@ public abstract class AttributeBaseValueDataFactory {
 
 	private static boolean isDefined(Attribute attribute, Data data) {
 		final AttributeType attributeType = attribute.getAttributeType();
-		// Alle Attribute, die einen "undefiniert Wert" zu Verfügung stellen, implementieren
+		// Alle Attribute, die einen "undefiniert Wert" zu VerfÃ¼gung stellen, implementieren
 		// das Interface "UndefinedAttributeValueAccess"
 		if(attributeType instanceof UndefinedAttributeValueAccess) {
 			final UndefinedAttributeValueAccess undefinedAttributeValueAccess = (UndefinedAttributeValueAccess)attributeType;
-			// Alle Typen, bis auf den <code>StringAttributeType</code> können entscheiden ob
+			// Alle Typen, bis auf den <code>StringAttributeType</code> kÃ¶nnen entscheiden ob
 			// die jeweiligen Attribute definiert sind (wenn der Wert des Attributes gleich dem "undefiniert Wert" ist, dann
 			// ist das Attribut nicht definiert).
 
 			// Am Attribut kann als Default-Wert der Wert "_Undefiniert" gesetzt werden. Dies entspricht aber dem
-			// undefiniert Wert und könnte somit nicht erkannt werden, wenn nur der Attributwert mit dem undefiniert Wert
-			// verglichen werden würde.
-			// Darum wird an dieser Stelle geprüft, ob am Attribut ein Default-Wert gesetzt wird. Falls dies der Fall ist,
-			// ist das Attribut definiert (es ist ja nicht möglich einen Undefiniert Wert anzugeben).
+			// undefiniert Wert und kÃ¶nnte somit nicht erkannt werden, wenn nur der Attributwert mit dem undefiniert Wert
+			// verglichen werden wÃ¼rde.
+			// Darum wird an dieser Stelle geprÃ¼ft, ob am Attribut ein Default-Wert gesetzt wird. Falls dies der Fall ist,
+			// ist das Attribut definiert (es ist ja nicht mÃ¶glich einen Undefiniert Wert anzugeben).
 			if(attributeType instanceof StringAttributeType) {
-				// Prüfen ob Default-Data am Attribut oder am Attributtyp vorhanden ist.
+				// PrÃ¼fen ob Default-Data am Attribut oder am Attributtyp vorhanden ist.
 				if(attribute.getDefaultAttributeValue() != null || attribute.getAttributeType().getDefaultAttributeValue() != null) {
 					// wenn Defaultwert vorhanden, dann ist der Wert auf jeden Fall definiert, weil es keinen Undefinierten Zustand gibt.
 					return true;
@@ -165,8 +171,8 @@ public abstract class AttributeBaseValueDataFactory {
 			return undefinedAttributeValueAccess.isDefined(data);
 		}
 		else {
-			// Für diesen Attributtype wurde kein "undefiniert Wert" festgelegt (Beispielsweise DoubleAttributeType).
-			// Da es keinen undefiniert Wert gibt, sind automatisch alle Werte gültig.
+			// FÃ¼r diesen Attributtype wurde kein "undefiniert Wert" festgelegt (Beispielsweise DoubleAttributeType).
+			// Da es keinen undefiniert Wert gibt, sind automatisch alle Werte gÃ¼ltig.
 			return true;
 		}
 	}
@@ -208,7 +214,7 @@ public abstract class AttributeBaseValueDataFactory {
 			try {
 				for(Iterator iterator = _attributeBaseValueList.iterator(); iterator.hasNext();) {
 					AttributeBaseValue attributeBaseValue = (AttributeBaseValue)iterator.next();
-					if(attributeBaseValue == null) throw new IllegalArgumentException("Unvollständiger Datensatz kann nicht gesendet werden");
+					if(attributeBaseValue == null) throw new IllegalArgumentException("UnvollstÃ¤ndiger Datensatz kann nicht gesendet werden");
 					attributeBaseValue.writeValue(out);
 				}
 				out.close();
@@ -390,9 +396,9 @@ public abstract class AttributeBaseValueDataFactory {
 //		}
 
 //		/**
-//		 * Gibt zu einem Objekt den konfigurierenden Datensatz zzurück, der den Default-Wert des Objekts enthält
+//		 * Gibt zu einem Objekt den konfigurierenden Datensatz zzurÃ¼ck, der den Default-Wert des Objekts enthÃ¤lt
 //		 *
-//		 * @param configurationObject Objekt, zu dem ein Datensatz zurückgegeben werden soll
+//		 * @param configurationObject Objekt, zu dem ein Datensatz zurÃ¼ckgegeben werden soll
 //		 * @return Datensatz oder <code>null</code> falls kein Datensatz gefunden werden konnte
 //		 */
 //		public Data getDefaultValueConfigurationData(ConfigurationObject configurationObject) {
@@ -413,7 +419,7 @@ public abstract class AttributeBaseValueDataFactory {
 						case IntegerAttributeType.LONG:
 							return new UnscaledLongValueAdapter();
 						default:
-							throw new IllegalStateException("ungültige Anzahl Bytes im Attributtyp " + type);
+							throw new IllegalStateException("ungÃ¼ltige Anzahl Bytes im Attributtyp " + type);
 					}
 				}
 				else if(type instanceof DoubleAttributeType) {
@@ -423,7 +429,7 @@ public abstract class AttributeBaseValueDataFactory {
 						case DoubleAttributeType.DOUBLE:
 							return new DoubleValueAdapter();
 						default:
-							throw new IllegalStateException("ungültige Genauigkeit im Attributtyp " + type);
+							throw new IllegalStateException("ungÃ¼ltige Genauigkeit im Attributtyp " + type);
 					}
 				}
 				else {
@@ -449,7 +455,7 @@ public abstract class AttributeBaseValueDataFactory {
 						case IntegerAttributeType.LONG:
 							return new ScaledLongValueAdapter();
 						default:
-							throw new IllegalStateException("üngültige Anzahl Bytes im Attributtyp " + type);
+							throw new IllegalStateException("Ã¼ngÃ¼ltige Anzahl Bytes im Attributtyp " + type);
 					}
 				}
 				else if(type instanceof DoubleAttributeType) {
@@ -459,7 +465,7 @@ public abstract class AttributeBaseValueDataFactory {
 						case DoubleAttributeType.DOUBLE:
 							return new DoubleValueAdapter();
 						default:
-							throw new IllegalStateException("üngültige Genauigkeit im Attributtyp " + type);
+							throw new IllegalStateException("Ã¼ngÃ¼ltige Genauigkeit im Attributtyp " + type);
 					}
 				}
 				else {
@@ -615,10 +621,10 @@ public abstract class AttributeBaseValueDataFactory {
 					int location = Integer.parseInt(locationDistance[0]);
 					int distance = Integer.parseInt(locationDistance[1]);
 					if(location > 65535) {
-						throw new IllegalArgumentException("Wert im Location-Distance Format aber Location zu groß: " + location);
+						throw new IllegalArgumentException("Wert im Location-Distance Format aber Location zu groÃŸ: " + location);
 					}
 					if(distance > 255) {
-						throw new IllegalArgumentException("Wert im Location-Distance Format aber Distance zu groß: " + distance);
+						throw new IllegalArgumentException("Wert im Location-Distance Format aber Distance zu groÃŸ: " + distance);
 					}
 					setUnscaledLongValue((location * 256) + distance);
 					return;
@@ -652,7 +658,7 @@ public abstract class AttributeBaseValueDataFactory {
 				catch(ConfigurationException e) {
 					throw new RuntimeException(e);
 				}
-				throw new IllegalArgumentException("Zustand ungültig " + newState);
+				throw new IllegalArgumentException("Zustand ungÃ¼ltig " + newState);
 			}
 		}
 
@@ -675,7 +681,7 @@ public abstract class AttributeBaseValueDataFactory {
 					if(state != null) return text.append("(").append(state.getName()).append(")").toString();
 					IntegerValueRange range = type.getRange();
 					if(range == null || value < range.getMinimum() || value > range.getMaximum()) {
-						return text.append("<<ungültiger Wert>>").toString();
+						return text.append("<<ungÃ¼ltiger Wert>>").toString();
 					}
 					double conversionFactor = range.getConversionFactor();
 					String separator = " ";
@@ -692,7 +698,7 @@ public abstract class AttributeBaseValueDataFactory {
 					return text.toString();
 				}
 				catch(Exception e) {
-					return text.append("<<" + e.getMessage() + ">>").toString();
+					return text.append(formatError(e)).toString();
 				}
 			}
 
@@ -701,7 +707,7 @@ public abstract class AttributeBaseValueDataFactory {
 					return String.valueOf(longValue());
 				}
 				catch(Exception e) {
-					return "<<" + e.getMessage() + ">>";
+					return formatError(e);
 				}
 			}
 
@@ -709,7 +715,7 @@ public abstract class AttributeBaseValueDataFactory {
 
 			public void set(double value) {
 				if(value < Long.MIN_VALUE || value > Long.MAX_VALUE) {
-					throw new IllegalArgumentException("Fließkommawert " + value + " kann nicht in Ganzzahlwert konvertiert werden");
+					throw new IllegalArgumentException("FlieÃŸkommawert " + value + " kann nicht in Ganzzahlwert konvertiert werden");
 				}
 				set(Math.round(value));
 			}
@@ -815,7 +821,7 @@ public abstract class AttributeBaseValueDataFactory {
 					return "";
 				}
 				catch(Exception e) {
-					return "<<" + e.getMessage() + ">>";
+					return formatError(e);
 				}
 			}
 
@@ -827,7 +833,7 @@ public abstract class AttributeBaseValueDataFactory {
 					if(state != null) return state.getName();
 					IntegerValueRange range = type.getRange();
 					if(range == null || value < range.getMinimum() || value > range.getMaximum()) {
-						return " <<ungültiger Wert (" + value + ")>>";
+						return " <<ungÃ¼ltiger Wert (" + value + ")>>";
 					}
 					double conversionFactor = range.getConversionFactor();
 					if(conversionFactor == 1) {
@@ -846,12 +852,12 @@ public abstract class AttributeBaseValueDataFactory {
 					}
 				}
 				catch(Exception e) {
-					return "<<" + e.getMessage() + ">>";
+					return formatError(e);
 				}
 			}
 
 			/**
-			 * Bestimmt, ob der aktuelle Wert des Datums durch einen Zahlwert dargestellt werden kann. In einer unskalierten Ansicht kann jeder gültige Wert des Datums
+			 * Bestimmt, ob der aktuelle Wert des Datums durch einen Zahlwert dargestellt werden kann. In einer unskalierten Ansicht kann jeder gÃ¼ltige Wert des Datums
 			 * als Zahlwert dargestellt werden. In einer skalierten Ansicht von Ganzzahlattributen werden nur Werte innerhalb des definierten Wertebereichs als Zahlwerte
 			 * entsprechend des Skalierungsfaktors dargestellt.
 			 *
@@ -894,7 +900,22 @@ public abstract class AttributeBaseValueDataFactory {
 					if(value < range.getMinimum() || value > range.getMaximum()) {
 						throw new IllegalStateException("Attribut " + getName() + ": Wert " + value + " nicht im Bereich");
 					}
-					return value * range.getConversionFactor();
+					double conversionFactor = range.getConversionFactor();
+					
+					// Folgende Fallunterscheidung vermeidet Genauigkeitsfehler bei conversionFactor < 1.0:
+					// Beispiel: 
+					// 95362170 * 0.000001 = 95.36216999999999
+					// aber
+					// 95362170 / (1 / 0.000001) = 95.36217 (wie erwartet)
+					if(conversionFactor < 1.0) {
+						return value / (1 / conversionFactor);
+					}
+					else if(conversionFactor > 1.0){
+						return value * conversionFactor;
+					}
+					else {
+						return value;
+					}
 				}
 				catch(ConfigurationException e) {
 					throw new RuntimeException(e);
@@ -911,8 +932,8 @@ public abstract class AttributeBaseValueDataFactory {
 					long unscaledValue;
 					double conversionFactor = range.getConversionFactor();
 					//Folgende Fallunterscheidung ist erforderlich um Rundungsfehler zu vermeiden
-					//Beispielsweise führt Math.round(0.95 / 0.1) zum falschen Ergebnis 9
-					//aber Math.round(0.95 * (1 / 0.1)) führt zum richtigen Ergebnis 10
+					//Beispielsweise fÃ¼hrt Math.round(0.95 / 0.1) zum falschen Ergebnis 9
+					//aber Math.round(0.95 * (1 / 0.1)) fÃ¼hrt zum richtigen Ergebnis 10
 
 					if(conversionFactor < 1.0) {
 						unscaledValue = Math.round((double)value * (1 / conversionFactor));
@@ -940,8 +961,8 @@ public abstract class AttributeBaseValueDataFactory {
 					long unscaledValue;
 					double conversionFactor = range.getConversionFactor();
 					//Folgende Fallunterscheidung ist erforderlich um Rundungsfehler zu vermeiden
-					//Beispielsweise führt Math.round(0.95 / 0.1) zum falschen Ergebnis 9
-					//aber Math.round(0.95 * (1 / 0.1)) führt zum richtigen Ergebnis 10
+					//Beispielsweise fÃ¼hrt Math.round(0.95 / 0.1) zum falschen Ergebnis 9
+					//aber Math.round(0.95 * (1 / 0.1)) fÃ¼hrt zum richtigen Ergebnis 10
 
 					if(conversionFactor < 1.0) {
 						unscaledValue = Math.round(value * (1 / conversionFactor));
@@ -1069,7 +1090,7 @@ public abstract class AttributeBaseValueDataFactory {
 					return "";
 				}
 				catch(Exception e) {
-					return "<<" + e.getMessage() + ">>";
+					return formatError(e);
 				}
 			}
 
@@ -1078,7 +1099,7 @@ public abstract class AttributeBaseValueDataFactory {
 					return _doubleNumberFormat.format(doubleValue());
 				}
 				catch(Exception e) {
-					return "<<" + e.getMessage() + ">>";
+					return formatError(e);
 				}
 			}
 
@@ -1124,7 +1145,7 @@ public abstract class AttributeBaseValueDataFactory {
 					return (String)((DataValue)_attributeValue.getValue()).getValue();
 				}
 				catch(Exception e) {
-					return "<<" + e.getLocalizedMessage() + ">>";
+					return formatError(e);
 				}
 			}
 
@@ -1185,7 +1206,7 @@ public abstract class AttributeBaseValueDataFactory {
 				//Das im Java-int-Typ enthaltene Vorzeichenbit darf dazu allerdings nicht als Vorzeichenbit
 				//sondern als Bit mit der Wertigkeit 2^31 interpretiert werden. Bei der obigen Zuweisung
 				//auf den Java-long-Typ wird eine automatische Vorzeichenerweiterung gemacht, die mit
-				//der folgenden Maskierung wieder rückgängig gemacht wird. Dadurch wird der übertragene
+				//der folgenden Maskierung wieder rÃ¼ckgÃ¤ngig gemacht wird. Dadurch wird der Ã¼bertragene
 				//32-Bit Wert als Vorzeichenlose Zahl im Bereich 0 bis 4294967295 interpretiert.
 				seconds &= 0xffffffffL;	//auch das L am Ende der Konstanten ist notwendig!
 				return seconds * 1000;
@@ -1197,7 +1218,7 @@ public abstract class AttributeBaseValueDataFactory {
 				//Das im Java-int-Typ enthaltene Vorzeichenbit darf dazu allerdings nicht als Vorzeichenbit
 				//sondern als Bit mit der Wertigkeit 2^31 interpretiert werden. Bei der obigen Zuweisung
 				//auf den Java-long-Typ wird eine automatische Vorzeichenerweiterung gemacht, die mit
-				//der folgenden Maskierung wieder rückgängig gemacht wird. Dadurch wird der übertragene
+				//der folgenden Maskierung wieder rÃ¼ckgÃ¤ngig gemacht wird. Dadurch wird der Ã¼bertragene
 				//32-Bit Wert als Vorzeichenlose Zahl im Bereich 0 bis 4294967295 interpretiert.
 				seconds &= 0xffffffffL;	//auch das L am Ende der Konstanten ist notwendig!
 				return seconds;
@@ -1208,7 +1229,7 @@ public abstract class AttributeBaseValueDataFactory {
 				long seconds = milliSeconds / 1000;
 				if(seconds > 0xffffffffL) {
 					throw new RuntimeException(
-							"Zeitangabe liegt nach dem größten darstellbaren Wert von absoluten sekundengenauen Zeitstempeln (07.02.2106 07:28:15)"
+							"Zeitangabe liegt nach dem grÃ¶ÃŸten darstellbaren Wert von absoluten sekundengenauen Zeitstempeln (07.02.2106 07:28:15)"
 					);
 				}
 				int intSeconds = (int)seconds;
@@ -1222,7 +1243,7 @@ public abstract class AttributeBaseValueDataFactory {
 				if(seconds < 0) throw new RuntimeException("Negative Zeitangaben sind bei absoluten Zeitstempeln nicht erlaubt");
 				if(seconds > 0xffffffffL) {
 					throw new RuntimeException(
-							"Zeitangabe liegt nach dem größten darstellbaren Wert von absoluten sekundengenauen Zeitstempeln (07.02.2106 07:28:15)"
+							"Zeitangabe liegt nach dem grÃ¶ÃŸten darstellbaren Wert von absoluten sekundengenauen Zeitstempeln (07.02.2106 07:28:15)"
 					);
 				}
 				int intSeconds = (int)seconds;
@@ -1251,9 +1272,9 @@ public abstract class AttributeBaseValueDataFactory {
 
 			public void setSeconds(long seconds) {
 				if(seconds < 0) throw new RuntimeException("Negative Zeitangaben sind bei absoluten Zeitstempeln nicht erlaubt");
-				//Sekundenwert ist zu groß, wenn er größer als Long.MAX_VALUE/1000 (==9223372036854775L) ist
+				//Sekundenwert ist zu groÃŸ, wenn er grÃ¶ÃŸer als Long.MAX_VALUE/1000 (==9223372036854775L) ist
 				if(seconds > 9223372036854775L) {
-					throw new RuntimeException("Zeitangabe liegt nach dem größten darstellbaren Wert von absoluten Zeitstempeln");
+					throw new RuntimeException("Zeitangabe liegt nach dem grÃ¶ÃŸten darstellbaren Wert von absoluten Zeitstempeln");
 				}
 				long milliSeconds = seconds * 1000;
 				_attributeValue.setValue(new LongAttribute(milliSeconds));
@@ -1274,14 +1295,14 @@ public abstract class AttributeBaseValueDataFactory {
 
 			public void setMillis(long milliSeconds) {
 				long seconds = milliSeconds / 1000;
-				if(seconds > Integer.MAX_VALUE) throw new RuntimeException("Zeitangabe größer als in einem relativen sekundengenauen Zeitstempel darstellbar");
+				if(seconds > Integer.MAX_VALUE) throw new RuntimeException("Zeitangabe grÃ¶ÃŸer als in einem relativen sekundengenauen Zeitstempel darstellbar");
 				if(seconds < Integer.MIN_VALUE) throw new RuntimeException("Zeitangabe kleiner als in einem relativen sekundengenauen Zeitstempel darstellbar");
 				int intSeconds = (int)seconds;
 				_attributeValue.setValue(new IntegerAttribute(intSeconds));
 			}
 
 			public void setSeconds(long seconds) {
-				if(seconds > Integer.MAX_VALUE) throw new RuntimeException("Zeitangabe größer als in einem relativen sekundengenauen Zeitstempel darstellbar");
+				if(seconds > Integer.MAX_VALUE) throw new RuntimeException("Zeitangabe grÃ¶ÃŸer als in einem relativen sekundengenauen Zeitstempel darstellbar");
 				if(seconds < Integer.MIN_VALUE) throw new RuntimeException("Zeitangabe kleiner als in einem relativen sekundengenauen Zeitstempel darstellbar");
 				int intSeconds = (int)seconds;
 				_attributeValue.setValue(new IntegerAttribute(intSeconds));
@@ -1304,7 +1325,7 @@ public abstract class AttributeBaseValueDataFactory {
 
 			public void setSeconds(long seconds) {
 				if(seconds > Long.MAX_VALUE / 1000) {
-					throw new RuntimeException("Zeitangabe größer als in einem relativen millisekundengenauen Zeitstempel darstellbar");
+					throw new RuntimeException("Zeitangabe grÃ¶ÃŸer als in einem relativen millisekundengenauen Zeitstempel darstellbar");
 				}
 				if(seconds < Long.MIN_VALUE / 1000) {
 					throw new RuntimeException("Zeitangabe kleiner als in einem relativen millisekundengenauen Zeitstempel darstellbar");
@@ -1313,6 +1334,16 @@ public abstract class AttributeBaseValueDataFactory {
 				_attributeValue.setValue(new LongAttribute(milliSeconds));
 			}
 		}
+	}
+
+	public static String formatError(final Exception e) {
+		String message = e.getMessage();
+		if(message == null) {
+			
+			_debug.warning("Fehler beim Darstellen eines Datensatzes", e);
+			message = e.getClass().getName();
+		}
+		return "<<" + message + ">>";
 	}
 
 	/** Subklasse von <code>AttributeBaseValueDataFactory</code>, abgeleitet von <code>AbstractData.ArrayData</code>. */
@@ -1400,7 +1431,7 @@ public abstract class AttributeBaseValueDataFactory {
 						case IntegerAttributeType.LONG:
 							return new LongArrayAdapter();
 						default:
-							throw new IllegalStateException("ungültige Anzahl Bytes im Attributtyp " + type);
+							throw new IllegalStateException("ungÃ¼ltige Anzahl Bytes im Attributtyp " + type);
 					}
 				}
 				else if(type instanceof DoubleAttributeType) {
@@ -1410,7 +1441,7 @@ public abstract class AttributeBaseValueDataFactory {
 						case DoubleAttributeType.DOUBLE:
 							return new DoubleArrayAdapter();
 						default:
-							throw new IllegalStateException("ungültige Genauigkeit im Attributtyp " + type);
+							throw new IllegalStateException("ungÃ¼ltige Genauigkeit im Attributtyp " + type);
 					}
 				}
 				else if(type instanceof ReferenceAttributeType) {
@@ -1494,7 +1525,7 @@ public abstract class AttributeBaseValueDataFactory {
 						(!isCountVariable() && (newLength != getMaxCount())) ||
 						(isCountLimited() && (newLength > getMaxCount()) && !relaxedRangeCheck)) {
 					throw new IllegalArgumentException(
-							"Arraygröße " + newLength + " ist beim Attribut " + getName() + " vom Typ " + getAttributeType().getPid() + " nicht erlaubt"
+							"ArraygrÃ¶ÃŸe " + newLength + " ist beim Attribut " + getName() + " vom Typ " + getAttributeType().getPid() + " nicht erlaubt"
 					);
 				}
 			}
@@ -1682,7 +1713,7 @@ public abstract class AttributeBaseValueDataFactory {
 				_ids = newIds;
 
 				if(initializeElements) {
-					// Alle neuen Attribute müssen auf den Default-Wert gesetzt werden
+					// Alle neuen Attribute mÃ¼ssen auf den Default-Wert gesetzt werden
 					for(int i = minLength; i < _ids.length; ++i) {
 						getItem(i).setToDefault();
 					}
@@ -1851,7 +1882,7 @@ public abstract class AttributeBaseValueDataFactory {
 				_millisArray = newTimes;
 
 				if(initializeElements) {
-					// Alle neuen Attribute müssen auf den Default-Wert gesetzt werden
+					// Alle neuen Attribute mÃ¼ssen auf den Default-Wert gesetzt werden
 					for(int i = minLength; i < _millisArray.length; ++i) {
 						getItem(i).setToDefault();
 					}
@@ -1905,7 +1936,7 @@ public abstract class AttributeBaseValueDataFactory {
 
 				public void setSeconds(long seconds) {
 					if(seconds > Long.MAX_VALUE / 1000) {
-						throw new RuntimeException("Zeitangabe größer als in einem relativen millisekundengenauen Zeitstempel darstellbar");
+						throw new RuntimeException("Zeitangabe grÃ¶ÃŸer als in einem relativen millisekundengenauen Zeitstempel darstellbar");
 					}
 					if(seconds < Long.MIN_VALUE / 1000) {
 						throw new RuntimeException("Zeitangabe kleiner als in einem relativen millisekundengenauen Zeitstempel darstellbar");
@@ -1936,9 +1967,9 @@ public abstract class AttributeBaseValueDataFactory {
 
 				public void setSeconds(long seconds) {
 					if(seconds < 0) throw new RuntimeException("Negative Zeitangaben sind bei absoluten Zeitstempeln nicht erlaubt");
-					//Sekundenwert ist zu groß, wenn er größer als Long.MAX_VALUE/1000 (==9223372036854775L) ist
+					//Sekundenwert ist zu groÃŸ, wenn er grÃ¶ÃŸer als Long.MAX_VALUE/1000 (==9223372036854775L) ist
 					if(seconds > 9223372036854775L) {
-						throw new RuntimeException("Zeitangabe liegt nach dem größten darstellbaren Wert von absoluten Zeitstempeln");
+						throw new RuntimeException("Zeitangabe liegt nach dem grÃ¶ÃŸten darstellbaren Wert von absoluten Zeitstempeln");
 					}
 					_millisArray[_itemIndex] = seconds * 1000;
 				}
@@ -1979,7 +2010,7 @@ public abstract class AttributeBaseValueDataFactory {
 				_secondsArray = newSecondsArray;
 
 				if(initializeElements) {
-					// Alle neuen Attribute müssen auf den Default-Wert gesetzt werden
+					// Alle neuen Attribute mÃ¼ssen auf den Default-Wert gesetzt werden
 					for(int i = minLength; i < _secondsArray.length; ++i) {
 						getItem(i).setToDefault();
 					}
@@ -2032,7 +2063,7 @@ public abstract class AttributeBaseValueDataFactory {
 				public void setMillis(long milliSeconds) {
 					long seconds = milliSeconds / 1000;
 					if(seconds > Integer.MAX_VALUE) {
-						throw new RuntimeException("Zeitangabe größer als in einem relativen sekundengenauen Zeitstempel darstellbar");
+						throw new RuntimeException("Zeitangabe grÃ¶ÃŸer als in einem relativen sekundengenauen Zeitstempel darstellbar");
 					}
 					if(seconds < Integer.MIN_VALUE) {
 						throw new RuntimeException("Zeitangabe kleiner als in einem relativen sekundengenauen Zeitstempel darstellbar");
@@ -2043,7 +2074,7 @@ public abstract class AttributeBaseValueDataFactory {
 
 				public void setSeconds(long seconds) {
 					if(seconds > Integer.MAX_VALUE) {
-						throw new RuntimeException("Zeitangabe größer als in einem relativen sekundengenauen Zeitstempel darstellbar");
+						throw new RuntimeException("Zeitangabe grÃ¶ÃŸer als in einem relativen sekundengenauen Zeitstempel darstellbar");
 					}
 					if(seconds < Integer.MIN_VALUE) {
 						throw new RuntimeException("Zeitangabe kleiner als in einem relativen sekundengenauen Zeitstempel darstellbar");
@@ -2071,7 +2102,7 @@ public abstract class AttributeBaseValueDataFactory {
 					//Das im Java-int-Typ enthaltene Vorzeichenbit darf dazu allerdings nicht als Vorzeichenbit
 					//sondern als Bit mit der Wertigkeit 2^31 interpretiert werden. Bei der obigen Zuweisung
 					//auf den Java-long-Typ wird eine automatische Vorzeichenerweiterung gemacht, die mit
-					//der folgenden Maskierung wieder rückgängig gemacht wird. Dadurch wird der übertragene
+					//der folgenden Maskierung wieder rÃ¼ckgÃ¤ngig gemacht wird. Dadurch wird der Ã¼bertragene
 					//32-Bit Wert als Vorzeichenlose Zahl im Bereich 0 bis 4294967295 interpretiert.
 					seconds &= 0xffffffffL;	//auch das L am Ende der Konstanten ist notwendig!
 					return seconds;
@@ -2082,7 +2113,7 @@ public abstract class AttributeBaseValueDataFactory {
 					long seconds = milliSeconds / 1000;
 					if(seconds > 0xffffffffL) {
 						throw new RuntimeException(
-								"Zeitangabe liegt nach dem größten darstellbaren Wert von absoluten sekundengenauen Zeitstempeln (07.02.2106 07:28:15)"
+								"Zeitangabe liegt nach dem grÃ¶ÃŸten darstellbaren Wert von absoluten sekundengenauen Zeitstempeln (07.02.2106 07:28:15)"
 						);
 					}
 					int intSeconds = (int)seconds;
@@ -2096,7 +2127,7 @@ public abstract class AttributeBaseValueDataFactory {
 					if(seconds < 0) throw new RuntimeException("Negative Zeitangaben sind bei absoluten Zeitstempeln nicht erlaubt");
 					if(seconds > 0xffffffffL) {
 						throw new RuntimeException(
-								"Zeitangabe liegt nach dem größten darstellbaren Wert von absoluten sekundengenauen Zeitstempeln (07.02.2106 07:28:15)"
+								"Zeitangabe liegt nach dem grÃ¶ÃŸten darstellbaren Wert von absoluten sekundengenauen Zeitstempeln (07.02.2106 07:28:15)"
 						);
 					}
 					int intSeconds = (int)seconds;
@@ -2180,7 +2211,7 @@ public abstract class AttributeBaseValueDataFactory {
 				_strings = newStrings;
 
 				if(initializeElements) {
-					// Alle neuen Attribute müssen auf den Default-Wert gesetzt werden
+					// Alle neuen Attribute mÃ¼ssen auf den Default-Wert gesetzt werden
 					for(int i = minLength; i < _strings.length; ++i) {
 						getItem(i).setToDefault();
 					}
@@ -2285,7 +2316,7 @@ public abstract class AttributeBaseValueDataFactory {
 				_values = newValues;
 
 				if(initializeElements) {
-					// Alle neuen Attribute müssen auf den Default-Wert gesetzt werden
+					// Alle neuen Attribute mÃ¼ssen auf den Default-Wert gesetzt werden
 					for(int i = minLength; i < _values.length; ++i) {
 						getItem(i).setToDefault();
 					}
@@ -2331,7 +2362,7 @@ public abstract class AttributeBaseValueDataFactory {
 						return "";
 					}
 					catch(Exception e) {
-						return "<<" + e.getMessage() + ">>";
+						return formatError(e);
 					}
 				}
 
@@ -2340,7 +2371,7 @@ public abstract class AttributeBaseValueDataFactory {
 						return _doubleNumberFormat.format(doubleValue());
 					}
 					catch(Exception e) {
-						return "<<" + e.getMessage() + ">>";
+						return formatError(e);
 					}
 				}
 
@@ -2418,7 +2449,7 @@ public abstract class AttributeBaseValueDataFactory {
 				_values = newValues;
 
 				if(initializeElements) {
-					// Alle neuen Attribute müssen auf den Default-Wert gesetzt werden
+					// Alle neuen Attribute mÃ¼ssen auf den Default-Wert gesetzt werden
 					for(int i = minLength; i < _values.length; ++i) {
 						getItem(i).setToDefault();
 					}
@@ -2476,7 +2507,7 @@ public abstract class AttributeBaseValueDataFactory {
 						return "";
 					}
 					catch(Exception e) {
-						return "<<" + e.getMessage() + ">>";
+						return formatError(e);
 					}
 				}
 
@@ -2485,7 +2516,7 @@ public abstract class AttributeBaseValueDataFactory {
 						return _doubleNumberFormat.format(floatValue());
 					}
 					catch(Exception e) {
-						return "<<" + e.getMessage() + ">>";
+						return formatError(e);
 					}
 				}
 			}
@@ -2586,7 +2617,7 @@ public abstract class AttributeBaseValueDataFactory {
 				_values = newValues;
 
 				if(initializeElements) {
-					// Alle neuen Attribute müssen auf den Default-Wert gesetzt werden
+					// Alle neuen Attribute mÃ¼ssen auf den Default-Wert gesetzt werden
 					for(int i = minLength; i < _values.length; ++i) {
 						getItem(i).setToDefault();
 					}
@@ -2758,7 +2789,7 @@ public abstract class AttributeBaseValueDataFactory {
 				_values = newValues;
 
 				if(initializeElements) {
-					// Alle neuen Attribute müssen auf den Default-Wert gesetzt werden
+					// Alle neuen Attribute mÃ¼ssen auf den Default-Wert gesetzt werden
 					for(int i = minLength; i < _values.length; ++i) {
 						getItem(i).setToDefault();
 					}
@@ -2940,7 +2971,7 @@ public abstract class AttributeBaseValueDataFactory {
 				_values = newValues;
 
 				if(initializeElements) {
-					// Alle neuen Attribute müssen auf den Default-Wert gesetzt werden
+					// Alle neuen Attribute mÃ¼ssen auf den Default-Wert gesetzt werden
 					for(int i = minLength; i < _values.length; ++i) {
 						getItem(i).setToDefault();
 					}
@@ -3122,7 +3153,7 @@ public abstract class AttributeBaseValueDataFactory {
 				_values = newValues;
 
 				if(initializeElements) {
-					// Alle neuen Attribute müssen auf den Default-Wert gesetzt werden
+					// Alle neuen Attribute mÃ¼ssen auf den Default-Wert gesetzt werden
 					for(int i = minLength; i < _values.length; ++i) {
 						getItem(i).setToDefault();
 					}

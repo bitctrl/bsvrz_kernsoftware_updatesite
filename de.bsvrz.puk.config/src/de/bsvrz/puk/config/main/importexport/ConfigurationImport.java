@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung, Aachen
- * Copyright 2006 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main.importexport;
@@ -44,70 +50,70 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Diese Klasse importiert die Versorgungsdateien in das bestehende Datenmodell. Zu importierende Bereiche dürfen keine Pid mehrmals benutzen.
+ * Diese Klasse importiert die Versorgungsdateien in das bestehende Datenmodell. Zu importierende Bereiche dÃ¼rfen keine Pid mehrmals benutzen.
  *
  * @author Kappich Systemberatung
  * @version $Revision:5077 $
  */
 public class ConfigurationImport implements ObjectLookup {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
-	/** Das Datenmodell, in welches die Versorgungsdateien importiert werden sollen. Hierüber werden auch auf Modelldaten des MetaModells zugegriffen. */
+	/** Das Datenmodell, in welches die Versorgungsdateien importiert werden sollen. HierÃ¼ber werden auch auf Modelldaten des MetaModells zugegriffen. */
 	private DataModel _dataModel;
 
 	/**
-	 * Objekt, welches die Import-Eigenschaften mit möglichen konkreten Objekten vergleicht. Dabei wird auch ermittelt, ob das Objekt geändert werden kann, wenn
-	 * die Eigenschaften nicht übereinstimmen.
+	 * Objekt, welches die Import-Eigenschaften mit mÃ¶glichen konkreten Objekten vergleicht. Dabei wird auch ermittelt, ob das Objekt geÃ¤ndert werden kann, wenn
+	 * die Eigenschaften nicht Ã¼bereinstimmen.
 	 */
 	private final ComparePropertiesWithSystemObjects _objectDiffs;
 
 	/**
-	 * Enthält zu importierende Objekte. Diese Map speichert zu einer Pid ein sogenanntes ImportObject, welches Referenzen auf ein SystemObjectProperties und auf
-	 * ein SystemObject enthält.
+	 * EnthÃ¤lt zu importierende Objekte. Diese Map speichert zu einer Pid ein sogenanntes ImportObject, welches Referenzen auf ein SystemObjectProperties und auf
+	 * ein SystemObject enthÃ¤lt.
 	 */
 	private final Map<String, ImportObject> _importMap = new HashMap<String, ImportObject>();
 
 	/**
-	 * Diese Map speichert zu einem Konfigurationsbereich, die Objekte, die aktuell gültig sind. Diese Map wird benötigt, um am Ende des Imports herauszubekommen,
-	 * welche Objekte auf {@link de.bsvrz.dav.daf.main.config.SystemObject#invalidate() ungültig} gesetzt werden müssen.
+	 * Diese Map speichert zu einem Konfigurationsbereich, die Objekte, die aktuell gÃ¼ltig sind. Diese Map wird benÃ¶tigt, um am Ende des Imports herauszubekommen,
+	 * welche Objekte auf {@link de.bsvrz.dav.daf.main.config.SystemObject#invalidate() ungÃ¼ltig} gesetzt werden mÃ¼ssen.
 	 */
 	private final Map<ConfigurationArea, Collection<CheckedObject>> _currentObjects = new HashMap<ConfigurationArea, Collection<CheckedObject>>();
 
 	/**
-	 * Diese Map speichert alle Objekte, die zukünftig aktuell werden. Sie wurden bereits zur Übernahme oder zur Aktivierung freigegeben. Diese Objekte dürfen nur
-	 * in begrenztem Maße modifiziert werden.
+	 * Diese Map speichert alle Objekte, die zukÃ¼nftig aktuell werden. Sie wurden bereits zur Ãœbernahme oder zur Aktivierung freigegeben. Diese Objekte dÃ¼rfen nur
+	 * in begrenztem MaÃŸe modifiziert werden.
 	 */
 	private final Map<ConfigurationArea, Collection<CheckedObject>> _newObjects = new HashMap<ConfigurationArea, Collection<CheckedObject>>();
 
 	/** Diese Map speichert alle Objekte aus den zu importierenden Konfigurationsbereichen, die sich in Bearbeitung befinden. */
 	private final Map<ConfigurationArea, Collection<CheckedObject>> _editingObjects = new HashMap<ConfigurationArea, Collection<CheckedObject>>();
 
-	/** Enthält alle Konfigurationsbereiche, die importiert werden sollen */
+	/** EnthÃ¤lt alle Konfigurationsbereiche, die importiert werden sollen */
 	private final Set<ConfigurationArea> _allImportedConfigurationAreas = new HashSet<ConfigurationArea>();
 
 	/**
-	 * In dieses Set wird die Pid eines Objekt-Typen eingetragen, sobald er erstellt werden soll. Dabei wird überprüft, ob die Pid sich bereits in dem Set
+	 * In dieses Set wird die Pid eines Objekt-Typen eingetragen, sobald er erstellt werden soll. Dabei wird Ã¼berprÃ¼ft, ob die Pid sich bereits in dem Set
 	 * befindet. Falls ja, dann befindet sich eine Schleife in den Versorgungsdateien (der Objekt-Typ braucht einen anderen Typen und dieser braucht wiederum den
-	 * ursprünglichen Objekt-Typ, der aber noch nicht erstellt wurde). Nach Erstellung des Objekt-Typen wird die Pid aus dem Set wieder entfernt.
+	 * ursprÃ¼nglichen Objekt-Typ, der aber noch nicht erstellt wurde). Nach Erstellung des Objekt-Typen wird die Pid aus dem Set wieder entfernt.
 	 */
 	private final Set<String> _objectTypesToCreate = new HashSet<String>();
 
-	/** Gibt an, ob noch Referenzen aufgelöst werden sollen, oder nicht. */
+	/** Gibt an, ob noch Referenzen aufgelÃ¶st werden sollen, oder nicht. */
 	private boolean _dissolveReference = true;
 
 	/** Zu jedem Konfigurationsbereich wird die Version gespeichert, in der der Bereich betrachtet werden soll. */
 	private final Map<ConfigurationArea, Short> _usingVersionOfConfigurationArea = new HashMap<ConfigurationArea, Short>();
 
-	/** Speichert alle Objekte, die betrachtet werden sollen. (In Abhängigkeit von der zu betrachtenden Version.) */
+	/** Speichert alle Objekte, die betrachtet werden sollen. (In AbhÃ¤ngigkeit von der zu betrachtenden Version.) */
 	private Map<String, SystemObject> _viewingObjects;
 
-	/** Enthält für jeden importierten Bereich ein Properties-Objekt. */
+	/** EnthÃ¤lt fÃ¼r jeden importierten Bereich ein Properties-Objekt. */
 	private Map<ConfigurationAreaProperties, ConfigurationArea> _areaProperty2ConfigurationArea = new HashMap<ConfigurationAreaProperties, ConfigurationArea>();
 
 	/**
-	 * Der Konstruktor führt den Import der angegebenen Konfigurationsbereiche durch.
+	 * Der Konstruktor fÃ¼hrt den Import der angegebenen Konfigurationsbereiche durch.
 	 *
 	 * @param dataModel  das Datenmodell der Konfiguration
 	 * @param importPath das Verzeichnis der Versorgungsdateien
@@ -145,7 +151,7 @@ public class ConfigurationImport implements ObjectLookup {
 			_objectDiffs = new ComparePropertiesWithSystemObjects(this, dataModel);
 
 			// Die zu importierenden Daten werden geladen!
-			// Parser für die XML-Dateien initialisieren
+			// Parser fÃ¼r die XML-Dateien initialisieren
 			ConfigAreaParser parser = null;
 			try {
 				parser = new ConfigAreaParser();
@@ -160,7 +166,7 @@ public class ConfigurationImport implements ObjectLookup {
 			// Alle zu importierenden Konfigurationsbereiche werden eingelesen
 			for(String configurationAreaPid : pids) {
 				try {
-					// File-Objekt für den Konfigurationsbereich erstellen und XML-Datei einlesen.
+					// File-Objekt fÃ¼r den Konfigurationsbereich erstellen und XML-Datei einlesen.
 					final File file = new File(importPath, configurationAreaPid + ".xml");
 					final ConfigurationAreaProperties configurationAreaProperties = parser.parse(file);
 
@@ -171,17 +177,17 @@ public class ConfigurationImport implements ObjectLookup {
 					// alle zu importierenden Objekte werden in einer ImportMap gespeichert
 					for(SystemObjectProperties objectProperty : configurationAreaProperties.getObjectProperties()) {
 						ImportObject importObject = _importMap.put(objectProperty.getPid(), new ImportObject(configurationArea, objectProperty));
-						// Falls bereits ein Eintrag mit der Pid als Schlüssel in der Map vorkommt,
+						// Falls bereits ein Eintrag mit der Pid als SchlÃ¼ssel in der Map vorkommt,
 						// muss eine Exception geworfen werden, damit auch alle Objekte verarbeitet werden.
 						if(importObject != null) {
 							throw new IllegalStateException(
 									"Diese Pid " + objectProperty.getPid() + " wurde bereits in einem der anderen zu importierenden Bereiche "
-									+ "verwendet. Für den Import ist es notwendig, dass alle Pids der zu importierenden Bereich nur einmal vorkommen."
+									+ "verwendet. FÃ¼r den Import ist es notwendig, dass alle Pids der zu importierenden Bereich nur einmal vorkommen."
 							);
 						}
 					}
 
-					// Alle (aktuelle, in Bearbeitung, zur Übernahme/Aktivierung freigegebene) Objekte, die in diesem Konfigurationsbereich sind werden eingelesen.
+					// Alle (aktuelle, in Bearbeitung, zur Ãœbernahme/Aktivierung freigegebene) Objekte, die in diesem Konfigurationsbereich sind werden eingelesen.
 					readExistingObjects(configurationArea);
 					_allImportedConfigurationAreas.add(configurationArea);
 					setSystemObjectKeeping(configurationArea);	// dieses Objekt soll beibehalten werden
@@ -209,21 +215,21 @@ public class ConfigurationImport implements ObjectLookup {
 					throw new RuntimeException(errorMessage.toString(), ex);
 				}
 				catch(ConfigurationChangeException ex) {
-					_debug.error("Beim Importieren einer Versorgungsdatei kam es zu Fehlern beim Umsetzen der entsprechenden Änderungen in der Konfiguration" , ex);
+					_debug.error("Beim Importieren einer Versorgungsdatei kam es zu Fehlern beim Umsetzen der entsprechenden Ã„nderungen in der Konfiguration" , ex);
 					throw new ConfigurationChangeException(ex);
 				}
-			}// for, über alle zu importierenden Bereiche
+			}// for, Ã¼ber alle zu importierenden Bereiche
 
 			_debug.info("Anzahl der Definitionen und SystemObjekte, die zu importieren sind", _importMap.values().size());
 
 			_dissolveReference = true;
 			int counter = 1;
 			while(_dissolveReference) {
-				// erstmal ist davon auszugehen, dass keine Referenzen aufzulösen sind.
+				// erstmal ist davon auszugehen, dass keine Referenzen aufzulÃ¶sen sind.
 				_dissolveReference = false;
 				/*
-				 * 1.) Zu importierende Objekte, die noch nicht existieren oder nicht verändert werden dürfen, werden neu erstellt.
-				 *     Objekte, die bereits existieren, werden also überprüft, ob sie geändert werden dürfen, falls sie geändert werden müssen.
+				 * 1.) Zu importierende Objekte, die noch nicht existieren oder nicht verÃ¤ndert werden dÃ¼rfen, werden neu erstellt.
+				 *     Objekte, die bereits existieren, werden also Ã¼berprÃ¼ft, ob sie geÃ¤ndert werden dÃ¼rfen, falls sie geÃ¤ndert werden mÃ¼ssen.
 				 */
 				_debug.config("Alle Modelldaten der zu importierenden Konfigurationsbereiche werden erstellt.");
 				for(ImportObject importObject : _importMap.values()) {
@@ -239,8 +245,8 @@ public class ConfigurationImport implements ObjectLookup {
 					}
 				}
 				if(_dissolveReference) {
-					_debug.config("Bestehende Objekte wurden durch neue Objekte ersetzt - Referenzen müssen aufgelöst werden. Durchlauf", counter++);
-					// ob ein Objekt beibehalten wird, muss hier zurückgesetzt werden!
+					_debug.config("Bestehende Objekte wurden durch neue Objekte ersetzt - Referenzen mÃ¼ssen aufgelÃ¶st werden. Durchlauf", counter++);
+					// ob ein Objekt beibehalten wird, muss hier zurÃ¼ckgesetzt werden!
 					unsetSystemObjectKeeping();
 					// alle Konfigurationsbereiche setzen, da diese in der Schleife nicht betrachtet werden.
 					for(ConfigurationArea configurationArea : _allImportedConfigurationAreas) {
@@ -249,18 +255,18 @@ public class ConfigurationImport implements ObjectLookup {
 				}
 			}
 
-			// prüfen und ggf. handeln, falls sich der KV des Bereichs geändert hat.
+			// prÃ¼fen und ggf. handeln, falls sich der KV des Bereichs geÃ¤ndert hat.
 			checkChangeOfConfigurationAuthority();
 
-			// 2.) Neu erstellte Objekte werden vervollständigt und bereits existierende Objekte so verändert, dass sie mit den Import-Daten übereinstimmen.
-			_debug.config("Alle Modelldaten der zu importierenden Konfigurationsbereiche werden vervollständigt.");
-			// erst alle Attributlisten (wird für die Default-Parameter-Datensätze benötigt)
+			// 2.) Neu erstellte Objekte werden vervollstÃ¤ndigt und bereits existierende Objekte so verÃ¤ndert, dass sie mit den Import-Daten Ã¼bereinstimmen.
+			_debug.config("Alle Modelldaten der zu importierenden Konfigurationsbereiche werden vervollstÃ¤ndigt.");
+			// erst alle Attributlisten (wird fÃ¼r die Default-Parameter-DatensÃ¤tze benÃ¶tigt)
 			for(ImportObject importObject : _importMap.values()) {
 				if(importObject.getProperties() instanceof AttributeListProperties) {
 					completeImportObject(importObject);
 				}
 			}
-			// dann alle Attributgruppen (wird für die Default-Parameter-Datensätze benötigt)
+			// dann alle Attributgruppen (wird fÃ¼r die Default-Parameter-DatensÃ¤tze benÃ¶tigt)
 			for(ImportObject importObject : _importMap.values()) {
 				if(importObject.getProperties() instanceof AttributeGroupProperties) {
 					completeImportObject(importObject);
@@ -274,34 +280,34 @@ public class ConfigurationImport implements ObjectLookup {
 				}
 			}
 
-			_debug.config("Default-Werte werden vervollständigt.");
+			_debug.config("Default-Werte werden vervollstÃ¤ndigt.");
 			for(ImportObject importObject : _importMap.values()) {
 				if(!(importObject.getProperties() instanceof ConfigurationConfigurationObject)) {
 					completeDefaults(importObject);
 				}
 			}
 
-			_debug.config("Alle Objekte der zu importierenden Konfigurationsbereiche werden vervollständigt.");
+			_debug.config("Alle Objekte der zu importierenden Konfigurationsbereiche werden vervollstÃ¤ndigt.");
 			for(ImportObject importObject : _importMap.values()) {
 				if(importObject.getProperties() instanceof ConfigurationConfigurationObject) {
 					completeImportObject(importObject);
 				}
 			}
 
-			// Nach dem Import muss noch aufgeräumt werden. Nicht mehr benötigte Objekte werden auf ungültig gesetzt oder werden gelöscht.
-			// Bereits auf ungültig gesetzte Objekte, werden wieder gültig, wenn sie gebraucht werden.
-			_debug.config("Aufräumen bestehender Objekte nach dem Import.");
+			// Nach dem Import muss noch aufgerÃ¤umt werden. Nicht mehr benÃ¶tigte Objekte werden auf ungÃ¼ltig gesetzt oder werden gelÃ¶scht.
+			// Bereits auf ungÃ¼ltig gesetzte Objekte, werden wieder gÃ¼ltig, wenn sie gebraucht werden.
+			_debug.config("AufrÃ¤umen bestehender Objekte nach dem Import.");
 			invalidateNoLongerRequiredObjects();
 			deleteNoLongerRequiredObjects();
 			validateRequiredObjects();
 
-			// hier die Konfigurationsänderungen aktualisieren
+			// hier die KonfigurationsÃ¤nderungen aktualisieren
 			for(Map.Entry<ConfigurationAreaProperties, ConfigurationArea> entry : _areaProperty2ConfigurationArea.entrySet()) {
 				setConfigurationAreaChangeInformation(entry.getKey(), entry.getValue());
 			}
 
 			long endTime = System.currentTimeMillis();
-			_debug.info("Der Import wurde durchgeführt. Dauer in Sekunden", ((endTime - startTime) / 1000));
+			_debug.info("Der Import wurde durchgefÃ¼hrt. Dauer in Sekunden", ((endTime - startTime) / 1000));
 		}
 		catch(Exception ex) {
 			throw new ConfigurationChangeException(ex);
@@ -309,21 +315,21 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Prüft, ob sich der KV des Bereichs geändert hat. Wenn ja, dann wird ein neuer Zuständiger für diesen Bereich eingetragen. Wenn nicht, dann wird ein evtl.
-	 * vorhandener neuer Zuständiger gelöscht.
+	 * PrÃ¼ft, ob sich der KV des Bereichs geÃ¤ndert hat. Wenn ja, dann wird ein neuer ZustÃ¤ndiger fÃ¼r diesen Bereich eingetragen. Wenn nicht, dann wird ein evtl.
+	 * vorhandener neuer ZustÃ¤ndiger gelÃ¶scht.
 	 *
-	 * @throws ConfigurationChangeException Falls der neue Zuständige nicht geschrieben werden kann.
+	 * @throws ConfigurationChangeException Falls der neue ZustÃ¤ndige nicht geschrieben werden kann.
 	 */
 	private void checkChangeOfConfigurationAuthority() throws ConfigurationChangeException {
 		final ConfigurationAuthority configurationAuthority = _dataModel.getConfigurationAuthority();
-		// KV der Bereiche prüfen
+		// KV der Bereiche prÃ¼fen
 		if(configurationAuthority != null) {
 			final AttributeGroup configurationAreaAtg = _dataModel.getAttributeGroup("atg.konfigurationsBereichEigenschaften");
 			for(Map.Entry<ConfigurationAreaProperties, ConfigurationArea> entry : _areaProperty2ConfigurationArea.entrySet()) {
 				final ConfigurationArea configurationArea = entry.getValue();
 				final String areaPropertyAuthority = entry.getKey().getAuthority();
 				if(!areaPropertyAuthority.equals(configurationArea.getConfigurationAuthority().getPid())) {
-					// neuen Zuständigen eintragen
+					// neuen ZustÃ¤ndigen eintragen
 					final ConfigurationAuthority newAuthority = (ConfigurationAuthority)getObject(areaPropertyAuthority);
 					if(newAuthority == null) {
 						throwNoObjectException(areaPropertyAuthority);
@@ -331,7 +337,7 @@ public class ConfigurationImport implements ObjectLookup {
 
 					for(ImportObject importObject : _importMap.values()) {
 						if(importObject.getSystemObject() == newAuthority) {
-							_debug.fine("Neuen KV vervollständigen", newAuthority);
+							_debug.fine("Neuen KV vervollstÃ¤ndigen", newAuthority);
 							completeImportObject(importObject);
 						}
 					}
@@ -340,10 +346,10 @@ public class ConfigurationImport implements ObjectLookup {
 					checkCodingOfConfigurationAuthority(newAuthority.getCoding(), newAuthority.getPid());
 
 					final Data data = getConfigurationData(configurationArea, configurationAreaAtg);
-					data.getReferenceValue("neuerZuständiger").setSystemObject(newAuthority);
+					data.getReferenceValue("neuerZustÃ¤ndiger").setSystemObject(newAuthority);
 					configurationArea.setConfigurationData(configurationAreaAtg, data);
 					_debug.info(
-							"Der Bereich " + configurationArea.getPid() + " ändert ab der nächsten Version seinen Zuständigen zu " + newAuthority.getPid() + "."
+							"Der Bereich " + configurationArea.getPid() + " Ã¤ndert ab der nÃ¤chsten Version seinen ZustÃ¤ndigen zu " + newAuthority.getPid() + "."
 					);
 				}
 				else {
@@ -355,30 +361,30 @@ public class ConfigurationImport implements ObjectLookup {
 					if(data==null) {
 						throw new IllegalStateException("Am Bereich " + configurationArea + " fehlt der Datensatz der Attributgruppe " + configurationAreaAtg);
 					}
-					final SystemObject oldConfigurationAuthority = data.getReferenceValue("zuständiger").getSystemObject();
+					final SystemObject oldConfigurationAuthority = data.getReferenceValue("zustÃ¤ndiger").getSystemObject();
 					if(oldConfigurationAuthority == null || oldConfigurationAuthority.getId() != newAuthority.getId()) {
 
 						for(ImportObject importObject : _importMap.values()) {
 							if(importObject.getSystemObject() == newAuthority) {
-								_debug.fine("Neuen KV vervollständigen", newAuthority);
+								_debug.fine("Neuen KV vervollstÃ¤ndigen", newAuthority);
 								completeImportObject(importObject);
 							}
 						}
 
 						// ist die Kodierung eindeutig?
 						checkCodingOfConfigurationAuthority(newAuthority.getCoding(), newAuthority.getPid());
-						// neuen Zuständigen eintragen
-						data.getReferenceValue("neuerZuständiger").setSystemObject(newAuthority);
+						// neuen ZustÃ¤ndigen eintragen
+						data.getReferenceValue("neuerZustÃ¤ndiger").setSystemObject(newAuthority);
 						configurationArea.setConfigurationData(configurationAreaAtg, data);
 						_debug.info(
-								"Der Bereich " + configurationArea.getPid() + " ändert ab der nächsten Version seinen Zuständigen von " +
+								"Der Bereich " + configurationArea.getPid() + " Ã¤ndert ab der nÃ¤chsten Version seinen ZustÃ¤ndigen von " +
 								oldConfigurationAuthority.getPid() + "/" + oldConfigurationAuthority.getId() + " zu " +
 								newAuthority.getPid() + "/" + newAuthority.getId() + "."
 						);
 					}
 					else {
-						// prüfen, ob beim neuen Zuständigen die null drinsteht!
-						final Data.ReferenceValue referenceValue = data.getReferenceValue("neuerZuständiger");
+						// prÃ¼fen, ob beim neuen ZustÃ¤ndigen die null drinsteht!
+						final Data.ReferenceValue referenceValue = data.getReferenceValue("neuerZustÃ¤ndiger");
 						final SystemObject object = referenceValue.getSystemObject();
 						if(object != null) {
 							referenceValue.setSystemObject(null);
@@ -398,8 +404,8 @@ public class ConfigurationImport implements ObjectLookup {
 	private void determineUsingVersionOfConfigurationAreas(final ConfigurationControl configurationControl) {
 		final Collection<ConfigurationArea> configurationAreas = configurationControl.getAllConfigurationAreas().values();
 		for(ConfigurationArea configurationArea : configurationAreas) {
-			// Dieser Vergleich ist auch möglich, wenn der KV in den zu importierenden Bereichen neu angelegt wurde, da dann
-			// _dataModel.getConfigurationAuthority() == null zurückgibt. Diese Gleichung sollte für keinen Bereich zutreffen, da alle einen anderen
+			// Dieser Vergleich ist auch mÃ¶glich, wenn der KV in den zu importierenden Bereichen neu angelegt wurde, da dann
+			// _dataModel.getConfigurationAuthority() == null zurÃ¼ckgibt. Diese Gleichung sollte fÃ¼r keinen Bereich zutreffen, da alle einen anderen
 			// Verantwortlichen besitzen.
 			ConfigurationAuthority areaAuthority = null;
 			try {
@@ -418,11 +424,11 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Diese Methode prüft, ob es bereits einen Konfigurationsbereich passend zur Versorgungsdatei (dargestellt durch das {@link ConfigurationAreaProperties
+	 * Diese Methode prÃ¼ft, ob es bereits einen Konfigurationsbereich passend zur Versorgungsdatei (dargestellt durch das {@link ConfigurationAreaProperties
 	 * Eigenschafts-Objekt}) gibt. Existiert er noch nicht, so wird eine neue Bereichs-Datei angelegt.
 	 *
-	 * @param property             Eigenschafts-Objekt, welches die Versorgungsdatei repräsentiert
-	 * @param configurationControl Objekt, welches spezielle Zugriffsmethoden auf die Konfiguration enthält
+	 * @param property             Eigenschafts-Objekt, welches die Versorgungsdatei reprÃ¤sentiert
+	 * @param configurationControl Objekt, welches spezielle Zugriffsmethoden auf die Konfiguration enthÃ¤lt
 	 *
 	 * @return Konfigurationsbereich, passend zur Versorgungsdatei.
 	 *
@@ -468,29 +474,29 @@ public class ConfigurationImport implements ObjectLookup {
 			}
 			checkConfigurationArea(property, configurationArea);
 		}
-		// Info überprüfen
+		// Info Ã¼berprÃ¼fen
 		if(_objectDiffs.isInfoDifferent(configurationArea.getInfo(), property.getInfo()) && _objectDiffs.isInfoProcessable(
 				configurationArea.getInfo(), property.getInfo()
 		)) {
 			setInfo(configurationArea, property.getInfo());
 		}
-		// KonfigurationsÄnderungen überprüfen, ob der Datensatz geändert werden kann.
+		// KonfigurationsÃ„nderungen Ã¼berprÃ¼fen, ob der Datensatz geÃ¤ndert werden kann.
 		if(!_objectDiffs.isConfigurationAreaChangeInformationProcessable(property.getConfigurationAreaChangeInformation(), configurationArea)) {
 			throw new ConfigurationChangeException(
-					"Die Konfigurationsänderungen können nicht am Konfigurationsbereich " + configurationArea.getPidOrNameOrId() + " geändert werden."
+					"Die KonfigurationsÃ¤nderungen kÃ¶nnen nicht am Konfigurationsbereich " + configurationArea.getPidOrNameOrId() + " geÃ¤ndert werden."
 			);
 		}
-		// Darf hier nicht mehr gemacht werden, weil die richtige Versionsnummer für die Aktualisierung der Konfigurationsänderungseinträge
+		// Darf hier nicht mehr gemacht werden, weil die richtige Versionsnummer fÃ¼r die Aktualisierung der KonfigurationsÃ¤nderungseintrÃ¤ge
 		// noch nicht feststeht.
 		// setConfigurationAreaChangeInformation(property, configurationArea);
 
-		// die Zeiten, wann sich ein Datensatz geändert oder ein Objekt erzeugt wurde, müssen initialisiert werden
+		// die Zeiten, wann sich ein Datensatz geÃ¤ndert oder ein Objekt erzeugt wurde, mÃ¼ssen initialisiert werden
 		((ConfigConfigurationArea)configurationArea).initialiseTimeOfLastChanges();
 		return configurationArea;
 	}
 
 	/**
-	 * Setzt die KonfigurationsÄnderungen an einem Konfigurationsbereich.
+	 * Setzt die KonfigurationsÃ„nderungen an einem Konfigurationsbereich.
 	 *
 	 * @param property          eingelesene Werte der Versorgungsdatei
 	 * @param configurationArea Konfigurationsbereich
@@ -505,7 +511,7 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Der Konfigurationsbereich wird überprüft, ob auch er geändert wurde.
+	 * Der Konfigurationsbereich wird Ã¼berprÃ¼ft, ob auch er geÃ¤ndert wurde.
 	 *
 	 * @param property          Eigenschaftsobjekt des Konfigurationsbereichs
 	 * @param configurationArea Konfigurationsbereichs-Objekt
@@ -514,21 +520,21 @@ public class ConfigurationImport implements ObjectLookup {
 	 */
 	private void checkConfigurationArea(final ConfigurationAreaProperties property, final ConfigurationArea configurationArea)
 			throws ConfigurationChangeException {
-		// Der Konfigurationsbereich existiert bereits - prüfen, ob alle Werte übereinstimmen.
-		// Namen des Konfigurationsbereichs überprüfen
+		// Der Konfigurationsbereich existiert bereits - prÃ¼fen, ob alle Werte Ã¼bereinstimmen.
+		// Namen des Konfigurationsbereichs Ã¼berprÃ¼fen
 		if(_objectDiffs.isNameDifferent(property.getName(), configurationArea.getName())) {
 			if(_objectDiffs.isNameProcessable(property.getName(), configurationArea)) {
 				configurationArea.setName(property.getName());
 			}
 			else {
 				throw new ConfigurationChangeException(
-						"Der Name des Konfigurationsbereichs darf nicht geändert werden. Alter Name: " + configurationArea.getName() + " neuer Name: "
+						"Der Name des Konfigurationsbereichs darf nicht geÃ¤ndert werden. Alter Name: " + configurationArea.getName() + " neuer Name: "
 						+ property.getName()
 				);
 			}
 		}
 
-		// Konfigurationsbereiche können nicht verändert werden - wenn einer verändert werden soll, muss ein neuer Bereich angelegt werden
+		// Konfigurationsbereiche kÃ¶nnen nicht verÃ¤ndert werden - wenn einer verÃ¤ndert werden soll, muss ein neuer Bereich angelegt werden
 		if(configurationArea.getNotValidSince() != 0) {
 			
 			((ConfigConfigurationObject)configurationArea).simpleRevalidate();
@@ -539,7 +545,7 @@ public class ConfigurationImport implements ObjectLookup {
 	 * Diese Methode erstellt einen neuen Konfigurationsbereich.
 	 *
 	 * @param property             Das Eigenschafts-Objekt zum Bereich.
-	 * @param configurationControl Wird zum Erstellen eines neuen Bereichs benötigt.
+	 * @param configurationControl Wird zum Erstellen eines neuen Bereichs benÃ¶tigt.
 	 *
 	 * @return der neue Konfigurationsbereich
 	 *
@@ -573,7 +579,7 @@ public class ConfigurationImport implements ObjectLookup {
 					// Objekt des Konfigurationsverantwortlichen gefunden
 					// es handelt sich um ein Konfigurationsobjekt
 					ConfigurationConfigurationObject configurationObjectProperties = (ConfigurationConfigurationObject)systemObjectProperties;
-					// der Typ des Konfigurationsverantwortlichen muss zu den aktiven Objekten gehören
+					// der Typ des Konfigurationsverantwortlichen muss zu den aktiven Objekten gehÃ¶ren
 					authorityType = _dataModel.getType(configurationObjectProperties.getType());
 					authorityPid = configurationObjectProperties.getPid();
 					authorityName = configurationObjectProperties.getName();
@@ -587,7 +593,7 @@ public class ConfigurationImport implements ObjectLookup {
 						+ "' und es wird kein neuer Konfigurationsverantwortlicher in diesem Bereich '" + property.getPid() + "' angelegt."
 				);
 			}
-			// Prüfen, ob Kodierung eindeutig ist. Alle KVs betrachten und prüfen.
+			// PrÃ¼fen, ob Kodierung eindeutig ist. Alle KVs betrachten und prÃ¼fen.
 			checkCodingOfConfigurationAuthority(authorityCoding, authorityPid);
 
 			// Bereich und Konfigurationsverantwortlicher werden erstellt
@@ -595,7 +601,7 @@ public class ConfigurationImport implements ObjectLookup {
 					property.getName(), property.getPid(), authorityType, authorityPid, authorityName, authorityCoding
 			);
 
-			// Der Konfigurationsverantwortliche muss hinzugefügt werden, da er gerade erst erstellt wurde.
+			// Der Konfigurationsverantwortliche muss hinzugefÃ¼gt werden, da er gerade erst erstellt wurde.
 			if(_viewingObjects != null) {
 				final ConfigurationAuthority configurationAuthority = configurationArea.getConfigurationAuthority();
 				_viewingObjects.put(configurationAuthority.getPid(), configurationAuthority);
@@ -612,7 +618,7 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Diese Methode prüft, ob die Kodierung des zu verwendenden Konfigurationsverantwortlichen eindeutig ist. Es darf also keinen aktuellen Verantwortlichen
+	 * Diese Methode prÃ¼ft, ob die Kodierung des zu verwendenden Konfigurationsverantwortlichen eindeutig ist. Es darf also keinen aktuellen Verantwortlichen
 	 * geben, der die gleiche Kodierung verwendet.
 	 *
 	 * @param authorityCoding zu vergleichende Kodierung
@@ -666,10 +672,10 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Erzeugt einen Datensatz mit den Konfigurationsänderungen aus der Versorgungsdatei und speichert diesen am Konfigurationsbereich ab.
+	 * Erzeugt einen Datensatz mit den KonfigurationsÃ¤nderungen aus der Versorgungsdatei und speichert diesen am Konfigurationsbereich ab.
 	 *
 	 * @param configurationAreaChangeInformation
-	 *                          die Konfigurationsänderungen aus der Versorgungsdatei
+	 *                          die KonfigurationsÃ¤nderungen aus der Versorgungsdatei
 	 * @param configurationArea der Konfigurationsbereich
 	 *
 	 * @throws ConfigurationChangeException Falls der Datensatz nicht am Konfigurationsbereich gespeichert werden konnte.
@@ -677,15 +683,15 @@ public class ConfigurationImport implements ObjectLookup {
 	private void setConfigurationAreaChangeInformation(
 			ConfigurationAreaChangeInformation[] configurationAreaChangeInformation, ConfigurationArea configurationArea
 	) throws ConfigurationChangeException {
-		final AttributeGroup atg = _dataModel.getAttributeGroup("atg.konfigurationsÄnderungen");
+		final AttributeGroup atg = _dataModel.getAttributeGroup("atg.konfigurationsÃ„nderungen");
 
 		// bestehendes Data holen
 		final Data existData = getConfigurationData(configurationArea, atg);
 
 		// neues Data wird erzeugt!
 		Data data = AttributeBaseValueDataFactory.createAdapter(atg, AttributeHelper.getAttributesValues(atg));
-		final Data.Array array = data.getArray("KonfigurationsÄnderung");
-		// Länge festlegen
+		final Data.Array array = data.getArray("KonfigurationsÃ„nderung");
+		// LÃ¤nge festlegen
 		array.setLength(configurationAreaChangeInformation.length);
 		int i = 0;
 		final short lastModifiedVersion = ((ConfigConfigurationArea)configurationArea).getLastModifiedVersion();
@@ -698,23 +704,23 @@ public class ConfigurationImport implements ObjectLookup {
 			int version = information.getVersion();
 			if(version == -1) version = existChangeInformation(existData, information);    // Version aus dem bestehenden Datensatz ermitteln
 			if(version == -1) version = lastModifiedVersion;   // Falls keine Version ermittelt werden konnte
-			if(version > lastModifiedVersion) version = lastModifiedVersion; // Version auf die größte verwendete Version beschränken
+			if(version > lastModifiedVersion) version = lastModifiedVersion; // Version auf die grÃ¶ÃŸte verwendete Version beschrÃ¤nken
 			item.getUnscaledValue("Version").set(version);
 		}
 		configurationArea.setConfigurationData(atg, data);
 	}
 
 	/**
-	 * Ermittelt die Versionsnummer zu einem Änderungsvermerk, der zuvor schon mal gespeichert wurde.
+	 * Ermittelt die Versionsnummer zu einem Ã„nderungsvermerk, der zuvor schon mal gespeichert wurde.
 	 *
-	 * @param existData existierendes Data zu den Konfigurations-Änderungen
+	 * @param existData existierendes Data zu den Konfigurations-Ã„nderungen
 	 * @param info      ein neuer Info-Eintrag
 	 *
 	 * @return Versionsnummer dieses Info-Eintrages oder "-1", falls der Eintrag noch nicht existierte.
 	 */
 	private int existChangeInformation(Data existData, ConfigurationAreaChangeInformation info) {
 		if(existData == null) return -1;
-		Data.Array array = existData.getArray("KonfigurationsÄnderung");
+		Data.Array array = existData.getArray("KonfigurationsÃ„nderung");
 		for(int i = 0; i < array.getLength(); i++) {
 			Data item = array.getItem(i);
 			if(item.getTextValue("Text").getText().equals(info.getText()) && item.getTextValue("Grund").getText().equals(info.getReason())
@@ -726,7 +732,7 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Liest alle aktuellen und zur Aktivierung/Übernahme freigegebenen Objekte aus dem Konfigurationsbereich aus und merkt sich diese lokal.
+	 * Liest alle aktuellen und zur Aktivierung/Ãœbernahme freigegebenen Objekte aus dem Konfigurationsbereich aus und merkt sich diese lokal.
 	 *
 	 * @param configurationArea ein zu importierender Konfigurationsbereich
 	 */
@@ -739,8 +745,8 @@ public class ConfigurationImport implements ObjectLookup {
 		}
 		_currentObjects.put(configurationArea, currentCheckedObjects);
 
-		// Alle zukünftigen, bereits vorhandene Objekte einladen - unterteilt nach freigegebenen und in Bearbeitung befindlichen Objekten.
-		// Die größere Versionsnummer zwischen der "Übernehmbaren" und der "Aktivierbaren" Version ermitteln.
+		// Alle zukÃ¼nftigen, bereits vorhandene Objekte einladen - unterteilt nach freigegebenen und in Bearbeitung befindlichen Objekten.
+		// Die grÃ¶ÃŸere Versionsnummer zwischen der "Ãœbernehmbaren" und der "Aktivierbaren" Version ermitteln.
 		short releasedVersion = configurationArea.getActivatableVersion();
 		if(configurationArea.getTransferableVersion() > releasedVersion) {
 			releasedVersion = configurationArea.getTransferableVersion();
@@ -764,22 +770,22 @@ public class ConfigurationImport implements ObjectLookup {
 			}
 			else {
 				// Ein dynamisches Objekt ist entweder aktuell oder veraltet. Sobald es erstellt wurde, gilt ein dynamisches Objekt als aktuell, somit
-				// kann es nicht bei den zur Übernahme/Aktivierung freigegebenen und in Bearbeitung befindlichen Objekten sein.
+				// kann es nicht bei den zur Ãœbernahme/Aktivierung freigegebenen und in Bearbeitung befindlichen Objekten sein.
 				_debug.error("Ein dynamisches Objekt bei den neuen Objekten gefunden", systemObject.getPidOrNameOrId());
 			}
 		}
-		// ermittelte Objekte hinzufügen
+		// ermittelte Objekte hinzufÃ¼gen
 		_newObjects.put(configurationArea, newCheckedObjects);
 		_editingObjects.put(configurationArea, editingCheckedObjects);
 	}
 
 	/**
-	 * Diese Methode prüft, ob es bereits ein passendes Objekt zu einer zu importierenden Definition gibt und verwendet dieses. Wenn dieses Objekt allerdings
-	 * verändert werden muss, wird überprüft, ob es auch verändert werden darf. Wenn es nicht verändert werden darf, wird ein neues Objekt angelegt.
-	 * <p/>
+	 * Diese Methode prÃ¼ft, ob es bereits ein passendes Objekt zu einer zu importierenden Definition gibt und verwendet dieses. Wenn dieses Objekt allerdings
+	 * verÃ¤ndert werden muss, wird Ã¼berprÃ¼ft, ob es auch verÃ¤ndert werden darf. Wenn es nicht verÃ¤ndert werden darf, wird ein neues Objekt angelegt.
+	 * <p>
 	 * Wird ein passendes Objekt gefunden, dann wird damit weitergearbeitet. Wenn nicht, dann wird ein neues Objekt erstellt.
 	 *
-	 * @param importObject Import-Objekt, welches ein Import-Objekt und ein System-Objekt enthält.
+	 * @param importObject Import-Objekt, welches ein Import-Objekt und ein System-Objekt enthÃ¤lt.
 	 *
 	 * @throws ConfigurationChangeException Falls das Objekt nicht angelegt werden.
 	 */
@@ -789,26 +795,26 @@ public class ConfigurationImport implements ObjectLookup {
 		_debug.finer("*** Folgende Pid wird jetzt weiterverarbeitet", pid);
 		CheckedObject checkedObject = getNewObject(configurationArea, pid);
 		if(checkedObject != null) {
-			// Es gibt ein zur Übernahme / Aktivierung freigegebenes Objekt.
-			// wenn dieses Objekt geändert werden muss und geändert werden darf, dann soll es weiter verwendet werden
+			// Es gibt ein zur Ãœbernahme / Aktivierung freigegebenes Objekt.
+			// wenn dieses Objekt geÃ¤ndert werden muss und geÃ¤ndert werden darf, dann soll es weiter verwendet werden
 			boolean isObjectProcessable = _objectDiffs.isObjectProcessable(importObject.getProperties(), checkedObject.getSystemObject());
 			if(_objectDiffs.isObjectDifferent(importObject.getProperties(), checkedObject.getSystemObject())) {
 				_debug.fine(
-						"Das zur Übernahme / Aktivierung freigegebene Objekt mit Pid '" + pid + "' und Id '" + checkedObject.getSystemObject().getId()
-						+ "' muss geändert werden. Darf es geändert werden? " + isObjectProcessable
+						"Das zur Ãœbernahme / Aktivierung freigegebene Objekt mit Pid '" + pid + "' und Id '" + checkedObject.getSystemObject().getId()
+						+ "' muss geÃ¤ndert werden. Darf es geÃ¤ndert werden? " + isObjectProcessable
 				);
 			}
 			else {
 				_debug.finer(
 						"Objekt mit Pid " + checkedObject.getSystemObject().getPid()
-						+ " unterscheidet sich nicht von einem zur Übernahme / Aktivierung freigegebene Objekt!"
+						+ " unterscheidet sich nicht von einem zur Ãœbernahme / Aktivierung freigegebene Objekt!"
 				);
 			}
 			if(isObjectProcessable) {
-				// wenn es geändert werden kann, dann wird dieses weiterverwendet, wenn nicht, dann muss ein neues angelegt werden.
+				// wenn es geÃ¤ndert werden kann, dann wird dieses weiterverwendet, wenn nicht, dann muss ein neues angelegt werden.
 				final ConfigurationObject configurationObject = getModifiableObject(configurationArea, pid);
 				if(configurationObject != null) {
-					// ein Objekt mit gleicher Pid welches in Bearbeitung ist, muss gelöscht werden, da
+					// ein Objekt mit gleicher Pid welches in Bearbeitung ist, muss gelÃ¶scht werden, da
 					// das aktive Objekt verwendet wird
 					
 					((ConfigSystemObject)configurationObject).simpleInvalidation();
@@ -819,8 +825,8 @@ public class ConfigurationImport implements ObjectLookup {
 			}
 			else {
 				if(importObject.getSystemObject() == null || importObject.getSystemObject() == checkedObject.getSystemObject()) {
-					// Wenn die beiden Objekte gleich sind, diese aber nicht weiterverarbeitet werden dürfen, dann müssen
-					// die Referenzen mit einem neuen Objekt aufgelöst werden.
+					// Wenn die beiden Objekte gleich sind, diese aber nicht weiterverarbeitet werden dÃ¼rfen, dann mÃ¼ssen
+					// die Referenzen mit einem neuen Objekt aufgelÃ¶st werden.
 					_debug.finest("DissolveReference because Pid " + pid);
 					_dissolveReference = true;
 					importObject.setSystemObject(null);
@@ -828,26 +834,26 @@ public class ConfigurationImport implements ObjectLookup {
 			}
 		}
 		else {
-			// Es gibt kein zur Übernahme / Aktivierung freigegebenes Objekt - gibt es ein aktuelles Objekt?
+			// Es gibt kein zur Ãœbernahme / Aktivierung freigegebenes Objekt - gibt es ein aktuelles Objekt?
 			checkedObject = getCurrentObject(configurationArea, pid);
 			if(checkedObject != null) {
 				// es gibt ein aktuelles Objekt
-				// wenn dieses Objekt geändert werden muss und geändert werden darf, dann soll es weiter verwendet werden
+				// wenn dieses Objekt geÃ¤ndert werden muss und geÃ¤ndert werden darf, dann soll es weiter verwendet werden
 				boolean isObjectProcessable = _objectDiffs.isObjectProcessable(importObject.getProperties(), checkedObject.getSystemObject());
 				if(_objectDiffs.isObjectDifferent(importObject.getProperties(), checkedObject.getSystemObject())) {
 					_debug.fine(
-							"Das aktuelle Objekt mit Pid '" + pid + "' und Id '" + checkedObject.getSystemObject().getId() + "' muss geändert werden (Typ: "
-							+ checkedObject.getSystemObject().getType().getPidOrNameOrId() + "). Darf es geändert werden? " + isObjectProcessable
+							"Das aktuelle Objekt mit Pid '" + pid + "' und Id '" + checkedObject.getSystemObject().getId() + "' muss geÃ¤ndert werden (Typ: "
+							+ checkedObject.getSystemObject().getType().getPidOrNameOrId() + "). Darf es geÃ¤ndert werden? " + isObjectProcessable
 					);
 				}
 				else {
 					_debug.finer("Objekt mit Pid " + checkedObject.getSystemObject().getPid() + " unterscheidet sich nicht von einem aktuellen Objekt!");
 				}
 				if(isObjectProcessable) {
-					// wenn es geändert werden kann, dann wird dieses weiterverwendet, wenn nicht, dann muss ein neues angelegt werden.
+					// wenn es geÃ¤ndert werden kann, dann wird dieses weiterverwendet, wenn nicht, dann muss ein neues angelegt werden.
 					final ConfigurationObject configurationObject = getModifiableObject(configurationArea, pid);
 					if(configurationObject != null) {
-						// ein Objekt mit gleicher Pid welches in Bearbeitung ist, muss gelöscht werden, da
+						// ein Objekt mit gleicher Pid welches in Bearbeitung ist, muss gelÃ¶scht werden, da
 						// das aktive Objekt verwendet wird
 						
 						((ConfigSystemObject)configurationObject).simpleInvalidation();
@@ -858,11 +864,11 @@ public class ConfigurationImport implements ObjectLookup {
 				}
 				else {
 					if(importObject.getSystemObject() == null || importObject.getSystemObject() == checkedObject.getSystemObject()) {
-						// Wenn die beiden Objekte gleich sind, diese aber nicht weiterverarbeitet werden dürfen, dann müssen
-						// die Referenzen mit einem neuen Objekt aufgelöst werden.
+						// Wenn die beiden Objekte gleich sind, diese aber nicht weiterverarbeitet werden dÃ¼rfen, dann mÃ¼ssen
+						// die Referenzen mit einem neuen Objekt aufgelÃ¶st werden.
 						final SystemObject checkedSystemObject = checkedObject.getSystemObject();
 						if(checkedSystemObject instanceof DynamicObject) {
-							_debug.fine("dynamisches Objekt wird gelöscht", checkedSystemObject);
+							_debug.fine("dynamisches Objekt wird gelÃ¶scht", checkedSystemObject);
 							forgetCurrentObject(configurationArea, checkedSystemObject);
 							((ConfigSystemObject)checkedSystemObject).simpleInvalidation();
 						}
@@ -873,13 +879,13 @@ public class ConfigurationImport implements ObjectLookup {
 				}
 			}
 		}
-		// Es gibt weder ein zur Übernahme / Aktivierung freigegebenes Objekt, noch ein aktuelles Objekt.
+		// Es gibt weder ein zur Ãœbernahme / Aktivierung freigegebenes Objekt, noch ein aktuelles Objekt.
 		// Gibt es ein in Bearbeitung befindliches Objekt, welches vor dem Import bereits in Bearbeitung war?
 		checkedObject = getEditingObject(configurationArea, pid);
 		if(checkedObject != null) {
-			// Es gibt ein in Bearbeitung befindliches Objekt -> dies kann nach belieben geändert werden.
+			// Es gibt ein in Bearbeitung befindliches Objekt -> dies kann nach belieben geÃ¤ndert werden.
 			_debug.fine("Ein in Bearbeitung befindliches Objekt mit der Pid '" + pid + "' wird weiterverarbeitet.");
-			// Objekt weiterverarbeiten - es kann nach belieben verändert werden
+			// Objekt weiterverarbeiten - es kann nach belieben verÃ¤ndert werden
 			handleObject(checkedObject, importObject);
 			return;
 		}
@@ -894,8 +900,8 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Ermittelt zu einer Pid ein in Bearbeitung befindliches Objekt, löscht es aus der entsprechenden Liste, damit es nicht nochmal betrachtet wird und gibt es
-	 * zurück.
+	 * Ermittelt zu einer Pid ein in Bearbeitung befindliches Objekt, lÃ¶scht es aus der entsprechenden Liste, damit es nicht nochmal betrachtet wird und gibt es
+	 * zurÃ¼ck.
 	 *
 	 * @param area Konfigurationsbereich, in dem das Objekt sein soll
 	 * @param pid  Pid des Objekts
@@ -917,23 +923,23 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Diese Methode wird aufgerufen, wenn ein zu importierendes Objekt vervollständigt werden soll. Bei diesem Vorgang werden Mengen und Datensätze mit Referenzen
-	 * erzeugt oder verändert. Je nach Typ des Eigenschafts-Objekts wird die entsprechende Methode zur Weiterverarbeitung aufgerufen.
+	 * Diese Methode wird aufgerufen, wenn ein zu importierendes Objekt vervollstÃ¤ndigt werden soll. Bei diesem Vorgang werden Mengen und DatensÃ¤tze mit Referenzen
+	 * erzeugt oder verÃ¤ndert. Je nach Typ des Eigenschafts-Objekts wird die entsprechende Methode zur Weiterverarbeitung aufgerufen.
 	 *
-	 * @param importObject Import-Objekt, welches ein Import-Objekt und ein System-Objekt enthält.
+	 * @param importObject Import-Objekt, welches ein Import-Objekt und ein System-Objekt enthÃ¤lt.
 	 *
-	 * @throws ConfigurationChangeException Falls das Objekt nicht vervollständigt werden konnte (Mengen und Datensätze konnten nicht hinzugefügt werden).
+	 * @throws ConfigurationChangeException Falls das Objekt nicht vervollstÃ¤ndigt werden konnte (Mengen und DatensÃ¤tze konnten nicht hinzugefÃ¼gt werden).
 	 */
 	private void completeImportObject(ImportObject importObject) throws ConfigurationChangeException {
 		// Eigenschafts-Objekt des zu importierenden Objekts
 		final SystemObjectProperties property = importObject.getProperties();
 		final SystemObject systemObject = importObject.getSystemObject();
-		// diese Objekte sollten alle bereits erstellt sein und benötigen noch die konfigurierenden Datensätze
-		_debug.finer("### Folgendes Objekt wird jetzt vervollständigt", systemObject.getPidOrNameOrId());
+		// diese Objekte sollten alle bereits erstellt sein und benÃ¶tigen noch die konfigurierenden DatensÃ¤tze
+		_debug.finer("### Folgendes Objekt wird jetzt vervollstÃ¤ndigt", systemObject.getPidOrNameOrId());
 		if(systemObject != null) {
-			// je nachdem, um welches Eigenschafts-Objekt es sich handelt, müssen unterschiedliche Datensätze/Mengen vervollständigt werden
+			// je nachdem, um welches Eigenschafts-Objekt es sich handelt, mÃ¼ssen unterschiedliche DatensÃ¤tze/Mengen vervollstÃ¤ndigt werden
 			if(property instanceof AspectProperties) {
-				// ist bereits vollständig erstellt worden
+				// ist bereits vollstÃ¤ndig erstellt worden
 			}
 			else if(property instanceof AttributeListProperties) {
 				completeAttributeListDefinition(importObject);
@@ -954,7 +960,7 @@ public class ConfigurationImport implements ObjectLookup {
 				completeSystemObjectType(importObject);
 			}
 			else {
-				// ConfigurationObjectProperties und SystemObjectProperties werden gleichermaßen verarbeitet
+				// ConfigurationObjectProperties und SystemObjectProperties werden gleichermaÃŸen verarbeitet
 				completeSystemObject(importObject);
 			}
 		}
@@ -964,7 +970,7 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Default-Werte werden an den Objekten vervollständigt.
+	 * Default-Werte werden an den Objekten vervollstÃ¤ndigt.
 	 *
 	 * @param importObject Import-Objekte
 	 *
@@ -982,22 +988,22 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Aktuelle Objekte und Objekte, die zur Übernahme / Aktivierung freigegeben wurden werden geprüft, ob sie bei einem vorhergehenden Import auf ungültig gesetzt
-	 * wurden, nach diesem Import aber benötigt werden. Diese Objekte werden dann mittels {@link ConfigurationObject#revalidate() revalidate} wieder gültig.
+	 * Aktuelle Objekte und Objekte, die zur Ãœbernahme / Aktivierung freigegeben wurden werden geprÃ¼ft, ob sie bei einem vorhergehenden Import auf ungÃ¼ltig gesetzt
+	 * wurden, nach diesem Import aber benÃ¶tigt werden. Diese Objekte werden dann mittels {@link ConfigurationObject#revalidate() revalidate} wieder gÃ¼ltig.
 	 *
-	 * @throws ConfigurationChangeException Falls ein benötigtes Objekt nicht zurück auf gültig gesetzt werden kann.
+	 * @throws ConfigurationChangeException Falls ein benÃ¶tigtes Objekt nicht zurÃ¼ck auf gÃ¼ltig gesetzt werden kann.
 	 */
 	private void validateRequiredObjects() throws ConfigurationChangeException {
 		for(ConfigurationArea configurationArea : _currentObjects.keySet()) {
 			for(CheckedObject checkedObject : _currentObjects.get(configurationArea)) {
 				if(checkedObject.isObjectKeeping()) {
-					// das Objekt wird noch benötigt, wenn es schon mal auf ungültig gesetzt wurde, wieder auf gültig setzen
+					// das Objekt wird noch benÃ¶tigt, wenn es schon mal auf ungÃ¼ltig gesetzt wurde, wieder auf gÃ¼ltig setzen
 					final SystemObject systemObject = checkedObject.getSystemObject();
 					if(systemObject instanceof ConfigurationObject) {
 						ConfigurationObject configurationObject = (ConfigurationObject)systemObject;
 						if(configurationObject.getNotValidSince() != 0) {
 							_debug.finer(
-									"Habe ein Objekt gefunden, welches in der nächsten Version ungültig wird, aber noch gebraucht wird. Es wird wieder gültig gemacht: "
+									"Habe ein Objekt gefunden, welches in der nÃ¤chsten Version ungÃ¼ltig wird, aber noch gebraucht wird. Es wird wieder gÃ¼ltig gemacht: "
 									+ configurationObject.getPidOrNameOrId()
 							);
 							
@@ -1010,13 +1016,13 @@ public class ConfigurationImport implements ObjectLookup {
 		for(ConfigurationArea configurationArea : _newObjects.keySet()) {
 			for(CheckedObject checkedObject : _newObjects.get(configurationArea)) {
 				if(checkedObject.isObjectKeeping()) {
-					// das Objekt wird noch benötigt, wenn es schon mal auf ungültig gesetzt wurde, wieder auf gültig setzen
+					// das Objekt wird noch benÃ¶tigt, wenn es schon mal auf ungÃ¼ltig gesetzt wurde, wieder auf gÃ¼ltig setzen
 					final SystemObject systemObject = checkedObject.getSystemObject();
 					if(systemObject instanceof ConfigurationObject) {
 						ConfigurationObject configurationObject = (ConfigurationObject)systemObject;
 						if(configurationObject.getNotValidSince() != 0) {
 							_debug.finer(
-									"Habe ein Objekt gefunden, welches in der nächsten Version gebraucht wird, aber ungültig wird: "
+									"Habe ein Objekt gefunden, welches in der nÃ¤chsten Version gebraucht wird, aber ungÃ¼ltig wird: "
 									+ configurationObject.getPidOrNameOrId()
 							);
 							
@@ -1029,21 +1035,21 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Aktuelle und freigegebene Objekte werden überprüft, ob sie nach dem Import weiterhin gebraucht werden. Werden sie nicht benötigt, dann werden sie auf
-	 * ungültig gesetzt.
+	 * Aktuelle und freigegebene Objekte werden Ã¼berprÃ¼ft, ob sie nach dem Import weiterhin gebraucht werden. Werden sie nicht benÃ¶tigt, dann werden sie auf
+	 * ungÃ¼ltig gesetzt.
 	 */
 	private void invalidateNoLongerRequiredObjects() {
-		_debug.finer("Folgende Objekte werden auf ungültig gesetzt: ");
+		_debug.finer("Folgende Objekte werden auf ungÃ¼ltig gesetzt: ");
 		// alle aktuellen Objekte betrachten
 		int counter1 = 0;
 		int counter2 = 0;
 		for(ConfigurationArea configurationArea : _currentObjects.keySet()) {
 			for(CheckedObject checkedObject : _currentObjects.get(configurationArea)) {
 				if(!checkedObject.isObjectKeeping()) {
-					// Falls das Objekt nicht mehr benötigt wird, wird es auf ungültig gesetzt.
+					// Falls das Objekt nicht mehr benÃ¶tigt wird, wird es auf ungÃ¼ltig gesetzt.
 					try {
 						final SystemObject systemObject = checkedObject.getSystemObject();
-						_debug.finer("Nicht mehr benötigtes aktuelles Objekt = " + systemObject.toString());
+						_debug.finer("Nicht mehr benÃ¶tigtes aktuelles Objekt = " + systemObject.toString());
 						
 						((ConfigSystemObject)systemObject).simpleInvalidation();
 						counter1++;
@@ -1052,7 +1058,7 @@ public class ConfigurationImport implements ObjectLookup {
 						// Sollte eigentlich nie vorkommen
 						final StringBuilder errorMessage = new StringBuilder();
 						errorMessage.append("Das aktuelle Objekt '").append(checkedObject.getSystemObject().getPidOrNameOrId()).append(
-								"' konnte nicht ungültig gemacht werden"
+								"' konnte nicht ungÃ¼ltig gemacht werden"
 						);
 						_debug.warning(errorMessage.toString(), ex.toString());
 					}
@@ -1062,8 +1068,8 @@ public class ConfigurationImport implements ObjectLookup {
 				}
 			}
 		}
-		if(counter1 > 0) _debug.info("Anzahl der aktuellen Objekte, die auf ungültig gesetzt wurden", counter1);
-		if(counter2 > 0) _debug.info("Anzahl der aktuellen Objekte, die gültig bleiben", counter2);
+		if(counter1 > 0) _debug.info("Anzahl der aktuellen Objekte, die auf ungÃ¼ltig gesetzt wurden", counter1);
+		if(counter2 > 0) _debug.info("Anzahl der aktuellen Objekte, die gÃ¼ltig bleiben", counter2);
 
 		counter1 = 0;
 		counter2 = 0;
@@ -1072,10 +1078,10 @@ public class ConfigurationImport implements ObjectLookup {
 		for(ConfigurationArea configurationArea : _newObjects.keySet()) {
 			for(CheckedObject checkedObject : _newObjects.get(configurationArea)) {
 				if(!checkedObject.isObjectKeeping()) {
-					// Falls das Objekt nicht mehr benötigt wird, wird es auf ungültig gesetzt.
+					// Falls das Objekt nicht mehr benÃ¶tigt wird, wird es auf ungÃ¼ltig gesetzt.
 					try {
 						final SystemObject systemObject = checkedObject.getSystemObject();
-						_debug.finer("Nicht mehr benötigtes freigegebenes Objekt = " + systemObject.getPidOrNameOrId());
+						_debug.finer("Nicht mehr benÃ¶tigtes freigegebenes Objekt = " + systemObject.getPidOrNameOrId());
 						
 						((ConfigSystemObject)systemObject).simpleInvalidation();
 						counter1++;
@@ -1084,7 +1090,7 @@ public class ConfigurationImport implements ObjectLookup {
 						// Sollte eigentlich nie vorkommen
 						final StringBuilder errorMessage = new StringBuilder();
 						errorMessage.append("Das freigegebene Objekt '").append(checkedObject.getSystemObject().getPidOrNameOrId()).append(
-								"' konnte nicht ungültig gemacht werden"
+								"' konnte nicht ungÃ¼ltig gemacht werden"
 						);
 						_debug.warning(errorMessage.toString(), ex.toString());
 					}
@@ -1094,22 +1100,22 @@ public class ConfigurationImport implements ObjectLookup {
 				}
 			}
 		}
-		if(counter1 > 0) _debug.info("Anzahl der zur Übernahme/Aktivierung freigegebenen Objekte, die auf ungültig gesetzt wurden", counter1);
-		if(counter2 > 0) _debug.info("Anzahl der zur Übernahme/Aktivierung freigegebenen Objekte, die gültig bleiben", counter2);
+		if(counter1 > 0) _debug.info("Anzahl der zur Ãœbernahme/Aktivierung freigegebenen Objekte, die auf ungÃ¼ltig gesetzt wurden", counter1);
+		if(counter2 > 0) _debug.info("Anzahl der zur Ãœbernahme/Aktivierung freigegebenen Objekte, die gÃ¼ltig bleiben", counter2);
 	}
 
-	/** In Bearbeitung befindliche Objekte werden überprüft, ob sie nach dem Import nicht mehr benötigt werden. Wenn dem so ist, werden sie gelöscht. */
+	/** In Bearbeitung befindliche Objekte werden Ã¼berprÃ¼ft, ob sie nach dem Import nicht mehr benÃ¶tigt werden. Wenn dem so ist, werden sie gelÃ¶scht. */
 	private void deleteNoLongerRequiredObjects() {
-		_debug.finer("Folgende in Bearbeitung befindliche Objekte werden gelöscht: ");
+		_debug.finer("Folgende in Bearbeitung befindliche Objekte werden gelÃ¶scht: ");
 		int counter1 = 0;
 		int counter2 = 0;
 		for(ConfigurationArea configurationArea : _editingObjects.keySet()) {
 			for(CheckedObject checkedObject : _editingObjects.get(configurationArea)) {
 				if(!checkedObject.isObjectKeeping()) {
-					// Falls das Objekt nicht mehr benötigt wird, wird es gelöscht.
+					// Falls das Objekt nicht mehr benÃ¶tigt wird, wird es gelÃ¶scht.
 					try {
 						final SystemObject systemObject = checkedObject.getSystemObject();
-						_debug.finer("Nicht mehr benötigtes in Bearbeitung befindliches Objekt = " + systemObject.getPidOrNameOrId());
+						_debug.finer("Nicht mehr benÃ¶tigtes in Bearbeitung befindliches Objekt = " + systemObject.getPidOrNameOrId());
 						
 						((ConfigSystemObject)systemObject).simpleInvalidation();
 						counter1++;
@@ -1118,7 +1124,7 @@ public class ConfigurationImport implements ObjectLookup {
 						// Sollte eigentlich nie vorkommen.
 						final StringBuilder errorMessage = new StringBuilder();
 						errorMessage.append("Das in Bearbeitung befindliche Objekt '").append(checkedObject.getSystemObject().getPidOrNameOrId()).append(
-								"' konnte nicht gelöscht werden"
+								"' konnte nicht gelÃ¶scht werden"
 						);
 						_debug.warning(errorMessage.toString(), ex.toString());
 					}
@@ -1128,8 +1134,8 @@ public class ConfigurationImport implements ObjectLookup {
 				}
 			}
 		}
-		if(counter1 > 0) _debug.info("Anzahl der in Bearbeitung befindlichen gelöschten Objekte", counter1);
-		if(counter2 > 0) _debug.info("Anzahl der in Bearbeitung befindlichen nicht gelöschten Objekte", counter2);
+		if(counter1 > 0) _debug.info("Anzahl der in Bearbeitung befindlichen gelÃ¶schten Objekte", counter1);
+		if(counter2 > 0) _debug.info("Anzahl der in Bearbeitung befindlichen nicht gelÃ¶schten Objekte", counter2);
 	}
 
 	/* ############################## Methoden zur Bearbeitung und Erstellung von Objekten ############################ */
@@ -1137,9 +1143,9 @@ public class ConfigurationImport implements ObjectLookup {
 	/**
 	 * Ermittelt anhand des Eigenschafts-Objekts, welche Methode aufgerufen werden muss, damit das System-Objekt weiterverarbeitet bzw. erstellt wird.
 	 *
-	 * @param checkedObject Enthält das System-Objekt, welches weiterverarbeitet werden soll. <code>null</code>, wenn es neues Objekt erstellt werden soll und noch
+	 * @param checkedObject EnthÃ¤lt das System-Objekt, welches weiterverarbeitet werden soll. <code>null</code>, wenn es neues Objekt erstellt werden soll und noch
 	 *                      keines vorhanden war.
-	 * @param importObject  Import-Objekt, welches ein Import-Objekt und ein System-Objekt enthält.
+	 * @param importObject  Import-Objekt, welches ein Import-Objekt und ein System-Objekt enthÃ¤lt.
 	 *
 	 * @throws ConfigurationChangeException Falls ein Objekt nicht importiert werden konnte.
 	 */
@@ -1171,7 +1177,7 @@ public class ConfigurationImport implements ObjectLookup {
 			handleSystemObjectType(importObject);
 		}
 		else {
-			// ConfigurationObjectProperties und SystemObjectProperties werden gleichermaßen verarbeitet
+			// ConfigurationObjectProperties und SystemObjectProperties werden gleichermaÃŸen verarbeitet
 			handleSystemObject(importObject);
 		}
 	}
@@ -1179,10 +1185,10 @@ public class ConfigurationImport implements ObjectLookup {
 	/* ##################### Aspect-Methoden ############################ */
 
 	/**
-	 * Überarbeitet das übergebene System-Objekt. Falls keines vorhanden ist, wird aus einem Eintrag in der Versorgungsdatei - dargestellt durch ein
+	 * Ãœberarbeitet das Ã¼bergebene System-Objekt. Falls keines vorhanden ist, wird aus einem Eintrag in der Versorgungsdatei - dargestellt durch ein
 	 * Property-Objekt - ein Aspekt erstellt.
 	 *
-	 * @param importObject Objekt, welches die Daten für den Import eines Aspekts enthält
+	 * @param importObject Objekt, welches die Daten fÃ¼r den Import eines Aspekts enthÃ¤lt
 	 *
 	 * @throws ConfigurationChangeException Falls der Aspekt nicht erstellt werden konnte.
 	 */
@@ -1199,11 +1205,11 @@ public class ConfigurationImport implements ObjectLookup {
 			else {
 				setSystemObjectKeeping(aspect);
 			}
-			// Namen überprüfen
+			// Namen Ã¼berprÃ¼fen
 			if(_objectDiffs.isNameDifferent(property.getName(), aspect.getName())) {
 				aspect.setName(property.getName());
 			}
-			// Info überprüfen
+			// Info Ã¼berprÃ¼fen
 			if(_objectDiffs.isInfoDifferent(property.getInfo(), aspect.getInfo())) {
 				setInfo(aspect, property.getInfo());
 			}
@@ -1219,10 +1225,10 @@ public class ConfigurationImport implements ObjectLookup {
 	/* ##################### AttributeListDefinition-Methoden ############################ */
 
 	/**
-	 * Erstellt aus einem Eintrag in der Versorgungsdatei eine Attributliste, oder verändert ein bestehendes System-Objekt, so dass es mit der Definition
-	 * übereinstimmt.
+	 * Erstellt aus einem Eintrag in der Versorgungsdatei eine Attributliste, oder verÃ¤ndert ein bestehendes System-Objekt, so dass es mit der Definition
+	 * Ã¼bereinstimmt.
 	 *
-	 * @param importObject Objekt, welches die Daten für den Import eine Attributliste enthält
+	 * @param importObject Objekt, welches die Daten fÃ¼r den Import eine Attributliste enthÃ¤lt
 	 *
 	 * @throws ConfigurationChangeException Falls die Attributliste nicht importiert werden konnte.
 	 */
@@ -1239,11 +1245,11 @@ public class ConfigurationImport implements ObjectLookup {
 			else {
 				setSystemObjectKeeping(atl);
 			}
-			// Namen überprüfen
+			// Namen Ã¼berprÃ¼fen
 			if(_objectDiffs.isNameDifferent(property.getName(), atl.getName())) {
 				atl.setName(property.getName());
 			}
-			// Info überprüfen
+			// Info Ã¼berprÃ¼fen
 			if(_objectDiffs.isInfoDifferent(property.getInfo(), atl.getInfo())) {
 				setInfo(atl, property.getInfo());
 			}
@@ -1257,11 +1263,11 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Diese Methode vervollständigt eine Attributliste mit konfigurierenden Datensätzen.
+	 * Diese Methode vervollstÃ¤ndigt eine Attributliste mit konfigurierenden DatensÃ¤tzen.
 	 *
-	 * @param importObject Objekt, welches die Daten für den Import einer Attributliste enthält
+	 * @param importObject Objekt, welches die Daten fÃ¼r den Import einer Attributliste enthÃ¤lt
 	 *
-	 * @throws ConfigurationChangeException Falls das Objekt nicht vervollständigt werden konnte (Mengen und Datensätze).
+	 * @throws ConfigurationChangeException Falls das Objekt nicht vervollstÃ¤ndigt werden konnte (Mengen und DatensÃ¤tze).
 	 */
 	private void completeAttributeListDefinition(ImportObject importObject) throws ConfigurationChangeException {
 		final ConfigurationArea configurationArea = importObject.getConfigurationArea();
@@ -1271,7 +1277,7 @@ public class ConfigurationImport implements ObjectLookup {
 			setAttributeObjectSet(configurationArea, atl, property.getAttributeAndAttributeList());
 		}
 		catch(ConfigurationChangeException ex) {
-			final String errorMessage = "Die Attributliste " + property.toString() + " konnte nicht vollständig erstellt werden";
+			final String errorMessage = "Die Attributliste " + property.toString() + " konnte nicht vollstÃ¤ndig erstellt werden";
 			_debug.error(errorMessage);
 			throw new ConfigurationChangeException(errorMessage, ex);
 		}
@@ -1302,10 +1308,10 @@ public class ConfigurationImport implements ObjectLookup {
 			setSystemObjectKeeping(objectSet);
 		}
 
-		// prüfen, ob zwei Attribute mit gleichem Namen versehen wurden
+		// prÃ¼fen, ob zwei Attribute mit gleichem Namen versehen wurden
 		final Set<String> attributeNames = new HashSet<String>();
 
-		// erhält alle neu erzeugten Attribute dieser Attributgruppe
+		// erhÃ¤lt alle neu erzeugten Attribute dieser Attributgruppe
 		final List<Attribute> newAttributes = new ArrayList<Attribute>();
 
 		ConfigurationObjectType attType = (ConfigurationObjectType)_dataModel.getType(Pid.Type.ATTRIBUTE);
@@ -1357,26 +1363,26 @@ public class ConfigurationImport implements ObjectLookup {
 					break;
 				}
 			}
-			// prüfen, ob das Attribut geändert werden darf, wenn es geändert werden muss, oder ob ein neues angelegt wird!
+			// prÃ¼fen, ob das Attribut geÃ¤ndert werden darf, wenn es geÃ¤ndert werden muss, oder ob ein neues angelegt wird!
 			if(att != null) {
 				if(_objectDiffs.isAttributeProcessable(configurationAttribute, att, position)) {
 					// Attribut kann weiterverarbeitet werden
-					// Info überprüfen
+					// Info Ã¼berprÃ¼fen
 					if(_objectDiffs.isInfoDifferent(info, att.getInfo())) {
 						setInfo(att, info);
 					}
-					// Attribut-Eigenschaften überprüfen
+					// Attribut-Eigenschaften Ã¼berprÃ¼fen
 					if((maxCount != att.getMaxCount() || isCountVariable != att.isCountVariable() || attributeType != att.getAttributeType())
 					   || position != att.getPosition()) {
 						setAttributeProperties(att, position, maxCount, isCountVariable, attributeType);
 					}
-					// Default-Wert überprüfen
+					// Default-Wert Ã¼berprÃ¼fen
 					if(_objectDiffs.isDefaultDifferent(att, aDefault)) {
 						setDefault(att, aDefault);
 					}
 				}
 				else {
-					// Das Attribut kann nicht weiterverarbeitet werden - muss je nach Referenzierungsart auf veraltet gesetzt oder gelöscht werden.
+					// Das Attribut kann nicht weiterverarbeitet werden - muss je nach Referenzierungsart auf veraltet gesetzt oder gelÃ¶scht werden.
 					if(objectSet.getObjectSetType().getReferenceType() == ReferenceType.ASSOCIATION && !objectSet.getObjectSetType().isMutable()) {
 						// ein bestehendes Objekt wird auf veraltet gesetzt
 						objectSet.remove(att);
@@ -1394,7 +1400,7 @@ public class ConfigurationImport implements ObjectLookup {
 				setInfo(att, info);
 				setAttributeProperties(att, position, maxCount, isCountVariable, attributeType);
 				setDefault(att, aDefault);
-				objectSet.add(att);	// neues Attribut wird hinzugefügt
+				objectSet.add(att);	// neues Attribut wird hinzugefÃ¼gt
 				_debug.finer("Neues Attribut '" + name + "' wird erstellt.");
 			}
 			else {
@@ -1405,7 +1411,7 @@ public class ConfigurationImport implements ObjectLookup {
 			position++;
 		}
 
-		// nur die importierten Attribute dürfen in der Menge vorhanden sein
+		// nur die importierten Attribute dÃ¼rfen in der Menge vorhanden sein
 		final List<SystemObject> elementsInVersion = objectSet.getElementsInModifiableVersion();
 		for(SystemObject systemObject : elementsInVersion) {
 			Attribute att = (Attribute)systemObject;
@@ -1440,10 +1446,10 @@ public class ConfigurationImport implements ObjectLookup {
 	/* ##################### AttributeType-Methoden ############################ */
 
 	/**
-	 * Erstellt aus einem Property-Objekt (welches einem Eintrag in der Versorgungsdatei entspricht) einen AttributTypen, oder verändert ein bestehendes
-	 * System-Objekt, so dass es mit der Definition übereinstimmt.
+	 * Erstellt aus einem Property-Objekt (welches einem Eintrag in der Versorgungsdatei entspricht) einen AttributTypen, oder verÃ¤ndert ein bestehendes
+	 * System-Objekt, so dass es mit der Definition Ã¼bereinstimmt.
 	 *
-	 * @param importObject Objekt, welches die Daten für den Import eines Attribut-Typen enthält
+	 * @param importObject Objekt, welches die Daten fÃ¼r den Import eines Attribut-Typen enthÃ¤lt
 	 *
 	 * @throws ConfigurationChangeException Falls der Attribut-Typ nicht importiert werden konnte.
 	 */
@@ -1466,15 +1472,15 @@ public class ConfigurationImport implements ObjectLookup {
 					attributeType = (StringAttributeType)configurationArea.createConfigurationObject(objectType, property.getPid(), property.getName(), null);
 					_debug.finer("Ein neuer String-Attribut-Typ mit der Pid '" + property.getPid() + "'wurde angelegt.");
 				}
-				// Namen überprüfen
+				// Namen Ã¼berprÃ¼fen
 				if(_objectDiffs.isNameDifferent(property.getName(), attributeType.getName())) {
 					attributeType.setName(property.getName());
 				}
-				// Info überprüfen
+				// Info Ã¼berprÃ¼fen
 				if(_objectDiffs.isInfoDifferent(property.getInfo(), attributeType.getInfo())) {
 					setInfo(attributeType, property.getInfo());
 				}
-				// Attribut-Typ-Eigenschaften überprüfen
+				// Attribut-Typ-Eigenschaften Ã¼berprÃ¼fen
 //				if(attributeType.getConfigurationData(_dataModel.getAttributeGroup("atg.zeichenkettenAttributTypEigenschaften")) == null
 				if(getConfigurationData(attributeType, _dataModel.getAttributeGroup("atg.zeichenkettenAttributTypEigenschaften")) == null
 				   || type.getLength() != attributeType.getMaxLength() || !type.getStringEncoding().equals(attributeType.getEncodingName())) {
@@ -1495,11 +1501,11 @@ public class ConfigurationImport implements ObjectLookup {
 					attributeType = (IntegerAttributeType)configurationArea.createConfigurationObject(objectType, property.getPid(), property.getName(), null);
 					_debug.finer("Ein neuer Ganzzahl-Attribut-Typ mit der Pid '" + property.getPid() + "' wurde angelegt.");
 				}
-				// Namen überprüfen
+				// Namen Ã¼berprÃ¼fen
 				if(_objectDiffs.isNameDifferent(property.getName(), attributeType.getName())) {
 					attributeType.setName(property.getName());
 				}
-				// Info überprüfen
+				// Info Ã¼berprÃ¼fen
 				if(_objectDiffs.isInfoDifferent(property.getInfo(), attributeType.getInfo())) {
 					setInfo(attributeType, property.getInfo());
 				}
@@ -1520,14 +1526,14 @@ public class ConfigurationImport implements ObjectLookup {
 					}
 				}
 
-				// Eigenschaften überprüfen
+				// Eigenschaften Ã¼berprÃ¼fen
 				if(attributeTypePropertiesData == null || _objectDiffs.isIntegerAttributeTypePropertiesDifferent(def, attributeType)) {
 					setIntegerAttributeTypeProperties(attributeType, valueRange, def.getBits());
 				}
 
-				// Vorhandene Zustände merken
+				// Vorhandene ZustÃ¤nde merken
 				final List<IntegerValueState> stateList = new LinkedList<IntegerValueState>();
-				NonMutableSet stateSet = attributeType.getNonMutableSet("zustände");
+				NonMutableSet stateSet = attributeType.getNonMutableSet("zustÃ¤nde");
 				if(stateSet != null) {
 					for(SystemObject systemObject : stateSet.getElementsInModifiableVersion()) {
 						final IntegerValueState valueState = (IntegerValueState)systemObject;
@@ -1536,23 +1542,23 @@ public class ConfigurationImport implements ObjectLookup {
 					setSystemObjectKeeping(stateSet);
 				}
 				else {
-					// Menge der Zustände neu anlegen
+					// Menge der ZustÃ¤nde neu anlegen
 					final ConfigurationObjectType type = (ConfigurationObjectType)_dataModel.getType(Pid.SetType.INTEGER_VALUE_STATES);
-					stateSet = (NonMutableSet)configurationArea.createConfigurationObject(type, "", "zustände", null);
+					stateSet = (NonMutableSet)configurationArea.createConfigurationObject(type, "", "zustÃ¤nde", null);
 					attributeType.addSet(stateSet);
 				}
-				// Menge der Zustände überprüfen
-//				ObjectSet stateSet = attributeType.getObjectSet("zustände");
+				// Menge der ZustÃ¤nde Ã¼berprÃ¼fen
+//				ObjectSet stateSet = attributeType.getObjectSet("zustÃ¤nde");
 //				if (stateSet == null) {
-//					// Menge muss erzeugt und dem Attribut-Typen hinzugefügt werden
+//					// Menge muss erzeugt und dem Attribut-Typen hinzugefÃ¼gt werden
 //					final ConfigurationObjectType type = (ConfigurationObjectType) _dataModel.getType(Pid.SetType.INTEGER_VALUE_STATES);
-//					stateSet = (ObjectSet) configurationArea.createConfigurationObject(type, "", "zustände", null);
+//					stateSet = (ObjectSet) configurationArea.createConfigurationObject(type, "", "zustÃ¤nde", null);
 //					attributeType.addSet(stateSet);
 //				} else {
 //					setSystemObjectKeeping(stateSet);
 //				}
 
-				// die einzelnen Zustände überprüfen und ggf. neu anlegen
+				// die einzelnen ZustÃ¤nde Ã¼berprÃ¼fen und ggf. neu anlegen
 				for(ConfigurationIntegerValueRange rangeAndStates : def.getValueRangeAndState()) {
 					if(rangeAndStates instanceof ConfigurationState) {
 						final ConfigurationState configurationState = (ConfigurationState)rangeAndStates;
@@ -1571,11 +1577,11 @@ public class ConfigurationImport implements ObjectLookup {
 						else {
 							setSystemObjectKeeping(integerValueState);
 						}
-						// Info überprüfen
+						// Info Ã¼berprÃ¼fen
 						if(_objectDiffs.isInfoDifferent(configurationState.getInfo(), integerValueState.getInfo())) {
 							setInfo(integerValueState, configurationState.getInfo());
 						}
-						// Eigenschaften überpüfen
+						// Eigenschaften Ã¼berpÃ¼fen
 						if(getConfigurationData(integerValueState, _dataModel.getAttributeGroup("atg.werteZustandsEigenschaften")) == null) {
 							setIntegerValueStateProperties(integerValueState, configurationState);
 						}
@@ -1598,13 +1604,13 @@ public class ConfigurationImport implements ObjectLookup {
 					// Attribut-Typ wird neu angelegt
 					final ConfigurationObjectType objectType = (ConfigurationObjectType)_dataModel.getType(Pid.Type.DOUBLE_ATTRIBUTE_TYPE);
 					attributeType = (DoubleAttributeType)configurationArea.createConfigurationObject(objectType, property.getPid(), property.getName(), null);
-					_debug.finer("Ein neuer Fließkommazahl-Attribut-Typ mit der Pid '" + property.getPid() + "' wurde angelegt.");
+					_debug.finer("Ein neuer FlieÃŸkommazahl-Attribut-Typ mit der Pid '" + property.getPid() + "' wurde angelegt.");
 				}
-				// Info überprüfen
+				// Info Ã¼berprÃ¼fen
 				if(_objectDiffs.isInfoDifferent(property.getInfo(), attributeType.getInfo())) {
 					setInfo(attributeType, property.getInfo());
 				}
-				// Eigenschaften überprüfen
+				// Eigenschaften Ã¼berprÃ¼fen
 				if(_objectDiffs.isDoubleAttributeTypeDifferent(def, attributeType)) {
 					setDoubleAttributeTypeProperties(attributeType, def);
 				}
@@ -1623,11 +1629,11 @@ public class ConfigurationImport implements ObjectLookup {
 					attributeType = (TimeAttributeType)configurationArea.createConfigurationObject(objectType, property.getPid(), property.getName(), null);
 					_debug.finer("Ein neuer Zeitstempel-Attribut-Typ mit der Pid '" + property.getPid() + "' wurde angelegt.");
 				}
-				// Info überprüfen
+				// Info Ã¼berprÃ¼fen
 				if(_objectDiffs.isInfoDifferent(property.getInfo(), attributeType.getInfo())) {
 					setInfo(attributeType, property.getInfo());
 				}
-				// Eigenschaften überprüfen
+				// Eigenschaften Ã¼berprÃ¼fen
 				if(_objectDiffs.isTimeAttributeTypeDifferent(stamp, attributeType)) {
 					setTimeAttributeTypeProperties(attributeType, stamp);
 				}
@@ -1647,14 +1653,14 @@ public class ConfigurationImport implements ObjectLookup {
 					);
 					_debug.finer("Ein neuer Referenz-Attribut-Typ mit der Pid '" + property.getPid() + "' wurde angelegt.");
 				}
-				// Info überprüfen
+				// Info Ã¼berprÃ¼fen
 				if(_objectDiffs.isInfoDifferent(property.getInfo(), attributeType.getInfo())) {
 					setInfo(attributeType, property.getInfo());
 				}
 				importObject.setSystemObject(attributeType);
 			}
 			else {
-				throw new IllegalStateException("Dieser AttributTyp " + configurationAttributeType.getClass().getName() + " wird noch nicht unterstützt.");
+				throw new IllegalStateException("Dieser AttributTyp " + configurationAttributeType.getClass().getName() + " wird noch nicht unterstÃ¼tzt.");
 			}
 		}
 		catch(ConfigurationChangeException ex) {
@@ -1679,7 +1685,7 @@ public class ConfigurationImport implements ObjectLookup {
 		// Attributgruppenverwendung ermitteln
 		final AttributeGroupUsage atgUsage = getAttributeGroupUsage(atg, asp);
 		if(aDefault == null) {
-			// evtl. muss der Datensatz gelöscht werden
+			// evtl. muss der Datensatz gelÃ¶scht werden
 //			if(systemObject.getConfigurationData(atgUsage) != null) {
 			if(getConfigurationData(systemObject, atgUsage) != null) {
 				systemObject.setConfigurationData(atgUsage, null);
@@ -1708,11 +1714,11 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Vervollständigt den Attribut-Typen um die fehlenden konfigurierenden Datensätze. Momentan ist nur der Referenz-Attribut-Typ davon betroffen.
+	 * VervollstÃ¤ndigt den Attribut-Typen um die fehlenden konfigurierenden DatensÃ¤tze. Momentan ist nur der Referenz-Attribut-Typ davon betroffen.
 	 *
-	 * @param importObject Objekt, welches die Daten für den Import eines Attribut-Typen enthält
+	 * @param importObject Objekt, welches die Daten fÃ¼r den Import eines Attribut-Typen enthÃ¤lt
 	 *
-	 * @throws ConfigurationChangeException Falls der Attribut-Typ nicht vervollständigt werden konnte (Mengen und Datensätze).
+	 * @throws ConfigurationChangeException Falls der Attribut-Typ nicht vervollstÃ¤ndigt werden konnte (Mengen und DatensÃ¤tze).
 	 */
 	private void completeAttributeType(ImportObject importObject) throws ConfigurationChangeException {
 		final AttributeType attributeType = (AttributeType)importObject.getSystemObject();
@@ -1727,7 +1733,7 @@ public class ConfigurationImport implements ObjectLookup {
 			}
 		}
 		catch(ConfigurationChangeException ex) {
-			final String errorMessage = "Der AttributTyp " + property.toString() + " konnte nicht vollständig erstellt werden";
+			final String errorMessage = "Der AttributTyp " + property.toString() + " konnte nicht vollstÃ¤ndig erstellt werden";
 			_debug.error(errorMessage);
 			throw new ConfigurationChangeException(errorMessage, ex);
 		}
@@ -1742,7 +1748,7 @@ public class ConfigurationImport implements ObjectLookup {
 	 * @throws ConfigurationChangeException Falls die Default-Werte nicht am Attribut-Typ gespeichert werden konnten.
 	 */
 	private void completeDefaults(AttributeType attributeType, AttributeTypeProperties property) throws ConfigurationChangeException {
-		// Default-Wert überprüfen
+		// Default-Wert Ã¼berprÃ¼fen
 		if(_objectDiffs.isDefaultDifferent(attributeType, property.getDefault())) {
 			setDefault(attributeType, property.getDefault());
 		}
@@ -1752,7 +1758,7 @@ public class ConfigurationImport implements ObjectLookup {
 	 * Speichert die Eigenschaften des Zeichenketten-AttributTyps als konfigurierenden Datensatz.
 	 *
 	 * @param attributeType       Zeichenketten-AttributTyp, an dem die Eigenschaften gespeichert werden sollen
-	 * @param configurationString Objekt, welches die Eigenschaften des AttributTyps enthält
+	 * @param configurationString Objekt, welches die Eigenschaften des AttributTyps enthÃ¤lt
 	 *
 	 * @throws ConfigurationChangeException Falls der konfigurierende Datensatz nicht am Objekt gespeichert werden konnte.
 	 */
@@ -1760,7 +1766,7 @@ public class ConfigurationImport implements ObjectLookup {
 			throws ConfigurationChangeException {
 		final AttributeGroup atg = _dataModel.getAttributeGroup("atg.zeichenkettenAttributTypEigenschaften");
 		Data data = AttributeBaseValueDataFactory.createAdapter(atg, AttributeHelper.getAttributesValues(atg));
-		data.getUnscaledValue("länge").set(configurationString.getLength());
+		data.getUnscaledValue("lÃ¤nge").set(configurationString.getLength());
 		String encoding = configurationString.getStringEncoding();
 		if("ISO-8859-1".equals(encoding)) {
 			data.getUnscaledValue("kodierung").set(StringAttributeType.ISO_8859_1);
@@ -1769,15 +1775,15 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Erstellt den Wertebereich einer Ganzzahl, oder überarbeitet ein bestehendes Bereichs-Objekt und gibt es zurück.
+	 * Erstellt den Wertebereich einer Ganzzahl, oder Ã¼berarbeitet ein bestehendes Bereichs-Objekt und gibt es zurÃ¼ck.
 	 *
-	 * @param configurationArea Konfigurationsbereich, dem der Wertebereich hinzugefügt werden soll
+	 * @param configurationArea Konfigurationsbereich, dem der Wertebereich hinzugefÃ¼gt werden soll
 	 * @param valueRange        umzuwandelnder Wertebereich
 	 * @param integerValueRange bestehender Wertebereich
 	 *
 	 * @return SystemObject des Wertebereichs
 	 *
-	 * @throws ConfigurationChangeException Falls der Wertebereich nicht vollständig erstellt werden konnte.
+	 * @throws ConfigurationChangeException Falls der Wertebereich nicht vollstÃ¤ndig erstellt werden konnte.
 	 */
 	private IntegerValueRange handleIntegerValueRange(
 			ConfigurationArea configurationArea, ConfigurationValueRange valueRange, IntegerValueRange integerValueRange
@@ -1790,11 +1796,11 @@ public class ConfigurationImport implements ObjectLookup {
 		else {
 			setSystemObjectKeeping(integerValueRange);
 		}
-		// Info überprüfen
+		// Info Ã¼berprÃ¼fen
 		if(_objectDiffs.isInfoDifferent(valueRange.getInfo(), integerValueRange.getInfo())) {
 			setInfo(integerValueRange, valueRange.getInfo());
 		}
-		// Eigenschaften überprüfen
+		// Eigenschaften Ã¼berprÃ¼fen
 		if(_objectDiffs.isIntegerAttributeTypeValueRangePropertiesDifferent(valueRange, integerValueRange)) {
 			setIntegerValueRangeProperties(integerValueRange, valueRange);
 		}
@@ -1805,7 +1811,7 @@ public class ConfigurationImport implements ObjectLookup {
 	 * Speichert die Eigenschaften des Ganzzahl-Wertebereichs als konfigurierenden Datensatz.
 	 *
 	 * @param range      der Ganzzahl-Wertebereich
-	 * @param valueRange Objekt, welches die zu speichernden Eigenschaften enthält
+	 * @param valueRange Objekt, welches die zu speichernden Eigenschaften enthÃ¤lt
 	 *
 	 * @throws ConfigurationChangeException Falls der konfigurierende Datensatz nicht am Objekt gespeichert werden konnte.
 	 */
@@ -1823,7 +1829,7 @@ public class ConfigurationImport implements ObjectLookup {
 	 * Speichert die Eigenschaften des Ganzzahl-Werte-Zustands als konfigurierenden Datensatz.
 	 *
 	 * @param valueState der Ganzzahl-Werte-Zustand
-	 * @param state      Objekt, welches die zu speichernden Eigenschaften enthält
+	 * @param state      Objekt, welches die zu speichernden Eigenschaften enthÃ¤lt
 	 *
 	 * @throws ConfigurationChangeException Falls der konfigurierende Datensatz nicht am Objekt gespeichert werden konnte.
 	 */
@@ -1868,10 +1874,10 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Speichert die Eigenschaften einer Fließkommazahl als konfigurierenden Datensatz.
+	 * Speichert die Eigenschaften einer FlieÃŸkommazahl als konfigurierenden Datensatz.
 	 *
-	 * @param attributeType Fließkommazahl-AttributTyp
-	 * @param def           Objekt, welches die zu speichernden Eigenschaften enthält
+	 * @param attributeType FlieÃŸkommazahl-AttributTyp
+	 * @param def           Objekt, welches die zu speichernden Eigenschaften enthÃ¤lt
 	 *
 	 * @throws ConfigurationChangeException Falls der konfigurierende Datensatz nicht am Objekt gespeichert werden konnte.
 	 */
@@ -1887,7 +1893,7 @@ public class ConfigurationImport implements ObjectLookup {
 				accuracy = DoubleAttributeType.FLOAT;
 				break;
 			default:
-				throw new IllegalStateException("Dieser Genauigkeitstyp '" + def.getAccuracy() + "' wird beim Import nicht unterstützt.");
+				throw new IllegalStateException("Dieser Genauigkeitstyp '" + def.getAccuracy() + "' wird beim Import nicht unterstÃ¼tzt.");
 		}
 		data.getTextValue("einheit").setText(def.getUnit());
 		data.getUnscaledValue("genauigkeit").set(accuracy);
@@ -1898,7 +1904,7 @@ public class ConfigurationImport implements ObjectLookup {
 	 * Speichert die Eigenschaften eines Zeit-Attribut-Typs als konfigurierenden Datensatz.
 	 *
 	 * @param attributeType Zeit-Attribut-Typ
-	 * @param stamp         Objekt, welches die zu speichernden Eigenschaften enthält
+	 * @param stamp         Objekt, welches die zu speichernden Eigenschaften enthÃ¤lt
 	 *
 	 * @throws ConfigurationChangeException Falls der konfigurierende Datensatz nicht am Objekt gespeichert werden konnte.
 	 */
@@ -1914,7 +1920,7 @@ public class ConfigurationImport implements ObjectLookup {
 				accuracy = TimeAttributeType.SECONDS;
 				break;
 			default:
-				throw new IllegalStateException("Dieser Genauigkeitstyp '" + stamp.getAccuracy() + "' wird beim Import nicht unterstützt");
+				throw new IllegalStateException("Dieser Genauigkeitstyp '" + stamp.getAccuracy() + "' wird beim Import nicht unterstÃ¼tzt");
 		}
 		data.getUnscaledValue("relativ").set((stamp.getRelative() ? 1 : 0));
 		data.getUnscaledValue("genauigkeit").set(accuracy);
@@ -1925,7 +1931,7 @@ public class ConfigurationImport implements ObjectLookup {
 	 * Speichert die Eigenschaften eines Referenz-Attribut-Typs als konfigurierenden Datensatz.
 	 *
 	 * @param attributeType Referenz-Attribut-Typ
-	 * @param reference     Objekt, welches die zu speichernden Eigenschaften enthält
+	 * @param reference     Objekt, welches die zu speichernden Eigenschaften enthÃ¤lt
 	 *
 	 * @throws ConfigurationChangeException Falls der konfigurierende Datensatz nicht am Objekt gespeichert werden konnte.
 	 */
@@ -1945,7 +1951,7 @@ public class ConfigurationImport implements ObjectLookup {
 				referenceType = 2;
 				break;
 			default:
-				throw new IllegalStateException("Diese Referenzierungsart '" + reference.getReferenceType() + "' wird nicht vom Import unterstützt.");
+				throw new IllegalStateException("Diese Referenzierungsart '" + reference.getReferenceType() + "' wird nicht vom Import unterstÃ¼tzt.");
 		}
 		final String referenceObjectTypePid = reference.getReferenceObjectType();
 		if(referenceObjectTypePid.equals("")) {
@@ -1962,10 +1968,10 @@ public class ConfigurationImport implements ObjectLookup {
 	/* ##################### AttributeGroup-Methoden ############################ */
 
 	/**
-	 * Erstellt aus einem Property-Objekt (welches einem Eintrag in der Versorgungsdatei entspricht) eine Attributgruppe oder verändert eine bestehende
-	 * Attributgruppe so, dass es der Import-Definition entspricht und gibt diese zurück.
+	 * Erstellt aus einem Property-Objekt (welches einem Eintrag in der Versorgungsdatei entspricht) eine Attributgruppe oder verÃ¤ndert eine bestehende
+	 * Attributgruppe so, dass es der Import-Definition entspricht und gibt diese zurÃ¼ck.
 	 *
-	 * @param importObject Objekt, welches die Daten für den Import einer Attributgruppe enthält
+	 * @param importObject Objekt, welches die Daten fÃ¼r den Import einer Attributgruppe enthÃ¤lt
 	 *
 	 * @throws ConfigurationChangeException Falls das Objekt nicht importiert werden konnte.
 	 */
@@ -1980,7 +1986,7 @@ public class ConfigurationImport implements ObjectLookup {
 					// Eine Transaktion erstellen
 					type = (ConfigurationObjectType)_dataModel.getType(Pid.Type.TRANSACTION);
 					if(type == null) {
-						throw new IllegalStateException("Das verwendete Datenmodell unterstützt keine Transaktionen");
+						throw new IllegalStateException("Das verwendete Datenmodell unterstÃ¼tzt keine Transaktionen");
 					}
 				}
 				else{
@@ -1996,11 +2002,11 @@ public class ConfigurationImport implements ObjectLookup {
 			else {
 				setSystemObjectKeeping(attributeGroup);
 			}
-			// Namen überprüfen
+			// Namen Ã¼berprÃ¼fen
 			if(_objectDiffs.isNameDifferent(property.getName(), attributeGroup.getName())) {
 				attributeGroup.setName(property.getName());
 			}
-			// Info überprüfen
+			// Info Ã¼berprÃ¼fen
 			if(_objectDiffs.isInfoDifferent(property.getInfo(), attributeGroup.getInfo())) {
 				setInfo(attributeGroup, property.getInfo());
 			}
@@ -2014,11 +2020,11 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Vervollständigt eine Attributgruppe um die fehlenden konfigurierenden Datensätze.
+	 * VervollstÃ¤ndigt eine Attributgruppe um die fehlenden konfigurierenden DatensÃ¤tze.
 	 *
-	 * @param importObject Objekt, welches die Daten für den Import einer Attributgruppe enthält
+	 * @param importObject Objekt, welches die Daten fÃ¼r den Import einer Attributgruppe enthÃ¤lt
 	 *
-	 * @throws ConfigurationChangeException Falls das Objekt nicht vervollständigt werden konnte (Mengen und Datensätze).
+	 * @throws ConfigurationChangeException Falls das Objekt nicht vervollstÃ¤ndigt werden konnte (Mengen und DatensÃ¤tze).
 	 */
 	private void completeAttributeGroup(ImportObject importObject) throws ConfigurationChangeException {
 		final ConfigurationArea configurationArea = importObject.getConfigurationArea();
@@ -2035,17 +2041,17 @@ public class ConfigurationImport implements ObjectLookup {
 			}
 		}
 		catch(ConfigurationChangeException ex) {
-			final String errorMessage = "Die Attributgruppe '" + property.getPid() + "' konnte nicht vollständig erstellt werden";
+			final String errorMessage = "Die Attributgruppe '" + property.getPid() + "' konnte nicht vollstÃ¤ndig erstellt werden";
 			_debug.error(errorMessage);
 			throw new ConfigurationChangeException(errorMessage, ex);
 		}
 	}
 
 	/**
-	 * Vervollständigt eine Transaktionsattributgruppe
+	 * VervollstÃ¤ndigt eine Transaktionsattributgruppe
 	 * @param transaction Transaktionsattributgruppe
 	 * @param transactionProperties Eigenschaften
-	 * @throws ConfigurationChangeException Falls das Objekt nicht vervollständigt werden konnte (Mengen und Datensätze).
+	 * @throws ConfigurationChangeException Falls das Objekt nicht vervollstÃ¤ndigt werden konnte (Mengen und DatensÃ¤tze).
 	 */
 	private void setTransactionProperties(
 			final AttributeGroup transaction, final TransactionProperties transactionProperties)
@@ -2053,7 +2059,7 @@ public class ConfigurationImport implements ObjectLookup {
 		final AttributeGroup atg = _dataModel.getAttributeGroup("atg.transaktionsEigenschaften");
 		final Data data = AttributeBaseValueDataFactory.createAdapter(atg, AttributeHelper.getAttributesValues(atg));
 		setDids(data.getArray("akzeptiert"), transactionProperties.getPossibleDids());
-		setDids(data.getArray("benötigt"), transactionProperties.getRequiredDids());
+		setDids(data.getArray("benÃ¶tigt"), transactionProperties.getRequiredDids());
 		transaction.setConfigurationData(atg,data);
 	}
 
@@ -2077,7 +2083,7 @@ public class ConfigurationImport implements ObjectLookup {
 
 	/**
 	 * Erstellt anhand der Attributgruppe und der Eigenschaften eine Menge mit den Attributgruppenverwendungen, wenn es sie noch nicht gibt. Dabei wird
-	 * berücksichtigt, ob die Attributgruppe parametrierend ist, oder nicht. Die neu erstellte Menge wird an der angegebenen Attributgruppe gespeichert.
+	 * berÃ¼cksichtigt, ob die Attributgruppe parametrierend ist, oder nicht. Die neu erstellte Menge wird an der angegebenen Attributgruppe gespeichert.
 	 *
 	 * @param configurationArea der Konfigurationsbereich, an dem die Attributgruppe steht
 	 * @param atg               die Attributgruppe, die um die Attributgruppenverwendungen erweitert werden soll
@@ -2106,21 +2112,21 @@ public class ConfigurationImport implements ObjectLookup {
 			_debug.finer("Eine Menge der Attributgruppenverwendungen an der Attributgruppe '" + atg.getPid() + "' wurde erstellt.");
 		}
 
-		// enthält alle ATGVs, die in der nächsten Version aktiv sein sollen
+		// enthÃ¤lt alle ATGVs, die in der nÃ¤chsten Version aktiv sein sollen
 		final Collection<AttributeGroupUsage> nextCurrentAtgUsageList = new ArrayList<AttributeGroupUsage>();
 
-		// für jeden Aspekt wird eine Attributgruppenverwendung erstellt, wenn sie noch nicht vorhanden ist
+		// fÃ¼r jeden Aspekt wird eine Attributgruppenverwendung erstellt, wenn sie noch nicht vorhanden ist
 		final ConfigurationObjectType type = (ConfigurationObjectType)_dataModel.getType(Pid.Type.ATTRIBUTE_GROUP_USAGE);
 		final String atgvStr = "atgv." + atg.getPid() + ".";	// erster Teil der Pid einer Attributgruppenverwendung
 
-		// handelt es sich um eine parametrierbare Attributgruppe, dann dürfen folgende drei Aspekte nicht fehlen:
+		// handelt es sich um eine parametrierbare Attributgruppe, dann dÃ¼rfen folgende drei Aspekte nicht fehlen:
 		if(property.isParameter()) {
 			// Aspekt "ParameterSoll" wird verarbeitet
 			{
 				final Aspect asp = _dataModel.getAspect("asp.parameterSoll");
 				AttributeGroupUsage attributeGroupUsage = atgUsageMap.get(asp);
 				if(attributeGroupUsage != null) {
-					// prüfen, ob auch die ATGV korrekt ist.
+					// prÃ¼fen, ob auch die ATGV korrekt ist.
 					if(!attributeGroupUsage.isExplicitDefined() || !(attributeGroupUsage.getUsage() == AttributeGroupUsage.Usage.OnlineDataAsSourceReceiver
 					                                                 || attributeGroupUsage.getUsage() == AttributeGroupUsage.Usage
 							.OnlineDataAsSourceReceiverOrSenderDrain)) {
@@ -2132,7 +2138,7 @@ public class ConfigurationImport implements ObjectLookup {
 					// Die Attributgruppenverwendung ist nicht vorhanden -> erstellen
 					attributeGroupUsage = (AttributeGroupUsage)configurationArea.createConfigurationObject(type, atgvStr + asp.getPid(), "", null);
 					setAttributeGroupUsageProperties(attributeGroupUsage, atg, asp, AttributeGroupUsage.Usage.OnlineDataAsSourceReceiver, true);
-					atgUsageSet.add(attributeGroupUsage);	// ATGV hinzufügen
+					atgUsageSet.add(attributeGroupUsage);	// ATGV hinzufÃ¼gen
 				}
 				nextCurrentAtgUsageList.add(attributeGroupUsage);
 			}
@@ -2141,7 +2147,7 @@ public class ConfigurationImport implements ObjectLookup {
 				final Aspect asp = _dataModel.getAspect("asp.parameterVorgabe");
 				AttributeGroupUsage attributeGroupUsage = atgUsageMap.get(asp);
 				if(attributeGroupUsage != null) {
-					// prüfen, ob auch die ATGV korrekt ist.
+					// prÃ¼fen, ob auch die ATGV korrekt ist.
 					if(!attributeGroupUsage.isExplicitDefined() || !(attributeGroupUsage.getUsage() == AttributeGroupUsage.Usage.OnlineDataAsSenderDrain
 					                                                 || attributeGroupUsage.getUsage() == AttributeGroupUsage.Usage
 							.OnlineDataAsSourceReceiverOrSenderDrain)) {
@@ -2153,7 +2159,7 @@ public class ConfigurationImport implements ObjectLookup {
 					// Neue ATGV wird erstellt.
 					attributeGroupUsage = (AttributeGroupUsage)configurationArea.createConfigurationObject(type, atgvStr + asp.getPid(), "", null);
 					setAttributeGroupUsageProperties(attributeGroupUsage, atg, asp, AttributeGroupUsage.Usage.OnlineDataAsSenderDrain, true);
-					atgUsageSet.add(attributeGroupUsage);	// ATGV hinzufügen
+					atgUsageSet.add(attributeGroupUsage);	// ATGV hinzufÃ¼gen
 				}
 				nextCurrentAtgUsageList.add(attributeGroupUsage);
 			}
@@ -2162,7 +2168,7 @@ public class ConfigurationImport implements ObjectLookup {
 				final Aspect asp = _dataModel.getAspect("asp.parameterIst");
 				AttributeGroupUsage attributeGroupUsage = atgUsageMap.get(asp);
 				if(attributeGroupUsage != null) {
-					// prüfen, ob auch die ATGV korrekt ist.
+					// prÃ¼fen, ob auch die ATGV korrekt ist.
 					if(!attributeGroupUsage.isExplicitDefined() || !(attributeGroupUsage.getUsage() == AttributeGroupUsage.Usage.OnlineDataAsSourceReceiver
 					                                                 || attributeGroupUsage.getUsage() == AttributeGroupUsage.Usage
 							.OnlineDataAsSourceReceiverOrSenderDrain)) {
@@ -2174,7 +2180,7 @@ public class ConfigurationImport implements ObjectLookup {
 					// Neue ATGV wird erstellt.
 					attributeGroupUsage = (AttributeGroupUsage)configurationArea.createConfigurationObject(type, atgvStr + asp.getPid(), "", null);
 					setAttributeGroupUsageProperties(attributeGroupUsage, atg, asp, AttributeGroupUsage.Usage.OnlineDataAsSourceReceiver, true);
-					atgUsageSet.add(attributeGroupUsage);	// ATGV hinzufügen
+					atgUsageSet.add(attributeGroupUsage);	// ATGV hinzufÃ¼gen
 				}
 				nextCurrentAtgUsageList.add(attributeGroupUsage);
 			}
@@ -2188,7 +2194,7 @@ public class ConfigurationImport implements ObjectLookup {
 				}
 				AttributeGroupUsage attributeGroupUsage = atgUsageMap.get(asp);
 				if(attributeGroupUsage != null) {
-					// prüfen, ob auch die ATGV korrekt ist.
+					// prÃ¼fen, ob auch die ATGV korrekt ist.
 					if(!attributeGroupUsage.isExplicitDefined()
 					   || attributeGroupUsage.getUsage() != AttributeGroupUsage.Usage.ChangeableOptionalConfigurationData) {
 						setAttributeGroupUsageProperties(attributeGroupUsage, atg, asp, AttributeGroupUsage.Usage.ChangeableOptionalConfigurationData, true);
@@ -2199,7 +2205,7 @@ public class ConfigurationImport implements ObjectLookup {
 					// Neue ATGV wird erstellt.
 					attributeGroupUsage = (AttributeGroupUsage)configurationArea.createConfigurationObject(type, atgvStr + asp.getPid(), "", null);
 					setAttributeGroupUsageProperties(attributeGroupUsage, atg, asp, AttributeGroupUsage.Usage.ChangeableOptionalConfigurationData, true);
-					atgUsageSet.add(attributeGroupUsage); // ATGV hinzufügen
+					atgUsageSet.add(attributeGroupUsage); // ATGV hinzufÃ¼gen
 				}
 				nextCurrentAtgUsageList.add(attributeGroupUsage);
 			}
@@ -2210,7 +2216,7 @@ public class ConfigurationImport implements ObjectLookup {
 			final String aspPid = configurationAspect.getPid();
 			if(property.isParameter() && (aspPid.equals("asp.parameterSoll") || aspPid.equals("asp.parameterVorgabe") || aspPid.equals("asp.parameterIst")
 			                              || aspPid.equals("asp.parameterDefault"))) {
-				// diese Aspekte ignorieren, wenn es sich um eine Parameter-Atg handelt - die Aspekte werden durch die Methode isParameter() geprüft
+				// diese Aspekte ignorieren, wenn es sich um eine Parameter-Atg handelt - die Aspekte werden durch die Methode isParameter() geprÃ¼ft
 				_debug.warning(
 						"Aspekt " + aspPid
 						+ " wurde explizit angegeben und wird ignoriert. Da es sich um eine Parameter-Attributgruppe handelt, wird er implizit gesetzt."
@@ -2223,7 +2229,7 @@ public class ConfigurationImport implements ObjectLookup {
 //				AttributeGroupUsage attributeGroupUsage = atg.getAttributeGroupUsage(asp);
 				AttributeGroupUsage attributeGroupUsage = atgUsageMap.get(asp);
 				if(attributeGroupUsage != null) {
-					// prüfen, ob die ATGV korrekt ist.
+					// prÃ¼fen, ob die ATGV korrekt ist.
 					if(_objectDiffs.isInfoDifferent(configurationAspect.getInfo(), attributeGroupUsage.getInfo())) {
 						setInfo(attributeGroupUsage, configurationAspect.getInfo());
 					}
@@ -2238,7 +2244,7 @@ public class ConfigurationImport implements ObjectLookup {
 					final AttributeGroupUsage atgUsage = (AttributeGroupUsage)configurationArea.createConfigurationObject(
 							type, atgvStr + configurationAspect.getPid(), "", null
 					);
-					// konfigurierende Datensätze hinzufügen
+					// konfigurierende DatensÃ¤tze hinzufÃ¼gen
 					setInfo(atgUsage, configurationAspect.getInfo());
 					setAttributeGroupUsageProperties(atgUsage, atg, asp, configurationAspect.getUsage(), true);
 					nextCurrentAtgUsageList.add(atgUsage);
@@ -2248,10 +2254,10 @@ public class ConfigurationImport implements ObjectLookup {
 		}
 
 		if(property.getConfiguring()) {
-			// Attributgruppenverwendung asp.eigenschaften hinzufügen, falls sie noch nicht vorhanden ist und sie die einzige Verwendung ist und das Attribut
+			// Attributgruppenverwendung asp.eigenschaften hinzufÃ¼gen, falls sie noch nicht vorhanden ist und sie die einzige Verwendung ist und das Attribut
 			// konfigurierend ist.
 			if(atgUsageSet.getElementsInModifiableVersion().isEmpty()) {
-				// ATGV asp.eigenschaften hinzufügen
+				// ATGV asp.eigenschaften hinzufÃ¼gen
 				final Aspect asp = _dataModel.getAspect("asp.eigenschaften");
 				// neue Attributgruppenverwendung erstellen
 				final AttributeGroupUsage atgUsage = (AttributeGroupUsage)configurationArea.createConfigurationObject(
@@ -2270,7 +2276,7 @@ public class ConfigurationImport implements ObjectLookup {
 			}
 		}
 
-		// alte nicht mehr verwendete ATGVs löschen
+		// alte nicht mehr verwendete ATGVs lÃ¶schen
 		for(AttributeGroupUsage atgUsage : atgUsageMap.values()) {  // bisheriger Inhalt der Menge der ATGVs
 			if(!nextCurrentAtgUsageList.contains(atgUsage)) {
 				atgUsageSet.remove(atgUsage);
@@ -2322,7 +2328,7 @@ public class ConfigurationImport implements ObjectLookup {
 				usageNumber = 7;
 				break;
 			default:
-				throw new IllegalStateException("Diese AttributgruppenVerwendung '" + usage + "' wird beim Import noch nicht unterstützt.");
+				throw new IllegalStateException("Diese AttributgruppenVerwendung '" + usage + "' wird beim Import noch nicht unterstÃ¼tzt.");
 		}
 		data.getUnscaledValue("DatensatzVerwendung").set(usageNumber);
 		atgUsage.setConfigurationData(atg, data);
@@ -2331,9 +2337,9 @@ public class ConfigurationImport implements ObjectLookup {
 	/* ##################### ObjectSetType-Methoden ############################ */
 
 	/**
-	 * Erstellt aus einem Eigenschafts-Objekt einen Mengen-Typ oder verändert ein bestehenden Mengen-Typen so, dass er mit der Import-Definition übereinstimmt.
+	 * Erstellt aus einem Eigenschafts-Objekt einen Mengen-Typ oder verÃ¤ndert ein bestehenden Mengen-Typen so, dass er mit der Import-Definition Ã¼bereinstimmt.
 	 *
-	 * @param importObject Objekt, welches die Daten für den Import eines Mengen-Typs enthält
+	 * @param importObject Objekt, welches die Daten fÃ¼r den Import eines Mengen-Typs enthÃ¤lt
 	 *
 	 * @throws ConfigurationChangeException Falls der Mengen-Typ nicht importiert werden konnte.
 	 */
@@ -2350,15 +2356,15 @@ public class ConfigurationImport implements ObjectLookup {
 			else {
 				setSystemObjectKeeping(objectSetType);
 			}
-			// Namen überprüfen
+			// Namen Ã¼berprÃ¼fen
 			if(_objectDiffs.isNameDifferent(property.getName(), objectSetType.getName())) {
 				objectSetType.setName(property.getName());
 			}
-			// Info überprüfen
+			// Info Ã¼berprÃ¼fen
 			if(_objectDiffs.isInfoDifferent(property.getInfo(), objectSetType.getInfo())) {
 				setInfo(objectSetType, property.getInfo());
 			}
-			// Mengen-Typ-Eigenschaften überprüfen
+			// Mengen-Typ-Eigenschaften Ã¼berprÃ¼fen
 			if(_objectDiffs.isObjectSetTypePropertiesDifferent(property, objectSetType)) {
 				setObjectSetTypeProperties(objectSetType, property);
 			}
@@ -2372,11 +2378,11 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Vervollständigt den Mengen-Typ um noch fehlende konfigurierenden Datensätze.
+	 * VervollstÃ¤ndigt den Mengen-Typ um noch fehlende konfigurierenden DatensÃ¤tze.
 	 *
-	 * @param importObject Objekt, welches die Daten für den Import eines Mengen-Typs enthält
+	 * @param importObject Objekt, welches die Daten fÃ¼r den Import eines Mengen-Typs enthÃ¤lt
 	 *
-	 * @throws ConfigurationChangeException Falls der Mengen-Typ nicht vervollständigt werden konnte (Mengen und Datensätze).
+	 * @throws ConfigurationChangeException Falls der Mengen-Typ nicht vervollstÃ¤ndigt werden konnte (Mengen und DatensÃ¤tze).
 	 */
 	private void completeObjectSetType(ImportObject importObject) throws ConfigurationChangeException {
 		final ConfigurationArea configurationArea = importObject.getConfigurationArea();
@@ -2388,7 +2394,7 @@ public class ConfigurationImport implements ObjectLookup {
 			setObjectSetTypeEmptySets(configurationArea, objectSetType);
 		}
 		catch(ConfigurationChangeException ex) {
-			final String errorMessage = "Der MengenTyp '" + property.getPid() + "' konnte nicht vollständig erstellt werden";
+			final String errorMessage = "Der MengenTyp '" + property.getPid() + "' konnte nicht vollstÃ¤ndig erstellt werden";
 			_debug.error(errorMessage);
 			throw new ConfigurationChangeException(errorMessage, ex);
 		}
@@ -2398,12 +2404,12 @@ public class ConfigurationImport implements ObjectLookup {
 	 * Speichert die Eigenschaften eines Mengen-Typs als konfigurierenden Datensatz am Mengen-Typ ab.
 	 *
 	 * @param objectSetType der Mengen-Typ
-	 * @param property      das Eigenschafts-Objekt, welches die Eigenschaften des Mengen-Typs enthält
+	 * @param property      das Eigenschafts-Objekt, welches die Eigenschaften des Mengen-Typs enthÃ¤lt
 	 *
 	 * @throws ConfigurationChangeException Falls der konfigurierende Datensatz nicht am Objekt gespeichert werden konnte.
 	 */
 	private void setObjectSetTypeProperties(ObjectSetType objectSetType, ObjectSetTypeProperties property) throws ConfigurationChangeException {
-		// Überprüfung, ob ein dynamischer MengenTyp als Referenzierungsart 'Assoziation' erhält.
+		// ÃœberprÃ¼fung, ob ein dynamischer MengenTyp als Referenzierungsart 'Assoziation' erhÃ¤lt.
 		if(property.isMutable() && (property.getReferenceType() != ReferenceType.ASSOCIATION)) {
 			throw new IllegalArgumentException(
 					"Eine dynamische Menge muss immer mit der Referenzierungsart 'Assoziation' versorgt werden. " + "\nDer MengenTyp "
@@ -2415,7 +2421,7 @@ public class ConfigurationImport implements ObjectLookup {
 		Data data = AttributeBaseValueDataFactory.createAdapter(atg, AttributeHelper.getAttributesValues(atg));
 		data.getUnscaledValue("minimaleAnzahl").set(property.getMinimum());
 		data.getUnscaledValue("maximaleAnzahl").set(property.getMaximum());
-		data.getUnscaledValue("änderbar").set((property.isMutable() ? 1 : 0));
+		data.getUnscaledValue("Ã¤nderbar").set((property.isMutable() ? 1 : 0));
 		byte referenceType;
 		switch(property.getReferenceType()) {
 			case ASSOCIATION:
@@ -2452,14 +2458,14 @@ public class ConfigurationImport implements ObjectLookup {
 			final ConfigurationObjectType type = (ConfigurationObjectType)_dataModel.getType(Pid.SetType.OBJECT_TYPES);
 			nonMutableSet = (NonMutableSet)configurationArea.createConfigurationObject(type, "", "ObjektTypen", null);
 			objectSetType.addSet(nonMutableSet);
-			_debug.finer("Menge der ObjektTypen für den Mengen-Typ mit der Pid '" + objectSetType.getPid() + "' wurde erstellt.");
+			_debug.finer("Menge der ObjektTypen fÃ¼r den Mengen-Typ mit der Pid '" + objectSetType.getPid() + "' wurde erstellt.");
 		}
 		else {
 			setSystemObjectKeeping(nonMutableSet);
 		}
 
 		// Elemente der Menge ermitteln
-		final Set<SystemObjectType> objectTypes = new HashSet<SystemObjectType>();
+		final Set<SystemObjectType> objectTypes = new LinkedHashSet<SystemObjectType>();
 		for(String element : elements) {
 			// Element ist entweder im Datenmodell oder wurde just importiert
 			final SystemObject object = getObject(element);
@@ -2467,16 +2473,16 @@ public class ConfigurationImport implements ObjectLookup {
 			objectTypes.add((SystemObjectType)object);
 		}
 
-		// Menge überprüfen
+		// Menge Ã¼berprÃ¼fen
 		final List<SystemObject> elementsInVersion = nonMutableSet.getElementsInVersion(objectSetType.getConfigurationArea().getModifiableVersion());
-		// Erst alle überflüssigen entfernen.
+		// Erst alle Ã¼berflÃ¼ssigen entfernen.
 		for(SystemObject systemObject : elementsInVersion) {
 			SystemObjectType systemObjectType = (SystemObjectType)systemObject;
 			if(!objectTypes.contains(systemObjectType)) {
 				nonMutableSet.remove(systemObjectType);
 			}
 		}
-		// Jetzt neue hinzufügen
+		// Jetzt neue hinzufÃ¼gen
 		for(SystemObjectType objectType : objectTypes) {
 			if(!elementsInVersion.contains(objectType)) {
 				nonMutableSet.add(objectType);
@@ -2490,23 +2496,23 @@ public class ConfigurationImport implements ObjectLookup {
 	 * @param configurationArea Konfigurationsbereich der Mengendefinition
 	 * @param objectSetType     Mengendefinition
 	 *
-	 * @throws ConfigurationChangeException Falls die Menge der Mengendefinition nicht hinzugefügt werden konnten.
+	 * @throws ConfigurationChangeException Falls die Menge der Mengendefinition nicht hinzugefÃ¼gt werden konnten.
 	 */
 	private void setObjectSetTypeSuperTypeSet(ConfigurationArea configurationArea, ObjectSetType objectSetType) throws ConfigurationChangeException {
 		NonMutableSet superTypeSet = objectSetType.getNonMutableSet("SuperTypen");
 		if(superTypeSet == null) {
-			// Mengen erstellen und dem MengenTyp hinzufügen
+			// Mengen erstellen und dem MengenTyp hinzufÃ¼gen
 			final ConfigurationObjectType superTypeType = (ConfigurationObjectType)_dataModel.getType(Pid.SetType.OBJECT_TYPES);
 			superTypeSet = (NonMutableSet)configurationArea.createConfigurationObject(superTypeType, "", "SuperTypen", null);
 			objectSetType.addSet(superTypeSet);
-			_debug.finer("Menge der SuperTypen wurde für den Mengen-Typ mit der Pid '" + objectSetType.getPid() + "' angelegt.");
+			_debug.finer("Menge der SuperTypen wurde fÃ¼r den Mengen-Typ mit der Pid '" + objectSetType.getPid() + "' angelegt.");
 		}
 		else {
 			setSystemObjectKeeping(superTypeSet);
 		}
 
-		// je nachdem, ob die Menge änderbar ist oder nicht, muss der richtige SuperTyp ausgewählt werden
-		// änderbar = typ.dynamischeMenge || nicht änderbar = typ.konfigurationsMenge
+		// je nachdem, ob die Menge Ã¤nderbar ist oder nicht, muss der richtige SuperTyp ausgewÃ¤hlt werden
+		// Ã¤nderbar = typ.dynamischeMenge || nicht Ã¤nderbar = typ.konfigurationsMenge
 		final SystemObjectType superType = objectSetType.isMutable() ? _dataModel.getType(Pid.Type.MUTABLE_SET) : _dataModel.getType(Pid.Type.NON_MUTABLE_SET);
 		final List<SystemObject> superTypeSetElements = superTypeSet.getElementsInVersion(objectSetType.getConfigurationArea().getModifiableVersion());
 		if(!superTypeSetElements.contains(superType)) {
@@ -2514,19 +2520,19 @@ public class ConfigurationImport implements ObjectLookup {
 			superTypeSet.add(superType);
 		}
 
-		// evtl. vorhandene andere Supertypen müssen entfernt werden.
+		// evtl. vorhandene andere Supertypen mÃ¼ssen entfernt werden.
 		for(SystemObject object : superTypeSetElements) {
 			if(!object.equals(superType)) superTypeSet.remove(object);
 		}
 	}
 
 	/**
-	 * Die Mengen 'Attributgruppen' und 'Mengen' müssen an einer Mengendefinition vorhanden sein, obwohl in der Versorgungsdatei keine Elemente vorhanden sind.
+	 * Die Mengen 'Attributgruppen' und 'Mengen' mÃ¼ssen an einer Mengendefinition vorhanden sein, obwohl in der Versorgungsdatei keine Elemente vorhanden sind.
 	 *
 	 * @param configurationArea Konfigurationsbereich der Mengendefinition
 	 * @param objectSetType     Mengendefinition
 	 *
-	 * @throws ConfigurationChangeException Falls die Mengen der Mengendefinition nicht hinzugefügt werden konnten.
+	 * @throws ConfigurationChangeException Falls die Mengen der Mengendefinition nicht hinzugefÃ¼gt werden konnten.
 	 */
 	private void setObjectSetTypeEmptySets(ConfigurationArea configurationArea, ObjectSetType objectSetType) throws ConfigurationChangeException {
 		NonMutableSet atgSet = objectSetType.getNonMutableSet("Attributgruppen");
@@ -2535,7 +2541,7 @@ public class ConfigurationImport implements ObjectLookup {
 			final ConfigurationObjectType atgType = (ConfigurationObjectType)_dataModel.getType(Pid.SetType.ATTRIBUTEGROUPS);
 			atgSet = (NonMutableSet)configurationArea.createConfigurationObject(atgType, "", "Attributgruppen", null);
 			objectSetType.addSet(atgSet);
-			_debug.finer("Menge der Attributgruppen wurde für den Mengen-Typ mit der Pid '" + objectSetType.getPid() + "' angelegt.");
+			_debug.finer("Menge der Attributgruppen wurde fÃ¼r den Mengen-Typ mit der Pid '" + objectSetType.getPid() + "' angelegt.");
 		}
 		else {
 			setSystemObjectKeeping(atgSet);
@@ -2547,7 +2553,7 @@ public class ConfigurationImport implements ObjectLookup {
 			final ConfigurationObjectType setType = (ConfigurationObjectType)_dataModel.getType(Pid.SetType.OBJECT_SET_USES);
 			setUsesSet = (NonMutableSet)configurationArea.createConfigurationObject(setType, "", "Mengen", null);
 			objectSetType.addSet(setUsesSet);
-			_debug.finer("Menge der Mengenverwendungen wurde für den Mengen-Typ mit der Pid '" + objectSetType.getPid() + "' angelegt.");
+			_debug.finer("Menge der Mengenverwendungen wurde fÃ¼r den Mengen-Typ mit der Pid '" + objectSetType.getPid() + "' angelegt.");
 		}
 		else {
 			setSystemObjectKeeping(setUsesSet);
@@ -2557,17 +2563,17 @@ public class ConfigurationImport implements ObjectLookup {
 	/* ##################### SystemObjectType-Methoden ############################ */
 
 	/**
-	 * Erstellt aus einem Eigenschafts-Objekt einen Objekt-Typen oder verändert einen bestehenden Objekt-Typen so, dass er mit der Import-Definition
-	 * übereinstimmt.
+	 * Erstellt aus einem Eigenschafts-Objekt einen Objekt-Typen oder verÃ¤ndert einen bestehenden Objekt-Typen so, dass er mit der Import-Definition
+	 * Ã¼bereinstimmt.
 	 *
-	 * @param importObject Objekt, welches die Daten für den Import eines Objekt-Typs enthält
+	 * @param importObject Objekt, welches die Daten fÃ¼r den Import eines Objekt-Typs enthÃ¤lt
 	 *
 	 * @throws ConfigurationChangeException Falls der Objekt-Typ nicht importiert werden konnte.
 	 */
 	private void handleSystemObjectType(ImportObject importObject) throws ConfigurationChangeException {
 		final SystemObjectTypeProperties property = (SystemObjectTypeProperties)importObject.getProperties();
 		try {
-			// prüfen, ob die Pid des Objekt-Typen bereits eingetragen wurde, wenn ja, dann wurde eine Schleife erkannt, d.h. eine fehlerhafte Versorgung in
+			// prÃ¼fen, ob die Pid des Objekt-Typen bereits eingetragen wurde, wenn ja, dann wurde eine Schleife erkannt, d.h. eine fehlerhafte Versorgung in
 			// der Versorgungsdatei
 			if(_objectTypesToCreate.contains(property.getPid())) {
 				final String errorMessage = "Es gibt einen Fehler in der Versorgungsdatei. Zwei Objekt-Typen referenzieren sich gegenseitig.";
@@ -2595,7 +2601,7 @@ public class ConfigurationImport implements ObjectLookup {
 				}
 			}
 			else {
-				// es ist kein BasisTyp -> herausbekommen, was für ein Typ es ist
+				// es ist kein BasisTyp -> herausbekommen, was fÃ¼r ein Typ es ist
 				// Liste der erweiterten Typen wird erstellt
 				superTypes.addAll(createSuperTypes(property.getExtendedPids()));
 				isDynamicType = isDynamicType(superTypes);
@@ -2612,10 +2618,10 @@ public class ConfigurationImport implements ObjectLookup {
 
 			SystemObjectType systemObjectType = (SystemObjectType)importObject.getSystemObject();
 			if(systemObjectType != null) {
-				// falls der Typ des bestehenden Typs nicht mit dem neuen Typ der Properties übereinstimmt, muss ein neuer Objekt-Typ erstellt werden
+				// falls der Typ des bestehenden Typs nicht mit dem neuen Typ der Properties Ã¼bereinstimmt, muss ein neuer Objekt-Typ erstellt werden
 				if(type != systemObjectType.getType()) {
 					_debug.finer(
-							"Der Typ des Typs " + systemObjectType.getPid() + " hat sich geänder von " + systemObjectType.getType().getPid() + " zu "
+							"Der Typ des Typs " + systemObjectType.getPid() + " hat sich geÃ¤nder von " + systemObjectType.getType().getPid() + " zu "
 							+ type.getPid()
 					);
 
@@ -2628,8 +2634,8 @@ public class ConfigurationImport implements ObjectLookup {
 						}
 					}
 
-					// Typ muss jetzt schon auf ungültig gesetzt werden, damit ein neuer Typ mit gleicher Pid erstellt werden kann
-					// in Bearbeitung erstellte Objekte werden direkt gelöscht.
+					// Typ muss jetzt schon auf ungÃ¼ltig gesetzt werden, damit ein neuer Typ mit gleicher Pid erstellt werden kann
+					// in Bearbeitung erstellte Objekte werden direkt gelÃ¶scht.
 					
 					((ConfigSystemObject)systemObjectType).simpleInvalidation();
 					systemObjectType = null;
@@ -2647,15 +2653,15 @@ public class ConfigurationImport implements ObjectLookup {
 				_debug.finer("Ein Objekt-Typ mit der Pid '" + property.getPid() + "' wurde erstellt.");
 			}
 
-			// Namen überprüfen
+			// Namen Ã¼berprÃ¼fen
 			if(_objectDiffs.isNameDifferent(property.getName(), systemObjectType.getName())) {
 				systemObjectType.setName(property.getName());
 			}
-			// Info überprüfen
+			// Info Ã¼berprÃ¼fen
 			if(_objectDiffs.isInfoDifferent(property.getInfo(), systemObjectType.getInfo())) {
 				setInfo(systemObjectType, property.getInfo());
 			}
-			// Eigenschaften überprüfen
+			// Eigenschaften Ã¼berprÃ¼fen
 //			if(systemObjectType.getConfigurationData(_dataModel.getAttributeGroup("atg.typEigenschaften")) == null
 			if(getConfigurationData(systemObjectType, _dataModel.getAttributeGroup("atg.typEigenschaften")) == null
 			   || _objectDiffs.isSystemObjectTypePropertiesDifferent(property, systemObjectType)) {
@@ -2700,11 +2706,11 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Vervollständigt den Objekt-Typ um fehlende konfigurierende Datensätze, die bei der Erstellung des Objekts noch nicht berücksichtigt wurden.
+	 * VervollstÃ¤ndigt den Objekt-Typ um fehlende konfigurierende DatensÃ¤tze, die bei der Erstellung des Objekts noch nicht berÃ¼cksichtigt wurden.
 	 *
-	 * @param importObject Objekt, welches die Daten für den Import eines Objekt-Typs enthält
+	 * @param importObject Objekt, welches die Daten fÃ¼r den Import eines Objekt-Typs enthÃ¤lt
 	 *
-	 * @throws ConfigurationChangeException Falls der Objekt-Typ nicht vervollständigt werden konnte (Mengen und Datensätze).
+	 * @throws ConfigurationChangeException Falls der Objekt-Typ nicht vervollstÃ¤ndigt werden konnte (Mengen und DatensÃ¤tze).
 	 */
 	private void completeSystemObjectType(ImportObject importObject) throws ConfigurationChangeException {
 		final ConfigurationArea configurationArea = importObject.getConfigurationArea();
@@ -2712,7 +2718,7 @@ public class ConfigurationImport implements ObjectLookup {
 		final SystemObjectTypeProperties property = (SystemObjectTypeProperties)importObject.getProperties();
 		try {
 			setSystemObjectTypeAttributeGroups(configurationArea, systemObjectType, property.getAtgAndSet());
-			// Default-Parameter-Datensätze hinzufügen
+			// Default-Parameter-DatensÃ¤tze hinzufÃ¼gen
 			if(_objectDiffs.isDefaultParameterDifferent(property.getDefaultParameters(), systemObjectType)) {
 				try {
 					setDefaultParameterDataset(property.getDefaultParameters(), systemObjectType);
@@ -2723,7 +2729,7 @@ public class ConfigurationImport implements ObjectLookup {
 			}
 		}
 		catch(ConfigurationChangeException ex) {
-			final String errorMessage = "Der Objekt-Typ '" + property.getPid() + "' konnte nicht vollständig erstellt werden. Grund: " + ex.getMessage();
+			final String errorMessage = "Der Objekt-Typ '" + property.getPid() + "' konnte nicht vollstÃ¤ndig erstellt werden. Grund: " + ex.getMessage();
 			_debug.error(errorMessage);
 			throw new ConfigurationChangeException(errorMessage, ex);
 		}
@@ -2734,7 +2740,7 @@ public class ConfigurationImport implements ObjectLookup {
 	 *
 	 * @param objectType      der Objekt-Typ
 	 * @param isConfigurating gibt an, ob der Objekt-Typ konfigurierend ist
-	 * @param isNamePermanent gibt an, ob der Name des Objekt-Typs permanent, also nicht änderbar, ist
+	 * @param isNamePermanent gibt an, ob der Name des Objekt-Typs permanent, also nicht Ã¤nderbar, ist
 	 *
 	 * @throws ConfigurationChangeException Falls der konfigurierende Datensatz nicht am Objekt-Typ gespeichert werden konnte.
 	 */
@@ -2763,7 +2769,7 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Diese Methode prüft, ob die Super-Typen alle dynamisch oder konfigurierend sind. Sind die Super-Typen unterschiedlich, so liegt ein Versorgungsfehler vor
+	 * Diese Methode prÃ¼ft, ob die Super-Typen alle dynamisch oder konfigurierend sind. Sind die Super-Typen unterschiedlich, so liegt ein Versorgungsfehler vor
 	 * und eine Ausnahme wird geworfen.
 	 *
 	 * @param superTypes Liste der Super-Typen eines neuen Typs
@@ -2785,7 +2791,7 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Diese Methode ermittelt anhand der Super-Typen den gemeinsamen Persistenz-Modus. Dieser ist für alle Super-Typen gleich.
+	 * Diese Methode ermittelt anhand der Super-Typen den gemeinsamen Persistenz-Modus. Dieser ist fÃ¼r alle Super-Typen gleich.
 	 *
 	 * @param superTypes die zu betrachtenden Super-Typen
 	 *
@@ -2811,7 +2817,7 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Erstellt eine Menge mit Super-Typen für einen Objekt-Typen oder verändert eine bestehende Menge.
+	 * Erstellt eine Menge mit Super-Typen fÃ¼r einen Objekt-Typen oder verÃ¤ndert eine bestehende Menge.
 	 *
 	 * @param configurationArea Konfigurationsbereich des Objekt-Typs
 	 * @param systemObjectType  Objekt-Typ an dem die Menge der SuperTypen gespeichert werden soll.
@@ -2834,14 +2840,14 @@ public class ConfigurationImport implements ObjectLookup {
 		}
 
 		final List<SystemObject> elementsInVersion = superTypeSet.getElementsInVersion(systemObjectType.getConfigurationArea().getModifiableVersion());
-		// Erst alle überflüssigen Elemente entfernen
+		// Erst alle Ã¼berflÃ¼ssigen Elemente entfernen
 		for(SystemObject systemObject : elementsInVersion) {
 			SystemObjectType objectType = (SystemObjectType)systemObject;
 			if(!superTypes.contains(objectType)) {
 				superTypeSet.remove(objectType);
 			}
 		}
-		// Elemente neu hinzufügen
+		// Elemente neu hinzufÃ¼gen
 		for(SystemObjectType objectType : superTypes) {
 			if(!elementsInVersion.contains(objectType)) {
 				superTypeSet.add(objectType);
@@ -2873,7 +2879,7 @@ public class ConfigurationImport implements ObjectLookup {
 				mode = 3;
 				break;
 			default:
-				throw new IllegalStateException("Persistenzmodus hat einen ungültigen Wert: " + persistenceMode);
+				throw new IllegalStateException("Persistenzmodus hat einen ungÃ¼ltigen Wert: " + persistenceMode);
 		}
 		data.getUnscaledValue("persistenzModus").set(mode);
 		dynamicObjectType.setConfigurationData(atg, data);
@@ -2884,7 +2890,7 @@ public class ConfigurationImport implements ObjectLookup {
 	 *
 	 * @param configurationArea der Konfigurationsbereich des Objekt-Typs
 	 * @param systemObjectType  der Objekt-Typ
-	 * @param atgAndSet         Array, welches die Attributgruppen und Mengenverwendungen enthält
+	 * @param atgAndSet         Array, welches die Attributgruppen und Mengenverwendungen enthÃ¤lt
 	 *
 	 * @throws ConfigurationChangeException Falls die Mengen nicht am Objekt-Typ gespeichert werden konnten.
 	 */
@@ -2896,7 +2902,7 @@ public class ConfigurationImport implements ObjectLookup {
 			final ConfigurationObjectType atgType = (ConfigurationObjectType)_dataModel.getType(Pid.SetType.ATTRIBUTEGROUPS);
 			atgSet = (NonMutableSet)configurationArea.createConfigurationObject(atgType, "", "Attributgruppen", null);
 			systemObjectType.addSet(atgSet);
-			_debug.finer("Menge der Attributgruppen für den Objekt-Typ mit der Pid '" + systemObjectType.getPid() + "' wurde erstellt.");
+			_debug.finer("Menge der Attributgruppen fÃ¼r den Objekt-Typ mit der Pid '" + systemObjectType.getPid() + "' wurde erstellt.");
 		}
 		else {
 			setSystemObjectKeeping(atgSet);
@@ -2907,7 +2913,7 @@ public class ConfigurationImport implements ObjectLookup {
 			final ConfigurationObjectType objectSetUseType = (ConfigurationObjectType)_dataModel.getType(Pid.SetType.OBJECT_SET_USES);
 			objectSetUsesSet = (NonMutableSet)configurationArea.createConfigurationObject(objectSetUseType, "", "Mengen", null);
 			systemObjectType.addSet(objectSetUsesSet);
-			_debug.finer("Menge der Mengenverwendungen für den Objekt-Typ mit der Pid '" + systemObjectType.getPid() + "' wurde erstellt.");
+			_debug.finer("Menge der Mengenverwendungen fÃ¼r den Objekt-Typ mit der Pid '" + systemObjectType.getPid() + "' wurde erstellt.");
 		}
 		else {
 			setSystemObjectKeeping(objectSetUsesSet);
@@ -2933,7 +2939,7 @@ public class ConfigurationImport implements ObjectLookup {
 				if(systemObjectType.isConfigurating()) {
 					// hier handelt es sich um Mengen
 					ConfigurationSet configurationSet = (ConfigurationSet)o;
-					// neues Objekt erhält keine Pid und keinen Namen (wird nicht benötigt)
+					// neues Objekt erhÃ¤lt keine Pid und keinen Namen (wird nicht benÃ¶tigt)
 					ObjectSetUse objectSetUse = null;
 					for(SystemObject systemObject : elementsInObjectSetUsesSet) {
 						ObjectSetUse use = (ObjectSetUse)systemObject;
@@ -2952,7 +2958,7 @@ public class ConfigurationImport implements ObjectLookup {
 					if(_objectDiffs.isInfoDifferent(configurationSet.getInfo(), objectSetUse.getInfo())) {
 						setInfo(objectSetUse, configurationSet.getInfo());
 					}
-					// Mengen-Typ der Elemente und ob die Menge erforderlich ist überprüfen
+					// Mengen-Typ der Elemente und ob die Menge erforderlich ist Ã¼berprÃ¼fen
 					final String setTypePid = configurationSet.getSetTypePid();
 					final SystemObject objectSetType = getObject(setTypePid);
 					if(objectSetType == null) throwNoObjectException(setTypePid);
@@ -2971,14 +2977,14 @@ public class ConfigurationImport implements ObjectLookup {
 
 		// Menge der Attributgruppen
 		final List<SystemObject> elementsInAtgSet = atgSet.getElementsInVersion(systemObjectType.getConfigurationArea().getModifiableVersion());
-		// überflüssige Elemente entfernen
+		// Ã¼berflÃ¼ssige Elemente entfernen
 		for(SystemObject systemObject : elementsInAtgSet) {
 			AttributeGroup attributeGroup = (AttributeGroup)systemObject;
 			if(!directAttributeGroups.contains(attributeGroup)) {
 				atgSet.remove(attributeGroup);
 			}
 		}
-		// Elemente hinzufügen
+		// Elemente hinzufÃ¼gen
 		for(AttributeGroup attributeGroup : directAttributeGroups) {
 			if(!elementsInAtgSet.contains(attributeGroup)) {
 				atgSet.add(attributeGroup);
@@ -2987,14 +2993,14 @@ public class ConfigurationImport implements ObjectLookup {
 
 		if(systemObjectType.isConfigurating()) {
 			// Menge der Mengenverwendungen
-			// überflüssige Elemente entfernen
+			// Ã¼berflÃ¼ssige Elemente entfernen
 			for(SystemObject systemObject : elementsInObjectSetUsesSet) {
 				ObjectSetUse use = (ObjectSetUse)systemObject;
 				if(!directObjectSetUses.contains(use)) {
 					objectSetUsesSet.remove(use);
 				}
 			}
-			// Elemente hinzufügen
+			// Elemente hinzufÃ¼gen
 			for(ObjectSetUse objectSetUse : directObjectSetUses) {
 				if(!elementsInObjectSetUsesSet.contains(objectSetUse)) {
 					objectSetUsesSet.add(objectSetUse);
@@ -3007,7 +3013,7 @@ public class ConfigurationImport implements ObjectLookup {
 	 * Speichert die Eigenschaften einer Mengenverwendung an einer Mengenverwendung als konfigurierenden Datensatz ab.
 	 *
 	 * @param objectSetUse     die Mengenverwendung
-	 * @param configurationSet Objekt, welches die Eigenschaften der Mengenverwendung enthält
+	 * @param configurationSet Objekt, welches die Eigenschaften der Mengenverwendung enthÃ¤lt
 	 *
 	 * @throws ConfigurationChangeException Falls der konfigurierende Datensatz nicht an der Mengenverwendung gespeichert werden konnte.
 	 */
@@ -3027,9 +3033,9 @@ public class ConfigurationImport implements ObjectLookup {
 	/* ##################### SystemObject-Methoden ############################ */
 
 	/**
-	 * Erstellt aus einem Eigenschafts-Objekt ein System-Objekt oder verändert ein bereits bestehendes System-Objekt.
+	 * Erstellt aus einem Eigenschafts-Objekt ein System-Objekt oder verÃ¤ndert ein bereits bestehendes System-Objekt.
 	 *
-	 * @param importObject Objekt, welches die Daten für den Import eines System-Objekts enthält
+	 * @param importObject Objekt, welches die Daten fÃ¼r den Import eines System-Objekts enthÃ¤lt
 	 *
 	 * @throws ConfigurationChangeException Falls das System-Objekt nicht erstellt werden konnte.
 	 */
@@ -3041,7 +3047,7 @@ public class ConfigurationImport implements ObjectLookup {
 
 			SystemObject systemObject = importObject.getSystemObject();
 			if(systemObject != null) {
-				// es gibt bereits ein Objekt - prüfen, ob der Typ übereinstimmt - wenn nicht, dann muss ein neues Objekt angelegt werden.
+				// es gibt bereits ein Objekt - prÃ¼fen, ob der Typ Ã¼bereinstimmt - wenn nicht, dann muss ein neues Objekt angelegt werden.
 				if(systemObject.getType() != systemObjectType) {
 					// handelt es sich um ein in Bearbeitung erstelltes Objekt, dann muss es aus der EditingObjects-Map entfernt werden.
 					final Collection<CheckedObject> objects = _editingObjects.get(importObject.getConfigurationArea());
@@ -3052,8 +3058,8 @@ public class ConfigurationImport implements ObjectLookup {
 						}
 					}
 
-					// Objekt muss jetzt schon auf ungültig gesetzt werden, damit ein neues Objekt mit gleicher Pid erstellt werden kann
-					// in Bearbeitung erstellte Objekte werden direkt gelöscht.
+					// Objekt muss jetzt schon auf ungÃ¼ltig gesetzt werden, damit ein neues Objekt mit gleicher Pid erstellt werden kann
+					// in Bearbeitung erstellte Objekte werden direkt gelÃ¶scht.
 					
 					((ConfigSystemObject)systemObject).simpleInvalidation();
 					systemObject = null;
@@ -3073,13 +3079,13 @@ public class ConfigurationImport implements ObjectLookup {
 					_debug.finer("Konfigurierendes Objekt mit Pid '" + property.getPid() + "' wurde erstellt.");
 				}
 				else {
-					// falls Datensätze am dynamischen Objekt gespeichert werden sollen, müssen diese schon hier berücksichtigt werden
+					// falls DatensÃ¤tze am dynamischen Objekt gespeichert werden sollen, mÃ¼ssen diese schon hier berÃ¼cksichtigt werden
 					final ConfigurationConfigurationObject configurationObjectProperties = (ConfigurationConfigurationObject)property;
 					final List<DataAndATGUsageInformation> dataAndATGUsageInformation = new LinkedList<DataAndATGUsageInformation>();
 					for(ConfigurationObjectElements configurationObjectElements : configurationObjectProperties.getDatasetAndObjectSet()) {
 						if(configurationObjectElements instanceof ConfigurationDataset) {
 							ConfigurationDataset configurationDataset = (ConfigurationDataset)configurationObjectElements;
-							// prüfen, ob es die Atg und den Asp gibt. Es müssen aktuelle Objekte sein.
+							// prÃ¼fen, ob es die Atg und den Asp gibt. Es mÃ¼ssen aktuelle Objekte sein.
 							final AttributeGroup atg = _dataModel.getAttributeGroup(configurationDataset.getPidATG());
 							if(atg == null) throwNoObjectException(configurationDataset.getPidATG());
 							final Aspect asp = _dataModel.getAspect(configurationDataset.getPidAspect());
@@ -3095,7 +3101,7 @@ public class ConfigurationImport implements ObjectLookup {
 								_debug.error(errorMessage.toString());
 								throw new ConfigurationChangeException(errorMessage.toString());
 							}
-							// alle notwendigen und optional nicht änderbaren Datensätze werden hier gespeichert.
+							// alle notwendigen und optional nicht Ã¤nderbaren DatensÃ¤tze werden hier gespeichert.
 							if(atgUsage.getUsage() != AttributeGroupUsage.Usage.ChangeableOptionalConfigurationData) {
 //							if(atgUsage.getUsage() == AttributeGroupUsage.Usage.ChangeableRequiredConfigurationData
 //							   || atgUsage.getUsage() == AttributeGroupUsage.Usage.RequiredConfigurationData) {
@@ -3113,10 +3119,10 @@ public class ConfigurationImport implements ObjectLookup {
 					}
 
 					// Der zu nutzende dynamische Typ muss ein aktueller Typ sein. Falls er gerade erst importiert wurde, kann er nicht verwendet werden, da
-					// das Objekt sofort gültig würde, ohne einen aktuellen Objekt-Typen.
+					// das Objekt sofort gÃ¼ltig wÃ¼rde, ohne einen aktuellen Objekt-Typen.
 					final DynamicObjectType dynamicObjectType = (DynamicObjectType)_dataModel.getObject(property.getType());
 					if(dynamicObjectType != null) {
-						_debug.finer("Dynamisches Objekt mit pid '" + property.getPid() + "' wird erstellt. Datensätze", dataAndATGUsageInformation);
+						_debug.finer("Dynamisches Objekt mit pid '" + property.getPid() + "' wird erstellt. DatensÃ¤tze", dataAndATGUsageInformation);
 						systemObject = importObject.getConfigurationArea().createDynamicObject(
 								dynamicObjectType, property.getPid(), property.getName(), dataAndATGUsageInformation
 						);
@@ -3124,18 +3130,18 @@ public class ConfigurationImport implements ObjectLookup {
 					}
 					else {
 						final String errorMessage = "Das dynamische Objekt mit der Pid '" + property.getPid() + "' konnte nicht erzeugt werden, "
-						                            + "da der Typ des Objekts erst in der nächsten Version des Konfigurationsbereichs aktiviert wird.";
+						                            + "da der Typ des Objekts erst in der nÃ¤chsten Version des Konfigurationsbereichs aktiviert wird.";
 						_debug.error(errorMessage);
 						throw new IllegalStateException(errorMessage);
 					}
 				}
 			}
-			// Namen überprüfen
+			// Namen Ã¼berprÃ¼fen
 			if(_objectDiffs.isNameDifferent(property.getName(), systemObject.getName())) {
 				systemObject.setName(property.getName());
 			}
 
-			// Info überprüfen
+			// Info Ã¼berprÃ¼fen
 			if(_objectDiffs.isInfoDifferent(property.getInfo(), systemObject.getInfo())) {
 				setInfo(systemObject, property.getInfo());
 			}
@@ -3149,11 +3155,11 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * System-Objekte erhalten in dieser Methode ihre konfigurierenden Datensätze und Mengen.
+	 * System-Objekte erhalten in dieser Methode ihre konfigurierenden DatensÃ¤tze und Mengen.
 	 *
-	 * @param importObject Objekt, welches die Daten für den Import eines System-Objekts enthält
+	 * @param importObject Objekt, welches die Daten fÃ¼r den Import eines System-Objekts enthÃ¤lt
 	 *
-	 * @throws ConfigurationChangeException Falls das System-Objekt nicht vervollständigt werden konnte.
+	 * @throws ConfigurationChangeException Falls das System-Objekt nicht vervollstÃ¤ndigt werden konnte.
 	 */
 	private void completeSystemObject(ImportObject importObject) throws ConfigurationChangeException {
 		final ConfigurationArea configurationArea = importObject.getConfigurationArea();
@@ -3161,10 +3167,10 @@ public class ConfigurationImport implements ObjectLookup {
 		final SystemObjectType objectType = systemObject.getType();
 		final ConfigurationConfigurationObject property = (ConfigurationConfigurationObject)importObject.getProperties();
 		try {
-			// Set in der alle verwendeten ATGV gespeichert werden, damit alle Datensätze gelöscht werden können, die nicht vorhanden sein dürfen.
+			// Set in der alle verwendeten ATGV gespeichert werden, damit alle DatensÃ¤tze gelÃ¶scht werden kÃ¶nnen, die nicht vorhanden sein dÃ¼rfen.
 			final Set<AttributeGroupUsage> usedAtgUsages = new HashSet<AttributeGroupUsage>();
 
-			// Datensätze und Mengen werden gespeichert
+			// DatensÃ¤tze und Mengen werden gespeichert
 			for(ConfigurationObjectElements elements : property.getDatasetAndObjectSet()) {
 				if(elements instanceof ConfigurationDataset) {
 					ConfigurationDataset dataset = (ConfigurationDataset)elements;
@@ -3190,9 +3196,9 @@ public class ConfigurationImport implements ObjectLookup {
 						throw new ConfigurationChangeException(errorMessage.toString());
 					}
 
-					// Merken, zu welchen ATGV Datensätze existieren sollen
+					// Merken, zu welchen ATGV DatensÃ¤tze existieren sollen
 					usedAtgUsages.add(atgUsage);
-					// bei dynamischen Objekten und notwendig und nicht änderbaren DS nachfolgenden Part überspringen
+					// bei dynamischen Objekten und notwendig und nicht Ã¤nderbaren DS nachfolgenden Part Ã¼berspringen
 					if(!objectType.isConfigurating() && (atgUsage.getUsage() == AttributeGroupUsage.Usage.RequiredConfigurationData
 					                                     || atgUsage.getUsage() == AttributeGroupUsage.Usage.OptionalConfigurationData)) {
 						// tue nix
@@ -3223,10 +3229,10 @@ public class ConfigurationImport implements ObjectLookup {
 				else if(elements instanceof ConfigurationObjectSet) {
 					ConfigurationObjectSet configurationObjectSet = (ConfigurationObjectSet)elements;
 
-					// dynamische Objekte können keine Mengen haben
+					// dynamische Objekte kÃ¶nnen keine Mengen haben
 					if(!objectType.isConfigurating()) {
 						// es ist ein dynamisches Objekt!
-						final String errorMessage = "Dynamische Objekte können keine Mengen haben. Es sind aber welche angegeben.";
+						final String errorMessage = "Dynamische Objekte kÃ¶nnen keine Mengen haben. Es sind aber welche angegeben.";
 						_debug.error(errorMessage);
 						throw new IllegalArgumentException(errorMessage);
 					}
@@ -3246,7 +3252,7 @@ public class ConfigurationImport implements ObjectLookup {
 						if(objectSetType == null) {
 							final StringBuilder errorMessage = new StringBuilder();
 							errorMessage.append("Der Typ '").append(objectType.getPidOrNameOrId()).append("' dieses Objektes '");
-							errorMessage.append(systemObject.getPidOrNameOrId()).append("' unterstützt die Menge '").append(configurationObjectSet.getName());
+							errorMessage.append(systemObject.getPidOrNameOrId()).append("' unterstÃ¼tzt die Menge '").append(configurationObjectSet.getName());
 							errorMessage.append("' nicht.");
 							_debug.error(errorMessage.toString());
 							throw new IllegalArgumentException(errorMessage.toString());
@@ -3271,7 +3277,7 @@ public class ConfigurationImport implements ObjectLookup {
 							}
 
 
-							// Typ überprüfen
+							// Typ Ã¼berprÃ¼fen
 							if(objectSet.getObjectSetType() != objectSetType) {
 								versionedChange = true;
 							}
@@ -3283,10 +3289,10 @@ public class ConfigurationImport implements ObjectLookup {
 						if(objectSet == null) {
 							// neue Menge anlegen
 							objectSet = (ObjectSet)configurationArea.createConfigurationObject(objectSetType, "", configurationObjectSet.getName(), null);
-							// Menge dem Objekt hinzufügen
+							// Menge dem Objekt hinzufÃ¼gen
 							configObject.addSet(objectSet);
 							_debug.finer(
-									"Menge " + configurationObjectSet.getName() + " dem SystemObjekt mit der Pid '" + systemObject.getPid() + "' hinzugefügt."
+									"Menge " + configurationObjectSet.getName() + " dem SystemObjekt mit der Pid '" + systemObject.getPid() + "' hinzugefÃ¼gt."
 							);
 						}
 						else {
@@ -3299,7 +3305,7 @@ public class ConfigurationImport implements ObjectLookup {
 							if(dynamicSetPropertiesAtg == null) {
 								if(!importManagementPid.equals("")) {
 									_debug.warning(
-											"Zugriff auf Verwaltungsinformationen von dynamischen Mengen nicht möglich, da die eingesetzte Version des Bereichs"
+											"Zugriff auf Verwaltungsinformationen von dynamischen Mengen nicht mÃ¶glich, da die eingesetzte Version des Bereichs"
 											+ " kb.metaModellGlobal zu alt ist (mindestens Version 10 notwendig)."
 									);
 								}
@@ -3329,8 +3335,8 @@ public class ConfigurationImport implements ObjectLookup {
 							}
 						}
 
-						// prüfen, ob die hinzuzufügenden Elemente in der Menge erlaubt sind (wird beim hinzufügen der Elemente überprüft)
-						Set<SystemObject> setElements = new HashSet<SystemObject>();
+						// prÃ¼fen, ob die hinzuzufÃ¼genden Elemente in der Menge erlaubt sind (wird beim hinzufÃ¼gen der Elemente Ã¼berprÃ¼ft)
+						Set<SystemObject> setElements = new LinkedHashSet<SystemObject>();
 						final String[] elementPids = configurationObjectSet.getElements();
 						if(elementPids.length != 0) {
 							if(ignoreElements) {
@@ -3349,13 +3355,13 @@ public class ConfigurationImport implements ObjectLookup {
 							}
 						}
 						final List<SystemObject> elementsInSet = objectSet.getElements();
-						// überflüssige Elemente entfernen
+						// Ã¼berflÃ¼ssige Elemente entfernen
 						for(SystemObject object : elementsInSet) {
 							if(!setElements.contains(object)) {
 								objectSet.remove(object);
 							}
 						}
-						// Elemente hinzufügen
+						// Elemente hinzufÃ¼gen
 						for(SystemObject object : setElements) {
 							if(!elementsInSet.contains(object)) {
 								objectSet.add(object);
@@ -3363,33 +3369,32 @@ public class ConfigurationImport implements ObjectLookup {
 						}
 					}
 					else {
-						// Menge muss nicht geändert werden -> aber es wird beibehalten
+						// Menge muss nicht geÃ¤ndert werden -> aber es wird beibehalten
 						setSystemObjectKeeping(objectSet);
 					}
 				}
 			}
 
-			// nicht mehr benötigte Datensätze entweder gelöscht oder auf null gesetzt, je nachdem, ob das Objekt in Bearbeitung ist
+			// nicht mehr benÃ¶tigte DatensÃ¤tze entweder gelÃ¶scht oder auf null gesetzt, je nachdem, ob das Objekt in Bearbeitung ist
 			// oder bereits freigegeben/aktiviert wurde
 			if(objectType.isConfigurating()) {
 				final Collection<AttributeGroupUsage> usedAttributeGroupUsages = systemObject.getUsedAttributeGroupUsages();
 				for(AttributeGroupUsage atgUsage : usedAttributeGroupUsages) {
-					if(!usedAtgUsages.contains(atgUsage) && !(atgUsage.getAttributeGroup().getPid().equals("atg.info")
-					                                          || atgUsage.getAttributeGroup().getPid().equals("atg.konfigurationsVerantwortlicherLaufendeNummer"))) {
-						// die ATGV wurde nicht verwendet und entspricht nicht atg.info oder atg.konfigurationsVerantwortlicherLaufendeNummer -> Datensatz löschen
-						// bei einem in Bearbeitung befindlichen Objekt werden die Datensätze richtig gelöscht.
+					if(!usedAtgUsages.contains(atgUsage) && !ComparePropertiesWithSystemObjects.isHiddenInExport(atgUsage)) {
+						// die ATGV wurde nicht verwendet und entspricht nicht atg.info oder atg.konfigurationsVerantwortlicherLaufendeNummer -> Datensatz lÃ¶schen
+						// bei einem in Bearbeitung befindlichen Objekt werden die DatensÃ¤tze richtig gelÃ¶scht.
 						if(getEditingObject(systemObject.getConfigurationArea(), systemObject.getPid()) != null) {
 							((ConfigSystemObject)systemObject).removeConfigurationData(atgUsage);
 						}
 						else {
-							// bei einem zuvor freigegebenen Objekt werden die Datensätze nur auf null gesetzt.
+							// bei einem zuvor freigegebenen Objekt werden die DatensÃ¤tze nur auf null gesetzt.
 							((ConfigSystemObject)systemObject).createConfigurationData(atgUsage, null);
 						}
 					}
 				}
 			}
 			else {
-				// es handelt sich um ein dynamisches Objekt - notwendige DS werden hier nicht betrachtet (sie dürfen nicht gelöscht werden)
+				// es handelt sich um ein dynamisches Objekt - notwendige DS werden hier nicht betrachtet (sie dÃ¼rfen nicht gelÃ¶scht werden)
 				for(AttributeGroupUsage atgUsage : systemObject.getUsedAttributeGroupUsages()) {
 //					System.out.println("############### Betrachte atgUsage = " + atgUsage);
 //					System.out.println("atgUsage.getValidSince() = " + atgUsage.getValidSince());
@@ -3400,11 +3405,8 @@ public class ConfigurationImport implements ObjectLookup {
 //						System.out.println("-> bleibt, weil notwendig");
 					}
 					else {
-						if(!usedAtgUsages.contains(atgUsage) && !(atgUsage.getAttributeGroup().getPid().equals("atg.info")
-						                                          || atgUsage.getAttributeGroup().getPid().equals(
-								"atg.konfigurationsVerantwortlicherLaufendeNummer"
-						))) {
-							// die ATGV wurde nicht verwendet -> muss also gelöscht werden
+						if(!usedAtgUsages.contains(atgUsage) && !ComparePropertiesWithSystemObjects.isHiddenInExport(atgUsage)) {
+							// die ATGV wurde nicht verwendet -> muss also gelÃ¶scht werden
 							((ConfigSystemObject)systemObject).createConfigurationData(atgUsage, null);
 //							System.out.println("-> wird auf null gesetzt");
 						}
@@ -3416,14 +3418,14 @@ public class ConfigurationImport implements ObjectLookup {
 			}
 
 			if(objectType.isConfigurating()) {
-				// Default-Parameter-Datensätze hinzufügen
+				// Default-Parameter-DatensÃ¤tze hinzufÃ¼gen
 				if(_objectDiffs.isDefaultParameterDifferent(property.getDefaultParameters(), systemObject)) {
 					setDefaultParameterDataset(property.getDefaultParameters(), systemObject);
 				}
 			}
 		}
 		catch(Exception ex) {
-			final String errorMessage = "Das System-Objekt mit der Pid '" + property.getPid() + "' konnte nicht vollständig erstellt werden";
+			final String errorMessage = "Das System-Objekt mit der Pid '" + property.getPid() + "' konnte nicht vollstÃ¤ndig erstellt werden";
 			_debug.error(errorMessage, ex);
 			throw new ConfigurationChangeException(errorMessage, ex);
 		}
@@ -3431,7 +3433,7 @@ public class ConfigurationImport implements ObjectLookup {
 
 	private void setDefaultParameterDataset(final ConfigurationDefaultParameter[] defaultParameters, final SystemObject systemObject)
 			throws IOException, ConfigurationChangeException {
-		final AttributeGroup attributeGroup = (AttributeGroup)getObject("atg.defaultParameterdatensätze");
+		final AttributeGroup attributeGroup = (AttributeGroup)getObject("atg.defaultParameterdatensÃ¤tze");
 		final Data data;
 		if(defaultParameters.length > 0) {
 			// den Datensatz komplett neu schreiben
@@ -3439,7 +3441,7 @@ public class ConfigurationImport implements ObjectLookup {
 			final Data.Array array = data.getArray("Default-Parameterdatensatz");
 			array.setLength(defaultParameters.length);
 
-			// Elemente füllen
+			// Elemente fÃ¼llen
 			for(int i = 0; i < array.getLength(); i++) {
 				final Data item = array.getItem(i);
 				final ConfigurationDefaultParameter defaultParameter = defaultParameters[i];
@@ -3456,7 +3458,7 @@ public class ConfigurationImport implements ObjectLookup {
 				final SystemObject typeObject = getObject(pidType);
 				if(!(typeObject instanceof SystemObjectType)) {
 					throw new ConfigurationChangeException(
-							"Default-Parameter-Datensatz am '" + systemObject.getPidOrNameOrId() + "' konnte nicht importiert werden, weil ein ungültiger Typ '"
+							"Default-Parameter-Datensatz am '" + systemObject.getPidOrNameOrId() + "' konnte nicht importiert werden, weil ein ungÃ¼ltiger Typ '"
 							+ pidType + "' angegeben wurde."
 					);
 				}
@@ -3467,7 +3469,7 @@ public class ConfigurationImport implements ObjectLookup {
 				if(!(atgObject instanceof AttributeGroup)) {
 					throw new ConfigurationChangeException(
 							"Default-Parameter-Datensatz am '" + systemObject.getPidOrNameOrId()
-							+ "' konnte nicht importiert werden, weil eine ungültige Attributgruppe '" + defaultParameter.getPidAtg() + "' angegeben wurde."
+							+ "' konnte nicht importiert werden, weil eine ungÃ¼ltige Attributgruppe '" + defaultParameter.getPidAtg() + "' angegeben wurde."
 					);
 				}
 				final AttributeGroup atg = (AttributeGroup)atgObject;
@@ -3483,7 +3485,7 @@ public class ConfigurationImport implements ObjectLookup {
 				if(!defaultData.isDefined()) {
 					throw new IllegalStateException(
 							"Default-Parameter-Datensatz mit der ATG '" + atg.getPid() + "' am Konfigurationsobjekt '" + systemObject.getPidOrNameOrId()
-							+ "' ist nicht vollständig definiert."
+							+ "' ist nicht vollstÃ¤ndig definiert."
 					);
 				}
 				// aus dem Data ein byte-Array machen
@@ -3493,7 +3495,7 @@ public class ConfigurationImport implements ObjectLookup {
 					serializer = SerializingFactory.createSerializer(3, out);
 				}
 				catch(NoSuchVersionException e) {
-					throw new IOException("Serialisierer konnte nicht in der gewünschten Version erstellt werden");
+					throw new IOException("Serialisierer konnte nicht in der gewÃ¼nschten Version erstellt werden");
 				}
 				serializer.writeData(defaultData);
 				final byte[] bytes = out.toByteArray();
@@ -3507,7 +3509,7 @@ public class ConfigurationImport implements ObjectLookup {
 			}
 		}
 		else {
-			// Keine Default-Parameterdatensätze in der Versorgungsdatei vorhanden führt zum Löschen des Datensatzes
+			// Keine Default-ParameterdatensÃ¤tze in der Versorgungsdatei vorhanden fÃ¼hrt zum LÃ¶schen des Datensatzes
 			data = null;
 		}
 		// Datensatz speichern
@@ -3515,7 +3517,7 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Diese Methode ermittelt anhand eines Objekt-Typen seine sämtlichen Mengenverwendungen.
+	 * Diese Methode ermittelt anhand eines Objekt-Typen seine sÃ¤mtlichen Mengenverwendungen.
 	 *
 	 * @param systemObjectType der Objekt-Typ
 	 *
@@ -3525,13 +3527,13 @@ public class ConfigurationImport implements ObjectLookup {
 		final Collection<ObjectSetUse> objectSetUses = new HashSet<ObjectSetUse>();
 		if(_allImportedConfigurationAreas.contains(systemObjectType.getConfigurationArea())) {
 			// Typ wird gerade importiert -> die in Bearbeitung befindlichen Mengenverwendungen betrachten
-			// Die Menge der Mengenverwendungen ist erforderlich, deshalb muss hier nicht auf != null geprüft werden
+			// Die Menge der Mengenverwendungen ist erforderlich, deshalb muss hier nicht auf != null geprÃ¼ft werden
 			final List<SystemObject> setUses = systemObjectType.getNonMutableSet("Mengen").getElementsInModifiableVersion();
 			for(SystemObject systemObject : setUses) {
 				final ObjectSetUse setUse = (ObjectSetUse)systemObject;
 				objectSetUses.add(setUse);
 			}
-			// Typen holen -> die Menge ist erforderlich, deshalb muss hier nicht auf != null geprüft werden
+			// Typen holen -> die Menge ist erforderlich, deshalb muss hier nicht auf != null geprÃ¼ft werden
 			final List<SystemObject> superTypes = systemObjectType.getNonMutableSet("SuperTypen").getElementsInModifiableVersion();
 			for(SystemObject systemObject : superTypes) {
 				final SystemObjectType objectType = (SystemObjectType)systemObject;
@@ -3548,7 +3550,7 @@ public class ConfigurationImport implements ObjectLookup {
 				final ObjectSetUse setUse = (ObjectSetUse)systemObject;
 				objectSetUses.add(setUse);
 			}
-			// Typen holen -> die Menge ist erforderlich, deshalb muss hier nicht auf != null geprüft werden
+			// Typen holen -> die Menge ist erforderlich, deshalb muss hier nicht auf != null geprÃ¼ft werden
 			final List<SystemObject> superTypes = systemObjectType.getNonMutableSet("SuperTypen").getElementsInVersion(version);
 			for(SystemObject systemObject : superTypes) {
 				final SystemObjectType objectType = (SystemObjectType)systemObject;
@@ -3559,7 +3561,7 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Gibt alle Konfigurationsbereiche zurück, die gerade importiert werden.
+	 * Gibt alle Konfigurationsbereiche zurÃ¼ck, die gerade importiert werden.
 	 *
 	 * @return Alle Konfigurationsbereiche, die gerade importiert werden.
 	 */
@@ -3568,7 +3570,7 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Ein neues Data-Objekt wird mit den Elementen aus der Definition gefüllt.
+	 * Ein neues Data-Objekt wird mit den Elementen aus der Definition gefÃ¼llt.
 	 *
 	 * @param data     ein neues Data-Objekt
 	 * @param elements Elemente der Definition eines System-Objekts
@@ -3627,7 +3629,7 @@ public class ConfigurationImport implements ObjectLookup {
 			}
 			else if(datasetElement instanceof ConfigurationDataField) {
 				ConfigurationDataField dataField = (ConfigurationDataField)datasetElement;
-				// Größe des Arrays beachten
+				// GrÃ¶ÃŸe des Arrays beachten
 				Data item = data.getItem(dataField.getName());
 				item.asArray().setLength(dataField.getDataAndDataList().length);
 				fillData(item, dataField.getDataAndDataList());
@@ -3668,7 +3670,7 @@ public class ConfigurationImport implements ObjectLookup {
 	/* ############################# verschiedene Getter-Methoden ############################# */
 
 	/**
-	 * Gibt zu einem Konfigurationsbereich und einer Pid das zur Übernahme oder Aktivierung freigegebene Objekt zurück, wenn es existiert.
+	 * Gibt zu einem Konfigurationsbereich und einer Pid das zur Ãœbernahme oder Aktivierung freigegebene Objekt zurÃ¼ck, wenn es existiert.
 	 *
 	 * @param configurationArea der Konfigurationsbereich
 	 * @param pid               die Pid des gesuchten Objekts
@@ -3685,7 +3687,7 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Gibt zu einem Konfigurationsbereich und einer Pid das aktuelle Objekt zurück, wenn es existiert.
+	 * Gibt zu einem Konfigurationsbereich und einer Pid das aktuelle Objekt zurÃ¼ck, wenn es existiert.
 	 *
 	 * @param configurationArea der Konfigurationsbereich
 	 * @param pid               die Pid des gesuchten Objekts
@@ -3702,10 +3704,10 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Löscht aus der Liste der aktuellen Objekte eines Bereichs ein gegebenes Objekt, wenn es enthalten ist.
+	 * LÃ¶scht aus der Liste der aktuellen Objekte eines Bereichs ein gegebenes Objekt, wenn es enthalten ist.
 	 *
 	 * @param configurationArea Der zu durchsuchende Konfigurationsbereich
-	 * @param object Das zu löschende Objekt
+	 * @param object Das zu lÃ¶schende Objekt
 	 *
 	 * @return Das gesuchte Objekt oder <code>null</code>, falls es nicht existiert.
 	 */
@@ -3722,7 +3724,7 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Gibt zu einem Konfigurationsbereich und einer Pid das in Bearbeitung befindliche Objekt zurück, wenn es existiert.
+	 * Gibt zu einem Konfigurationsbereich und einer Pid das in Bearbeitung befindliche Objekt zurÃ¼ck, wenn es existiert.
 	 *
 	 * @param configurationArea der Konfigurationsbereich
 	 * @param pid               die Pid des gesuchten Objekts
@@ -3741,14 +3743,14 @@ public class ConfigurationImport implements ObjectLookup {
 	/* ##################### Allgemeine-Methoden ############################ */
 
 	/**
-	 * Diese Methode gibt anhand der angegebenen Pid ein Objekt aus dem Datenmodell oder aus den Import-Versorgungsdateien zurück.
+	 * Diese Methode gibt anhand der angegebenen Pid ein Objekt aus dem Datenmodell oder aus den Import-Versorgungsdateien zurÃ¼ck.
 	 *
 	 * @param pid Pid des gesuchten Objekts
 	 *
-	 * @return das gewünschte Objekt oder eine Exception, falls dies nicht existiert
+	 * @return das gewÃ¼nschte Objekt oder eine Exception, falls dies nicht existiert
 	 */
 	public SystemObject getObject(String pid) {
-		// Erst die Import-Objekte durchforsten, damit auf jeden Fall auch neu erzeugte Objekte berücksichtigt werden
+		// Erst die Import-Objekte durchforsten, damit auf jeden Fall auch neu erzeugte Objekte berÃ¼cksichtigt werden
 		SystemObject systemObject = null;
 
 		// gibt es zu dieser Pid ein importiertes Objekt?
@@ -3759,7 +3761,7 @@ public class ConfigurationImport implements ObjectLookup {
 		else {
 			// es gibt kein importiertes Objekt
 			systemObject = getUsingObjects().get(pid);
-			// wenn Objekt nicht gefunden wurde, wird geprüft, ob in der aktuellen Konfiguration ein Objekt mit der gewünschten Pid aktiviert ist
+			// wenn Objekt nicht gefunden wurde, wird geprÃ¼ft, ob in der aktuellen Konfiguration ein Objekt mit der gewÃ¼nschten Pid aktiviert ist
 			if(systemObject == null) {
 				systemObject = _dataModel.getObject(pid);
 				
@@ -3774,24 +3776,24 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Ermittelt zu allen Konfigurationsbereichen, die Objekte, die in der zu betrachtenden Version gültig sind.
+	 * Ermittelt zu allen Konfigurationsbereichen, die Objekte, die in der zu betrachtenden Version gÃ¼ltig sind.
 	 *
-	 * @return die Objekte, die in den zu betrachtenden Versionen gültig sind
+	 * @return die Objekte, die in den zu betrachtenden Versionen gÃ¼ltig sind
 	 */
 	private Map<String, SystemObject> getUsingObjects() {
 		if(_viewingObjects == null) {
 			_viewingObjects = new HashMap<String, SystemObject>();
-			// Version der Konfigurationsbereiche berücksichtigen, in der das Objekt sein soll!
+			// Version der Konfigurationsbereiche berÃ¼cksichtigen, in der das Objekt sein soll!
 			for(Map.Entry<ConfigurationArea, Short> entry : _usingVersionOfConfigurationArea.entrySet()) {
 				final ConfigurationArea configurationArea = entry.getKey();
 				// alle Bereiche erst in der aktuellen Version betrachten
 				// erst die aktuellen Objekte holen ...
 				final Collection<SystemObject> currentObjects = configurationArea.getCurrentObjects();
 
-				// Konfigurationsbereich selber muss auch hinzugefügt werden
+				// Konfigurationsbereich selber muss auch hinzugefÃ¼gt werden
 				_viewingObjects.put(configurationArea.getPid(), configurationArea);
 
-				// anschließend alle aktuellen Objekte des Bereichs
+				// anschlieÃŸend alle aktuellen Objekte des Bereichs
 				for(SystemObject object : currentObjects) {
 					final String objPid = object.getPid();
 					if(!objPid.equals("")) {
@@ -3799,7 +3801,7 @@ public class ConfigurationImport implements ObjectLookup {
 							_viewingObjects.put(objPid, object);
 						}
 						else {
-							// nur die aktuellen Objekte, die auch noch in der zu betrachtenden Version gültig sind
+							// nur die aktuellen Objekte, die auch noch in der zu betrachtenden Version gÃ¼ltig sind
 							final ConfigurationObject configObject = (ConfigurationObject)object;
 							if(configObject.getNotValidSince() == 0 || configObject.getNotValidSince() > entry.getValue()) {
 								_viewingObjects.put(objPid, object);
@@ -3808,11 +3810,11 @@ public class ConfigurationImport implements ObjectLookup {
 					}
 				}
 
-				// ... dann die neuesten Objekte holen und die aktuellen überschreiben lassen
+				// ... dann die neuesten Objekte holen und die aktuellen Ã¼berschreiben lassen
 				if(configurationArea.getActiveVersion() != entry.getValue()) {
 					final Collection<SystemObject> newObjects = configurationArea.getNewObjects();
 					for(SystemObject object : newObjects) {
-						// Ist das Objekt in der richtigen Version gültig?
+						// Ist das Objekt in der richtigen Version gÃ¼ltig?
 						if(object.getType() instanceof DynamicObjectType) {
 							_viewingObjects.put(object.getPid(), object);
 						}
@@ -3843,11 +3845,11 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Erstellt einen Objekt-Typen mit der angegebenen Pid, falls es nicht bereits existiert. Wird zur Ermittlung der Super-Typen benötigt.
+	 * Erstellt einen Objekt-Typen mit der angegebenen Pid, falls es nicht bereits existiert. Wird zur Ermittlung der Super-Typen benÃ¶tigt.
 	 *
 	 * @param pid Pid des gesuchten Objekt-Typs
 	 *
-	 * @return der gewünschte Objekt-Typ
+	 * @return der gewÃ¼nschte Objekt-Typ
 	 *
 	 * @throws IllegalArgumentException Falls zur angegebenen Pid kein Objekt-Typ existiert.
 	 */
@@ -3890,7 +3892,7 @@ public class ConfigurationImport implements ObjectLookup {
 	private void setInfo(SystemObject systemObject, SystemObjectInfo info) throws ConfigurationChangeException {
 		// wenn Info nicht definiert ist, braucht es auch nicht abgespeichert zu werden
 		if(info != SystemObjectInfo.UNDEFINED) {
-			// wenn der Info-Datensatz bereits existiert, kann dieser geändert werden
+			// wenn der Info-Datensatz bereits existiert, kann dieser geÃ¤ndert werden
 			final AttributeGroup atg = _dataModel.getAttributeGroup("atg.info");
 			Data data = AttributeBaseValueDataFactory.createAdapter(atg, AttributeHelper.getAttributesValues(atg));
 			data.getTextValue("kurzinfo").setText(info.getShortInfoAsXML());
@@ -3915,12 +3917,12 @@ public class ConfigurationImport implements ObjectLookup {
 				}
 			}
 		}
-		// die Liste der zur Übernahme / Aktivierung freigegebenen Objekte wird durchgearbeitet
+		// die Liste der zur Ãœbernahme / Aktivierung freigegebenen Objekte wird durchgearbeitet
 		for(ConfigurationArea configurationArea : _newObjects.keySet()) {
 			for(CheckedObject checkedObject : _newObjects.get(configurationArea)) {
 				if(checkedObject.getSystemObject() == systemObject) {
 					_debug.finer(
-							"Ein zur Übernahme / Aktivierung freigegebenes Objekt '" + systemObject.getPidOrNameOrId() + "' wurde gefunden und wird markiert."
+							"Ein zur Ãœbernahme / Aktivierung freigegebenes Objekt '" + systemObject.getPidOrNameOrId() + "' wurde gefunden und wird markiert."
 					);
 					checkedObject.setObjectKeeping(true);
 					return; // gesucht - gefunden
@@ -3939,7 +3941,7 @@ public class ConfigurationImport implements ObjectLookup {
 		}
 	}
 
-	/** Setzt alle Markierung, ob ein Objekt beibehalten werden soll, wieder zurück. */
+	/** Setzt alle Markierung, ob ein Objekt beibehalten werden soll, wieder zurÃ¼ck. */
 	private void unsetSystemObjectKeeping() {
 		// die Liste der in Bearbeitung befindlichen Objekte wird durchgearbeitet
 		for(ConfigurationArea configurationArea : _editingObjects.keySet()) {
@@ -3947,7 +3949,7 @@ public class ConfigurationImport implements ObjectLookup {
 				checkedObject.setObjectKeeping(false);
 			}
 		}
-		// die Liste der zur Übernahme / Aktivierung freigegebenen Objekte wird durchgearbeitet
+		// die Liste der zur Ãœbernahme / Aktivierung freigegebenen Objekte wird durchgearbeitet
 		for(ConfigurationArea configurationArea : _newObjects.keySet()) {
 			for(CheckedObject checkedObject : _newObjects.get(configurationArea)) {
 				checkedObject.setObjectKeeping(false);
@@ -3962,12 +3964,12 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Gibt die Attributgruppenverwendung zurück, die in der in Bearbeitung befindlichen Version gültig ist.
+	 * Gibt die Attributgruppenverwendung zurÃ¼ck, die in der in Bearbeitung befindlichen Version gÃ¼ltig ist.
 	 *
 	 * @param atg die Attributgruppe
 	 * @param asp der Aspekt
 	 *
-	 * @return Die Attributgruppenverwendung, die in der in Bearbeitung befindlichen Version gültig ist oder <code>null</code>, falls es keine gültige Verwendung
+	 * @return Die Attributgruppenverwendung, die in der in Bearbeitung befindlichen Version gÃ¼ltig ist oder <code>null</code>, falls es keine gÃ¼ltige Verwendung
 	 *         gibt.
 	 */
 	AttributeGroupUsage getAttributeGroupUsage(AttributeGroup atg, Aspect asp) {
@@ -3996,7 +3998,7 @@ public class ConfigurationImport implements ObjectLookup {
 	/* ##################### Import-Klasse ############################ */
 
 	/**
-	 * Diese Klasse wird nur für den Import benutzt. Sie speichert eine Referenz auf ein {@link de.bsvrz.puk.config.xmlFile.properties.SystemObjectProperties} und auf ein {@link SystemObject}. Damit
+	 * Diese Klasse wird nur fÃ¼r den Import benutzt. Sie speichert eine Referenz auf ein {@link de.bsvrz.puk.config.xmlFile.properties.SystemObjectProperties} und auf ein {@link SystemObject}. Damit
 	 * auch bekannt ist, wo das Eigenschafts-Objekt importiert werden soll, wird auch der Konfigurationsbereich gespeichert.
 	 */
 	private class ImportObject {
@@ -4022,7 +4024,7 @@ public class ConfigurationImport implements ObjectLookup {
 		}
 
 		/**
-		 * Gibt den Konfigurationsbereich dieses Import-Objekts zurück.
+		 * Gibt den Konfigurationsbereich dieses Import-Objekts zurÃ¼ck.
 		 *
 		 * @return der Konfigurationsbereich dieses Import-Objekts
 		 */
@@ -4031,7 +4033,7 @@ public class ConfigurationImport implements ObjectLookup {
 		}
 
 		/**
-		 * Gibt das Eigenschafts-Objekt dieses Import-Objekts zurück, welches die Definition eines Objekts aus der Versorgungsdatei enthält.
+		 * Gibt das Eigenschafts-Objekt dieses Import-Objekts zurÃ¼ck, welches die Definition eines Objekts aus der Versorgungsdatei enthÃ¤lt.
 		 *
 		 * @return das Eigenschafts-Objekt
 		 */
@@ -4040,9 +4042,9 @@ public class ConfigurationImport implements ObjectLookup {
 		}
 
 		/**
-		 * Gibt das zum Eigenschafts-Objekt gehörende System-Objekt zurück.
+		 * Gibt das zum Eigenschafts-Objekt gehÃ¶rende System-Objekt zurÃ¼ck.
 		 *
-		 * @return das zum Eigenschafts-Objekt gehörende System-Objekt
+		 * @return das zum Eigenschafts-Objekt gehÃ¶rende System-Objekt
 		 */
 		public SystemObject getSystemObject() {
 			return _systemObject;
@@ -4059,20 +4061,20 @@ public class ConfigurationImport implements ObjectLookup {
 	}
 
 	/**
-	 * Diese Klasse speichert zu einem bereits bestehenden Objekt, ob es im Konfigurationsbereich beibehalten werden soll, oder nicht. Für diese Unterscheidung
+	 * Diese Klasse speichert zu einem bereits bestehenden Objekt, ob es im Konfigurationsbereich beibehalten werden soll, oder nicht. FÃ¼r diese Unterscheidung
 	 * gibt es ein Flag. Wird es nicht gesetzt, dann wird das Objekt im letzten Schritt des Imports auf {@link de.bsvrz.dav.daf.main.config.SystemObject#invalidate()
-	 * ungültig} gesetzt.
+	 * ungÃ¼ltig} gesetzt.
 	 */
 	private class CheckedObject {
 
 		/** Ein bestehendes System-Objekt. */
 		private SystemObject _systemObject;
 
-		/** Ob nach Abschluss des Import-Vorgangs dieses System-Objekt noch benötigt wird oder es auf ungültig gesetzt wird. */
+		/** Ob nach Abschluss des Import-Vorgangs dieses System-Objekt noch benÃ¶tigt wird oder es auf ungÃ¼ltig gesetzt wird. */
 		private boolean _isObjectKeeping = false;
 
 		/**
-		 * Speicher ein System-Objekt ab, welches nach dem Import überprüft werden soll, ob es noch benötigt wird.
+		 * Speicher ein System-Objekt ab, welches nach dem Import Ã¼berprÃ¼ft werden soll, ob es noch benÃ¶tigt wird.
 		 *
 		 * @param systemObject ein System-Objekt
 		 */
@@ -4081,7 +4083,7 @@ public class ConfigurationImport implements ObjectLookup {
 		}
 
 		/**
-		 * Gibt das System-Objekt zurück.
+		 * Gibt das System-Objekt zurÃ¼ck.
 		 *
 		 * @return das System-Objekt
 		 */
@@ -4090,7 +4092,7 @@ public class ConfigurationImport implements ObjectLookup {
 		}
 
 		/**
-		 * Gibt zurück, ob das System-Objekt auch nach dem Import beibehalten werden soll.
+		 * Gibt zurÃ¼ck, ob das System-Objekt auch nach dem Import beibehalten werden soll.
 		 *
 		 * @return <code>true</code>, falls das System-Objekt auch nach dem Import beibehalten werden soll, sonst <code>false</code>
 		 */

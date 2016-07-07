@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel.telegrams;
@@ -28,23 +34,23 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * In diesem Systemtelegramm werden die vom Datenverteiler festgelegten Verbindungsparameter an die Applikationsfunktionen übertragen.
+ * In diesem Systemtelegramm werden die vom Datenverteiler festgelegten Verbindungsparameter an die Applikationsfunktionen Ã¼bertragen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5059 $
+ * @version $Revision$
  */
 public class ComParametersAnswer extends DataTelegram {
 
-	/** Zeit, nach der spätestens ein Keep-Alive-Telegramm versendet wird, wenn keine sonstigen Telegramme während dieser Zeit versendet wurden. */
+	/** Zeit, nach der spÃ¤testens ein Keep-Alive-Telegramm versendet wird, wenn keine sonstigen Telegramme wÃ¤hrend dieser Zeit versendet wurden. */
 	private long keepAliveSendTimeOut;
 
 	/**
-	 * Timeoutzeit, in der spätestens ein Telegramm empfangen werden muss. Wird diese Zeit ohne Empfang von Telegrammen überschritten, wird die Verbindung zum
+	 * Timeoutzeit, in der spÃ¤testens ein Telegramm empfangen werden muss. Wird diese Zeit ohne Empfang von Telegrammen Ã¼berschritten, wird die Verbindung zum
 	 * Kommunikationspartner terminiert.
 	 */
 	private long keepAliveReceiveTimeOut;
 
-	/** Belegung des Sendepuffers in Prozent ab der zyklisch die Durchsatzprüfung erfolgen soll. */
+	/** Belegung des Sendepuffers in Prozent ab der zyklisch die DurchsatzprÃ¼fung erfolgen soll. */
 	public byte cacheThresholdPercentage;
 
 	/**
@@ -66,8 +72,8 @@ public class ComParametersAnswer extends DataTelegram {
 	 *
 	 * @param _keepAliveSendTimeOut     Keepalive-Sendezeit
 	 * @param _keepAliveReceiveTimeOut  Keepalive-Empfangszeit
-	 * @param _cacheThresholdPercentage Pufferfüllgrad
-	 * @param _flowControlThresholdTime Prüfintervall
+	 * @param _cacheThresholdPercentage PufferfÃ¼llgrad
+	 * @param _flowControlThresholdTime PrÃ¼fintervall
 	 * @param _minConnectionSpeed       Mindestdurchsatz
 	 */
 	public ComParametersAnswer(
@@ -84,25 +90,25 @@ public class ComParametersAnswer extends DataTelegram {
 	}
 
 	/**
-	 * Gibt den prozentualen Anteil der Cache, um die Flusscontrole zu starten, zurück.
+	 * Gibt den prozentualen Anteil der Cache, um die Flusscontrole zu starten, zurÃ¼ck.
 	 *
-	 * @return Pufferfüllgrad
+	 * @return PufferfÃ¼llgrad
 	 */
 	public final byte getCacheThresholdPercentage() {
 		return cacheThresholdPercentage;
 	}
 
 	/**
-	 * Gibt die Zeit zwichen zwei Durchsatzprüfungen zurück.
+	 * Gibt die Zeit zwichen zwei DurchsatzprÃ¼fungen zurÃ¼ck.
 	 *
-	 * @return Prüfintervall
+	 * @return PrÃ¼fintervall
 	 */
 	public final short getFlowControlThresholdTime() {
 		return flowControlThresholdTime;
 	}
 
 	/**
-	 * Gibt den minimum Verbindungsdurchsatz zurück.
+	 * Gibt den minimum Verbindungsdurchsatz zurÃ¼ck.
 	 *
 	 * @return Mindestdurchsatz
 	 */
@@ -111,7 +117,7 @@ public class ComParametersAnswer extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die Zeit zurück, nach der spätestens ein keepalive Telegramm geschickt werden muss, wenn in diese Zeit kein Telegramm empfangen wurde.
+	 * Gibt die Zeit zurÃ¼ck, nach der spÃ¤testens ein keepalive Telegramm geschickt werden muss, wenn in diese Zeit kein Telegramm empfangen wurde.
 	 *
 	 * @return die Keepalive-Sendezeit
 	 */
@@ -120,7 +126,7 @@ public class ComParametersAnswer extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die Zeit zurück, in der spätestens ein Telegramm empfangen werden muss, sonst wird die verbindung terminiert.
+	 * Gibt die Zeit zurÃ¼ck, in der spÃ¤testens ein Telegramm empfangen werden muss, sonst wird die verbindung terminiert.
 	 *
 	 * @return die Keepalive-Empfangszeit
 	 */
@@ -132,8 +138,8 @@ public class ComParametersAnswer extends DataTelegram {
 		String str = "Systemtelegramm setzen der Kommunikationsparametern Antwort: \n";
 		str += "Keep Alive Sendezeit    : " + keepAliveSendTimeOut + "\n";
 		str += "Keep Alive Empfangszeit : " + keepAliveReceiveTimeOut + "\n";
-		str += "Pufferfüllgrad: " + cacheThresholdPercentage + " % \n";
-		str += "Prüfintervall: " + flowControlThresholdTime + " s \n";
+		str += "PufferfÃ¼llgrad: " + cacheThresholdPercentage + " % \n";
+		str += "PrÃ¼fintervall: " + flowControlThresholdTime + " s \n";
 		str += "Mindestdurchsatz: " + minConnectionSpeed + "\n";
 		return str;
 	}
@@ -156,7 +162,7 @@ public class ComParametersAnswer extends DataTelegram {
 		minConnectionSpeed = in.readInt();
 		length = 23;
 		if(length != _length) {
-			throw new IOException("Falsche Telegrammlänge");
+			throw new IOException("Falsche TelegrammlÃ¤nge");
 		}
 	}
 }

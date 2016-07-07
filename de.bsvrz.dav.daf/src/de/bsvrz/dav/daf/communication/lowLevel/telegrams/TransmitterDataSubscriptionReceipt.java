@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel.telegrams;
@@ -31,29 +37,29 @@ import java.io.IOException;
  * Der Datenverteiler quittiert eine an ihn gerichtete Datenanmeldung.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
+ * @version $Revision$
  */
 public class TransmitterDataSubscriptionReceipt extends DataTelegram {
 
 	/** Die Basisinformationen der Anmeldung */
 	private BaseSubscriptionInfo _baseSubscriptionInfo;
 
-	/** Die Information, ob die Anmeldung eine Sender- oder Empfängeranmeldung ist 0: Senderanmeldung 1: Empfängeranmeldung */
+	/** Die Information, ob die Anmeldung eine Sender- oder EmpfÃ¤ngeranmeldung ist 0: Senderanmeldung 1: EmpfÃ¤ngeranmeldung */
 	private byte _subscriptionState;
 
 	/**
-	 * Die Quittung für die Anmeldung: 0: Keiner der angemeldeten Zentraldatenverteiler ist für die Daten zuständig. 1: Der spezifizierte Datenverteiler ist der
-	 * Zuständige für die Daten. 2: Der spezifizierte Datenverteiler ist der Zuständige für die Daten, die notwendigen Rechte sind aber nicht vorhanden.
+	 * Die Quittung fÃ¼r die Anmeldung: 0: Keiner der angemeldeten Zentraldatenverteiler ist fÃ¼r die Daten zustÃ¤ndig. 1: Der spezifizierte Datenverteiler ist der
+	 * ZustÃ¤ndige fÃ¼r die Daten. 2: Der spezifizierte Datenverteiler ist der ZustÃ¤ndige fÃ¼r die Daten, die notwendigen Rechte sind aber nicht vorhanden.
 	 */
 	private byte _receipt;
 
 	/**
-	 * Der Zentraldatenverteiler der für die angemeldeten Daten zuständig ist. Wenn kein zentraler Datenverteiler für die angemeldeten Daten existiert, dann wird
-	 * -1 übertragen.
+	 * Der Zentraldatenverteiler der fÃ¼r die angemeldeten Daten zustÃ¤ndig ist. Wenn kein zentraler Datenverteiler fÃ¼r die angemeldeten Daten existiert, dann wird
+	 * -1 Ã¼bertragen.
 	 */
 	private long _transmitterId;
 
-	/** Die Liste der zu berücksichtigenden Datenverteiler */
+	/** Die Liste der zu berÃ¼cksichtigenden Datenverteiler */
 	private long _transmitterList[];
 
 	public TransmitterDataSubscriptionReceipt() {
@@ -63,10 +69,10 @@ public class TransmitterDataSubscriptionReceipt extends DataTelegram {
 
 	/**
 	 * @param baseSubscriptionInfo Basisinformationen
-	 * @param subscriptionState    Information ob die Anmeldung ein  Sender oder Empfänger ist
+	 * @param subscriptionState    Information ob die Anmeldung ein  Sender oder EmpfÃ¤nger ist
 	 * @param receipt              Quittung
 	 * @param transmitterId        ID des Zentraldatenverteilers
-	 * @param transmitterList      Liste der zu berücksichtigenden Datenverteiler
+	 * @param transmitterList      Liste der zu berÃ¼cksichtigenden Datenverteiler
 	 */
 	public TransmitterDataSubscriptionReceipt(
 			BaseSubscriptionInfo baseSubscriptionInfo, byte subscriptionState, byte receipt, long transmitterId, long transmitterList[]
@@ -85,7 +91,7 @@ public class TransmitterDataSubscriptionReceipt extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die Basisanmeldeinformationen zurück.
+	 * Gibt die Basisanmeldeinformationen zurÃ¼ck.
 	 *
 	 * @return die Basisanmeldeinformationen
 	 */
@@ -94,7 +100,7 @@ public class TransmitterDataSubscriptionReceipt extends DataTelegram {
 	}
 
 	/**
-	 * Gibt den Status der Anmeldung zurück 0: Senderanmeldung 1: Empfängeranmeldung.
+	 * Gibt den Status der Anmeldung zurÃ¼ck 0: Senderanmeldung 1: EmpfÃ¤ngeranmeldung.
 	 *
 	 * @return der Status der Anmeldung
 	 */
@@ -103,8 +109,8 @@ public class TransmitterDataSubscriptionReceipt extends DataTelegram {
 	}
 
 	/**
-	 * Gibt den Status der Quittung zurück 0: Keiner der angemeldeten Zentraldatenverteiler ist für die Daten zuständig. 1: Der spezifizierte Datenverteiler ist
-	 * der Zuständige für die Daten. 2: Der spezifizierte Datenverteiler ist der Zuständige für die Daten, die notwendigen Rechte sind aber nicht vorhanden.
+	 * Gibt den Status der Quittung zurÃ¼ck 0: Keiner der angemeldeten Zentraldatenverteiler ist fÃ¼r die Daten zustÃ¤ndig. 1: Der spezifizierte Datenverteiler ist
+	 * der ZustÃ¤ndige fÃ¼r die Daten. 2: Der spezifizierte Datenverteiler ist der ZustÃ¤ndige fÃ¼r die Daten, die notwendigen Rechte sind aber nicht vorhanden.
 	 *
 	 * @return der Status der Quittung
 	 */
@@ -113,7 +119,7 @@ public class TransmitterDataSubscriptionReceipt extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die Id des für die angemeldeten Daten zuständigen Zentraldatenverteilers zurück.
+	 * Gibt die Id des fÃ¼r die angemeldeten Daten zustÃ¤ndigen Zentraldatenverteilers zurÃ¼ck.
 	 *
 	 * @return die Id des Zentraldatenverteilers
 	 */
@@ -122,9 +128,9 @@ public class TransmitterDataSubscriptionReceipt extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die Liste der zu berücksichtigenden Datenverteiler zurück.
+	 * Gibt die Liste der zu berÃ¼cksichtigenden Datenverteiler zurÃ¼ck.
 	 *
-	 * @return die Liste der zu berücksichtigenden Datenverteiler
+	 * @return die Liste der zu berÃ¼cksichtigenden Datenverteiler
 	 */
 	public final long[] getTransmitters() {
 		return _transmitterList;
@@ -138,18 +144,18 @@ public class TransmitterDataSubscriptionReceipt extends DataTelegram {
 			str += ", Anmeldung als Sender";
 		}
 		else {
-			str += ", Anmeldung als Empfänger";
+			str += ", Anmeldung als EmpfÃ¤nger";
 		}
 
 		if(_receipt == TransmitterSubscriptionsConstants.NEGATIV_RECEIP) {
-			str += ", Kein Zentraldatenverteiler für die angemeldeten Daten vorhanden";
+			str += ", Kein Zentraldatenverteiler fÃ¼r die angemeldeten Daten vorhanden";
 		}
 		else if(_receipt == TransmitterSubscriptionsConstants.POSITIV_RECEIP) {
-			str += ", Zentraldatenverteiler für die angemeldeten Daten vorhanden";
+			str += ", Zentraldatenverteiler fÃ¼r die angemeldeten Daten vorhanden";
 			str += ", Zentraldatenverteiler Id: " + _transmitterId;
 		}
 		else {
-			str += ", Zentraldatenverteiler für die angemeldeten Daten gefunden aber keine Zugriffsrechte vorhanden.";
+			str += ", Zentraldatenverteiler fÃ¼r die angemeldeten Daten gefunden aber keine Zugriffsrechte vorhanden.";
 			str += ", Zentraldatenverteiler Id: " + _transmitterId;
 		}
 		if(_transmitterList != null) {
@@ -196,7 +202,7 @@ public class TransmitterDataSubscriptionReceipt extends DataTelegram {
 		_receipt = in.readByte();
 		_transmitterId = in.readLong();
 		if(length != _length) {
-			throw new IOException("Falsche Telegrammlänge");
+			throw new IOException("Falsche TelegrammlÃ¤nge");
 		}
 	}
 }

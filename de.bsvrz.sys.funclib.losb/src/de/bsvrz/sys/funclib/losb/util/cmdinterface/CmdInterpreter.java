@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.sys.funclib.losb.
  * 
- * de.bsvrz.sys.funclib.losb is free software; you can redistribute it and/or modify
+ * de.bsvrz.sys.funclib.losb is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.losb is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.sys.funclib.losb; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.losb.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.losb.util.cmdinterface;
@@ -39,14 +45,14 @@ import java.net.UnknownHostException;
  * Kommando-Interpreter
  *
  * @author beck et al. projects GmbH
- * @author Thomas Müller
- * @version $Revision: 6420 $ / $Date: 2009-03-10 23:19:01 +0100 (Tue, 10 Mar 2009) $ / ($Author: rs $)
+ * @author Thomas MÃ¼ller
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class CmdInterpreter extends Thread {
 
 	private static final Debug logger = Debug.getLogger();
 
-	/** Das Prompt für die Darstellung einer Eingabeaufforderung an der Konsole */
+	/** Das Prompt fÃ¼r die Darstellung einer Eingabeaufforderung an der Konsole */
 	public static String PROMPT = "? ";
 
 	private boolean closeConnection = false, stopServer = false;
@@ -63,7 +69,7 @@ public class CmdInterpreter extends Thread {
 
 	private BufferedWriter out;
 
-	/** True falls zusätzliche Kommandos angezeigt werden sollen. */
+	/** True falls zusÃ¤tzliche Kommandos angezeigt werden sollen. */
 	private boolean showHidden = false;
 
 	/** Kommando zum schliessen der Verbindung (Server horcht weiter) */
@@ -93,7 +99,7 @@ public class CmdInterpreter extends Thread {
 	 * Erzeugt den Telnet-Server
 	 *
 	 * @param port           der Port auf dem der Server horcht
-	 * @param timeOutMinutes Timeout für eine Socket-Verbindung
+	 * @param timeOutMinutes Timeout fÃ¼r eine Socket-Verbindung
 	 */
 	public CmdInterpreter(int port, int timeOutMinutes) {
 		setName(getClass().getSimpleName());    // Zur Identifikation im Debugger
@@ -105,8 +111,8 @@ public class CmdInterpreter extends Thread {
 	 * Erzeugt den Telnet-Server
 	 *
 	 * @param port           Port auf dem der Server horcht
-	 * @param root           das Hauptmenü
-	 * @param timeOutMinutes Timeout für eine Socket-Verbindung
+	 * @param root           das HauptmenÃ¼
+	 * @param timeOutMinutes Timeout fÃ¼r eine Socket-Verbindung
 	 */
 	public CmdInterpreter(int port, int timeOutMinutes, CmdMenu root) {
 		this(port, timeOutMinutes);
@@ -119,8 +125,8 @@ public class CmdInterpreter extends Thread {
 	 * Erzeugt den Telnet-Server
 	 *
 	 * @param port           Port auf dem der Server horcht
-	 * @param timeOutMinutes Timeout für eine Socket-Verbindung
-	 * @param showHidden     <code>true</code> falls zusätzliche Kommandos angezeigt werden sollen
+	 * @param timeOutMinutes Timeout fÃ¼r eine Socket-Verbindung
+	 * @param showHidden     <code>true</code> falls zusÃ¤tzliche Kommandos angezeigt werden sollen
 	 */
 	public CmdInterpreter(int port, int timeOutMinutes, boolean showHidden) {
 		this(port, timeOutMinutes);
@@ -144,7 +150,7 @@ public class CmdInterpreter extends Thread {
 	}
 
 	/**
-	 * Warten auf Verbindung, Menü in Loop anzeigen, Verbindung schliessen
+	 * Warten auf Verbindung, MenÃ¼ in Loop anzeigen, Verbindung schliessen
 	 *
 	 * @throws IOException
 	 * @throws UnknownHostException
@@ -186,7 +192,7 @@ public class CmdInterpreter extends Thread {
 		logger.info("Kommandoverbindung zum Telnet-Server hergestellt.");
 	}
 
-	/** Menü anzeigen, Navigation durchführen, Kommandos ausführen */
+	/** MenÃ¼ anzeigen, Navigation durchfÃ¼hren, Kommandos ausfÃ¼hren */
 	public void menuLoop() {
 		try {
 			boolean showMenu = true;
@@ -255,7 +261,7 @@ public class CmdInterpreter extends Thread {
 
 
 	/**
-	 * Benutzereingabe vom In-Stream lesen und z.B. an {@link #menuLoop()} zurückgeben, Abbruch bei Überschreitung des Server-Timeout
+	 * Benutzereingabe vom In-Stream lesen und z.B. an {@link #menuLoop()} zurÃ¼ckgeben, Abbruch bei Ãœberschreitung des Server-Timeout
 	 *
 	 * @return Benutzereingabe
 	 *
@@ -270,9 +276,9 @@ public class CmdInterpreter extends Thread {
 	}
 
 	/**
-	 * Hilfe für Menüeintrag zurückgeben
+	 * Hilfe fÃ¼r MenÃ¼eintrag zurÃ¼ckgeben
 	 *
-	 * @param ind Index des Menüeintrags (Submenü oder Kommando)
+	 * @param ind Index des MenÃ¼eintrags (SubmenÃ¼ oder Kommando)
 	 *
 	 * @return Hilfetext
 	 */
@@ -308,7 +314,7 @@ public class CmdInterpreter extends Thread {
 	}
 
 	/**
-	 * Aktuelles Menü darstellen
+	 * Aktuelles MenÃ¼ darstellen
 	 *
 	 * @throws Exception
 	 */
@@ -347,9 +353,9 @@ public class CmdInterpreter extends Thread {
 	}
 
 	/**
-	 * Menü für den Interpreter setzen (falls noch nicht geschehen)
+	 * MenÃ¼ fÃ¼r den Interpreter setzen (falls noch nicht geschehen)
 	 *
-	 * @param root das Menü
+	 * @param root das MenÃ¼
 	 */
 	public void setMenu(CmdMenu root) {
 		rootMenu = root;

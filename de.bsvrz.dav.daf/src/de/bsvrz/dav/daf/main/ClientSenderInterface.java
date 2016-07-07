@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main;
@@ -24,10 +30,10 @@ package de.bsvrz.dav.daf.main;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 
 /**
- * Schnittstelle die seitens der Applikation zu implementieren ist, um bei getriggerten Sendeanmeldungen, den Versand von Daten auszulösen.
+ * Schnittstelle die seitens der Applikation zu implementieren ist, um bei getriggerten Sendeanmeldungen, den Versand von Daten auszulÃ¶sen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
+ * @version $Revision$
  * @see ClientDavInterface#subscribeSender
  */
 public interface ClientSenderInterface {
@@ -36,29 +42,29 @@ public interface ClientSenderInterface {
 	public static final byte START_SENDING = 0;
 
 	/**
-	 * Eine Sendesteuerung mit diesem Status-Wert signalisiert, dass der Versand von Daten angehalten werden soll, weil momentan kein Abnehmer sich für die Daten
+	 * Eine Sendesteuerung mit diesem Status-Wert signalisiert, dass der Versand von Daten angehalten werden soll, weil momentan kein Abnehmer sich fÃ¼r die Daten
 	 * interessiert.
 	 */
 	public static final byte STOP_SENDING = 1;
 
 	/**
-	 * Eine Sendesteuerung mit diesem Status-Wert signalisiert, dass der Versand von Daten angehalten werden soll, weil momentan keine Rechte für den Versand
+	 * Eine Sendesteuerung mit diesem Status-Wert signalisiert, dass der Versand von Daten angehalten werden soll, weil momentan keine Rechte fÃ¼r den Versand
 	 * vorliegen.
 	 */
 	public static final byte STOP_SENDING_NO_RIGHTS = 2;
 
 	/**
 	 * Eine Sendesteuerung mit diesem Status-Wert signalisiert, dass der Versand von Daten angehalten werden soll, weil die entsprechende Anmeldung momentan nicht
-	 * gültig ist (z.B. wegen doppelter Quelle).
+	 * gÃ¼ltig ist (z.B. wegen doppelter Quelle).
 	 */
 	public static final byte STOP_SENDING_NOT_A_VALID_SUBSCRIPTION = 3;
 
 	/**
 	 * Sendesteuerung des Datenverteilers an die Applikation. Diese Methode muss von der Applikation implementiert werden, um den Versand von Daten zu starten bzw.
-	 * anzuhalten. Der Datenverteiler signalisiert damit einer Quelle oder einem Sender dass mindestens ein Abnehmer bzw. kein Abnehmer mehr für die zuvor
+	 * anzuhalten. Der Datenverteiler signalisiert damit einer Quelle oder einem Sender dass mindestens ein Abnehmer bzw. kein Abnehmer mehr fÃ¼r die zuvor
 	 * angemeldeten Daten vorhanden ist. Die Quelle wird damit aufgefordert den Versand von Daten zu starten bzw. zu stoppen.
 	 *
-	 * @param object          Das in der zugehörigen Sendeanmeldung angegebene Objekt, auf das sich die Sendesteuerung bezieht.
+	 * @param object          Das in der zugehÃ¶rigen Sendeanmeldung angegebene Objekt, auf das sich die Sendesteuerung bezieht.
 	 * @param dataDescription Beschreibende Informationen zu den angemeldeten Daten auf die sich die Sendesteuerung bezieht.
 	 * @param state           Status der Sendesteuerung. Kann einen der Werte <code>START_SENDING</code>, <code>STOP_SENDING</code>,
 	 *                        <code>STOP_SENDING_NO_RIGHTS</code>, <code>STOP_SENDING_NOT_A_VALID_SUBSCRIPTION</code> enthalten.
@@ -71,14 +77,14 @@ public interface ClientSenderInterface {
 	public void dataRequest(SystemObject object, DataDescription dataDescription, byte state);
 
 	/**
-	 * Diese Methode muss von der Applikation implementiert werden, um zu signalisieren, ob Sendesteuerungen erwünscht sind und mit der Methode
-	 * <code>dataRequest</code> verarbeitet werden. In der Implementierung dieser Methode dürfen keine synchronen Aufrufe, die auf Telegramme vom Datenverteiler
-	 * warten (wie z.B. Konfigurationsanfragen) durchgeführt werden, da ansonsten ein Deadlock entsteht.
+	 * Diese Methode muss von der Applikation implementiert werden, um zu signalisieren, ob Sendesteuerungen erwÃ¼nscht sind und mit der Methode
+	 * <code>dataRequest</code> verarbeitet werden. In der Implementierung dieser Methode dÃ¼rfen keine synchronen Aufrufe, die auf Telegramme vom Datenverteiler
+	 * warten (wie z.B. Konfigurationsanfragen) durchgefÃ¼hrt werden, da ansonsten ein Deadlock entsteht.
 	 *
-	 * @param object          Das in der zugehörigen Sendeanmeldung angegebene System-Objekt.
-	 * @param dataDescription Die in der zugehörigen Sendeanmeldung angegebenen beschreibenden Informationen der angemeldeten Daten.
+	 * @param object          Das in der zugehÃ¶rigen Sendeanmeldung angegebene System-Objekt.
+	 * @param dataDescription Die in der zugehÃ¶rigen Sendeanmeldung angegebenen beschreibenden Informationen der angemeldeten Daten.
 	 *
-	 * @return <code>true</code>, falls Sendesteuerungen gewünscht sind, sonst <code>false</code>.
+	 * @return <code>true</code>, falls Sendesteuerungen gewÃ¼nscht sind, sonst <code>false</code>.
 	 *
 	 * @see #dataRequest
 	 */

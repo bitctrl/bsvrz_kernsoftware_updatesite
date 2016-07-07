@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2003 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2003 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.onlprot.
  * 
- * de.bsvrz.pat.onlprot is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.onlprot is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.onlprot is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.onlprot; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.onlprot.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.onlprot.protocoller.protocolModuleConnector;
@@ -36,7 +42,7 @@ import java.nio.charset.Charset;
 
 /**
  * Modul zur Verwaltung beliebiger Protokollierungsmodule, die die Schnittstelle
- * {@link de.bsvrz.pat.onlprot.standardProtocolModule.ClientProtocollerInterface} erfüllen.
+ * {@link de.bsvrz.pat.onlprot.standardProtocolModule.ClientProtocollerInterface} erfÃ¼llen.
  *
  * @author Kappich Systemberatung
  * @version $Revision:5031 $
@@ -46,7 +52,7 @@ public class ProtocolModuleConnector {
 	static private final Debug debug = Debug.getLogger();
 
 	/**
-	 * Der Protokollierer, der für die Ausgabe der Telegramme zuständig ist
+	 * Der Protokollierer, der fÃ¼r die Ausgabe der Telegramme zustÃ¤ndig ist
 	 */
 	private final ClientReceiverInterface	protocoller;
 
@@ -56,7 +62,7 @@ public class ProtocolModuleConnector {
 	private File							protocolFile = null;
 
 	/**
-	 * Ausgabe-<i>Stream</i> für die Protokolle
+	 * Ausgabe-<i>Stream</i> fÃ¼r die Protokolle
 	 */
 	private PrintWriter						protocolFileWriter = null;
 
@@ -81,7 +87,7 @@ public class ProtocolModuleConnector {
 	 * 									Protokollierungsmoduls nicht gefunden
 	 * 									wird
 	 * @throws IllegalAccessException wenn {@link de.bsvrz.sys.funclib.commandLineArgs.ArgumentList#fetchArgument}
-	 * 									keinen Wert für das gewünschte Argument
+	 * 									keinen Wert fÃ¼r das gewÃ¼nschte Argument
 	 * 									ermitteln konnte
 	 * @throws InstantiationException in {@link #setProtocolModule}
 	 * @throws IOException wenn bei der Initialisierung E/A-Probleme auftreten.
@@ -95,7 +101,7 @@ public class ProtocolModuleConnector {
 		try {
 
 			/*
-			 * Zwischenspeicher für den Dateinamen, für den Aufruf von
+			 * Zwischenspeicher fÃ¼r den Dateinamen, fÃ¼r den Aufruf von
 			 * <code>asWritableFile</code>
 			 */
 			ArgumentList.Argument dummy = argumentList.fetchArgument("-datei=");
@@ -109,7 +115,7 @@ public class ProtocolModuleConnector {
 				protocolFileWriter = new PrintWriter(System.out, true);
 			}
 		} catch (IOException e) {
-			debug.error("Fehler beim Anlegen oder Öffnen der Protokolldatei");
+			debug.error("Fehler beim Anlegen oder Ã–ffnen der Protokolldatei");
 			throw e;
 		}
 		protocoller
@@ -131,15 +137,15 @@ public class ProtocolModuleConnector {
 	}
 
 	/**
-	 * Aufräumen nach Beenden des Protokollierens
+	 * AufrÃ¤umen nach Beenden des Protokollierens
 	 */
 	public void cleanUp() {
 		protocolModule.closeProtocol();
 	}
 
 	/**
-	 * Gibt Information über die erlaubten Aufrufparameter des verwendeten
-	 * Protokollierungsmoduls zurück
+	 * Gibt Information Ã¼ber die erlaubten Aufrufparameter des verwendeten
+	 * Protokollierungsmoduls zurÃ¼ck
 	 *
 	 * @return	String mit der Beschreibung der erlaubten Aufrufparameter und
 	 *			deren erwartetes Format
@@ -158,15 +164,15 @@ public class ProtocolModuleConnector {
 		return protocoller;
 	}
 
-	/** Trägt das verwendete Protokollierungsmodul ein. Dazu wird überprüft, ob
-	 * eine Klasse mit dem übergebenen Namen existiert.
+	/** TrÃ¤gt das verwendete Protokollierungsmodul ein. Dazu wird Ã¼berprÃ¼ft, ob
+	 * eine Klasse mit dem Ã¼bergebenen Namen existiert.
 	 * @param protocolModuleName String mit dem Namen des
 	 * 										Protokollierungsmoduls
 	 * @throws ClassNotFoundException wenn unter dem angegebenen Namen
 	 * 										kein Protokollierungsmodul zu finden
 	 * 										ist
 	 * @throws IllegalAccessException wenn eine leere Zeichenkette
-	 * 										übergeben wurde
+	 * 										Ã¼bergeben wurde
 	 * @throws InstantiationException wenn Fehler in
 	 * 										{@link Class#newInstance} auftritt
 	 */

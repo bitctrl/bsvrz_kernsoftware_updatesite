@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.xmlFile.properties;
@@ -28,7 +34,7 @@ import java.util.List;
  * Dieses Objekt spiegelt eine Transaktionsdefininition wieder, die in der K2S.DTD definiert ist.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8632 $
+ * @version $Revision$
  */
 public class TransactionProperties extends AttributeGroupProperties {
 
@@ -49,7 +55,7 @@ public class TransactionProperties extends AttributeGroupProperties {
 	}
 
 	/**
-	 * Setzt die Datenindentifikationen für die die Transaktion erlaubt ist
+	 * Setzt die Datenindentifikationen fÃ¼r die die Transaktion erlaubt ist
 	 * @param possibleDids Datenidentifikationen (leere Liste = alle Erlaubt)
 	 */
 	public void setPossibleDids(final List<DataIdentification> possibleDids) {
@@ -57,7 +63,7 @@ public class TransactionProperties extends AttributeGroupProperties {
 	}
 
 	/**
-	 * Setzt die Datenidentifikationen die für diese Transaktion notwendig sind
+	 * Setzt die Datenidentifikationen die fÃ¼r diese Transaktion notwendig sind
 	 * @param requiredDids Erforderliche Datenidentifikationen
 	 */
 	public void setRequiredDids(final List<DataIdentification> requiredDids) {
@@ -89,11 +95,11 @@ public class TransactionProperties extends AttributeGroupProperties {
 	 */
 	@Override
 	public void setAttributeAndAttributeList(final AttributeProperties[] attributeAndAttributeList) {
-		throw new UnsupportedOperationException("Das Setzen von Attributen für eine Transaktion ist nicht vorgesehen.");
+		throw new UnsupportedOperationException("Das Setzen von Attributen fÃ¼r eine Transaktion ist nicht vorgesehen.");
 	}
 
 	/**
-	 * Datenidentifikation für import/Export von Transaktionen. Statt Systemobjekten werden Strings benutzt
+	 * Datenidentifikation fÃ¼r import/Export von Transaktionen. Statt Systemobjekten werden Strings benutzt
 	 */
 	public static class DataIdentification {
 		private final String _objectType;
@@ -109,7 +115,7 @@ public class TransactionProperties extends AttributeGroupProperties {
 			_attributeGroup = attributeGroup;
 			_aspect = aspect;
 			if(!"ja".equals(onlyTransactionObject) && !"nein".equals(onlyTransactionObject)){
-				throw new IllegalArgumentException("Keine gültige Angabe für NurTransaktionsObjekt: " + onlyTransactionObject);
+				throw new IllegalArgumentException("Keine gÃ¼ltige Angabe fÃ¼r NurTransaktionsObjekt: " + onlyTransactionObject);
 			}
 			_onlyTransactionObject = "ja".equals(onlyTransactionObject);
 		}

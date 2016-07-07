@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.sys.funclib.concurrent is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.concurrent is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.concurrent; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.concurrent; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.concurrent;
@@ -24,21 +30,21 @@ package de.bsvrz.sys.funclib.concurrent;
  * Definiert die Schnittstelle zum An- und Abmelden von Targets bei einem Trigger
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5888 $
+ * @version $Revision$
  * @see de.bsvrz.sys.funclib.concurrent.TriggerTarget
  * @see de.bsvrz.sys.funclib.concurrent.DelayedTrigger
  */
 public interface Trigger {
 
 	/**
-	 * Fügt dem Trigger ein neues TriggerTarget, das beim Auslösen und Schließen des Triggers benachrichtigt werden soll, hinzu.
+	 * FÃ¼gt dem Trigger ein neues TriggerTarget, das beim AuslÃ¶sen und SchlieÃŸen des Triggers benachrichtigt werden soll, hinzu.
 	 *
-	 * @param triggerTarget Listener-Objekt, das zukünftig beim Auslösen oder Schließen des Triggers benachrichtigt werden soll.
+	 * @param triggerTarget Listener-Objekt, das zukÃ¼nftig beim AuslÃ¶sen oder SchlieÃŸen des Triggers benachrichtigt werden soll.
 	 */
 	void addTriggerTarget(TriggerTarget triggerTarget);
 
 	/**
-	 * Entfernt ein vorher hinzugefügtes TriggerTarget.
+	 * Entfernt ein vorher hinzugefÃ¼gtes TriggerTarget.
 	 *
 	 * @param triggerTarget Listener-Objekt, das entfernt werden soll.
 	 */

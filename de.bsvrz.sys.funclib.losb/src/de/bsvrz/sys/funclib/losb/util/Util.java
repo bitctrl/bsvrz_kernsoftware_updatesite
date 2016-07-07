@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.sys.funclib.losb.
  * 
- * de.bsvrz.sys.funclib.losb is free software; you can redistribute it and/or modify
+ * de.bsvrz.sys.funclib.losb is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.losb is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.sys.funclib.losb; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.losb.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.losb.util;
@@ -61,7 +67,7 @@ import java.util.regex.Pattern;
  *
  * @author beck et al. projects GmbH
  * @author Alexander Schmidt
- * @version $Revision: 10736 $ / $Date: 2012-11-19 20:42:12 +0100 (Mon, 19 Nov 2012) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class Util {
 
@@ -80,14 +86,14 @@ public class Util {
 	/** Wird von {@link #msToDate(StringBuffer,long)} verwendet. */
 	private static final GregorianCalendar gc = new GregorianCalendar();
 
-	/** Format für Datumsausgabe festlegen. */
+	/** Format fÃ¼r Datumsausgabe festlegen. */
 	protected static final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss,SSS");
 
 	/** Debug Ausgaben. */
 	private static final Debug debug = Debug.getLogger();
 
 	/**
-	 * Berechnet das Datum aus Zeitangabe in Millisekunden. Das Datum wird folgendermaßen formatiert: DD.MM.JJJJ HH:MM:SS,sss
+	 * Berechnet das Datum aus Zeitangabe in Millisekunden. Das Datum wird folgendermaÃŸen formatiert: DD.MM.JJJJ HH:MM:SS,sss
 	 *
 	 * @param sb           Stringbuffer, in den das Datum geschrieben wird.
 	 * @param timeInMillis Zeitangabe in Millisekunden.
@@ -101,7 +107,7 @@ public class Util {
 	}
 
 	/**
-	 * Berechnet das Datum aus Zeitangabe in Millisekunden. Das Datum wird folgendermaßen formatiert: DD.MM.JJJJ HH:MM:SS,sss
+	 * Berechnet das Datum aus Zeitangabe in Millisekunden. Das Datum wird folgendermaÃŸen formatiert: DD.MM.JJJJ HH:MM:SS,sss
 	 *
 	 * @param timeInMillis Zeitangabe in Millisekunden.
 	 *
@@ -467,12 +473,12 @@ public class Util {
 	}
 
 	/**
-	 * Zerlegt die numerische ID in Gruppen von jeweils 3 Zeichen in Dezimaldarstellung und ergänzt diese so zum übergebenen StringBuilder, dass vor jeder
-	 * Gruppe die übergebene Separtor/Prefixsequenz hinzugefügt wird. Beispiel: mit "/obj" im Parameter separatorAndPrefix führt die ID 12345678 dazu, dass die
-	 * Zeichenkette "/obj123/obj456/obj78" zum Stringbuilder ergänzt wird.
+	 * Zerlegt die numerische ID in Gruppen von jeweils 3 Zeichen in Dezimaldarstellung und ergÃ¤nzt diese so zum Ã¼bergebenen StringBuilder, dass vor jeder
+	 * Gruppe die Ã¼bergebene Separtor/Prefixsequenz hinzugefÃ¼gt wird. Beispiel: mit "/obj" im Parameter separatorAndPrefix fÃ¼hrt die ID 12345678 dazu, dass die
+	 * Zeichenkette "/obj123/obj456/obj78" zum Stringbuilder ergÃ¤nzt wird.
 	 *
 	 * @param pathName StringBuilder-Objekt, an das die ermittelte Zeichenkette angehangen werden soll.
-	 * @param separatorAndPrefix Sequenz von Separator und Prefixzeichen, die vor jeder Zeichengruppe eingefügt werden soll.
+	 * @param separatorAndPrefix Sequenz von Separator und Prefixzeichen, die vor jeder Zeichengruppe eingefÃ¼gt werden soll.
 	 * @param id Numerische ID.
 	 */
 	public static void appendIdElements(StringBuilder pathName, String separatorAndPrefix, long id) {
@@ -689,7 +695,7 @@ public class Util {
 	}
 
 	/**
-	 * Liefert die Datenidentifikation als String zurück.
+	 * Liefert die Datenidentifikation als String zurÃ¼ck.
 	 *
 	 * @param objID Objekt-ID
 	 * @param atgID Attributgruppen-ID
@@ -844,11 +850,11 @@ public class Util {
 	}
 
 	/**
-	 * Gibt Informationen über das Ergebnis der Archivinformationsanfrage zurück.
+	 * Gibt Informationen Ã¼ber das Ergebnis der Archivinformationsanfrage zurÃ¼ck.
 	 *
 	 * @param air Ergebnis der Archivinformationsanfrage.
 	 *
-	 * @return String mit Informationen über die Archivinformationsanfrage.
+	 * @return String mit Informationen Ã¼ber die Archivinformationsanfrage.
 	 */
 	public static String air2Str(ArchiveInformationResult air) {
 		if(air == null) return "";
@@ -875,16 +881,16 @@ public class Util {
 		);
 		sb.append("\n");
 
-		sb.append("Der Anfragezeitraum enthält eine Datenlücke: " + ((air.isDataGap()) ? "JA" : "NEIN"));
+		sb.append("Der Anfragezeitraum enthÃ¤lt eine DatenlÃ¼cke: " + ((air.isDataGap()) ? "JA" : "NEIN"));
 		sb.append("\n");
 
-		sb.append("Medium ID der Datensätze (falls bekannt): " + air.getVolumeIdTypB());
+		sb.append("Medium ID der DatensÃ¤tze (falls bekannt): " + air.getVolumeIdTypB());
 
 		return sb.toString();
 	}
 
 	/**
-	 * Gibt die im ArchiveInformationResult gespeicherte Datenidentifikation zurück.
+	 * Gibt die im ArchiveInformationResult gespeicherte Datenidentifikation zurÃ¼ck.
 	 *
 	 * @param aiqr Ergebnis der Archivinformationsanfrage.
 	 *
@@ -1024,7 +1030,7 @@ public class Util {
 	}
 
 	/**
-	 * Überprüft ob die laufende Nummer des Datenindex springt. Wenn die beiden Datenindizes gleich sind, wird <code>false</code> zurückgegeben.
+	 * ÃœberprÃ¼ft ob die laufende Nummer des Datenindex springt. Wenn die beiden Datenindizes gleich sind, wird <code>false</code> zurÃ¼ckgegeben.
 	 *
 	 * @param index1 Erster Datenindex
 	 * @param index2 Darauf folgender Datenindex
@@ -1041,7 +1047,7 @@ public class Util {
 	}
 
 	/**
-	 * Liefert die Datenidentifikation inkl. Datensatzart als String zurück.
+	 * Liefert die Datenidentifikation inkl. Datensatzart als String zurÃ¼ck.
 	 *
 	 * @param objID Objekt-ID
 	 * @param atgID Attributgruppen-ID
@@ -1373,8 +1379,8 @@ public class Util {
 	}
 
 	/**
-	 * Liefert den verfuegbaren Speicherplatz in Bytes auf einem Laufwerk zurueck. Die Implementierung ist plattformunabhängig mit Hilfe der seit Java 1.6
-	 * existierenden Möglichkeiten realisiert.
+	 * Liefert den verfuegbaren Speicherplatz in Bytes auf einem Laufwerk zurueck. Die Implementierung ist plattformunabhÃ¤ngig mit Hilfe der seit Java 1.6
+	 * existierenden MÃ¶glichkeiten realisiert.
 	 *
 	 * @param drive Als <code>drive</code> kann ein beliebiger Filename verwendet werden, das Laufwerk wird automatisch erkannt.
 	 *
@@ -1390,7 +1396,7 @@ public class Util {
 	/**
 	 * Liefert den verfuegbaren Speicherplatz in Bytes auf einem Laufwerk zurueck. Momentan werden Windows- und Linux-Systeme unterstuetzt. Als <code>drive</code>
 	 * kann ein beliebiger Filenamen verwendet werden, das Laufwerk wird automatisch erkannt.<br>
-	 * Diese Methode wird von Testfällen benutzt, um Vergleichswerte für das neue Systemunabhängige Verfahren zu ermitteln.
+	 * Diese Methode wird von TestfÃ¤llen benutzt, um Vergleichswerte fÃ¼r das neue SystemunabhÃ¤ngige Verfahren zu ermitteln.
 	 *
 	 * @param drive
 	 *
@@ -1403,7 +1409,7 @@ public class Util {
 		long result = Long.MAX_VALUE;
 		String os = System.getProperty("os.name").toLowerCase();
 		if(os.startsWith("windows")) {
-			// dir - Befehl ausführen
+			// dir - Befehl ausfÃ¼hren
 			Runtime r = Runtime.getRuntime();
 			if(drive.contains(":")) {
 				drive = drive.substring(0, drive.indexOf(":") + 1);
@@ -1457,9 +1463,9 @@ public class Util {
 	}
 
 	/**
-	 * Liefert den verfügbaren Speicherplatz zurück.
+	 * Liefert den verfÃ¼gbaren Speicherplatz zurÃ¼ck.
 	 *
-	 * @param input String mit dem verfügbaren Speicherplatz. Der verfügbare Speicherplatz muss in folgendem Format vorliegen:<br> <code> [Space] [Zahl] [Punkt
+	 * @param input String mit dem verfÃ¼gbaren Speicherplatz. Der verfÃ¼gbare Speicherplatz muss in folgendem Format vorliegen:<br> <code> [Space] [Zahl] [Punkt
 	 *              Zahl]* [Space]</code><br> Falls mehrere solcher Ziffern und Punkt Ketten im String vorkommen, wird das letzte Vorkommen verwendet.
 	 *
 	 * @return Verfuegbarer Speicherplatz in Bytes.
@@ -1469,14 +1475,14 @@ public class Util {
 	public static long getFreeDiscSpaceWindows(String input) throws Exception {
 		String result = null;
 		try {
-			// Regulären Ausdruck erzeugen
+			// RegulÃ¤ren Ausdruck erzeugen
 			Pattern pattern = Pattern.compile("\\s\\d+((\\.|,)?\\d+)*\\s");
 			Matcher matcher = pattern.matcher(input);
 
 			while(matcher.find()) result = matcher.group();
 
 			// Dezimaltrenner entfernen:
-			result = result.replace(".", "").trim(); // überflüssige Spaces abschneiden
+			result = result.replace(".", "").trim(); // Ã¼berflÃ¼ssige Spaces abschneiden
 			result = result.replace(",", "");
 			return Long.parseLong(result);
 		}
@@ -1535,7 +1541,7 @@ public class Util {
 	}
 
 	/**
-	 * Schließt ein Objekt. Kommt es zu einem Fehler, wird dieser Fehler geloggt.
+	 * SchlieÃŸt ein Objekt. Kommt es zu einem Fehler, wird dieser Fehler geloggt.
 	 *
 	 * @param obj Objekt. Darf <code>null</code> sein.
 	 */
@@ -1549,9 +1555,9 @@ public class Util {
 	}
 
 	/**
-	 * Erzeugt ein temporäres Verzeichnis. Falls das Verzeichnis schon existiert, wird der Inhalt gelöscht.
+	 * Erzeugt ein temporÃ¤res Verzeichnis. Falls das Verzeichnis schon existiert, wird der Inhalt gelÃ¶scht.
 	 *
-	 * @param dirName Unterordner, der im temporären Verzeichnis angelegt werden soll.
+	 * @param dirName Unterordner, der im temporÃ¤ren Verzeichnis angelegt werden soll.
 	 *
 	 * @return Pfad des angelgeten Verzeichnisses. Endet mit {@link File#separator}.
 	 */
@@ -1562,9 +1568,9 @@ public class Util {
 	}
 
 	/**
-	 * @param dirName Unterordner im temporären Verzeichnis
+	 * @param dirName Unterordner im temporÃ¤ren Verzeichnis
 	 *
-	 * @return Pfad des Unterordners im temporären Verzeichnis. Endet mit {@link File#separator}.
+	 * @return Pfad des Unterordners im temporÃ¤ren Verzeichnis. Endet mit {@link File#separator}.
 	 */
 	public static String tempDir(String dirName) {
 		String path = System.getProperty("java.io.tmpdir");
@@ -1582,21 +1588,16 @@ public class Util {
 	 * @param obj2 Objekt.
 	 *
 	 * @return <code>true</code> wenn die Objekte gleich sind.
+	 *
+	 * @deprecated Stattdessen kann Java7 Objects.equals() benutzt werden
 	 */
+	@Deprecated
 	public static boolean cmpObj(Object obj1, Object obj2) {
-		if(obj1 != null) {
-			return obj1.equals(obj2); // Objekte direkt Vergleichen
-		}
-		else if(obj2 != null) {
-			return false; // obj1 ist null, obj2 nicht
-		}
-		else {
-			return true; // beide Objekte sind null.
-		}
+		return Objects.equals(obj1, obj2);
 	}
-
+	
 	/**
-	 * Setzt alle Instanzvariablen eines Objektes auf <code>null</code>. Geerbte und statische Variablen werden nicht berücksichtigt. Fehler werden auf der Konsole
+	 * Setzt alle Instanzvariablen eines Objektes auf <code>null</code>. Geerbte und statische Variablen werden nicht berÃ¼cksichtigt. Fehler werden auf der Konsole
 	 * ausgegeben und ein fail aufgerufen.
 	 *
 	 * @param object Objekt
@@ -1611,7 +1612,7 @@ public class Util {
 	}
 
 	/**
-	 * Setzt die Instanzvariablen des Objekts zurück. Es erfolgt keine Prüfung, ob objClass und object zusammenpassen.
+	 * Setzt die Instanzvariablen des Objekts zurÃ¼ck. Es erfolgt keine PrÃ¼fung, ob objClass und object zusammenpassen.
 	 *
 	 * @param objClass Klasse des Objekts
 	 * @param object   Objekt
@@ -1629,14 +1630,14 @@ public class Util {
 					field.set(object, null);
 				}
 				catch(IllegalArgumentException iae) {
-					// falls primitiver Datentyp übergeben wurde
+					// falls primitiver Datentyp Ã¼bergeben wurde
 				}
 			}
 		}
 	}
 
 	/**
-	 * Entspricht {@link #nullifyFields(Object)}, ändert jedoch auch geerbte Felder.
+	 * Entspricht {@link #nullifyFields(Object)}, Ã¤ndert jedoch auch geerbte Felder.
 	 *
 	 * @param object Objekt, dessen Instanzvariablen auf <code>null</code> gesetzt werden.
 	 *

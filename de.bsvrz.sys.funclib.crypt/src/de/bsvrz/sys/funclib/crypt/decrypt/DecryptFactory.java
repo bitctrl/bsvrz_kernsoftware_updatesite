@@ -6,7 +6,7 @@
  * 
  * de.bsvrz.sys.funclib.crypt is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.crypt is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.crypt; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.crypt; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.crypt.decrypt;
@@ -25,17 +31,17 @@ import de.bsvrz.sys.funclib.crypt.EncryptDecryptProcedure;
 import de.bsvrz.sys.funclib.crypt.PBEWithMD5AndDES;
 
 /**
- * Diese Klasse stellt Objekt zur Verfügung, die verschlüsselte Texte entschlüsseln können.
+ * Diese Klasse stellt Objekt zur VerfÃ¼gung, die verschlÃ¼sselte Texte entschlÃ¼sseln kÃ¶nnen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5010 $
+ * @version $Revision$
  */
 public class DecryptFactory {
 
 	/**
-	 * Erzeugt ein Objekt, mit dem Strings verschlüsselt werden können.
-	 * @param decryptPractice Verfahren, mit dem die Daten verschlüsselt werden sollen
-	 * @return Objekt zum verschlüsseln von Strings
+	 * Erzeugt ein Objekt, mit dem Strings verschlÃ¼sselt werden kÃ¶nnen.
+	 * @param decryptPractice Verfahren, mit dem die Daten verschlÃ¼sselt werden sollen
+	 * @return Objekt zum verschlÃ¼sseln von Strings
 	 *
 	 * @throws IllegalArgumentException Das angegebene Verfahren ist unbekannt
 	 */
@@ -45,7 +51,7 @@ public class DecryptFactory {
 			return new PBEWithMD5AndDES();
 		}else
 		{
-			throw new IllegalArgumentException("Unbekanntes Verschlüsslungsverfahren " + decryptPractice.getName());
+			throw new IllegalArgumentException("Unbekanntes VerschlÃ¼sslungsverfahren " + decryptPractice.getName());
 		}
 	}
 }

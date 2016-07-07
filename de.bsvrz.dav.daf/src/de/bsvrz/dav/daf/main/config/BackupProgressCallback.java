@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,17 +14,23 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.config;
 /**
- * Schnittstelle die für Statusmeldungen des Sicherungs-Vorgangs für Konfigurationsdateien benutzt wird.
+ * Schnittstelle die fÃ¼r Statusmeldungen des Sicherungs-Vorgangs fÃ¼r Konfigurationsdateien benutzt wird.
  * @see de.bsvrz.puk.config.main.ConfigDataBackup
  * @see de.bsvrz.dav.daf.main.impl.config.request.ConfigurationRequester#backupConfigurationFiles(String, ConfigurationAuthority, BackupProgressCallback)
  * @author Kappich Systemberatung
- * @version $Revision: 0 $
+ * @version $Revision$
  *
  */
 public interface BackupProgressCallback {
@@ -32,13 +38,13 @@ public interface BackupProgressCallback {
 	/**
 	 * Wird aufgerufen, nachdem der Backup-Vorgang gestartet wurde.
 	 * @param path Absolutes Zielverzeichnis innerhalb der Konfiguration, in der die Sicherung angelegt wird. Das Verzeichnis befindet sich auf dem System,
-	 * auf dem die Konfiguration läuft.
+	 * auf dem die Konfiguration lÃ¤uft.
 	 */
 	public void backupStarted(final String path);
 
 	/**
-	 * Wird aufgerufen, um über den aktuellen Fortschritt des Backup-Vorgangs zu informieren. Diese Funktion wird mindestens etwa alle 10 Sekunden aufgerufen,
-	 * außerdem nachdem das Backup beendet wurde, direkt vor backupFinished().
+	 * Wird aufgerufen, um Ã¼ber den aktuellen Fortschritt des Backup-Vorgangs zu informieren. Diese Funktion wird mindestens etwa alle 10 Sekunden aufgerufen,
+	 * auÃŸerdem nachdem das Backup beendet wurde, direkt vor backupFinished().
 	 * @param completed Anzahl der gesicherten Dateien
 	 * @param failed Anzahl der nicht erfolgreich gesicherten Dateien
 	 * @param total Anzahl der zu sichernden Dateien

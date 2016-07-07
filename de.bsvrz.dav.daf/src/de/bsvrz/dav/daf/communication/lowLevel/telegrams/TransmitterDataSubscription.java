@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel.telegrams;
@@ -28,24 +34,24 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Der Datenverteiler meldet Daten für Empfänger oder Sender an. Wenn sich eine Applikation als Quelle oder Senke von Daten anmeldet, dann wird der verbundene
- * Datenverteiler zum Zentraldatenverteiler dieser Daten. Bei Anmeldungen als Sender oder Empfänger besteht die Aufgabe des Datenverteilers darin, den
- * zugehörigen Zentraldatenverteiler ausfindig zu machen und über die Datenverteiler, die auf dem günstigsten Weg zum Zentraldatenverteiler liegen, eine
+ * Der Datenverteiler meldet Daten fÃ¼r EmpfÃ¤nger oder Sender an. Wenn sich eine Applikation als Quelle oder Senke von Daten anmeldet, dann wird der verbundene
+ * Datenverteiler zum Zentraldatenverteiler dieser Daten. Bei Anmeldungen als Sender oder EmpfÃ¤nger besteht die Aufgabe des Datenverteilers darin, den
+ * zugehÃ¶rigen Zentraldatenverteiler ausfindig zu machen und Ã¼ber die Datenverteiler, die auf dem gÃ¼nstigsten Weg zum Zentraldatenverteiler liegen, eine
  * Anmeldekette aufzubauen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11783 $
+ * @version $Revision$
  */
 public class TransmitterDataSubscription extends DataTelegram {
 
 	/** Die Basisinformationen der Anmeldung */
 	private BaseSubscriptionInfo _baseSubscriptionInfo;
 
-	/** Die Information, ob die Anmeldung eine Sender- oder Empfängeranmeldung ist 0: Senderanmeldung 1: Empfängeranmeldung */
+	/** Die Information, ob die Anmeldung eine Sender- oder EmpfÃ¤ngeranmeldung ist 0: Senderanmeldung 1: EmpfÃ¤ngeranmeldung */
 	private byte _subscriptionType;
 
-	/** Die Liste der zu berücksichtigenden möglichen Zentral-Datenverteiler. Bei einer Anmeldekette entscheiden die Datenverteiler "in der Mitte"
-	 * hierüber, in welche Richtung bzw. an welche Datenverteiler sie die Anmeldungen "weiterleiten" sollen */
+	/** Die Liste der zu berÃ¼cksichtigenden mÃ¶glichen Zentral-Datenverteiler. Bei einer Anmeldekette entscheiden die Datenverteiler "in der Mitte"
+	 * hierÃ¼ber, in welche Richtung bzw. an welche Datenverteiler sie die Anmeldungen "weiterleiten" sollen */
 	private long _transmitterList[];
 
 	public TransmitterDataSubscription() {
@@ -57,8 +63,8 @@ public class TransmitterDataSubscription extends DataTelegram {
 	 * Erzeugt neues TransmitterDataSubscription-Telegramm.
 	 *
 	 * @param baseSubscriptionInfo Basisinformationen
-	 * @param subscriptionType    Anmeldung als Sender oder Empfänger (0: Senderanmeldung 1: Empfängeranmeldung)
-	 * @param transmitterList      Liste der zu berücksichtigenden Datenverteiler
+	 * @param subscriptionType    Anmeldung als Sender oder EmpfÃ¤nger (0: Senderanmeldung 1: EmpfÃ¤ngeranmeldung)
+	 * @param transmitterList      Liste der zu berÃ¼cksichtigenden Datenverteiler
 	 */
 	public TransmitterDataSubscription(BaseSubscriptionInfo baseSubscriptionInfo, byte subscriptionType, long transmitterList[]) {
 		type = TRANSMITTER_DATA_SUBSCRIPTION_TYPE;
@@ -74,7 +80,7 @@ public class TransmitterDataSubscription extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die Basisanmeldeinformationen zurück.
+	 * Gibt die Basisanmeldeinformationen zurÃ¼ck.
 	 *
 	 * @return die Basisanmeldeinformationen
 	 */
@@ -83,7 +89,7 @@ public class TransmitterDataSubscription extends DataTelegram {
 	}
 
 	/**
-	 * Gibt den Typ der Anmeldung zurück 0: Senderanmeldung 1: Empfängeranmeldung.
+	 * Gibt den Typ der Anmeldung zurÃ¼ck 0: Senderanmeldung 1: EmpfÃ¤ngeranmeldung.
 	 *
 	 * @return Typ der Anmeldung
 	 */
@@ -92,7 +98,7 @@ public class TransmitterDataSubscription extends DataTelegram {
 	}
 
 	/**
-	 * Gibt den Typ der Anmeldung zurück 0: Senderanmeldung 1: Empfängeranmeldung.
+	 * Gibt den Typ der Anmeldung zurÃ¼ck 0: Senderanmeldung 1: EmpfÃ¤ngeranmeldung.
 	 *
 	 * @return Typ der Anmeldung
 	 */
@@ -101,9 +107,9 @@ public class TransmitterDataSubscription extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die Liste der zu berücksichtigenden Datenverteiler zurück.
+	 * Gibt die Liste der zu berÃ¼cksichtigenden Datenverteiler zurÃ¼ck.
 	 *
-	 * @return die Liste der zu berücksichtigenden Datenverteiler
+	 * @return die Liste der zu berÃ¼cksichtigenden Datenverteiler
 	 */
 	public final long[] getTransmitters() {
 		return _transmitterList;
@@ -116,7 +122,7 @@ public class TransmitterDataSubscription extends DataTelegram {
 			str += ", Anmeldung als Sender";
 		}
 		else {
-			str += ", Anmeldung als Empfänger";
+			str += ", Anmeldung als EmpfÃ¤nger";
 		}
 		if(_transmitterList != null) {
 			str += ", Potentielle Datenverteiler [ ";
@@ -159,7 +165,7 @@ public class TransmitterDataSubscription extends DataTelegram {
 			length += (_transmitterList.length * 8);
 		}
 		if(length != _length) {
-			throw new IOException("Falsche Telegrammlänge");
+			throw new IOException("Falsche TelegrammlÃ¤nge");
 		}
 	}
 }

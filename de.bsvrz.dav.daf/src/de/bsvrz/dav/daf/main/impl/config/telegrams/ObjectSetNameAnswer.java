@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config.telegrams;
@@ -27,11 +33,11 @@ import java.io.IOException;
 
 
 /**
- * Diese Klasse stellt ein Antworttelegramm zur Names‰nderung eines Objektes dar. Es wird die ƒnderung des names best‰tigt bzw das Fehlschlagen der ƒnderung
+ * Diese Klasse stellt ein Antworttelegramm zur Names√§nderung eines Objektes dar. Es wird die √Ñnderung des names best√§tigt bzw das Fehlschlagen der √Ñnderung
  * mitgeteilt
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5054 $
+ * @version $Revision$
  */
 public class ObjectSetNameAnswer extends ConfigTelegram {
 
@@ -41,10 +47,10 @@ public class ObjectSetNameAnswer extends ConfigTelegram {
 	/** Die Id des Objektes */
 	private long objectId;
 
-	/** Die Information ob die Aktion erfolgreich durchgef¸hrt worden ist */
+	/** Die Information ob die Aktion erfolgreich durchgef√ºhrt worden ist */
 	private boolean success;
 
-	/** Erzeugt ein neues Objekt ohne Parameter. Die Parameter werden zu einem Sp‰teren Zeitpunkt ¸ber die read-Methode eingelesen. */
+	/** Erzeugt ein neues Objekt ohne Parameter. Die Parameter werden zu einem Sp√§teren Zeitpunkt √ºber die read-Methode eingelesen. */
 	public ObjectSetNameAnswer() {
 		_type = OBJECT_SET_NAME_ANSWER_TYPE;
 	}
@@ -54,7 +60,7 @@ public class ObjectSetNameAnswer extends ConfigTelegram {
 	 *
 	 * @param _configTime Konfigurationszeit
 	 * @param _objectId   Id des Objektes
-	 * @param _success    true Name wurde ge‰ndert, false Name wurde nicht ge‰ndert
+	 * @param _success    true Name wurde ge√§ndert, false Name wurde nicht ge√§ndert
 	 */
 	public ObjectSetNameAnswer(long _configTime, long _objectId, boolean _success) {
 		_type = OBJECT_SET_NAME_ANSWER_TYPE;
@@ -64,7 +70,7 @@ public class ObjectSetNameAnswer extends ConfigTelegram {
 	}
 
 	/**
-	 * Gibt die Konfigurationszeit zur¸ck
+	 * Gibt die Konfigurationszeit zur√ºck
 	 *
 	 * @return Die Konfigurationszeit
 	 */
@@ -73,7 +79,7 @@ public class ObjectSetNameAnswer extends ConfigTelegram {
 	}
 
 	/**
-	 * Gibt die Id des Objektes zur¸ck
+	 * Gibt die Id des Objektes zur√ºck
 	 *
 	 * @return Die Id des Objektes
 	 */
@@ -82,9 +88,9 @@ public class ObjectSetNameAnswer extends ConfigTelegram {
 	}
 
 	/**
-	 * Gibt an, ob der Objektname erfolgreich ge‰ndert worden ist oder nicht.
+	 * Gibt an, ob der Objektname erfolgreich ge√§ndert worden ist oder nicht.
 	 *
-	 * @return true Name wurde ge‰ndert, false Name wurde nicht ge‰ndert
+	 * @return true Name wurde ge√§ndert, false Name wurde nicht ge√§ndert
 	 */
 	public final boolean isNameSet() {
 		return success;

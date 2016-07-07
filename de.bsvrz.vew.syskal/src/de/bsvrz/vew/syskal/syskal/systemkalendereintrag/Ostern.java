@@ -29,7 +29,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
- * Die Klasse für die Berechnung eines Ostersonntags *
+ * Die Klasse fÃ¼r die Berechnung eines Ostersonntags *
  * 
  * @version $Revision: 1.1 $ / $Date: 2009/09/24 12:49:16 $ / ($Author: Pittner $)
  * 
@@ -40,8 +40,8 @@ import java.util.GregorianCalendar;
 public class Ostern
 {
   /**
-   * Berechnet Ostersonntag für den gregorianischen Kalender, also für Jahre > 1583. Die Rückgabe enthält das gleiche
-   * Jahr und als Monat, entweder März oder April, sowie den korrekten Tag.
+   * Berechnet Ostersonntag fÃ¼r den gregorianischen Kalender, also fÃ¼r Jahre > 1583. Die RÃ¼ckgabe enthÃ¤lt das gleiche
+   * Jahr und als Monat, entweder MÃ¤rz oder April, sowie den korrekten Tag.
    * 
    * @param year >
    *          1583

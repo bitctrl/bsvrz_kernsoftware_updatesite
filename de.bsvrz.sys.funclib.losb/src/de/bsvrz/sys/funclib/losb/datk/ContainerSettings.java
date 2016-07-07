@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.sys.funclib.losb.
  * 
- * de.bsvrz.sys.funclib.losb is free software; you can redistribute it and/or modify
+ * de.bsvrz.sys.funclib.losb is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.losb is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.sys.funclib.losb; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.losb.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.losb.datk;
@@ -34,16 +40,16 @@ import java.util.*;
  *
  * @author beck et al. projects GmbH
  * @author Alexander Schmidt
- * @version $Revision: 6420 $ / $Date: 2009-03-10 23:19:01 +0100 (Tue, 10 Mar 2009) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ContainerSettings {
 
 	public static final String ATTR_GROUP = "atg.archivContainer";
 
-	/** Siehe atg.archivContainer::ContainerAbschluﬂParameter.Standardeinstellung */
+	/** Siehe atg.archivContainer::ContainerAbschlu√üParameter.Standardeinstellung */
 	public CloseCondition stdCloseConditions;
 
-	/** Siehe atg.archivContainer::ContainerAbschluﬂParameter.Ausnahmen */
+	/** Siehe atg.archivContainer::ContainerAbschlu√üParameter.Ausnahmen */
 	public List<ContSettingsExc> exceptions = new ArrayList<ContSettingsExc>();
 
 	public ContainerSettings() {
@@ -51,7 +57,7 @@ public class ContainerSettings {
 	}
 
 	public ContainerSettings(Data d) {
-		Data capParams = d.getItem("ContainerAbschluﬂParameter");
+		Data capParams = d.getItem("ContainerAbschlu√üParameter");
 		stdCloseConditions = new CloseCondition(capParams.getItem("Standardeinstellung").getItem("Einstellungen"));
 
 		Data.Array ausnahmen = capParams.getItem("Ausnahmen").asArray();
@@ -107,7 +113,7 @@ public class ContainerSettings {
 	}
 
 	/**
-	 * Liefert die Ausnahmeeinstellungen falls vorhanden (siehe atg.archivContainer::ContainerAbschluﬂParameter.Ausnahmen). Die Liste der Ausnahmen wird von hinten
+	 * Liefert die Ausnahmeeinstellungen falls vorhanden (siehe atg.archivContainer::ContainerAbschlu√üParameter.Ausnahmen). Die Liste der Ausnahmen wird von hinten
 	 * durchlaufen, damit stets die letzte Einstellung gueltig ist.
 	 *
 	 * @param dd Datenidentifikation
@@ -132,10 +138,10 @@ public class ContainerSettings {
 	 */
 	public Data createData(ClientDavConnection davCon) throws ConfigurationException {
 		Data data = davCon.createData(davCon.getDataModel().getAttributeGroup(ATTR_GROUP));
-		Data capParams = data.getItem("ContainerAbschluﬂParameter");
+		Data capParams = data.getItem("ContainerAbschlu√üParameter");
 		Data einst = capParams.getItem("Standardeinstellung").getItem("Einstellungen");
-		einst.getItem("MaxAnzahlArchivdatens‰tze").asUnscaledValue().set(stdCloseConditions.maxContAnzDS);
-		einst.getItem("MaxContainergrˆﬂe").asUnscaledValue().set(stdCloseConditions.maxContSize);
+		einst.getItem("MaxAnzahlArchivdatens√§tze").asUnscaledValue().set(stdCloseConditions.maxContAnzDS);
+		einst.getItem("MaxContainergr√∂√üe").asUnscaledValue().set(stdCloseConditions.maxContSize);
 		einst.getItem("MaxZeitspanneContainer").asTimeValue().setSeconds(stdCloseConditions.maxContTime);
 
 		Data.Array ausnahmen = capParams.getItem("Ausnahmen").asArray();
@@ -149,8 +155,8 @@ public class ContainerSettings {
 				atgs.getItem(j++).getItem("Attributgruppe").asReferenceValue().setSystemObject(excAtg);
 			}
 			einst = ausnahmen.getItem(i).getItem("Einstellungen");
-			einst.getItem("MaxAnzahlArchivdatens‰tze").asUnscaledValue().set(exceptions.get(i).excCloseConditions.maxContAnzDS);
-			einst.getItem("MaxContainergrˆﬂe").asUnscaledValue().set(exceptions.get(i).excCloseConditions.maxContSize);
+			einst.getItem("MaxAnzahlArchivdatens√§tze").asUnscaledValue().set(exceptions.get(i).excCloseConditions.maxContAnzDS);
+			einst.getItem("MaxContainergr√∂√üe").asUnscaledValue().set(exceptions.get(i).excCloseConditions.maxContSize);
 			einst.getItem("MaxZeitspanneContainer").asTimeValue().setSeconds(exceptions.get(i).excCloseConditions.maxContTime);
 		}
 		return data;
@@ -159,10 +165,10 @@ public class ContainerSettings {
 	/** Abschlusskriterien. Siehe atg.archivContainer */
 	public static class CloseCondition {
 
-		/** Siehe atg.archivContainer::MaxAnzahlArchivdatens‰tze */
+		/** Siehe atg.archivContainer::MaxAnzahlArchivdatens√§tze */
 		public int maxContAnzDS;
 
-		/** Siehe atg.archivContainer::MaxContainergrˆﬂe (in Byte) */
+		/** Siehe atg.archivContainer::MaxContainergr√∂√üe (in Byte) */
 		public int maxContSize;
 
 		/** Siehe atg.archivContainer::MaxZeitspanneContainer (in Sekunden) */
@@ -172,8 +178,8 @@ public class ContainerSettings {
 		}
 
 		private CloseCondition(Data d) {
-			maxContAnzDS = d.getUnscaledValue("MaxAnzahlArchivdatens‰tze").intValue();
-			maxContSize = d.getUnscaledValue("MaxContainergrˆﬂe").intValue();
+			maxContAnzDS = d.getUnscaledValue("MaxAnzahlArchivdatens√§tze").intValue();
+			maxContSize = d.getUnscaledValue("MaxContainergr√∂√üe").intValue();
 			maxContTime = d.getTimeValue("MaxZeitspanneContainer").getSeconds();
 		}
 	}

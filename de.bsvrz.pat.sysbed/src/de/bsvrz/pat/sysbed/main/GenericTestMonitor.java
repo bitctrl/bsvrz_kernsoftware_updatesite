@@ -4,13 +4,13 @@
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -19,8 +19,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.main;
@@ -54,12 +60,12 @@ import java.util.List;
 
 /**
  * Mit dieser Klasse wird die Anwendung "Generischer Test Monitor" gestartet. Die {@link de.bsvrz.pat.sysbed.plugins.api.ExternalModule Module}, die zu der
- * Applikation gehören sollen, können hier hinzugefügt werden. Der Auswahlbaum wird hier für den {@link de.bsvrz.pat.sysbed.preselection.tree.PreselectionTree
- * PreselectionTree} erstellt und an die Applikation übergeben. Außerdem wird die Verbindung zum Dateverteiler und die Argumentliste, welche beim Aufruf der
- * <code>main</code>-Methode angegeben wurde, übergeben.
- * <p/>
- * Der Login-Dialog, welcher es ermöglicht, eine IP-Adresse mit Port, Benutzernamen und Passwort einzugeben, kann über den Aufrufparameter
- * <code>-autologin</code> ausgeschaltet werden. Allerdings werden dann die Parameter <code>-benutzer</code> und <code>-authentifizierung</code> benötigt.
+ * Applikation gehÃ¶ren sollen, kÃ¶nnen hier hinzugefÃ¼gt werden. Der Auswahlbaum wird hier fÃ¼r den {@link de.bsvrz.pat.sysbed.preselection.tree.PreselectionTree
+ * PreselectionTree} erstellt und an die Applikation Ã¼bergeben. AuÃŸerdem wird die Verbindung zum Dateverteiler und die Argumentliste, welche beim Aufruf der
+ * <code>main</code>-Methode angegeben wurde, Ã¼bergeben.
+ * <p>
+ * Der Login-Dialog, welcher es ermÃ¶glicht, eine IP-Adresse mit Port, Benutzernamen und Passwort einzugeben, kann Ã¼ber den Aufrufparameter
+ * <code>-autologin</code> ausgeschaltet werden. Allerdings werden dann die Parameter <code>-benutzer</code> und <code>-authentifizierung</code> benÃ¶tigt.
  * 
  * @author Kappich Systemberatung
  */
@@ -72,7 +78,7 @@ public class GenericTestMonitor extends AbstractGUIApplication {
 	/** speichert das "Logo" */
 	private Icon _logo = null;
 	
-	/** speichert die Argumente, die beim Aufruf übergeben wurden */
+	/** speichert die Argumente, die beim Aufruf Ã¼bergeben wurden */
 	private static final List<String> _argumentList = new LinkedList<String>();
 	
 	/** speichert die Objekt-Pids der Argumente */
@@ -84,10 +90,10 @@ public class GenericTestMonitor extends AbstractGUIApplication {
 	/* ############### Methoden ################## */
 
 	/**
-	 * Die Applikation "Generischer Test Monitor" wird über die <code>main</code>-Methode gestartet.
+	 * Die Applikation "Generischer Test Monitor" wird Ã¼ber die <code>main</code>-Methode gestartet.
 	 * 
 	 * @param args
-	 *            Argumente, die beim Start der Applikation übergeben wurden
+	 *            Argumente, die beim Start der Applikation Ã¼bergeben wurden
 	 */
 	public static void main(String[] args) {
 		for(int i = 0; i < args.length; i++) { // vor dem Aufruf von run - da sonst ein Teil der Argumente fehlen
@@ -104,7 +110,7 @@ public class GenericTestMonitor extends AbstractGUIApplication {
 		StandardApplicationRunner.run(new GenericTestMonitor(), args);
 	}
 	
-	/** Öffentlichen Konstruktor dieser Klasse überschrieben, damit kein Objekt dieser Klasse erstellt werden kann. */
+	/** Ã–ffentlichen Konstruktor dieser Klasse Ã¼berschrieben, damit kein Objekt dieser Klasse erstellt werden kann. */
 	private GenericTestMonitor() {
 	}
 	
@@ -113,17 +119,17 @@ public class GenericTestMonitor extends AbstractGUIApplication {
 	}
 	
 	/**
-	 * Mit der <code>main</code>-Methode übergebene Parameter können hier ausgewertet werden.
+	 * Mit der <code>main</code>-Methode Ã¼bergebene Parameter kÃ¶nnen hier ausgewertet werden.
 	 * 
 	 * @param argumentList
 	 *            die modifizierte Argumentliste von der Standardapplikation
 	 *
 	 * @throws Exception
-	 *             Falls ein ungültiges Argument gefunden wurde.
+	 *             Falls ein ungÃ¼ltiges Argument gefunden wurde.
 	 */
 	public void parseArguments(ArgumentList argumentList) throws Exception {
-		// der ConfigurationHelper könnte hier genutzt werden, allerdings wird dort das "," als Separator verwendet.
-		String argument = argumentList.fetchArgument("-objekt=datenAuswahl.TestMenü01").asNonEmptyString();
+		// der ConfigurationHelper kÃ¶nnte hier genutzt werden, allerdings wird dort das "," als Separator verwendet.
+		String argument = argumentList.fetchArgument("-objekt=datenAuswahl.TestMenÃ¼01").asNonEmptyString();
 		
 		String plugins = argumentList.fetchArgument("-plugins=").asString();
 		
@@ -132,8 +138,8 @@ public class GenericTestMonitor extends AbstractGUIApplication {
 	}
 	
 	/**
-	 * Die Applikation wird erstellt, Module und Logo hinzugefügt und der Baum für die {@link de.bsvrz.pat.sysbed.preselection.panel.PreselectionPanel
-	 * Datenidentifikationsauswahl} wird erstellt. Anschließend wird die Anwendung gestartet.
+	 * Die Applikation wird erstellt, Module und Logo hinzugefÃ¼gt und der Baum fÃ¼r die {@link de.bsvrz.pat.sysbed.preselection.panel.PreselectionPanel
+	 * Datenidentifikationsauswahl} wird erstellt. AnschlieÃŸend wird die Anwendung gestartet.
 	 * 
 	 * @param connection
 	 *            Verbindung zum Datenverteiler
@@ -157,7 +163,7 @@ public class GenericTestMonitor extends AbstractGUIApplication {
 			}
 		}
 		
-		_debug.info("Durch Login-Dialog geänderte Aufrufargumente", _argumentList);
+		_debug.info("Durch Login-Dialog geÃ¤nderte Aufrufargumente", _argumentList);
 		
 		try {
 			_logo = new ImageIcon(GenericTestMonitorApplication.class.getResource("kappich-logo.png"));
@@ -193,7 +199,7 @@ public class GenericTestMonitor extends AbstractGUIApplication {
 //		treeNodes.add(treeNodeObject02);
 
 		Set<SystemObject> allMenuObjects = new TreeSet<SystemObject>();
-		// Objekte des Aufrufparameters einfügen
+		// Objekte des Aufrufparameters einfÃ¼gen
 		for(int i = 0; i < _objects.length; i++) {
 			String object = _objects[i].trim();
 			List<SystemObject> objects = null;
@@ -201,8 +207,8 @@ public class GenericTestMonitor extends AbstractGUIApplication {
 				objects = ConfigurationHelper.getObjects(object, dataModel);
 				allMenuObjects.addAll(objects);
 			} catch (IllegalArgumentException e) {
-				if(!object.equals("datenAuswahl.TestMenü01")) {
-					_debug.warning("Objekt wird nicht ins Auswahlmenü aufgenommen, da '" + object + "' nicht aufgelöst werden konnte");
+				if(!object.equals("datenAuswahl.TestMenÃ¼01")) {
+					_debug.warning("Objekt wird nicht ins AuswahlmenÃ¼ aufgenommen, da '" + object + "' nicht aufgelÃ¶st werden konnte");
 				}
 			}
 		}
@@ -211,7 +217,7 @@ public class GenericTestMonitor extends AbstractGUIApplication {
 				treeNodes.add(menuObject);
 			}
 			else {
-				_debug.warning("Objekt wird nicht ins Auswahlmenü aufgenommen, da es nicht vom Typ 'typ.datenAuswahl' ist", menuObject);
+				_debug.warning("Objekt wird nicht ins AuswahlmenÃ¼ aufgenommen, da es nicht vom Typ 'typ.datenAuswahl' ist", menuObject);
 			}
 		}
 		return treeNodes;
@@ -256,7 +262,7 @@ public class GenericTestMonitor extends AbstractGUIApplication {
 
 
 	/**
-	 * Startet den Generischen TestMonitor und übergibt die Verbindung zum Datenverteiler und den Vorauswahlbaum.
+	 * Startet den Generischen TestMonitor und Ã¼bergibt die Verbindung zum Datenverteiler und den Vorauswahlbaum.
 	 * 
 	 * @param connection
 	 *            Verbindung zum Datenverteiler
@@ -297,7 +303,7 @@ public class GenericTestMonitor extends AbstractGUIApplication {
 					application.addModule(new OnlineProtocolModule());
 					application.addModule(new DatGenModule());
 					
-					// Plugins ermitteln und hinzufügen
+					// Plugins ermitteln und hinzufÃ¼gen
 					for(String plugin : _plugins) {
 						if(!plugin.equals("")) {
 							try {

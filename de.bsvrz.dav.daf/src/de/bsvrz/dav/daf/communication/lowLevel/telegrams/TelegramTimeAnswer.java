@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel.telegrams;
@@ -29,15 +35,15 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Mit diesem Systemtelegramm wird eine Anfrage zur Ermittlung der Telegrammlaufzeit zwischen einer Applikation und dem zugehörigen Datenverteiler beantwortet.
- * Die Ermittlung der Telegrammlaufzeit ist in beiden Richtungen möglich (siehe  Telegrammlaufzeitanfrage ).
+ * Mit diesem Systemtelegramm wird eine Anfrage zur Ermittlung der Telegrammlaufzeit zwischen einer Applikation und dem zugehÃ¶rigen Datenverteiler beantwortet.
+ * Die Ermittlung der Telegrammlaufzeit ist in beiden Richtungen mÃ¶glich (siehe  Telegrammlaufzeitanfrage ).
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5059 $
+ * @version $Revision$
  */
 public class TelegramTimeAnswer extends DataTelegram {
 
-	/** Die Zeit bis hierher, die das Telegramm für seine Laufzeitsermittlung gebraucht hat. */
+	/** Die Zeit bis hierher, die das Telegramm fÃ¼r seine Laufzeitsermittlung gebraucht hat. */
 	private long _telegramTime;
 
 	private long _roundTripTime = 0;
@@ -59,18 +65,18 @@ public class TelegramTimeAnswer extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die Startzeit der Durchsatzprüfung zurück.
+	 * Gibt die Startzeit der DurchsatzprÃ¼fung zurÃ¼ck.
 	 *
-	 * @return die Startzeit der Durchsatzprüfung
+	 * @return die Startzeit der DurchsatzprÃ¼fung
 	 */
 	public final long getTelegramStartTime() {
 		return _telegramTime;
 	}
 
 	/**
-	 * Gibt die Zeit der Durchsatzprüfung zurück.
+	 * Gibt die Zeit der DurchsatzprÃ¼fung zurÃ¼ck.
 	 *
-	 * @return die benötigte Zeit für die Durchsatzprüfung
+	 * @return die benÃ¶tigte Zeit fÃ¼r die DurchsatzprÃ¼fung
 	 */
 	public final long getRoundTripTime() {
 		return _roundTripTime;
@@ -93,7 +99,7 @@ public class TelegramTimeAnswer extends DataTelegram {
 		_roundTripTime = System.currentTimeMillis() - _telegramTime;
 		length = 8;
 		if(length != _length) {
-			throw new IOException("Falsche Telegrammlänge");
+			throw new IOException("Falsche TelegrammlÃ¤nge");
 		}
 	}
 }

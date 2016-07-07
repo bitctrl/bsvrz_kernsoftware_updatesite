@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2003 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2003 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.sys.funclib.concurrent.
  * 
  * de.bsvrz.sys.funclib.concurrent is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.concurrent is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.concurrent; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.concurrent; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.concurrent;
@@ -25,16 +31,16 @@ package de.bsvrz.sys.funclib.concurrent;
  * Schnittstelle, die von priorisierten Objekten implementiert werden muss.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5006 $
+ * @version $Revision$
  * @see PriorityChannel
  */
 public interface PriorizedObject {
 
 	/**
-	 * Liefert die Priorit‰tsklasse des Objektes zur¸ck. Der Wert 1 entspricht dabei der Klasse mit der hˆchsten Priorit‰t. Grˆﬂere Werte kennzeichnen
-	 * Priorit‰tsklassen mit niedrigerer Priorit‰t.
+	 * Liefert die Priorit√§tsklasse des Objektes zur√ºck. Der Wert 1 entspricht dabei der Klasse mit der h√∂chsten Priorit√§t. Gr√∂√üere Werte kennzeichnen
+	 * Priorit√§tsklassen mit niedrigerer Priorit√§t.
 	 *
-	 * @return Priorit‰tsklasse als positive Zahl.
+	 * @return Priorit√§tsklasse als positive Zahl.
 	 */
 	public int getPriorityClass();
 }

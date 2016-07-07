@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.config.management.consistenycheck;
@@ -23,15 +29,15 @@ package de.bsvrz.dav.daf.main.config.management.consistenycheck;
 import java.util.*;
 
 /**
- * Klasse, die das Ergebnis einer Konsistenzprüfung enthält.
+ * Klasse, die das Ergebnis einer KonsistenzprÃ¼fung enthÃ¤lt.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 6056 $ / $Date: 2008-05-09 14:08:32 +0200 (Fri, 09 May 2008) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConsistencyCheckResult implements ConsistencyCheckResultInterface {
 
-	/** Enthält die Liste aller Fehler, die lokal aufgetreten sind */
+	/** EnthÃ¤lt die Liste aller Fehler, die lokal aufgetreten sind */
 	private final List<ConsistencyCheckResultEntry> _localErrors = Collections.synchronizedList(new ArrayList<ConsistencyCheckResultEntry>());
 
 	/** Liste aller Interferenz-Fehler */
@@ -91,9 +97,9 @@ public class ConsistencyCheckResult implements ConsistencyCheckResultInterface {
 	}
 
 	/**
-	 * Methode, die <code>true</code> zurückgibt, wenn ein lokaler Fehler aufgetreten ist, siehe TPuK1-139.
+	 * Methode, die <code>true</code> zurÃ¼ckgibt, wenn ein lokaler Fehler aufgetreten ist, siehe TPuK1-139.
 	 *
-	 * @return true = es ist mindestens ein lokaler Fehler bei der Konsistenzprüfung aufgetreten; false = es ist kein lokaler Fehler bei der Konsistenzprüfung
+	 * @return true = es ist mindestens ein lokaler Fehler bei der KonsistenzprÃ¼fung aufgetreten; false = es ist kein lokaler Fehler bei der KonsistenzprÃ¼fung
 	 *         aufgetreten
 	 */
 	public boolean localError() {
@@ -106,10 +112,10 @@ public class ConsistencyCheckResult implements ConsistencyCheckResultInterface {
 	}
 
 	/**
-	 * Methode, die <code>true</code> zurückgibt, wenn ein Interferenz-Fehler aufgetreten ist, siehe TPuK1-140.
+	 * Methode, die <code>true</code> zurÃ¼ckgibt, wenn ein Interferenz-Fehler aufgetreten ist, siehe TPuK1-140.
 	 *
-	 * @return true = es ist mindestens ein Interferenz-Fehler bei der Konsistenzprüfung aufgetreten; false = es ist kein Interferenz-Fehler bei der
-	 *         Konsistenzprüfung aufgetreten
+	 * @return true = es ist mindestens ein Interferenz-Fehler bei der KonsistenzprÃ¼fung aufgetreten; false = es ist kein Interferenz-Fehler bei der
+	 *         KonsistenzprÃ¼fung aufgetreten
 	 */
 	public boolean interferenceErrors() {
 		if(_interferenceErrors.size() > 0) {
@@ -159,7 +165,7 @@ public class ConsistencyCheckResult implements ConsistencyCheckResultInterface {
 
 
 	public String toString() {
-		StringBuffer out = new StringBuffer("Ergebnis Konsistenzprüfung: \n");
+		StringBuffer out = new StringBuffer("Ergebnis KonsistenzprÃ¼fung: \n");
 
 		out.append("  Anzahl Warnungen: " + _warnings.size() + "\n");
 		for(ConsistencyCheckResultEntry entry : _warnings) {

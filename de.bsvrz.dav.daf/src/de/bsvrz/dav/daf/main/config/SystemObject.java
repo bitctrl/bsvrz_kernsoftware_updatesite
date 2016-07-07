@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.config;
@@ -27,28 +33,28 @@ import de.bsvrz.dav.daf.main.Data;
 import java.util.*;
 
 /**
- * Schnittstelle zum Zugriff auf die Eigenschaften eines System-Objekts. Datensätze, die vom Datenverteiler transportiert werden, sind immer genau einem
+ * Schnittstelle zum Zugriff auf die Eigenschaften eines System-Objekts. DatensÃ¤tze, die vom Datenverteiler transportiert werden, sind immer genau einem
  * System-Objekt zugeordnet. Zur internen Identifizierung eines System-Objekts wird die <code>id</code> des Objekts benutzt. Das ist ein 64-Bit-Wert der
  * systemweit eindeutig ist. Zur expliziten Referenzierung von Objekten (z.B. in Aufrufparametern von Applikationen, Versorgungsskripten etc.) kann die
  * permanente ID (PID) eines Objekts verwendet werden. Diese ist optional und muss nur bei den Objekten gesetzt werden, bei denen sie gebraucht wird. Die PID
- * ist eine leicht zu merkende Zeichenkette, die systemweit eindeutig ist und sich (wenn sie einmal vergeben wurde) nie mehr ändern kann. Außerdem kann jedem
- * System-Objekt ein Name zugeordnet werden, der zu Darstellungszwecken benutzt werden kann. Der Name eines Objekts kann i.a. jederzeit geändert werden und
+ * ist eine leicht zu merkende Zeichenkette, die systemweit eindeutig ist und sich (wenn sie einmal vergeben wurde) nie mehr Ã¤ndern kann. AuÃŸerdem kann jedem
+ * System-Objekt ein Name zugeordnet werden, der zu Darstellungszwecken benutzt werden kann. Der Name eines Objekts kann i.a. jederzeit geÃ¤ndert werden und
  * sollte aus diesem Grund nicht zur Referenzierung von Objekten eingesetzt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
+ * @version $Revision$
  */
 public interface SystemObject extends Comparable {
 
 	/**
-	 * Liefert die Objekt-ID des System-Objekts zurück.
+	 * Liefert die Objekt-ID des System-Objekts zurÃ¼ck.
 	 *
 	 * @return ID dieses System-Objekts oder 0, wenn das Objekt keine ID hat.
 	 */
 	public long getId();
 
 	/**
-	 * Liefert den Typ dieses System-Objekts zurück.
+	 * Liefert den Typ dieses System-Objekts zurÃ¼ck.
 	 *
 	 * @return Typ dieses System-Objekts.
 	 */
@@ -56,37 +62,37 @@ public interface SystemObject extends Comparable {
 
 	/**
 	 * Bestimmt, ob dieses System-Objekt ein Element des angegebenen Typs ist. Ein System-Objekt ist Element des Objekt-Typs, der von der Methode {@link #getType}
-	 * zurückgeliefert wird. Außerdem ist das Objekt ein Element von den direkten und indirekten {@link SystemObjectType#getSuperTypes Super-Typen} des
+	 * zurÃ¼ckgeliefert wird. AuÃŸerdem ist das Objekt ein Element von den direkten und indirekten {@link SystemObjectType#getSuperTypes Super-Typen} des
 	 * Objekt-Typs.
 	 *
-	 * @param type Zu prüfender Typ.
+	 * @param type Zu prÃ¼fender Typ.
 	 *
-	 * @return <code>true</code>, wenn der übergebene Typ mit dem Objekt-Typ oder mit einem der direkten oder indirekten Vorgänger in der Vererbungshierarchie
-	 *         übereinstimmt; sonst <code>false</code>.
+	 * @return <code>true</code>, wenn der Ã¼bergebene Typ mit dem Objekt-Typ oder mit einem der direkten oder indirekten VorgÃ¤nger in der Vererbungshierarchie
+	 *         Ã¼bereinstimmt; sonst <code>false</code>.
 	 */
 	public boolean isOfType(SystemObjectType type);
 
 	/**
 	 * Bestimmt, ob dieses System-Objekt ein Element des angegebenen Typs ist. Ein System-Objekt ist Element des Objekt-Typs, der von der Methode {@link #getType}
-	 * zurückgeliefert wird. Außerdem ist das Objekt ein Element von den direkten und indirekten {@link SystemObjectType#getSuperTypes Super-Typen} des
+	 * zurÃ¼ckgeliefert wird. AuÃŸerdem ist das Objekt ein Element von den direkten und indirekten {@link SystemObjectType#getSuperTypes Super-Typen} des
 	 * Objekt-Typs.
 	 *
-	 * @param typePid PID des zu prüfenden Typs.
+	 * @param typePid PID des zu prÃ¼fenden Typs.
 	 *
-	 * @return <code>true</code>, wenn der übergebene Typ mit dem Objekt-Typ oder mit einem der direkten oder indirekten Vorgänger in der Vererbungshierarchie
-	 *         übereinstimmt; sonst <code>false</code>.
+	 * @return <code>true</code>, wenn der Ã¼bergebene Typ mit dem Objekt-Typ oder mit einem der direkten oder indirekten VorgÃ¤nger in der Vererbungshierarchie
+	 *         Ã¼bereinstimmt; sonst <code>false</code>.
 	 */
 	public boolean isOfType(String typePid);
 
 	/**
-	 * Liefert die permanente ID (PID) dieses Objekts zurück. Wenn das Objekt keine PID hat, wird ein leerer String zurückgegeben.
+	 * Liefert die permanente ID (PID) dieses Objekts zurÃ¼ck. Wenn das Objekt keine PID hat, wird ein leerer String zurÃ¼ckgegeben.
 	 *
 	 * @return PID des System-Objekts oder einen leeren String, wenn das Objekt keine PID hat.
 	 */
 	public String getPid();
 
 	/**
-	 * Liefert den Namen dieses Objekts zurück. Wenn das Objekt keinen Namen hat, wird ein leerer String zurückgegeben.
+	 * Liefert den Namen dieses Objekts zurÃ¼ck. Wenn das Objekt keinen Namen hat, wird ein leerer String zurÃ¼ckgegeben.
 	 *
 	 * @return Name des System-Objekts oder ein leerer String, wenn das Objekt keinen Namen hat.
 	 */
@@ -97,72 +103,72 @@ public interface SystemObject extends Comparable {
 	 *
 	 * @param name Neuer Name des Objekts. Der leere String ("") oder <code>null</code> wird als "kein Name" interpretiert.
 	 *
-	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException Wenn der Name des Objektes nicht geändert werden konnte.
+	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException Wenn der Name des Objektes nicht geÃ¤ndert werden konnte.
 	 * @see SystemObjectType#isNameOfObjectsPermanent
 	 */
 	public void setName(String name) throws ConfigurationChangeException;
 
 	/**
-	 * Liefert eine Bezeichnung für dieses Objekt zurück. Wenn dieses Objekt einen nicht leeren Namen hat, wird dieser zurückgegeben. Ansonsten wird (falls
-	 * vorhanden) die PID des Objekts zurückgeben. Wenn die PID auch nicht vorhanden ist, wird die ID des Objekts zurückgegeben.
+	 * Liefert eine Bezeichnung fÃ¼r dieses Objekt zurÃ¼ck. Wenn dieses Objekt einen nicht leeren Namen hat, wird dieser zurÃ¼ckgegeben. Ansonsten wird (falls
+	 * vorhanden) die PID des Objekts zurÃ¼ckgeben. Wenn die PID auch nicht vorhanden ist, wird die ID des Objekts zurÃ¼ckgegeben.
 	 *
-	 * @return Text, der den Namen, die PID oder die ID des System-Objekts enthält.
+	 * @return Text, der den Namen, die PID oder die ID des System-Objekts enthÃ¤lt.
 	 */
 	public String getNameOrPidOrId();
 
 	/**
-	 * Liefert eine Bezeichnung für dieses Objekt zurück. Wenn dieses Objekt eine nicht leere PID hat, wird diese zurückgegeben. Ansonsten wird (falls vorhanden)
-	 * der Name des Objekts zurückgegeben. Wenn der Name auch nicht vorhanden ist, wird die ID des Objekts zurückgegeben.
+	 * Liefert eine Bezeichnung fÃ¼r dieses Objekt zurÃ¼ck. Wenn dieses Objekt eine nicht leere PID hat, wird diese zurÃ¼ckgegeben. Ansonsten wird (falls vorhanden)
+	 * der Name des Objekts zurÃ¼ckgegeben. Wenn der Name auch nicht vorhanden ist, wird die ID des Objekts zurÃ¼ckgegeben.
 	 *
-	 * @return Text, der die PID, den Namen oder die ID des System-Objekts enthält.
+	 * @return Text, der die PID, den Namen oder die ID des System-Objekts enthÃ¤lt.
 	 */
 	public String getPidOrNameOrId();
 
 	/**
-	 * Liefert eine Bezeichnug für dieses Objekt zurück. Wenn dieses Objekt eine nicht leere PID hat, wird diese zurückgegeben. Ansonsten wird die ID des Objekts
-	 * zurückgegeben.
+	 * Liefert eine Bezeichnug fÃ¼r dieses Objekt zurÃ¼ck. Wenn dieses Objekt eine nicht leere PID hat, wird diese zurÃ¼ckgegeben. Ansonsten wird die ID des Objekts
+	 * zurÃ¼ckgegeben.
 	 *
-	 * @return Text, der die PID oder die ID des System-Objekts enthält.
+	 * @return Text, der die PID oder die ID des System-Objekts enthÃ¤lt.
 	 */
 	public String getPidOrId();
 
 	/**
-	 * Liefert eine textuelle Beschreibung dieses Objekts zurück. Das genaue Format ist nicht festgelegt und kann sich ändern.
+	 * Liefert eine textuelle Beschreibung dieses Objekts zurÃ¼ck. Das genaue Format ist nicht festgelegt und kann sich Ã¤ndern.
 	 *
 	 * @return Beschreibung dieses Objekts.
 	 */
 	public String toString();
 
 	/**
-	 * Bestimmt, ob dieses Objekt zum aktuellen Zeitpunkt gültig ist. Konfigurierende System-Objekte sind nach deren {@link
-	 * ConfigurationArea#createConfigurationObject Erzeugung} noch nicht gültig, sondern werden erst mit der Aktivierung der nächsten Konfigurationsversion gültig.
-	 * Nach dem {@link #invalidate Löschen} eines Konfigurationsobjekts bleibt es bis zur Aktivierung der nächsten Konfigurationsversion gültig. Dynamische Objekte
-	 * werden sofort mit deren {@link ConfigurationArea#createDynamicObject Erzeugung} gültig und mit dem {@link #invalidate Löschen} ungültig.
+	 * Bestimmt, ob dieses Objekt zum aktuellen Zeitpunkt gÃ¼ltig ist. Konfigurierende System-Objekte sind nach deren {@link
+	 * ConfigurationArea#createConfigurationObject Erzeugung} noch nicht gÃ¼ltig, sondern werden erst mit der Aktivierung der nÃ¤chsten Konfigurationsversion gÃ¼ltig.
+	 * Nach dem {@link #invalidate LÃ¶schen} eines Konfigurationsobjekts bleibt es bis zur Aktivierung der nÃ¤chsten Konfigurationsversion gÃ¼ltig. Dynamische Objekte
+	 * werden sofort mit deren {@link ConfigurationArea#createDynamicObject Erzeugung} gÃ¼ltig und mit dem {@link #invalidate LÃ¶schen} ungÃ¼ltig.
 	 *
-	 * @return <code>true</code>, falls das Objekt gültig ist;<br/> <code>false</code>, falls das Objekt nicht gültig ist.
+	 * @return <code>true</code>, falls das Objekt gÃ¼ltig ist;<br/> <code>false</code>, falls das Objekt nicht gÃ¼ltig ist.
 	 */
 	public boolean isValid();
 
 	/**
-	 * Löscht das Objekt, indem es ungültig gemacht wird. Dynamische System-Objekte werden sofort ungültig. Bereits gültige konfigurierende System-Objekte werden
-	 * mit Aktivierung der nächsten Konfigurationsversion ungültig. Für historische Anfragen bleiben ungültige Objekte nach wie vor existent. Konfigurierende
-	 * System-Objekte, die noch nie gültig waren, werden durch diese Methode gelöscht und sind nicht mehr zugreifbar.
+	 * LÃ¶scht das Objekt, indem es ungÃ¼ltig gemacht wird. Dynamische System-Objekte werden sofort ungÃ¼ltig. Bereits gÃ¼ltige konfigurierende System-Objekte werden
+	 * mit Aktivierung der nÃ¤chsten Konfigurationsversion ungÃ¼ltig. FÃ¼r historische Anfragen bleiben ungÃ¼ltige Objekte nach wie vor existent. Konfigurierende
+	 * System-Objekte, die noch nie gÃ¼ltig waren, werden durch diese Methode gelÃ¶scht und sind nicht mehr zugreifbar.
 	 *
-	 * @throws ConfigurationChangeException Wenn das Objekt nicht ungültig gemacht werden konnte.
+	 * @throws ConfigurationChangeException Wenn das Objekt nicht ungÃ¼ltig gemacht werden konnte.
 	 */
 	public void invalidate() throws ConfigurationChangeException;
 
 	/**
-	 * Liefert das zu diesem Objekt gehörende Objekt zum Zugriff auf die Konfiguration zurück.
+	 * Liefert das zu diesem Objekt gehÃ¶rende Objekt zum Zugriff auf die Konfiguration zurÃ¼ck.
 	 *
 	 * @return Objekt zum Zugriff auf die Konfiguration.
 	 */
 	public DataModel getDataModel();
 
 	/**
-	 * Liefert einen konfigurierenden Datensatz dieses Objekts zurück. Als Aspekt des gewünschten Datensatzes wird "<code>asp.eigenschaften</code>" angenommen.
+	 * Liefert einen konfigurierenden Datensatz dieses Objekts zurÃ¼ck. Als Aspekt des gewÃ¼nschten Datensatzes wird "<code>asp.eigenschaften</code>" angenommen.
 	 *
-	 * @param atg Attributgruppe des gewünschten Datensatzes.
+	 * @param atg Attributgruppe des gewÃ¼nschten Datensatzes.
 	 *
 	 * @return Konfigurierender Datensatz der angegebenen Attributgruppe oder <code>null</code>, wenn das Objekt keinen Datensatz der angegebenen Attributgruppe
 	 *         hat.
@@ -172,10 +178,10 @@ public interface SystemObject extends Comparable {
 	public Data getConfigurationData(AttributeGroup atg);
 
 	/**
-	 * Liefert einen konfigurierenden Datensatz dieses Objekts zurück.
+	 * Liefert einen konfigurierenden Datensatz dieses Objekts zurÃ¼ck.
 	 *
-	 * @param atg Attributgruppe des gewünschten Datensatzes.
-	 * @param asp Aspekt des gewünschten Datensatzes.
+	 * @param atg Attributgruppe des gewÃ¼nschten Datensatzes.
+	 * @param asp Aspekt des gewÃ¼nschten Datensatzes.
 	 *
 	 * @return Konfigurierender Datensatz der angegebenen Attributgruppe oder <code>null</code>, wenn das Objekt keinen Datensatz der angegebenen Attributgruppe
 	 *         hat.
@@ -183,9 +189,9 @@ public interface SystemObject extends Comparable {
 	public Data getConfigurationData(AttributeGroup atg, Aspect asp);
 
 	/**
-	 * Liefert einen konfigurierenden Datensatz dieses Objekts zurück.
+	 * Liefert einen konfigurierenden Datensatz dieses Objekts zurÃ¼ck.
 	 *
-	 * @param atgUsage Attributgruppenverwendung des gewünschten Datensatzes
+	 * @param atgUsage Attributgruppenverwendung des gewÃ¼nschten Datensatzes
 	 *
 	 * @return Konfigurierender Datensatz der angegebenen Attributgruppenverwendung oder <code>null</code>, wenn das Objekt keinen Datensatz zu der angegebenen
 	 *         Attributgruppenverwendung hat.
@@ -193,54 +199,54 @@ public interface SystemObject extends Comparable {
 	public Data getConfigurationData(AttributeGroupUsage atgUsage);
 
 	/**
-	 * Ändert einen konfigurierenden Datensatz dieses Objekts. Als Aspekt wird "<code>asp.eigenschaften</code>" verwendet.
+	 * Ã„ndert einen konfigurierenden Datensatz dieses Objekts. Als Aspekt wird "<code>asp.eigenschaften</code>" verwendet.
 	 *
-	 * @param atg  Attributgruppe des zu ändernden Datensatzes
-	 * @param data Der neue Datensatz. Wird <code>null</code> angegeben, wird der Datensatz am Objekt gelöscht.
+	 * @param atg  Attributgruppe des zu Ã¤ndernden Datensatzes
+	 * @param data Der neue Datensatz. Wird <code>null</code> angegeben, wird der Datensatz am Objekt gelÃ¶scht.
 	 *
-	 * @throws ConfigurationChangeException Wenn der Datensatz nicht geändert werden konnte.
+	 * @throws ConfigurationChangeException Wenn der Datensatz nicht geÃ¤ndert werden konnte.
 	 */
 	public void setConfigurationData(AttributeGroup atg, Data data) throws ConfigurationChangeException;
 
 	/**
-	 * Ändert einen konfigurierenden Datensatz dieses Objekts.
+	 * Ã„ndert einen konfigurierenden Datensatz dieses Objekts.
 	 *
-	 * @param atg  Attributgruppe des zu ändernden Datensatzes
-	 * @param asp  Aspekt des zu ändernden Datensatzes
-	 * @param data Der neue Datensatz. Wird <code>null</code> angegeben, wird der Datensatz am Objekt gelöscht.
+	 * @param atg  Attributgruppe des zu Ã¤ndernden Datensatzes
+	 * @param asp  Aspekt des zu Ã¤ndernden Datensatzes
+	 * @param data Der neue Datensatz. Wird <code>null</code> angegeben, wird der Datensatz am Objekt gelÃ¶scht.
 	 *
-	 * @throws ConfigurationChangeException Wenn der Datensatz nicht geändert werden konnte.
+	 * @throws ConfigurationChangeException Wenn der Datensatz nicht geÃ¤ndert werden konnte.
 	 */
 	public void setConfigurationData(AttributeGroup atg, Aspect asp, Data data) throws ConfigurationChangeException;
 
 	/**
-	 * Ändert einen konfigurierenden Datensatz dieses Objekts.
+	 * Ã„ndert einen konfigurierenden Datensatz dieses Objekts.
 	 *
-	 * @param atgUsage Attributgruppenverwendung des zu ändernden Datensatzes
-	 * @param data     Der neue Datensatz. Wird <code>null</code> angegeben, wird der Datensatz am Objekt gelöscht.
+	 * @param atgUsage Attributgruppenverwendung des zu Ã¤ndernden Datensatzes
+	 * @param data     Der neue Datensatz. Wird <code>null</code> angegeben, wird der Datensatz am Objekt gelÃ¶scht.
 	 *
-	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException Wenn der Datensatz nicht geändert werden konnte.
+	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException Wenn der Datensatz nicht geÃ¤ndert werden konnte.
 	 */
 	public void setConfigurationData(AttributeGroupUsage atgUsage, Data data) throws ConfigurationChangeException;
 
 	/**
-	 * Liefert alle Attributgruppenverwendungen zurück, für die es einen konfigurierenden Datensatz an diesem Objekt gibt.
+	 * Liefert alle Attributgruppenverwendungen zurÃ¼ck, fÃ¼r die es einen konfigurierenden Datensatz an diesem Objekt gibt.
 	 *
-	 * @return Alle Attributgruppenverwendungen, für die es einen konfigurierenden Datensatz an diesem Objekt gibt.
+	 * @return Alle Attributgruppenverwendungen, fÃ¼r die es einen konfigurierenden Datensatz an diesem Objekt gibt.
 	 *
-	 * @throws UnsupportedOperationException Wenn diese Methode nicht von diesem System-Object unterstützt wird.
+	 * @throws UnsupportedOperationException Wenn diese Methode nicht von diesem System-Object unterstÃ¼tzt wird.
 	 */
 	public Collection<AttributeGroupUsage> getUsedAttributeGroupUsages();
 
 	/**
-	 * Liefert ein Objekt mit beschreibenden Informationen zu diesem Objekt zurück.
+	 * Liefert ein Objekt mit beschreibenden Informationen zu diesem Objekt zurÃ¼ck.
 	 *
 	 * @return Objekt mit beschreibenden Informationen.
 	 */
 	public SystemObjectInfo getInfo();
 
 	/**
-	 * Liefert den Konfigurationsbereich, zu dem dieses Objekt gehört, zurück.
+	 * Liefert den Konfigurationsbereich, zu dem dieses Objekt gehÃ¶rt, zurÃ¼ck.
 	 *
 	 * @return Konfigurationsbereich dieses Objekts.
 	 */

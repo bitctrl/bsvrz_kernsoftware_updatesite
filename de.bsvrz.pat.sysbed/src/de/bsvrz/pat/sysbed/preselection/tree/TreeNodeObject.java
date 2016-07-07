@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.preselection.tree;
@@ -27,14 +33,14 @@ import de.bsvrz.pat.sysbed.preselection.treeFilter.standard.Filter;
 import java.util.*;
 
 /**
- * Speichert die Informationen zu einem Knoten/Blatt im Datenbaum des Panels {@link PreselectionTree}. Dieses Objekt wird für die Klasse {@link
+ * Speichert die Informationen zu einem Knoten/Blatt im Datenbaum des Panels {@link PreselectionTree}. Dieses Objekt wird fÃ¼r die Klasse {@link
  * PreselectionTreeHandler.DataTreeModel} benutzt.
- * <p/>
- * Dieses Objekt entspricht den Einträgen, die im {@link ParameterEditor Parametereditor} gesetzt werden/wurden. Es enthält einen Namen, eine Pid,
- * UnterMenü-Einträge und Objekte vom Typ {@link Filter}.
+ * <p>
+ * Dieses Objekt entspricht den EintrÃ¤gen, die im {@link ParameterEditor Parametereditor} gesetzt werden/wurden. Es enthÃ¤lt einen Namen, eine Pid,
+ * UnterMenÃ¼-EintrÃ¤ge und Objekte vom Typ {@link Filter}.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5019 $
+ * @version $Revision$
  */
 public class TreeNodeObject {
 
@@ -44,7 +50,7 @@ public class TreeNodeObject {
 	/** speichert die Pid des Objektes */
 	private String _pid;
 
-	/** speichert die UnterMenü-Einträge */
+	/** speichert die UnterMenÃ¼-EintrÃ¤ge */
 	private final List<TreeNodeObject> _subMenu;
 
 	/** speichert die Filter-Objekte */
@@ -84,7 +90,7 @@ public class TreeNodeObject {
 	}
 
 	/**
-	 * Gibt des Namen des Objekts zurück.
+	 * Gibt des Namen des Objekts zurÃ¼ck.
 	 *
 	 * @return der Name des Objekts
 	 */
@@ -102,7 +108,7 @@ public class TreeNodeObject {
 	}
 
 	/**
-	 * Gibt die Pid des Objekts zurück.
+	 * Gibt die Pid des Objekts zurÃ¼ck.
 	 *
 	 * @return die Pid des Objekts
 	 */
@@ -111,34 +117,34 @@ public class TreeNodeObject {
 	}
 
 	/**
-	 * Gibt die Anzahl der UnterMenü-Einträge zurück.
+	 * Gibt die Anzahl der UnterMenÃ¼-EintrÃ¤ge zurÃ¼ck.
 	 *
-	 * @return Anzahl der UnterMenüs
+	 * @return Anzahl der UnterMenÃ¼s
 	 */
 	public int getChildCount() {
 		return _subMenu.size();
 	}
 
 	/**
-	 * Fügt einen UnterMenü-Eintrag zum Objekt hinzu.
+	 * FÃ¼gt einen UnterMenÃ¼-Eintrag zum Objekt hinzu.
 	 *
-	 * @param child der hinzuzufügende UnterMenü-Eintrag
+	 * @param child der hinzuzufÃ¼gende UnterMenÃ¼-Eintrag
 	 */
 	public void addChild(TreeNodeObject child) {
 		_subMenu.add(child);
 	}
 
 	/**
-	 * Fügt einen Filter zum Objekt hinzu.
+	 * FÃ¼gt einen Filter zum Objekt hinzu.
 	 *
-	 * @param filter der hinzuzufügende Filter
+	 * @param filter der hinzuzufÃ¼gende Filter
 	 */
 	public void addFilter(Filter filter) {
 		_filters.add(filter);
 	}
 
 	/**
-	 * Gibt die Liste der Filter zurück.
+	 * Gibt die Liste der Filter zurÃ¼ck.
 	 *
 	 * @return die Liste mit den Filtern
 	 */
@@ -147,20 +153,20 @@ public class TreeNodeObject {
 	}
 
 	/**
-	 * Gibt zu einer bestimmten Index-Position den UnterMenü-Eintrag zurück
+	 * Gibt zu einer bestimmten Index-Position den UnterMenÃ¼-Eintrag zurÃ¼ck
 	 *
-	 * @param index Position des gewünschten Eintrages
+	 * @param index Position des gewÃ¼nschten Eintrages
 	 *
-	 * @return UnterMenü-Eintrag
+	 * @return UnterMenÃ¼-Eintrag
 	 */
 	public TreeNodeObject getChild(int index) {
 		return _subMenu.get(index);
 	}
 
 	/**
-	 * Gibt zu einem UnterMenü-Eintrag die Position in der Liste zurück.
+	 * Gibt zu einem UnterMenÃ¼-Eintrag die Position in der Liste zurÃ¼ck.
 	 *
-	 * @param child der UnterMenü-Eintrag
+	 * @param child der UnterMenÃ¼-Eintrag
 	 *
 	 * @return die Position des Eintrages
 	 */
@@ -169,7 +175,7 @@ public class TreeNodeObject {
 	}
 
 	/**
-	 * Besitzt das Objekt einen Namen, wird dieser zurückgeben, ansonsten wird die Pid zurückgegeben.
+	 * Besitzt das Objekt einen Namen, wird dieser zurÃ¼ckgeben, ansonsten wird die Pid zurÃ¼ckgegeben.
 	 *
 	 * @return Name oder Pid des Objekts
 	 */

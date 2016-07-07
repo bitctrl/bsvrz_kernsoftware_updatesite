@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.sys.funclib.xmlSupport.
  * 
  * de.bsvrz.sys.funclib.xmlSupport is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.xmlSupport is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.xmlSupport; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.xmlSupport; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.sys.funclib.xmlSupport;
 
@@ -27,10 +33,10 @@ import org.xml.sax.Attributes;
 
 /**
  * Implementierung eines SAX-Contenthandlers, der Default-Implementierungen aller Callback-Aufrufe des
- * SAX-Parsers enth‰lt.
+ * SAX-Parsers enth√§lt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5009 $
+ * @version $Revision$
  */
 public class SilentContentHandler implements ContentHandler {
 
@@ -38,7 +44,7 @@ public class SilentContentHandler implements ContentHandler {
 
 	/**
 	 * Receive a Locator object for document events.
-	 * <p/>
+	 * <p>
 	 * <p>By default, do nothing.  Application writers may override this
 	 * method in a subclass if they wish to store the locator for use
 	 * with other document events.</p>
@@ -53,7 +59,7 @@ public class SilentContentHandler implements ContentHandler {
 
 	/**
 	 * Receive notification of the beginning of the document.
-	 * <p/>
+	 * <p>
 	 * <p>By default, do nothing.  Application writers may override this
 	 * method in a subclass to take specific actions at the beginning
 	 * of a document (such as allocating the root node of a tree or
@@ -69,7 +75,7 @@ public class SilentContentHandler implements ContentHandler {
 
 	/**
 	 * Receive notification of the end of the document.
-	 * <p/>
+	 * <p>
 	 * <p>By default, do nothing.  Application writers may override this
 	 * method in a subclass to take specific actions at the end
 	 * of a document (such as finalising a tree or closing an output
@@ -85,7 +91,7 @@ public class SilentContentHandler implements ContentHandler {
 
 	/**
 	 * Receive notification of the start of a Namespace mapping.
-	 * <p/>
+	 * <p>
 	 * <p>By default, do nothing.  Application writers may override this
 	 * method in a subclass to take specific actions at the start of
 	 * each Namespace prefix scope (such as storing the prefix mapping).</p>
@@ -102,7 +108,7 @@ public class SilentContentHandler implements ContentHandler {
 
 	/**
 	 * Receive notification of the end of a Namespace mapping.
-	 * <p/>
+	 * <p>
 	 * <p>By default, do nothing.  Application writers may override this
 	 * method in a subclass to take specific actions at the end of
 	 * each prefix mapping.</p>
@@ -169,7 +175,7 @@ public class SilentContentHandler implements ContentHandler {
 
 	/**
 	 * Receive notification of character data inside an element.
-	 * <p/>
+	 * <p>
 	 * <p>By default, do nothing.  Application writers may override this
 	 * method to take specific actions for each chunk of character data
 	 * (such as adding the data to a node or buffer, or printing it to
@@ -189,7 +195,7 @@ public class SilentContentHandler implements ContentHandler {
 
 	/**
 	 * Receive notification of ignorable whitespace in element content.
-	 * <p/>
+	 * <p>
 	 * <p>By default, do nothing.  Application writers may override this
 	 * method to take specific actions for each chunk of ignorable
 	 * whitespace (such as adding data to a node or buffer, or printing
@@ -209,7 +215,7 @@ public class SilentContentHandler implements ContentHandler {
 
 	/**
 	 * Receive notification of a processing instruction.
-	 * <p/>
+	 * <p>
 	 * <p>By default, do nothing.  Application writers may override this
 	 * method in a subclass to take specific actions for each
 	 * processing instruction, such as setting status variables or
@@ -228,7 +234,7 @@ public class SilentContentHandler implements ContentHandler {
 
 	/**
 	 * Receive notification of a skipped entity.
-	 * <p/>
+	 * <p>
 	 * <p>By default, do nothing.  Application writers may override this
 	 * method in a subclass to take specific actions for each
 	 * processing instruction, such as setting status variables or

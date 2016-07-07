@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.plugins.api;
@@ -29,10 +35,10 @@ import java.awt.event.KeyEvent;
 
 /**
  * Diese Klasse stellt ein Panel mit den Buttons "Speichern unter ...", "Abbrechen" und "OK" dar. Eine Klasse, welche das Interface {@link DialogInterface}
- * implementiert, implementiert dadurch die Funktionalit‰t dieser drei Buttons.
+ * implementiert, implementiert dadurch die Funktionalit√§t dieser drei Buttons.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5001 $
+ * @version $Revision$
  * @see DialogInterface
  */
 public class ButtonBar extends JPanel {
@@ -50,7 +56,7 @@ public class ButtonBar extends JPanel {
 	private final DialogInterface _dialog;
 
 	/**
-	 * Dem Konstruktor wird ein Objekt ¸bergeben, welches das Interface {@link DialogInterface} implementiert hat. Dieses Objekt liefert die Funktionalit‰t der
+	 * Dem Konstruktor wird ein Objekt √ºbergeben, welches das Interface {@link DialogInterface} implementiert hat. Dieses Objekt liefert die Funktionalit√§t der
 	 * Buttons "Speichern...", "Abbrechen" und "OK" dieser Klasse.
 	 *
 	 * @param dialog ein Objekt, welches das Interface <code>DialogInterface</code> implementiert
@@ -92,7 +98,7 @@ public class ButtonBar extends JPanel {
 	}
 
 	/**
-	 * Gibt den "OK" - Button des Panels zur¸ck.
+	 * Gibt den "OK" - Button des Panels zur√ºck.
 	 *
 	 * @return der "OK" - Button
 	 */
@@ -104,8 +110,8 @@ public class ButtonBar extends JPanel {
 	private class CancelButton extends JButton {
 
 		/**
-		 * Dem Konstruktor wird ein Titel des Buttons ¸bergeben. Zus‰tzlich wird die ESC-Taste an diesen Button gebunden. D.h. wenn die ESC-Taste bet‰tigt wird, wird
-		 * dieser Button ausgef¸hrt.
+		 * Dem Konstruktor wird ein Titel des Buttons √ºbergeben. Zus√§tzlich wird die ESC-Taste an diesen Button gebunden. D.h. wenn die ESC-Taste bet√§tigt wird, wird
+		 * dieser Button ausgef√ºhrt.
 		 *
 		 * @param title Titel des Buttons
 		 */

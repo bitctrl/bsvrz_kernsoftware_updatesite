@@ -2,7 +2,7 @@
 <feature
       id="de.bsvrz.buv.vew.feature"
       label="%featureName"
-      version="1.0.0.qualifier"
+      version="1.2.4.qualifier"
       provider-name="%featureProvider">
 
    <description>

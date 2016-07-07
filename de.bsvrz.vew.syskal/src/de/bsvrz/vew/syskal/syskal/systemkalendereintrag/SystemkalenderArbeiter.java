@@ -71,7 +71,7 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
 {
 
   /**
-   * DebugLogger für Debug-Ausgaben
+   * DebugLogger fÃ¼r Debug-Ausgaben
    */
   private static Debug _debug;
 
@@ -201,10 +201,10 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
   }
 
   /**
-   * Hilfsmethode, die formal nicht zur Systemkalenderbibliothek gehört, aber für deren Test notwendig ist. Hierbei
-   * werden die Einträge vom DaV gelesen und ausgewertet.
+   * Hilfsmethode, die formal nicht zur Systemkalenderbibliothek gehÃ¶rt, aber fÃ¼r deren Test notwendig ist. Hierbei
+   * werden die EintrÃ¤ge vom DaV gelesen und ausgewertet.
    * 
-   * @return Liste der Einträge als HashMap
+   * @return Liste der EintrÃ¤ge als HashMap
    */
   public Map<String, SystemkalenderEintrag> starteSystemKalenderArbeiter()
   {
@@ -238,11 +238,11 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
         BenachrichtigeFunktion f = new BenachrichtigeFunktion();
         f.getBenachrichtigeListenerVerwaltung().addBenachrichtigeListener(this);
 
-        MutableSet ms = _configObj.getMutableSet("SystemKalenderEinträge");
+        MutableSet ms = _configObj.getMutableSet("SystemKalenderEintrÃ¤ge");
 
         if (ms != null)
         {
-          _debug.fine("Listener Menge SystemKalenderEinträge angemeldet");
+          _debug.fine("Listener Menge SystemKalenderEintrÃ¤ge angemeldet");
 
           ms.addChangeListener(this);
         }
@@ -288,7 +288,7 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
   {
     ConfigurationObject kalender = (ConfigurationObject)_connection.getDataModel().getObject(_kalender);
 
-    ObjectSet objekte = kalender.getObjectSet("SystemKalenderEinträge");
+    ObjectSet objekte = kalender.getObjectSet("SystemKalenderEintrÃ¤ge");
 
     List listSke = objekte.getElements();
 
@@ -481,9 +481,9 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
   }
 
   /**
-   * Holt die liste der Systemkalender Einträge
+   * Holt die liste der Systemkalender EintrÃ¤ge
    * 
-   * @return Liste der Einträge
+   * @return Liste der EintrÃ¤ge
    */
   public static Map<String, SystemkalenderEintrag> getSkeList()
   {
@@ -795,9 +795,9 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
   // sf[0] = me.getKey();
   //
   // if (gueltig)
-  // sf[1] = "gültig";
+  // sf[1] = "gÃ¼ltig";
   // else
-  // sf[1] = "noch gültig";
+  // sf[1] = "noch gÃ¼ltig";
   //          
   // /******************************************************************/
   // // Calendar cal = new GregorianCalendar();
@@ -934,9 +934,9 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
   // sf[0] = ske.getPid();
   //
   // if (gueltig)
-  // sf[1] = "gültig";
+  // sf[1] = "gÃ¼ltig";
   // else
-  // sf[1] = "noch gültig";
+  // sf[1] = "noch gÃ¼ltig";
   //          
   // /******************************************************************/
   // // Calendar cal = new GregorianCalendar();
@@ -1010,7 +1010,7 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
       }
       else
       {
-        _debug.error(so.getPid() + " ist nicht der Liste der Systemkalendereinträge");
+        _debug.error(so.getPid() + " ist nicht der Liste der SystemkalendereintrÃ¤ge");
       }
     }
     
@@ -1045,7 +1045,7 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
       }
       else
       {
-        _debug.error(so.getPid() + " ist nicht der Liste der Systemkalendereinträge");
+        _debug.error(so.getPid() + " ist nicht der Liste der SystemkalendereintrÃ¤ge");
       }
     }
 
@@ -1100,9 +1100,9 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
   // sf[0] = pid;
   //
   // if (gueltig)
-  // sf[1] = "gültig";
+  // sf[1] = "gÃ¼ltig";
   // else
-  // sf[1] = "noch gültig";
+  // sf[1] = "noch gÃ¼ltig";
   //          
   // /******************************************************************/
   // // Calendar cal = new GregorianCalendar();
@@ -1128,7 +1128,7 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
   // // else
   // {
   // // Ereignis hat keine Aenderungs-Liste
-  // // _debug.config(ske.getPid() + " hat keine zeitl. Änderungsliste");
+  // // _debug.config(ske.getPid() + " hat keine zeitl. Ã„nderungsliste");
   // }
   //
   // }
@@ -1186,7 +1186,7 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
     }
     else
     {
-      _debug.error(pid + " ist nicht der Liste der Systemkalendereinträge");
+      _debug.error(pid + " ist nicht der Liste der SystemkalendereintrÃ¤ge");
     }
 
     return ergebnis;
@@ -1218,7 +1218,7 @@ public class SystemkalenderArbeiter implements ClientReceiverInterface, ClientSe
     }
     else
     {
-      _debug.error(pid + " ist nicht der Liste der Systemkalendereinträge");
+      _debug.error(pid + " ist nicht der Liste der SystemkalendereintrÃ¤ge");
     }
     
     return ergebnis;

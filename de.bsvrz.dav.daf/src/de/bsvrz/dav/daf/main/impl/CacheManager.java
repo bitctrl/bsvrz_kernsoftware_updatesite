@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl;
@@ -32,12 +38,12 @@ import de.bsvrz.sys.funclib.debug.Debug;
 import java.util.*;
 
 /**
- * Die interne Subkomponente Cache-Manager ist für das Speichern der ankommenden Daten und für die Bereitstellung bereits gespeicherte Daten zuständig. Die
- * gespeicherten Daten werden nach ihrem Index sortiert festgehalten. Ein im Hintergrund laufender Thread, der CacheCleaner, sorgt dafür, dass die Daten, nach
- * ihrer beim Anmelden angegebenen Verweilzeit, aus dem Cache gelöscht werden. Diese Subkomponente wird von ClientDavConnection erzeugt.
+ * Die interne Subkomponente Cache-Manager ist fÃ¼r das Speichern der ankommenden Daten und fÃ¼r die Bereitstellung bereits gespeicherte Daten zustÃ¤ndig. Die
+ * gespeicherten Daten werden nach ihrem Index sortiert festgehalten. Ein im Hintergrund laufender Thread, der CacheCleaner, sorgt dafÃ¼r, dass die Daten, nach
+ * ihrer beim Anmelden angegebenen Verweilzeit, aus dem Cache gelÃ¶scht werden. Diese Subkomponente wird von ClientDavConnection erzeugt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13457 $
+ * @version $Revision$
  */
 public class CacheManager {
 
@@ -51,30 +57,30 @@ public class CacheManager {
 
 	private final DataModel _dataModel;
 
-	/** Der Datensätzecache. Als Key dient die BaseSubscriptionInfo, der Value ist eine Liste von CachedObject-Objekten. */
+	/** Der DatensÃ¤tzecache. Als Key dient die BaseSubscriptionInfo, der Value ist eine Liste von CachedObject-Objekten. */
 	private Hashtable cache;
 
-	/** Der Verwalter der Datensätze im Cache */
+	/** Der Verwalter der DatensÃ¤tze im Cache */
 	private CacheCleaner cleaner;
 
 	/**
-	 * Dieser Konstruktor erzeugt eine Instanz und hält eine Referenz auf die Subkomponenten Anmeldemanager und Konfigurationsmanager fest. Auch eine Instanz des
+	 * Dieser Konstruktor erzeugt eine Instanz und hÃ¤lt eine Referenz auf die Subkomponenten Anmeldemanager und Konfigurationsmanager fest. Auch eine Instanz des
 	 * CacheCleaners wird gestartet.
 	 *
 	 * @param _subscriptionManager  Im Konstruktor wird die Methode {@link SubscriptionManager#setCacheManager(CacheManager)} aufgerufen und
-	 *                              dieses Objekt übergeben.
-	 * @param _configurationManager Wird zum anfordern des Datenmodells benötigt.
+	 *                              dieses Objekt Ã¼bergeben.
+	 * @param _configurationManager Wird zum anfordern des Datenmodells benÃ¶tigt.
 	 */
 	public CacheManager(SubscriptionManager _subscriptionManager, ConfigurationManager _configurationManager) {
 		this(_subscriptionManager, _configurationManager.getDataModel());
 	}
 
 	/**
-	 * Dieser Konstruktor erzeugt eine Instanz und hält eine Referenz auf die Subkomponenten Anmeldemanager und Konfigurationsmanager fest. Auch eine Instanz des
+	 * Dieser Konstruktor erzeugt eine Instanz und hÃ¤lt eine Referenz auf die Subkomponenten Anmeldemanager und Konfigurationsmanager fest. Auch eine Instanz des
 	 * CacheCleaners wird gestartet.
 	 *
 	 * @param _subscriptionManager Im Konstruktor wird die Methode {@link SubscriptionManager#setCacheManager(CacheManager)} aufgerufen und
-	 *                             dieses Objekt übergeben.
+	 *                             dieses Objekt Ã¼bergeben.
 	 * @param dataModel            Datenmodell
 	 */
 	CacheManager(final SubscriptionManager _subscriptionManager, final DataModel dataModel) {
@@ -88,16 +94,16 @@ public class CacheManager {
 	}
 
 	/**
-	 * Diese Methode wird von der Protokollsteuerung DaV-DAF aufgerufen, wenn ein aktuelles Datum angekommen ist. Die Datensätze, die als Bytestrom ankommen,
-	 * werden zuerst in Attribute umgewandelt, und ein neues CachedObject wird gebildet. Dieses wird nach dem Datensatzindex sortiert in den Cache eingefügt, und
-	 * die SubscriptionManager- Subkomponente wird über das Ankommen des aktuellen Datums benachrichtigt.
+	 * Diese Methode wird von der Protokollsteuerung DaV-DAF aufgerufen, wenn ein aktuelles Datum angekommen ist. Die DatensÃ¤tze, die als Bytestrom ankommen,
+	 * werden zuerst in Attribute umgewandelt, und ein neues CachedObject wird gebildet. Dieses wird nach dem Datensatzindex sortiert in den Cache eingefÃ¼gt, und
+	 * die SubscriptionManager- Subkomponente wird Ã¼ber das Ankommen des aktuellen Datums benachrichtigt.
 	 *
 	 * @param newData Neuer Datensatz
-	 * @throws InterruptedException Wenn der Thread während eines blockierenden Aufrufs unterbrochen wurde
+	 * @throws InterruptedException Wenn der Thread wÃ¤hrend eines blockierenden Aufrufs unterbrochen wurde
 	 */
 	public void update(SendDataObject newData) throws InterruptedException {
 		if(newData == null) {
-			throw new IllegalArgumentException("Falsche Übergabeparameter");
+			throw new IllegalArgumentException("Falsche Ãœbergabeparameter");
 		}
 		BaseSubscriptionInfo baseSubscriptionInfo = newData.getBaseSubscriptionInfo();
 		if(baseSubscriptionInfo == null) {
@@ -117,7 +123,7 @@ public class CacheManager {
 				final AttributeGroup atg = _dataModel.getAttributeGroupUsage(baseSubscriptionInfo.getUsageIdentification()).getAttributeGroup();
 				if(attributesIndicator != null) {
 					throw new RuntimeException(
-							"Anmeldungen auf einzelne Attribute der Attributgruppe werden nicht unterstützt. " + "atg: " + atg.getPid()
+							"Anmeldungen auf einzelne Attribute der Attributgruppe werden nicht unterstÃ¼tzt. " + "atg: " + atg.getPid()
 					);
 				}
 				data = DataFactory.forVersion(1).createUnmodifiableData(atg, dataBytes);
@@ -148,7 +154,7 @@ public class CacheManager {
 //		System.out.println("++++++++++++list:" + (list == null ? "null" : list.size() + " entries") + "+++++++++++");
 		CachedObject cachedObject = null;
 		if(list == null) {
-			// Im Cache war noch kein Eintrag für diese Datenidentifikation enthalten
+			// Im Cache war noch kein Eintrag fÃ¼r diese Datenidentifikation enthalten
 
 			list = new LinkedList();
 			cachedObject = new CachedObject(
@@ -162,7 +168,7 @@ public class CacheManager {
 			cache.put(baseSubscriptionInfo, list);
 		}
 		else {
-			// list enthält die schon im Cache gespeicherten Datensätze dieser Datenidentifikation
+			// list enthÃ¤lt die schon im Cache gespeicherten DatensÃ¤tze dieser Datenidentifikation
 			synchronized(list) {
 				ListIterator _iterator = list.listIterator(list.size());
 				while(_iterator.hasPrevious()) {
@@ -204,8 +210,8 @@ public class CacheManager {
 						break;
 					}
 					else {
-						// Ein Rücksprung des Datensatzindex ist zugelassen, wenn die Verbindung zur Quelle zeitweise unterbrochen war und nach dem leeren
-						// Datensatz (zur Markierung des Ausfalls mit einem um 1 erhöhten Datensatzindex) nach erneutem Verbindungsaufbau wieder der (i.a.)
+						// Ein RÃ¼cksprung des Datensatzindex ist zugelassen, wenn die Verbindung zur Quelle zeitweise unterbrochen war und nach dem leeren
+						// Datensatz (zur Markierung des Ausfalls mit einem um 1 erhÃ¶hten Datensatzindex) nach erneutem Verbindungsaufbau wieder der (i.a.)
 						// bereits vorher empfangene aktuelle Datensatz mit einem um 1 erniedrigten Datensatzindex empfangen wird.
 						if(((dataIndex & 0x0000000000000003L) == 0) && (_cachedObject.getDataNumber() != (dataIndex + 1))) {
 							final SystemObject object = _dataModel.getObject(baseSubscriptionInfo.getObjectID());
@@ -216,7 +222,7 @@ public class CacheManager {
 							final long oldIndex = _cachedObject.getDataNumber();
 
 							_debug.error(
-									"Empfangener Datensatz hat ungültigen Datensatzindex, Objekt: " + objectName + ", Attributgruppenverwendung: "
+									"Empfangener Datensatz hat ungÃ¼ltigen Datensatzindex, Objekt: " + objectName + ", Attributgruppenverwendung: "
 									+ (atgUsage == null ? String.valueOf(usageIdentification) : atgUsage.getPid()) + ", letzter Index: " + (oldIndex >>> 32)
 									+ "#" + ((oldIndex & 0xffffffffL) >> 2) + "#" + (oldIndex & 3) + ", aktueller Index: " + (dataIndex >>> 32) + "#"
 									+ ((dataIndex & 0xffffffffL) >> 2) + "#" + (dataIndex & 3)
@@ -259,9 +265,9 @@ public class CacheManager {
 	}
 
 	/**
-	 * Diese Methode wird für JUnit-Tests benötigt.
+	 * Diese Methode wird fÃ¼r JUnit-Tests benÃ¶tigt.
 	 *
-	 * @return Thread, der den Cache aufräumt.
+	 * @return Thread, der den Cache aufrÃ¤umt.
 	 */
 	Thread getCleaner() {
 		return cleaner;
@@ -269,7 +275,7 @@ public class CacheManager {
 
 	/**
 	 * Diese Methode wird vom SubscriptionManager aufgerufen. Wenn keine Anmeldung der spezifizierten Daten (mehr) vorliegt, bewirkt der Aufruf dieser Methode,
-	 * dass die entsprechenden Datensätze aus dem Cache entfernt werden.
+	 * dass die entsprechenden DatensÃ¤tze aus dem Cache entfernt werden.
 	 *
 	 * @param baseSubscriptionInfo Alle Daten, die zu dieser Anmeldeinformationen vorhanden sind, werden aus dem Cache entfernt.
 	 */
@@ -278,13 +284,13 @@ public class CacheManager {
 	}
 
 	/**
-	 * Gibt den aktuellen Datensatz der spezifizierten Daten zurück. Wenn der Datensatz kein nachgelieferter sein darf, dann wird der letzte nicht nachgeliefert
-	 * Datensatz zurückgegeben. Ist kein passender Datensatz vorhanden, so wird <code>null</code> zurückgegeben.
+	 * Gibt den aktuellen Datensatz der spezifizierten Daten zurÃ¼ck. Wenn der Datensatz kein nachgelieferter sein darf, dann wird der letzte nicht nachgeliefert
+	 * Datensatz zurÃ¼ckgegeben. Ist kein passender Datensatz vorhanden, so wird <code>null</code> zurÃ¼ckgegeben.
 	 *
 	 * @param baseSubscriptionInfo Anmeldeinformation eines Datensatzes
 	 * @param delayedDataFlag      Nachgelieferte Daten
 	 *
-	 * @return Datensatz, der die Parameter erfüllt oder <code>null</code>, falls kein Datensatz vorhanden ist.
+	 * @return Datensatz, der die Parameter erfÃ¼llt oder <code>null</code>, falls kein Datensatz vorhanden ist.
 	 */
 	public final CachedObject getLastValueOfCachedData(BaseSubscriptionInfo baseSubscriptionInfo, boolean delayedDataFlag) {
 		if(baseSubscriptionInfo == null) {
@@ -311,15 +317,15 @@ public class CacheManager {
 	}
 
 	/**
-	 * Diese Methode iteriert durch den Cache-Inhalt und sammelt die letzen n Datensätze, vom aktuellen Datensatz startend in die Vergangenheit. Wenn keine
-	 * nachgelieferten erwünscht sind, so werden alle nachgelieferte Daten übersprungen. Ist kein passender Datensatz vorhanden, so wird null zurückgegeben. Sind
-	 * weniger als n Datensätze vorhanden, so werden diese zurückgegeben.
+	 * Diese Methode iteriert durch den Cache-Inhalt und sammelt die letzen n DatensÃ¤tze, vom aktuellen Datensatz startend in die Vergangenheit. Wenn keine
+	 * nachgelieferten erwÃ¼nscht sind, so werden alle nachgelieferte Daten Ã¼bersprungen. Ist kein passender Datensatz vorhanden, so wird null zurÃ¼ckgegeben. Sind
+	 * weniger als n DatensÃ¤tze vorhanden, so werden diese zurÃ¼ckgegeben.
 	 *
 	 * @param baseSubscriptionInfo Anmeldeinformation eines Datensatzes
 	 * @param delayedDataFlag      Nachgelieferte Daten
-	 * @param n                    Anzahl der gültigen Versionen eines Datensatzes
+	 * @param n                    Anzahl der gÃ¼ltigen Versionen eines Datensatzes
 	 *
-	 * @return Datensätze/satz oder <code>null</code>, falls kein Datensatz vorhanden ist. Der Datensatz, der als letztes gecasht wurde steht an Index 0.
+	 * @return DatensÃ¤tze/satz oder <code>null</code>, falls kein Datensatz vorhanden ist. Der Datensatz, der als letztes gecasht wurde steht an Index 0.
 	 */
 	public final List getCachedData(
 			BaseSubscriptionInfo baseSubscriptionInfo, boolean delayedDataFlag, int n
@@ -363,16 +369,16 @@ public class CacheManager {
 	}
 
 	/**
-	 * Diese Methode iteriert durch den Cache-Inhalt und sammelt die Datensätze, deren Zeitstempel zwischen den spezifizierten Zeiten liegt. Wenn keine
-	 * nachgelieferten erwünscht sind, so werden alle nachgelieferte Daten übersprungen. Ist kein passender Datensatz vorhanden, so wird <code>null</code>
-	 * zurückgegeben.
+	 * Diese Methode iteriert durch den Cache-Inhalt und sammelt die DatensÃ¤tze, deren Zeitstempel zwischen den spezifizierten Zeiten liegt. Wenn keine
+	 * nachgelieferten erwÃ¼nscht sind, so werden alle nachgelieferte Daten Ã¼bersprungen. Ist kein passender Datensatz vorhanden, so wird <code>null</code>
+	 * zurÃ¼ckgegeben.
 	 *
 	 * @param baseSubscriptionInfo Anmeldeinformation eines Datensatzes
 	 * @param delayedDataFlag      Nachgelieferte Daten
-	 * @param fromTime             Start Zeitintervall. Wird der Wert -1 übergeben, so wird die Datenzeit des zuletzt gecachten Objekts benutzt.
-	 * @param toTime               Ende Zeitintervall. Wird der Wert -1 übergeben, so wird die Datenzeit des zuletzt gecachten Objekts benutzt.
+	 * @param fromTime             Start Zeitintervall. Wird der Wert -1 Ã¼bergeben, so wird die Datenzeit des zuletzt gecachten Objekts benutzt.
+	 * @param toTime               Ende Zeitintervall. Wird der Wert -1 Ã¼bergeben, so wird die Datenzeit des zuletzt gecachten Objekts benutzt.
 	 *
-	 * @return Datensätze/Datensatz für den die übergebenen Parameter erfüllt sind oder <code>null</code> wenn kein Datensatz vorhanden ist
+	 * @return DatensÃ¤tze/Datensatz fÃ¼r den die Ã¼bergebenen Parameter erfÃ¼llt sind oder <code>null</code> wenn kein Datensatz vorhanden ist
 	 */
 	public final List getCachedData(
 			BaseSubscriptionInfo baseSubscriptionInfo, boolean delayedDataFlag, long fromTime, long toTime
@@ -457,30 +463,30 @@ public class CacheManager {
 					int numberOfDeletedDatasets = 0;
 
 					for(int i = list.size() - 1; i > -1; --i) {
-						// Alle Daten im Cache, die zu einer BaseSubscriptionInfo gehören
+						// Alle Daten im Cache, die zu einer BaseSubscriptionInfo gehÃ¶ren
 						LinkedList allCachedDataOfABaseSubscriptionInfo = (LinkedList)list.get(i);
 						if(allCachedDataOfABaseSubscriptionInfo != null) {
 							synchronized(allCachedDataOfABaseSubscriptionInfo) {
 
 								// Mit diesem Iterator wird zuerst das letzte Element genommen. Dann wird der Iterator erneut initialisiert, diesmal
-								// wird vorwärts über die Liste gelaufen.
+								// wird vorwÃ¤rts Ã¼ber die Liste gelaufen.
 								ListIterator _iterator = allCachedDataOfABaseSubscriptionInfo.listIterator(allCachedDataOfABaseSubscriptionInfo.size());
 								if(_iterator.hasPrevious()) {
 									CachedObject _cachedObject = (CachedObject)_iterator.previous();
 									if(_cachedObject != null) {
-										// Wie lange darf sich ein Objekte im Cache befinden, bevor es gelöscht wird
+										// Wie lange darf sich ein Objekte im Cache befinden, bevor es gelÃ¶scht wird
 										final long timeInHistory = subscriptionManager.getTimeInCache(_cachedObject.getBaseSubscriptionInfo());
-										// Zeitpunkt, ab dem Objekte gelöscht werden müssen (Dieser Zeitpunkt wird ausgehend vom letzten Objekte im Cache ausgehend berechnet) 
+										// Zeitpunkt, ab dem Objekte gelÃ¶scht werden mÃ¼ssen (Dieser Zeitpunkt wird ausgehend vom letzten Objekte im Cache ausgehend berechnet) 
 										final long thresholdTime = _cachedObject.getActionTime() - timeInHistory;
 
-										// Der Iterator wird vorwärts durchlaufen
+										// Der Iterator wird vorwÃ¤rts durchlaufen
 										_iterator = allCachedDataOfABaseSubscriptionInfo.listIterator(0);
 										while(_iterator.hasNext()) {
 											_cachedObject = (CachedObject)_iterator.next();
 											if(_cachedObject != null) {
 												numberOfCheckedDatasets ++;
 												if(_cachedObject.getActionTime() < thresholdTime) {
-													// Die If-Abfrage verhindert, dass das letzte Element gelöscht wird
+													// Die If-Abfrage verhindert, dass das letzte Element gelÃ¶scht wird
 													if(_iterator.hasNext()) {
 														numberOfDeletedDatasets ++;
 														_iterator.remove();
@@ -499,7 +505,7 @@ public class CacheManager {
 					final long endTime = System.currentTimeMillis();
 					if(debugEnabled) {
 						long duration = endTime - startTime;
-						_debug.info("CacheCleanerlauf hat in " + duration + "ms " + numberOfSubscription + " Anmeldungen mit " + numberOfCheckedDatasets + " gespeicherten Datensätzen geprüft und " + numberOfDeletedDatasets + " Datensätze gelöscht");
+						_debug.info("CacheCleanerlauf hat in " + duration + "ms " + numberOfSubscription + " Anmeldungen mit " + numberOfCheckedDatasets + " gespeicherten DatensÃ¤tzen geprÃ¼ft und " + numberOfDeletedDatasets + " DatensÃ¤tze gelÃ¶scht");
 					}
 //					// Garbage Collection nur nach jedem 10. Durchlauf aufrufen.
 //					if((++loopCount % 10) == 0) {

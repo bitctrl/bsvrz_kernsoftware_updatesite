@@ -223,7 +223,7 @@ public class ListeZustandsWechsel
    *          Startzeitpunkt der Berechnung
    * @param bis
    *          Endezeitpunkt der Berechnung
-   * @return SortedMap<Long, Boolean> zeitlich sortierte Liste mit dem Zeitpunkten der Zustandswechsel´der zeitlichen
+   * @return SortedMap<Long, Boolean> zeitlich sortierte Liste mit dem Zeitpunkten der ZustandswechselÂ´der zeitlichen
    *         Gueltigkeit und dem Zustand
    */
   public SortedMap<Long, Boolean> setGueltigkeitZeit(long von, long bis)

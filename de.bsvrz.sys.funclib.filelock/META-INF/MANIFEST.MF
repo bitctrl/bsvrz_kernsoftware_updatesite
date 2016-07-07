@@ -4,10 +4,10 @@ Created-By: Kappich Systemberatung
 Bundle-ManifestVersion: 2
 Bundle-Name: de.bsvrz.sys.funclib.filelock
 Bundle-SymbolicName: de.bsvrz.sys.funclib.filelock
-Bundle-Version: 3.6.5.qualifier
+Bundle-Version: 3.8.0.qualifier
 Bundle-Vendor: Kappich Systemberatung
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: de.bsvrz.sys.funclib.filelock
 Eclipse-BuddyPolicy: dependent
 Bundle-ClassPath: .

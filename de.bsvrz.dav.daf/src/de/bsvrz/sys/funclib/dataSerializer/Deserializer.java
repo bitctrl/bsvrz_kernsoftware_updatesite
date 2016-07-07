@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.dataSerializer;
@@ -31,18 +37,18 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Schnittstelle zum Deserialisieren von Datensätzen. Konkrete Objekte zum Deserialisieren können mit den verschiedenen
- * Methoden der Klasse {@link SerializingFactory} erzeugt werden. Dabei kann der Eingabe-Stream für die Deserialisierung
+ * Schnittstelle zum Deserialisieren von DatensÃ¤tzen. Konkrete Objekte zum Deserialisieren kÃ¶nnen mit den verschiedenen
+ * Methoden der Klasse {@link SerializingFactory} erzeugt werden. Dabei kann der Eingabe-Stream fÃ¼r die Deserialisierung
  * vorgegeben werden.
- * <p/>
- * Mit den verschiedenen <code>read</code>-Methoden können primitive Datentypen, Referenzen auf {@link SystemObject
- * System-Objekte} und ganze {@link Data Datensätze} von einem {@link InputStream} eingelesen und deserialisiert
+ * <p>
+ * Mit den verschiedenen <code>read</code>-Methoden kÃ¶nnen primitive Datentypen, Referenzen auf {@link SystemObject
+ * System-Objekte} und ganze {@link Data DatensÃ¤tze} von einem {@link InputStream} eingelesen und deserialisiert
  * werden.
- * <p/>
- * Über die {@link #getVersion} Methode kann die Version eines konkreten Deserialisieres abgefragt werden.
+ * <p>
+ * Ãœber die {@link #getVersion} Methode kann die Version eines konkreten Deserialisieres abgefragt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5058 $
+ * @version $Revision$
  * @see Serializer
  */
 public interface Deserializer {
@@ -89,7 +95,7 @@ public interface Deserializer {
 	 * Liest und deserialisiert einen Datensatz aus dem Eingabe-Stream dieses Deserialisierers.
 	 *
 	 * @param data Neuer Datensatz, der mit der Attributgruppe der erwarteten Daten initialisiert wurde.
-	 * @param dataModel Datenmodell mit dessen Hilfe Objektreferenzen aufgelöst werden.
+	 * @param dataModel Datenmodell mit dessen Hilfe Objektreferenzen aufgelÃ¶st werden.
 	 * @throws IOException Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 * @see de.bsvrz.dav.daf.main.ClientDavConnection#createData
 	 */
@@ -99,7 +105,7 @@ public interface Deserializer {
 	 * Liest und deserialisiert einen Datensatz aus dem Eingabe-Stream dieses Deserialisierers.
 	 *
 	 * @param atg Attributgruppe des einzulesenden Datensatzes.
-	 * @param dataModel Datenmodell mit dessen Hilfe Objektreferenzen aufgelöst werden.
+	 * @param dataModel Datenmodell mit dessen Hilfe Objektreferenzen aufgelÃ¶st werden.
 	 * @return Eingelesener Datensatz
 	 * @throws IOException Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 */
@@ -116,7 +122,7 @@ public interface Deserializer {
 	/**
 	 * Liest und deserialisiert eine Referenz auf ein Systemobjekt vom Eingabe-Stream dieses Deserialisierers.
 	 *
-	 * @param dataModel Datenmodell mit dessen Hilfe Objektreferenzen aufgelöst werden.
+	 * @param dataModel Datenmodell mit dessen Hilfe Objektreferenzen aufgelÃ¶st werden.
 	 * @return Das referenzierte Systemobjekt oder <code>null</code>, wenn das referenzierte Objekt nicht bestimmt werden
 	 *         kann.
 	 * @throws IOException Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
@@ -199,7 +205,7 @@ public interface Deserializer {
 	public double readDouble() throws IOException;
 
 	/**
-	 * Liest und deserialisiert einen <code>String</code>-Wert mit einer maximalen Länge von 65535 vom Eingabe-Stream
+	 * Liest und deserialisiert einen <code>String</code>-Wert mit einer maximalen LÃ¤nge von 65535 vom Eingabe-Stream
 	 * dieses Deserialisierers.
 	 *
 	 * @return Der eingelesene String.
@@ -208,11 +214,11 @@ public interface Deserializer {
 	public String readString() throws IOException;
 
 	/**
-	 * Liest und deserialisiert einen <code>String</code>-Wert mit einer vorgegebenen Maximal-Länge vom Eingabe-Stream
-	 * dieses Deserialisierers. Es ist zu beachten, dass beim Deserialiseren die gleiche Maximalgröße wie beim
+	 * Liest und deserialisiert einen <code>String</code>-Wert mit einer vorgegebenen Maximal-LÃ¤nge vom Eingabe-Stream
+	 * dieses Deserialisierers. Es ist zu beachten, dass beim Deserialiseren die gleiche MaximalgrÃ¶ÃŸe wie beim
 	 * Serialisieren angegeben wird.
 	 *
-	 * @param maxLength Maximale Länge des einzulesenden Strings oder <code>0</code> wenn keine Begrenzung vorgegeben
+	 * @param maxLength Maximale LÃ¤nge des einzulesenden Strings oder <code>0</code> wenn keine Begrenzung vorgegeben
 	 *                  werden kann.
 	 * @return Der eingelesene String.
 	 * @throws IOException Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
@@ -220,10 +226,10 @@ public interface Deserializer {
 	public String readString(int maxLength) throws IOException;
 
 	/**
-	 * Liest ein Byte-Array mit vorgegebener Länge vom Eingabe-Stream dieses Deserialisierers. Es ist zu beachten, das als
-	 * Länge exakt die Größe des entsprechenden serialisierten Arrays angegeben werden muss.
+	 * Liest ein Byte-Array mit vorgegebener LÃ¤nge vom Eingabe-Stream dieses Deserialisierers. Es ist zu beachten, das als
+	 * LÃ¤nge exakt die GrÃ¶ÃŸe des entsprechenden serialisierten Arrays angegeben werden muss.
 	 *
-	 * @param length Länge des einzulesenden Byte-Arrays
+	 * @param length LÃ¤nge des einzulesenden Byte-Arrays
 	 * @return Das eingelesene Byte-Array
 	 * @throws IOException Wenn beim Lesen vom Eingabe-Stream Fehler aufgetreten sind.
 	 */
@@ -232,7 +238,7 @@ public interface Deserializer {
 	/**
 	 * Liest eine vorgegebene Anzahl von Bytes vom Eingabe-Stream dieses Deserialisierers ein und speichert diese an
 	 * einem vorgegebenen Offset in ein vorhandenes Byte-Array. Es ist zu beachten, das als
-	 * Länge exakt die Größe des entsprechenden serialisierten Arrays angegeben werden muss.
+	 * LÃ¤nge exakt die GrÃ¶ÃŸe des entsprechenden serialisierten Arrays angegeben werden muss.
 	 *
 	 * @param buffer Byte-Array in das die eingelesenen Bytes gespeichert werden sollen.
 	 * @param offset Startposition im Byte-Array ab der die eingelesenen Bytes gespeichert werden sollen.

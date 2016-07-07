@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main.simulation;
@@ -25,7 +31,7 @@ import de.bsvrz.puk.config.main.communication.query.ConfigurationQueryManager;
 import de.bsvrz.dav.daf.main.SendSubscriptionNotConfirmed;
 
 /**
- * Diese Klasse stellt verschiedene Methoden zur Verfügung, mit denen Zustandnsübergänge durchgeführt werden können.
+ * Diese Klasse stellt verschiedene Methoden zur VerfÃ¼gung, mit denen ZustandnsÃ¼bergÃ¤nge durchgefÃ¼hrt werden kÃ¶nnen.
  *
  * @author Achim Wullenkord (AW), Kappich Systemberatung
  * @version $Revision:5077 $ / $Date:2007-09-02 14:48:31 +0200 (So, 02 Sep 2007) $ / ($Author:rs $)
@@ -42,13 +48,13 @@ class Util {
 	private final ConfigSimulationObject _simulationObject;
 
 	/**
-	 * Objekt, mit dem alle Aktionen ausgeführt werden, die für jeweilige Zustandsübergange nötig sind.
+	 * Objekt, mit dem alle Aktionen ausgefÃ¼hrt werden, die fÃ¼r jeweilige ZustandsÃ¼bergange nÃ¶tig sind.
 	 *
 	 * @param senderSimulationStatus Verschickt den Status der Konfiguration.
 	 * @param configDataModel        Zugriff auf dynamische Objekte
-	 * @param simulationVariant      Simulationsvariante, für die bestimmte Atkionen (löschen, Abmeldung für Schreibanfragen an die Konfiguration, usw.) ausgeführt
+	 * @param simulationVariant      Simulationsvariante, fÃ¼r die bestimmte Atkionen (lÃ¶schen, Abmeldung fÃ¼r Schreibanfragen an die Konfiguration, usw.) ausgefÃ¼hrt
 	 *                               werden.
-	 * @param queryManager           Ermöglicht es, die Konfiguration für eine Simulationsvariante an/abzumelden
+	 * @param queryManager           ErmÃ¶glicht es, die Konfiguration fÃ¼r eine Simulationsvariante an/abzumelden
 	 */
 	public Util(
 			final SourceSimulationStatus senderSimulationStatus,
@@ -68,66 +74,66 @@ class Util {
 	 *
 	 */
 	public void doPrestart() throws SendSubscriptionNotConfirmed {
-		// Alle dynamischen Objekte einer Simulation löschen
+		// Alle dynamischen Objekte einer Simulation lÃ¶schen
 		deleteDynamicObjectsAndCleanUpSets();
 
-		// Meldet die Konfiguration für Konfigurationsanfragen für diese Simulationsvariante an
+		// Meldet die Konfiguration fÃ¼r Konfigurationsanfragen fÃ¼r diese Simulationsvariante an
 		_queryManager.subscribeReadRequestForSimulation(_simulationVariant, _simulationObject);
 		_queryManager.subscribeWriteRequestForSimulation(_simulationVariant, _simulationObject);
 
-		// Alle Mengen und Objekttypen anfordern, die speziell behandelt werden müssen
+		// Alle Mengen und Objekttypen anfordern, die speziell behandelt werden mÃ¼ssen
 		_simulationObject.getSpecialTypes();
 
-		// Datensatz schreiben, dass die Konfiguration bereit für Simulationen ist
+		// Datensatz schreiben, dass die Konfiguration bereit fÃ¼r Simulationen ist
 		_senderSimulationStatus.sendReady();
 	}
 
 	/**
-	 * Führt alle Aktionen aus, die unter TPuK1-125 gefordert sind. Es wird ein Datensatz geschrieben, der anzeigt, dass die Konfiguration nicht mehr zur
-	 * Durchführung derSimulations zur Verfügung steht. Des Weiteren werden Schreibanfragen an die Konfiguration unterbunden.
+	 * FÃ¼hrt alle Aktionen aus, die unter TPuK1-125 gefordert sind. Es wird ein Datensatz geschrieben, der anzeigt, dass die Konfiguration nicht mehr zur
+	 * DurchfÃ¼hrung derSimulations zur VerfÃ¼gung steht. Des Weiteren werden Schreibanfragen an die Konfiguration unterbunden.
 	 *
-	 * @throws SendSubscriptionNotConfirmed Auch wenn diese Exception geworfen wird, findet die Abmeldung als Senke für "Konfigurationsanfragen schreibend" statt.
-	 *                                      Auch wenn wenn die Zustansänderung nicht mehr propagiert werden kann, können trotzdem keine dynamischen Objekte mehr
+	 * @throws SendSubscriptionNotConfirmed Auch wenn diese Exception geworfen wird, findet die Abmeldung als Senke fÃ¼r "Konfigurationsanfragen schreibend" statt.
+	 *                                      Auch wenn wenn die ZustansÃ¤nderung nicht mehr propagiert werden kann, kÃ¶nnen trotzdem keine dynamischen Objekte mehr
 	 *                                      angelegt werden.
 	 */
 	public void doStop() throws SendSubscriptionNotConfirmed {
 
-		// Datensatz verschicken "Konfiguration steht nicht mehr für die Simulation zur Verfügung".
+		// Datensatz verschicken "Konfiguration steht nicht mehr fÃ¼r die Simulation zur VerfÃ¼gung".
 		try {
 			_senderSimulationStatus.sendNotReady();
 		}
 		finally {
-			// Sicherstellen, dass die Konfiguration für lesende Konfigurationsanfragen angemeldet ist, nicht aber für schreibende
+			// Sicherstellen, dass die Konfiguration fÃ¼r lesende Konfigurationsanfragen angemeldet ist, nicht aber fÃ¼r schreibende
 			_queryManager.subscribeReadRequestForSimulation(_simulationVariant, _simulationObject);
 			_queryManager.unsubscribeWriteRequestForSimulation(_simulationVariant);
 		}
 	}
 
 	/**
-	 * Führt alle Aktionen aus, die unter TPuK1-126 gefordert sind. Es müssen alle dynamischen Objekte einer Simulationvariante gelöscht werden. Es wird ein
-	 * Datensatz geschrieben, dass das Simulationsobjekt gelöscht werden kann.
+	 * FÃ¼hrt alle Aktionen aus, die unter TPuK1-126 gefordert sind. Es mÃ¼ssen alle dynamischen Objekte einer Simulationvariante gelÃ¶scht werden. Es wird ein
+	 * Datensatz geschrieben, dass das Simulationsobjekt gelÃ¶scht werden kann.
 	 */
 	public void doDelete() throws SendSubscriptionNotConfirmed {
-		// Alle dynamischen Objekte löschen
+		// Alle dynamischen Objekte lÃ¶schen
 		deleteDynamicObjectsAndCleanUpSets();
 
 		_queryManager.unsubscribeWriteRequestForSimulation(_simulationVariant);
 		_queryManager.unsubscribeReadRequestForSimulation(_simulationVariant);
 		
-		// Datensatz verschicken (Simulationsobjekt kann gelöscht werden)
+		// Datensatz verschicken (Simulationsobjekt kann gelÃ¶scht werden)
 		_senderSimulationStatus.sendDelete();
 	}
 
-	/** Löscht alle dynamischen Objekte einer Simulationsvariante und löscht alle Elemente aus den Mengen, die speziell behandelt werden sollten. */
+	/** LÃ¶scht alle dynamischen Objekte einer Simulationsvariante und lÃ¶scht alle Elemente aus den Mengen, die speziell behandelt werden sollten. */
 	private void deleteDynamicObjectsAndCleanUpSets() {
-		// Löscht alle dynamischen Objekte
+		// LÃ¶scht alle dynamischen Objekte
 		_configDataModel.deleteObjects(_simulationVariant);
-		// Räumt bei allen Mengen auf, die gesondert behandlet werden sollten.
+		// RÃ¤umt bei allen Mengen auf, die gesondert behandlet werden sollten.
 		_simulationObject.cleanUpSets();
 	}
 
 	/**
-	 * Verschickt einen Datensatz, der besagt das die Konfiguration nicht mehr bereit ist eine bestimmte Simulation zu unterstützen
+	 * Verschickt einen Datensatz, der besagt das die Konfiguration nicht mehr bereit ist eine bestimmte Simulation zu unterstÃ¼tzen
 	 * @throws SendSubscriptionNotConfirmed
 	 */
 	public void sendNotReady() throws SendSubscriptionNotConfirmed {

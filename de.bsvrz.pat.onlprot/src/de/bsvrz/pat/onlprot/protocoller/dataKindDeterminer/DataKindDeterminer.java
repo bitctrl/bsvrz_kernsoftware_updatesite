@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2003 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2003 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.onlprot.
  * 
- * de.bsvrz.pat.onlprot is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.onlprot is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.onlprot is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.onlprot; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.onlprot.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.onlprot.protocoller.dataKindDeterminer;
@@ -72,7 +78,7 @@ public class DataKindDeterminer {
 	public static final boolean			notIsSender = false;
 
 	/**
-	 * Vorgabewert für die Rolle. Wird im Konstruktor gesetzt.
+	 * Vorgabewert fÃ¼r die Rolle. Wird im Konstruktor gesetzt.
 	 */
 	private final String				defaultRole;
 
@@ -82,12 +88,12 @@ public class DataKindDeterminer {
 	private int							intervalCount = 0;
 
 	/**
-	 * Kürzestes zu erzeugendes Intervall
+	 * KÃ¼rzestes zu erzeugendes Intervall
 	 */
 	private long						intervalLowerBound = 60 * 1000;
 
 	/**
-	 * Längstes zu erzeugendes Intervall
+	 * LÃ¤ngstes zu erzeugendes Intervall
 	 */
 	private long						intervalUpperBound = intervalLowerBound;
 
@@ -116,36 +122,36 @@ public class DataKindDeterminer {
 
 
 	/**
-	 * Liste der gülten Optionen dieser Applikation
+	 * Liste der gÃ¼lten Optionen dieser Applikation
 	 */
 	private ArgumentList.ValueSelection validOptions
 										= new ArgumentList.ValueSelection();
 
 	/**
-	 * Liste der gültigen Rollen dieser Applikation
+	 * Liste der gÃ¼ltigen Rollen dieser Applikation
 	 */
 	private ArgumentList.ValueSelection	validRoles
 										= new ArgumentList.ValueSelection();
 
 	/**
-	 * Liste der gültigen Zeit-Optionen dieser Applikation
+	 * Liste der gÃ¼ltigen Zeit-Optionen dieser Applikation
 	 */
 	private ArgumentList.ValueSelection	validTimeOptions
 										= new ArgumentList.ValueSelection();
 
-	/** Konstante für <code>-zeit</code>-Argument: Intervallbeginn als Zeitstempel. */
+	/** Konstante fÃ¼r <code>-zeit</code>-Argument: Intervallbeginn als Zeitstempel. */
 	public static final int INTERVAL_TIME = 0;
 
-	/** Konstante für <code>-zeit</code>-Argument: Versandzeit als Zeitstempel. */
+	/** Konstante fÃ¼r <code>-zeit</code>-Argument: Versandzeit als Zeitstempel. */
 	public static final int SEND_TIME = 1;
 
 	/** Erzeugt ein neues Objekt der Klasse <code>DataKindDeterminer</code> mit
 	 * speziellem <code>actionText</code>
 	 *
 	 * @param isSetToSender			boolean, welches angibt, ob es sich bei der
-	 *								Applikation um einen Sender oder Empfänger
+	 *								Applikation um einen Sender oder EmpfÃ¤nger
 	 *								handelt
-	 * @param defaultRole			String, der den Vorgabewert für die Rolle
+	 * @param defaultRole			String, der den Vorgabewert fÃ¼r die Rolle
 	 *								angibt
 	 * @param optionParamAllowed	boolean, welches angibt, ob der Parameter
 	 *								<code>-option</code> ausgewertet wird
@@ -160,7 +166,7 @@ public class DataKindDeterminer {
 	/** Aufrufparameter filtern: Interpretiert werden die Parameter <code>-rolle
 	 * </code>, <code>-option </code>, <code>-objekte </code> und <code>-daten
 	 * </code>. Ein Satz aus diesen Parametern bildet eine Einheit, wobei
-	 * einzelne Werte fehlen können, die dann durch Vorgaben ersetzt werden.
+	 * einzelne Werte fehlen kÃ¶nnen, die dann durch Vorgaben ersetzt werden.
 	 * @param argumentList {@link ArgumentList} der noch nicht
 	 * 							ausgewerteten Aufrufparameter der Applikation
 	 * @return List der angegebenen Datenbeschreibungen
@@ -177,19 +183,19 @@ public class DataKindDeterminer {
 		String						objectSpecs = null;
 
 		/*
-		 * Option (bei Empfängern): Online-Daten, Delta-Daten oder
+		 * Option (bei EmpfÃ¤ngern): Online-Daten, Delta-Daten oder
 		 * nachgelieferte Daten
 		 */
 		ReceiveOptions				receiveOptions = ReceiveOptions.normal();
 
-		/* Rolle: Quelle, Sender, Empfänger oder Senke */
+		/* Rolle: Quelle, Sender, EmpfÃ¤nger oder Senke */
 		String						role = null;
 
-		/* Liste der auszuführenden Anmeldungen */
+		/* Liste der auszufÃ¼hrenden Anmeldungen */
 		List						subscriptions = new LinkedList();
 
 		if (isSetToSender) {
-			validRoles.add("quelle").alias("source").alias("empfänger").alias("empfaenger").alias("receiver").ignoreCase()
+			validRoles.add("quelle").alias("source").alias("empfÃ¤nger").alias("empfaenger").alias("receiver").ignoreCase()
 					.convertTo(SenderRole.source());
 			validRoles.add("sender").alias("senke").alias("drain").ignoreCase()
 					.convertTo(SenderRole.sender());
@@ -202,20 +208,20 @@ public class DataKindDeterminer {
 		} else {
 			validRoles.add("senke").alias("drain").ignoreCase()
 					.convertTo(ReceiverRole.drain());
-			validRoles.add("empfänger").alias("empfaenger").alias("receiver")
+			validRoles.add("empfÃ¤nger").alias("empfaenger").alias("receiver")
 					.ignoreCase().convertTo(ReceiverRole.receiver());
 		}
 
 		if (optionParamAllowed) {
 			validOptions.add("online").alias("o").ignoreCase()
 					.convertTo(ReceiveOptions.normal())
-					.purpose("Anmeldung auf alle Online-Datensätze");
+					.purpose("Anmeldung auf alle Online-DatensÃ¤tze");
 			validOptions.add("delta").alias("d").ignoreCase()
 					.convertTo(ReceiveOptions.delta())
-					.purpose("Anmeldung nur auf geänderte Datensätze");
+					.purpose("Anmeldung nur auf geÃ¤nderte DatensÃ¤tze");
 			validOptions.add("nachgeliefert").alias("n").alias("delayed")
 					.ignoreCase().convertTo(ReceiveOptions.delayed())
-					.purpose("Anmeldung auch auf nachgelieferte Datensätze");
+					.purpose("Anmeldung auch auf nachgelieferte DatensÃ¤tze");
 		}
 
 		role = defaultRole;
@@ -291,34 +297,34 @@ public class DataKindDeterminer {
 	}
 
 	/**
-	 * Gibt die Liste der gültigen Rollen dieser Applikation zurück
+	 * Gibt die Liste der gÃ¼ltigen Rollen dieser Applikation zurÃ¼ck
 	 *
-	 * @return	{@link ArgumentList.ValueSelection} der gültigen Rollen
+	 * @return	{@link ArgumentList.ValueSelection} der gÃ¼ltigen Rollen
 	 */
 	public ArgumentList.ValueSelection getValidRoles() {
 		return validRoles;
 	}
 
 	/**
-	 * Gibt die Liste der gültigen Optionen dieser Applikation zurück
+	 * Gibt die Liste der gÃ¼ltigen Optionen dieser Applikation zurÃ¼ck
 	 *
-	 * @return	{@link ArgumentList.ValueSelection} der gültigen Optionen
+	 * @return	{@link ArgumentList.ValueSelection} der gÃ¼ltigen Optionen
 	 */
 	public ArgumentList.ValueSelection getValidOptions() {
 		return validOptions;
 	}
 
 	/**
-	 * Gibt die Liste der gültigen Rollen dieser Applikation zurück
+	 * Gibt die Liste der gÃ¼ltigen Rollen dieser Applikation zurÃ¼ck
 	 *
-	 * @return	{@link ArgumentList.ValueSelection} der gültigen Rollen
+	 * @return	{@link ArgumentList.ValueSelection} der gÃ¼ltigen Rollen
 	 */
 	public ArgumentList.ValueSelection getValidTimeOptions() {
 		return validTimeOptions;
 	}
 
 	/**
-	 * Registrierung durchführen
+	 * Registrierung durchfÃ¼hren
 	 *
 	 * @param	sender				{@link de.bsvrz.dav.daf.main.ClientSenderInterface} mit Referenz
 	 *								auf die Senderapplikation
@@ -326,7 +332,7 @@ public class DataKindDeterminer {
 	 * @param	dataModel			{@link DataModel}, welches verwendet wird
 	 * @param	isAutarkic			boolean; 1: Datengenerator arbeitet autark,
 	 *								d. h. es ist keine Anmeldung der Objekte
-	 *								notwendig; 0: Objekte müssen beim DaV
+	 *								notwendig; 0: Objekte mÃ¼ssen beim DaV
 	 *								angemeldet werden.
 	 * @param	connection			{@link ClientDavInterface Verbindung} zum
 	 *								DaV
@@ -358,7 +364,7 @@ public class DataKindDeterminer {
 			else dataDescription= new DataDescription(attributeGroup, aspect);
 ;
 			debug.config("Anmeldung als " + subscriptionInfo.getSenderRole()
-						 + " für " + attributeGroup.getNameOrPidOrId() + ":"
+						 + " fÃ¼r " + attributeGroup.getNameOrPidOrId() + ":"
 						 + aspect.getNameOrPidOrId());
 			debug.config(simulationVariantText);
 			debug.config(" Objekte: " + objects);
@@ -366,9 +372,9 @@ public class DataKindDeterminer {
 			/*
 			 * XXX
 			 * Work around: Ist die Simulationsvariante -1 (also nicht explizit
-			 * über die Aufrufparameter gesetzt), so wird sie durch die
+			 * Ã¼ber die Aufrufparameter gesetzt), so wird sie durch die
 			 * DaV-Applikationsfunktionen automatisch auf 0 gesetzt. Dieses
-			 * Verhalten ist unerwünscht und wird hier bis auf weiteres
+			 * Verhalten ist unerwÃ¼nscht und wird hier bis auf weiteres
 			 * umgangen.
 			 */
 			short rescueSimulationVariant = dataDescription.getSimulationVariant();

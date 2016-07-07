@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.plugins.api;
@@ -28,13 +34,13 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 /**
- * Diese Klasse stellt die Ausgabeoptionen eines Moduls als Panel dar. Die Optionen bestehen aus einem Detaillierungsgrad und der Möglichkeit die Ausgabe in
- * eine Datei umzuleiten. Es kann zwischen folgenden Detaillierungsgraden gewählt werden: <ul> <li>keine Ausgabe</li> <li>Aktualisierung</li>
- * <li>Kopfinformationen</li> <li>Daten</li> <li>XML</li> </ul> Mittels der Getter- und Setter-Methoden können die Elemente auf dem Panel voreingestellt
+ * Diese Klasse stellt die Ausgabeoptionen eines Moduls als Panel dar. Die Optionen bestehen aus einem Detaillierungsgrad und der MÃ¶glichkeit die Ausgabe in
+ * eine Datei umzuleiten. Es kann zwischen folgenden Detaillierungsgraden gewÃ¤hlt werden: <ul> <li>keine Ausgabe</li> <li>Aktualisierung</li>
+ * <li>Kopfinformationen</li> <li>Daten</li> <li>XML</li> </ul> Mittels der Getter- und Setter-Methoden kÃ¶nnen die Elemente auf dem Panel voreingestellt
  * werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5001 $
+ * @version $Revision$
  */
 public class OutputOptionsPanel extends JPanel {
 
@@ -54,10 +60,10 @@ public class OutputOptionsPanel extends JPanel {
 	public static final int XML = 4;
 
 
-	/** gibt an, welche Detailierungsgrade zur Verfügung stehen */
+	/** gibt an, welche Detailierungsgrade zur VerfÃ¼gung stehen */
 	private final String[] _detailUnit = {"keine Ausgabe", "Aktualisierung", "Kopfinformationen", "Daten", "XML"};
 
-	/** speichert die Auswahlbox für den Detaillierungsgrad */
+	/** speichert die Auswahlbox fÃ¼r den Detaillierungsgrad */
 	private final JComboBox _detailLevelCombo;
 
 	/** gibt an, in welche Datei die Daten geschrieben werden */
@@ -66,15 +72,15 @@ public class OutputOptionsPanel extends JPanel {
 	/** gibt an, ob die Daten in eine Datei geschrieben werden */
 	private final JCheckBox _outputCheckBox;
 
-	/** Dateidialog, damit eine Datei zum Speichern der Daten ausgewählt werden kann */
+	/** Dateidialog, damit eine Datei zum Speichern der Daten ausgewÃ¤hlt werden kann */
 	private final JFileChooser _fileChooser = new JFileChooser();
 
-	/** speichert die ausgewählte Datei */
+	/** speichert die ausgewÃ¤hlte Datei */
 	private File _outputFile = null;
 
 
 	/**
-	 * Die Ausgabeoptionen eines Moduls werden auf einem Panel dargestellt. Die Optionen bestehen aus einem Detaillierungsgrad und der Möglichkeit die Ausgabe in
+	 * Die Ausgabeoptionen eines Moduls werden auf einem Panel dargestellt. Die Optionen bestehen aus einem Detaillierungsgrad und der MÃ¶glichkeit die Ausgabe in
 	 * eine Datei umzuleiten.
 	 */
 	public OutputOptionsPanel() {
@@ -168,7 +174,7 @@ public class OutputOptionsPanel extends JPanel {
 	}
 
 	/**
-	 * Gibt den ausgewählten Detaillierungsgrad zurück.
+	 * Gibt den ausgewÃ¤hlten Detaillierungsgrad zurÃ¼ck.
 	 *
 	 * @return Detaillierungsgrad
 	 */
@@ -196,9 +202,9 @@ public class OutputOptionsPanel extends JPanel {
 	}
 
 	/**
-	 * Gibt zu der ausgewählten Datei den gesamten Pfad zurück.
+	 * Gibt zu der ausgewÃ¤hlten Datei den gesamten Pfad zurÃ¼ck.
 	 *
-	 * @return den Pfad der ausgewählten Datei
+	 * @return den Pfad der ausgewÃ¤hlten Datei
 	 */
 	public String getFileName() {
 		if(_outputCheckBox.isSelected()) {
@@ -210,9 +216,9 @@ public class OutputOptionsPanel extends JPanel {
 	}
 
 	/**
-	 * Mit dieser Methode kann die Datei bestimmt werden, welche für die Ausgabe genutzt werden soll.
+	 * Mit dieser Methode kann die Datei bestimmt werden, welche fÃ¼r die Ausgabe genutzt werden soll.
 	 *
-	 * @param fileName Pfad incl. Dateiname für die Ausgabe
+	 * @param fileName Pfad incl. Dateiname fÃ¼r die Ausgabe
 	 */
 	public void setFileName(final String fileName) {
 		_outputCheckBox.setSelected(true);

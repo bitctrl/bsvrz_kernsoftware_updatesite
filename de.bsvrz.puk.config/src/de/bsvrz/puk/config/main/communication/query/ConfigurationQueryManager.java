@@ -2,13 +2,13 @@
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2008 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -17,8 +17,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main.communication.query;
@@ -59,7 +65,7 @@ import java.util.*;
  * Anfrage verschicken, wird dies ebenfalls durch dieses Objekt realisiert.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13267 $
+ * @version $Revision$
  */
 public class ConfigurationQueryManager implements SimulationHandler {
 
@@ -77,48 +83,48 @@ public class ConfigurationQueryManager implements SimulationHandler {
 
 	/**
 	 * Speichert zu einem SystemObjekt, das eine Simulation darstellt, ein Java Objekt, das eine Simulation aus Sicht der Konfiguration, darstellt.
-	 * <p/>
-	 * Als Schlüssel dient eine Simulation aus der dynamischen Menge der Simulationen. Der value ist das entsprechende JavaObjekt, das die Simulation aus Sicht der
+	 * <p>
+	 * Als SchlÃ¼ssel dient eine Simulation aus der dynamischen Menge der Simulationen. Der value ist das entsprechende JavaObjekt, das die Simulation aus Sicht der
 	 * Konfiguration darstellt.
 	 */
 	private final Map<SystemObject, ConfigSimulationObject> _simulationObjects = new HashMap<SystemObject, ConfigSimulationObject>();
 
-	/** Map zum Zugriff auf die Simulationsobjekte über die Simulationsvariante */
+	/** Map zum Zugriff auf die Simulationsobjekte Ã¼ber die Simulationsvariante */
 	private HashMap<Short, ConfigSimulationObject> _simulations = new HashMap<Short, ConfigSimulationObject>();
 
-	/** Enthält alle Anmeldungen der Konfiguration als Senke auf lesende Konfigurationsanfragen unter Berücksichtigung der Simulationsvariante. */
+	/** EnthÃ¤lt alle Anmeldungen der Konfiguration als Senke auf lesende Konfigurationsanfragen unter BerÃ¼cksichtigung der Simulationsvariante. */
 	private final Map<Short, ReceiverSubscriptionSimulation> _simulationReadSubscriptions = Collections.synchronizedMap(new HashMap<Short, ReceiverSubscriptionSimulation>());
 
-	/** Enthält alle Anmeldungen der Konfiguration als Senke auf schreibende Konfigurationsanfragen unter Berücksichtigung der Simulationsvariante. */
+	/** EnthÃ¤lt alle Anmeldungen der Konfiguration als Senke auf schreibende Konfigurationsanfragen unter BerÃ¼cksichtigung der Simulationsvariante. */
 	private final Map<Short, ReceiverSubscriptionSimulation> _simulationWriteSubscriptions = Collections.synchronizedMap(new HashMap<Short, ReceiverSubscriptionSimulation>());
 
-	/** Aufträge für die Konfiguration, schreibend */
+	/** AuftrÃ¤ge fÃ¼r die Konfiguration, schreibend */
 	private DataDescription _dataDescriptionWrite;
 
-	/** Aufträge für die Konfiguration, lesen */
+	/** AuftrÃ¤ge fÃ¼r die Konfiguration, lesen */
 	private DataDescription _dataDescriptionRead;
 
-	/** Aufträge für die Konfiguration, Benutzerverwaltung */
+	/** AuftrÃ¤ge fÃ¼r die Konfiguration, Benutzerverwaltung */
 	private DataDescription _dataDescriptionUser;
 
-	/** Aufträge für die Konfiguration, Konfigurationsbereiche */
+	/** AuftrÃ¤ge fÃ¼r die Konfiguration, Konfigurationsbereiche */
 	private DataDescription _dataDescriptionArea;
 
-	/** Listener, der Änderungen auf der Menge der Simulationen überwacht */
+	/** Listener, der Ã„nderungen auf der Menge der Simulationen Ã¼berwacht */
 	private SimulationListener _simulationListener;
 
 	private ForeignObjectManager _foreignObjectManager;
 
 	/**
-	 * Hilfsfunktion, die zu den übergebenen PIDs von einer Attributgruppe und eines Aspekts eine DataDescription erstellt.
+	 * Hilfsfunktion, die zu den Ã¼bergebenen PIDs von einer Attributgruppe und eines Aspekts eine DataDescription erstellt.
 	 *
 	 * @param configuration Datenmodell mit dessen Hilfe die Objekte zu den PIDs ermittelt werden
-	 * @param atgPid        Pid der gewünschten Attributgruppe
-	 * @param aspPid        Pid des gewünschten Aspekts
+	 * @param atgPid        Pid der gewÃ¼nschten Attributgruppe
+	 * @param aspPid        Pid des gewÃ¼nschten Aspekts
 	 *
-	 * @return DataDescription-Objekt, dass mit der gewünschten Attributgruppe und dem gewünschten Aspekt initialisiert ist.
+	 * @return DataDescription-Objekt, dass mit der gewÃ¼nschten Attributgruppe und dem gewÃ¼nschten Aspekt initialisiert ist.
 	 *
-	 * @throws IllegalStateException mit entsprechender Fehlermeldung, falls eine der beiden PIDs nicht aufgelöst werden konnte.
+	 * @throws IllegalStateException mit entsprechender Fehlermeldung, falls eine der beiden PIDs nicht aufgelÃ¶st werden konnte.
 	 */
 	private static DataDescription getDataDescription(DataModel configuration, String atgPid, String aspPid) {
 		final AttributeGroup atg = configuration.getAttributeGroup(atgPid);
@@ -156,7 +162,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 		}
 		_foreignObjectManager = new ForeignObjectManager(connection, localConfiguration, _localAuthority, foreignObjectCacheFile);
 
-		// 4 Kanäle, auf die sich die Konfiguration als Senke anmeldet
+		// 4 KanÃ¤le, auf die sich die Konfiguration als Senke anmeldet
 		_dataDescriptionWrite = getDataDescription(localConfiguration, "atg.konfigurationsAnfrageSchnittstelleSchreibend", "asp.anfrage");
 		_dataDescriptionRead = getDataDescription(localConfiguration, "atg.konfigurationsAnfrageSchnittstelleLesend", "asp.anfrage");
 		_dataDescriptionUser = getDataDescription(localConfiguration, "atg.konfigurationsBenutzerverwaltungsAnfrageSchnittstelle", "asp.anfrage");
@@ -181,7 +187,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 						continue;
 					}
 					catch(OneSubscriptionPerSendData oneSubscriptionPerSendData) {
-						// Eine Doppelanmeldung wird verhindert, da es für jede Simulation nur einen Sender pro Simulationsvariante
+						// Eine Doppelanmeldung wird verhindert, da es fÃ¼r jede Simulation nur einen Sender pro Simulationsvariante
 						// geben kann.
 						oneSubscriptionPerSendData.printStackTrace();
 						_debug.error("Fehler beim Anmelden einer Simulation", oneSubscriptionPerSendData);
@@ -193,7 +199,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 			}
 		}
 
-		// 2) Auf Änderungen dieser Menge anmelden, damit bei neuen Simulationen ein neues Objekt angelegt werden kann. Wird eine
+		// 2) Auf Ã„nderungen dieser Menge anmelden, damit bei neuen Simulationen ein neues Objekt angelegt werden kann. Wird eine
 		// Simulation aus der Menge entfernt, so muss auch das Objekt benachrichtigt und entfernt werden
 		_simulationListener = new SimulationListener();
 		mutableSet.addChangeListener(_simulationListener);
@@ -202,16 +208,16 @@ public class ConfigurationQueryManager implements SimulationHandler {
 	public void start() {
 		try {
 			// Alle Anmeldungen finden auf die Simulationsvariante statt, die durch das System vorgegeben werden.
-			// Dies sind die Standardkanäle, auf denen die Konfiguration Anfragen entgegen nimmt.
-			// Für Simulationen werden extra Kanäle, mittels einer entsprechenden Methode, angemeldet.
+			// Dies sind die StandardkanÃ¤le, auf denen die Konfiguration Anfragen entgegen nimmt.
+			// FÃ¼r Simulationen werden extra KanÃ¤le, mittels einer entsprechenden Methode, angemeldet.
 
-			// Senke für lesende Konfigurationsanfragen
+			// Senke fÃ¼r lesende Konfigurationsanfragen
 			_connection.subscribeReceiver(new QueryReceiver(), _localAuthority, _dataDescriptionRead, ReceiveOptions.normal(), ReceiverRole.drain());
-			// Senke für schreibende Konfigurationsanfragen
+			// Senke fÃ¼r schreibende Konfigurationsanfragen
 			_connection.subscribeReceiver(new QueryReceiver(), _localAuthority, _dataDescriptionWrite, ReceiveOptions.normal(), ReceiverRole.drain());
-			// Senke für Benutzerverwaltungsanfragen
+			// Senke fÃ¼r Benutzerverwaltungsanfragen
 			_connection.subscribeReceiver(new QueryReceiver(), _localAuthority, _dataDescriptionUser, ReceiveOptions.normal(), ReceiverRole.drain());
-			// Senke für Konfigurationsbereichsoperationen
+			// Senke fÃ¼r Konfigurationsbereichsoperationen
 			_connection.subscribeReceiver(new QueryReceiver(), _localAuthority, _dataDescriptionArea, ReceiveOptions.normal(), ReceiverRole.drain());
 			_foreignObjectManager.start();
 		}
@@ -222,20 +228,20 @@ public class ConfigurationQueryManager implements SimulationHandler {
 	}
 
 	private void detachHandler(final SystemObject querySender) {
-//		System.out.println("QueryHandler abgemeldet für " + querySender);
+//		System.out.println("QueryHandler abgemeldet fÃ¼r " + querySender);
 		synchronized(_querySender2queryHandlerMap) {
 			_querySender2queryHandlerMap.remove(querySender);
 		}
 	}
 
 	/**
-	 * Diese Methode meldet für eine Simulationsvariante einen Empfänger für lesende Konfigurationsanfragen an, falls dies nicht bereits geschehen ist.
+	 * Diese Methode meldet fÃ¼r eine Simulationsvariante einen EmpfÃ¤nger fÃ¼r lesende Konfigurationsanfragen an, falls dies nicht bereits geschehen ist.
 	 *
 	 * @param simulationVariant Simulationsvariante, mit der sich Konfiguration auf Anfragen anmeldet
 	 */
 	public void subscribeReadRequestForSimulation(final short simulationVariant, ConfigSimulationObject simulationObject) {
 		if(!_simulationReadSubscriptions.containsKey(simulationVariant)) {
-			// Senke für lesende Konfigurationsanfragen, es wird auf eine bestimmte Simulationsvariante angemeldet
+			// Senke fÃ¼r lesende Konfigurationsanfragen, es wird auf eine bestimmte Simulationsvariante angemeldet
 			final DataDescription simulationDataDescriptionRead = new DataDescription(
 					_dataDescriptionRead.getAttributeGroup(), _dataDescriptionRead.getAspect(), simulationVariant
 			);
@@ -243,19 +249,19 @@ public class ConfigurationQueryManager implements SimulationHandler {
 			_connection.subscribeReceiver(receiver, _localAuthority, simulationDataDescriptionRead, ReceiveOptions.normal(), ReceiverRole.drain());
 
 			final ReceiverSubscriptionSimulation receiverSubscriptionSimulation = new ReceiverSubscriptionSimulation(simulationDataDescriptionRead, receiver);
-			// Verhindert Doppelanmeldungen und ermöglicht später die Abmeldung
+			// Verhindert Doppelanmeldungen und ermÃ¶glicht spÃ¤ter die Abmeldung
 			_simulationReadSubscriptions.put(simulationVariant, receiverSubscriptionSimulation);
 		}
 	}
 
 	/**
-	 * Diese Methode meldet für eine Simulationsvariante einen Empfänger für Konfigurationsschreibanfragenanfragen an, falls dies nicht bereits geschehen ist.
+	 * Diese Methode meldet fÃ¼r eine Simulationsvariante einen EmpfÃ¤nger fÃ¼r Konfigurationsschreibanfragenanfragen an, falls dies nicht bereits geschehen ist.
 	 *
 	 * @param simulationVariant Simulationsvariante, mit der sich Konfiguration auf Anfragen anmeldet
 	 */
 	public void subscribeWriteRequestForSimulation(final short simulationVariant, ConfigSimulationObject simulationObject) {
 		if(!_simulationWriteSubscriptions.containsKey(simulationVariant)) {
-			// Senke für schreibende Konfigurationsanfragen, es wird auf eine bestimmte Simulationsvariante angemeldet
+			// Senke fÃ¼r schreibende Konfigurationsanfragen, es wird auf eine bestimmte Simulationsvariante angemeldet
 			final DataDescription simulationDataDescriptionWrite = new DataDescription(
 					_dataDescriptionWrite.getAttributeGroup(), _dataDescriptionWrite.getAspect(), simulationVariant
 			);
@@ -268,11 +274,11 @@ public class ConfigurationQueryManager implements SimulationHandler {
 	}
 
 	/**
-	 * Meldet für eine Simulationsvariante die Anmeldung als Empfänger für Konfigurationsschreibanfragen ab. Es ist dann unmöglich für diese Simulation weiter
+	 * Meldet fÃ¼r eine Simulationsvariante die Anmeldung als EmpfÃ¤nger fÃ¼r Konfigurationsschreibanfragen ab. Es ist dann unmÃ¶glich fÃ¼r diese Simulation weiter
 	 * Anfragen zu stellen, die schreibend auf die Konfiguration zugreifen wollen. Die Methode kann mehrfach aufgerufen werden, de Verbindung wird nur dann
 	 * abgebaut, wenn sie auch existiert.
 	 *
-	 * @param simulationVariant Simulationsvariante, für die es nicht mehr möglich sein soll Schreibanfragen zu stellen.
+	 * @param simulationVariant Simulationsvariante, fÃ¼r die es nicht mehr mÃ¶glich sein soll Schreibanfragen zu stellen.
 	 */
 	public void unsubscribeWriteRequestForSimulation(short simulationVariant) {
 		final ReceiverSubscriptionSimulation receiverSubscriptionSimulation = _simulationWriteSubscriptions.remove(simulationVariant);
@@ -284,11 +290,11 @@ public class ConfigurationQueryManager implements SimulationHandler {
 	}
 
 	/**
-	 * Meldet für eine Simulationsvariante die Anmeldung als Empfänger für Konfigurationsschreibanfragen ab. Es ist dann unmöglich für diese Simulation weiter
+	 * Meldet fÃ¼r eine Simulationsvariante die Anmeldung als EmpfÃ¤nger fÃ¼r Konfigurationsschreibanfragen ab. Es ist dann unmÃ¶glich fÃ¼r diese Simulation weiter
 	 * Anfragen zu stellen, die schreibend auf die Konfiguration zugreifen wollen. Die Methode kann mehrfach aufgerufen werden, de Verbindung wird nur dann
 	 * abgebaut, wenn sie auch existiert.
 	 *
-	 * @param simulationVariant Simulationsvariante, für die es nicht mehr möglich sein soll Schreibanfragen zu stellen.
+	 * @param simulationVariant Simulationsvariante, fÃ¼r die es nicht mehr mÃ¶glich sein soll Schreibanfragen zu stellen.
 	 */
 	public void unsubscribeReadRequestForSimulation(short simulationVariant) {
 		final ReceiverSubscriptionSimulation receiverSubscriptionSimulation = _simulationReadSubscriptions.remove(simulationVariant);
@@ -337,19 +343,19 @@ public class ConfigurationQueryManager implements SimulationHandler {
 
 	/**
 	 * Erzeugt ein Simulationsobjekt {@link de.bsvrz.puk.config.main.simulation.ConfigSimulationObject} aus einem SystemObjekt.
-	 * <p/>
+	 * <p>
 	 * Dabei wird der Typ(online/offline), die Simulationsvariante und die speziell zu behandelnden Mengen der Simulation ausgelesen.
 	 *
 	 * @param systemObject Objekt, das vom Typ typ.simulation sein muss (oder diese Eigenschaften erbt).
 	 */
 	private ConfigSimulationObject createNewSimulationObject(SystemObject systemObject) throws OneSubscriptionPerSendData {
-		// Das Objekt wird hier angelegt da das ConfigurationQueryManagerObjekt benötigt wird und die Methode aus "innerClasses" aufgerufen wird.
+		// Das Objekt wird hier angelegt da das ConfigurationQueryManagerObjekt benÃ¶tigt wird und die Methode aus "innerClasses" aufgerufen wird.
 		return new ConfigSimulationObject(_connection, systemObject, this);
 	}
 
 	/**
-	 * Listener, der aufgerufen wird, sobald sich die dynamische Menge mit Simulationen ändert. Wird eine Simulation entfernt, wird das jeweilige Objekt
-	 * benachrichtigt und dann aus der Map entfernt. Wird eine Simulation hinzugefügt, so wird ein entsprechendes Objekt der Map hinzugefügt.
+	 * Listener, der aufgerufen wird, sobald sich die dynamische Menge mit Simulationen Ã¤ndert. Wird eine Simulation entfernt, wird das jeweilige Objekt
+	 * benachrichtigt und dann aus der Map entfernt. Wird eine Simulation hinzugefÃ¼gt, so wird ein entsprechendes Objekt der Map hinzugefÃ¼gt.
 	 */
 	private final class SimulationListener implements MutableSetChangeListener {
 
@@ -378,7 +384,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 								continue;
 							}
 							catch(OneSubscriptionPerSendData oneSubscriptionPerSendData) {
-								// Eine Doppelanmeldung wird verhindert, da es für jede Simulation nur einen Sender pro Simulationsvariante
+								// Eine Doppelanmeldung wird verhindert, da es fÃ¼r jede Simulation nur einen Sender pro Simulationsvariante
 								// geben kann.
 								oneSubscriptionPerSendData.printStackTrace();
 								throw new IllegalStateException(oneSubscriptionPerSendData);
@@ -410,14 +416,14 @@ public class ConfigurationQueryManager implements SimulationHandler {
 
 		private final ConfigSimulationObject _configSimulationObject;
 
-		/** Dieses Objekt empfängt Konfigurationanfragen für die Simulationsvariante 0. */
+		/** Dieses Objekt empfÃ¤ngt Konfigurationanfragen fÃ¼r die Simulationsvariante 0. */
 		public QueryReceiver() {
 			_configSimulationObject = null;
 		}
 
 		/**
-		 * Dieses Objekt empfängt Konfigurationsanfragen für eine bestimmte Simulation. Das Objekt, das die Simulation aus Sicht der Konfiguration darstellt wird
-		 * übergeben.
+		 * Dieses Objekt empfÃ¤ngt Konfigurationsanfragen fÃ¼r eine bestimmte Simulation. Das Objekt, das die Simulation aus Sicht der Konfiguration darstellt wird
+		 * Ã¼bergeben.
 		 *
 		 * @param configSimulationObject Objekt, das aus Sicht der Konfiguration eine Simulation darstellt.
 		 */
@@ -449,11 +455,11 @@ public class ConfigurationQueryManager implements SimulationHandler {
 							handler = _querySender2queryHandlerMap.get(querySender);
 							if(handler == null) {
 								handler = new QueryHandler(querySender, result.getDataDescription().getSimulationVariant(), _configSimulationObject);
-//								System.out.println("neuen QueryHandler angelegt für " + querySender);
+//								System.out.println("neuen QueryHandler angelegt fÃ¼r " + querySender);
 								_querySender2queryHandlerMap.put(querySender, handler);
 							}
 						}
-//						System.out.println("QueryHandler für " + querySender + " bearbeitet Anfrage: " + result);
+//						System.out.println("QueryHandler fÃ¼r " + querySender + " bearbeitet Anfrage: " + result);
 						handler.handleQuery(result);
 					}
 				}
@@ -482,90 +488,90 @@ public class ConfigurationQueryManager implements SimulationHandler {
 		/** Lockt die Zugriffe auf den Publisher. */
 		private Object _lockPublisher = new Object();
 
-		/** Objekt, welches bei dynamischen Mengen genutzt wird, um die Änderungen an diesen Mengen zu publizieren. */
+		/** Objekt, welches bei dynamischen Mengen genutzt wird, um die Ã„nderungen an diesen Mengen zu publizieren. */
 		private MutableSetChangePublisher _publisher;
 
 		/** Merkt sich alle dynamischen Mengen, bei denen ein Beobachter (MutableSetChangePublisher) angemeldet wurde. */
 		private Set<MutableSet> _publisherSets;
 
-		/** Enthält alle dynamischen Objekte, zu denen es einen <code>_invalidationListenerPublisher</code> gibt. */
+		/** EnthÃ¤lt alle dynamischen Objekte, zu denen es einen <code>_invalidationListenerPublisher</code> gibt. */
 		private Set<DynamicObject> _monitoredDynamicObject = Collections.synchronizedSet(new HashSet<DynamicObject>());
 
-		/** Objekt, das den Versand von Konfigurationsanfragen(die Antwort darauf) übernimmt. */
+		/** Objekt, das den Versand von Konfigurationsanfragen(die Antwort darauf) Ã¼bernimmt. */
 		private final SenderReceiverCommunication _senderReplyReadTasks;
 
-		/** Objekt, das den Versand von Konfigurationsanfragen(die Antwort darauf) übernimmt. */
+		/** Objekt, das den Versand von Konfigurationsanfragen(die Antwort darauf) Ã¼bernimmt. */
 		private final SenderReceiverCommunication _senderReplyWriteTasks;
 
-		/** Objekt, das den Versand von Konfigurationsanfragen(die Antwort darauf) übernimmt. */
+		/** Objekt, das den Versand von Konfigurationsanfragen(die Antwort darauf) Ã¼bernimmt. */
 		private final SenderReceiverCommunication _senderReplyAreaTasks;
 
-		/** Objekt, das den Versand von Konfigurationsanfragen(die Antwort darauf) übernimmt. */
+		/** Objekt, das den Versand von Konfigurationsanfragen(die Antwort darauf) Ã¼bernimmt. */
 		private final SenderReceiverCommunication _senderReplyUserAdministrationTask;
 
-		/** Datenidentifikation für lesende Konfigurationsanfragen. Die Simulationsvariante wird beachtet. */
+		/** Datenidentifikation fÃ¼r lesende Konfigurationsanfragen. Die Simulationsvariante wird beachtet. */
 		private final DataDescription _dataDescriptionReadLocal;
 
-		/** Datenidentifikation für schreibende Konfigurationsanfragen. Die Simulationsvariante wird beachtet. */
+		/** Datenidentifikation fÃ¼r schreibende Konfigurationsanfragen. Die Simulationsvariante wird beachtet. */
 		private final DataDescription _dataDescriptionWriteLocal;
 
 		/**
-		 * Datenidentifikation für Konfigurationsanfragen, die Konfigurationsbereiche steuern. Die Identifikation wird auch bei Simulationen erzeugt, um eine
-		 * Null-Pointer Exception zu verhindern. Allerdings wird weder ein Sender noch ein Empfänger für diese Anfragen angemeldet.
+		 * Datenidentifikation fÃ¼r Konfigurationsanfragen, die Konfigurationsbereiche steuern. Die Identifikation wird auch bei Simulationen erzeugt, um eine
+		 * Null-Pointer Exception zu verhindern. Allerdings wird weder ein Sender noch ein EmpfÃ¤nger fÃ¼r diese Anfragen angemeldet.
 		 */
 		private final DataDescription _dataDescriptionAreaLocal;
 
 		/**
-		 * Datenidentifikation für Konfigurationsanfragen, die Benutzer beeinflussen. Die Identifikation wird auch bei Simulationen erzeugt, um eine Null-Pointer
-		 * Exception zu verhindern. Allerdings wird weder ein Sender noch ein Empfänger für diese Anfragen angemeldet.
+		 * Datenidentifikation fÃ¼r Konfigurationsanfragen, die Benutzer beeinflussen. Die Identifikation wird auch bei Simulationen erzeugt, um eine Null-Pointer
+		 * Exception zu verhindern. Allerdings wird weder ein Sender noch ein EmpfÃ¤nger fÃ¼r diese Anfragen angemeldet.
 		 */
 		private final DataDescription _dataDescriptionUserLocal;
 
-		/** Wird für Anmdeldung als Sender/Empfänger benötigt */
+		/** Wird fÃ¼r Anmdeldung als Sender/EmpfÃ¤nger benÃ¶tigt */
 		private final short _simulationVariant;
 
 		/** Objekt, das aus Sicht der Konfiguration eine Simulation darstellt. Ist die <code>_simulationVariant</code> > 0, so muss dieses Objekt vorhanden sein. */
 		private ConfigSimulationObject _simulationObject = null;
 
-		/** Enthält für jeden dynamischen Typ einen Listener. Die Listener werden gespeichert, um sie später wieder abmelden zu können. */
+		/** EnthÃ¤lt fÃ¼r jeden dynamischen Typ einen Listener. Die Listener werden gespeichert, um sie spÃ¤ter wieder abmelden zu kÃ¶nnen. */
 		private final Map<DynamicObjectType, InvalidationListener> _invalidationListenerForAllTyps = new HashMap<DynamicObjectType, InvalidationListener>();
 
-		/** Enthält für jeden dynamischen Typ einen Listener. Die Listener werden gespeichert, um sie später wieder abmelden zu können. */
+		/** EnthÃ¤lt fÃ¼r jeden dynamischen Typ einen Listener. Die Listener werden gespeichert, um sie spÃ¤ter wieder abmelden zu kÃ¶nnen. */
 		private final Map<DynamicObjectType, DynamicObjectType.NameChangeListener> _nameChangedListener = new HashMap<DynamicObjectType, DynamicObjectType.NameChangeListener>();
 
-		/** Enthält für jeden dynamischen Typ einen Listener. Die Listener werden gespeichert, um sie später wieder abmelden zu können. */
+		/** EnthÃ¤lt fÃ¼r jeden dynamischen Typ einen Listener. Die Listener werden gespeichert, um sie spÃ¤ter wieder abmelden zu kÃ¶nnen. */
 		private final Map<DynamicObjectType, DynamicObjectType.DynamicObjectCreatedListener> _objectCreatedListener = new HashMap<DynamicObjectType, DynamicObjectType.DynamicObjectCreatedListener>();
 
-		/** Map, die die angemeldeten Listener für Änderungen der Elemente von dynamischen Zusammenstellungen speichert, für Key und Value wird das selbe
-		 * Listener-Objekt verwendet. Allerdings ist die interne Simulationsvariante im Listenerobjekt nicht signifikant für die HashMap.
+		/** Map, die die angemeldeten Listener fÃ¼r Ã„nderungen der Elemente von dynamischen Zusammenstellungen speichert, fÃ¼r Key und Value wird das selbe
+		 * Listener-Objekt verwendet. Allerdings ist die interne Simulationsvariante im Listenerobjekt nicht signifikant fÃ¼r die HashMap.
  		 */
 		private Map<PublishingMutableCollectionChangeListener, PublishingMutableCollectionChangeListener> _mutableCollectionChangeHandlers = new HashMap<PublishingMutableCollectionChangeListener, PublishingMutableCollectionChangeListener>();
 
 		private HashMap<PublishingCommunicationStateListener, PublishingCommunicationStateListener> _communicationChangedHandlers = new HashMap<PublishingCommunicationStateListener, PublishingCommunicationStateListener>();
 
 		/**
-		 * Bearbeitet Konfigurationsanfragen und reicht diese an das Datenmodell weiter und verschickt anschließend die Antwort.
+		 * Bearbeitet Konfigurationsanfragen und reicht diese an das Datenmodell weiter und verschickt anschlieÃŸend die Antwort.
 		 *
 		 * @param querySender       Applikation, die die Anfragen gestellt hat
 		 * @param simulationVariant Simulationsvariante, mit der die Antworten angemeldet werden. Ist die Simulationsvariante > 0, so muss auch das Objekt
-		 *                          <code>simulationObject</code> übergeben werden.
-		 * @param simulationObject  Objekt, über das zusätzliche Informationen über eine Simulation abgefragt werden können. Dieses Objekt kann auch <code>null</code>
+		 *                          <code>simulationObject</code> Ã¼bergeben werden.
+		 * @param simulationObject  Objekt, Ã¼ber das zusÃ¤tzliche Informationen Ã¼ber eine Simulation abgefragt werden kÃ¶nnen. Dieses Objekt kann auch <code>null</code>
 		 *                          sein, falls der Parameter <code>simulationVariant</code> kleiner/gleich 0 ist.
 		 */
 		public QueryHandler(SystemObject querySender, short simulationVariant, ConfigSimulationObject simulationObject) {
 			_querySender = querySender;
 			_isRequestFromApplication = _querySender instanceof ClientApplication;
-			_debug.fine("QueryHandler für " + _querySender + ", isRequestFromApplication: " + _isRequestFromApplication);
+			_debug.fine("QueryHandler fÃ¼r " + _querySender + ", isRequestFromApplication: " + _isRequestFromApplication);
 			_simulationVariant = simulationVariant;
 			_worker = new Thread(this);
 			_worker.start();
-			if(simulationVariant > 0 && simulationObject == null) throw new IllegalStateException("Für eine Simulation wurde kein Simulationsobjekt angegeben");
+			if(simulationVariant > 0 && simulationObject == null) throw new IllegalStateException("FÃ¼r eine Simulation wurde kein Simulationsobjekt angegeben");
 			_simulationObject = simulationObject;
 
-			// Die Anfragen müssen identifiziert werden (über ihre Datenidentifikation), aus diesem Grund wird an dieser Stelle
-			// die erwarteten/unterstützten Identifikationen erzeugt.
+			// Die Anfragen mÃ¼ssen identifiziert werden (Ã¼ber ihre Datenidentifikation), aus diesem Grund wird an dieser Stelle
+			// die erwarteten/unterstÃ¼tzten Identifikationen erzeugt.
 			if(simulationVariant > 0) {
-				// Es handelt sich um eine Simulation, also müssen neue Datenidentifikationen erzeut werden
+				// Es handelt sich um eine Simulation, also mÃ¼ssen neue Datenidentifikationen erzeut werden
 				_dataDescriptionReadLocal = new DataDescription(_dataDescriptionRead.getAttributeGroup(), _dataDescriptionRead.getAspect(), simulationVariant);
 				_dataDescriptionWriteLocal = new DataDescription(
 						_dataDescriptionWrite.getAttributeGroup(), _dataDescriptionWrite.getAspect(), simulationVariant
@@ -574,7 +580,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 				_dataDescriptionUserLocal = new DataDescription(_dataDescriptionUser.getAttributeGroup(), _dataDescriptionUser.getAspect(), simulationVariant);
 			}
 			else {
-				// Es handelt sich um keine Simulation, es können die normalen Datenidentifikationen benutzt werden
+				// Es handelt sich um keine Simulation, es kÃ¶nnen die normalen Datenidentifikationen benutzt werden
 				_dataDescriptionReadLocal = _dataDescriptionRead;
 				_dataDescriptionWriteLocal = _dataDescriptionWrite;
 				_dataDescriptionAreaLocal = _dataDescriptionArea;
@@ -582,7 +588,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 			}
 
 			try {
-				// 4 Kanäle, die Antworten der Konfiguration zurückschicken
+				// 4 KanÃ¤le, die Antworten der Konfiguration zurÃ¼ckschicken
 
 				// Auf welches Objekt soll sich angemeldet werden (_querySender)
 				// Wer verschickt diese Nachricht (_localAuthority)
@@ -592,11 +598,11 @@ public class ConfigurationQueryManager implements SimulationHandler {
 				// Wer verschickt diese Nachricht (_localAuthority)
 				_senderReplyReadTasks = new ConfigurationAnswerReadTasks(_connection, _querySender, _localAuthority, simulationVariant);
 
-				// Simulationen dürfen weder Benutzer ändern noch Konfigurationsbereiche steuern. Aus diesem Grund werden keine Sender für
+				// Simulationen dÃ¼rfen weder Benutzer Ã¤ndern noch Konfigurationsbereiche steuern. Aus diesem Grund werden keine Sender fÃ¼r
 				// diesen Fall angemeldet.
 				if(simulationVariant > 0) {
 					// Auf die nicht initialisierten Objekte wird bei Simulationen nicht Zugegriffen, da die Simulation
-					// über die Datenidentifikation identifiziert werden kann.
+					// Ã¼ber die Datenidentifikation identifiziert werden kann.
 					_senderReplyUserAdministrationTask = null;
 					_senderReplyAreaTasks = null;
 				}
@@ -610,7 +616,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 					_senderReplyAreaTasks = new ConfigurationAnswerAreaTasks(_connection, _querySender, _localAuthority);
 				}
 
-				// Die Konfiguration muss alle Änderungen an Objekten propagieren. Dafür werden alle Listener bei allen Typen angemeldet.
+				// Die Konfiguration muss alle Ã„nderungen an Objekten propagieren. DafÃ¼r werden alle Listener bei allen Typen angemeldet.
 
 				// Alle dynamische Typen anfordern
 				final List<SystemObject> allDynamicTypes = _localConfiguration.getType("typ.dynamischerTyp").getElements();
@@ -618,21 +624,21 @@ public class ConfigurationQueryManager implements SimulationHandler {
 				for(SystemObject objectType : allDynamicTypes) {
 					final DynamicObjectType dynamicObjectType = (DynamicObjectType)objectType;
 
-					// Listener für "Objekte werden ungültig" anmelden
-					// Änderungen werden über die "atg.konfigurationsAnfrageSchnittstelleLesend" propagiert
+					// Listener fÃ¼r "Objekte werden ungÃ¼ltig" anmelden
+					// Ã„nderungen werden Ã¼ber die "atg.konfigurationsAnfrageSchnittstelleLesend" propagiert
 					final InvalidationListenerForTyps invalidationListenerForTyps = new InvalidationListenerForTyps(_senderReplyReadTasks, dynamicObjectType, _isRequestFromApplication);
 					dynamicObjectType.addInvalidationListener(invalidationListenerForTyps);
-					// Damit die Listener wieder entfernt werden können
+					// Damit die Listener wieder entfernt werden kÃ¶nnen
 					_invalidationListenerForAllTyps.put(dynamicObjectType, invalidationListenerForTyps);
 
-					// Listener für "Der Name ändert sich" anmelden
+					// Listener fÃ¼r "Der Name Ã¤ndert sich" anmelden
 					final NameChangedListenerForTyps nameChangedListenerForTyps = new NameChangedListenerForTyps(_senderReplyReadTasks, dynamicObjectType,
 					                                                                                             _isRequestFromApplication
 					);
 					dynamicObjectType.addNameChangeListener(nameChangedListenerForTyps);
 					_nameChangedListener.put(dynamicObjectType, nameChangedListenerForTyps);
 
-					// Listener für "Neues Objekt" anmelden
+					// Listener fÃ¼r "Neues Objekt" anmelden
 					final ObjectCreatedListenerForTyps objectCreatedListenerForTyps = new ObjectCreatedListenerForTyps(
 							_senderReplyReadTasks, dynamicObjectType
 					);
@@ -650,7 +656,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 			}
 		}
 
-		/** Meldet alle Listener ab, die auf Änderungen bei dynamischen Typen angemeldet waren. */
+		/** Meldet alle Listener ab, die auf Ã„nderungen bei dynamischen Typen angemeldet waren. */
 		private void detachListener() {
 
 			synchronized(_communicationChangedHandlers) {
@@ -679,14 +685,14 @@ public class ConfigurationQueryManager implements SimulationHandler {
 				final InvalidationListener invalidationListenerForTyps = _invalidationListenerForAllTyps.get(dynamicObjectType);
 				assert invalidationListenerForTyps != null : dynamicObjectType;
 				dynamicObjectType.removeInvalidationListener(invalidationListenerForTyps);
-				// Damit die Listener wieder entfernt werden können
+				// Damit die Listener wieder entfernt werden kÃ¶nnen
 
-				// Listener für "Der Name ändert sich" abmelden
+				// Listener fÃ¼r "Der Name Ã¤ndert sich" abmelden
 				final DynamicObjectType.NameChangeListener nameChangedListenerForTyps = _nameChangedListener.get(dynamicObjectType);
 				assert nameChangedListenerForTyps != null : dynamicObjectType;
 				dynamicObjectType.removeNameChangeListener(nameChangedListenerForTyps);
 
-				// Listener für "Neues Objekt" abmelden
+				// Listener fÃ¼r "Neues Objekt" abmelden
 				final DynamicObjectType.DynamicObjectCreatedListener objectCreatedListenerForTyps = _objectCreatedListener.get(dynamicObjectType);
 				assert objectCreatedListenerForTyps != null : dynamicObjectType;
 				dynamicObjectType.removeObjectCreationListener(objectCreatedListenerForTyps);
@@ -711,7 +717,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 
 			_senderReplyWriteTasks.close();
 			_senderReplyReadTasks.close();
-			// Bei Simulationen werden diese Kanäle nicht angemeldet
+			// Bei Simulationen werden diese KanÃ¤le nicht angemeldet
 			if(_simulationVariant <= 0) {
 				_senderReplyUserAdministrationTask.close();
 				_senderReplyAreaTasks.close();
@@ -731,11 +737,11 @@ public class ConfigurationQueryManager implements SimulationHandler {
 					ResultData resultData = null;
 //					do {
 					while(resultData == null) {
-						// Es wird alle 60 Sekunden geprüft, ob die Verbindung noch vorhanden ist
+						// Es wird alle 60 Sekunden geprÃ¼ft, ob die Verbindung noch vorhanden ist
 						resultData = _queries.poll(60000);
 						synchronized(_lock) {
-							// Es werden nur noch die neuen Anfrageschnittstellen unterstützt -> Die vier Sendesteuerungen müssen vorhanden sein.
-							// Nur wenn beide Fälle negativ sind, kann der Thread, der sich um die Anfragen kümmert beendet werden
+							// Es werden nur noch die neuen Anfrageschnittstellen unterstÃ¼tzt -> Die vier Sendesteuerungen mÃ¼ssen vorhanden sein.
+							// Nur wenn beide FÃ¤lle negativ sind, kann der Thread, der sich um die Anfragen kÃ¼mmert beendet werden
 							// (Es gab einmal eine positive Sendesteuerung und jetzt nicht mehr).
 							if(((_senderReplyAreaTasks != null
 							     && _senderReplyAreaTasks.getConnectionState() != SenderReceiverCommunication.ConnectionState.Connected
@@ -753,7 +759,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 								detachSelf();
 
 								_debug.fine(
-										"QueryHandlerWorker ist fertig und beendet sich. Anfragende Applikation, die keine Antworten mehr erhält: "
+										"QueryHandlerWorker ist fertig und beendet sich. Anfragende Applikation, die keine Antworten mehr erhÃ¤lt: "
 										+ _querySender
 								);
 								return;
@@ -775,9 +781,9 @@ public class ConfigurationQueryManager implements SimulationHandler {
 					//_debug.fine("queryMessage = " + queryMessage);
 					Deserializer deserializer = SerializingFactory.createDeserializer(2, new ByteArrayInputStream(queryMessage));
 
-					_debug.fine("Konfiguration empfängt Auftrag: " + resultData.getDataDescription() + " AnfrageTyp: " + queryType);
+					_debug.fine("Konfiguration empfÃ¤ngt Auftrag: " + resultData.getDataDescription() + " AnfrageTyp: " + queryType);
 
-					// Enthält die serialisierte Nachricht(byte-Array), die verschickt werden muss
+					// EnthÃ¤lt die serialisierte Nachricht(byte-Array), die verschickt werden muss
 					ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
 					Serializer serializer = SerializingFactory.createSerializer(2, byteArrayStream);
 
@@ -792,7 +798,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 						boolean sendData = true;
 						try {
 							if(queryType.equals("ObjektAnfrageMitId")) {
-								// Diese Anfrage wird aktuell nur für den ForeinRequestmanager verwendet und ist veraltet.
+								// Diese Anfrage wird aktuell nur fÃ¼r den ForeinRequestmanager verwendet und ist veraltet.
 								// Applikationen verwenden ObjektAnfrageMitIdNeu
 								long id = deserializer.readLong();
 								SystemObject object = _localConfiguration.getObject(id);
@@ -892,13 +898,13 @@ public class ConfigurationQueryManager implements SimulationHandler {
 
 								// Zu beachten:  Das Simulationobjekt ist bei Simulationsvariante <= 0 <code>null</code>, bei Simulationen ist das Objekt vorhanden
 
-								// Bei der Anfrage müssen 3 Fälle unterschieden werden:
+								// Bei der Anfrage mÃ¼ssen 3 FÃ¤lle unterschieden werden:
 								// 1) Keine Simulation -> Anfrage ganz normal stellen
 								// 2) Simulation, aber der Typ der Menge befindet sich nicht in den speziell zu behandelnden Mengen -> Anfrage normal stellen
-								// 3) Simulation und der Typ der Menge muss speziell behandelt werden -> Anfrage an die Menge, aber unter Berücksichtigung der Simulationsvariante
+								// 3) Simulation und der Typ der Menge muss speziell behandelt werden -> Anfrage an die Menge, aber unter BerÃ¼cksichtigung der Simulationsvariante
 
-								// true = Die Elemente einer Menge müssen unter Berücksichtigung der Simulationsvariante angefordert werden; false = Die Elemente
-								// können ganz normal angefordert werden
+								// true = Die Elemente einer Menge mÃ¼ssen unter BerÃ¼cksichtigung der Simulationsvariante angefordert werden; false = Die Elemente
+								// kÃ¶nnen ganz normal angefordert werden
 
 								final boolean requestWithSimulationVariant;
 								if(_simulationVariant <= 0) {
@@ -922,7 +928,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 								// Fallunterscheidung, welches getElements aufgerufen werden muss
 								List resultList = new LinkedList();
 								if(startTime == Long.MAX_VALUE && endTime == Long.MAX_VALUE) {
-									// Muss bei den Elementen die Simulationsvariante berücksichtigt werden
+									// Muss bei den Elementen die Simulationsvariante berÃ¼cksichtigt werden
 									if(requestWithSimulationVariant) {
 										resultList = ((ConfigMutableSet)set).getElementsWithSimulationVariant(_simulationVariant);
 									}
@@ -931,7 +937,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 									}
 								}
 								else if(startTime == endTime) {
-									// Muss bei den Elementen die Simulationsvariante berücksichtigt werden
+									// Muss bei den Elementen die Simulationsvariante berÃ¼cksichtigt werden
 									if(requestWithSimulationVariant) {
 										resultList = ((ConfigMutableSet)set).getElementsWithSimulationVariant(startTime, _simulationVariant);
 									}
@@ -940,7 +946,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 									}
 								}
 								else if(validDuringEntirePeriod) {
-									// Muss bei den Elementen die Simulationsvariante berücksichtigt werden
+									// Muss bei den Elementen die Simulationsvariante berÃ¼cksichtigt werden
 									if(requestWithSimulationVariant) {
 										resultList = ((ConfigMutableSet)set).getElementsDuringPeriod(startTime, endTime, _simulationVariant);
 									}
@@ -949,7 +955,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 									}
 								}
 								else if(!validDuringEntirePeriod) {
-									// Muss bei den Elementen die Simulationsvariante berücksichtigt werden
+									// Muss bei den Elementen die Simulationsvariante berÃ¼cksichtigt werden
 									if(requestWithSimulationVariant) {
 										resultList = ((ConfigMutableSet)set).getElementsInPeriod(startTime, endTime, _simulationVariant);
 									}
@@ -958,7 +964,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 									}
 								}
 
-								serializer.writeInt(resultList.size());	// speichert die Länge der Antwort
+								serializer.writeInt(resultList.size());	// speichert die LÃ¤nge der Antwort
 								for(Iterator iterator = resultList.iterator(); iterator.hasNext();) {
 									SystemObject systemObject = (SystemObject)iterator.next();
 									serializer.writeObjectReference(systemObject);
@@ -971,11 +977,11 @@ public class ConfigurationQueryManager implements SimulationHandler {
 								if(_publisher == null) _publisher = new MutableSetChangePublisher();
 
 								if(_simulationVariant <= 0) {
-									// der Zeitstempel wird momentan nicht benötigt, deshalb wird er nicht weitergereicht
+									// der Zeitstempel wird momentan nicht benÃ¶tigt, deshalb wird er nicht weitergereicht
 									set.addChangeListener(_publisher /*, time*/);
 								}
 								else {
-									// der Zeitstempel wird momentan nicht benötigt, deshalb wird er nicht weitergereicht
+									// der Zeitstempel wird momentan nicht benÃ¶tigt, deshalb wird er nicht weitergereicht
 									((ConfigMutableSet)set).addChangeListener(_publisher, _simulationVariant /*, time*/);
 								}
 								synchronized(_lockPublisher) {
@@ -1079,7 +1085,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 										communicationState = foreignConfigRequester.isCommunicatorConnected() ? 1 : 0;
 									}
 								}
-								messageType = "KommunikationszustandRückmeldung";
+								messageType = "KommunikationszustandRÃ¼ckmeldung";
 								serializer.writeObjectReference(object);
 								serializer.writeByte(communicationState);
 							}
@@ -1141,7 +1147,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 									}
 									else {
 										// Aus dem Data-Objekt wird mit einem eigenen Serializer ein ByteArray erzeugt,
-										// damit die Länge bestimmt werden kann.
+										// damit die LÃ¤nge bestimmt werden kann.
 										// Stream wird bei jedem Schleifendurchlauf wiederverwendet und deshalb mit reset() initialisiert
 										dataOutputStream.reset();
 										dataSerializer.writeData(configData);
@@ -1173,7 +1179,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 								messageType = "AntwortObjekteAnfragenMitPidUndZeitbereich";
 							}
 							else if(queryType.equals("AktiveVersionKonfigurationsbereich")) {
-								// Das übergebene Objekt ist ein Konfigurationsbereich
+								// Das Ã¼bergebene Objekt ist ein Konfigurationsbereich
 								final ConfigurationArea configurationArea = (ConfigurationArea)deserializer.readObjectReference(_localConfiguration);
 
 								// Aktive Version anfragen und den short-Wert verschicken
@@ -1183,7 +1189,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 								messageType = "AntwortAktiveVersionKonfigurationsbereich";
 							}
 							else if(queryType.equals("VersionInArbeitKonfigurationsbereich")) {
-								// Das übergebene Objekt ist ein Konfigurationsbereich
+								// Das Ã¼bergebene Objekt ist ein Konfigurationsbereich
 								final ConfigurationArea configurationArea = (ConfigurationArea)deserializer.readObjectReference(_localConfiguration);
 
 								// modifizierbare Version anfragen und den short-Wert verschicken
@@ -1195,7 +1201,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 							else if(queryType.equals("ObjekteMitBereichUndTypAnfragen")) {
 								// Konfigurationsbereiche einlesen. Die Zahl -99 wird als <code>null</code> interpretiert und dient als Wildcard.
 								final int numberOfConfigurationAreas = deserializer.readInt();
-								// Bereiche, die geprüft werden sollen
+								// Bereiche, die geprÃ¼ft werden sollen
 								final Collection<ConfigurationArea> configurationAreas;
 
 								if(numberOfConfigurationAreas >= 0) {
@@ -1205,13 +1211,13 @@ public class ConfigurationQueryManager implements SimulationHandler {
 									}
 								}
 								else {
-									// Wildcard für Bereiche
+									// Wildcard fÃ¼r Bereiche
 									configurationAreas = null;
 								}
 
 								// Typen einlesen. Die Zahl -99 wird als <code>null</code> interpretiert und dient als Wildcard.
 								final int numberOfTypes = deserializer.readInt();
-								// Typen, die geprüft werden sollen
+								// Typen, die geprÃ¼ft werden sollen
 								final Collection<SystemObjectType> systemObjectTypes;
 
 								if(numberOfTypes >= 0) {
@@ -1222,7 +1228,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 									}
 								}
 								else {
-									// Wildcard für Typen
+									// Wildcard fÃ¼r Typen
 									systemObjectTypes = null;
 								}
 
@@ -1293,7 +1299,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 							else if(queryType.equals("ElementeEinerMengeZeit")) {
 								final ObjectSet set = (ObjectSet)deserializer.readObjectReference(_localConfiguration);
 
-								// Zeit, in der die Objekte gültig sein sollen
+								// Zeit, in der die Objekte gÃ¼ltig sein sollen
 								final ObjectTimeSpecification objectTimeSpecification = deserializeObjectTimeSpecification(deserializer);
 
 								final List<SystemObject> result;
@@ -1324,7 +1330,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 								List<SystemObject> result;
 
 								if(kindOfVersion == KindOfVersion.IN_ALL_VERSIONS || kindOfVersion == KindOfVersion.IN_ANY_VERSIONS) {
-									// die Versionen sind in beiden Fällen gespeichert
+									// die Versionen sind in beiden FÃ¤llen gespeichert
 									final short fromVersion = deserializer.readShort();
 									final short toVersion = deserializer.readShort();
 
@@ -1341,7 +1347,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 									result = set.getElementsInVersion(version);
 								}
 								else if(kindOfVersion == KindOfVersion.IN_NEXT_VERSION) {
-									// Für diesen Fall muss nichts weiter ausgelesen werden
+									// FÃ¼r diesen Fall muss nichts weiter ausgelesen werden
 									result = set.getElementsInModifiableVersion();
 								}
 								else {
@@ -1380,24 +1386,24 @@ public class ConfigurationQueryManager implements SimulationHandler {
 						String messageType = "";
 						// Schreibende Anfrage
 						try {
-							if(queryType.equals("DynamischeMengeElementeÄndern") || queryType.equals("KonfigurierendeMengeElementeÄndern")) {
+							if(queryType.equals("DynamischeMengeElementeÃ„ndern") || queryType.equals("KonfigurierendeMengeElementeÃ„ndern")) {
 
 								final ObjectSet set;
 
-								// Soll eine dynamische oder eine konfigurierende Menge geändert werden. Da auf dem Interface gearbeitet wird,
+								// Soll eine dynamische oder eine konfigurierende Menge geÃ¤ndert werden. Da auf dem Interface gearbeitet wird,
 								// ist nur die Objektzuweisung wichtig.
 								// Es wird auch sofort der richtige Antworttyp des Telegramms festgelegt.
-								if(queryType.equals("DynamischeMengeElementeÄndern")) {
+								if(queryType.equals("DynamischeMengeElementeÃ„ndern")) {
 									set = (MutableSet)deserializer.readObjectReference(_localConfiguration);
 									// Im Fehlerfall wird der Typ erneut gesetzt
 									messageType = "DynamischeMengeElementeAntwort";
 
-									// Bei dynamischen Mengen muss die Simulation berücksichtigt werden. Es gibt drei Fälle:
-									// 1) Es handelt sich um keine Simulation (Simvariante <= 0) -> Elemente der Menge ändern
-									// 2) Es handelt sich um eine Simulation (Simvariante > 0) und der Typ der zu ändernden Menge wurde an der Simulationsstrecke
-									// angegeben -> Elemente der Menge ändern
-									// 3) Es handelt sich um eine Simulation und der Typ der zu ändernden Menge wurde nicht an der Simulationsstrecke angegeben
-									// -> Fehler, die Menge darf nicht geändert werden
+									// Bei dynamischen Mengen muss die Simulation berÃ¼cksichtigt werden. Es gibt drei FÃ¤lle:
+									// 1) Es handelt sich um keine Simulation (Simvariante <= 0) -> Elemente der Menge Ã¤ndern
+									// 2) Es handelt sich um eine Simulation (Simvariante > 0) und der Typ der zu Ã¤ndernden Menge wurde an der Simulationsstrecke
+									// angegeben -> Elemente der Menge Ã¤ndern
+									// 3) Es handelt sich um eine Simulation und der Typ der zu Ã¤ndernden Menge wurde nicht an der Simulationsstrecke angegeben
+									// -> Fehler, die Menge darf nicht geÃ¤ndert werden
 
 									// Anmerkung: Das _simulationObject darf <code>null</code> sein, wenn die Simulationsvariante <= 0 ist.
 									if(_simulationVariant <= 0) {
@@ -1405,16 +1411,16 @@ public class ConfigurationQueryManager implements SimulationHandler {
 										handleChangeElementsRequest(deserializer, serializer, set, true, false);
 									}
 									else if(_simulationObject.isSpecialTreatedSetType((ObjectSetType)set.getType())) {
-										// Es ist eine Simulation und die Menge darf geändert werden
+										// Es ist eine Simulation und die Menge darf geÃ¤ndert werden
 										handleChangeElementsRequest(deserializer, serializer, set, true, true);
 									}
 									else {
 										// Es ist eine Simulation, aber der Typ der Menge ist nicht an der Simulationsstrecke vermerkt. Also
-										// darf die Simulation nicht ändernd auf die dynamische Menge zugreifen.
-										// Da eine Exception geworfen wird, wird der messageType entsprechend geändert.
+										// darf die Simulation nicht Ã¤ndernd auf die dynamische Menge zugreifen.
+										// Da eine Exception geworfen wird, wird der messageType entsprechend geÃ¤ndert.
 										throw new ConfigurationChangeException(
 												"Die Menge " + set.getPid() + " darf durch die Simulation " + _simulationObject.getSimulationObject().getPid()
-												+ " mit Simulationsvariante " + _simulationVariant + " nicht geändert werden."
+												+ " mit Simulationsvariante " + _simulationVariant + " nicht geÃ¤ndert werden."
 										);
 									}
 								}
@@ -1428,21 +1434,21 @@ public class ConfigurationQueryManager implements SimulationHandler {
 							}
 							else if(queryType.equals("KonfigurierendenDatensatzFestlegen")) {
 
-								// Das übergebene Byte-Array ist wie folgt aufgebaut:
+								// Das Ã¼bergebene Byte-Array ist wie folgt aufgebaut:
 
 								// Id der Attributgruppenverwendung, long
 								// Id des Systemobjekts, long
-								// Länge des folgenden byte-Arrays, int
-								// Datensatz als byte-Array. Ein byte-Array der Länge 0 wird als <code>null</code> interpretiert
+								// LÃ¤nge des folgenden byte-Arrays, int
+								// Datensatz als byte-Array. Ein byte-Array der LÃ¤nge 0 wird als <code>null</code> interpretiert
 
 								// ATG-Verwendung
 								final AttributeGroupUsage attributeGroupUsage = (AttributeGroupUsage)_localConfiguration.getObject(deserializer.readLong());
-								// SystemObject an dem der Datensatz hinzugefügt werden soll
+								// SystemObject an dem der Datensatz hinzugefÃ¼gt werden soll
 								final SystemObject object = _localConfiguration.getObject(deserializer.readLong());
 
-								// Länge des folgenden byte-Arrays
+								// LÃ¤nge des folgenden byte-Arrays
 								final int dataByteSize = deserializer.readInt();
-								// Konfigurierender Datensatz, der an das Objekt gehängt werden soll
+								// Konfigurierender Datensatz, der an das Objekt gehÃ¤ngt werden soll
 								final Data data;
 								if(dataByteSize > 0) {
 									data = deserializer.readData(attributeGroupUsage.getAttributeGroup());
@@ -1474,9 +1480,9 @@ public class ConfigurationQueryManager implements SimulationHandler {
 								if(configurationObject) {
 									// Type des Konfigurationsobjekts einlesen
 									final ConfigurationObjectType type = (ConfigurationObjectType)deserializer.readObjectReference(_localConfiguration);
-									// Mengen, die angefügt werden sollen, auslesen
+									// Mengen, die angefÃ¼gt werden sollen, auslesen
 
-									// Anzahl Mengen, die angefügt werden soll. Die Zahl "-99" stellt den Wert <code>null</code> dar
+									// Anzahl Mengen, die angefÃ¼gt werden soll. Die Zahl "-99" stellt den Wert <code>null</code> dar
 									final int numberOfSets = deserializer.readInt();
 
 									final List<ObjectSet> sets;
@@ -1498,9 +1504,9 @@ public class ConfigurationQueryManager implements SimulationHandler {
 
 									final DynamicObjectType type = (DynamicObjectType)deserializer.readObjectReference(_localConfiguration);
 
-									// Das neue Objekt anlegen, da bei diesem Auftrag keine Datensätze mit übertragen werden, wird eine leere Liste übergeben.
-									// An dieser Stelle wird festgelegt, dass die alte Methode benutzt werden soll. Diese prüft derzeit nicht, ob alle
-									// benötigten Datensätze an dem neuen Objekt vorhanden sind, auch wenn diese vorhanden sein müssen.
+									// Das neue Objekt anlegen, da bei diesem Auftrag keine DatensÃ¤tze mit Ã¼bertragen werden, wird eine leere Liste Ã¼bergeben.
+									// An dieser Stelle wird festgelegt, dass die alte Methode benutzt werden soll. Diese prÃ¼ft derzeit nicht, ob alle
+									// benÃ¶tigten DatensÃ¤tze an dem neuen Objekt vorhanden sind, auch wenn diese vorhanden sein mÃ¼ssen.
 									newObject = createDynamicObject(
 											(ConfigConfigurationArea)configurationArea, type, pid, name, new ArrayList<DataAndATGUsageInformation>(), true
 									);
@@ -1509,7 +1515,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 								messageType = "AntwortObjektAnlegen";
 							}
 							else if(queryType.equals("DynamischesObjektMitKonfigurierendenDatensaetzenAnlegen")) {
-								// Dynamisches Objekt anlegen und sofort konfigurierende Datensätze speichern
+								// Dynamisches Objekt anlegen und sofort konfigurierende DatensÃ¤tze speichern
 
 								final ConfigurationArea configArea = (ConfigurationArea)deserializer.readObjectReference(_localConfiguration);
 								final String pid = deserializer.readString();
@@ -1530,7 +1536,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 									dataSets.add(dataSet);
 								}
 
-								// Es soll die neue create-Methode benutzt werden. Also wird auch geprüft, ob alle benötigten Datensätze
+								// Es soll die neue create-Methode benutzt werden. Also wird auch geprÃ¼ft, ob alle benÃ¶tigten DatensÃ¤tze
 								// vorhanden sind.
 								final DynamicObject newObject = createDynamicObject(
 										(ConfigConfigurationArea)configArea, type, pid, name, dataSets, false
@@ -1541,9 +1547,9 @@ public class ConfigurationQueryManager implements SimulationHandler {
 							}
 							else if(queryType.equals("ObjektKopieren")) {
 
-								// Das übergebene Byte-Array besitzt folgenden aufbau:
+								// Das Ã¼bergebene Byte-Array besitzt folgenden aufbau:
 								// 1) Referenz auf das zu kopierende Objekt
-								// 2) Größe der Map, die angelegt werden muss
+								// 2) GrÃ¶ÃŸe der Map, die angelegt werden muss
 								// 3) Je Eintrag in die Map die 2 Werte;
 								// 4) Pid, die ersetzt werden soll (String)
 								// 5) Pid, die die bestehnde Pid ersetzt (String)
@@ -1570,19 +1576,19 @@ public class ConfigurationQueryManager implements SimulationHandler {
 									messageType = "AntwortObjektKopieren";
 								}
 								else {
-									// Wenn es auch möglich ist dynamische Objekte zu kopieren, dann muss nur noch dieser Fall betrachtet werden, weil
+									// Wenn es auch mÃ¶glich ist dynamische Objekte zu kopieren, dann muss nur noch dieser Fall betrachtet werden, weil
 									// die Methode dann an dem SystemObject Interface gefordert wird.
 									throw new UnsupportedOperationException(
-											"Derzeit können nur Konfigurationsobjekte kopiert werden. Vom Objekt " + systemObject.getPid()
+											"Derzeit kÃ¶nnen nur Konfigurationsobjekte kopiert werden. Vom Objekt " + systemObject.getPid()
 											+ " kann keine Kopie erstellt werden, da es kein Konfigurationsobjekt ist."
 									);
 								}
 							}
 							else if(queryType.equals("ObjektMengenBearbeiten")) {
 								// Das Telegramm besitzt folgenden Aufbau
-								// Objekt, dessen Mengen geändert werden sollen
-								// Menge, die geändert werden soll
-								// boolean, true = Menge hinzufügen; false = Menge entfernen
+								// Objekt, dessen Mengen geÃ¤ndert werden sollen
+								// Menge, die geÃ¤ndert werden soll
+								// boolean, true = Menge hinzufÃ¼gen; false = Menge entfernen
 
 								final ConfigurationObject configObject = (ConfigurationObject)deserializer.readObjectReference(_localConfiguration);
 								final ObjectSet set = (ObjectSet)deserializer.readObjectReference(_localConfiguration);
@@ -1595,14 +1601,14 @@ public class ConfigurationQueryManager implements SimulationHandler {
 									configObject.removeSet(set);
 								}
 
-								// Die Antwort signalisiert, dass die Änderungen vorgenommen wurden. Kommt es zu einem Fehler, so
-								// wird die Exception in einem anderen Telegramm übertragen.
+								// Die Antwort signalisiert, dass die Ã„nderungen vorgenommen wurden. Kommt es zu einem Fehler, so
+								// wird die Exception in einem anderen Telegramm Ã¼bertragen.
 								messageType = "AntwortObjektMengenBearbeiten";
 							}
-							else if(queryType.equals("ObjektLöschen")){
+							else if(queryType.equals("ObjektLÃ¶schen")){
 								SystemObject systemObject = deserializer.readObjectReference(_localConfiguration);
 								systemObject.invalidate();
-								messageType = "AntwortObjektLöschen";
+								messageType = "AntwortObjektLÃ¶schen";
 								if(systemObject instanceof DynamicObject) {
 									serializer.writeLong(((DynamicObject) systemObject).getNotValidSince());
 								}
@@ -1618,18 +1624,18 @@ public class ConfigurationQueryManager implements SimulationHandler {
 									messageType = "AntwortObjektWiederherstellen";
 								}
 								else {
-									throw new ConfigurationChangeException("Nur konfigurierende Objekte können wiederhergestellt werden.");
+									throw new ConfigurationChangeException("Nur konfigurierende Objekte kÃ¶nnen wiederhergestellt werden.");
 								}
 							}
-							else if(queryType.equals("ObjektNamenÄndern")){
+							else if(queryType.equals("ObjektNamenÃ„ndern")){
 								SystemObject systemObject = deserializer.readObjectReference(_localConfiguration);
 								systemObject.setName(deserializer.readString());
-								messageType = "AntwortObjektNamenÄndern";
+								messageType = "AntwortObjektNamenÃ„ndern";
 							}
-							else if(queryType.equals("KonfigurationsänderungVerweigert")) {
-								final String errorMessage = "Konfigurationsänderung wurde wegen fehlender Rechte nicht ausgeführt: " + deserializer.readString();;
+							else if(queryType.equals("KonfigurationsÃ¤nderungVerweigert")) {
+								final String errorMessage = "KonfigurationsÃ¤nderung wurde wegen fehlender Rechte nicht ausgefÃ¼hrt: " + deserializer.readString();;
 								serializer.writeString(errorMessage);
-								messageType = "KonfigurationsänderungVerweigert";
+								messageType = "KonfigurationsÃ¤nderungVerweigert";
 							}
 							else {
 								final String errorMessage = "Unbekannter nachrichtenTyp: " + queryType;
@@ -1639,14 +1645,14 @@ public class ConfigurationQueryManager implements SimulationHandler {
 							}
 						}
 						catch(ConfigurationChangeException e) {
-							// Die Konfiguration weigert sich den Schreibvorgang durchzuführen.
-							// Ein Grund dafür könnten mangelnde Rechte sein.
+							// Die Konfiguration weigert sich den Schreibvorgang durchzufÃ¼hren.
+							// Ein Grund dafÃ¼r kÃ¶nnten mangelnde Rechte sein.
 							// Es ist zu einem Fehler gekommen
 //							e.printStackTrace();
-							final String errorMessage = "Fehler beim Versuch Daten der Konfiguration zu ändern: " + e;
+							final String errorMessage = "Fehler beim Versuch Daten der Konfiguration zu Ã¤ndern: " + e;
 							serializer.writeString(errorMessage);
-							messageType = "KonfigurationsänderungVerweigert";
-							_debug.warning("Fehler beim Versuch Daten der Konfiguration zu ändern", e);
+							messageType = "KonfigurationsÃ¤nderungVerweigert";
+							_debug.warning("Fehler beim Versuch Daten der Konfiguration zu Ã¤ndern", e);
 						}
 						catch(Exception e) {
 							// Es ist zu einem Fehler gekommen
@@ -1660,28 +1666,28 @@ public class ConfigurationQueryManager implements SimulationHandler {
 						);
 					}
 					else if((_dataDescriptionUserLocal.getSimulationVariant() <= 0) && (resultData.getDataDescription().equals(_dataDescriptionUserLocal))) {
-						// Benutzerverwaltungsanfrage, diese dürfen nicht von Simulationen angestossen werden
+						// Benutzerverwaltungsanfrage, diese dÃ¼rfen nicht von Simulationen angestossen werden
 
 						// Speichert den Antworttyp der Nachricht
 						String messageType = "";
 
 						try {
 							if("AuftragBenutzerverwaltung".equals(queryType)) {
-								// Es soll (eines der unten aufgeführten Aktionen):
+								// Es soll (eines der unten aufgefÃ¼hrten Aktionen):
 								// - ein neuer Benutzer angelegt
 								// - ein Einmal-Passwort angelegt
-								// - die Rechte eines bestehenden Benutzers geändert
-								// - das Passwort eines Benutzers geändert werden
-								// - ein Benutzer gelöscht werden
-								// - Einmalpasswörter gelöscht werden odr deren verbleibende Anzahl ermittelt werden
-								// - geprüft werden, ob ein Benutzer Admin-Rechte hat.
-								// Werden neue Aufgaben ergänzt, sollte der Kommentar erweitert werden
+								// - die Rechte eines bestehenden Benutzers geÃ¤ndert
+								// - das Passwort eines Benutzers geÃ¤ndert werden
+								// - ein Benutzer gelÃ¶scht werden
+								// - EinmalpasswÃ¶rter gelÃ¶scht werden odr deren verbleibende Anzahl ermittelt werden
+								// - geprÃ¼ft werden, ob ein Benutzer Admin-Rechte hat.
+								// Werden neue Aufgaben ergÃ¤nzt, sollte der Kommentar erweitert werden
 
-								// Das übergebene Byte-Array enthält:
-								// Benutzername des Benutzers, der den Auftrag anstößt (String)
-								// Benutztes Verschlüsslungsverfahren (String)
-								// Länge des Byte-Arrays, das den verschlüsselten Auftrag enthält (int)
-								// Byte-Array, das den verschlüsselten Auftrag enthält (byte[])
+								// Das Ã¼bergebene Byte-Array enthÃ¤lt:
+								// Benutzername des Benutzers, der den Auftrag anstÃ¶ÃŸt (String)
+								// Benutztes VerschlÃ¼sslungsverfahren (String)
+								// LÃ¤nge des Byte-Arrays, das den verschlÃ¼sselten Auftrag enthÃ¤lt (int)
+								// Byte-Array, das den verschlÃ¼sselten Auftrag enthÃ¤lt (byte[])
 
 								final String username = deserializer.readString();
 								final String usedEncryptionProcessName = deserializer.readString();
@@ -1695,7 +1701,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 								// Beauftragt die Benutzerverwaltung einen Zufallstext zu generieren
 
 								// Der Zufallstext wird wie folgt gespeichert:
-								// Länge des Textes (int)
+								// LÃ¤nge des Textes (int)
 								// Zufallstext (byte[])
 
 								byte[] randomText = _authentication.getText();
@@ -1728,18 +1734,18 @@ public class ConfigurationQueryManager implements SimulationHandler {
 						);
 					}
 					else if((_dataDescriptionAreaLocal.getSimulationVariant() <= 0) && (resultData.getDataDescription().equals(_dataDescriptionAreaLocal))) {
-						// Auftrag für Konfigurationsbereiche, diese können nicht durch Simulationen angestossen werden
+						// Auftrag fÃ¼r Konfigurationsbereiche, diese kÃ¶nnen nicht durch Simulationen angestossen werden
 						// Speichert den Antworttyp der Nachricht
 						String messageType = "";
 
 						try {
-							if("BereichePrüfen".equals(queryType)) {
+							if("BereichePrÃ¼fen".equals(queryType)) {
 								ConsistencyCheckResultInterface consistencyCheckResultInterface = _localConfiguration.checkConsistency(
 										createAreaAndVersion(deserializer)
 								);
 								// Die Antwort zusammenfassen
 								transferConsistencyCheckResult(consistencyCheckResultInterface, serializer);
-								messageType = "BereichePrüfenAntwort";
+								messageType = "BereichePrÃ¼fenAntwort";
 							}
 							else if("BereicheAktivieren".equals(queryType)) {
 								ConsistencyCheckResultInterface consistencyCheckResultInterface = _localConfiguration.activateConfigurationAreas(
@@ -1748,16 +1754,16 @@ public class ConfigurationQueryManager implements SimulationHandler {
 								transferConsistencyCheckResult(consistencyCheckResultInterface, serializer);
 								messageType = "BereicheAktivierenAntwort";
 							}
-							else if("BereicheFreigabeZurÜbernahme".equals(queryType)) {
+							else if("BereicheFreigabeZurÃœbernahme".equals(queryType)) {
 								ConsistencyCheckResultInterface consistencyCheckResultInterface = _localConfiguration.releaseConfigurationAreasForTransfer(
 										createAreaAndVersion(deserializer)
 								);
 								transferConsistencyCheckResult(consistencyCheckResultInterface, serializer);
-								messageType = "BereicheFreigabeZurÜbernahmeAntwort";
+								messageType = "BereicheFreigabeZurÃœbernahmeAntwort";
 							}
 							else if("BereicheFreigabeZurAktivierung".equals(queryType)) {
 								_localConfiguration.releaseConfigurationAreasForActivation(createAreaAndVersion(deserializer));
-								// Irgendwas zurückgeben. Die positive Antwort wird nicht ausgewertet, der Fehlerfall (Fehlemeldung) ist von intresse.
+								// Irgendwas zurÃ¼ckgeben. Die positive Antwort wird nicht ausgewertet, der Fehlerfall (Fehlemeldung) ist von intresse.
 								serializer.writeBoolean(true);
 								messageType = "BereicheFreigabeZurAktivierungAntwort";
 							}
@@ -1765,14 +1771,14 @@ public class ConfigurationQueryManager implements SimulationHandler {
 								// Ein Benutzer fordert alle Konfigurtionsbereiche an, auch die, die nur in den Verwaltungsdateien
 								// gespeichert sind und nicht aktiv sind.
 
-								// Der Deserialisierer enthält keine Informationen, die ausgelesen werden müssen
+								// Der Deserialisierer enthÃ¤lt keine Informationen, die ausgelesen werden mÃ¼ssen
 
-								// Die Bereiche anfordern. Es werden nur die Id´s gebraucht. Über diese kann sich
-								// der Empfänger die Map selbst zusammenbauen (Objekt mit Id anfordern, dann steht das Objekt und die Pid zur Verfügung).
+								// Die Bereiche anfordern. Es werden nur die IdÅ½s gebraucht. Ãœber diese kann sich
+								// der EmpfÃ¤nger die Map selbst zusammenbauen (Objekt mit Id anfordern, dann steht das Objekt und die Pid zur VerfÃ¼gung).
 								final Collection<ConfigurationArea> allConfigurationAreas = _localConfiguration.getAllConfigurationAreas().values();
 
 								// Aufbau der Daten:
-								// Anzahl Id´s (int)
+								// Anzahl IdÅ½s (int)
 								// Anzahl viele Long-Werte, die jeweils einer Id eines Bereichs entsprechen
 
 								serializer.writeInt(allConfigurationAreas.size());
@@ -1798,14 +1804,14 @@ public class ConfigurationQueryManager implements SimulationHandler {
 								final ConfigurationArea newConfigurationArea = _localConfiguration.createConfigurationArea(
 										name, pid, authorityPid
 								);
-								// Id des neuen Bereichs. Damit kann der Empfänger das Objekt anfordern, auch wenn es noch nicht
+								// Id des neuen Bereichs. Damit kann der EmpfÃ¤nger das Objekt anfordern, auch wenn es noch nicht
 								// aktiv ist
 								serializer.writeLong(newConfigurationArea.getId());
 								messageType = "BereichAnlegenAntwort";
 							}
 							else if("BereicheImportieren".equals(queryType) || "BereicheExportieren".equals(queryType)) {
 
-								// In beiden Fällen muss ein Pfad und eine Anzahl Pids ausgelesen werden
+								// In beiden FÃ¤llen muss ein Pfad und eine Anzahl Pids ausgelesen werden
 
 								// Verzeichnis der Versorgungsdateien
 								final String pathString = deserializer.readString();
@@ -1830,7 +1836,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 									messageType = "BereicheExportierenAntwort";
 								}
 
-								// Irgendwas zurückgeben. Die positive Antwort wird nicht ausgewertet, der Fehlerfall (Fehlermeldung) ist von Interesse.
+								// Irgendwas zurÃ¼ckgeben. Die positive Antwort wird nicht ausgewertet, der Fehlerfall (Fehlermeldung) ist von Interesse.
 								serializer.writeBoolean(true);
 							}
 							else if("BereicheFreigabeZurAktivierungOhneKVAktivierung".equals(queryType)) {
@@ -1876,18 +1882,18 @@ public class ConfigurationQueryManager implements SimulationHandler {
 							}
 						}
 						catch(ConfigurationChangeException e) {
-							// Die Konfiguration verweigert es den Auftrag(Konfigurationsänderungen) auszuführen, weil gegen Randbediengungen
-							// verstoßen wurden, die für den Auftrag gelten mußten.
+							// Die Konfiguration verweigert es den Auftrag(KonfigurationsÃ¤nderungen) auszufÃ¼hren, weil gegen Randbediengungen
+							// verstoÃŸen wurden, die fÃ¼r den Auftrag gelten muÃŸten.
 							// Davon muss die Gegenseite informatiert werden.
-							final String reason = "Die Konfiguration kann die Konfigurationsänderung nicht ausführen: " + e;
+							final String reason = "Die Konfiguration kann die KonfigurationsÃ¤nderung nicht ausfÃ¼hren: " + e;
 							serializer.writeString(reason);
-							messageType = "KonfigurationsänderungVerweigert";
+							messageType = "KonfigurationsÃ¤nderungVerweigert";
 						}
 						catch(ConfigurationTaskException e) {
-							// Die Konfiguration verweigert es den Auftrag auszuführen, weil gegen Randbediengungen
-							// verstoßen wurden, die für den Auftrag gelten mußten.
+							// Die Konfiguration verweigert es den Auftrag auszufÃ¼hren, weil gegen Randbediengungen
+							// verstoÃŸen wurden, die fÃ¼r den Auftrag gelten muÃŸten.
 							// Davon muss die Gegenseite informatiert werden.
-							final String reason = "Die Konfiguration kann den Auftrag nicht ausführen: " + e;
+							final String reason = "Die Konfiguration kann den Auftrag nicht ausfÃ¼hren: " + e;
 							serializer.writeString(reason);
 							messageType = "KonfigurationsauftragVerweigert";
 						}
@@ -1909,7 +1915,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 							// Es handelt sich nicht um eine Simulation
 							final StringBuffer errorText = new StringBuffer("Unbekannter Konfigurationsanfragetype: " + "\n");
 							errorText.append(resultData.getDataDescription() + "\n");
-							errorText.append("Unterstützte Anfragetypen: " + "\n");
+							errorText.append("UnterstÃ¼tzte Anfragetypen: " + "\n");
 							errorText.append(_dataDescriptionReadLocal + "\n");
 							errorText.append(_dataDescriptionWriteLocal + "\n");
 							errorText.append(_dataDescriptionUserLocal + "\n");
@@ -1929,13 +1935,13 @@ public class ConfigurationQueryManager implements SimulationHandler {
 									"Unbekannter Konfigurationsanfragetyp oder unerlaubte Aktion einer Simulation: " + "\n"
 							);
 							errorText.append(resultData.getDataDescription() + "\n");
-							errorText.append("Unterstützte Anfragetypen: " + "\n");
+							errorText.append("UnterstÃ¼tzte Anfragetypen: " + "\n");
 							errorText.append(_dataDescriptionReadLocal + "\n");
 							errorText.append(_dataDescriptionWriteLocal + "\n");
 							_debug.error(errorText.toString());
 
 							throw new IllegalArgumentException(
-									"Der Typ der Konfigurationsanfrage ist unbekannt oder für Simulationen nicht zugelassen: " + resultData.getDataDescription()
+									"Der Typ der Konfigurationsanfrage ist unbekannt oder fÃ¼r Simulationen nicht zugelassen: " + resultData.getDataDescription()
 									+ " Art der Anfrage:" + queryType + " Index der Anfrage " + queryIndex + " Empfangsobjekt " + _querySender
 							);
 						}
@@ -1996,10 +2002,10 @@ public class ConfigurationQueryManager implements SimulationHandler {
 		}
 
 		/**
-		 * Ermittelt die Simulationsvariante für interne Anmeldungen auf Änderungen der Elemente von dynamischen Zusammenstellungen.
-		 * @param externalSimVariant Von außen vorgegebene Simulationsvariante.
-		 * @param mutableCollection Dynamische Menge oder dynamischer Typ für den die interne Simulationsvariante ermittelt werden soll.
-		 * @return Simulationsvariante für interne Anmeldungen auf Änderungen der Elemente von dynamischen Zusammenstellungen.
+		 * Ermittelt die Simulationsvariante fÃ¼r interne Anmeldungen auf Ã„nderungen der Elemente von dynamischen Zusammenstellungen.
+		 * @param externalSimVariant Von auÃŸen vorgegebene Simulationsvariante.
+		 * @param mutableCollection Dynamische Menge oder dynamischer Typ fÃ¼r den die interne Simulationsvariante ermittelt werden soll.
+		 * @return Simulationsvariante fÃ¼r interne Anmeldungen auf Ã„nderungen der Elemente von dynamischen Zusammenstellungen.
 		 */
 		private short getInternalSimVariant(final short externalSimVariant, final MutableCollection mutableCollection) {
 			short internalSimVariant = 0;
@@ -2010,8 +2016,8 @@ public class ConfigurationQueryManager implements SimulationHandler {
 				final ConfigSimulationObject configSimulationObject = _simulations.get(new Short(externalSimVariant));
 				if(configSimulationObject == null) {
 					_debug.warning(
-							"Anmeldung auf Änderung der Zusammenstellung " + mutableCollection.getPidOrNameOrId() + " unter Simulationsvariante "
-							+ externalSimVariant + " durch Applikation " + _querySender + " ist nicht möglich, weil kein entsprechendes Simulationsobjekt "
+							"Anmeldung auf Ã„nderung der Zusammenstellung " + mutableCollection.getPidOrNameOrId() + " unter Simulationsvariante "
+							+ externalSimVariant + " durch Applikation " + _querySender + " ist nicht mÃ¶glich, weil kein entsprechendes Simulationsobjekt "
 							+ "vorhanden ist."
 					);
 				}
@@ -2032,10 +2038,10 @@ public class ConfigurationQueryManager implements SimulationHandler {
 		}
 
 		/**
-		 * Schreibt eine Liste mit Systemobjekten in eine Serializer. Der Aufbau ist 1) Länge der Liste (int) 2)Referenzen auf die Objekte der Liste
+		 * Schreibt eine Liste mit Systemobjekten in eine Serializer. Der Aufbau ist 1) LÃ¤nge der Liste (int) 2)Referenzen auf die Objekte der Liste
 		 *
 		 * @param serializer Serialisierer, in den die Daten geschrieben werden.
-		 * @param result     Liste, die geschrieben werden soll. Wird <code>null</code> übergeben, so wird für die Länge der Liste eine 0 geschrieben.
+		 * @param result     Liste, die geschrieben werden soll. Wird <code>null</code> Ã¼bergeben, so wird fÃ¼r die LÃ¤nge der Liste eine 0 geschrieben.
 		 *
 		 * @throws IOException Fehler beim schreiben der Daten
 		 */
@@ -2055,18 +2061,18 @@ public class ConfigurationQueryManager implements SimulationHandler {
 		}
 
 		/**
-		 * Bearbeitet eine Anfrage vom Typ "DynamischeMengeElementeÄndern" oder "KonfigurierendeMengeElementeÄndern". Dabei wird der Auftrag aus dem
+		 * Bearbeitet eine Anfrage vom Typ "DynamischeMengeElementeÃ„ndern" oder "KonfigurierendeMengeElementeÃ„ndern". Dabei wird der Auftrag aus dem
 		 * Parameter deserializer ausgelesen und in die Antwort in den Paramter serializer geschrieben.
-		 * <p/>
-		 * Bei dynamischen Mengen wird die Simulationsvariante berücksichtigt, falls dies gefordert wird.
-		 * <p/>
-		 * Bei konfigurierenden Mengen wird die Simulationsvariante niemals berücksichtigt.
+		 * <p>
+		 * Bei dynamischen Mengen wird die Simulationsvariante berÃ¼cksichtigt, falls dies gefordert wird.
+		 * <p>
+		 * Bei konfigurierenden Mengen wird die Simulationsvariante niemals berÃ¼cksichtigt.
 		 *
-		 * @param deserializer              Enthält den Auftrag
+		 * @param deserializer              EnthÃ¤lt den Auftrag
 		 * @param serializer                In dieses Objekt wird die Antwort geschrieben
 		 * @param set                       Menge (dynamisch oder konfigurierend)
 		 * @param mutableSet                true = Es handelt sich um eine dynamische Menge
-		 * @param considerSimulationVariant true = Die Simulationsvariante muss berücksichtigt werden (dieser Parameter ist nur für dynamische Mengen wichtig)
+		 * @param considerSimulationVariant true = Die Simulationsvariante muss berÃ¼cksichtigt werden (dieser Parameter ist nur fÃ¼r dynamische Mengen wichtig)
 		 *
 		 * @throws IOException
 		 * @throws ConfigurationChangeException
@@ -2098,7 +2104,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 				removeElements.add(object);
 			}
 
-			// hinzufügen/löschen der Elemente aus der Menge
+			// hinzufÃ¼gen/lÃ¶schen der Elemente aus der Menge
 
 			try {
 				if(addLength > 0) {
@@ -2106,7 +2112,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 						set.add(addElements.toArray(new SystemObject[addElements.size()]));
 					}
 					else {
-						// Es handelt sich um eine Simulation und die Simulationsvariante muss berücksichtigt werden
+						// Es handelt sich um eine Simulation und die Simulationsvariante muss berÃ¼cksichtigt werden
 						((ConfigMutableSet)set).add(addElements.toArray(new SystemObject[addElements.size()]), _simulationVariant);
 					}
 				}
@@ -2127,7 +2133,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 		}
 
 		/**
-		 * Ließt aus einem Deserialisierer ein Objekt vom Typ ObjectTimeSpecification aus.
+		 * LieÃŸt aus einem Deserialisierer ein Objekt vom Typ ObjectTimeSpecification aus.
 		 *
 		 * @param deserializer
 		 *
@@ -2170,7 +2176,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 		}
 
 		/**
-		 * Ließt aus einem Deserializer Konfigurationsbereiche und zugehörige Versionen aus.
+		 * LieÃŸt aus einem Deserializer Konfigurationsbereiche und zugehÃ¶rige Versionen aus.
 		 *
 		 * @param deserializer s.o.
 		 *
@@ -2195,14 +2201,14 @@ public class ConfigurationQueryManager implements SimulationHandler {
 		}
 
 		/**
-		 * Schreibt das Ergebnis einer Konsistenzprüfung in einen Serialisierer.
+		 * Schreibt das Ergebnis einer KonsistenzprÃ¼fung in einen Serialisierer.
 		 *
-		 * @param consistencyCheckResult Ergebnis der Prüfung
-		 * @param serializer             In diesen Serialisierer wird das Ergebnis der Prüfung geschrieben
+		 * @param consistencyCheckResult Ergebnis der PrÃ¼fung
+		 * @param serializer             In diesen Serialisierer wird das Ergebnis der PrÃ¼fung geschrieben
 		 */
 		private void transferConsistencyCheckResult(ConsistencyCheckResultInterface consistencyCheckResult, Serializer serializer) throws IOException {
-			// Es wird für jeden Fall (lokaler Fehler, Interferenzfehler, Warnung) ein Eintrag erzeugt.
-			// Gab es keinen Fehler, wird für diesen Fall eine "0" eingetragen, somit kann auf der Gegenseite erkannt werden,
+			// Es wird fÃ¼r jeden Fall (lokaler Fehler, Interferenzfehler, Warnung) ein Eintrag erzeugt.
+			// Gab es keinen Fehler, wird fÃ¼r diesen Fall eine "0" eingetragen, somit kann auf der Gegenseite erkannt werden,
 			// das es diesen Fehler nicht gab.
 
 			// Aufbau der Daten:
@@ -2210,7 +2216,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 			//		Pro lokalen Fehler gibt es folgenden Eintrag:
 			//			Referenz auf den Konfigurationsbereich, Objektreferenz
 			//			Fehlertext des Fehlers, String
-			//			Anzahl betroffener Objekte, int (Jeder Eintrag entspricht einem Objekt und das Objekt wird über eine Referenz identifiziert)
+			//			Anzahl betroffener Objekte, int (Jeder Eintrag entspricht einem Objekt und das Objekt wird Ã¼ber eine Referenz identifiziert)
 			//				Id des betroffenen Objekts, Objektreferenz
 			// Anzahl Interferenzfehler(0 bedeutet, es gab keinen Fehler), int
 			// 		Der Aufbau ist gleich dem der lokalen Fehler
@@ -2246,16 +2252,16 @@ public class ConfigurationQueryManager implements SimulationHandler {
 		}
 
 		/**
-		 * Schreibt eine Liste, die lokale/Interferenzfehler oder Warnungen enthält in einen Serializer.
+		 * Schreibt eine Liste, die lokale/Interferenzfehler oder Warnungen enthÃ¤lt in einen Serializer.
 		 *
-		 * @param errorOrWarning Fehler oder Warnungen. Enthält die Liste keine Einträge, wird eine Exception geworfen
+		 * @param errorOrWarning Fehler oder Warnungen. EnthÃ¤lt die Liste keine EintrÃ¤ge, wird eine Exception geworfen
 		 * @param serializer     Serializer, in den die Fehler, bzw. Warnungen geschrieben werden
 		 *
-		 * @throws IllegalArgumentException Die Liste enthält keine Einträge
+		 * @throws IllegalArgumentException Die Liste enthÃ¤lt keine EintrÃ¤ge
 		 */
 		private void transferList(List<ConsistencyCheckResultEntry> errorOrWarning, Serializer serializer) throws IllegalArgumentException, IOException {
 			if(errorOrWarning.size() > 0) {
-				// Größe der Liste
+				// GrÃ¶ÃŸe der Liste
 				serializer.writeInt(errorOrWarning.size());
 				for(ConsistencyCheckResultEntry consistencyCheckResultEntry : errorOrWarning) {
 					// Konfigurationsbereich
@@ -2276,18 +2282,18 @@ public class ConfigurationQueryManager implements SimulationHandler {
 		}
 
 		/**
-		 * Diese Methode erzeugt ein dynamisches Objekt. Dabei wird berücksichtigt, ob es sich um eine Simulation handelt, ist dies der Fall, wird geprüft, ob die
-		 * Simulation das überhaupt darf.
+		 * Diese Methode erzeugt ein dynamisches Objekt. Dabei wird berÃ¼cksichtigt, ob es sich um eine Simulation handelt, ist dies der Fall, wird geprÃ¼ft, ob die
+		 * Simulation das Ã¼berhaupt darf.
 		 *
 		 * @param configurationArea  Bereich an dem das Objekt angelegt werden soll
 		 * @param type               Typ des neuen Objekts.
 		 * @param pid                Pid des neuen Objekts
 		 * @param name               Name des neuen Objekts
-		 * @param data               Alle Datensätze, die am neuen Objekt angelegt werden sollen. Es kann eine leere Liste oder <code>null</code> übergeben werden.
-		 * @param useOldCreateMethod <code>true</code>, wenn die alte "Create-Methode" benutzt werden soll. Die alte create-Methode prüft DERZEIT((29.6.2007) das soll
-		 *                           später anders sein) nicht, ob alle Datensätze am neuen Objekt vorhanden sind, die vorhanden sein müssen. <code>false</code>, es
-		 *                           wird die neue create-Methode benutzt und somit geprüft, ob alle geforderten Datensätze vorhanden sind. Wurde die Software
-		 *                           umgestellt(es muss immer gerpüft werden), kann dieser Parameter sehr wahrscheinlich entfernt werden.
+		 * @param data               Alle DatensÃ¤tze, die am neuen Objekt angelegt werden sollen. Es kann eine leere Liste oder <code>null</code> Ã¼bergeben werden.
+		 * @param useOldCreateMethod <code>true</code>, wenn die alte "Create-Methode" benutzt werden soll. Die alte create-Methode prÃ¼ft DERZEIT((29.6.2007) das soll
+		 *                           spÃ¤ter anders sein) nicht, ob alle DatensÃ¤tze am neuen Objekt vorhanden sind, die vorhanden sein mÃ¼ssen. <code>false</code>, es
+		 *                           wird die neue create-Methode benutzt und somit geprÃ¼ft, ob alle geforderten DatensÃ¤tze vorhanden sind. Wurde die Software
+		 *                           umgestellt(es muss immer gerpÃ¼ft werden), kann dieser Parameter sehr wahrscheinlich entfernt werden.
 		 *
 		 * @return Neues Objekt
 		 *
@@ -2302,10 +2308,10 @@ public class ConfigurationQueryManager implements SimulationHandler {
 				List<DataAndATGUsageInformation> data,
 				boolean useOldCreateMethod) throws ConfigurationChangeException {
 
-			// Bei dynamischen Objekte muss geprüft werden ob es sich um eine Simulation handelt. Und eventuelle Listener
-			// müssen benachrichtigt werden.
+			// Bei dynamischen Objekte muss geprÃ¼ft werden ob es sich um eine Simulation handelt. Und eventuelle Listener
+			// mÃ¼ssen benachrichtigt werden.
 
-			// Handelt es sich um eine Simulation muss geprüft werden ob der Typ des neuen Objekts an der Simulationsstrecke
+			// Handelt es sich um eine Simulation muss geprÃ¼ft werden ob der Typ des neuen Objekts an der Simulationsstrecke
 			// festgelegt wurde.
 			// Ist das der Fall so wird das neue Objekt mit der Simulationsvariante der Simulation angelegt.
 			// Im anderen Fall wird eine Exception geworfen.
@@ -2318,7 +2324,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 					newObject = configurationArea.createDynamicObject(type, pid, name, data);
 				}
 				else {
-					// Dieser Weg wird nur gegangen, wenn die alte Methode benutzt werden soll (diese prüft nicht, ob die Datensätze alle
+					// Dieser Weg wird nur gegangen, wenn die alte Methode benutzt werden soll (diese prÃ¼ft nicht, ob die DatensÃ¤tze alle
 					// vorhanden sind).
 					newObject = configurationArea.createDynamicObject(type, pid, name);
 				}
@@ -2330,24 +2336,24 @@ public class ConfigurationQueryManager implements SimulationHandler {
 						newObject = configurationArea.createDynamicObject(type, pid, name, data, _simulationVariant);
 					}
 					else {
-						// Dieser Weg wird nur gegangen, wenn die alte Methode benutzt werden soll (diese prüft nicht, ob die Datensätze alle
+						// Dieser Weg wird nur gegangen, wenn die alte Methode benutzt werden soll (diese prÃ¼ft nicht, ob die DatensÃ¤tze alle
 						// vorhanden sind).
 						newObject = configurationArea.createDynamicObject(type, pid, name, _simulationVariant);
 					}
 				}
 				else {
-					// Eine Simulation versucht ein Objekt anzulegen, obwohl dies für diesen Typ nicht erlaubt ist
+					// Eine Simulation versucht ein Objekt anzulegen, obwohl dies fÃ¼r diesen Typ nicht erlaubt ist
 					throw new ConfigurationChangeException(
 							"Eine Simulation " + _simulationObject.getSimulationObject().getPidOrNameOrId() + " und Simulationsvariante " + _simulationVariant
 							+ " versucht ein dynamisches Objekt vom Typ " + type.getPidOrNameOrId()
-							+ " anzulegen, obwohl für die Simulation dieser Typ nicht an der Simulationsstrecke angegeben ist."
+							+ " anzulegen, obwohl fÃ¼r die Simulation dieser Typ nicht an der Simulationsstrecke angegeben ist."
 					);
 				}
 			}
 			return newObject;
 		}
 
-		/** Intern verwendeter Listener für Anmeldungen auf Änderungen der Elemente von dynamischen Zusammenstellungen. */
+		/** Intern verwendeter Listener fÃ¼r Anmeldungen auf Ã„nderungen der Elemente von dynamischen Zusammenstellungen. */
 		private class PublishingMutableCollectionChangeListener implements ExtendedMutableCollectionChangeListener {
 
 			/** Applikationsobjekt dient zur richtigen Zuordnung der Anmeldungen. */
@@ -2359,7 +2365,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 			/** Von der Applikation vorgegebene Simulationsvariante */
 			private final short _externalSimVariant;
 
-			/** Intern verwendete Simulationsvariante. Dieses Feld wird bei den Methoden <code>equals</code> und <code>hashCode</code> nicht berücksichtigt. */
+			/** Intern verwendete Simulationsvariante. Dieses Feld wird bei den Methoden <code>equals</code> und <code>hashCode</code> nicht berÃ¼cksichtigt. */
 			private final short _internalSimVariant;
 
 			private final ForeignMutableCollectionProxy _foreignMutableCollectionProxy;
@@ -2384,8 +2390,8 @@ public class ConfigurationQueryManager implements SimulationHandler {
 			}
 
 			/**
-			 * Liefert die zugehörige dynamische Menge oder den dynamischen Typ bei dem eine Anmeldung vorgenommen wurde bzw. wird.
-			 * @return Zugehörige dynamische Menge oder dynamischer Typ.
+			 * Liefert die zugehÃ¶rige dynamische Menge oder den dynamischen Typ bei dem eine Anmeldung vorgenommen wurde bzw. wird.
+			 * @return ZugehÃ¶rige dynamische Menge oder dynamischer Typ.
 			 */
 			public MutableCollection getMutableCollection() {
 				return _mutableCollection;
@@ -2399,7 +2405,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 			}
 
 			/**
-			 * @return Intern verwendete Simulationsvariante. Dieses Feld wird bei den Methoden <code>equals</code> und <code>hashCode</code> nicht berücksichtigt.
+			 * @return Intern verwendete Simulationsvariante. Dieses Feld wird bei den Methoden <code>equals</code> und <code>hashCode</code> nicht berÃ¼cksichtigt.
 			 */
 			public short getInternalSimVariant() {
 				return _internalSimVariant;
@@ -2413,7 +2419,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 			}
 
 			/**
-			 * {@inheritDoc} Die intern verwendete Simulationsvariante wird beim Vergleich nicht berücksichtigt.
+			 * {@inheritDoc} Die intern verwendete Simulationsvariante wird beim Vergleich nicht berÃ¼cksichtigt.
 			 */
 			public boolean equals(Object obj) {
 				if(this == obj) return true;
@@ -2443,7 +2449,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 					_senderReplyReadTasks.sendData("DynamischeKollektionAktualisierung", byteArrayStream.toByteArray(), 0);
 				}
 				catch(SendSubscriptionNotConfirmed e) {
-					// Der Empfänger der Daten ist nicht mehr erreichbar. Also kann die Nachricht auch verworfen werden.
+					// Der EmpfÃ¤nger der Daten ist nicht mehr erreichbar. Also kann die Nachricht auch verworfen werden.
 				}
 				catch(Exception e) {
 					e.printStackTrace();
@@ -2468,7 +2474,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 					_senderReplyReadTasks.sendData("DynamischeKollektionElemente", byteArrayStream.toByteArray(), _queryIndex);
 				}
 				catch(SendSubscriptionNotConfirmed e) {
-					// Der Empfänger der Daten ist nicht mehr erreichbar. Also kann die Nachricht auch verworfen werden.
+					// Der EmpfÃ¤nger der Daten ist nicht mehr erreichbar. Also kann die Nachricht auch verworfen werden.
 				}
 				catch(Exception e) {
 					e.printStackTrace();
@@ -2478,7 +2484,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 				}
 			}
 		}
-		/** Intern verwendeter Listener für Anmeldungen auf Änderungen der Elemente von dynamischen Zusammenstellungen. */
+		/** Intern verwendeter Listener fÃ¼r Anmeldungen auf Ã„nderungen der Elemente von dynamischen Zusammenstellungen. */
 		private class PublishingCommunicationStateListener implements ForeignConfigRequester.ForeignCommunicationStateListener {
 
 			/** Applikationsobjekt dient zur richtigen Zuordnung der Anmeldungen. */
@@ -2509,7 +2515,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 			}
 
 			/**
-			 * {@inheritDoc} Der ForeignConfigRequester wird beim Vergleich nicht berücksichtigt.
+			 * {@inheritDoc} Der ForeignConfigRequester wird beim Vergleich nicht berÃ¼cksichtigt.
 			 */
 			public boolean equals(Object obj) {
 				if(this == obj) return true;
@@ -2530,7 +2536,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 					_senderReplyReadTasks.sendData("KommunikationszustandAktualisierung", byteArrayStream.toByteArray(), 0);
 				}
 				catch(SendSubscriptionNotConfirmed e) {
-					// Der Empfänger der Daten ist nicht mehr erreichbar. Also kann die Nachricht auch verworfen werden.
+					// Der EmpfÃ¤nger der Daten ist nicht mehr erreichbar. Also kann die Nachricht auch verworfen werden.
 				}
 				catch(Exception e) {
 					e.printStackTrace();
@@ -2542,8 +2548,8 @@ public class ConfigurationQueryManager implements SimulationHandler {
 		}
 
 		/**
-		 * Diese Klasse wird bei Dynamischen Mengen angemeldet, wenn man über Änderungen der dynamischen Menge informiert werden möchte. Wird die {@link
-		 * #update}-Methode aufgerufen, dann wird eine Antwort mit den Änderungen zusammengestellt und an den Datenverteiler geschickt. Der {@link
+		 * Diese Klasse wird bei Dynamischen Mengen angemeldet, wenn man Ã¼ber Ã„nderungen der dynamischen Menge informiert werden mÃ¶chte. Wird die {@link
+		 * #update}-Methode aufgerufen, dann wird eine Antwort mit den Ã„nderungen zusammengestellt und an den Datenverteiler geschickt. Der {@link
 		 * de.bsvrz.dav.daf.main.impl.config.request.RemoteRequestManager} liest und wertet den geschickten Datensatz aus.
 		 */
 		private class MutableSetChangePublisher implements MutableSetChangeListener {
@@ -2557,7 +2563,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 
 							ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
 							Serializer serializer = SerializingFactory.createSerializer(2, byteArrayStream);
-							serializer.writeObjectReference(set);	// Dynamische Menge, die verändert wurde
+							serializer.writeObjectReference(set);	// Dynamische Menge, die verÃ¤ndert wurde
 
 							if(addedObjects == null) {
 								serializer.writeInt(0);
@@ -2592,13 +2598,13 @@ public class ConfigurationQueryManager implements SimulationHandler {
 							serializer.writeString(errorMessage);
 							message = byteArrayStream.toByteArray();
 							messageType = "FehlerAntwort";
-							_debug.warning("Fehler beim Erzeugen einer Aktualisierungsnachricht bei Änderung einer dynamischen Menge ", e);
+							_debug.warning("Fehler beim Erzeugen einer Aktualisierungsnachricht bei Ã„nderung einer dynamischen Menge ", e);
 						}
 						_senderReplyReadTasks.sendData(messageType, message, 0);
 					}
 					catch(Exception e) {
 						e.printStackTrace();
-						_debug.error("Fehler beim Versenden einer Aktualisierungsnachricht bei Änderung einer dynamischen Menge", e);
+						_debug.error("Fehler beim Versenden einer Aktualisierungsnachricht bei Ã„nderung einer dynamischen Menge", e);
 					}
 				}
 			} // update
@@ -2609,7 +2615,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 
 		private final SenderReceiverCommunication _sender;
 
-		/** Der Typ, den dieser Listener unterstützt. */
+		/** Der Typ, den dieser Listener unterstÃ¼tzt. */
 		private final DynamicObjectType _dynamicObjectType;
 
 
@@ -2631,7 +2637,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 
 					// Telegrammaufbau
 					// Ein neues dynamisches Objekt wurde erzeugt. Das Telegramm besitzt folgenden Aufbau
-					// 0) Was für ein Telegramm wird verschickt
+					// 0) Was fÃ¼r ein Telegramm wird verschickt
 					// 1) Id des Objekts, das erzeugt wurde (long)
 					// 2) Id des Typs des Objekts (long)
 
@@ -2642,7 +2648,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 					_sender.sendData("Objektaktualisierung", byteArrayStream.toByteArray(), 0);
 				}
 				catch(SendSubscriptionNotConfirmed e) {
-					// Die Daten konnten nicht verschickt werden, weil der Empfänger nicht mehr vorhanden ist. Also interssiert ihn auch
+					// Die Daten konnten nicht verschickt werden, weil der EmpfÃ¤nger nicht mehr vorhanden ist. Also interssiert ihn auch
 					// die Antwort nicht mehr
 				}
 				catch(Exception e) {
@@ -2659,7 +2665,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 
 		private final SenderReceiverCommunication _sender;
 
-		/** Der Typ, den dieser Listener unterstützt. */
+		/** Der Typ, den dieser Listener unterstÃ¼tzt. */
 		private final DynamicObjectType _dynamicObjectType;
 
 		private boolean _isRequestFromApplication;
@@ -2684,8 +2690,8 @@ public class ConfigurationQueryManager implements SimulationHandler {
 					final Serializer serializer = SerializingFactory.createSerializer(2, byteArrayStream);
 
 					// Telegrammaufbau
-					// 0) Was für ein Telegramm ist es (byte)
-					// 1) Id des Objekt, dessen Name geändert werden soll (long)
+					// 0) Was fÃ¼r ein Telegramm ist es (byte)
+					// 1) Id des Objekt, dessen Name geÃ¤ndert werden soll (long)
 					// 2) Id des Typs von dem das Objekt ist (long)
 					// 3) Der neue Name (String)
 
@@ -2697,7 +2703,7 @@ public class ConfigurationQueryManager implements SimulationHandler {
 					_sender.sendData("Objektaktualisierung", byteArrayStream.toByteArray(), 0);
 				}
 				catch(SendSubscriptionNotConfirmed e) {
-					// Die Daten konnten nicht verschickt werden, weil der Empfänger nicht mehr vorhanden ist. Also interssiert ihn auch
+					// Die Daten konnten nicht verschickt werden, weil der EmpfÃ¤nger nicht mehr vorhanden ist. Also interssiert ihn auch
 					// die Antwort nicht mehr
 				}
 				catch(Exception e) {
@@ -2714,14 +2720,14 @@ public class ConfigurationQueryManager implements SimulationHandler {
 
 		private final SenderReceiverCommunication _sender;
 
-		/** Der Typ, den dieser Listener unterstützt. */
+		/** Der Typ, den dieser Listener unterstÃ¼tzt. */
 		private final DynamicObjectType _dynamicObjectType;
 
 		private final boolean _isRequestFromApplication;
 
 		/**
-		 * @param sender            Über dieses Objekt werden alle Änderungen an Objekten an alle angeschlossenen Applikationen propagiert.
-		 * @param dynamicObjectType Typ, für den dieser Listener verantwortlich ist.
+		 * @param sender            Ãœber dieses Objekt werden alle Ã„nderungen an Objekten an alle angeschlossenen Applikationen propagiert.
+		 * @param dynamicObjectType Typ, fÃ¼r den dieser Listener verantwortlich ist.
 		 */
 		public InvalidationListenerForTyps(final SenderReceiverCommunication sender, final DynamicObjectType dynamicObjectType, boolean isRequestFromApplication) {
 			_sender = sender;
@@ -2743,13 +2749,13 @@ public class ConfigurationQueryManager implements SimulationHandler {
 					final Serializer serializer = SerializingFactory.createSerializer(2, byteArrayStream);
 
 					// Telegrammaufbau
-					// 0) Was für ein Telegramm ist es (byte)
-					// 1) Id des Objekt, dessen Version/Zeitpunkt geändert werden soll (long)
+					// 0) Was fÃ¼r ein Telegramm ist es (byte)
+					// 1) Id des Objekt, dessen Version/Zeitpunkt geÃ¤ndert werden soll (long)
 					// 2) Id des Typs von dem das Objekt ist (long)
 					// 3) Konfiguration oder dynamisches Objekt (byte, 0 = Konfigurationsobjekt, 1 = dynamisches Objekt)
-					// Der nächste Wert ist abhängig von 3), ist es ein Konfigurationsobjekt, so muss ein short gelesen werden
-					// 4a) Version, ab der das Objekt ungültig werden wird, short
-					// 4b) Zeitpunkt, ab dem das Objekt ungültig geworden ist, long
+					// Der nÃ¤chste Wert ist abhÃ¤ngig von 3), ist es ein Konfigurationsobjekt, so muss ein short gelesen werden
+					// 4a) Version, ab der das Objekt ungÃ¼ltig werden wird, short
+					// 4b) Zeitpunkt, ab dem das Objekt ungÃ¼ltig geworden ist, long
 
 					serializer.writeByte(KindOfUpdateTelegramm.UPDATE_NOT_VALID_SINCE.getCode());
 					serializer.writeLong(dynamicObject.getId());
@@ -2757,13 +2763,13 @@ public class ConfigurationQueryManager implements SimulationHandler {
 
 					// Es ist ein dynamisches Objekt
 					serializer.writeByte(1);
-					// Zeitpunkt an dem es ungültig wird
+					// Zeitpunkt an dem es ungÃ¼ltig wird
 					serializer.writeLong(dynamicObject.getNotValidSince());
 
 					_sender.sendData("Objektaktualisierung", byteArrayStream.toByteArray(), 0);
 				}
 				catch(SendSubscriptionNotConfirmed e) {
-					// Der Empfänger der Daten ist nicht mehr erreichbar. Also kann die Nachricht auch verworfen werden.
+					// Der EmpfÃ¤nger der Daten ist nicht mehr erreichbar. Also kann die Nachricht auch verworfen werden.
 				}
 				catch(Exception e) {
 					e.printStackTrace();

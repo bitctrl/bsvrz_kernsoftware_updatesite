@@ -1,11 +1,11 @@
 /*
- * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,13 +14,20 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.communication.dataRepresentation.data.byteArray;
 
 import de.bsvrz.dav.daf.communication.dataRepresentation.data.info.AttributeInfo;
 import de.bsvrz.dav.daf.communication.dataRepresentation.data.info.version1.AbstractAttributeInfo;
+import de.bsvrz.dav.daf.communication.dataRepresentation.data.info.version1.ReferenceDefinitionInfo;
 import de.bsvrz.dav.daf.main.config.AttributeType;
 import de.bsvrz.dav.daf.main.Data;
 import de.bsvrz.dav.daf.main.config.StringAttributeType;
@@ -31,9 +38,9 @@ import java.util.Iterator;
 /**
  * Klasse, die noch zu dokumentieren ist.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 11528 $ / $Date: 2013-08-06 17:08:05 +0200 (Tue, 06 Aug 2013) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public abstract class ByteArrayData implements Data {
 	protected final byte[] _bytes;
@@ -89,14 +96,14 @@ public abstract class ByteArrayData implements Data {
 
 	public void setToDefault()
 	{
-		// Das byte-Array ist "read only", die Daten können also nicht geändert werden.
-		throw new UnsupportedOperationException("read only Objekt, die Änderung von Daten wird nicht unterstützt");
+		// Das byte-Array ist "read only", die Daten kÃ¶nnen also nicht geÃ¤ndert werden.
+		throw new UnsupportedOperationException("read only Objekt, die Ã„nderung von Daten wird nicht unterstÃ¼tzt");
 	}
 
 	public boolean isDefined()
 	{
 		if(!isPlain()){
-			// Über Kindelemente iterieren
+			// Ãœber Kindelemente iterieren
 			for(final Data data : this) {
 				if(!data.isDefined()) {
 					return false;
@@ -106,21 +113,21 @@ public abstract class ByteArrayData implements Data {
 		}
 
 		final AttributeType attributeType = getAttributeType();
-		// Alle Attribute, die einen "undefiniert Wert" zu Verfügung stellen, implementieren
+		// Alle Attribute, die einen "undefiniert Wert" zu VerfÃ¼gung stellen, implementieren
 		// das Interface "UndefinedAttributeValueAccess"
 		if(attributeType instanceof UndefinedAttributeValueAccess) {
 			final UndefinedAttributeValueAccess undefinedAttributeValueAccess = (UndefinedAttributeValueAccess)attributeType;
-			// Alle Typen, bis auf den <code>StringAttributeType</code> können entscheiden ob
+			// Alle Typen, bis auf den <code>StringAttributeType</code> kÃ¶nnen entscheiden ob
 			// die jeweiligen Attribute definiert sind (wenn der Wert des Attributes gleich dem "undefiniert Wert" ist, dann
 			// ist das Attribut nicht definiert).
 
 			// Am Attribut kann als Default-Wert der Wert "_Undefiniert" gesetzt werden. Dies entspricht aber dem
-			// undefiniert Wert und könnte somit nicht erkannt werden, wenn nur der Attributwert mit dem undefiniert Wert
-			// verglichen werden würde.
-			// Darum wird an dieser Stelle geprüft, ob am Attribut ein Default-Wert gesetzt wird. Falls dies der Fall ist,
-			// ist das Attribut definiert (es ist ja nicht möglich einen Undefiniert Wert anzugeben).
+			// undefiniert Wert und kÃ¶nnte somit nicht erkannt werden, wenn nur der Attributwert mit dem undefiniert Wert
+			// verglichen werden wÃ¼rde.
+			// Darum wird an dieser Stelle geprÃ¼ft, ob am Attribut ein Default-Wert gesetzt wird. Falls dies der Fall ist,
+			// ist das Attribut definiert (es ist ja nicht mÃ¶glich einen Undefiniert Wert anzugeben).
 			if(attributeType instanceof StringAttributeType) {
-				// Prüfen ob Default-Data am Attribut oder am Attributtyp vorhanden ist.
+				// PrÃ¼fen ob Default-Data am Attribut oder am Attributtyp vorhanden ist.
 				if(_info instanceof AbstractAttributeInfo && ((AbstractAttributeInfo)_info).getDefaultAttributeValue() != null) {
 					// wenn Defaultwert vorhanden, dann ist der Wert auf jeden Fall definiert, weil es keinen undefinierten Zustand gibt.
 					return true;
@@ -133,8 +140,8 @@ public abstract class ByteArrayData implements Data {
 			return undefinedAttributeValueAccess.isDefined(this);
 		}
 		else {
-			// Für diesen AttributeType wurde kein "undefiniert Wert" festgelegt (Beispielsweise DoubleAttributeType).
-			// Da es keinen undefiniert Wert gibt, sind automatisch alle Werte gültig.
+			// FÃ¼r diesen AttributeType wurde kein "undefiniert Wert" festgelegt (Beispielsweise DoubleAttributeType).
+			// Da es keinen undefiniert Wert gibt, sind automatisch alle Werte gÃ¼ltig.
 			return true;
 		}
 	}
@@ -175,7 +182,7 @@ public abstract class ByteArrayData implements Data {
 	public abstract Iterator<Data> iterator();
 
 	public Data getItem(int itemIndex) {
-		throw new UnsupportedOperationException("getItem(" + itemIndex + ") ist nicht möglich, weil das Attribut " + getName() + " kein Array ist.");
+		throw new UnsupportedOperationException("getItem(" + itemIndex + ") ist nicht mÃ¶glich, weil das Attribut " + getName() + " kein Array ist.");
 	}
 
 	public abstract boolean isList();
@@ -269,6 +276,29 @@ public abstract class ByteArrayData implements Data {
 		}
 		else {
 			return false;
+		}
+	}
+
+
+	/**
+	 * Diese Methode betrachtet rekursiv alle Attribute und sorgt mit entsprechenden Konfigurationsanfragen dafÃ¼r, dass
+	 * Referenzen auf lokal noch nicht bekannte Objekte aufgelÃ¶st werden.
+	 */
+	public void resolveReferences() {
+		if(isPlain()) {
+			if(getInfo().getDefinitionInfo() instanceof ReferenceDefinitionInfo) {
+				asReferenceValue().getSystemObject();
+			}
+		}
+		else {
+			for(final Data subData : this) {
+				try {
+					ByteArrayData item = (ByteArrayData) subData;
+					item.resolveReferences();
+				}
+				catch(Exception ignored) {
+				}
+			}
 		}
 	}
 

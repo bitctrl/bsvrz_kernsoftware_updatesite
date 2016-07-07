@@ -2,13 +2,13 @@
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -17,27 +17,24 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.plugins.parameditor;
 
-import de.bsvrz.dav.daf.main.ClientDavInterface;
-import de.bsvrz.dav.daf.main.ClientReceiverInterface;
-import de.bsvrz.dav.daf.main.ClientSenderInterface;
-import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.DataDescription;
-import de.bsvrz.dav.daf.main.OneSubscriptionPerSendData;
-import de.bsvrz.dav.daf.main.ReceiveOptions;
-import de.bsvrz.dav.daf.main.ReceiverRole;
-import de.bsvrz.dav.daf.main.ResultData;
-import de.bsvrz.dav.daf.main.SendSubscriptionNotConfirmed;
-import de.bsvrz.dav.daf.main.SenderRole;
+import de.bsvrz.dav.daf.main.*;
 import de.bsvrz.dav.daf.main.config.Aspect;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.dav.daf.main.config.DataModel;
 import de.bsvrz.dav.daf.main.config.SystemObject;
+import de.bsvrz.pat.sysbed.dataEditor.AbstractEditorPanel;
 import de.bsvrz.pat.sysbed.dataEditor.DataEditorPanel;
 import de.bsvrz.pat.sysbed.preselection.lists.PreselectionListsFilter;
 import de.bsvrz.pat.sysbed.preselection.panel.PreselectionDialog;
@@ -45,9 +42,11 @@ import de.bsvrz.sys.funclib.application.StandardApplication;
 import de.bsvrz.sys.funclib.application.StandardApplicationRunner;
 import de.bsvrz.sys.funclib.commandLineArgs.ArgumentList;
 import de.bsvrz.sys.funclib.debug.Debug;
+import de.kappich.sys.funclib.json.Json;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -56,16 +55,16 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Diese Klasse implementiert einen Dialog zum editieren von Parametern. Die Klasse kann als eigenständige Applikation gestartet oder in andere Applikationen
- * integriert werden. Als eigenständige Applikation werden die Aufrufargumente -objekt=... und -atg=... unterstützt mit denen spezifiziert werden kann, für
- * welches Objekt und für welche Attributgruppe ein Parameterdatensatz angezeigt werden soll.
+ * Diese Klasse implementiert einen Dialog zum editieren von Parametern. Die Klasse kann als eigenstÃ¤ndige Applikation gestartet oder in andere Applikationen
+ * integriert werden. Als eigenstÃ¤ndige Applikation werden die Aufrufargumente -objekt=... und -atg=... unterstÃ¼tzt mit denen spezifiziert werden kann, fÃ¼r
+ * welches Objekt und fÃ¼r welche Attributgruppe ein Parameterdatensatz angezeigt werden soll.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 6373 $
+ * @version $Revision$
  */
 public class ParameterEditor implements StandardApplication {
 
-	/** Logger für Debug-Ausgaben */
+	/** Logger fÃ¼r Debug-Ausgaben */
 	private static Debug _debug;
 
 	/** Pid des via Aufrufargument angegebenen Objekts. */
@@ -116,7 +115,7 @@ public class ParameterEditor implements StandardApplication {
 		);
 	}
 
-	/** Der Standardkonstruktor wird für den Aufruf durch die {@link #main(String[]) main} Methode benötigt. */
+	/** Der Standardkonstruktor wird fÃ¼r den Aufruf durch die {@link #main(String[]) main} Methode benÃ¶tigt. */
 	private ParameterEditor() {
 	}
 
@@ -130,7 +129,7 @@ public class ParameterEditor implements StandardApplication {
 	 * @param simulationVariant die Simulationsvariante
 	 */
 	public ParameterEditor(ClientDavInterface connection, SystemObject object, AttributeGroup attributeGroup, short simulationVariant) {
-		// Standardkonstruktor wird für die main-Methode verwendet -> keinen Standardkonstruktor verwenden
+		// Standardkonstruktor wird fÃ¼r die main-Methode verwendet -> keinen Standardkonstruktor verwenden
 		_debug = Debug.getLogger();
 		try {
 			EditorFrame editor = new EditorFrame(connection, object, attributeGroup, simulationVariant);
@@ -157,11 +156,9 @@ public class ParameterEditor implements StandardApplication {
 
 		private final Aspect _sendAspect;
 
-		private final DataEditorPanel _editorPanel;
+		private final AbstractEditorPanel _editorPanel;
 
 		private final JButton _sendButton;
-
-		private final JButton _pasteButton;
 
 		private JButton _actualDataButton;
 
@@ -174,8 +171,6 @@ public class ParameterEditor implements StandardApplication {
 		private DataDescription _receiveDataDescription;
 
 		private DataDescription _sendDataDescription;
-
-		private static Data _copiedData = null;
 
 		private final short _simulationVariant;
 
@@ -209,7 +204,7 @@ public class ParameterEditor implements StandardApplication {
 				}
 			};
 			dialog = new PreselectionDialog(
-					"Zu parametrierende Attributgruppe und Objekt auswählen", parentComponent, listFilter, configuration.getType("typ.konfigurationsObjekt")
+					"Zu parametrierende Attributgruppe und Objekt auswÃ¤hlen", parentComponent, listFilter, configuration.getType("typ.konfigurationsObjekt")
 			);
 			dialog.setMinimumSelectedAttributeGroups(1);
 			dialog.setMaximumSelectedAttributeGroups(1);
@@ -228,7 +223,7 @@ public class ParameterEditor implements StandardApplication {
 			_simulationVariant = simulationVariant;
 
 			try {
-				// prüfen, ob die neue Parametrierung vorhanden ist
+				// prÃ¼fen, ob die neue Parametrierung vorhanden ist
 				Class.forName("de.bsvrz.puk.param.lib.MethodenBibliothek");
 				final Class<ParameterControllerInterface> parameterControllerClass = (Class<ParameterControllerInterface>)Class.forName("pat.paramedi.ParameterController");
 				_parameterController = parameterControllerClass.newInstance();
@@ -266,10 +261,10 @@ public class ParameterEditor implements StandardApplication {
 			if(_object == null || _atg == null) {
 				if(!_usePreselectionDialog) {
 					if(_object == null) {
-						throw new IllegalArgumentException("Kein gültiges Objekt angegeben");
+						throw new IllegalArgumentException("Kein gÃ¼ltiges Objekt angegeben");
 					}
 					else {
-						throw new IllegalArgumentException("Keine gültige Attributgruppe angegeben");
+						throw new IllegalArgumentException("Keine gÃ¼ltige Attributgruppe angegeben");
 					}
 				}
 
@@ -293,7 +288,7 @@ public class ParameterEditor implements StandardApplication {
 					int visibleScreenWidth = screenSize.width - insets.left - insets.right;
 					if(preferredSize.height > visibleScreenHeight) {
 						preferredSize.height = visibleScreenHeight;
-						JScrollPane scrollPane = new JScrollPane();   // wird nur für die Breite der ScrollBar benötigt
+						JScrollPane scrollPane = new JScrollPane();   // wird nur fÃ¼r die Breite der ScrollBar benÃ¶tigt
 						preferredSize.width += scrollPane.getVerticalScrollBar().getSize().width;
 					}
 					if(preferredSize.width > visibleScreenWidth) {
@@ -307,7 +302,7 @@ public class ParameterEditor implements StandardApplication {
 			final Box headerPane = Box.createHorizontalBox();
 			headerPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-			// Auswahl-Feld dem Header hinzufügen
+			// Auswahl-Feld dem Header hinzufÃ¼gen
 			headerPane.add(createSelectionComponent());
 			headerPane.add(Box.createHorizontalStrut(10));
 			headerPane.add(createSourceComponent());
@@ -338,39 +333,62 @@ public class ParameterEditor implements StandardApplication {
 						}
 					}
 			);
-			JButton copyButton = new JButton("Kopieren");
-			copyButton.addActionListener(
+
+			final Clipboard systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+
+			JButton copyJson = new JButton("Kopieren");
+			copyJson.addActionListener(
 					new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
 							final Data data = _editorPanel.getData();
-							if(data == null) {
-								_copiedData = null;
-							}
-							else {
-								try {
-									_copiedData = data.createUnmodifiableCopy();
-								}
-								catch(Exception ex) {
-									_debug.error("Fehler beim Kopieren des Datensatzes", ex);
-									JOptionPane.showMessageDialog(_frame, ex.toString().substring(0,200), "Fehler beim Kopieren des Datensatzes", JOptionPane.ERROR_MESSAGE);
-								}
-							}
-							checkPasteButton();
+							Object json = JsonSerializer.serializeData(data);
+							systemClipboard.setContents(
+									new StringSelection(Json.getInstance().writeObject(json)), new ClipboardOwner() {
+										@Override
+										public void lostOwnership(final Clipboard clipboard, final Transferable contents) {
+
+										}
+									}
+							);
 						}
 					}
 			);
 
-			_pasteButton = new JButton("Einfügen");
-			_pasteButton.setEnabled(false);
-			_pasteButton.addActionListener(
+			final JButton pasteJson = new JButton("EinfÃ¼gen");
+			pasteJson.addActionListener(
 					new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
-							updateData(_copiedData == null ? null : _copiedData.createModifiableCopy());
+							try {
+								Data tmp = _editorPanel.getData();
+								if(tmp == null){
+									tmp = _connection.createData(_atg);
+								}
+								Data d = tmp.createModifiableCopy();
+								String data = (String) systemClipboard.getData(DataFlavor.stringFlavor);
+								Object json = Json.getInstance().readObject(data);
+								JsonSerializer.deserializeData(json, d);
+								updateData(d);
+							}
+							catch(Exception e1){
+								e1.printStackTrace();
+								String message = e1.getMessage();
+								if(message != null) {
+									JOptionPane.showMessageDialog(_frame, message);
+								}
+							}
 						}
 					}
 			);
+			
+			systemClipboard.addFlavorListener(new FlavorListener() {
+				                                  @Override
+				                                  public void flavorsChanged(final FlavorEvent e) {
+					                                  pasteJson.setEnabled(Arrays.asList(systemClipboard.getAvailableDataFlavors()).contains(DataFlavor.stringFlavor));
+				                                  }
+			                                  });
+			
 
-			JButton deleteButton = new JButton("Datensatz löschen");
+			JButton deleteButton = new JButton("Datensatz lÃ¶schen");
 			deleteButton.addActionListener(
 					new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
@@ -406,9 +424,9 @@ public class ParameterEditor implements StandardApplication {
 			buttonPane.add(Box.createHorizontalStrut(10));
 			buttonPane.add(deleteButton);
 			buttonPane.add(Box.createHorizontalStrut(10));
-			buttonPane.add(copyButton);
+			buttonPane.add(copyJson);
 			buttonPane.add(Box.createHorizontalStrut(10));
-			buttonPane.add(_pasteButton);
+			buttonPane.add(pasteJson);
 
 			buttonPane.add(Box.createHorizontalStrut(10));
 			buttonPane.add(_sendButton);
@@ -424,13 +442,11 @@ public class ParameterEditor implements StandardApplication {
 						/** Invoked when a window has been opened. */
 						public void windowOpened(WindowEvent e) {
 							super.windowOpened(e);
-							checkPasteButton();
 						}
 
 						/** Invoked when a window is activated. */
 						public void windowActivated(WindowEvent e) {
 							super.windowActivated(e);
-							checkPasteButton();
 						}
 
 						/**
@@ -440,14 +456,13 @@ public class ParameterEditor implements StandardApplication {
 						 */
 						public void windowGainedFocus(WindowEvent e) {
 							super.windowGainedFocus(e);
-							checkPasteButton();
 						}
 					}
 			);
 		}
 
 		/**
-		 * Erstellt eine Swing-Komponente zur Anzeige der Auswahl für die Parametrierung.
+		 * Erstellt eine Swing-Komponente zur Anzeige der Auswahl fÃ¼r die Parametrierung.
 		 *
 		 * @return Swing-Komponente, die die Auswahl der Parametrierung anzeigt
 		 */
@@ -467,7 +482,7 @@ public class ParameterEditor implements StandardApplication {
 
 			if(_usePreselectionDialog) {
 				selectionPane.add(Box.createHorizontalStrut(10));
-				final JButton changeSelectionButton = new JButton("Auswahl ändern");
+				final JButton changeSelectionButton = new JButton("Auswahl Ã¤ndern");
 				selectionPane.add(changeSelectionButton);
 				selectionPane.add(Box.createHorizontalStrut(10));
 				changeSelectionButton.addActionListener(
@@ -494,13 +509,13 @@ public class ParameterEditor implements StandardApplication {
 		}
 
 		/**
-		 * Erstellt eine Swing-Komponente zur Anzeige der Quelle der ausgewählten Objekt/Attributgruppe-Kombination.
+		 * Erstellt eine Swing-Komponente zur Anzeige der Quelle der ausgewÃ¤hlten Objekt/Attributgruppe-Kombination.
 		 *
 		 * @return eine Swing-Komponente zur Anzeige der Quelle
 		 */
 		private JComponent createSourceComponent() {
 			final Box sourcePane = Box.createHorizontalBox();
-			// prüfen, ob die neue Parametrierung vorhanden ist
+			// prÃ¼fen, ob die neue Parametrierung vorhanden ist
 			if(_newParametrisationAvailable) {
 				sourcePane.setBorder(BorderFactory.createTitledBorder("Quelle"));
 				final SystemObject sourceObject = _parameterController.getSourceObject();
@@ -517,7 +532,7 @@ public class ParameterEditor implements StandardApplication {
 					sourcePane.add(sourceInfoPane);
 					sourcePane.add(Box.createHorizontalStrut(10));
 
-					// Button hinzufügen
+					// Button hinzufÃ¼gen
 					_editSourceButton = new JButton("Quelle editieren");
 					sourcePane.add(_editSourceButton);
 					sourcePane.add(Box.createHorizontalStrut(10));
@@ -529,7 +544,7 @@ public class ParameterEditor implements StandardApplication {
 							}
 					);
 
-					// Labels mit Daten füllen
+					// Labels mit Daten fÃ¼llen
 					refreshSourcePanel();
 				}
 			}
@@ -539,7 +554,7 @@ public class ParameterEditor implements StandardApplication {
 
 		/** Falls die Anzeige der Quelle aktualisiert werden soll, muss diese Methode aufgerufen werden. */
 		private void refreshSourcePanel() {
-			// prüfen, ob die neue Parametrierung vorhanden ist
+			// prÃ¼fen, ob die neue Parametrierung vorhanden ist
 			if(_newParametrisationAvailable) {
 				_parameterController.actualizeSource();
 			}
@@ -564,9 +579,9 @@ public class ParameterEditor implements StandardApplication {
 		}
 
 		/**
-		 * Enabled oder disabled die Schaltfläche zum editieren des Quellenobjekts.
+		 * Enabled oder disabled die SchaltflÃ¤che zum editieren des Quellenobjekts.
 		 *
-		 * @param enable gibt an, ob die Schaltfläche aktiviert sein soll, oder nicht
+		 * @param enable gibt an, ob die SchaltflÃ¤che aktiviert sein soll, oder nicht
 		 */
 		public void showSourceButton(final boolean enable) {
 			String toolTipText = null;
@@ -580,7 +595,7 @@ public class ParameterEditor implements StandardApplication {
 			_editSourceButton.setToolTipText(toolTipText);
 		}
 
-		/** Erstellt die DataDescription für die Anmeldung beim Datenverteiler. */
+		/** Erstellt die DataDescription fÃ¼r die Anmeldung beim Datenverteiler. */
 		private void createDataDescriptions() {
 			if(_simulationVariant != -1) {
 				_receiveDataDescription = new DataDescription(_atg, _receiveAspect, _simulationVariant);
@@ -595,8 +610,8 @@ public class ParameterEditor implements StandardApplication {
 		/**
 		 * Setzt die zu verwendenden Werte innerhalb einer Methode.
 		 *
-		 * @param object neu ausgewähltes Objekt
-		 * @param atg    neu ausgewählte Attributgruppe
+		 * @param object neu ausgewÃ¤hltes Objekt
+		 * @param atg    neu ausgewÃ¤hlte Attributgruppe
 		 */
 		private void setSelection(final SystemObject object, final AttributeGroup atg) {
 			_object = object;
@@ -605,11 +620,6 @@ public class ParameterEditor implements StandardApplication {
 				_parameterController.setParameterInfo(object, atg, _simulationVariant);
 			}
 		}
-
-		public void checkPasteButton() {
-			_pasteButton.setEnabled(_copiedData == null || _copiedData.getName().equals(_sendDataDescription.getAttributeGroup().getPid()));
-		}
-
 
 		/** Startet den Parametereditor, indem die Daten bei der Parametrierung angemeldet werden und der Editor angezeigt wird. */
 		public void start() {
@@ -651,7 +661,7 @@ public class ParameterEditor implements StandardApplication {
 					_connection.subscribeSender(_parameterEditorReceiverSender, _object, _sendDataDescription, SenderRole.sender());
 				}
 				catch(OneSubscriptionPerSendData oneSubscriptionPerSendData) {
-					_debug.error("Ausnahme, die bei einer Sendeanmeldung generiert wird, wenn bereits eine lokale Sendeanmeldung für die gleichen Daten von einem anderen Anwendungsobjekt vorliegt (siehe fehlermeldung)", oneSubscriptionPerSendData);
+					_debug.error("Ausnahme, die bei einer Sendeanmeldung generiert wird, wenn bereits eine lokale Sendeanmeldung fÃ¼r die gleichen Daten von einem anderen Anwendungsobjekt vorliegt (siehe fehlermeldung)", oneSubscriptionPerSendData);
 					throw new RuntimeException(oneSubscriptionPerSendData);
 				}
 			}
@@ -686,7 +696,7 @@ public class ParameterEditor implements StandardApplication {
 			_receivedResultData = resultData;
 			_actualDataButton.setEnabled(true);
 			_editorPanel.setResultData(resultData);
-			refreshSourcePanel(); // evtl. hat sich die Quelle verändert
+			refreshSourcePanel(); // evtl. hat sich die Quelle verÃ¤ndert
 			_frame.pack();
 		}
 
@@ -706,8 +716,8 @@ public class ParameterEditor implements StandardApplication {
 
 
 		/**
-		 * Wird für die alte Parametrierung benötigt, um die Sendesteuerung zu aktivieren und den Sende-Button zu aktivieren, bzw. zu deaktivieren. Außerdem wird hier
-		 * der Empfang neuer oder geänderten Datensätze verarbeitet.
+		 * Wird fÃ¼r die alte Parametrierung benÃ¶tigt, um die Sendesteuerung zu aktivieren und den Sende-Button zu aktivieren, bzw. zu deaktivieren. AuÃŸerdem wird hier
+		 * der Empfang neuer oder geÃ¤nderten DatensÃ¤tze verarbeitet.
 		 */
 		private static class ParameterEditorReceiverSender implements ClientReceiverInterface, ClientSenderInterface {
 
@@ -727,7 +737,7 @@ public class ParameterEditor implements StandardApplication {
 
 			public void update(ResultData results[]) {
 				_debug.fine("results.length = " + results.length);
-				// falls mehrere Datensätze übertragen werden, nur den letzten Datensatz verwenden, alle anderen ignorieren
+				// falls mehrere DatensÃ¤tze Ã¼bertragen werden, nur den letzten Datensatz verwenden, alle anderen ignorieren
 				_editorFrame.setResultData(results[results.length - 1]);
 			}
 		}

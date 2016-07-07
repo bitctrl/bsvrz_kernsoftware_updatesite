@@ -1,13 +1,13 @@
 /*
  * Copyright 2010 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.sys.funclib.communicationStreams;
 
@@ -35,49 +41,49 @@ import java.io.InputStream;
 
 /**
  * Diese Klasse verschickt Nutzdatenpakete mit Streams an einen StreamDemultiplexer. Die Applikation, die ein Objekt
- * dieser Klasse erzeugt hat, stellt ihrerseits Nutzdaten für jeden Stream zur Verfügung. Auf der Gegenseite kann der
+ * dieser Klasse erzeugt hat, stellt ihrerseits Nutzdaten fÃ¼r jeden Stream zur VerfÃ¼gung. Auf der Gegenseite kann der
  * StreamDemultiplexer Nutzdaten auf jedem Stream anfordern und verarbeiten. Der StreamMultiplexer sendet seinerseits
  * nur dann Nutzdatenpakete, wenn ihn der StreamDemultiplexer dazu auffordert. Die Nutzdaten werden auch erst dann
  * erzeugt, wenn diese verschickt werden sollen. Der StreamMultiplexer verschickt die Nutzdatenpakete nicht einzeln,
- * sondern bündelt diese in einem großen Paket. Diese großen Pakete werden dann vom StreamDemultiplexer entgegen
- * genommen und ausgepackt. Diese Bündelung findet für jeden Stream einzeln statt, in jedem großen Paket befinden sich
- * also nur Nutzdaten für diesen einen Stream, nicht die Nutzdaten anderer Streams.
+ * sondern bÃ¼ndelt diese in einem groÃŸen Paket. Diese groÃŸen Pakete werden dann vom StreamDemultiplexer entgegen
+ * genommen und ausgepackt. Diese BÃ¼ndelung findet fÃ¼r jeden Stream einzeln statt, in jedem groÃŸen Paket befinden sich
+ * also nur Nutzdaten fÃ¼r diesen einen Stream, nicht die Nutzdaten anderer Streams.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8223 $
+ * @version $Revision$
  */
 public class StreamMultiplexer {
 
 	/**
-	 * Der blockingFactor bestimmt die Größe des Empfangspuffers. Dieser Wert bestimmt beim Sender nur, wie viele Pakete
-	 * der Sender ohne Bestätigung des Empfängers, beim ersten Versenden, verschicken darf (danach muß der Empfänger dem
-	 * Sender eine Sendeerlaubnis(Ticket) schicken). Dieser Wert muß beim Sender und beim Empfänger gleich sein.
+	 * Der blockingFactor bestimmt die GrÃ¶ÃŸe des Empfangspuffers. Dieser Wert bestimmt beim Sender nur, wie viele Pakete
+	 * der Sender ohne BestÃ¤tigung des EmpfÃ¤ngers, beim ersten Versenden, verschicken darf (danach muÃŸ der EmpfÃ¤nger dem
+	 * Sender eine Sendeerlaubnis(Ticket) schicken). Dieser Wert muÃŸ beim Sender und beim EmpfÃ¤nger gleich sein.
 	 */
 	private final int _blockingFactor;
 
 	/**
-	 * Diese Variable bestimmt die gesamte Größe des Puffers, der zum StreamMultiplexer gehört. Jeder Stream besitzt einen
-	 * eigenen Puffer. Sobald dieser gefüllt ist, werden alle Nutzdatenpakete als ein großes Paket verschickt.
+	 * Diese Variable bestimmt die gesamte GrÃ¶ÃŸe des Puffers, der zum StreamMultiplexer gehÃ¶rt. Jeder Stream besitzt einen
+	 * eigenen Puffer. Sobald dieser gefÃ¼llt ist, werden alle Nutzdatenpakete als ein groÃŸes Paket verschickt.
 	 */
 	private final int _bufferSizeStreamMultiplexer;
 
 	/**
-	 * Diese Variable bestimmt die Größe des Puffers, den jeder Stream zur Verfügung hat. Im Konstruktor wird dieser Wert
+	 * Diese Variable bestimmt die GrÃ¶ÃŸe des Puffers, den jeder Stream zur VerfÃ¼gung hat. Im Konstruktor wird dieser Wert
 	 * mit <code>_bufferSizeStreamMultiplexer /_numberOfStreams</code> gesetzt.
 	 */
 	private final int _bufferSizeStream;
 
 	/**
-	 * Eine Warteschlange, in ihr werden alle Streams gespeichert, die Nutzdatenpakete verschicken können. In der
+	 * Eine Warteschlange, in ihr werden alle Streams gespeichert, die Nutzdatenpakete verschicken kÃ¶nnen. In der
 	 * Warteschlange werden Objekte vom Type "IndexOfStreamAndMaxSendPackets" gespeichert. Diese Objekte enthalten den
-	 * "indexOfStream", welcher Stream kann Nutzdatenpakete verschicken, und "maxSendPackets". Dieser Wert drückt aus, wie
-	 * viele Nutzdatenpakete verschickt werden dürfen (für diesen Stream). Die Warteschlange erspart somit das "Suchen"
+	 * "indexOfStream", welcher Stream kann Nutzdatenpakete verschicken, und "maxSendPackets". Dieser Wert drÃ¼ckt aus, wie
+	 * viele Nutzdatenpakete verschickt werden dÃ¼rfen (fÃ¼r diesen Stream). Die Warteschlange erspart somit das "Suchen"
 	 * eines sendebereiten Streams.
 	 */
 	private final UnboundedQueue _queueWithStreamsPermitedToSendData;
 
 	/**
-	 * Anzahl der Streams auf denen Nutzdatenpakete verschickt werden können
+	 * Anzahl der Streams auf denen Nutzdatenpakete verschickt werden kÃ¶nnen
 	 */
 	private final int _numberOfStreams;
 	/**
@@ -92,14 +98,14 @@ public class StreamMultiplexer {
 	private final MultiplexerStreaminformations[] _streams;
 
 	/**
-	 * Objekt, das das Anfordern von Daten (von der Applikation) und versenden von Datenpaketen an den Empfänger
-	 * ermöglicht
+	 * Objekt, das das Anfordern von Daten (von der Applikation) und versenden von Datenpaketen an den EmpfÃ¤nger
+	 * ermÃ¶glicht
 	 */
 	private final StreamMultiplexerDirector _director;
 
 	/**
 	 * Mit dieser Version wird der Serializer Nutzdaten verpacken und der Deserializer Tickets auspacken. Auf der
-	 * Gegenseite wird der StreamDemultiplexer die Datensätze mit dieser Version deserialisieren und die Tickets
+	 * Gegenseite wird der StreamDemultiplexer die DatensÃ¤tze mit dieser Version deserialisieren und die Tickets
 	 * serialisieren.
 	 */
 	private final int _serializerVersion;
@@ -108,8 +114,8 @@ public class StreamMultiplexer {
 	// Anzahl versandter Nutzdatenpackete
 	private int _numberOfPacketsSend = 0;
 
-	// Anzahl von falschen maxTicketIndex Ticktes, die der Empfänger verschickt hat.
-	// (der max Index war kleiner, als der aktuelle max Index. Das Ticketpaket wurde "überholt")
+	// Anzahl von falschen maxTicketIndex Ticktes, die der EmpfÃ¤nger verschickt hat.
+	// (der max Index war kleiner, als der aktuelle max Index. Das Ticketpaket wurde "Ã¼berholt")
 	private int _numberOfFalseMaxTickets = 0;
 
 	private static Debug _debug = Debug.getLogger();
@@ -119,11 +125,11 @@ public class StreamMultiplexer {
 	/**
 	 * @param numberOfStreams             Anzahl von Streams, die Datenpakete versenden sollen
 	 * @param blockingFactor              Anzahl der Pakete, die initial am Anfang versendet werden
-	 * @param bufferSizeStreamMultiplexer Diese Variable bestimmt die gesamte Größe des Puffers, der zum StreamMultiplexer
-	 *                                    gehört
+	 * @param bufferSizeStreamMultiplexer Diese Variable bestimmt die gesamte GrÃ¶ÃŸe des Puffers, der zum StreamMultiplexer
+	 *                                    gehÃ¶rt
 	 * @param serializerVersion           Diese Variable legt die Versionsnummer des Deserializer/Serializer fest, der
 	 *                                    benutzt wird. Sowohl der StreamMultiplexer als auch der StreamDemultiplexer
-	 *                                    müssen die selbe Version benutzen
+	 *                                    mÃ¼ssen die selbe Version benutzen
 	 * @param director                    Schnittstelle, die eine Methode zum verschicken von Informationen an den Sender
 	 *                                    bereitstellt (siehe Interface Beschreibung)
 	 * @see de.bsvrz.sys.funclib.dataSerializer.Serializer
@@ -139,39 +145,39 @@ public class StreamMultiplexer {
 
 		_streams = new MultiplexerStreaminformations[_numberOfStreams];
 
-		// In dieser Warteschlange werden alle Streams eingetragen, die Daten versenden dürfen.
+		// In dieser Warteschlange werden alle Streams eingetragen, die Daten versenden dÃ¼rfen.
 		_queueWithStreamsPermitedToSendData = new UnboundedQueue();
 
 
 		for (int i = 0; i < _streams.length; i++) {
-			// Für jeden Stream ein Objekt für seine Informationen anlegen und im Array aller Streams speichern.
-			// Auf dieses Objekt kann dann später ein synchronized angewendet werden.
+			// FÃ¼r jeden Stream ein Objekt fÃ¼r seine Informationen anlegen und im Array aller Streams speichern.
+			// Auf dieses Objekt kann dann spÃ¤ter ein synchronized angewendet werden.
 			MultiplexerStreaminformations newStreaminformations = new MultiplexerStreaminformations(_blockingFactor, _director);
 			_streams[i] = newStreaminformations;
 
-			// Diese Objekt speichert, wie viele Nutzdatenpakete auf welchem Stream gesendet werden dürfen.
-			// Beim ersten Senden dürfen aber blockingFactor viele Packete an den Empfänger geschickt werden, ohne das dieser
-			// bestätigen muß.
+			// Diese Objekt speichert, wie viele Nutzdatenpakete auf welchem Stream gesendet werden dÃ¼rfen.
+			// Beim ersten Senden dÃ¼rfen aber blockingFactor viele Packete an den EmpfÃ¤nger geschickt werden, ohne das dieser
+			// bestÃ¤tigen muÃŸ.
 			IndexOfStreamAndMaxSendPackets paketsForStream = new IndexOfStreamAndMaxSendPackets(i, _blockingFactor);
-			// Den Sendeauftrag in die Warteschlange einfügen
+			// Den Sendeauftrag in die Warteschlange einfÃ¼gen
 			_queueWithStreamsPermitedToSendData.put(paketsForStream);
 		}
 	}
 
 	/**
-	 * Diese Methode verschickt die Nutzdaten über einen bestimmten Stream an den Empfänger.
+	 * Diese Methode verschickt die Nutzdaten Ã¼ber einen bestimmten Stream an den EmpfÃ¤nger.
 	 *
 	 * @param indexOfStream     : Der eindeutige Index des Streams auf dem gesendet werden soll
 	 * @param streamPacketIndex : Jedes Datenpacket bekommt eine laufende Nummer
 	 * @param data              : Nutzdaten, die versendet werden sollen
 	 */
 	private void sendDataToReceiver(int indexOfStream, int streamPacketIndex, byte[] data) {
-		// Die übergebenen Variablen müßen nun in ein byte-Array verpackt werden. Dieses byte-Array wird dann mit dem
-		// _director übertragen und auf der Gegenseite (StreamDemultiplexer) wieder "ausgepackt" und in die entsprechenden Variablen
+		// Die Ã¼bergebenen Variablen mÃ¼ÃŸen nun in ein byte-Array verpackt werden. Dieses byte-Array wird dann mit dem
+		// _director Ã¼bertragen und auf der Gegenseite (StreamDemultiplexer) wieder "ausgepackt" und in die entsprechenden Variablen
 		// umgewandelt und die passenden Objekte werden erzeugt.
 
-		// Dieses Paket wird physisch über eine Verbindung an einen StreamDemultiplexer verschickt.
-		// Die größe des Pakets setzt sich aus den drei Integerzahlen zusammen (3 * 4 Bytes) und der Länge
+		// Dieses Paket wird physisch Ã¼ber eine Verbindung an einen StreamDemultiplexer verschickt.
+		// Die grÃ¶ÃŸe des Pakets setzt sich aus den drei Integerzahlen zusammen (3 * 4 Bytes) und der LÃ¤nge
 		// des Nutzdatenpakets.
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -188,7 +194,7 @@ public class StreamMultiplexer {
 			// Die Daten werden wie folgt in dem Byte-Array verpackt
 			// 1) indexOfStream (int)
 			// 2) streamPacketIndex (int)
-			// 3) Länge des Byte-Arrays (int)
+			// 3) LÃ¤nge des Byte-Arrays (int)
 			// 4) Byte-Array (byte[])
 			serializer.writeInt(indexOfStream);
 			serializer.writeInt(streamPacketIndex);
@@ -207,7 +213,7 @@ public class StreamMultiplexer {
 
 	/**
 	 * Diese Methode fordert von einer Application, auf einem bestimmten Stream, neue Nutzdaten an.
-	 * <p/>
+	 * <p>
 	 * Die Applikation wird von dem StreamMultiplexer angesprochen, darum private.
 	 *
 	 * @param indexOfStream Index des Streams, auf dem neue Daten angefordert werden sollen
@@ -216,9 +222,9 @@ public class StreamMultiplexer {
 	private byte[] take(int indexOfStream) {
 
 		// Es werden soviele Nutzdaten angefordert, bis <code>_bufferSizeStream</code> erreicht wird, dann wird
-		// das große Paket (mit den vielen kleinen Nutzdatenpaketen als Inhalt) verschickt.
+		// das groÃŸe Paket (mit den vielen kleinen Nutzdatenpaketen als Inhalt) verschickt.
 
-		// Hier werden alle Informationen für das große Paket gespeichert. Dies wird später in ein byte-Array umgewandelt
+		// Hier werden alle Informationen fÃ¼r das groÃŸe Paket gespeichert. Dies wird spÃ¤ter in ein byte-Array umgewandelt
 		ByteArrayOutputStream bigPacket = new ByteArrayOutputStream();
 		// Serializer vorbereiten
 		Serializer serializer = null;
@@ -229,25 +235,25 @@ public class StreamMultiplexer {
 			_debug.error("Die geforderte Serializer-Version kann vom Serializer des StreamMultiplexer nicht benutzt werden, geforderte Version: " + _serializerVersion);
 		}
 
-		// Wie viele Bytes wurden bereits in dem großen Paket gespeichert, dies wird benötigt um zu prüfen ob das
-		// Paket schon die passende Größe hat.
+		// Wie viele Bytes wurden bereits in dem groÃŸen Paket gespeichert, dies wird benÃ¶tigt um zu prÃ¼fen ob das
+		// Paket schon die passende GrÃ¶ÃŸe hat.
 		int sizeOfBigPacket = 0;
 
-		// Es werden solange Nutzdaten in das große Paket gepackt, bis dies die gewünschte Größe hat oder null-Paket
-		// von der Senderapplikation versandt wurde (null bedeutet, dass keine weiteren Nutzdaten mehr zur Verfügung stehen).
+		// Es werden solange Nutzdaten in das groÃŸe Paket gepackt, bis dies die gewÃ¼nschte GrÃ¶ÃŸe hat oder null-Paket
+		// von der Senderapplikation versandt wurde (null bedeutet, dass keine weiteren Nutzdaten mehr zur VerfÃ¼gung stehen).
 
 		boolean bigPacketReady = false;
 
-		// Anmerkung: Es wird mindestens ein Nutzdatenpaket verschickt (auch wenn das eine Paket die Größe des Puffers überschreitet),
-		// da die größe des aktuellen Pakets erst nach dem einfügen eines Pakets geprüft wird.
+		// Anmerkung: Es wird mindestens ein Nutzdatenpaket verschickt (auch wenn das eine Paket die GrÃ¶ÃŸe des Puffers Ã¼berschreitet),
+		// da die grÃ¶ÃŸe des aktuellen Pakets erst nach dem einfÃ¼gen eines Pakets geprÃ¼ft wird.
 
 		while (bigPacketReady == false) {
 			// Ein Nutzdatum anfordern
 			byte[] oneData = _director.take(indexOfStream);
 //			_dataCount++;
 			if (oneData == null) {
-				// Die Senderappliaktion hat keine Nutzdaten mehr zur Verfügung, somit muß ein "null"-Paket verpackt werden.
-				// Dies wird durch einen negativen Index für die Nutzdatenpaketgröße angezeigt
+				// Die Senderappliaktion hat keine Nutzdaten mehr zur VerfÃ¼gung, somit muÃŸ ein "null"-Paket verpackt werden.
+				// Dies wird durch einen negativen Index fÃ¼r die NutzdatenpaketgrÃ¶ÃŸe angezeigt
 
 				try {
 					int negativPaketSize = -1;
@@ -256,12 +262,12 @@ public class StreamMultiplexer {
 					e.printStackTrace();
 				}
 
-				// Nun muß der Stream gekennzeichnet werden, dass er nicht mehr senden braucht.
-				// Das null-Paket wird in dem großen Paket aber noch verschickt.
+				// Nun muÃŸ der Stream gekennzeichnet werden, dass er nicht mehr senden braucht.
+				// Das null-Paket wird in dem groÃŸen Paket aber noch verschickt.
 
 				synchronized (_streams[indexOfStream]) {
 
-					// Somit darf der Stream keine Daten mehr senden, ABER das letzte große Paket darf er noch verschicken.
+					// Somit darf der Stream keine Daten mehr senden, ABER das letzte groÃŸe Paket darf er noch verschicken.
 					// Das passiert auch in der <code>sendAllStreamData()</code> Methode.
 					_streams[indexOfStream].setStreamFinished();
 					_debug.finer("\t\t\t\t\t\t\t\t\t\tSender verschickt null-Paket. Stream: " + indexOfStream + " und beendet den Stream");
@@ -271,13 +277,13 @@ public class StreamMultiplexer {
 			} else {
 				// Es wurden Nutzdaten von der Senderapplikation geschickt
 
-				// Wie groß ist das Nutzdatum
+				// Wie groÃŸ ist das Nutzdatum
 				int sizeOfData = oneData.length;
 				sizeOfBigPacket = sizeOfBigPacket + sizeOfData;
 
-				// Als erstes wird gespeichert wie groß der Nutzdatensatz ist und dann das Array für die Nutzdaten.
-				// Somit ist beim auspacken des großen Pakets immer klar, wie groß denn nun die eigentlichen
-				// Nutzdatenpakete sind (die größe steht ja vor den Nutzdatenpaketen).
+				// Als erstes wird gespeichert wie groÃŸ der Nutzdatensatz ist und dann das Array fÃ¼r die Nutzdaten.
+				// Somit ist beim auspacken des groÃŸen Pakets immer klar, wie groÃŸ denn nun die eigentlichen
+				// Nutzdatenpakete sind (die grÃ¶ÃŸe steht ja vor den Nutzdatenpaketen).
 				try {
 					serializer.writeInt(sizeOfData);
 					serializer.writeBytes(oneData);
@@ -288,15 +294,15 @@ public class StreamMultiplexer {
 			}
 
 			if ((sizeOfBigPacket > _bufferSizeStream) || (oneData == null)) {
-				// Das erzeugte Paket ist nun größer als der Puffer des Streams, somit kann das Paket verschickt werden.
-				// Wenn keine Nutzdaten mehr zur Verfügung stehen (take liefert null), dann ist das Paket auch bereits
+				// Das erzeugte Paket ist nun grÃ¶ÃŸer als der Puffer des Streams, somit kann das Paket verschickt werden.
+				// Wenn keine Nutzdaten mehr zur VerfÃ¼gung stehen (take liefert null), dann ist das Paket auch bereits
 				// versandt zu werden.
 				bigPacketReady = true;
 			}
 		}
 
-		// Das große Paket ist nun fertig, damit der Empfänger weiß wann keine Daten (int, byte[]) mehr kommen, wird eine
-		// Art EOF gesetzt. dies wird durch eine -2 symbolisiert. Jedes "bigPacket"/großes Paket bekommt diesen Stempel
+		// Das groÃŸe Paket ist nun fertig, damit der EmpfÃ¤nger weiÃŸ wann keine Daten (int, byte[]) mehr kommen, wird eine
+		// Art EOF gesetzt. dies wird durch eine -2 symbolisiert. Jedes "bigPacket"/groÃŸes Paket bekommt diesen Stempel
 		// am Ende (auch das null-Paket).
 
 		try {
@@ -308,26 +314,26 @@ public class StreamMultiplexer {
 		// Das bigPaket in ein Byte-Array umwandeln
 		byte[] data = bigPacket.toByteArray();
 
-		// Das große Paket "verschicken"
+		// Das groÃŸe Paket "verschicken"
 		return data;
 	}
 
 	/**
-	 * Diese Methode verschickt Nutzdaten, die die Senderapplikation erzeugt hat, an den Empfänger (StreamDemultiplexer).
+	 * Diese Methode verschickt Nutzdaten, die die Senderapplikation erzeugt hat, an den EmpfÃ¤nger (StreamDemultiplexer).
 	 * Ein Problem das sich dabei ergibt ist, welcher Stream ist gerade sendebereit ? Das durchsuchen aller Streams nach
 	 * einem sendebereiten Stream kann dabei sehr ungeschickt sein, da im "worst Case" immer alle Streams betrachtet werden
-	 * müßten und das für jede Nachricht. Da jeder Stream mindestens eine Nachricht verschickt wäre somit eine quadratische
+	 * mÃ¼ÃŸten und das fÃ¼r jede Nachricht. Da jeder Stream mindestens eine Nachricht verschickt wÃ¤re somit eine quadratische
 	 * Laufzeit erreicht.
-	 * <p/>
-	 * Die Grundidee ist, dass alle Tickets an einer zentralen Stelle gesammelt werden. Dafür wurde als Datenstruktur eine
-	 * Warteschlange gewählt. Diese synchronisiert sich selbständig und schickt wartende Threads automatisch in den wait
-	 * Modus, gleichzeitig werden diese Threads wieder aufgeweckt, wenn neue Daten zur Verfügung stehen.
-	 * <p/>
-	 * Sobald der Empfänger dem Sender eine Sendeerlaubnis erteilt wird der Stream mit seinem Index und der Anzahl Pakete,
+	 * <p>
+	 * Die Grundidee ist, dass alle Tickets an einer zentralen Stelle gesammelt werden. DafÃ¼r wurde als Datenstruktur eine
+	 * Warteschlange gewÃ¤hlt. Diese synchronisiert sich selbstÃ¤ndig und schickt wartende Threads automatisch in den wait
+	 * Modus, gleichzeitig werden diese Threads wieder aufgeweckt, wenn neue Daten zur VerfÃ¼gung stehen.
+	 * <p>
+	 * Sobald der EmpfÃ¤nger dem Sender eine Sendeerlaubnis erteilt wird der Stream mit seinem Index und der Anzahl Pakete,
 	 * die er senden darf, in die Warteschlange eingetragen.
-	 * <p/>
+	 * <p>
 	 * Wenn nun ein Stream gesucht wird, der senden soll, dann wird von der Warteschlange das vorderste Element
-	 * angefordert. Es steht somit sofort ein Stream zur Verfügung. Gleichzeitig ist bekannt, wieviele Pakete dieser Stream
+	 * angefordert. Es steht somit sofort ein Stream zur VerfÃ¼gung. Gleichzeitig ist bekannt, wieviele Pakete dieser Stream
 	 * verschicken darf.
 	 *
 	 * @throws InterruptedException Ein Thread, der auf ein Objekt in der Warteschlange gewartet hat, wurde mit Interrupt
@@ -339,16 +345,16 @@ public class StreamMultiplexer {
 		// jeder Stream verschickt soviele Pakete wie er darf).
 		boolean singlePacketMode;
 
-		// Solange es Streams gibt, die Senden dürfen
+		// Solange es Streams gibt, die Senden dÃ¼rfen
 		while (_numberTerminatedStreams < _numberOfStreams) {
 
 			// Ein Element aus der Warteschlange anfordern.
 			// Anmerkung, in der Zwischenzeit kann der StreamMultiplexer unterbrochen worden sein (killAllStreams).
 			// Dieser Abbruch kann notwenig gewesen sein, weil der StreamDemultiplexer physich nicht mehr zu erreichen war,
-			// es würden also keine Tickets mehr verschickt und somit würde es auch keine Sendebereiten Streams mehr geben.
-			// Der Thread der den folgenden Aufruf tätigt würde also nie wieder die Queue verlassen können.
+			// es wÃ¼rden also keine Tickets mehr verschickt und somit wÃ¼rde es auch keine Sendebereiten Streams mehr geben.
+			// Der Thread der den folgenden Aufruf tÃ¤tigt wÃ¼rde also nie wieder die Queue verlassen kÃ¶nnen.
 			// Der Aufruf <code>killAllStreams</code> legt einen Dummy-Stream in die Queue, der abgebrochen wurde.
-			// Somit wird der hier wartende Thread befreit und verläßt die while-Schleife.
+			// Somit wird der hier wartende Thread befreit und verlÃ¤ÃŸt die while-Schleife.
 			IndexOfStreamAndMaxSendPackets paketsForStream = (IndexOfStreamAndMaxSendPackets) _queueWithStreamsPermitedToSendData.take();
 
 			// Welcher Stream darf Nutzdatenpakete verschicken
@@ -370,13 +376,13 @@ public class StreamMultiplexer {
 					final int numberOfPackets;
 
 					if (_queueWithStreamsPermitedToSendData.size() == 0) {
-						// Die Schlange ist leer, somit kann der gerade gewählte Stream alle Nutzdatenpakete verschicken
+						// Die Schlange ist leer, somit kann der gerade gewÃ¤hlte Stream alle Nutzdatenpakete verschicken
 						// die er verschicken darf.
 						singlePacketMode = false;
-						// Wie viele Pakete sollen verschickt werden (in diesem Modus so viele wie möglich)
+						// Wie viele Pakete sollen verschickt werden (in diesem Modus so viele wie mÃ¶glich)
 						numberOfPackets = paketsForStream._maxSendPackets;
 					} else {
-						// Es gibt noch andere Streams die senden möchten. Also verschickt jeder nur ein Nutzdatenpaket
+						// Es gibt noch andere Streams die senden mÃ¶chten. Also verschickt jeder nur ein Nutzdatenpaket
 						// und reiht sich dann wieder in der Warteschlange ein.
 						singlePacketMode = true;
 						// Wie viele Pakete sollen verschickt werden (in diesem Modus nur eins)
@@ -390,25 +396,25 @@ public class StreamMultiplexer {
 						// Ein Paket verschicken
 						currentStreamPacketIndex++;
 
-						// Nutzdaten von der "Applikation" anfordern, wenn die Applikation eine "null" zurück gibt, dann sind
+						// Nutzdaten von der "Applikation" anfordern, wenn die Applikation eine "null" zurÃ¼ck gibt, dann sind
 						// keine Nutzdaten mehr vorhanden. Der stream kann also beendet werden.
 						byte[] data = take(indexOfStream);
 
 						// Debug
-						_debug.finer("\t\t\t\t\t\t\t\t\t\tPaketdaten: Stream(" + indexOfStream + ") Paketindex(" + currentStreamPacketIndex + ") Anzahl Pakete, die zu diesem Satz gehören (" + numberOfPackets + ")" + "Paketnummer des Satzes (Nummer 0 ist das erste Paket)) (" + nr + ")");
+						_debug.finer("\t\t\t\t\t\t\t\t\t\tPaketdaten: Stream(" + indexOfStream + ") Paketindex(" + currentStreamPacketIndex + ") Anzahl Pakete, die zu diesem Satz gehÃ¶ren (" + numberOfPackets + ")" + "Paketnummer des Satzes (Nummer 0 ist das erste Paket)) (" + nr + ")");
 
-						// Das mit take angeforderte große Nutzdatenpaket verschicken
+						// Das mit take angeforderte groÃŸe Nutzdatenpaket verschicken
 						sendDataToReceiver(indexOfStream, currentStreamPacketIndex, data);
-						// Da ein Paket verschickt wurde, muß der neue Index gespeichert werden
+						// Da ein Paket verschickt wurde, muÃŸ der neue Index gespeichert werden
 						stream.setCurrentStreamPacketIndex(currentStreamPacketIndex);
 
 						// Wenn bei dem Aufruf der take Methode ein null-Paket verpackt wurde, dann wird der Stream dort
 						// mit <code>setStreamTerminated</code> beendet. Das angelegte Paket WURDE aber noch verschickt.
-						// Allerdings werden für den Stream keine weiteren Pakete mehr versandt.
+						// Allerdings werden fÃ¼r den Stream keine weiteren Pakete mehr versandt.
 						if (stream.isStreamTerminated()) {
-							// Es gibt für den Stream keine Nutzdaten mehr, der Sender beendet auf seiner Seite den Stream.
-							// Der Empfänger muß nicht benachrichtigt werden, da er ein Nutzdatenpaket mit leeren
-							// Nutzdaten empfängt. Er wird daraufhin auf seiner Seite den Stream
+							// Es gibt fÃ¼r den Stream keine Nutzdaten mehr, der Sender beendet auf seiner Seite den Stream.
+							// Der EmpfÃ¤nger muÃŸ nicht benachrichtigt werden, da er ein Nutzdatenpaket mit leeren
+							// Nutzdaten empfÃ¤ngt. Er wird daraufhin auf seiner Seite den Stream
 							// ebenfalls beenden (Der Sender wird davon nicht benachrichtigt, da er den Stream sowieso schon beendet hat).
 
 							// Nun brauchen die restlichen Pakete nicht mehr verschickt werden, die For-Schleife kann abgebrochen werden
@@ -422,8 +428,8 @@ public class StreamMultiplexer {
 						// Da ein Paket verschickt wurde, darf der Stream ein Paket weniger verschicken als vorher
 						paketsForStream.decrementMaxSendPackets();
 						if (paketsForStream.getMaxSendPackets() > 0) {
-							// Der Stream darf noch Nutzdaten verschicken, also wird er wieder in die Warteschlange eingefügt.
-							// Wurden alle Nutzdatenpakete verschickt ("virtueller else Zweig"), dann muß nichts gemacht werden.
+							// Der Stream darf noch Nutzdaten verschicken, also wird er wieder in die Warteschlange eingefÃ¼gt.
+							// Wurden alle Nutzdatenpakete verschickt ("virtueller else Zweig"), dann muÃŸ nichts gemacht werden.
 
 							_queueWithStreamsPermitedToSendData.put(paketsForStream);
 						}
@@ -434,21 +440,21 @@ public class StreamMultiplexer {
 			}
 		}
 //		_debug.info("sendAllStreamData: _dataCount = " + _dataCount + ", Anzahl verschickter Pakete(alle Streams) = " + _numberOfPacketsSend + ", _numberTerminatedStreams = " + _numberTerminatedStreams + ", _numberOfStreams = " + _numberOfStreams);
-		_debug.info("StreamMultiplexer beendet sich");
+		_debug.finer("StreamMultiplexer beendet sich");
 	}
 
 	/**
-	 * <p/>
+	 * <p>
 	 * Diese Methode setzt den "maximumStreamTicketIndex" eines Streams herauf. Dadurch kann der Stream Datenpakete bis zu
-	 * diesem neuen Index versenden. Wird der "maximumStreamTicketIndex" erreicht, stellt der Stream seine Sendetätigkeiten
-	 * ein, bis der "maximumStreamTicketIndex" wieder erhöht wird. Verschickt der Empfänger eine "-1", dann will er die
-	 * Empfangstätigkeiten auf diesem Stream einstellen.
-	 * <p/>
-	 * <p/>
+	 * diesem neuen Index versenden. Wird der "maximumStreamTicketIndex" erreicht, stellt der Stream seine SendetÃ¤tigkeiten
+	 * ein, bis der "maximumStreamTicketIndex" wieder erhÃ¶ht wird. Verschickt der EmpfÃ¤nger eine "-1", dann will er die
+	 * EmpfangstÃ¤tigkeiten auf diesem Stream einstellen.
+	 * <p>
+	 * <p>
 	 * Die ersten 4 Byte enthalten den Index des Streams. Die letzen vier Bytes enthalten den neuen maximalen Index. Dies
-	 * ist eine Steuerung des einen Multis(Sender) durch den anderen(Receiver), kein Zugriff von außen.
+	 * ist eine Steuerung des einen Multis(Sender) durch den anderen(Receiver), kein Zugriff von auÃŸen.
 	 *
-	 * @param streamTicketPacket Dieses Byte-Array enthält verschlüsselt den Index des Streams und den maximalen Index, bis
+	 * @param streamTicketPacket Dieses Byte-Array enthÃ¤lt verschlÃ¼sselt den Index des Streams und den maximalen Index, bis
 	 *                           zu dem der StreamMultiplexer senden darf.
 	 * @throws IOException Ein Fehler beim deserialisieren von Daten
 	 */
@@ -467,32 +473,32 @@ public class StreamMultiplexer {
 			_debug.error("Die geforderte Serializer-Version kann vom Serializer des StreamMultiplexer nicht benutzt werden, geforderte Version: " + _serializerVersion);
 		}
 
-		// Index des Streams, dessen Ticketanzahl erhöht werden soll
+		// Index des Streams, dessen Ticketanzahl erhÃ¶ht werden soll
 		int indexOfStream = deserializer.readInt();
 
 		// Eine neue Obergrenze bis zu der der Stream Daten senden darf, -1 zeigt an, dass der Stream beendet werden soll
 		int maximumStreamTicketIndex = deserializer.readInt();
 
-		// Wenn ein Stream beendet werden soll, verschickt der Empfänger eine "-1 mit dem ""maximumStreamTicketIndex"
+		// Wenn ein Stream beendet werden soll, verschickt der EmpfÃ¤nger eine "-1 mit dem ""maximumStreamTicketIndex"
 		if (maximumStreamTicketIndex > 0) {
 			// Es wird auf das Objekt MultiplexerStreaminformations synchronisiert, nicht auf das gesamte Array
 			MultiplexerStreaminformations stream = _streams[indexOfStream];
 			synchronized (stream) {
 				// Es kann sein, das der Sender einen Stream beendet (keine Nutzdaten mehr), aber denoch gerade Tickets zu ihm unterwegs sind
 				if (stream.isStreamTerminated() == false) {
-					// Der Empfänger kann "maximumStreamTicketIndex" verschicken, die zu alt sind (ihr Wert ist kleiner als der schon empfangene oder sogar 0)
+					// Der EmpfÃ¤nger kann "maximumStreamTicketIndex" verschicken, die zu alt sind (ihr Wert ist kleiner als der schon empfangene oder sogar 0)
 					// Siehe Kommentar StreamDemultiplexer take-Methode, Stichwort: verschicken neuer Tickets.
 					if (stream.getMaxStreamPacketIndex() <= maximumStreamTicketIndex) {
-						// Es muß nun ein neues Element in die Warteschlange gelegt werden und der maximale Index, bis zu dem gesendet werden darf, muß
+						// Es muÃŸ nun ein neues Element in die Warteschlange gelegt werden und der maximale Index, bis zu dem gesendet werden darf, muÃŸ
 						// aktualisiert werden.
 
 						// Die neue maximale Anzahl von zu verschickenden Pakten wird berechnet
 						// (dies sind wirklich einzelne Pakete, keine Index Nummer bis zu der geschickt werden darf).
 						int maxNumberOfPacketsSendByStream = maximumStreamTicketIndex - stream.getMaxStreamPacketIndex();
-						// Objekt für die Warteschlange anlegen
+						// Objekt fÃ¼r die Warteschlange anlegen
 						IndexOfStreamAndMaxSendPackets paketsForStream = new IndexOfStreamAndMaxSendPackets(indexOfStream, maxNumberOfPacketsSendByStream);
-						// Objekt in die Warteschlange einfügen.
-						// Der Zugriff auf die Warteschlange muß nicht synchronisiert werden, da dies die Datenstruktur von alleine macht.
+						// Objekt in die Warteschlange einfÃ¼gen.
+						// Der Zugriff auf die Warteschlange muÃŸ nicht synchronisiert werden, da dies die Datenstruktur von alleine macht.
 						_queueWithStreamsPermitedToSendData.put(paketsForStream);
 						// Den neuen maximalen Index speichern
 						stream.setMaxStreamPacketIndex(maximumStreamTicketIndex);
@@ -507,7 +513,7 @@ public class StreamMultiplexer {
 			}
 
 		} else {
-			// Der Empfänger hat einen Stream beendet
+			// Der EmpfÃ¤nger hat einen Stream beendet
 			_numberTerminatedStreams++;
 
 			// Der Stream darf keine Nutzdatenpakete mehr verschicken
@@ -516,14 +522,14 @@ public class StreamMultiplexer {
 			}
 			// Falls der Stream, der gerade von der Empfangsseite beendet wurde, der letzte Stream war,
 			// wird der Thread in der Warteschlange <code>_queueWithStreamsPermitedToSendData</code>
-			// festhängen. Da keine Tickets mehr ankommen werden, somit muss der Thread befreit werden.
+			// festhÃ¤ngen. Da keine Tickets mehr ankommen werden, somit muss der Thread befreit werden.
 			// Jeder Stream, der abgebrochen wird, wird sich  noch einemal in diese Warteschlange
 			// eintragen. Da der Stream aber abgebrochen, wird er keine Daten mehr verschicken.
 			// Der wartende Thread wird dadurch aber erneut gestartet und kann erkennen, dass
 			// der Stream nicht mehr senden dard und falls alle Streams beendet wurden, wird
 			// sich der Thread ebenfalls beenden.
 			// Das Problem ist fast identisch mit der <code>killAllStreams</code> - Methode, auch
-			// dort konnte es zu einem Deadlock kommen. Die Lösung ist somit fast identisch.
+			// dort konnte es zu einem Deadlock kommen. Die LÃ¶sung ist somit fast identisch.
 
 			// Als indexOfStream, wird der abgebrochene Stream genommen
 			// (das ist der unterschied zu <code>killAllStreams</code>, dort wird immer der Stream mit Index 0 genommen
@@ -534,13 +540,13 @@ public class StreamMultiplexer {
 	}
 
 	/**
-	 * Alle Streams werden beendet, da die Verbindung zum Empfänger unterbrochen wurde.
-	 * <p/>
-	 * Wenn das Objekt, dem der StreamMultiplexer gehört, einen Fehler des DaV gemeldet bekommt (die Leitung zur
-	 * Empfängerapplikation wurde unterbrochen, als Beispiel) wird mit dieser Methode jeder Stream abgebrochen.
-	 * Gleichzeitig wird die Sendeapplikation darauf hingewiesen, dass sie alle Nutzdaten für die Streams verwerfen kann.
+	 * Alle Streams werden beendet, da die Verbindung zum EmpfÃ¤nger unterbrochen wurde.
+	 * <p>
+	 * Wenn das Objekt, dem der StreamMultiplexer gehÃ¶rt, einen Fehler des DaV gemeldet bekommt (die Leitung zur
+	 * EmpfÃ¤ngerapplikation wurde unterbrochen, als Beispiel) wird mit dieser Methode jeder Stream abgebrochen.
+	 * Gleichzeitig wird die Sendeapplikation darauf hingewiesen, dass sie alle Nutzdaten fÃ¼r die Streams verwerfen kann.
 	 * Auf der Gegenseite wird dem StreamDemultiplexer ebenfalls gemeldet, dass etwas mit der Verbindung nicht stimmt (dies
-	 * übernimmt dort das Objekt, das den StreamDemultiplexer erzeugt hat). Der StreamDemultiplexer wird daraufhin
+	 * Ã¼bernimmt dort das Objekt, das den StreamDemultiplexer erzeugt hat). Der StreamDemultiplexer wird daraufhin
 	 * ebenfalls alle Streams beenden. Der beidseitige Abbruch geschieht automatisch.
 	 */
 	public void killAllStreams() {
@@ -553,7 +559,7 @@ public class StreamMultiplexer {
 			}
 		}
 		// Alle Streams wurden abgebrochen. Es kann sein, das kein Stream senden durfte und somit
-		// der Thread in der _queueWithStreamsPermitedToSendData festhängt. Es muss somit ein Dummy-Eintrag
+		// der Thread in der _queueWithStreamsPermitedToSendData festhÃ¤ngt. Es muss somit ein Dummy-Eintrag
 		// erzeugt werden, dieser befreit den Thread. Nach dem er befreit wurde, wird festgestellt, dass
 		// alle Streams abgeborchen wurden und der Thread beendet sich wie gewollt.
 		IndexOfStreamAndMaxSendPackets dummyEntry = new IndexOfStreamAndMaxSendPackets(0, 1);
@@ -573,9 +579,9 @@ public class StreamMultiplexer {
 	}
 
 	/**
-	 * Diese Klasse erzeugt ein Objekt für die Warteschlange "_queueWithStreamsPermitedToSendData". In dem Objekt ist der
+	 * Diese Klasse erzeugt ein Objekt fÃ¼r die Warteschlange "_queueWithStreamsPermitedToSendData". In dem Objekt ist der
 	 * <code>_indexOfStream</code> und die Anzahl der zu verschickenden Daten "_maxSendPackets" enthalten. Die Klasse
-	 * benötigt keinen Zugriff auf die sie umgebene Klasse, darum ist sie static.
+	 * benÃ¶tigt keinen Zugriff auf die sie umgebene Klasse, darum ist sie static.
 	 */
 	private static class IndexOfStreamAndMaxSendPackets {
 
@@ -598,7 +604,7 @@ public class StreamMultiplexer {
 
 		/**
 		 * @param indexOfStream  Index des Streams, der Daten verschicken kann
-		 * @param maxSendPackets Maximale Anzahl von Paketen, die verschickt werden können
+		 * @param maxSendPackets Maximale Anzahl von Paketen, die verschickt werden kÃ¶nnen
 		 */
 		public IndexOfStreamAndMaxSendPackets(int indexOfStream, int maxSendPackets) {
 			_indexOfStream = indexOfStream;
@@ -609,14 +615,14 @@ public class StreamMultiplexer {
 		}
 
 		/**
-		 * Der Index des Streams wird zurück gegeben
+		 * Der Index des Streams wird zurÃ¼ck gegeben
 		 */
 		public int getIndexOfStream() {
 			return _indexOfStream;
 		}
 
 		/**
-		 * Die maximale Anzahl von zu verschickenden Paketen wird zurück gegeben
+		 * Die maximale Anzahl von zu verschickenden Paketen wird zurÃ¼ck gegeben
 		 */
 		public int getMaxSendPackets() {
 			return _maxSendPackets;
@@ -632,8 +638,8 @@ public class StreamMultiplexer {
 	}
 
 	/**
-	 * Diese Objekt beinhaltet alle Informationen, die für einen Stream, auf Senderseiteseite, wichtig sind. Diese Objekte
-	 * werden in einem Array (Index des Arrays ist dabei gleich der Nummer des Stream) gespeichert. Somit können alle
+	 * Diese Objekt beinhaltet alle Informationen, die fÃ¼r einen Stream, auf Senderseiteseite, wichtig sind. Diese Objekte
+	 * werden in einem Array (Index des Arrays ist dabei gleich der Nummer des Stream) gespeichert. Somit kÃ¶nnen alle
 	 * Inforamtionen zu einem Stream mit einem Arrayzugriff geholt werden.
 	 *
 	 * @see StreamMultiplexer#_streams
@@ -651,9 +657,9 @@ public class StreamMultiplexer {
 		private int _currentStreamPacketIndex;
 
 		/**
-		 * Wenn ein Stream abgebrochen wurde (mit abort des Empfängers oder take liefert null oder <code> killAllStreams
-		 * </code>), dann wird dieser boolean true. Streng genommen müßte man die Fälle trennen, aber das bringt keinen
-		 * Informationsgewinn, darum findet keine Trennung statt. (Jede Abfrage ob _streamTerminated == true müßte um eine
+		 * Wenn ein Stream abgebrochen wurde (mit abort des EmpfÃ¤ngers oder take liefert null oder <code> killAllStreams
+		 * </code>), dann wird dieser boolean true. Streng genommen mÃ¼ÃŸte man die FÃ¤lle trennen, aber das bringt keinen
+		 * Informationsgewinn, darum findet keine Trennung statt. (Jede Abfrage ob _streamTerminated == true mÃ¼ÃŸte um eine
 		 * Variable, ob der Stream "normal" beendet wurde oder der Senderapplikation kill verwendet hat, erweitert werden)
 		 */
 		private boolean _streamTerminated;
@@ -665,14 +671,14 @@ public class StreamMultiplexer {
 		 * verschickt werden (deblockingFactor viele). Darum wird der deblockngFactor beim erzeugen mit gegeben.
 		 *
 		 * @param deblockingFactor Wie viele Pakete werden beim initialen Senden durch den StreamMultiplexer verschickt
-		 * @param director         Ein Stream kann mit diesem Objekt anzeigen das er abgebrochen wurde. Somit müssen keine
+		 * @param director         Ein Stream kann mit diesem Objekt anzeigen das er abgebrochen wurde. Somit mÃ¼ssen keine
 		 *                         weiteren Nutzdatenpakete, die mit <code>take</code> angefordert werden, bereitgestellt
 		 *                         werden.
 		 */
 		public MultiplexerStreaminformations(int deblockingFactor, StreamMultiplexerDirector director) {
 			_maxStreamPacketIndex = deblockingFactor;
 			_director = director;
-			// Dies ist zwar nicht nötig, soll aber zeigen, dass der Wert am Anfang auf "0" initialsiert wird. Dies ist für
+			// Dies ist zwar nicht nÃ¶tig, soll aber zeigen, dass der Wert am Anfang auf "0" initialsiert wird. Dies ist fÃ¼r
 			// den Ablauf des Algorithmus wichtig.
 			_currentStreamPacketIndex = 0;
 			_streamTerminated = false;
@@ -695,7 +701,7 @@ public class StreamMultiplexer {
 		}
 
 		/**
-		 * Wenn der Stream keine Nutzdaten mehr verschicken darf, dann wird true zurück gegeben.
+		 * Wenn der Stream keine Nutzdaten mehr verschicken darf, dann wird true zurÃ¼ck gegeben.
 		 *
 		 * @return true, wenn der Stream keine Nutzdaten mehr senden darf. false, wenn er noch Nutzdaten verschicken darf.
 		 */
@@ -704,11 +710,11 @@ public class StreamMultiplexer {
 		}
 
 		/**
-		 * Der Stream darf keine Daten mehr senden. Alle Informationen über den Stream stehen allerdings weiterhin zur
-		 * Verfügung (_streamTerminated wird noch benötigt, der Rest kann für Debug benutzt werden). Die Methode
-		 * "isStreamTerminated" liefert nach Aufruf der Methode den Wert "true" zurück.
-		 * <p/>
-		 * Diese Methode wird aufgerufen, sobald das Null-Paket bei einem <code>take</code> Aufruf zurückgegeben wird.
+		 * Der Stream darf keine Daten mehr senden. Alle Informationen Ã¼ber den Stream stehen allerdings weiterhin zur
+		 * VerfÃ¼gung (_streamTerminated wird noch benÃ¶tigt, der Rest kann fÃ¼r Debug benutzt werden). Die Methode
+		 * "isStreamTerminated" liefert nach Aufruf der Methode den Wert "true" zurÃ¼ck.
+		 * <p>
+		 * Diese Methode wird aufgerufen, sobald das Null-Paket bei einem <code>take</code> Aufruf zurÃ¼ckgegeben wird.
 		 */
 		public void setStreamFinished() {
 			_streamTerminated = true;
@@ -717,15 +723,15 @@ public class StreamMultiplexer {
 		}
 
 		/**
-		 * Der Stream darf keine Daten mehr senden. Alle Informationen über den Stream stehen allerdings weiterhin zur
-		 * Verfügung (_streamTerminated wird noch benötigt, der Rest kann für Debug benutzt werden). Die Methode
-		 * "isStreamTerminated" liefert nach Aufruf der Methode den Wert "true" zurück.
-		 * <p/>
-		 * Diese Methode wird aufgerufen, sobald der Stream ein abort vom StreamDemultiplexer empfängt oder die Methode
+		 * Der Stream darf keine Daten mehr senden. Alle Informationen Ã¼ber den Stream stehen allerdings weiterhin zur
+		 * VerfÃ¼gung (_streamTerminated wird noch benÃ¶tigt, der Rest kann fÃ¼r Debug benutzt werden). Die Methode
+		 * "isStreamTerminated" liefert nach Aufruf der Methode den Wert "true" zurÃ¼ck.
+		 * <p>
+		 * Diese Methode wird aufgerufen, sobald der Stream ein abort vom StreamDemultiplexer empfÃ¤ngt oder die Methode
 		 * <code>killAllStreams</code> des StreamMultiplexer wird aufgerufen. Bei Aufruf dieser Methode wird das Objekt, das
-		 * den StreamMultiplexerDirector implementiert, benachrichtigt das es keine weiteren Nutzdatenpakete für den Stream
+		 * den StreamMultiplexerDirector implementiert, benachrichtigt das es keine weiteren Nutzdatenpakete fÃ¼r den Stream
 		 * bereithalten muss.
-		 * <p/>
+		 * <p>
 		 * Wurde der Stream bereits mit  <code>setStreamFinished</code> beendet, bewirkt dieser Methodenaufruf nichts.
 		 */
 		public void setStreamTerminated(int indexOfStream) {

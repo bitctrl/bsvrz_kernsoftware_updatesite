@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2003 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2003 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.datgen.
  * 
- * de.bsvrz.pat.datgen is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.datgen is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.datgen is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.datgen; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.datgen.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.datgen.generator.xmlParser;
@@ -50,10 +56,10 @@ import java.io.IOException;
 import java.net.URL;
 
 /**
- * SAX-Handler für den Zugriff auf die XML-Datei.
+ * SAX-Handler fÃ¼r den Zugriff auf die XML-Datei.
  *
- * Datensätze können Felder und Listen (im folgenden <i>NonPlains</i> genannt)
- * enthalten. Würde man die XML-Datei "von Hand" verarbeiten, so hätte eine
+ * DatensÃ¤tze kÃ¶nnen Felder und Listen (im folgenden <i>NonPlains</i> genannt)
+ * enthalten. WÃ¼rde man die XML-Datei "von Hand" verarbeiten, so hÃ¤tte eine
  * Methode <code>datenVerarbeiten</code> wohl einen rekursiven Aufbau (vgl
  * {@link DataGenerator.DataCycler#setRandomData}:
  * <p>
@@ -72,27 +78,27 @@ import java.net.URL;
  * </code></pre>
  * <p>
  *Durch die Art des Einlesens der XML-Datei mit dem SAX-Parser (jedes Lesen
- * eines Start-/Ende-Tags löst Aufruf einer der hier zu findenden
- * Call-Back-Methoden aus), ist das rekursive Abarbeiten nicht möglich ==&gt;
- * Über einen Stack wird erreicht, daß die Zuordnung der eingelesenen Attribute
- * zu den richtigen Einträgen in der rekursiven Datenstruktur gelingt:
+ * eines Start-/Ende-Tags lÃ¶st Aufruf einer der hier zu findenden
+ * Call-Back-Methoden aus), ist das rekursive Abarbeiten nicht mÃ¶glich ==&gt;
+ * Ãœber einen Stack wird erreicht, daÃŸ die Zuordnung der eingelesenen Attribute
+ * zu den richtigen EintrÃ¤gen in der rekursiven Datenstruktur gelingt:
  * <p>
- * Ein Datensatz vom Typ {@link Data} wird "lazy" erzeugt, d. h. enthält er ein
+ * Ein Datensatz vom Typ {@link Data} wird "lazy" erzeugt, d. h. enthÃ¤lt er ein
  * <i>NonPlain</i>, so wird beim Erzeugen eines {@link Data} lediglich eine
- * "flacher" Datenstruktur erzeugt, in die wiederum {@link Data}s für die
- * <i>NonPlain</i>s eingesetzt werden, die wiederum {@link Data}s für
- * <i>NonPlain</i>s enthalten können usw.
+ * "flacher" Datenstruktur erzeugt, in die wiederum {@link Data}s fÃ¼r die
+ * <i>NonPlain</i>s eingesetzt werden, die wiederum {@link Data}s fÃ¼r
+ * <i>NonPlain</i>s enthalten kÃ¶nnen usw.
  * <p>
- * Die o. g. zunächst erzeugte flache Datenstruktur ist {@link #data}. Jedes
- * weitere für <i>NonPlain</i>s erzeugte {@link Data} wird auf einen Stack
- * gelegt. Durch {@link #readTop} wird nun erreicht, daß beim Einlesen eines
- * Attributs immer das {@link Data}-Element gefüllt wird, welches sich gerade in
- * Bearbeitung befindet, d. h. der Stack bildet das "Gedächtnis" des Parsers und
+ * Die o. g. zunÃ¤chst erzeugte flache Datenstruktur ist {@link #data}. Jedes
+ * weitere fÃ¼r <i>NonPlain</i>s erzeugte {@link Data} wird auf einen Stack
+ * gelegt. Durch {@link #readTop} wird nun erreicht, daÃŸ beim Einlesen eines
+ * Attributs immer das {@link Data}-Element gefÃ¼llt wird, welches sich gerade in
+ * Bearbeitung befindet, d. h. der Stack bildet das "GedÃ¤chtnis" des Parsers und
  * "aus Sicht der Attribute" ist nur dieses {@link Data}-Element bekannt, wie es
- * auch in einer rekursiven Methode der Fall wäre.
+ * auch in einer rekursiven Methode der Fall wÃ¤re.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5834 $
+ * @version $Revision$
  */
 public class SaxHandler extends DefaultHandler {
 
@@ -148,7 +154,7 @@ public class SaxHandler extends DefaultHandler {
 	/** Das aus der XML-Datei gelesene Telegramm */
 	private ResultData[] results = null;
 
-	/** Gewünschter Sendezeitpunkt für einen Datenblock */
+	/** GewÃ¼nschter Sendezeitpunkt fÃ¼r einen Datenblock */
 	private long blockTime = 0;
 
 	/** Objekt */
@@ -178,12 +184,12 @@ public class SaxHandler extends DefaultHandler {
 	private Data data;
 
 	/**
-	 * Zeigt an, ob ein Telegramm Daten enthält
+	 * Zeigt an, ob ein Telegramm Daten enthÃ¤lt
 	 */
 	private boolean hasNoData = false;
 
 	/**
-	 * Zeigt an, ob momentan Quelle für das entsprechende Objekt existiert
+	 * Zeigt an, ob momentan Quelle fÃ¼r das entsprechende Objekt existiert
 	 */
 	private boolean hasNoSource = false;
 
@@ -205,7 +211,7 @@ public class SaxHandler extends DefaultHandler {
 	/** Status des SAX-Handlers */
 	private int state = BEFORE_PROTOCOL;
 
-	/** Anzahl der geparsten Datensätze */
+	/** Anzahl der geparsten DatensÃ¤tze */
 	private int numberOfRecords = 0;
 	/** Das benutzte Datenmodell der Applikation */
 	private DataModel dataModel;
@@ -213,16 +219,16 @@ public class SaxHandler extends DefaultHandler {
 	private static ClientDavInterface connection;
 	/** Die Sende-Queue des SAX-Handlers */
 	private SendInterface sendQueue;
-	/** Datensatz eines der vom Anwender erwünschte Objekte, welcher in der XML-Datei
+	/** Datensatz eines der vom Anwender erwÃ¼nschte Objekte, welcher in der XML-Datei
 	 * gefunden wurde
 	 */
 	private LinkedList requestedResults = null;
-	/** Stack für die Verarbeitung von geschachtelten {@link Data}-Objekten */
+	/** Stack fÃ¼r die Verarbeitung von geschachtelten {@link Data}-Objekten */
 	private LinkedList itemStack = new LinkedList();
-	/** Objekte, für die Daten aus der XML-Datei ausgelesen werden sollen */
+	/** Objekte, fÃ¼r die Daten aus der XML-Datei ausgelesen werden sollen */
 	private List requestedObjects = null;
 	/** Zeitstempel-Option: Zeitstempel der Daten aus der XML-Datei wird beim Einspielen
-	 * der Daten entweder übernommen oder aber die Daten werden in die Jetztzeit
+	 * der Daten entweder Ã¼bernommen oder aber die Daten werden in die Jetztzeit
 	 * verschoben.
 	 */
 	private int timeStampOption = 0;
@@ -233,10 +239,10 @@ public class SaxHandler extends DefaultHandler {
 		startTime = System.currentTimeMillis();
 	}
 
-	/** Callback-Methode für die Verarbeitung von Characters.
+	/** Callback-Methode fÃ¼r die Verarbeitung von Characters.
 	 * @param ch Feld mit den erparsten <code>char</CODE>s
 	 * @param start Startposition
-	 * @param length Länge des Feldes
+	 * @param length LÃ¤nge des Feldes
 	 * @throws SAXException bei Problemen
 	 */
 	public void characters(char ch[], int start, int length)
@@ -352,7 +358,7 @@ public class SaxHandler extends DefaultHandler {
 
 	/** Fehler
 	 * @throws SAXException bei Problemen
-	 * @param e Den Fehler auslösende Exception
+	 * @param e Den Fehler auslÃ¶sende Exception
 	 */
 	public void error(SAXParseException e)
 	throws SAXException {
@@ -362,7 +368,7 @@ public class SaxHandler extends DefaultHandler {
 
 	/** Schwerer Fehler
 	 * @throws SAXException bei Problemen
-	 * @param e Den fatalen Fehler auslösende Exception
+	 * @param e Den fatalen Fehler auslÃ¶sende Exception
 	 */
 	public void fatalError(SAXParseException e)
 	throws SAXException {
@@ -402,7 +408,7 @@ public class SaxHandler extends DefaultHandler {
 	}
 
 	/** Die angeforderten Datenobjekte der Applikation im SAX-Handler eintragen
-	 * @param objects Die gewünschten Objekte
+	 * @param objects Die gewÃ¼nschten Objekte
 	 */
 	public void setRequestedObjects(List objects) {
 		requestedObjects = objects;
@@ -410,8 +416,8 @@ public class SaxHandler extends DefaultHandler {
 	}
 
 	/** Sende-Queue der Applikation im SAX-Handler eintragen (in diesen werden die aus
-	 * der XML-Datei gelesenen Telegramme geschrieben, so daß sie vom Sende-Thread
-	 * verschickt werden können)
+	 * der XML-Datei gelesenen Telegramme geschrieben, so daÃŸ sie vom Sende-Thread
+	 * verschickt werden kÃ¶nnen)
 	 * @param sq Die Sende-Queue
 	 */
 	public void setSendQueue(SendInterface sq) {
@@ -424,7 +430,7 @@ public class SaxHandler extends DefaultHandler {
 		debug.warning("SAXHandler.skippedEntity: " + name);
 	}
 
-	/** Callback-Methode für Start des XML-Dokuments
+	/** Callback-Methode fÃ¼r Start des XML-Dokuments
 	 * @throws SAXException bei Problemen
 	 */
 	public void startDocument()
@@ -587,8 +593,8 @@ public class SaxHandler extends DefaultHandler {
 					item.getItem(name).asTextValue().setText(value);
 				} else if (localName.equals("feld")) {
 					String name = attributes.getValue(uri, "name");
-					int count = (int) Integer.parseInt(attributes.getValue(uri, "länge"));
-					debug.finer("Feld mit Namen " + name + ", Länge: " + count);
+					int count = (int) Integer.parseInt(attributes.getValue(uri, "lÃ¤nge"));
+					debug.finer("Feld mit Namen " + name + ", LÃ¤nge: " + count);
 					Data item = readTop().getItem(name);
 					item.asArray().setLength(count);
 					pushItem(item);
@@ -610,7 +616,7 @@ public class SaxHandler extends DefaultHandler {
 
 	}
 
-	/** Option für den Zeitstempel setzen: Entweder werden die Daten mit den originalen
+	/** Option fÃ¼r den Zeitstempel setzen: Entweder werden die Daten mit den originalen
 	 * Zeitstempeln wieder eingespielt oder in die Jetztzeit verschoben
 	 * @param tso Gibt an, ob die Daten mit den originalen Zeitstempeln wieder eingespielt oder in
 	 * die Jetztzeit verschoben werden sollen.
@@ -621,7 +627,7 @@ public class SaxHandler extends DefaultHandler {
 
 	/** Warnung
 	 * @throws SAXException bei Problemen
-	 * @param e Die Warnung auslösende Exception
+	 * @param e Die Warnung auslÃ¶sende Exception
 	 */
 	public void warning(SAXParseException e)
 	throws SAXException {
@@ -642,8 +648,8 @@ public class SaxHandler extends DefaultHandler {
 	}
 
 	/**
-	 * "-rolle"-, "-objekte"- und "-daten"-Einträge aus der XML-Datei auswerten
-	 * und entsprechende Anmeldungen durchführen. Andere in der Datei
+	 * "-rolle"-, "-objekte"- und "-daten"-EintrÃ¤ge aus der XML-Datei auswerten
+	 * und entsprechende Anmeldungen durchfÃ¼hren. Andere in der Datei
 	 * festgehaltene Parameter werden ignoriert.
 	 *
 	 * @param	argumentString	String mit den Aufrufparametern, die in der

@@ -1,12 +1,12 @@
 /*
  * Copyright 2008 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,35 +15,41 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.config;
 
 
 /**
- * Schnittstelle zum Zugriff auf die Eigenschaften von online änderbaren Mengen. Eine Applikation kann sich
- * auf Änderungen einer dynamischen Menge {@link #addChangeListener(MutableSetChangeListener) anmelden} und
+ * Schnittstelle zum Zugriff auf die Eigenschaften von online Ã¤nderbaren Mengen. Eine Applikation kann sich
+ * auf Ã„nderungen einer dynamischen Menge {@link #addChangeListener(MutableSetChangeListener) anmelden} und
  * auch wieder {@link #removeChangeListener(MutableSetChangeListener) abmelden}.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5982 $
+ * @version $Revision$
  */
 public interface MutableSet extends ObjectSet, ConfigurationCommunicationInterface, MutableCollection {
 
 	/**
-	 * Meldet einen Beobachter für die Änderungen dieser Menge an. Bei Änderungen der Menge wird die Methode
+	 * Meldet einen Beobachter fÃ¼r die Ã„nderungen dieser Menge an. Bei Ã„nderungen der Menge wird die Methode
 	 * {@link MutableSetChangeListener#update} des angegebenen Beobachters aufgerufen.
 	 *
-	 * @param listener Beobachter für Änderungen der Menge.
+	 * @param listener Beobachter fÃ¼r Ã„nderungen der Menge.
 	 */
 	public void addChangeListener(MutableSetChangeListener listener);
 
 	/**
-	 * Meldet einen Beobachter für die Änderungen dieser Menge wieder ab.
+	 * Meldet einen Beobachter fÃ¼r die Ã„nderungen dieser Menge wieder ab.
 	 *
-	 * @param listener Ein bisher für Änderungen der Menge angemeldeter Beobachter.
+	 * @param listener Ein bisher fÃ¼r Ã„nderungen der Menge angemeldeter Beobachter.
 	 */
 	public void removeChangeListener(MutableSetChangeListener listener);
 }

@@ -30,8 +30,8 @@ import java.util.SortedMap;
 import de.bsvrz.vew.syskal.syskal.erinnerungsfunktion.ErinnerungsFunktion;
 
 /**
- * Schnittstelle zum Erzeugen von SystemKalenderEinträgen. Bietet einen einheitlichen Zugriff auf alle Typen von
- * SystemKalendereinträgen *
+ * Schnittstelle zum Erzeugen von SystemKalenderEintrÃ¤gen. Bietet einen einheitlichen Zugriff auf alle Typen von
+ * SystemKalendereintrÃ¤gen *
  * 
  * @version $Revision: 1.5 $ / $Date: 2010/08/03 07:34:26 $ / ($Author: Pittner $)
  * 
@@ -59,7 +59,7 @@ public interface SystemkalenderEintrag
    * Berechnet die Zeitstempel der Zustandswechsel
    * 
    * @param jahr
-   *          das Jahr für welches die Wechsel berechnet werden
+   *          das Jahr fÃ¼r welches die Wechsel berechnet werden
    * @return SortedMap<Long, Boolean> zeitl. sortierte Liste der Zustandswechsel
    */
   public SortedMap<Long, Boolean> berechneZustandsWechsel(int jahr);
@@ -72,7 +72,7 @@ public interface SystemkalenderEintrag
    * @param bis
    *          Endezeitpunkt
    * @param jahr
-   *          das Jahr für welches die Wechsel berechnet werden
+   *          das Jahr fÃ¼r welches die Wechsel berechnet werden
    * @return SortedMap<Long, Boolean> zeitl. sortierte Liste der Zustandswechsel
    */
   public SortedMap<Long, Boolean> berechneZustandsWechsel(Long von, Long bis, int jahr);
@@ -85,21 +85,21 @@ public interface SystemkalenderEintrag
    * @param bis
    *          Endezeitpunkt
    * @param jahr
-   *          das Jahr für welches die Wechsel berechnet werden
-   * @return SortedMap<Long, Long> zeitl. sortierte Liste der Gültigkeiten
+   *          das Jahr fÃ¼r welches die Wechsel berechnet werden
+   * @return SortedMap<Long, Long> zeitl. sortierte Liste der GÃ¼ltigkeiten
    */
   public SortedMap<Long, Long> berechneIntervall(Long von, Long bis, int jahr);
 
   
   /**
-   * Berechnet die Zeitstempel der Zustandswechsel für das Versenden des Ereigniszustands
+   * Berechnet die Zeitstempel der Zustandswechsel fÃ¼r das Versenden des Ereigniszustands
    * 
    * @param von
    *          Anfangszeitpunkt
    * @param bis
    *          Endezeitpunkt
    * @param jahr
-   *          das Jahr für welches die Wechsel berechnet werden
+   *          das Jahr fÃ¼r welches die Wechsel berechnet werden
    * @return SortedMap<Long, Boolean> zeitl. sortierte Liste der Zustandswechsel
    */
   public SortedMap<Long, Boolean> berechneZustandsWechselZustand(Long von, Long bis, int jahr);
@@ -208,7 +208,7 @@ public interface SystemkalenderEintrag
    *          Startzeitpunkt der Berechnung
    * @param bis
    *          Endezeitpunkt der Berechnung
-   * @return Liste der Gültigkeiten
+   * @return Liste der GÃ¼ltigkeiten
    */
   public SortedMap<Long, Long> berecheneIntervallVonBis(Long von, Long bis);
 

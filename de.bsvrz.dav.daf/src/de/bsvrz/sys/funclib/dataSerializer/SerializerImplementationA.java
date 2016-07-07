@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.dataSerializer;
@@ -38,22 +44,22 @@ import java.io.OutputStream;
 import java.util.*;
 
 /**
- * Implementierung eines Serialisierers zum serialisieren von Datensätzen. Die Klasse ist nicht öffentlich zugänglich.
+ * Implementierung eines Serialisierers zum serialisieren von DatensÃ¤tzen. Die Klasse ist nicht Ã¶ffentlich zugÃ¤nglich.
  * Ein Objekt dieser Klasse kann mit der Methode {@link SerializingFactory#createSerializer} erzeugt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13421 $
+ * @version $Revision$
  */
 final class SerializerImplementationA implements Serializer {
 	private final int _version;
 	private OutputStream _outputStream;
 
 	/**
-	 * Erzeugt ein neues Serialisierungsobjekt mit der gewünschten Version.
+	 * Erzeugt ein neues Serialisierungsobjekt mit der gewÃ¼nschten Version.
 	 *
-	 * @param version      Gewünschte Version der Deserialisierung.
+	 * @param version      GewÃ¼nschte Version der Deserialisierung.
 	 * @param outputStream Ausgabe-Stream, der beim serialisieren zu verwenden ist.
-	 * @throws RuntimeException Wenn die gewünschte Version nicht durch diese Klasse implementiert werden kann.
+	 * @throws RuntimeException Wenn die gewÃ¼nschte Version nicht durch diese Klasse implementiert werden kann.
 	 */
 	SerializerImplementationA(final int version, final OutputStream outputStream) throws RuntimeException {
 		_version = version;
@@ -64,9 +70,9 @@ final class SerializerImplementationA implements Serializer {
 	}
 
 	/**
-	 * Bestimmt den für die Serialisierung zu verwendenden Ausgabe-Stream.
+	 * Bestimmt den fÃ¼r die Serialisierung zu verwendenden Ausgabe-Stream.
 	 *
-	 * @return Für die Serialisierung zu verwendenden Ausgabe-Stream.
+	 * @return FÃ¼r die Serialisierung zu verwendenden Ausgabe-Stream.
 	 */
 	public OutputStream getOutputStream() {
 		return _outputStream;
@@ -93,7 +99,7 @@ final class SerializerImplementationA implements Serializer {
 	/**
 	 * Serialisiert einen Datensatz in einen Bytestrom und schreibt diesen auf den angegebenen Ausgabe-Stream.
 	 * AttributListen und Arrays werden durch Serialisierung der enthalten Attribute serialisiert. Bei Arrays variabler
-	 * Länge wird die Länge vorweg serialisiert, und zwar je nach maximaler Anzahl der Elemente in 1, 2 oder 4 Bytes als
+	 * LÃ¤nge wird die LÃ¤nge vorweg serialisiert, und zwar je nach maximaler Anzahl der Elemente in 1, 2 oder 4 Bytes als
 	 * vorzeichenloser Wert.
 	 *
 	 * @param data Der zu serialisierende Datensatz.
@@ -120,7 +126,7 @@ final class SerializerImplementationA implements Serializer {
 							writeLong(data.asUnscaledValue().longValue());
 							break;
 						default:
-							throw new RuntimeException("Ganzzahlattribut mit ungültiger Byte-Anzahl: " + integerAtt.getNameOrPidOrId());
+							throw new RuntimeException("Ganzzahlattribut mit ungÃ¼ltiger Byte-Anzahl: " + integerAtt.getNameOrPidOrId());
 					}
 				}
 				else if(att instanceof ReferenceAttributeType) {
@@ -132,13 +138,13 @@ final class SerializerImplementationA implements Serializer {
 							pid = systemObject.getPid();
 							if(pid.length() == 0) {
 								throw new IllegalArgumentException(
-										"Serialisierung des Attributs " + data.getName() + " kann nicht durchgeführt werden, weil"
+										"Serialisierung des Attributs " + data.getName() + " kann nicht durchgefÃ¼hrt werden, weil"
 												+ "das referenzierte Objekt keine Pid hat und als Referenzierungsart Assoziation festgelegt ist"
 								);
 							}
 						}
 						else {
-							// Bei nicht auflösbaren Referenzen wird die ursprüngliche Pid (falls vorhanden) eingetragen, sonst ein Leerstring für undefiniert
+							// Bei nicht auflÃ¶sbaren Referenzen wird die ursprÃ¼ngliche Pid (falls vorhanden) eingetragen, sonst ein Leerstring fÃ¼r undefiniert
 							pid = data.asReferenceValue().getSystemObjectPid();
 						}
 						writeString(pid, 255);
@@ -172,7 +178,7 @@ final class SerializerImplementationA implements Serializer {
 					}
 				}
 				else {
-					throw new RuntimeException("Serialisierung einer unbekannten Attributart nicht möglich");
+					throw new RuntimeException("Serialisierung einer unbekannten Attributart nicht mÃ¶glich");
 				}
 			}
 			catch(ConfigurationException e) {
@@ -198,8 +204,8 @@ final class SerializerImplementationA implements Serializer {
 				else {
 					if(arrayLength != maxCount) {
 						throw new RuntimeException(
-								"Länge des Arrays im Attribut " + data.getName() + " ist " + arrayLength + ", " +
-										"aber es sollte die Länge " + maxCount + " haben"
+								"LÃ¤nge des Arrays im Attribut " + data.getName() + " ist " + arrayLength + ", " +
+										"aber es sollte die LÃ¤nge " + maxCount + " haben"
 						);
 					}
 				}
@@ -305,7 +311,7 @@ final class SerializerImplementationA implements Serializer {
 	}
 
 	/**
-	 * Serialisiert einen <code>String</code>-Wert mit einer MaximalLänge von 65535 in einen Bytestrom und schreibt diesen
+	 * Serialisiert einen <code>String</code>-Wert mit einer MaximalLÃ¤nge von 65535 in einen Bytestrom und schreibt diesen
 	 * auf den Ausgabe-Stream.
 	 *
 	 * @param value Der zu serialisierende Wert.
@@ -317,12 +323,12 @@ final class SerializerImplementationA implements Serializer {
 
 	/**
 	 * Serialisiert einen <code>String</code>-Wert in einen Bytestrom und schreibt diesen auf den Ausgabe-Stream. Strings werden in ISO-8859-1 kodiert und vorweg
-	 * wird die Länge des Strings serialisiert und zwar je nach maximaler Stringlänge in 1, 2, oder 4 Bytes als vorzeichenloser Wert.
+	 * wird die LÃ¤nge des Strings serialisiert und zwar je nach maximaler StringlÃ¤nge in 1, 2, oder 4 Bytes als vorzeichenloser Wert.
 	 *
 	 * @param value     Der zu serialisierende Wert.
-	 * @param maxLength Maximale Länge des zu serialisierenden Strings oder <code>0</code> wenn keine Begrenzung vorgegeben werden kann.
+	 * @param maxLength Maximale LÃ¤nge des zu serialisierenden Strings oder <code>0</code> wenn keine Begrenzung vorgegeben werden kann.
 	 * @throws IOException              Wenn ein I/O Fehler bei Schreiben auf den Ausgabe-Stream auftritt.
-	 * @throws IllegalArgumentException Wenn die Länge des Strings größer als die angegebene Maximallänge ist.
+	 * @throws IllegalArgumentException Wenn die LÃ¤nge des Strings grÃ¶ÃŸer als die angegebene MaximallÃ¤nge ist.
 	 */
 	public void writeString(final String value, final int maxLength) throws IOException {
 		final int length = value.length();
@@ -332,7 +338,7 @@ final class SerializerImplementationA implements Serializer {
 		else {
 			if(length > maxLength) {
 				throw new IllegalArgumentException(
-						"Länge " + length + " des zu serialisierenden Strings '" + value + "' ist größer als das zulässige Maximum " + maxLength
+						"LÃ¤nge " + length + " des zu serialisierenden Strings '" + value + "' ist grÃ¶ÃŸer als das zulÃ¤ssige Maximum " + maxLength
 				);
 			}
 			if(maxLength > 255) {
@@ -344,14 +350,14 @@ final class SerializerImplementationA implements Serializer {
 		}
 		final byte[] bytes = value.getBytes("ISO-8859-1");
 		if(length != bytes.length) {
-			throw new RuntimeException("Stringlänge ungleich kodierter Stringlänge: " + value);
+			throw new RuntimeException("StringlÃ¤nge ungleich kodierter StringlÃ¤nge: " + value);
 		}
 		_outputStream.write(bytes);
 	}
 
 
 	/**
-	 * Schreibt ein Byte-Array auf den Ausgabe-Stream. Es ist zu beachten, dass die Größe des Arrays nicht implizit
+	 * Schreibt ein Byte-Array auf den Ausgabe-Stream. Es ist zu beachten, dass die GrÃ¶ÃŸe des Arrays nicht implizit
 	 * serialisiert wird und beim Deserialisieren angegeben werden muss.
 	 *
 	 * @param bytes Zu schreibendes Byte-Array
@@ -375,7 +381,7 @@ final class SerializerImplementationA implements Serializer {
 	}
 
 	/**
-	 * Liefert eine textuelle Beschreibung dieses Objekts für Debug-Zwecke.
+	 * Liefert eine textuelle Beschreibung dieses Objekts fÃ¼r Debug-Zwecke.
 	 *
 	 * @return Beschreibung dieses Objekts.
 	 */

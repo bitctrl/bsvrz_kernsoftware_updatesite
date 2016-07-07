@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,30 +15,36 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.sys.funclib.communicationStreams;
 
 /**
  * Dieses Interface muss implementiert werden, wenn ein StreamMultiplexer mit einem StreamDemultiplexer Nutzdatenpakete austauschen soll.
- * Die Methoden ermöglichen es, dass der StreamMultiplexer Nutzdaten von der Sendeapplikation anfordern und diese
+ * Die Methoden ermÃ¶glichen es, dass der StreamMultiplexer Nutzdaten von der Sendeapplikation anfordern und diese
  * dann an den StreamDemultiplexer weitergeben kann.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5019 $
+ * @version $Revision$
  */
 public interface StreamMultiplexerDirector {
 
 	/**
 	 * Diese Methode wird von einem StreamMultiplexer aufgerufen, sobald dieser Daten an einen StreamDemultiplexer
-	 * verschicken darf. Die Methode sollte ein Nutzdatenpaket zur Verfügung stellen, das dann über den StreamMultiplexer
-	 * und StreamDemultiplexer der Empfängerapplikation beim Aufruf der {@link StreamDemultiplexer#take} bereit gestellt
+	 * verschicken darf. Die Methode sollte ein Nutzdatenpaket zur VerfÃ¼gung stellen, das dann Ã¼ber den StreamMultiplexer
+	 * und StreamDemultiplexer der EmpfÃ¤ngerapplikation beim Aufruf der {@link StreamDemultiplexer#take} bereit gestellt
 	 * wird.
 	 *
-	 * @param indexOfStream Stream über den die Nutzdaten übertragen werden sollen
-	 * @return Nutzdaten, die von der Sendeapplikation zur Empfängerapplikation geschickt werden sollen. Sobald die
-	 *         Sendeapplikation keine Nutzdaten mehr für die Empfängerapplikation hat, wird ein <code>null</code> zurück
+	 * @param indexOfStream Stream Ã¼ber den die Nutzdaten Ã¼bertragen werden sollen
+	 * @return Nutzdaten, die von der Sendeapplikation zur EmpfÃ¤ngerapplikation geschickt werden sollen. Sobald die
+	 *         Sendeapplikation keine Nutzdaten mehr fÃ¼r die EmpfÃ¤ngerapplikation hat, wird ein <code>null</code> zurÃ¼ck
 	 *         gegeben.
 	 */
 	public byte[] take(int indexOfStream);
@@ -48,7 +54,7 @@ public interface StreamMultiplexerDirector {
 	 * StreamDemultiplexer gesendet werden soll. Empfangsseitig sollte die Methode {@link
 	 * StreamDemultiplexer#receivedDataFromSender} aufgerufen werden.
 	 *
-	 * Das Byte-Array enthält kodiert den Index des Streams, den Index des Pakets, die Größe des Byte-Arrays in dem
+	 * Das Byte-Array enthÃ¤lt kodiert den Index des Streams, den Index des Pakets, die GrÃ¶ÃŸe des Byte-Arrays in dem
 	 * die Nutzdaten gespeichert sind und die Nutzdaten.
 	 *
 	 * @param streamDataPacket Ein Nutzdatenpaket vom StreamMultiplexer zum StreamDemultiplexer
@@ -56,13 +62,13 @@ public interface StreamMultiplexerDirector {
 	public void sendData(byte[] streamDataPacket);
 
 	/**
-	 * Wenn die Empfängerapplikation keine Nutzdaten mehr verarbeiten kann (aus welchem Grund auch immer), wird sie den
-	 * Stream auf Empfängerseite (StreamDemultiplexer) mit abort beenden. Mit diesem Methodenaufruf wird die Senderapplikation
-	 * benachrichtigt, dass sie alle Daten, die für einen Stream bereitgestellt wurden nicht mehr benötigt wurden und das
-	 * sie auch in Zukunft keine Daten mehr für diesen Stream zur Verfügung stellen muss. Der StreamMultiplexer wird diese
+	 * Wenn die EmpfÃ¤ngerapplikation keine Nutzdaten mehr verarbeiten kann (aus welchem Grund auch immer), wird sie den
+	 * Stream auf EmpfÃ¤ngerseite (StreamDemultiplexer) mit abort beenden. Mit diesem Methodenaufruf wird die Senderapplikation
+	 * benachrichtigt, dass sie alle Daten, die fÃ¼r einen Stream bereitgestellt wurden nicht mehr benÃ¶tigt wurden und das
+	 * sie auch in Zukunft keine Daten mehr fÃ¼r diesen Stream zur VerfÃ¼gung stellen muss. Der StreamMultiplexer wird diese
 	 * Funktion aufrufen, sobald er von dem StreamDemultiplexer benachrichtigt wurde, dass ein Stream abgebrochen werden kann.
 	 *
-	 * @param indexOfStream Index des Streams, dessen Nutzdaten in der Senderapplikation verworfen werden können
+	 * @param indexOfStream Index des Streams, dessen Nutzdaten in der Senderapplikation verworfen werden kÃ¶nnen
 	 */
 	public void streamAborted(int indexOfStream);
 

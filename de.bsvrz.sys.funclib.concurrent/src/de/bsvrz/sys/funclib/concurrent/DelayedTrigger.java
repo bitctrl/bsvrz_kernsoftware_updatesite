@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.sys.funclib.concurrent is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.concurrent is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.concurrent; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.concurrent; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.concurrent;
@@ -24,39 +30,39 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Definiert einen Trigger mit verzögerter Auslösung.
+ * Definiert einen Trigger mit verzÃ¶gerter AuslÃ¶sung.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5897 $
+ * @version $Revision$
  */
 public class DelayedTrigger implements Trigger {
 
-	/** Listener, die beim Auslösen und Schließen des Triggers benachrichtigt werden sollen. */
+	/** Listener, die beim AuslÃ¶sen und SchlieÃŸen des Triggers benachrichtigt werden sollen. */
 	private final List<TriggerTarget> _triggerTargets = new CopyOnWriteArrayList<TriggerTarget>();
 
-	/** Anzahl der Trigger-Aufrufe, nach der die sofortige Auslösung angestoßen wird. */
+	/** Anzahl der Trigger-Aufrufe, nach der die sofortige AuslÃ¶sung angestoÃŸen wird. */
 	private int _maximumDelayedTriggerCount;
 
 	/** Aktuelle Anzahl der Trigger-Aufrufe. */
 	private int _delayedTriggerCount = 0;
 
-	/** Verzögerungszeit in der nach einem Trigger-Aufrufe auf weitere Trigger-Aufrufe gewartet wird, bevor die sofortige Auslösung angestoßen wird. */
+	/** VerzÃ¶gerungszeit in der nach einem Trigger-Aufrufe auf weitere Trigger-Aufrufe gewartet wird, bevor die sofortige AuslÃ¶sung angestoÃŸen wird. */
 	private long _delayDuration;
 
 	/**
-	 * Zeitpunkt an dem die sofortige Auslösung angestoßen wird, wenn nicht vorher ein weiterer Trigger-Aufruf stattfindet. Mit jedem neuen Trigger-Aufruf wird
+	 * Zeitpunkt an dem die sofortige AuslÃ¶sung angestoÃŸen wird, wenn nicht vorher ein weiterer Trigger-Aufruf stattfindet. Mit jedem neuen Trigger-Aufruf wird
 	 * dieses Feld auf die aktuelle Zeit plus <code>_delayDuration</code> gesetzt.
 	 */
 	private long _triggeringTime;
 
 	/**
-	 * Maximale Verzögerungszeit in der nach dem jeweils ersten Trigger-Aufruf auf weitere Trigger-Aufrufe gewartet wird, bevor die sofortige Auslösung angestoßen
+	 * Maximale VerzÃ¶gerungszeit in der nach dem jeweils ersten Trigger-Aufruf auf weitere Trigger-Aufrufe gewartet wird, bevor die sofortige AuslÃ¶sung angestoÃŸen
 	 * wird.
 	 */
 	private long _maximumDelayDuration;
 
 	/**
-	 * Zeitpunkt an dem die sofortige Auslösung angestoßen wird. Mit dem jeweils ersten verzögerten Anstoß wird dieses Feld auf die aktuelle Zeit plus
+	 * Zeitpunkt an dem die sofortige AuslÃ¶sung angestoÃŸen wird. Mit dem jeweils ersten verzÃ¶gerten AnstoÃŸ wird dieses Feld auf die aktuelle Zeit plus
 	 * <code>_maximumDelayDuration</code> gesetzt.
 	 */
 	private long _maximumTriggeringTime;
@@ -67,12 +73,12 @@ public class DelayedTrigger implements Trigger {
 	/**
 	 * Erzeugt ein neues Triggerobjekt mit den angegebenen Eigenschaften
 	 *
-	 * @param threadName                 Name des Threads für die asynchrone Auslösung des Triggers.
-	 * @param maximumDelayedTriggerCount Anzahl der Trigger-Aufrufe, nach der die sofortige Auslösung angestoßen wird.
-	 * @param delayDuration              Verzögerungszeit in der nach einem Trigger-Aufrufe auf weitere Trigger-Aufrufe gewartet wird, bevor die sofortige
-	 *                                   Auslösung angestoßen wird.
-	 * @param maximumDelayDuration       Maximale Verzögerungszeit in der nach dem jeweils ersten Trigger-Aufruf auf weitere Trigger-Aufrufe gewartet wird, bevor
-	 *                                   die sofortige Auslösung angestoßen wird.
+	 * @param threadName                 Name des Threads fÃ¼r die asynchrone AuslÃ¶sung des Triggers.
+	 * @param maximumDelayedTriggerCount Anzahl der Trigger-Aufrufe, nach der die sofortige AuslÃ¶sung angestoÃŸen wird.
+	 * @param delayDuration              VerzÃ¶gerungszeit in der nach einem Trigger-Aufrufe auf weitere Trigger-Aufrufe gewartet wird, bevor die sofortige
+	 *                                   AuslÃ¶sung angestoÃŸen wird.
+	 * @param maximumDelayDuration       Maximale VerzÃ¶gerungszeit in der nach dem jeweils ersten Trigger-Aufruf auf weitere Trigger-Aufrufe gewartet wird, bevor
+	 *                                   die sofortige AuslÃ¶sung angestoÃŸen wird.
 	 */
 	public DelayedTrigger(final String threadName, final int maximumDelayedTriggerCount, final long delayDuration, final long maximumDelayDuration) {
 		_maximumDelayDuration = maximumDelayDuration;
@@ -83,7 +89,7 @@ public class DelayedTrigger implements Trigger {
 		asyncTriggerThread.start();
 	}
 
-	/** Führt zu einer verzögerten Auslösung des Triggers mit einer asynchronen Benachrichtigung aller angemeldeten TriggerTargets */
+	/** FÃ¼hrt zu einer verzÃ¶gerten AuslÃ¶sung des Triggers mit einer asynchronen Benachrichtigung aller angemeldeten TriggerTargets */
 	public void trigger() {
 		synchronized(this) {
 			if(_closed) throw new IllegalStateException("Trigger wurde bereits geschlossen");
@@ -97,7 +103,7 @@ public class DelayedTrigger implements Trigger {
 		}
 	}
 
-	/** Führt zu einer sofortigen Auslösung des Triggers mit einer asynchronen Benachrichtigung aller angemeldeten TriggerTargets */
+	/** FÃ¼hrt zu einer sofortigen AuslÃ¶sung des Triggers mit einer asynchronen Benachrichtigung aller angemeldeten TriggerTargets */
 	public void shoot() {
 		synchronized(this) {
 			trigger();
@@ -107,8 +113,8 @@ public class DelayedTrigger implements Trigger {
 	}
 
 	/**
-	 * Schließt den Trigger. Die sofortige Auslösung des Triggers wird angestoßen, falls vorherige verzögerte Trigger-Aufrufe noch nicht zu einer Auslösung des
-	 * Triggers geführt haben. Alle angemeldeten TriggerTargets werden anschließend über das Schließen des Triggers benachrichtigt. Der Thread zur asynchronen
+	 * SchlieÃŸt den Trigger. Die sofortige AuslÃ¶sung des Triggers wird angestoÃŸen, falls vorherige verzÃ¶gerte Trigger-Aufrufe noch nicht zu einer AuslÃ¶sung des
+	 * Triggers gefÃ¼hrt haben. Alle angemeldeten TriggerTargets werden anschlieÃŸend Ã¼ber das SchlieÃŸen des Triggers benachrichtigt. Der Thread zur asynchronen
 	 * Benachrichtigung der TriggerTargets wird beendet.
 	 */
 	public void close() {
@@ -119,11 +125,11 @@ public class DelayedTrigger implements Trigger {
 	}
 
 	/**
-	 * Wartet bis der Trigger ausgelöst werden soll oder der Trigger geschlossen wurde.
+	 * Wartet bis der Trigger ausgelÃ¶st werden soll oder der Trigger geschlossen wurde.
 	 *
-	 * @return <code>false</code>, wenn der Trigger ausgelöst werden kann; <code>true</code>, wenn der Trigger geschlossen wurde.
+	 * @return <code>false</code>, wenn der Trigger ausgelÃ¶st werden kann; <code>true</code>, wenn der Trigger geschlossen wurde.
 	 *
-	 * @throws InterruptedException Wenn der Thread vor oder während des Wartens unterbrochen wurde.
+	 * @throws InterruptedException Wenn der Thread vor oder wÃ¤hrend des Wartens unterbrochen wurde.
 	 */
 	private boolean awaitTrigger() throws InterruptedException {
 		synchronized(this) {
@@ -155,21 +161,21 @@ public class DelayedTrigger implements Trigger {
 		_triggerTargets.remove(triggerTarget);
 	}
 
-	/** Benachrichtigt alle TriggerTargets über das Auslösen des Triggers */
+	/** Benachrichtigt alle TriggerTargets Ã¼ber das AuslÃ¶sen des Triggers */
 	private void shootTriggerTargets() {
 		for(TriggerTarget triggerTarget : _triggerTargets) {
 			triggerTarget.shot();
 		}
 	}
 
-	/** Benachrichtigt alle TriggerTargets über das Auslösen des Triggers */
+	/** Benachrichtigt alle TriggerTargets Ã¼ber das AuslÃ¶sen des Triggers */
 	private void closeTriggerTargets() {
 		for(TriggerTarget triggerTarget : _triggerTargets) {
 			triggerTarget.close();
 		}
 	}
 
-	/** Runnable mit der run-Methode, die in einem eigenen Thread ausgeführt wird und die TriggerTargets asynchron benachrichtigt. */
+	/** Runnable mit der run-Methode, die in einem eigenen Thread ausgefÃ¼hrt wird und die TriggerTargets asynchron benachrichtigt. */
 	private class AsyncTriggerThreadRunnable implements Runnable {
 
 		public void run() {

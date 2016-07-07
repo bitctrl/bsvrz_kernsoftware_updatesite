@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.subscription;
@@ -32,11 +38,11 @@ import de.bsvrz.dav.daf.communication.lowLevel.telegrams.BaseSubscriptionInfo;
 /**
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 11279 $
+ * @version $Revision$
  */
 public class SenderSubscription {
 
-	/** Repr‰sentant des Emp‰ngers */
+	/** Repr√§sentant des Emp√§ngers */
 	private ClientSenderInterface _clientSender;
 
 	/** Der Objekt der Anmeldung */
@@ -51,13 +57,13 @@ public class SenderSubscription {
 	/**
 	 * Erzeugt ein neues Objekt mit den gegebenen Parametern.
 	 *
-	 * @param client                    Repr‰sentant des Emp‰ngers
+	 * @param client                    Repr√§sentant des Emp√§ngers
 	 * @param systemObject              Objekt der Anmeldung
 	 * @param dataDescription           Beschreibende Informationen der zu versendenden Daten
 	 * @param externalSimulationVariant TBD
 	 * @param senderRole TBD
 	 *
-	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationException wenn Fehler bei Konfigurations‰nderungen auftritt.
+	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationException wenn Fehler bei Konfigurations√§nderungen auftritt.
 	 */
 	public SenderSubscription(
 			ClientSenderInterface client,
@@ -74,32 +80,32 @@ public class SenderSubscription {
 				_systemObject.getId(), _dataDescription.getAttributeGroup().getAttributeGroupUsage(_dataDescription.getAspect()), externalSimulationVariant
 		);
 		// Sender bekommen immer eine Sendesteuerung, auch wenn diese nicht expliziet angefordert wird.
-		// Dies ermˆglicht zu erkennen, ob bereits eine Sendesteuerung vorliegt (egal ob positiv oder negativ).
+		// Dies erm√∂glicht zu erkennen, ob bereits eine Sendesteuerung vorliegt (egal ob positiv oder negativ).
 		// Falls keine Sendesteuerung vorliegt, kann eine Exception geworfen werden
 		boolean requestSupported = isRequestSupported() || senderRole == SenderRole.sender();
 		_sendSubscriptionInfo = new SendSubscriptionInfo(baseSubscriptionInfo, senderRole, requestSupported);
 	}
 
 	/**
-	 * Gibt den Empf‰nger zur¸ck.
+	 * Gibt den Empf√§nger zur√ºck.
 	 *
-	 * @return Repr‰sentant des Emp‰ngers
+	 * @return Repr√§sentant des Emp√§ngers
 	 */
 	public final ClientSenderInterface getClientSender() {
 		return _clientSender;
 	}
 
 	/**
-	 * Setzt den Repr‰sentant des Emp‰ngers.
+	 * Setzt den Repr√§sentant des Emp√§ngers.
 	 *
-	 * @param client Repr‰sentant des Emp‰ngers
+	 * @param client Repr√§sentant des Emp√§ngers
 	 */
 	public final void setClientSender(ClientSenderInterface client) {
 		_clientSender = client;
 	}
 
 	/**
-	 * Gibt der Systemobjekt zur¸ck
+	 * Gibt der Systemobjekt zur√ºck
 	 *
 	 * @return Systemobjekt
 	 */
@@ -108,7 +114,7 @@ public class SenderSubscription {
 	}
 
 	/**
-	 * Gibt die beschreibende Informationen der zu versendenden Daten zur¸ck
+	 * Gibt die beschreibende Informationen der zu versendenden Daten zur√ºck
 	 *
 	 * @return beschreibende Informationen
 	 */
@@ -117,7 +123,7 @@ public class SenderSubscription {
 	}
 
 	/**
-	 * Gibt die Basisanmeldeinformationen zur¸ck
+	 * Gibt die Basisanmeldeinformationen zur√ºck
 	 *
 	 * @return Basisanmeldeinformation
 	 */
@@ -126,7 +132,7 @@ public class SenderSubscription {
 	}
 
 	/**
-	 * Gibt die Senderanmeldeinformationen zur¸ck
+	 * Gibt die Senderanmeldeinformationen zur√ºck
 	 *
 	 * @return Senderanmeldeinformation
 	 */
@@ -135,7 +141,7 @@ public class SenderSubscription {
 	}
 
 	/**
-	 * Gibt die Information zur¸ck, ob die Applikation getriggert werden kann oder nicht.
+	 * Gibt die Information zur√ºck, ob die Applikation getriggert werden kann oder nicht.
 	 *
 	 * @return <code>true: </code>Applikation kann getriggert werden, <code>false:</code>Applikation kann nicht getriggert werden
 	 */

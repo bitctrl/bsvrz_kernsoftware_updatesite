@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config.telegrams;
@@ -26,20 +32,20 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Diese Klasse ist die Basisklasse für System-Antworttelegramme. Hier werden die Typen der Telegramme festgelegt und Methoden zur Bearbeitung deklariert.
+ * Diese Klasse ist die Basisklasse fÃ¼r System-Antworttelegramme. Hier werden die Typen der Telegramme festgelegt und Methoden zur Bearbeitung deklariert.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5054 $
+ * @version $Revision$
  */
 public abstract class SystemObjectAnswerInfo {
 
 	/** Die Typen */
 	public static final byte IDS_TO_OBJECTS_TYPE = 1;
 
-	/** Antworttelegramm für PIDs zu Objekten */
+	/** Antworttelegramm fÃ¼r PIDs zu Objekten */
 	public static final byte PIDS_TO_OBJECTS_TYPE = 2;
 
-	/** Antworttelegramm für Objekte gleichen Typs */
+	/** Antworttelegramm fÃ¼r Objekte gleichen Typs */
 	public static final byte TYPE_IDS_TO_OBJECTS_TYPE = 3;
 
 	/** @deprecated Wird nicht mehr verwendet */
@@ -50,7 +56,7 @@ public abstract class SystemObjectAnswerInfo {
 	protected byte _answerType;
 
 	/**
-	 * Gibt den Typ zurück
+	 * Gibt den Typ zurÃ¼ck
 	 *
 	 * @return Typ des Telegramms
 	 */
@@ -59,7 +65,7 @@ public abstract class SystemObjectAnswerInfo {
 	}
 
 	/**
-	 * Liefert eine textuelle Beschreibung dieses Objekts für Debug-Zwecke zurück.
+	 * Liefert eine textuelle Beschreibung dieses Objekts fÃ¼r Debug-Zwecke zurÃ¼ck.
 	 *
 	 * @return Beschreibender Text dieses Objekts.
 	 */

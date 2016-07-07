@@ -39,8 +39,8 @@ import java.util.TreeMap;
 
 /**
  * Die Klasse erzeugt SystemKalenderEintraege vom Typ: "01.01.*,*" oder "17.06.1963,1989 03.10.1990,*". Die Berechnung
- * der Zeitpunkte mit Wildcards bezieht sich noch auf das aktuelle Kalenderjahr. Die Vorgehensweise könnte dahingehend
- * sein, dass beim Jahrewechsel die Zustandswechsel neu berechnet werden. Muss also noch geklärt werden *
+ * der Zeitpunkte mit Wildcards bezieht sich noch auf das aktuelle Kalenderjahr. Die Vorgehensweise kÃ¶nnte dahingehend
+ * sein, dass beim Jahrewechsel die Zustandswechsel neu berechnet werden. Muss also noch geklÃ¤rt werden *
  * 
  * @version $Revision: 1.6 $ / $Date: 2010/08/03 07:44:21 $ / ($Author: Pittner $)
  * @author Dambach-Werke GmbH

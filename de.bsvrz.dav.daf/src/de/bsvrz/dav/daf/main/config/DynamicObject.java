@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,32 +16,38 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.config;
 
 /**
  * Schnittstelle zum Zugriff auf die Eigenschaften eines dynamischen Objektes. Dynamische Objekte haben, neben den Eigenschaften aller System-Objekte, einen
- * Zeitstempel ab dem sie gültig geworden sind und einen Zeistempel ab dem sie nicht mehr gültig sind.
+ * Zeitstempel ab dem sie gÃ¼ltig geworden sind und einen Zeistempel ab dem sie nicht mehr gÃ¼ltig sind.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5961 $
+ * @version $Revision$
  */
 public interface DynamicObject extends SystemObject, ConfigurationCommunicationInterface {
 
 	/**
-	 * Liefert den Zeitpunkt ab dem dieses dynamische Objekt gültig geworden ist.
+	 * Liefert den Zeitpunkt ab dem dieses dynamische Objekt gÃ¼ltig geworden ist.
 	 *
 	 * @return Zeit in Millisekunden seit 1970.
 	 */
 	public long getValidSince();
 
 	/**
-	 * Liefert den Zeitpunkt ab dem dieses dynamische Objekt nicht mehr gültig ist.
+	 * Liefert den Zeitpunkt ab dem dieses dynamische Objekt nicht mehr gÃ¼ltig ist.
 	 *
-	 * @return Zeit in Millisekunden seit 1970. Wird die "0" zurückgegeben, wurde das Objekt noch nicht auf ungültig gesetzt.
+	 * @return Zeit in Millisekunden seit 1970. Wird die "0" zurÃ¼ckgegeben, wurde das Objekt noch nicht auf ungÃ¼ltig gesetzt.
 	 */
 	public long getNotValidSince();
 

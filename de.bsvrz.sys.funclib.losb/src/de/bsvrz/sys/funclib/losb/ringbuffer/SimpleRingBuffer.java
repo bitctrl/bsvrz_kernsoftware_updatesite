@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.sys.funclib.losb.
  * 
- * de.bsvrz.sys.funclib.losb is free software; you can redistribute it and/or modify
+ * de.bsvrz.sys.funclib.losb is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.losb is distributed in the hope that it will be useful,
@@ -15,19 +15,25 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.sys.funclib.losb; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.losb.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.losb.ringbuffer;
 
 /**
- * Einfacher RingBuffer (FIFO) <ul> <li>Nicht synchronisiert</li> <li>Bei erreichen der Kapazit‰t wird der ‰lteste Eintrag ¸berschrieben, auch wenn dieser noch
- * nicht abgeholt wurde</li> <li>Grˆﬂe nach Anlegen fix</li> </ul>
+ * Einfacher RingBuffer (FIFO) <ul> <li>Nicht synchronisiert</li> <li>Bei erreichen der Kapazit√§t wird der √§lteste Eintrag √ºberschrieben, auch wenn dieser noch
+ * nicht abgeholt wurde</li> <li>Gr√∂√üe nach Anlegen fix</li> </ul>
  *
  * @author beck et al. projects GmbH
  * @author Phil Schrettenbrunner
- * @version $Revision: 6420 $ / $Date: 2009-03-10 23:19:01 +0100 (Tue, 10 Mar 2009) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class SimpleRingBuffer<E> {
 
@@ -37,21 +43,21 @@ public class SimpleRingBuffer<E> {
 
 
 	/**
-	 * SimpleRungBuffer fester Grˆﬂe anlegen
+	 * SimpleRungBuffer fester Gr√∂√üe anlegen
 	 *
-	 * @param size Grˆﬂe
+	 * @param size Gr√∂√üe
 	 *
-	 * @throws IllegalArgumentException bei Grˆﬂenabgaben kleiner 1
+	 * @throws IllegalArgumentException bei Gr√∂√üenabgaben kleiner 1
 	 */
 	@SuppressWarnings("unchecked")
 	public SimpleRingBuffer(int size) throws IllegalArgumentException {
-		if(size < 1) throw new IllegalArgumentException("Mindestgrˆﬂe f¸r SimpleRingBuffer ist 1");
+		if(size < 1) throw new IllegalArgumentException("Mindestgr√∂√üe f√ºr SimpleRingBuffer ist 1");
 		this.buff = (E[])new Object[size];
 	}
 
 
 	/**
-	 * Objekt anf¸gen
+	 * Objekt anf√ºgen
 	 *
 	 * @param element Objekt
 	 */
@@ -72,9 +78,9 @@ public class SimpleRingBuffer<E> {
 	}
 
 	/**
-	 * ƒltestes Objekt ansehen, aber nicht entfernen
+	 * √Ñltestes Objekt ansehen, aber nicht entfernen
 	 *
-	 * @return ‰ltestes Objekt oder null, wenn keine Daten vorhanden
+	 * @return √§ltestes Objekt oder null, wenn keine Daten vorhanden
 	 */
 	public E peekBottom() {
 		if(entries() == 0) return null;
@@ -90,9 +96,9 @@ public class SimpleRingBuffer<E> {
 	}
 
 	/**
-	 * Kapazit‰t
+	 * Kapazit√§t
 	 *
-	 * @return Kapazit‰t
+	 * @return Kapazit√§t
 	 */
 	public int capacity() {
 		return buff.length;
@@ -100,9 +106,9 @@ public class SimpleRingBuffer<E> {
 
 
 	/**
-	 * Anzahl Eintr‰g
+	 * Anzahl Eintr√§g
 	 *
-	 * @return Anzahl eintr‰ge
+	 * @return Anzahl eintr√§ge
 	 */
 	public int entries() {
 		if(last < 0) {
@@ -115,7 +121,7 @@ public class SimpleRingBuffer<E> {
 
 
 	/**
-	 * Ob alle Pl‰tze belegt sind
+	 * Ob alle Pl√§tze belegt sind
 	 *
 	 * @return wahr, wenn size() == capacity()
 	 */

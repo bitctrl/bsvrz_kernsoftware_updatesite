@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2006 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -30,26 +36,26 @@ import de.bsvrz.puk.config.configFile.fileaccess.SystemObjectInformationInterfac
  * Implementierung der Attributgruppenverwendung auf Seiten der Konfiguration.
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
- * @version $Revision: 13136 $ / $Date: 2015-01-29 16:38:49 +0100 (Thu, 29 Jan 2015) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ConfigAttributeGroupUsage extends ConfigConfigurationObject implements AttributeGroupUsage, AttributeGroupUsageIdentifier {
 
 	/**
-	 * Identifizierung dieser Attributgruppenverwendung bei der Kommunikation über den Datenverteiler. Der Wert <code>0</code> bedeutet, dass die Identifizierung
+	 * Identifizierung dieser Attributgruppenverwendung bei der Kommunikation Ã¼ber den Datenverteiler. Der Wert <code>0</code> bedeutet, dass die Identifizierung
 	 * noch nicht berechnet wurde.
 	 *
 	 * @see #getIdentificationForDav
 	 */
 	private long _identificationForDav = 0;
 
-	/** Cache für Usage */
+	/** Cache fÃ¼r Usage */
 	private Usage _usage;
 
 	/**
 	 * Konstruktor einer Attributgruppenverwendung.
 	 *
 	 * @param configurationArea der Konfigurationsbereich einer Attributgruppenverwendung
-	 * @param systemObjectInfo  das korrespondierende Objekt für die Dateioperationen der Attributgruppenverwendung
+	 * @param systemObjectInfo  das korrespondierende Objekt fÃ¼r die Dateioperationen der Attributgruppenverwendung
 	 */
 	public ConfigAttributeGroupUsage(ConfigurationArea configurationArea, SystemObjectInformationInterface systemObjectInfo) {
 		super(configurationArea, systemObjectInfo);
@@ -94,7 +100,7 @@ public class ConfigAttributeGroupUsage extends ConfigConfigurationObject impleme
 		}
 		else {
 			throw new IllegalStateException(
-					"Für die Attributgruppenverwendung " + getNameOrPidOrId()
+					"FÃ¼r die Attributgruppenverwendung " + getNameOrPidOrId()
 					+ " konnte nicht ermittelt werden, ob die Verwendung explizit vorgegeben wurde oder ob sie sich implizit aus der Hierarchie der Parameter ergeben hat."
 			);
 		}
@@ -132,7 +138,7 @@ public class ConfigAttributeGroupUsage extends ConfigConfigurationObject impleme
 			}
 		}
 		if(result == null) {
-			throw new IllegalStateException("Verwendungsmöglichkeit der Attributgruppenverwendung " + getNameOrPidOrId() + " konnte nicht ermittelt werden.");
+			throw new IllegalStateException("VerwendungsmÃ¶glichkeit der Attributgruppenverwendung " + getNameOrPidOrId() + " konnte nicht ermittelt werden.");
 		}
 		else {
 			_usage = result;
@@ -141,10 +147,10 @@ public class ConfigAttributeGroupUsage extends ConfigConfigurationObject impleme
 	}
 
 	/**
-	 * Bestimmt die Identifizierung dieser Attributgruppenverwendung bei der Kommunikation über den Datenverteiler. Bei der ersten Verwendung dieser Methode wird
-	 * die Identifizierung berechnet und für weitere Aufrufe zwischengespeichert.
+	 * Bestimmt die Identifizierung dieser Attributgruppenverwendung bei der Kommunikation Ã¼ber den Datenverteiler. Bei der ersten Verwendung dieser Methode wird
+	 * die Identifizierung berechnet und fÃ¼r weitere Aufrufe zwischengespeichert.
 	 *
-	 * @return Identifizierung dieser Attributgruppenverwendung bei der Kommunikation über den Datenverteiler
+	 * @return Identifizierung dieser Attributgruppenverwendung bei der Kommunikation Ã¼ber den Datenverteiler
 	 *
 	 * @see #calculateDavIdentification()
 	 */
@@ -156,12 +162,12 @@ public class ConfigAttributeGroupUsage extends ConfigConfigurationObject impleme
 	}
 
 	/**
-	 * Bestimmt die Identifizierung dieser Attributgruppenverwendung bei der Kommunikation über den Datenverteiler. Die Identifizierung dieser
-	 * Attributgruppenverwendung hat für bestimmte vordefinierte Attributgruppen-Aspekt-Kombinationen, die zur Kommunikation zwischen
-	 * Datenverteiler-Applikationsfunktionen und Konfiguration benutzt werden, feste vordefinierte Werte und entspricht in allen anderen Fällen
+	 * Bestimmt die Identifizierung dieser Attributgruppenverwendung bei der Kommunikation Ã¼ber den Datenverteiler. Die Identifizierung dieser
+	 * Attributgruppenverwendung hat fÃ¼r bestimmte vordefinierte Attributgruppen-Aspekt-Kombinationen, die zur Kommunikation zwischen
+	 * Datenverteiler-Applikationsfunktionen und Konfiguration benutzt werden, feste vordefinierte Werte und entspricht in allen anderen FÃ¤llen
 	 * der Objekt-Id dieser Attributgruppenverwendung.
 	 *
-	 * @return Identifizierung dieser Attributgruppenverwendung bei der Kommunikation über den Datenverteiler.
+	 * @return Identifizierung dieser Attributgruppenverwendung bei der Kommunikation Ã¼ber den Datenverteiler.
 	 *
 	 * @see #getId()
 	 */

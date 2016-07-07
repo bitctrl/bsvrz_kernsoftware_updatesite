@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.plugins.configdata;
@@ -45,10 +51,10 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Implementiert das Modul für die Anzeige von Konfigurationsdaten. Die Daten werden als Tabelle dargestellt.
+ * Implementiert das Modul fÃ¼r die Anzeige von Konfigurationsdaten. Die Daten werden als Tabelle dargestellt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8209 $
+ * @version $Revision$
  */
 public class ConfigurationDataModule extends ExternalModuleAdapter {
 
@@ -61,7 +67,7 @@ public class ConfigurationDataModule extends ExternalModuleAdapter {
 
 	/* ############## Methoden ################ */
 	/**
-	 * Gibt den Namen des Moduls zurück.
+	 * Gibt den Namen des Moduls zurÃ¼ck.
 	 *
 	 * @return der Name des Moduls
 	 */
@@ -70,7 +76,7 @@ public class ConfigurationDataModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Gibt den Text des Buttons zurück.
+	 * Gibt den Text des Buttons zurÃ¼ck.
 	 *
 	 * @return Text des Buttons
 	 */
@@ -79,7 +85,7 @@ public class ConfigurationDataModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Gibt den Text des Tooltips zurück.
+	 * Gibt den Text des Tooltips zurÃ¼ck.
 	 *
 	 * @return Text des Tooltips
 	 */
@@ -88,9 +94,9 @@ public class ConfigurationDataModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Diese Methode erhält die ausgewählte Datenidentifikation und stellt die Konfigurationsdaten in einer Tabelle dar.
+	 * Diese Methode erhÃ¤lt die ausgewÃ¤hlte Datenidentifikation und stellt die Konfigurationsdaten in einer Tabelle dar.
 	 *
-	 * @param settingsData enthält die ausgewählte Datenidentifikation
+	 * @param settingsData enthÃ¤lt die ausgewÃ¤hlte Datenidentifikation
 	 */
 	public void startModule(final SettingsData settingsData) {
 		_dialog = new ConfigurationDataDialog();
@@ -98,7 +104,7 @@ public class ConfigurationDataModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Diese Methode erhält alle Einstellungen für die Anzeige der Konfigurationsdaten.
+	 * Diese Methode erhÃ¤lt alle Einstellungen fÃ¼r die Anzeige der Konfigurationsdaten.
 	 *
 	 * @param settingsData die Einstellungsdaten
 	 */
@@ -108,8 +114,8 @@ public class ConfigurationDataModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Diese Methode erhält alle Einstellungen für die Konfigurationsdaten und startet den {@link ConfigurationDataDialog Dialog}. Dieser wird mit den
-	 * Einstellungsdaten gefüllt.
+	 * Diese Methode erhÃ¤lt alle Einstellungen fÃ¼r die Konfigurationsdaten und startet den {@link ConfigurationDataDialog Dialog}. Dieser wird mit den
+	 * Einstellungsdaten gefÃ¼llt.
 	 *
 	 * @param settingsData die Einstellungsdaten
 	 */
@@ -119,33 +125,33 @@ public class ConfigurationDataModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Überprüft, ob die Voraussetzungen für das Modul gegeben sind.
+	 * ÃœberprÃ¼ft, ob die Voraussetzungen fÃ¼r das Modul gegeben sind.
 	 *
-	 * @param settingsData enthält die ausgewählte Datenidentifikation
+	 * @param settingsData enthÃ¤lt die ausgewÃ¤hlte Datenidentifikation
 	 *
-	 * @return gibt zurück, ob die Voraussetzungen für das Modul gegeben sind
+	 * @return gibt zurÃ¼ck, ob die Voraussetzungen fÃ¼r das Modul gegeben sind
 	 */
 	public boolean isPreselectionValid(final SettingsData settingsData) {
 		if(!super.isPreselectionValid(settingsData)) {
-			_tooltipText = "Eine konfigurierende Attributgruppe, ein Aspekt und mindestens ein Objekt müssen ausgewählt sein.";
+			_tooltipText = "Eine konfigurierende Attributgruppe, ein Aspekt und mindestens ein Objekt mÃ¼ssen ausgewÃ¤hlt sein.";
 			return false;
 		}
 
-		// ATGV wird berücksichtigt
+		// ATGV wird berÃ¼cksichtigt
 		final AttributeGroupUsage atgUsage = settingsData.getAttributeGroup().getAttributeGroupUsage(settingsData.getAspect());
 		if(atgUsage == null || !atgUsage.isConfigurating()) {
-			_tooltipText = "Keine konfigurierende Attributgruppe ausgewählt.";
+			_tooltipText = "Keine konfigurierende Attributgruppe ausgewÃ¤hlt.";
 			return false;
 		}
-		_tooltipText = "Auswahl übernehmen";
+		_tooltipText = "Auswahl Ã¼bernehmen";
 		return true;
 	}
 
 
 	/* ################## Klasse ConfigurationDataDialog ############### */
 	/**
-	 * Stellt einen Dialog zur Verfügung, mit dem Einstellungen für die Konfigurationsdaten gemacht werden können. Diese Einstellungen können gespeichert werden.
-	 * Durch betätigen des "OK"-Button werden die Konfigurationsdaten in einer Tabelle dargestellt.
+	 * Stellt einen Dialog zur VerfÃ¼gung, mit dem Einstellungen fÃ¼r die Konfigurationsdaten gemacht werden kÃ¶nnen. Diese Einstellungen kÃ¶nnen gespeichert werden.
+	 * Durch betÃ¤tigen des "OK"-Button werden die Konfigurationsdaten in einer Tabelle dargestellt.
 	 */
 	private class ConfigurationDataDialog implements DialogInterface {
 
@@ -161,9 +167,9 @@ public class ConfigurationDataModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Mit dieser Methode können die Datenidentifikationsdaten übergeben werden.
+		 * Mit dieser Methode kÃ¶nnen die Datenidentifikationsdaten Ã¼bergeben werden.
 		 *
-		 * @param data enthält die ausgewählte Datenidentifikation
+		 * @param data enthÃ¤lt die ausgewÃ¤hlte Datenidentifikation
 		 */
 		public void setDataIdentification(final SettingsData data) {
 			Class moduleClass = ConfigurationDataModule.class;
@@ -178,7 +184,7 @@ public class ConfigurationDataModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Diese Methode zeigt den Dialog an und trägt die Einstellungsdaten in die entsprechenden Felder.
+		 * Diese Methode zeigt den Dialog an und trÃ¤gt die Einstellungsdaten in die entsprechenden Felder.
 		 *
 		 * @param data die Einstellungsdaten
 		 */
@@ -194,7 +200,7 @@ public class ConfigurationDataModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Startet die Darstellung für die Konfigurationsdaten anhand der Einstellungsdaten.
+		 * Startet die Darstellung fÃ¼r die Konfigurationsdaten anhand der Einstellungsdaten.
 		 *
 		 * @param settingsData die Einstellungsdaten
 		 */
@@ -241,7 +247,7 @@ public class ConfigurationDataModule extends ExternalModuleAdapter {
 					if(whichList == PreselectionListsFilter.ATTRIBUTEGROUP_LIST) {
 						for(Iterator iterator = list.iterator(); iterator.hasNext();) {
 							final AttributeGroup attributeGroup = (AttributeGroup)iterator.next();
-							// prüfen, ob es hier eine ATGV gibt, die konfigurierend ist
+							// prÃ¼fen, ob es hier eine ATGV gibt, die konfigurierend ist
 							for(AttributeGroupUsage attributeGroupUsage : attributeGroup.getAttributeGroupUsages()) {
 								if(attributeGroupUsage.isConfigurating()) {
 									filteredList.add(attributeGroup);
@@ -258,7 +264,7 @@ public class ConfigurationDataModule extends ExternalModuleAdapter {
 			pane.add(_dataIdentificationChoice);
 
 			// untere Buttonleiste
-			final ButtonBar buttonBar = new ButtonBar(this);     // brauche noch Übergabeparameter
+			final ButtonBar buttonBar = new ButtonBar(this);     // brauche noch Ãœbergabeparameter
 			_dialog.getRootPane().setDefaultButton(buttonBar.getAcceptButton());
 			pane.add(buttonBar);
 		}
@@ -273,7 +279,7 @@ public class ConfigurationDataModule extends ExternalModuleAdapter {
 		/**
 		 * Erstellt die Einstellungsdaten.
 		 *
-		 * @param title der Name für die Einstellungen
+		 * @param title der Name fÃ¼r die Einstellungen
 		 *
 		 * @return die Einstellungsdaten
 		 */
@@ -292,7 +298,7 @@ public class ConfigurationDataModule extends ExternalModuleAdapter {
 			return settingsData;
 		}
 
-		/** Durch betätigen des "OK"-Buttons werden die Konfigurationsdaten angezeigt. Die ausgewählten Einstellungen werden gespeichert. */
+		/** Durch betÃ¤tigen des "OK"-Buttons werden die Konfigurationsdaten angezeigt. Die ausgewÃ¤hlten Einstellungen werden gespeichert. */
 		public void doOK() {
 			SettingsData settingsData = getSettings("");
 			startSettings(settingsData);
@@ -300,14 +306,14 @@ public class ConfigurationDataModule extends ExternalModuleAdapter {
 			saveSettings(settingsData);
 		}
 
-		/** Durch betätigen des "Abbrechen"-Buttons wird der Dialog geschlossen. */
+		/** Durch betÃ¤tigen des "Abbrechen"-Buttons wird der Dialog geschlossen. */
 		public void doCancel() {
 			_dialog.setVisible(false);
 			_dialog.dispose();
 		}
 
 		/**
-		 * Durch betätigen des "Speichern unter ..."-Buttons werden die Einstellungen gespeichert.
+		 * Durch betÃ¤tigen des "Speichern unter ..."-Buttons werden die Einstellungen gespeichert.
 		 *
 		 * @param title Titel der Einstellungen
 		 */

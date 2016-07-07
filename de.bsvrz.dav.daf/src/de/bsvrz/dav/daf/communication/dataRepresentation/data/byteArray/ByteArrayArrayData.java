@@ -1,11 +1,11 @@
 /*
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.communication.dataRepresentation.data.byteArray;
 
@@ -30,9 +36,9 @@ import java.util.*;
 /**
  * Klasse, die noch zu dokumentieren ist.
  *
- * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * @author Kappich+Kni√ü Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 8326 $ / $Date: 2010-11-16 12:00:46 +0100 (Tue, 16 Nov 2010) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ByteArrayArrayData extends ByteArrayStructuredData implements Data.Array, Data.TextArray, Data.TimeArray, Data.ReferenceArray, Data.NumberArray {
 	private final int _length;
@@ -126,51 +132,51 @@ public class ByteArrayArrayData extends ByteArrayStructuredData implements Data.
 	}
 
 	public void setLength(int newLength) {
-		throw new UnsupportedOperationException("setLength(" + newLength + "): Das Data-Objekt darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("setLength(" + newLength + "): Das Data-Objekt darf nicht ver√§ndert werden");
 	}
 
 	public void set(byte[] bytes) {
-		throw new UnsupportedOperationException("set(byte[]): Das Data-Objekt darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("set(byte[]): Das Data-Objekt darf nicht ver√§ndert werden");
 	}
 
 	public void set(short[] shorts) {
-		throw new UnsupportedOperationException("set(short[]): Das Data-Objekt darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("set(short[]): Das Data-Objekt darf nicht ver√§ndert werden");
 	}
 
 	public void set(int[] ints) {
-		throw new UnsupportedOperationException("set(int[]): Das Data-Objekt darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("set(int[]): Das Data-Objekt darf nicht ver√§ndert werden");
 	}
 
 	public void set(long[] longs) {
-		throw new UnsupportedOperationException("set(long[]): Das Data-Objekt darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("set(long[]): Das Data-Objekt darf nicht ver√§ndert werden");
 	}
 
 	public void set(float[] floats) {
-		throw new UnsupportedOperationException("set(float[]): Das Data-Objekt darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("set(float[]): Das Data-Objekt darf nicht ver√§ndert werden");
 	}
 
 	public void set(double[] doubles) {
-		throw new UnsupportedOperationException("set(double[]): Das Data-Objekt darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("set(double[]): Das Data-Objekt darf nicht ver√§ndert werden");
 	}
 
 	public void set(final SystemObject[] systemObjects) {
-		throw new UnsupportedOperationException("set(SystemObject[]): Das Data-Objekt darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("set(SystemObject[]): Das Data-Objekt darf nicht ver√§ndert werden");
 	}
 
 	public void set(final String[] strings) {
-		throw new UnsupportedOperationException("set(String[]): Das Data-Objekt darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("set(String[]): Das Data-Objekt darf nicht ver√§ndert werden");
 	}
 
 	public void set(final ObjectLookup dataModel, final String... systemObjectPids) {
-		throw new UnsupportedOperationException("set(ObjectLookup, String[]): Das Data-Objekt darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("set(ObjectLookup, String[]): Das Data-Objekt darf nicht ver√§ndert werden");
 	}
 
 	public void setMillis(final long[] millis) {
-		throw new UnsupportedOperationException("setMillis(long[]): Das Data-Objekt darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("setMillis(long[]): Das Data-Objekt darf nicht ver√§ndert werden");
 	}
 
 	public void setSeconds(final long[] seconds) {
-		throw new UnsupportedOperationException("setSeconds(long[]): Das Data-Objekt darf nicht ver‰ndert werden");
+		throw new UnsupportedOperationException("setSeconds(long[]): Das Data-Objekt darf nicht ver√§ndert werden");
 	}
 
 	public int getMaxCount() {
@@ -226,7 +232,7 @@ public class ByteArrayArrayData extends ByteArrayStructuredData implements Data.
 
 	public Data.TimeArray asTimeArray() {
 		if(_info.getDefinitionInfo().isTimeAttribute()) return this;
-		throw new UnsupportedOperationException("Das Attribut " + getName() + " enth‰lt keine Zeitangaben");
+		throw new UnsupportedOperationException("Das Attribut " + getName() + " enth√§lt keine Zeitangaben");
 	}
 
 	public long getSeconds(int itemIndex) {
@@ -273,7 +279,7 @@ public class ByteArrayArrayData extends ByteArrayStructuredData implements Data.
 
 	public Data.ReferenceArray asReferenceArray() {
 		if(_info.getDefinitionInfo().isReferenceAttribute()) return this;
-		throw new UnsupportedOperationException("Das Attribut " + getName() + " enth‰lt keine Referenzen");
+		throw new UnsupportedOperationException("Das Attribut " + getName() + " enth√§lt keine Referenzen");
 	}
 
 	public SystemObject getSystemObject(int itemIndex) {
@@ -290,7 +296,7 @@ public class ByteArrayArrayData extends ByteArrayStructuredData implements Data.
 
 	public Data.NumberArray asScaledArray() {
 		if(_info.getDefinitionInfo().isNumberAttribute()) return this;
-		throw new UnsupportedOperationException("Das Attribut " + getName() + " enth‰lt keine Zahlen");
+		throw new UnsupportedOperationException("Das Attribut " + getName() + " enth√§lt keine Zahlen");
 	}
 
 	public NumberValue getValue(int itemIndex) {
@@ -384,7 +390,7 @@ public class ByteArrayArrayData extends ByteArrayStructuredData implements Data.
 				return this;
 			}
 		}
-		throw new UnsupportedOperationException("Das Attribut " + getName() + " enth‰lt keine Zahlen");
+		throw new UnsupportedOperationException("Das Attribut " + getName() + " enth√§lt keine Zahlen");
 	}
 
 	private class UnscaledNumberArrayView implements Data.NumberArray {
@@ -394,31 +400,31 @@ public class ByteArrayArrayData extends ByteArrayStructuredData implements Data.
 		}
 
 		public void setLength(int newLength) {
-			throw new UnsupportedOperationException("setLength(" + newLength + "): Das Data-Objekt darf nicht ver‰ndert werden");
+			throw new UnsupportedOperationException("setLength(" + newLength + "): Das Data-Objekt darf nicht ver√§ndert werden");
 		}
 
 		public void set(byte[] bytes) {
-			throw new UnsupportedOperationException("set(byte[]): Das Data-Objekt darf nicht ver‰ndert werden");
+			throw new UnsupportedOperationException("set(byte[]): Das Data-Objekt darf nicht ver√§ndert werden");
 		}
 
 		public void set(short[] shorts) {
-			throw new UnsupportedOperationException("set(short[]): Das Data-Objekt darf nicht ver‰ndert werden");
+			throw new UnsupportedOperationException("set(short[]): Das Data-Objekt darf nicht ver√§ndert werden");
 		}
 
 		public void set(int[] ints) {
-			throw new UnsupportedOperationException("set(int[]): Das Data-Objekt darf nicht ver‰ndert werden");
+			throw new UnsupportedOperationException("set(int[]): Das Data-Objekt darf nicht ver√§ndert werden");
 		}
 
 		public void set(long[] longs) {
-			throw new UnsupportedOperationException("set(long[]): Das Data-Objekt darf nicht ver‰ndert werden");
+			throw new UnsupportedOperationException("set(long[]): Das Data-Objekt darf nicht ver√§ndert werden");
 		}
 
 		public void set(float[] floats) {
-			throw new UnsupportedOperationException("set(float[]): Das Data-Objekt darf nicht ver‰ndert werden");
+			throw new UnsupportedOperationException("set(float[]): Das Data-Objekt darf nicht ver√§ndert werden");
 		}
 
 		public void set(double[] doubles) {
-			throw new UnsupportedOperationException("set(double[]): Das Data-Objekt darf nicht ver‰ndert werden");
+			throw new UnsupportedOperationException("set(double[]): Das Data-Objekt darf nicht ver√§ndert werden");
 		}
 
 		public NumberValue getValue(int itemIndex) {

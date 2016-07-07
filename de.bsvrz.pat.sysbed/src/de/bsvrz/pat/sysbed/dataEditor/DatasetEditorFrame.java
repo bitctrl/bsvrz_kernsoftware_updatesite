@@ -1,13 +1,13 @@
 /*
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -16,36 +16,28 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.dataEditor;
 
-import de.bsvrz.dav.daf.main.ClientDavInterface;
-import de.bsvrz.dav.daf.main.ClientReceiverInterface;
-import de.bsvrz.dav.daf.main.ClientSenderInterface;
-import de.bsvrz.dav.daf.main.Data;
-import de.bsvrz.dav.daf.main.DataDescription;
-import de.bsvrz.dav.daf.main.DataNotSubscribedException;
-import de.bsvrz.dav.daf.main.OneSubscriptionPerSendData;
-import de.bsvrz.dav.daf.main.ReceiveOptions;
-import de.bsvrz.dav.daf.main.ReceiverRole;
-import de.bsvrz.dav.daf.main.ResultData;
-import de.bsvrz.dav.daf.main.SenderRole;
+import de.bsvrz.dav.daf.main.*;
 import de.bsvrz.dav.daf.main.config.Aspect;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.dav.daf.main.config.SystemObject;
+import de.bsvrz.pat.sysbed.main.GenericTestMonitorApplication;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 
 /**
  * Diese Klasse kann anhand einer Datenidentifikation (Attributgruppe, Aspekt und Objekt) das {@link #startShowCurrentData aktuelle Objekt} vom Datenverteiler
@@ -53,7 +45,7 @@ import java.awt.event.WindowEvent;
  * starten.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8843 $
+ * @version $Revision$
  * @see DataEditorPanel
  */
 public class DatasetEditorFrame extends JFrame {
@@ -64,7 +56,7 @@ public class DatasetEditorFrame extends JFrame {
 	/** die Verbindung zum Datenverteiler */
 	private final ClientDavInterface _connection;
 
-	/** speichert die Datenbeschreibung für die Anmeldung beim Datenverteiler */
+	/** speichert die Datenbeschreibung fÃ¼r die Anmeldung beim Datenverteiler */
 	private final DataDescription _dataDescription;
 
 	/** speichert die aktuelle Attributgruppe */
@@ -76,25 +68,25 @@ public class DatasetEditorFrame extends JFrame {
 	/** speichert das aktuelle Systemobjekt */
 	private final SystemObject _systemObject;
 
-	/** speichert die aktuellen Systemobjekte für die Anmeldung beim Datenverteiler */
+	/** speichert die aktuellen Systemobjekte fÃ¼r die Anmeldung beim Datenverteiler */
 	private final SystemObject[] _systemObjects;
 
 	/** speichert den {@link DataEditorPanel} */
-	private final DataEditorPanel _dataEditorPanel;
+	private final AbstractEditorPanel _dataEditorPanel;
 
-	/** Speichert die Rolle für die Anmeldung beim Datenverteiler. Voreingestellt auf "Empfänger". */
+	/** Speichert die Rolle fÃ¼r die Anmeldung beim Datenverteiler. Voreingestellt auf "EmpfÃ¤nger". */
 	private ReceiverRole _receiverRole = ReceiverRole.receiver();
 
-	/** Speichert die Empfängeroptionen für die Anmeldung beim Datenverteiler. Voreingestellt auf "Online (normal)". */
+	/** Speichert die EmpfÃ¤ngeroptionen fÃ¼r die Anmeldung beim Datenverteiler. Voreingestellt auf "Online (normal)". */
 	private ReceiveOptions _receiveOptions = ReceiveOptions.normal();
 
-	/** Speichert die Rolle für die Anmeldung beim Datenverteiler. Voreingestellt auf "Sender". */
+	/** Speichert die Rolle fÃ¼r die Anmeldung beim Datenverteiler. Voreingestellt auf "Sender". */
 	private SenderRole _senderRole = SenderRole.sender();
 
-	/** speichert das Objekt, welches die Daten vom Datenverteiler empfängt */
+	/** speichert das Objekt, welches die Daten vom Datenverteiler empfÃ¤ngt */
 	private DatasetReceiver _receiver;
 
-	/** speichert das Objekt, welches überprüft, ob gesendet werden darf */
+	/** speichert das Objekt, welches Ã¼berprÃ¼ft, ob gesendet werden darf */
 	private DatasetSender _sender;
 
 	/** Speichert die ContentPane des Fensters. Dort werden die Panel angeordnet. */
@@ -106,9 +98,9 @@ public class DatasetEditorFrame extends JFrame {
 
 	/* ##################### public - Methoden ################### */
 	/**
-	 * Der Konstruktor erstellt ein Fenster, welches die aktuellen Daten zu einer ausgewählten Datenidentifikation anzeigt. Erhält der Datenverteiler neue Daten
-	 * für diese Datenidentifikation, dann wird das Fenster aktualisiert. <br>Wird als Simulationsvariante der Wert -1 übergeben, wird so verfahren, als ob keine
-	 * Simulationsvariante übergeben wurde.
+	 * Der Konstruktor erstellt ein Fenster, welches die aktuellen Daten zu einer ausgewÃ¤hlten Datenidentifikation anzeigt. ErhÃ¤lt der Datenverteiler neue Daten
+	 * fÃ¼r diese Datenidentifikation, dann wird das Fenster aktualisiert. <br>Wird als Simulationsvariante der Wert -1 Ã¼bergeben, wird so verfahren, als ob keine
+	 * Simulationsvariante Ã¼bergeben wurde.
 	 *
 	 * @param connection        Verbindung zum Datenverteiler
 	 * @param title             Titel des Fensters
@@ -138,7 +130,7 @@ public class DatasetEditorFrame extends JFrame {
 		}
 		_systemObjects = new SystemObject[]{systemObject};
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setTitle(title);
+		setTitle(GenericTestMonitorApplication.getTitle(title, connection));
 
 		_dataEditorPanel = new DataEditorPanel(connection);
 
@@ -148,7 +140,7 @@ public class DatasetEditorFrame extends JFrame {
 
 	/**
 	 * Diese Methode wird aufgerufen, wenn eine Datenidentifikation nur angezeigt werden soll. Die {@link #setReceiveOptions Empfangsoptionen} ist auf "Online" und
-	 * die {@link #setReceiverRole Empfängerrolle} auf "Empfänger" voreingestellt.
+	 * die {@link #setReceiverRole EmpfÃ¤ngerrolle} auf "EmpfÃ¤nger" voreingestellt.
 	 */
 	public void startShowCurrentData() {
 		addWindowListener(
@@ -176,11 +168,11 @@ public class DatasetEditorFrame extends JFrame {
 	}
 
 	/**
-	 * Diese Methode wird aufgerufen, wenn für eine Datenidentifikation ein neuer Datensatz erzeugt/erstellt und gesendet werden soll. Die {@link #setSenderRole
+	 * Diese Methode wird aufgerufen, wenn fÃ¼r eine Datenidentifikation ein neuer Datensatz erzeugt/erstellt und gesendet werden soll. Die {@link #setSenderRole
 	 * Senderrolle} ist auf "Sender" voreingestellt.
 	 *
 	 * @throws de.bsvrz.dav.daf.main.OneSubscriptionPerSendData
-	 *          Ausnahme, die bei einer Sendeanmeldung generiert wird, wenn bereits eine lokale Sendeanmeldung für die gleichen Daten von einem anderen
+	 *          Ausnahme, die bei einer Sendeanmeldung generiert wird, wenn bereits eine lokale Sendeanmeldung fÃ¼r die gleichen Daten von einem anderen
 	 *          Anwendungsobjekt vorliegt.
 	 */
 	public void startSendCurrentData() throws OneSubscriptionPerSendData {
@@ -207,7 +199,7 @@ public class DatasetEditorFrame extends JFrame {
 	}
 
 	/**
-	 * Mit dieser Methode kann die Rolle des Senders geändert werden. Die Default-Einstellung ist "Sender".
+	 * Mit dieser Methode kann die Rolle des Senders geÃ¤ndert werden. Die Default-Einstellung ist "Sender".
 	 *
 	 * @param senderRole die Rolle ist Sender
 	 */
@@ -216,16 +208,16 @@ public class DatasetEditorFrame extends JFrame {
 	}
 
 	/**
-	 * Setzt die Rolle des Empfängers. Diese wird für den Datenverteiler benötigt. Die Default-Einstellung ist "Empfänger".
+	 * Setzt die Rolle des EmpfÃ¤ngers. Diese wird fÃ¼r den Datenverteiler benÃ¶tigt. Die Default-Einstellung ist "EmpfÃ¤nger".
 	 *
-	 * @param receiverRole die Rolle des Empfängers
+	 * @param receiverRole die Rolle des EmpfÃ¤ngers
 	 */
 	public void setReceiverRole(final ReceiverRole receiverRole) {
 		_receiverRole = receiverRole;
 	}
 
 	/**
-	 * Setzt die Empfangsoption (Online, nur geänderte Datensätze, auch nachgelieferte Datensätze). Die Default-Einstellung ist "Online (normal)".
+	 * Setzt die Empfangsoption (Online, nur geÃ¤nderte DatensÃ¤tze, auch nachgelieferte DatensÃ¤tze). Die Default-Einstellung ist "Online (normal)".
 	 *
 	 * @param receiveOptions die Empfangsoption
 	 */
@@ -234,9 +226,9 @@ public class DatasetEditorFrame extends JFrame {
 	}
 
 	/**
-	 * Die Methode <class>getPreferredSize()</class> wird überschrieben, da sonst Teile des Fensters hinter der Taskbar liegen und somit nicht zu sehen sind.
+	 * Die Methode <class>getPreferredSize()</class> wird Ã¼berschrieben, da sonst Teile des Fensters hinter der Taskbar liegen und somit nicht zu sehen sind.
 	 *
-	 * @return die Größe des Fensters
+	 * @return die GrÃ¶ÃŸe des Fensters
 	 */
 	public Dimension getPreferredSize() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -258,13 +250,13 @@ public class DatasetEditorFrame extends JFrame {
 
 	/* ########### Private Methoden ########### */
 	/**
-	 * Stellt die ausgewählte Datenidentifikation dar.
+	 * Stellt die ausgewÃ¤hlte Datenidentifikation dar.
 	 *
 	 * @param attributeGroup die darzustellende Attributgruppe
 	 * @param aspect         den darzustellenden Aspekt
 	 * @param systemObject   das darzustellende Systemobjekt
 	 *
-	 * @return die ausgewählte Datenidentifikation als JPanel
+	 * @return die ausgewÃ¤hlte Datenidentifikation als JPanel
 	 */
 	private JPanel getHeaderPanel(final AttributeGroup attributeGroup, final Aspect aspect, final SystemObject systemObject) {
 		JLabel atgLabel = new JLabel("Attributgruppe: ");
@@ -331,7 +323,7 @@ public class DatasetEditorFrame extends JFrame {
 	}
 
 	/**
-	 * In dieser Methode werden die Buttons angeordnet, die zum Erzeugen, Löschen und Senden von Datensätze benötigt werden.
+	 * In dieser Methode werden die Buttons angeordnet, die zum Erzeugen, LÃ¶schen und Senden von DatensÃ¤tze benÃ¶tigt werden.
 	 *
 	 * @return die auf einem Panel angeordneten Buttons
 	 */
@@ -344,7 +336,7 @@ public class DatasetEditorFrame extends JFrame {
 					}
 				}
 		);
-		JButton deleteButton = new JButton("Datensatz löschen");
+		JButton deleteButton = new JButton("Datensatz lÃ¶schen");
 		deleteButton.addActionListener(
 				new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -400,10 +392,10 @@ public class DatasetEditorFrame extends JFrame {
 	}
 
 	/**
-	 * Meldet sich mit der Datenidentifikation als Empfänger beim Datenverteiler an.
+	 * Meldet sich mit der Datenidentifikation als EmpfÃ¤nger beim Datenverteiler an.
 	 *
 	 * @throws de.bsvrz.dav.daf.main.DataNotSubscribedException
-	 *          Daten-Nicht-Angemeldet-Ausnahme, die beim Senden von Datensätzen ohne entsprechende Sendeanmeldungen generiert wird.
+	 *          Daten-Nicht-Angemeldet-Ausnahme, die beim Senden von DatensÃ¤tzen ohne entsprechende Sendeanmeldungen generiert wird.
 	 */
 	private void registerReceiver() throws DataNotSubscribedException {
 		_receiver = new DatasetReceiver();
@@ -414,7 +406,7 @@ public class DatasetEditorFrame extends JFrame {
 	 * Meldet sich mit der Datenidentifikation als Sender beim Datenverteiler an.
 	 *
 	 * @throws de.bsvrz.dav.daf.main.OneSubscriptionPerSendData
-	 *          Ausnahme, die bei einer Sendeanmeldung generiert wird, wenn bereits eine lokale Sendeanmeldung für die gleichen Daten von einem anderen
+	 *          Ausnahme, die bei einer Sendeanmeldung generiert wird, wenn bereits eine lokale Sendeanmeldung fÃ¼r die gleichen Daten von einem anderen
 	 *          Anwendungsobjekt vorliegt.
 	 */
 	private void registerSender() throws OneSubscriptionPerSendData {
@@ -423,14 +415,14 @@ public class DatasetEditorFrame extends JFrame {
 	}
 
 	/**
-	 * Hilfsmethode für das GridBagLayout zur Positionierung der Elemente.
+	 * Hilfsmethode fÃ¼r das GridBagLayout zur Positionierung der Elemente.
 	 *
 	 * @param x      die x-Position im Grid
 	 * @param y      die y-Position im Grid
 	 * @param width  gibt die Anzahl der Spalten an, die die Komponente nutzen soll
 	 * @param height gibt die Anzahl der Zeilen an, die die Komponente nutzen soll
 	 *
-	 * @return die Rahmenbedingungen für eine Komponente
+	 * @return die Rahmenbedingungen fÃ¼r eine Komponente
 	 */
 	private GridBagConstraints makegbc(int x, int y, int width, int height) {
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -444,7 +436,7 @@ public class DatasetEditorFrame extends JFrame {
 
 
 	/* ################# Klasse DatasetReceiver ############## */
-	/** Diese Klasse empfängt die Daten vom Datenverteiler, worauf die {@link DatasetEditorFrame Anwendung} sich vorher angemeldet hat. */
+	/** Diese Klasse empfÃ¤ngt die Daten vom Datenverteiler, worauf die {@link DatasetEditorFrame Anwendung} sich vorher angemeldet hat. */
 	private class DatasetReceiver implements ClientReceiverInterface {
 		/**
 		 * speichert den aktuell empfangenen Datensatz
@@ -452,7 +444,7 @@ public class DatasetEditorFrame extends JFrame {
 //		private Data _receivedData;
 
 		/**
-		 * Diese Methode erhält immer die aktuellsten Daten zu der angemeldeten Datenidentifikation vom Datenverteiler.
+		 * Diese Methode erhÃ¤lt immer die aktuellsten Daten zu der angemeldeten Datenidentifikation vom Datenverteiler.
 		 *
 		 * @param results aktuelle Daten vom Datenverteiler
 		 */
@@ -461,11 +453,11 @@ public class DatasetEditorFrame extends JFrame {
 //			_receivedData = results[results.length - 1].getData();
 			_dataEditorPanel.setResultData(results[results.length - 1]);
 //			_dataEditorPanel.setData(_receivedData == null ? null : _receivedData.createModifiableCopy());
-			pack();   // ermittelt für das Fenster zum Darstellen der Daten die optimale Größe
+			pack();   // ermittelt fÃ¼r das Fenster zum Darstellen der Daten die optimale GrÃ¶ÃŸe
 		}
 	}
 
-	/** Diese Klasse überprüft mit Hilfe der Sendesteuerung, ob gesendet werden kann oder nicht. */
+	/** Diese Klasse Ã¼berprÃ¼ft mit Hilfe der Sendesteuerung, ob gesendet werden kann oder nicht. */
 	private class DatasetSender implements ClientSenderInterface {
 
 		private byte _state = (byte)-1;
@@ -482,13 +474,13 @@ public class DatasetEditorFrame extends JFrame {
 			_sendButton.setEnabled(state == ClientSenderInterface.START_SENDING);
 			final String message;
 			if(state == STOP_SENDING_NO_RIGHTS) {
-				message = "Es liegen momentan keine Rechte für den Versand vor.";
+				message = "Es liegen momentan keine Rechte fÃ¼r den Versand vor.";
 			}
 			else if(state == STOP_SENDING_NOT_A_VALID_SUBSCRIPTION) {
-				message = "Die getätigte Anmeldung ist momentan nicht erlaubt.";
+				message = "Die getÃ¤tigte Anmeldung ist momentan nicht erlaubt.";
 			}
 			else if(state == STOP_SENDING) {
-				message = "Es sind keine Empfänger vorhanden." + (_senderRole.equals(SenderRole.source()) ? " (Alt-Taste drücken um trotzdem zu senden)" : "");
+				message = "Es sind keine EmpfÃ¤nger vorhanden." + (_senderRole.equals(SenderRole.source()) ? " (Alt-Taste drÃ¼cken um trotzdem zu senden)" : "");
 			}
 			else{
 				message = null;
@@ -497,12 +489,12 @@ public class DatasetEditorFrame extends JFrame {
 		}
 
 		/**
-		 * Diese Methode gibt an, ob Sendesteuerung erwünscht ist.
+		 * Diese Methode gibt an, ob Sendesteuerung erwÃ¼nscht ist.
 		 *
 		 * @param object          das Objekt, das beim Datenverteiler angemeldet wurde
 		 * @param dataDescription Information der angemeldeten Daten
 		 *
-		 * @return gibt zurück, ob Sendesteuerung erwünscht ist
+		 * @return gibt zurÃ¼ck, ob Sendesteuerung erwÃ¼nscht ist
 		 */
 		public boolean isRequestSupported(SystemObject object, DataDescription dataDescription) {
 			return true;

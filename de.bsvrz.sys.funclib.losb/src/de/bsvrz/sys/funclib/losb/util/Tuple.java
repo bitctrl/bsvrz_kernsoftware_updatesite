@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.sys.funclib.losb.
  * 
- * de.bsvrz.sys.funclib.losb is free software; you can redistribute it and/or modify
+ * de.bsvrz.sys.funclib.losb is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.losb is distributed in the hope that it will be useful,
@@ -15,13 +15,20 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.sys.funclib.losb; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.losb.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.losb.util;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Tuple bestehend aus zwei Objekten. Implementiert {@link java.io.Serializable}. Das Serialisieren kann aber trotzdem fehlschlagen, wenn eines der Elemente
@@ -29,7 +36,7 @@ import java.io.Serializable;
  *
  * @author beck et al. projects GmbH
  * @author Martin Hilgers
- * @version $Revision: 6420 $ / $Date: 2009-03-10 23:19:01 +0100 (Tue, 10 Mar 2009) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  * @param <X> Erstes Element
  * @param <Y> Zweites Element
  */
@@ -58,7 +65,7 @@ public class Tuple<X, Y> implements Comparable, Serializable {
 	}
 
 	/**
-	 * Vergleicht ob die Elemente der Objekte übereinstimmen. Dazu müssen {@link #first} und {@link #last} ungleich <code>null</code> sein.
+	 * Vergleicht ob die Elemente der Objekte Ã¼bereinstimmen. Dazu mÃ¼ssen {@link #first} und {@link #last} ungleich <code>null</code> sein.
 	 *
 	 * @param tupel Vergleichsobjekt
 	 *
@@ -70,7 +77,7 @@ public class Tuple<X, Y> implements Comparable, Serializable {
 		boolean result = false;
 		if(tupel instanceof Tuple) {
 			Tuple obj = (Tuple)tupel;
-			if(obj != null) result = Util.cmpObj(first, obj.first) && Util.cmpObj(last, obj.last);
+			if(obj != null) result = Objects.equals(first, obj.first) && Objects.equals(last, obj.last);
 		}
 		return result;
 	}

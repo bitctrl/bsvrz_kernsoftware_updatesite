@@ -1,12 +1,12 @@
 /*
  * Copyright 2011 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.sys.funclib.application.
  * 
  * de.bsvrz.sys.funclib.application is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.application is distributed in the hope that it will be useful,
@@ -15,29 +15,30 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.application; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.application; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.application;
 
-import de.bsvrz.dav.daf.main.ClientDavConnection;
-import de.bsvrz.dav.daf.main.ClientDavInterface;
-import de.bsvrz.dav.daf.main.ClientDavParameters;
-import de.bsvrz.dav.daf.main.CommunicationError;
-import de.bsvrz.dav.daf.main.ConnectionException;
-import de.bsvrz.dav.daf.main.InconsistentLoginException;
+import de.bsvrz.dav.daf.main.*;
 import de.bsvrz.sys.funclib.commandLineArgs.ArgumentList;
 import de.bsvrz.sys.funclib.debug.Debug;
 import de.bsvrz.sys.funclib.operatingMessage.MessageSender;
 
 /**
- * Diese Klasse initialisiert die Klasse für die Debug-Ausgaben, stellt eine Verbindung zum Datenverteiler her und ruft die Methoden des {@link
+ * Diese Klasse initialisiert die Klasse fÃ¼r die Debug-Ausgaben, stellt eine Verbindung zum Datenverteiler her und ruft die Methoden des {@link
  * StandardApplication}-Interfaces auf.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 12988 $ / $Date: 2014-11-20 17:09:29 +0100 (Thu, 20 Nov 2014) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class StandardApplicationRunner {
 
@@ -56,7 +57,7 @@ public class StandardApplicationRunner {
 	/**
 	 * Diese Methode erstellt eine Verbindung zum Datenverteiler anhand der Standard-Parameter her.
 	 *
-	 * @param application Applikation, die eine Verbindung zum Datenverteiler benötigt.
+	 * @param application Applikation, die eine Verbindung zum Datenverteiler benÃ¶tigt.
 	 * @param args        Aufrufargumente der Applikation
 	 */
 	public static void run(StandardApplication application, String[] args) {
@@ -66,8 +67,8 @@ public class StandardApplicationRunner {
 	/**
 	 * Diese Methode erstellt eine Verbindung zum Datenverteiler anhand der Standard-Parameter her.
 	 *
-	 * @param application Applikation, die eine Verbindung zum Datenverteiler benötigt.
-	 * @param applicationTypePid Pid des Applikationstyps. Der Datenverteiler erzeugt für die Appliaktion ein Objekt dieses
+	 * @param application Applikation, die eine Verbindung zum Datenverteiler benÃ¶tigt.
+	 * @param applicationTypePid Pid des Applikationstyps. Der Datenverteiler erzeugt fÃ¼r die Appliaktion ein Objekt dieses
 	 *      Typs. Der Applikationstyp sollte "typ.applikation" sein oder davon abgeleitet sein.
 	 * @param args        Aufrufargumente der Applikation
 	 */
@@ -75,7 +76,7 @@ public class StandardApplicationRunner {
 		createApplicationLabel(args);
 		final ArgumentList argumentList = new ArgumentList(args);
 		initializeDebug(application, argumentList);
-		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler());
+		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler(argumentList));
 		try {
 			// ArgumentListe wird in ClientDavParameters konvertiert
 			final ClientDavParameters parameters = new ClientDavParameters(argumentList);
@@ -85,7 +86,7 @@ public class StandardApplicationRunner {
 			application.parseArguments(argumentList);
 			argumentList.ensureAllArgumentsUsed();
 			final ClientDavInterface connection = new ClientDavConnection(parameters);
-			// Fertigmeldung für Start/Stop wird eplizit selbst übernommen
+			// Fertigmeldung fÃ¼r Start/Stop wird explizit selbst Ã¼bernommen
 			establishConnection(connection);
 			_applicationLabel.append(connection.getLocalConfigurationAuthority().getPid());	// ApplikationsKennung
 			MessageSender.getInstance().init(connection, _applicationName, _applicationLabel.toString());
@@ -102,7 +103,7 @@ public class StandardApplicationRunner {
 	/**
 	 * Diese Methode startet einen Login-Dialog und meldet sich anhand der eingetragenen IP-Adresse, Portnummer, Benutzername und Passwort beim Datenverteiler an.
 	 *
-	 * @param application Applikation, die eine Verbindung zum Datenverteiler benötigt.
+	 * @param application Applikation, die eine Verbindung zum Datenverteiler benÃ¶tigt.
 	 * @param args        Aufrufargumente der Applikation
 	 */
 	public static void run(GUIApplication application, String[] args) {
@@ -112,8 +113,8 @@ public class StandardApplicationRunner {
 	/**
 	 * Diese Methode startet einen Login-Dialog und meldet sich anhand der eingetragenen IP-Adresse, Portnummer, Benutzername und Passwort beim Datenverteiler an.
 	 *
-	 * @param application Applikation, die eine Verbindung zum Datenverteiler benötigt.
-	 * @param applicationTypePid Pid des Applikationstyps. Der Datenverteiler erzeugt für die Appliaktion ein Objekt dieses
+	 * @param application Applikation, die eine Verbindung zum Datenverteiler benÃ¶tigt.
+	 * @param applicationTypePid Pid des Applikationstyps. Der Datenverteiler erzeugt fÃ¼r die Appliaktion ein Objekt dieses
 	 *      Typs. Der Applikationstyp sollte "typ.applikation" sein oder davon abgeleitet sein.
 	 * @param args        Aufrufargumente der Applikation
 	 */
@@ -121,9 +122,9 @@ public class StandardApplicationRunner {
 		createApplicationLabel(args);
 		final ArgumentList argumentList = new ArgumentList(args);
 		initializeDebug(application, argumentList);
-		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler());
+		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler(argumentList));
 		try {
-			// soll der Login-Dialog überhaupt angezeigt werden?
+			// soll der Login-Dialog Ã¼berhaupt angezeigt werden?
 			boolean autoLogin = argumentList.fetchArgument("-autologin=false").booleanValue();
 			if(autoLogin) {
 				if(!(argumentList.hasArgument("-benutzer") && argumentList.hasArgument("-authentifizierung"))) {
@@ -133,7 +134,7 @@ public class StandardApplicationRunner {
 					}
 					_debug.warning(
 							"Der Login-Dialog wird trotz des Aufrufparameters '-autologin' aufgerufen, da die Parameter '-benutzer' und '-authentifizierung' "
-							+ "unvollständig oder nicht korrekt angegeben wurden."
+							+ "unvollstÃ¤ndig oder nicht korrekt angegeben wurden."
 					);
 					autoLogin = false;
 				}
@@ -151,11 +152,11 @@ public class StandardApplicationRunner {
 			ClientDavInterface connection = null;
 			if(autoLogin) {
 				connection = new ClientDavConnection(parameters);
-				// Verbindung aufbauen (inkl. Anmelden zur Fertigmeldung für Start/Stop)
+				// Verbindung aufbauen (inkl. Anmelden zur Fertigmeldung fÃ¼r Start/Stop)
 				establishConnection(connection);
 			}
 			else {
-				// Login-Dialog aufrufen, der eine Verbindung zum Datenverteiler aufbaut und zurückgibt.
+				// Login-Dialog aufrufen, der eine Verbindung zum Datenverteiler aufbaut und zurÃ¼ckgibt.
 				connection = application.connect(parameters);
 
 			}
@@ -177,7 +178,7 @@ public class StandardApplicationRunner {
 	}
 
 	/**
-	 * Diese Methode baut die Verbindung zum Datenverteiler auf und teilt mit, dass sich die Applikation selbst um die Fertigmeldung für Start/Stop kümmert.
+	 * Diese Methode baut die Verbindung zum Datenverteiler auf und teilt mit, dass sich die Applikation selbst um die Fertigmeldung fÃ¼r Start/Stop kÃ¼mmert.
      * @param connection aufzubauende Verbindung
      * @throws CommunicationError
      * @throws ConnectionException
@@ -196,7 +197,7 @@ public class StandardApplicationRunner {
 	 * @param argumentList Aufrufargumente
 	 */
 	private static void initializeDebug(Object application, ArgumentList argumentList) {
-		// Der Klassenname wird für die Initialisierung des Debug benötigt.
+		// Der Klassenname wird fÃ¼r die Initialisierung des Debug benÃ¶tigt.
 //		System.out.println("application.getClass().getName() = " + application.getClass().getName());
 		final String[] classNameParts = application.getClass().getName().split("[.]");
 //		System.out.println("classNameParts.length = " + classNameParts.length);
@@ -215,7 +216,7 @@ public class StandardApplicationRunner {
 	}
 
 	/**
-	 * Diese Methode wandelt die Aufrufargumente in einen String für die ApplikationsKennung um.
+	 * Diese Methode wandelt die Aufrufargumente in einen String fÃ¼r die ApplikationsKennung um.
 	 *
 	 * @param args Aufrufargumente
 	 */
@@ -232,8 +233,18 @@ public class StandardApplicationRunner {
 	 */
 	private static class UncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
 
+		/**
+		 * Strenger Fehlerbehandlungsmodus. Falls true wird bei jedem unbehandelten Laufzeitfehler terminiert, sonst nur bei Fehlern,
+		 * die von {@link Error} abgeleitet sind (z.B. OutOfMemoryError).
+		 */
+		private final boolean _strictMode;
+		
 		/** Speicherreserve, die freigegeben wird, wenn ein Error auftritt, damit die Ausgaben nach einem OutOfMemoryError funktionieren */
 		private volatile byte[] _reserve = new byte[20000];
+
+		public UncaughtExceptionHandler(final ArgumentList argumentList) {
+			_strictMode = argumentList.fetchArgument("-terminierenBeiException=nein").booleanValue();
+		}
 
 		public void uncaughtException(Thread t, Throwable e) {
 			if(e instanceof Error) {
@@ -246,7 +257,19 @@ public class StandardApplicationRunner {
 					_debug.error("Schwerwiegender Laufzeitfehler: " + t + " hat sich wegen eines Errors beendet, Prozess wird terminiert", e);
 				}
 				catch(Throwable ignored) {
-					// Weitere Fehler während der Ausgaben werden ignoriert, damit folgendes exit() auf jeden Fall ausgeführt wird.
+					// Weitere Fehler wÃ¤hrend der Ausgaben werden ignoriert, damit folgendes exit() auf jeden Fall ausgefÃ¼hrt wird.
+				}
+				System.exit(1);
+			}
+			else if(_strictMode){
+				try {
+					System.err.println("Schwerwiegender Laufzeitfehler: Ein Thread hat sich wegen einer Exception beendet, Prozess wird terminiert");
+					System.err.println(t);
+					e.printStackTrace(System.err);
+					_debug.error("Schwerwiegender Laufzeitfehler: " + t + " hat sich wegen einer Exception beendet, Prozess wird terminiert", e);
+				}
+				catch(Throwable ignored) {
+					// Weitere Fehler wÃ¤hrend der Ausgaben werden ignoriert, damit folgendes exit() auf jeden Fall ausgefÃ¼hrt wird.
 				}
 				System.exit(1);
 			}

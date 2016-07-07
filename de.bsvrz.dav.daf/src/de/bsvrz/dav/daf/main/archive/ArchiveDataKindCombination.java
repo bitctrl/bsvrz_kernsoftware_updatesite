@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,16 +15,22 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.main.archive;
 
 /**
- * Diese Klasse ermöglicht es in einer Archivanfrage eine Kombination von mehreren {@link ArchiveDataKind} zu erzeugen.
+ * Diese Klasse ermÃ¶glicht es in einer Archivanfrage eine Kombination von mehreren {@link ArchiveDataKind} zu erzeugen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5064 $
+ * @version $Revision$
  */
 public class ArchiveDataKindCombination {
 
@@ -47,7 +53,7 @@ public class ArchiveDataKindCombination {
 
 	/**
 	 * Dieser Construktor kann eine Kombination von vier ArchiveDataKind Objekten verarbeiten und ein entsprechendes Objekt
-	 * zur Verfügung stellen.
+	 * zur VerfÃ¼gung stellen.
 	 *
 	 * @param dataKind1
 	 * @param dataKind2
@@ -95,36 +101,36 @@ public class ArchiveDataKindCombination {
 	}
 
 	/**
-	 * Diese Methode gibt an, ob <code>ArchiveDataKind.ONLINE</code> im Konstruktor übergeben wurde
+	 * Diese Methode gibt an, ob <code>ArchiveDataKind.ONLINE</code> im Konstruktor Ã¼bergeben wurde
 	 *
-	 * @return true = <code>ArchiveDataKind.ONLINE</code> wurde gewählt;
+	 * @return true = <code>ArchiveDataKind.ONLINE</code> wurde gewÃ¤hlt;
 	 */
 	public boolean isOnline() {
 		return _online;
 	}
 
 	/**
-	 * Diese Methode gibt an, ob <code>ArchiveDataKind.ONLINE_DELAYED</code> im Konstruktor übergeben wurde
+	 * Diese Methode gibt an, ob <code>ArchiveDataKind.ONLINE_DELAYED</code> im Konstruktor Ã¼bergeben wurde
 	 *
-	 * @return true = <code>ArchiveDataKind.ONLINE_DELAYED</code> wurde gewählt;
+	 * @return true = <code>ArchiveDataKind.ONLINE_DELAYED</code> wurde gewÃ¤hlt;
 	 */
 	public boolean isOnlineDelayed() {
 		return _onlineDelayed;
 	}
 
 	/**
-	 * Diese Methode gibt an, ob <code>ArchiveDataKind.REQUESTED</code> im Konstruktor übergeben wurde
+	 * Diese Methode gibt an, ob <code>ArchiveDataKind.REQUESTED</code> im Konstruktor Ã¼bergeben wurde
 	 *
-	 * @return true = <code>ArchiveDataKind.REQUESTED</code> wurde gewählt;
+	 * @return true = <code>ArchiveDataKind.REQUESTED</code> wurde gewÃ¤hlt;
 	 */
 	public boolean isRequested() {
 		return _requested;
 	}
 
 	/**
-	 * Diese Methode gibt an, ob <code>ArchiveDataKind.REQUESTED_DELAYED</code> im Konstruktor übergeben wurde
+	 * Diese Methode gibt an, ob <code>ArchiveDataKind.REQUESTED_DELAYED</code> im Konstruktor Ã¼bergeben wurde
 	 *
-	 * @return true = <code>ArchiveDataKind.REQUESTED_DELAYED</code> wurde gewählt;
+	 * @return true = <code>ArchiveDataKind.REQUESTED_DELAYED</code> wurde gewÃ¤hlt;
 	 */
 	public boolean isRequestedDelayed() {
 		return _requestedDelayed;

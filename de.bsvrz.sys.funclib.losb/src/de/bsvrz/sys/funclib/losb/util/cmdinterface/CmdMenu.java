@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.sys.funclib.losb.
  * 
- * de.bsvrz.sys.funclib.losb is free software; you can redistribute it and/or modify
+ * de.bsvrz.sys.funclib.losb is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.losb is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.sys.funclib.losb; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.losb.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.losb.util.cmdinterface;
@@ -24,11 +30,11 @@ package de.bsvrz.sys.funclib.losb.util.cmdinterface;
 import java.util.*;
 
 /**
- * Menü für den {@link de.bsvrz.sys.funclib.losb.util.cmdinterface.CmdInterpreter}
+ * MenÃ¼ fÃ¼r den {@link de.bsvrz.sys.funclib.losb.util.cmdinterface.CmdInterpreter}
  *
  * @author beck et al. projects GmbH
- * @author Thomas Müller
- * @version $Revision: 6420 $ / $Date: 2009-03-10 23:19:01 +0100 (Tue, 10 Mar 2009) $ / ($Author: rs $)
+ * @author Thomas MÃ¼ller
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class CmdMenu {
 
@@ -42,11 +48,11 @@ public class CmdMenu {
 
 	private String help, description;
 
-	/** Anzahl zusätzlicher Kommandos. */
+	/** Anzahl zusÃ¤tzlicher Kommandos. */
 	private int numHiddenCommands = 0;
 
 	/**
-	 * Menü mit Beschreibung und Hilfetext
+	 * MenÃ¼ mit Beschreibung und Hilfetext
 	 *
 	 * @param desc Beschreibung
 	 * @param help Hilfetext
@@ -59,9 +65,9 @@ public class CmdMenu {
 	}
 
 	/**
-	 * Eltern-Menü dieses Menüs setzen
+	 * Eltern-MenÃ¼ dieses MenÃ¼s setzen
 	 *
-	 * @param parent das Eltern-Menü
+	 * @param parent das Eltern-MenÃ¼
 	 */
 	public void setParent(CmdMenu parent) {
 		this.parentMenu = parent;
@@ -69,15 +75,15 @@ public class CmdMenu {
 	}
 
 	/**
-	 * Eltern-Menü dieses Menüs lesen
+	 * Eltern-MenÃ¼ dieses MenÃ¼s lesen
 	 *
-	 * @return Eltern-Menü
+	 * @return Eltern-MenÃ¼
 	 */
 	public CmdMenu getParent() {
 		return this.parentMenu;
 	}
 
-	/** Index des Menüs setzen (abhängig vom Eltern-Menü und Geschwister-Einträgen), ist eindeutig */
+	/** Index des MenÃ¼s setzen (abhÃ¤ngig vom Eltern-MenÃ¼ und Geschwister-EintrÃ¤gen), ist eindeutig */
 	public void setIndex() {
 		if(this.parentMenu == null) {
 			this.index = 0;
@@ -88,18 +94,18 @@ public class CmdMenu {
 	}
 
 	/**
-	 * Index des Menüs auslesen
+	 * Index des MenÃ¼s auslesen
 	 *
-	 * @return Index (immer eindeutig auf einer Menühierarchie-Ebene)
+	 * @return Index (immer eindeutig auf einer MenÃ¼hierarchie-Ebene)
 	 */
 	public int getIndex() {
 		return this.index;
 	}
 
 	/**
-	 * Unter-Menü hinzufügen
+	 * Unter-MenÃ¼ hinzufÃ¼gen
 	 *
-	 * @param childMenu menü
+	 * @param childMenu menÃ¼
 	 */
 	public void addNode(CmdMenu childMenu) {
 		childMenu.setParent(this);
@@ -107,27 +113,27 @@ public class CmdMenu {
 	}
 
 	/**
-	 * Alle Untermenüs auslesen
+	 * Alle UntermenÃ¼s auslesen
 	 *
-	 * @return Vektor mit Untermenüs
+	 * @return Vektor mit UntermenÃ¼s
 	 */
 	public Vector<CmdMenu> getSubMenues() {
 		return this.subMenues;
 	}
 
 	/**
-	 * Ein bestimmtes Untermenü auslesen
+	 * Ein bestimmtes UntermenÃ¼ auslesen
 	 *
-	 * @param i Index des Untermenüs
+	 * @param i Index des UntermenÃ¼s
 	 *
-	 * @return das Untermenü
+	 * @return das UntermenÃ¼
 	 */
 	public CmdMenu getChildNode(int i) {
 		return this.subMenues.get(i);
 	}
 
 	/**
-	 * Ein Kommando hinzufügen. Fügt das Kommando vor etwaigen versteckten Kommandos ein.
+	 * Ein Kommando hinzufÃ¼gen. FÃ¼gt das Kommando vor etwaigen versteckten Kommandos ein.
 	 *
 	 * @param cmd das Kommando
 	 *
@@ -140,10 +146,10 @@ public class CmdMenu {
 		}
 		else	//"Normales" Kommando
 		{
-			//Es handelt sich um einen Command -> Hinter letzten Command und ersten HiddenCommand einfügen
+			//Es handelt sich um einen Command -> Hinter letzten Command und ersten HiddenCommand einfÃ¼gen
 			int i = commands.size() - 1;
 			while(i >= 0 && commands.get(i) instanceof HiddenCommand) i--;
-			commands.add(i + 1, cmd);	//Hinter den letzten Command der Liste einfügen
+			commands.add(i + 1, cmd);	//Hinter den letzten Command der Liste einfÃ¼gen
 		}
 		cmd.setParent(this);
 	}
@@ -169,7 +175,7 @@ public class CmdMenu {
 	}
 
 	/**
-	 * Einen Hilfetext für das Menü setzen
+	 * Einen Hilfetext fÃ¼r das MenÃ¼ setzen
 	 *
 	 * @param help der Hilfetext
 	 */
@@ -178,7 +184,7 @@ public class CmdMenu {
 	}
 
 	/**
-	 * Hilfe für das Menü ermitteln
+	 * Hilfe fÃ¼r das MenÃ¼ ermitteln
 	 *
 	 * @return der Hilfetext
 	 */
@@ -205,9 +211,9 @@ public class CmdMenu {
 	}
 
 	/**
-	 * Liefert die Anzahl der zusätzlichen Kommandos.
+	 * Liefert die Anzahl der zusÃ¤tzlichen Kommandos.
 	 *
-	 * @return Liefert die Anzahl der zusätzlichen Kommandos.
+	 * @return Liefert die Anzahl der zusÃ¤tzlichen Kommandos.
 	 */
 	public int getNumHiddenCommands() {
 		return numHiddenCommands;

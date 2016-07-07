@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel.telegrams;
@@ -29,7 +35,7 @@ import java.io.IOException;
 
 /**
  * @author Kappich Systemberatung
- * @version $Revision: 8332 $
+ * @version $Revision$
  */
 public class SendSubscriptionInfo {
 
@@ -45,7 +51,7 @@ public class SendSubscriptionInfo {
 	/** Der letzte zustand des Triggerflags */
 	private byte _lastTriggerRequest = -1;
 
-	/** Erzeugt neues Objekt ohne Parameter. Diese werden später gesetzt */
+	/** Erzeugt neues Objekt ohne Parameter. Diese werden spÃ¤ter gesetzt */
 	public SendSubscriptionInfo() {
 	}
 
@@ -65,7 +71,7 @@ public class SendSubscriptionInfo {
 	}
 
 	/**
-	 * Gibt den letzten Zustand des Triggerflags zurück.
+	 * Gibt den letzten Zustand des Triggerflags zurÃ¼ck.
 	 *
 	 * @return letzter Zustand des Triggerflags
 	 */
@@ -83,7 +89,7 @@ public class SendSubscriptionInfo {
 	}
 
 	/**
-	 * Gibt die Basisanmeldeinformationen zurück
+	 * Gibt die Basisanmeldeinformationen zurÃ¼ck
 	 *
 	 * @return Basisanmeldeinformation
 	 */
@@ -161,7 +167,7 @@ public class SendSubscriptionInfo {
 	}
 
 	/**
-	 * Gibt ein String zurrück, der diesen Datensatz beschreibt
+	 * Gibt ein String zurrÃ¼ck, der diesen Datensatz beschreibt
 	 *
 	 * @return Der String, der diesen Datensatz beschreibt
 	 */
@@ -211,9 +217,9 @@ public class SendSubscriptionInfo {
 	}
 
 	/**
-	 * Gibt die Länge des Telegramms zurück
+	 * Gibt die LÃ¤nge des Telegramms zurÃ¼ck
 	 *
-	 * @return die Länge des Telegramms
+	 * @return die LÃ¤nge des Telegramms
 	 */
 	public short getLength() {
 		return 16;

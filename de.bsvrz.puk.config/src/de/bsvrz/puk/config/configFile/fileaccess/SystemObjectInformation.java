@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.fileaccess;
@@ -28,13 +34,13 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 13136 $ / $Date: 2015-01-29 16:38:49 +0100 (Thu, 29 Jan 2015) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public abstract class SystemObjectInformation implements SystemObjectInformationInterface {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	private final long _id;
@@ -45,10 +51,10 @@ public abstract class SystemObjectInformation implements SystemObjectInformation
 
 	private String _name = "";
 
-	/** Sobald sich an dem Objekt etwas ändert (Konfigurierender Datensatz hinzufügen oder löschen) wird dieses Objekt benachrichtigt. */
+	/** Sobald sich an dem Objekt etwas Ã¤ndert (Konfigurierender Datensatz hinzufÃ¼gen oder lÃ¶schen) wird dieses Objekt benachrichtigt. */
 	private final ConfigAreaFile _modifiedManger;
 
-	/** Speichert die konfigurierenden Datensätze des Objekts, als Schlüssel dient die ID der ATGU (Attributgruppenverwendung) */
+	/** Speichert die konfigurierenden DatensÃ¤tze des Objekts, als SchlÃ¼ssel dient die ID der ATGU (Attributgruppenverwendung) */
 	private final Map<Long, byte[]> _dataSets = new HashMap<Long, byte[]>();
 
 	/** Speicher ob Modifikationen gespeichert werden sollen. Beim laden darf das Objekt nicht automatisch gespeichert werden. */
@@ -60,12 +66,12 @@ public abstract class SystemObjectInformation implements SystemObjectInformation
 	/**
 	 * @param id                Id des Objekts
 	 * @param pid               Pid des Objekts, diese muss ISO-8859-1 konform sein
-	 * @param typeId            Tye des Objekts, der Type wird über die Id identifiziert
+	 * @param typeId            Tye des Objekts, der Type wird Ã¼ber die Id identifiziert
 	 * @param name              Name des Objekts, <code>null</code> wird als "" interpretiert
 	 * @param configAreaFile    Objekt, das die Datei verwaltet, in dem dieses Objekt gespeichert ist/wird
-	 * @param saveModifications true = Das Objekt wird angelegt und in die Datei des Konfigurationsbereichs später gespeichert, werden Änderungen vorgenommen
-	 *                          (Datensätze geändert, usw), so werden die Änderungen gespeichert; false = Das Objekt wird angelegt und nicht gespeichert (beim
-	 *                          laden des Objekts aus der Datei wäre dies sinnvoll), auch Modifikationen am Objekt werden nicht gespeichert, damit gespeichert wird
+	 * @param saveModifications true = Das Objekt wird angelegt und in die Datei des Konfigurationsbereichs spÃ¤ter gespeichert, werden Ã„nderungen vorgenommen
+	 *                          (DatensÃ¤tze geÃ¤ndert, usw), so werden die Ã„nderungen gespeichert; false = Das Objekt wird angelegt und nicht gespeichert (beim
+	 *                          laden des Objekts aus der Datei wÃ¤re dies sinnvoll), auch Modifikationen am Objekt werden nicht gespeichert, damit gespeichert wird
 	 *                          muss {@link #saveObjectModifications} aufgerufen werden
 	 *
 	 * @throws IllegalArgumentException Die Pid ist nicht ISO-8859-1 konform
@@ -75,7 +81,7 @@ public abstract class SystemObjectInformation implements SystemObjectInformation
 		_id = id;
 
 		if(pid == null) pid = "";
-		// Ist die Pid ISO-8859-1 konform. Dafür wird jeder Char einzeln geprüft
+		// Ist die Pid ISO-8859-1 konform. DafÃ¼r wird jeder Char einzeln geprÃ¼ft
 		if(pid.length() > 0) {
 			// Speichert jeden Char der Pid
 			char pidChars[] = new char[pid.length()];
@@ -103,9 +109,9 @@ public abstract class SystemObjectInformation implements SystemObjectInformation
 	}
 
 	/**
-	 * Diese Methode wird aufgerufen, wenn ein Objekt aus der Datei eingeladen wurde und im Konstruktor saveModifications == false übergeben wurde. Nach Aufruf
-	 * dieser Methode, werden alle Änderungen wieder gespeichert. Wurde also saveModifications == false gesetzt, so muss diese Methode aufgerufen werden, damit
-	 * neue Änderungen gespeichert werden.
+	 * Diese Methode wird aufgerufen, wenn ein Objekt aus der Datei eingeladen wurde und im Konstruktor saveModifications == false Ã¼bergeben wurde. Nach Aufruf
+	 * dieser Methode, werden alle Ã„nderungen wieder gespeichert. Wurde also saveModifications == false gesetzt, so muss diese Methode aufgerufen werden, damit
+	 * neue Ã„nderungen gespeichert werden.
 	 */
 	public void saveObjectModifications() {
 		_saveModifications = true;
@@ -187,7 +193,7 @@ public abstract class SystemObjectInformation implements SystemObjectInformation
 
 	public void setConfigurationData(long attributeGroupUsageId, byte[] data) throws IllegalStateException {
 		if(_saveModifications && isDeleted()){
-			throw new IllegalStateException("Die konfigurierenden Datensätze eines gelöschten Objekts können nicht geändert werden");
+			throw new IllegalStateException("Die konfigurierenden DatensÃ¤tze eines gelÃ¶schten Objekts kÃ¶nnen nicht geÃ¤ndert werden");
 		}
 		synchronized(_dataSets) {
 			if(data != null && data.length > 0) {
@@ -206,14 +212,14 @@ public abstract class SystemObjectInformation implements SystemObjectInformation
 		synchronized(_dataSets) {
 			final byte[] removedDataSet = _dataSets.remove(attributeGroupUsageId);
 			if(_saveModifications && removedDataSet != null) {
-				// Änderungen sollen gespeichert werden und es wurde ein Datensatz entfernt
+				// Ã„nderungen sollen gespeichert werden und es wurde ein Datensatz entfernt
 				_modifiedManger.objectModified(this);
 			}
 		}
 	}
 
 	/**
-	 * Gibt ein Objekt zurück, das mit {@link #setReference} gesetzt wurde. Wurde noch kein Objekt gesetzt, wird <code>null</code> zurückgegeben
+	 * Gibt ein Objekt zurÃ¼ck, das mit {@link #setReference} gesetzt wurde. Wurde noch kein Objekt gesetzt, wird <code>null</code> zurÃ¼ckgegeben
 	 *
 	 * @return Objektreferenz oder <code>null</code>
 	 */
@@ -231,7 +237,7 @@ public abstract class SystemObjectInformation implements SystemObjectInformation
 	}
 
 	/**
-	 * Diese Methode gibt das Objekt zurück, das einen Konfigurationsbereich physisch auf einem Datenträger speichert.
+	 * Diese Methode gibt das Objekt zurÃ¼ck, das einen Konfigurationsbereich physisch auf einem DatentrÃ¤ger speichert.
 	 *
 	 * @return s.o.
 	 */
@@ -289,7 +295,7 @@ public abstract class SystemObjectInformation implements SystemObjectInformation
 		out.append("Name: " + getName() + "\n");
 
 		synchronized(_dataSets) {
-			out.append("Konfigurierende Datensätze, Anzahl: " + _dataSets.size() + "\n");
+			out.append("Konfigurierende DatensÃ¤tze, Anzahl: " + _dataSets.size() + "\n");
 			Collection<Long> keys = _dataSets.keySet();
 
 			for(Iterator<Long> iterator = keys.iterator(); iterator.hasNext();) {

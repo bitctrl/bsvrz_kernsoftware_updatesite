@@ -4,9 +4,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main.simulation;
@@ -25,7 +31,7 @@ import de.bsvrz.dav.daf.main.SendSubscriptionNotConfirmed;
 import de.bsvrz.sys.funclib.debug.Debug;
 
 /**
- * Dieses Objekt stellt den Zustand der Konfiguration für Simulationen dar. Es wird der Zustand "nicht Bereit" dargestellt und alle möglichen Zustnadsübergänge
+ * Dieses Objekt stellt den Zustand der Konfiguration fÃ¼r Simulationen dar. Es wird der Zustand "nicht Bereit" dargestellt und alle mÃ¶glichen ZustnadsÃ¼bergÃ¤nge
  * aus diesem Zustand implementiert. Wird ein Zustand gewechselt, wird das verwaltende Objekt auf den neuen Zustand gewechselt.
  *
  * @author Achim Wullenkord (AW), Kappich Systemberatung
@@ -35,7 +41,7 @@ public class NotReady implements SimulationStates {
 
 	private final ConfigSimulationObject _simulationObject;
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 
@@ -58,15 +64,15 @@ public class NotReady implements SimulationStates {
 	}
 
 	public void start() {
-		// Aus diesem Zustand ist diese Aktion nicht möglich
+		// Aus diesem Zustand ist diese Aktion nicht mÃ¶glich
 	}
 
 	public void stop() {
-		// Aus diesem Zustand ist diese Aktion nicht möglich
+		// Aus diesem Zustand ist diese Aktion nicht mÃ¶glich
 	}
 
 	public void pause() {
-		// Aus diesem Zustand ist diese Aktion nicht möglich
+		// Aus diesem Zustand ist diese Aktion nicht mÃ¶glich
 	}
 
 	public void delete() {
@@ -75,9 +81,9 @@ public class NotReady implements SimulationStates {
 			_simulationObject.setState(_simulationObject.getDeletedState());
 		}
 		catch(SendSubscriptionNotConfirmed sendSubscriptionNotConfirmed) {
-			// Der Datensatz, der den Zustand der Konfiguration darstellt, kann nicht verschickt werden. Die Daten wurden allerdings gelöscht
+			// Der Datensatz, der den Zustand der Konfiguration darstellt, kann nicht verschickt werden. Die Daten wurden allerdings gelÃ¶scht
 			sendSubscriptionNotConfirmed.printStackTrace();
-			_debug.error("Beim Wechsel einer  Simulation in den Zustand Löschen ist ein unerwarteter Fehler aufgetreten", sendSubscriptionNotConfirmed);
+			_debug.error("Beim Wechsel einer  Simulation in den Zustand LÃ¶schen ist ein unerwarteter Fehler aufgetreten", sendSubscriptionNotConfirmed);
 		}
 	}
 
@@ -86,7 +92,7 @@ public class NotReady implements SimulationStates {
 	}
 
 	public void noSource() {
-		// Aus diesem Zustand ist diese Aktion nicht möglich
+		// Aus diesem Zustand ist diese Aktion nicht mÃ¶glich
 	}
 
 	public void removedFromSet() {

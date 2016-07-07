@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.util;
@@ -28,14 +34,14 @@ import java.nio.channels.FileChannel;
 
 /**
  * Implementierung eines gepufferten {@link java.io.RandomAccessFile}. Diese Klasse implementiert die Interfaces
- * {@link java.io.DataInput}, {@link java.io.DataOutput} und {@link java.nio.channels.ByteChannel} und unterstützt
+ * {@link java.io.DataInput}, {@link java.io.DataOutput} und {@link java.nio.channels.ByteChannel} und unterstÃ¼tzt
  * alle wesentlichen Methoden eines {@link java.io.RandomAccessFile}s
  *
- * Diese Klasse ist (anders als {@link java.nio.channels.FileChannel}) nicht für die Verwendung durch mehrere unsynchronisierte
+ * Diese Klasse ist (anders als {@link java.nio.channels.FileChannel}) nicht fÃ¼r die Verwendung durch mehrere unsynchronisierte
  * Threads geeignet.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13114 $
+ * @version $Revision$
  */
 public class BufferedRandomAccessFile implements DataInput, DataOutput, ByteChannel {
 	
@@ -49,10 +55,10 @@ public class BufferedRandomAccessFile implements DataInput, DataOutput, ByteChan
 	/** FileChannel zum lesen und Schreiben der Datei */
 	private final FileChannel _channel;
 
-	/** Gepufferter EingabeStream, wird bei Bedarf initialisiert und gelöscht */
+	/** Gepufferter EingabeStream, wird bei Bedarf initialisiert und gelÃ¶scht */
 	private DataInputStream _dataInStream = null;
 
-	/** Gepufferter AusgabeStream, wird bei Bedarf initialisiert und gelöscht */
+	/** Gepufferter AusgabeStream, wird bei Bedarf initialisiert und gelÃ¶scht */
 	private DataOutputStream _dataOutStream = null;
 
 	/**
@@ -62,11 +68,11 @@ public class BufferedRandomAccessFile implements DataInput, DataOutput, ByteChan
 	private long _position = 0L;
 
 	/**
-	 * Größe des Lese und Schreibpuffers
+	 * GrÃ¶ÃŸe des Lese und Schreibpuffers
 	 */
 	private int _bufferSize;
 
-	/** Standardpuffergröße */
+	/** StandardpuffergrÃ¶ÃŸe */
 	private static final int defaultBufferSize = 512;
 
 	/**
@@ -81,7 +87,7 @@ public class BufferedRandomAccessFile implements DataInput, DataOutput, ByteChan
 	/**
 	 * Erstellt ein neues gepuffertes BufferedFile als gepufferten Ersatz eines {@link java.io.RandomAccessFile}.
 	 * @param file Datei
-	 * @param bufferSize Größe des Lese und Schreibpuffers in Byte
+	 * @param bufferSize GrÃ¶ÃŸe des Lese und Schreibpuffers in Byte
 	 * @throws FileNotFoundException Falls Datei nicht gefunden
 	 */
 	public BufferedRandomAccessFile(final File file, final int bufferSize) throws FileNotFoundException {
@@ -103,7 +109,7 @@ public class BufferedRandomAccessFile implements DataInput, DataOutput, ByteChan
 	 * Erstellt ein neues gepuffertes BufferedFile als gepufferten Ersatz eines {@link java.io.RandomAccessFile}.
 	 * @param file Datei
 	 * @param mode "r" wenn nur gelesen werden soll, "rw" zum Lesen und schreiben. Siehe {@link java.io.RandomAccessFile}
-	 * @param bufferSize Größe des Lese und Schreibpuffers in Byte
+	 * @param bufferSize GrÃ¶ÃŸe des Lese und Schreibpuffers in Byte
 	 * @throws FileNotFoundException Falls Datei nicht gefunden
 	 */
 	public BufferedRandomAccessFile(final File file, final String mode, final int bufferSize) throws FileNotFoundException {
@@ -121,7 +127,7 @@ public class BufferedRandomAccessFile implements DataInput, DataOutput, ByteChan
 	}
 
 	private DataOutputStream getDataOutStream() {
-		flushInStream(); // Vor dem Schreiben Leseoperationen abschließen und Lesepuffer löschen (um FilePointer abschließend zu setzen)
+		flushInStream(); // Vor dem Schreiben Leseoperationen abschlieÃŸen und Lesepuffer lÃ¶schen (um FilePointer abschlieÃŸend zu setzen)
 		if(_dataOutStream == null) {
 			_dataOutStream = new DataOutputStream(new BufferedOutputStream(_rawOutStream, _bufferSize));
 		}
@@ -129,7 +135,7 @@ public class BufferedRandomAccessFile implements DataInput, DataOutput, ByteChan
 	}
 
 	private DataInputStream getDataInStream() throws IOException {
-		flushOutStream(); // Vor dem Lesen Schreiboperationen abschließen und Schreibpuffer löschen (um FilePointer abschließend zu setzen)
+		flushOutStream(); // Vor dem Lesen Schreiboperationen abschlieÃŸen und Schreibpuffer lÃ¶schen (um FilePointer abschlieÃŸend zu setzen)
 		if(_dataInStream == null) {
 			_dataInStream = new DataInputStream(new BufferedInputStream(_rawInStream, _bufferSize));
 		}
@@ -137,12 +143,12 @@ public class BufferedRandomAccessFile implements DataInput, DataOutput, ByteChan
 	}
 
 	private void flushInStream() {
-		// Eingabestream verwerfen, flushen nicht möglich und nicht nötig
+		// Eingabestream verwerfen, flushen nicht mÃ¶glich und nicht nÃ¶tig
 		_dataInStream = null;
 	}
 
 	private void flushOutStream() throws IOException {
-		// Ausgabestream verwerfen, nur flushen, nicht schließen, weil schließen das ganze RandomAccessFile schließen würde!
+		// Ausgabestream verwerfen, nur flushen, nicht schlieÃŸen, weil schlieÃŸen das ganze RandomAccessFile schlieÃŸen wÃ¼rde!
 		if(_dataOutStream != null) {
 			_dataOutStream.flush();
 			_dataOutStream = null;
@@ -174,13 +180,13 @@ public class BufferedRandomAccessFile implements DataInput, DataOutput, ByteChan
 	}
 
 	/**
-	 * Überspringt n genau Bytes. Anders als DataInput definiert wird immer genau die übergebene Zahl an bytes übersprungen,
-	 * d.h. die Methode gibt immer den Parameter n zurück.
+	 * Ãœberspringt n genau Bytes. Anders als DataInput definiert wird immer genau die Ã¼bergebene Zahl an bytes Ã¼bersprungen,
+	 * d.h. die Methode gibt immer den Parameter n zurÃ¼ck.
 	 * Daher entspricht diese Methode <code>position(position() + n); return n;</code>
 	 *
-	 * Diese Methode kann über das Dateiende hinausspringen, vgl. {@link java.io.RandomAccessFile#seek(long)}.
+	 * Diese Methode kann Ã¼ber das Dateiende hinausspringen, vgl. {@link java.io.RandomAccessFile#seek(long)}.
 	 *
-	 * @param n Anzahl zu überspringender Bytes (kann negativ sein, dann wird rückwärts gesprungen)
+	 * @param n Anzahl zu Ã¼berspringender Bytes (kann negativ sein, dann wird rÃ¼ckwÃ¤rts gesprungen)
 	 * @return n
 	 * @throws IOException
 	 */
@@ -190,13 +196,13 @@ public class BufferedRandomAccessFile implements DataInput, DataOutput, ByteChan
 	}
 
 	/**
-	 * Überspringt n genau Bytes.
+	 * Ãœberspringt n genau Bytes.
 	 * Daher entspricht diese Methode <code>position(position() + n); return n;</code>
 	 *
-	 * Diese Methode kann über das Dateiende hinausspringen, vgl. {@link java.io.RandomAccessFile#seek(long)}.
+	 * Diese Methode kann Ã¼ber das Dateiende hinausspringen, vgl. {@link java.io.RandomAccessFile#seek(long)}.
 	 *
-	 * @param n Anzahl zu überspringender Bytes (kann negativ sein, dann wird rückwärts gesprungen)
-	 * @return Der Parameter n (zur Kompatibilität mit FileChannel)
+	 * @param n Anzahl zu Ã¼berspringender Bytes (kann negativ sein, dann wird rÃ¼ckwÃ¤rts gesprungen)
+	 * @return Der Parameter n (zur KompatibilitÃ¤t mit FileChannel)
 	 * @throws IOException
 	 */
 	public long skip(long n) throws IOException {
@@ -452,7 +458,7 @@ public class BufferedRandomAccessFile implements DataInput, DataOutput, ByteChan
 	}
 
 	/**
-	 * Für RandomAccessFile-Kompatibilität
+	 * FÃ¼r RandomAccessFile-KompatibilitÃ¤t
 	 * @see #position(long)
 	 */
 	public void seek(long position) throws IOException {
@@ -460,7 +466,7 @@ public class BufferedRandomAccessFile implements DataInput, DataOutput, ByteChan
 	}
 
 	/**
-	 * Für RandomAccessFile-Kompatibilität
+	 * FÃ¼r RandomAccessFile-KompatibilitÃ¤t
 	 * @see #position()
 	 */
 	public long getFilePointer() {
@@ -468,7 +474,7 @@ public class BufferedRandomAccessFile implements DataInput, DataOutput, ByteChan
 	}
 
 	/**
-	 * Für RandomAccessFile-Kompatibilität
+	 * FÃ¼r RandomAccessFile-KompatibilitÃ¤t
 	 * @see #size()
 	 */
 	public long length() throws IOException {
@@ -476,7 +482,7 @@ public class BufferedRandomAccessFile implements DataInput, DataOutput, ByteChan
 	}
 
 	/**
-	 * Für RandomAccessFile-Kompatibilität
+	 * FÃ¼r RandomAccessFile-KompatibilitÃ¤t
 	 */
 	public void setLength(final long len) throws IOException {
 		flushOutStream();

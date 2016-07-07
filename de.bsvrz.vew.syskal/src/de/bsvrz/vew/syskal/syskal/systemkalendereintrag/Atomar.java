@@ -75,12 +75,12 @@ public class Atomar implements SystemkalenderEintrag, Cloneable
   private String definition;
 
   /**
-   * Der Debugger, stellt verschiedene Protokollierungsfunktionen zur Verfügung
+   * Der Debugger, stellt verschiedene Protokollierungsfunktionen zur VerfÃ¼gung
    */
   private ErinnerungsFunktion rs;
 
   /**
-   * Der Debugger, stellt verschiedene Protokollierungsfunktionen zur Verfügung
+   * Der Debugger, stellt verschiedene Protokollierungsfunktionen zur VerfÃ¼gung
    */
   protected Debug _debug;
 
@@ -705,16 +705,16 @@ public class Atomar implements SystemkalenderEintrag, Cloneable
   }
 
   /**
-   * Korrigiert das Ergebnis nach Vorgabe BÜ/AG vom 08.10.2009 
+   * Korrigiert das Ergebnis nach Vorgabe BÃœ/AG vom 08.10.2009 
    * 
    * @param von
    *          Startzeitpunkt
    * @param bis
    *          Endzeitpunkt
    * @param tmp
-   *          Zeitlich sortierte Liste der zeitlichen Gültigkeiten
+   *          Zeitlich sortierte Liste der zeitlichen GÃ¼ltigkeiten
    * @return
-   *          Zeitlich sortierte Liste der verkehrlichen Gültigkeiten
+   *          Zeitlich sortierte Liste der verkehrlichen GÃ¼ltigkeiten
    */
   private SortedMap<Long, Long> korrigiereErgebnis(Long von, Long bis, SortedMap<Long, Long> tmp)
   {

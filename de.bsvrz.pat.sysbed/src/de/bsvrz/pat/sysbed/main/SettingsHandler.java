@@ -1,13 +1,13 @@
 /*
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -16,66 +16,46 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.main;
 
+import de.bsvrz.dav.daf.main.config.*;
+import de.bsvrz.pat.sysbed.plugins.api.ExternalModule;
 import de.bsvrz.pat.sysbed.plugins.api.settings.KeyValueObject;
 import de.bsvrz.pat.sysbed.plugins.api.settings.SettingsData;
-import de.bsvrz.pat.sysbed.plugins.api.ExternalModule;
-import de.bsvrz.dav.daf.main.config.Aspect;
-import de.bsvrz.dav.daf.main.config.AttributeGroup;
-import de.bsvrz.dav.daf.main.config.DataModel;
-import de.bsvrz.dav.daf.main.config.SystemObject;
-import de.bsvrz.dav.daf.main.config.SystemObjectType;
-import de.bsvrz.sys.funclib.debug.Debug;
 import de.bsvrz.pat.sysbed.preselection.lists.PreselectionLists;
-import de.bsvrz.pat.sysbed.preselection.tree.PreselectionTree;
 import de.bsvrz.pat.sysbed.preselection.panel.PreselectionPanel;
+import de.bsvrz.pat.sysbed.preselection.tree.PreselectionTree;
+import de.bsvrz.sys.funclib.debug.Debug;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
+import javax.swing.table.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.awt.event.*;
+import java.io.*;
 import java.util.*;
 import java.util.List;
-import java.util.prefs.BackingStoreException;
-import java.util.prefs.InvalidPreferencesFormatException;
-import java.util.prefs.PreferenceChangeEvent;
-import java.util.prefs.PreferenceChangeListener;
-import java.util.prefs.Preferences;
+import java.util.prefs.*;
 
 /**
- * Organisiert die Einstellungen der {@link de.bsvrz.pat.sysbed.plugins.api.ExternalModule Module}. Es werden zwei Tabellen geführt. Eine zeigt die zuletzt verwendeten Einstellungen an, die
- * andere Tabelle die gespeicherten Einstellungen. Aus beiden Tabellen können die Einstellungen gestartet, gespeichert bzw. umbenannt, geändert oder gelöscht
- * werden. Die gespeicherten Einstellungen können zudem im XML-Format exportiert und importiert werden.
+ * Organisiert die Einstellungen der {@link de.bsvrz.pat.sysbed.plugins.api.ExternalModule Module}. Es werden zwei Tabellen gefÃ¼hrt. Eine zeigt die zuletzt verwendeten Einstellungen an, die
+ * andere Tabelle die gespeicherten Einstellungen. Aus beiden Tabellen kÃ¶nnen die Einstellungen gestartet, gespeichert bzw. umbenannt, geÃ¤ndert oder gelÃ¶scht
+ * werden. Die gespeicherten Einstellungen kÃ¶nnen zudem im XML-Format exportiert und importiert werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8256 $
+ * @version $Revision$
  * @see #SettingsHandler
  * @see #saveSettings
  * @see #loadAllSettings
@@ -98,7 +78,7 @@ public class SettingsHandler {
 	/** das TableModel der zuletzt verwendeten Einstellungen */
 	private final DefaultTableModel _lastUsedSettingsTableModel;
 
-	/** der Button startet das Modul mit den ausgewählten Einstellungen */
+	/** der Button startet das Modul mit den ausgewÃ¤hlten Einstellungen */
 	private final JButton _startButton = new JButton();
 
 	/** der Button speichert die Einstellungen unter einem neuen Namen */
@@ -107,10 +87,10 @@ public class SettingsHandler {
 	/** der Button ruft den Dialog des zu den Einstellungen passenden Moduls auf */
 	private final JButton _changeButton = new JButton();
 
-	/** der Button löscht die gewählte Einstellung aus der Liste */
+	/** der Button lÃ¶scht die gewÃ¤hlte Einstellung aus der Liste */
 	private final JButton _deleteButton = new JButton();
 
-	/** der Button exportiert die ausgewählten Einstellungen */
+	/** der Button exportiert die ausgewÃ¤hlten Einstellungen */
 	private final JButton _exportButton = new JButton();
 
 	/** der Button importiert Einstellungen aus einer XML-Datei */
@@ -127,13 +107,13 @@ public class SettingsHandler {
 	/** speichert den Knoten mit den gespeicherten Einstellungen */
 	private final Preferences _savedPreferences;
 
-	/** speichert das Panel mit den Tabellen für die Einstellungen */
+	/** speichert das Panel mit den Tabellen fÃ¼r die Einstellungen */
 	private JPanel _settingsPanel;
 
-	/** speichert die PreselectionLists, damit Objekte anhand der Einstellung ausgewählt werden können */
+	/** speichert die PreselectionLists, damit Objekte anhand der Einstellung ausgewÃ¤hlt werden kÃ¶nnen */
 	private final PreselectionLists _preselectionLists;
 
-	/** speichert den PreselectionTree, damit ein Pfad vorausgewählt werden kann */
+	/** speichert den PreselectionTree, damit ein Pfad vorausgewÃ¤hlt werden kann */
 	private final PreselectionTree _preselectionTree;
 
 	/** speichert ein Objekt der Applikation */
@@ -150,16 +130,16 @@ public class SettingsHandler {
 
 	/* #################### Methoden ################### */
 	/**
-	 * Der Konstruktor erstellt ein SettingsHandler-Objekt. Es wird ein Objekt der Applikation übergeben, damit darüber auf die Module und die Verbindung zum
-	 * Datenverteiler zugegriffen werden kann. Das {@link PreselectionPanel} wird übergeben, da bei Anwahl einer Einstellung in den Tabellen, die
-	 * Datenidentifikation, die Simulationsvariante und der Pfad im {@link PreselectionTree Baum} vorausgewählt werden.
-	 * <p/>
-	 * Zusätzlich wir das Panel erzeugt, welches die beiden Tabellen mit den gespeicherten und zuletzt verwendeten Einstellungen darstellt. Wird eine Einstellung
-	 * in den Tabellen ausgewählt, dann kann sie direkt gestartet, umbenannt bzw. gespeichert, geändert und gelöscht werden. Dieses Panel kann mittels der Methode
+	 * Der Konstruktor erstellt ein SettingsHandler-Objekt. Es wird ein Objekt der Applikation Ã¼bergeben, damit darÃ¼ber auf die Module und die Verbindung zum
+	 * Datenverteiler zugegriffen werden kann. Das {@link PreselectionPanel} wird Ã¼bergeben, da bei Anwahl einer Einstellung in den Tabellen, die
+	 * Datenidentifikation, die Simulationsvariante und der Pfad im {@link PreselectionTree Baum} vorausgewÃ¤hlt werden.
+	 * <p>
+	 * ZusÃ¤tzlich wir das Panel erzeugt, welches die beiden Tabellen mit den gespeicherten und zuletzt verwendeten Einstellungen darstellt. Wird eine Einstellung
+	 * in den Tabellen ausgewÃ¤hlt, dann kann sie direkt gestartet, umbenannt bzw. gespeichert, geÃ¤ndert und gelÃ¶scht werden. Dieses Panel kann mittels der Methode
 	 * {@link #getSettingsPanel} abgefragt werden.
 	 *
 	 * @param application       die Applikation
-	 * @param preselectionPanel das Panel mit der vollständigen Datenidentifikation
+	 * @param preselectionPanel das Panel mit der vollstÃ¤ndigen Datenidentifikation
 	 *
 	 * @see #getSettingsPanel
 	 */
@@ -241,10 +221,10 @@ public class SettingsHandler {
 	}
 
 	/**
-	 * Das durch den Konstruktor erzeugte Panel kann hier geholt werden. Es stellt Tabellen zur Verfügung, die gespeicherte und zuletzt verwendete Einstellungen
-	 * anzeigt. Diese können gestartet, gelöscht, geändert, gespeichert, exportiert und importiert werden.
+	 * Das durch den Konstruktor erzeugte Panel kann hier geholt werden. Es stellt Tabellen zur VerfÃ¼gung, die gespeicherte und zuletzt verwendete Einstellungen
+	 * anzeigt. Diese kÃ¶nnen gestartet, gelÃ¶scht, geÃ¤ndert, gespeichert, exportiert und importiert werden.
 	 *
-	 * @return ein Panel für die Einstellungen der {@link de.bsvrz.pat.sysbed.plugins.api.ExternalModule Module}
+	 * @return ein Panel fÃ¼r die Einstellungen der {@link de.bsvrz.pat.sysbed.plugins.api.ExternalModule Module}
 	 */
 	public JPanel getSettingsPanel() {
 		return _settingsPanel;
@@ -252,7 +232,7 @@ public class SettingsHandler {
 
 	/** Setzt die maximale Breite der benutzten Buttons. */
 	private void setButtonWidth() {
-		// größte Breite ermitteln und anderen Buttons zuweisen
+		// grÃ¶ÃŸte Breite ermitteln und anderen Buttons zuweisen
 		// Import-Button hat die breiteste Breite
 		Dimension dim = _importButton.getPreferredSize();
 		_startButton.setMaximumSize(dim);
@@ -268,12 +248,12 @@ public class SettingsHandler {
 		_lastUsedSettingsTable.clearSelection();
 	}
 
-	/** Werden Einträge in den Preferences hinzugefügt, dann werden die Tabellen aktualisiert. */
+	/** Werden EintrÃ¤ge in den Preferences hinzugefÃ¼gt, dann werden die Tabellen aktualisiert. */
 	private void actualizeTable() {
 		_lastUsedPreferences.addPreferenceChangeListener(
 				new PreferenceChangeListener() {
 					public void preferenceChange(PreferenceChangeEvent evt) {
-						// Knoten hinzugefügt -> Zeile in der Tabelle hinzufügen!
+						// Knoten hinzugefÃ¼gt -> Zeile in der Tabelle hinzufÃ¼gen!
 						if(evt.getKey().equals("node") && !evt.getNewValue().equals("")) {
 							Preferences prefs = evt.getNode().node(evt.getNewValue());
 							try {
@@ -337,7 +317,7 @@ public class SettingsHandler {
 	}
 
 	/**
-	 * Ermittelt in den übergebenen Preferences die Position des Knotens node.
+	 * Ermittelt in den Ã¼bergebenen Preferences die Position des Knotens node.
 	 *
 	 * @param prefs wo gesucht werden soll
 	 * @param node  wonach gesucht werden soll
@@ -362,7 +342,7 @@ public class SettingsHandler {
 	/**
 	 * Erstellt ein Panel mit einer Tabelle, die alle gespeicherten Einstellungen anzeigt.
 	 *
-	 * @return ein Panel mit Tabelle für die gespeicherten Einstellungen
+	 * @return ein Panel mit Tabelle fÃ¼r die gespeicherten Einstellungen
 	 */
 	private JPanel createSavedSettingsPanel() {
 		JPanel panel = new JPanel();
@@ -383,7 +363,7 @@ public class SettingsHandler {
 		);
 		_savedSettingsTable.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener() {
-					// zur Ermittlung, ob eine neue Zeile ausgewählt wurde -> Abfrage spart doppelten Ausführung
+					// zur Ermittlung, ob eine neue Zeile ausgewÃ¤hlt wurde -> Abfrage spart doppelten AusfÃ¼hrung
 					int row = -1;
 
 					public void valueChanged(ListSelectionEvent e) {
@@ -412,7 +392,7 @@ public class SettingsHandler {
 		_savedSettingsTable.setModel(_savedSettingsTableModel);
 
 		ColumnHeaderToolTips headerToolTips = new ColumnHeaderToolTips();
-		// Tooltip für die Spalte SV zuweisen und die Breite der Spalten initialisieren
+		// Tooltip fÃ¼r die Spalte SV zuweisen und die Breite der Spalten initialisieren
 		for(int i = 0, n = _savedSettingsTable.getColumnCount(); i < n; i++) {
 			TableColumn column = _savedSettingsTable.getColumnModel().getColumn(i);
 			String headerValue = (String)column.getHeaderValue();
@@ -434,7 +414,7 @@ public class SettingsHandler {
 	/**
 	 * Erstellt ein Panel mit einer Tabelle, die alle zuletzt verwendeten Einstellungen anzeigt.
 	 *
-	 * @return ein Panel mit Tabelle für die zuletzt verwendeten Einstellungen
+	 * @return ein Panel mit Tabelle fÃ¼r die zuletzt verwendeten Einstellungen
 	 */
 	private JPanel createLastUsedSettingsPanel() {
 		JPanel panel = new JPanel();
@@ -486,7 +466,7 @@ public class SettingsHandler {
 		_lastUsedSettingsTable.setModel(_lastUsedSettingsTableModel);
 
 		ColumnHeaderToolTips headerToolTips = new ColumnHeaderToolTips();
-		// Tooltip für die Spalte SV zuweisen und die Breite der Spalten initialisieren
+		// Tooltip fÃ¼r die Spalte SV zuweisen und die Breite der Spalten initialisieren
 		for(int i = 0, n = _lastUsedSettingsTable.getColumnCount(); i < n; i++) {
 			TableColumn column = _lastUsedSettingsTable.getColumnModel().getColumn(i);
 			String headerValue = (String)column.getHeaderValue();
@@ -506,10 +486,10 @@ public class SettingsHandler {
 	}
 
 	/**
-	 * Selektiert die Elemente in den Listen der <code>PreselectionLists</code> anhand der ausgewählten Einstellung. Die erste markierte Einstellung wird
-	 * berücksichtigt.
+	 * Selektiert die Elemente in den Listen der <code>PreselectionLists</code> anhand der ausgewÃ¤hlten Einstellung. Die erste markierte Einstellung wird
+	 * berÃ¼cksichtigt.
 	 *
-	 * @param settingsData die Einstellung, die in den Listen vorausgewählt werden soll
+	 * @param settingsData die Einstellung, die in den Listen vorausgewÃ¤hlt werden soll
 	 */
 	private void preselectListsBySettings(final SettingsData settingsData) {
 		try {
@@ -524,8 +504,8 @@ public class SettingsHandler {
 				simulationVariant = 0;
 			}
 			String treePath = settingsData.getTreePath();
-			// Frühere GTM-Versionen speicherten den Treepath nicht in jedem Fall.
-			// Falls er nicht enthalten ist, die Selektion im Tree nicht verändern.
+			// FrÃ¼here GTM-Versionen speicherten den Treepath nicht in jedem Fall.
+			// Falls er nicht enthalten ist, die Selektion im Tree nicht verÃ¤ndern.
 			if(!treePath.equals("")) _preselectionTree.setSelectedTreePath(treePath);
 			_preselectionLists.setPreselectedAttributeGroups(atgList);
 			_preselectionLists.setPreselectedAspects(aspList);
@@ -533,13 +513,13 @@ public class SettingsHandler {
 			_preselectionLists.setPreselectedObjects(objects);
 		}
 		catch(Exception ex) {
-			_debug.warning("Einstellung kann nicht in den Listen vorausgewählt werden: " + ex.getMessage() + " " + ex.toString());
+			_debug.warning("Einstellung kann nicht in den Listen vorausgewÃ¤hlt werden: " + ex.getMessage() + " " + ex.toString());
 		}
 	}
 
-	/** Überprüft, ob die Buttons in den Einstellungen anwählbar oder nicht anwählbar sein sollen. */
+	/** ÃœberprÃ¼ft, ob die Buttons in den Einstellungen anwÃ¤hlbar oder nicht anwÃ¤hlbar sein sollen. */
 	private void checkButtonStatus() {
-		// Selektionen können nur in einer von beiden Tabellen vorgenommen werden.
+		// Selektionen kÃ¶nnen nur in einer von beiden Tabellen vorgenommen werden.
 		int selectedSavedSettingsRows = _savedSettingsTable.getSelectedRowCount();
 		int selectedLastUsedSettingsRows = _lastUsedSettingsTable.getSelectedRowCount();
 
@@ -580,8 +560,8 @@ public class SettingsHandler {
 	}
 
 	/**
-	 * Erstellt das Panel mit dem Button "Selektion exportieren", damit die ausgewählten Einstellungen im XML-Format exportiert werden können und dem Button
-	 * "Einstellungen importieren", damit Einstellungen im XML-Format übernommen werden können.
+	 * Erstellt das Panel mit dem Button "Selektion exportieren", damit die ausgewÃ¤hlten Einstellungen im XML-Format exportiert werden kÃ¶nnen und dem Button
+	 * "Einstellungen importieren", damit Einstellungen im XML-Format Ã¼bernommen werden kÃ¶nnen.
 	 *
 	 * @return das Panel mit den Export- / Import- Buttons
 	 */
@@ -623,12 +603,12 @@ public class SettingsHandler {
 									name = name.substring(0, name.lastIndexOf(".xml"));
 									try {
 										if(_savedPreferences.nodeExists(name)) {
-											String message = "Bestehende Einstellung \'" + name + "\' überschreiben?";
+											String message = "Bestehende Einstellung \'" + name + "\' Ã¼berschreiben?";
 											String headline = "Einstellung existiert bereits.";
 											if(JOptionPane.showConfirmDialog(
 													_settingsPanel, message, headline, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE
 											) == JOptionPane.YES_OPTION) {
-												// bestehende Einstellung überschreiben
+												// bestehende Einstellung Ã¼berschreiben
 												int row = getRowNumber(_savedPreferences, name);
 												_savedSettingsTableModel.removeRow(row);
 												_savedPreferences.node(name).removeNode();
@@ -650,7 +630,7 @@ public class SettingsHandler {
 										ex.printStackTrace();
 									}
 									catch(InvalidPreferencesFormatException ex) {
-										String headline = "Einstellung wurde nicht übernommen.";
+										String headline = "Einstellung wurde nicht Ã¼bernommen.";
 										String message = "Einstellungsdatei fehlerhaft.";
 										JOptionPane.showMessageDialog(_settingsPanel, message, headline, JOptionPane.INFORMATION_MESSAGE);
 										_debug.finest(ex.toString());
@@ -669,20 +649,20 @@ public class SettingsHandler {
 		_exportButton.addActionListener(
 				new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						// FileDialog öffnen
+						// FileDialog Ã¶ffnen
 						JFileChooser fileChooser = new JFileChooser();
 						String path = _preferences.get("importexportdirectory", "");
 						if(!path.equals("")) {
 							fileChooser.setCurrentDirectory(new File(path));
 						}
 						fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-						if(fileChooser.showDialog(_exportButton, "Verzeichnis auswählen") == JFileChooser.APPROVE_OPTION) {
+						if(fileChooser.showDialog(_exportButton, "Verzeichnis auswÃ¤hlen") == JFileChooser.APPROVE_OPTION) {
 							File directory = fileChooser.getSelectedFile();
 							String newPath = directory.getPath();
 							if(!path.equals(newPath)) {
 								_preferences.put("importexportdirectory", newPath);
 							}
-							// alle ausgewählten Einstellungen mit dem entsprechenden Namen speichern.
+							// alle ausgewÃ¤hlten Einstellungen mit dem entsprechenden Namen speichern.
 							try {
 								int[] selectedRows = _savedSettingsTable.getSelectedRows();
 								String[] children = new String[0];
@@ -723,9 +703,9 @@ public class SettingsHandler {
 
 	/**
 	 * Um den KV richtig zu importieren, muss die Eingabe bearbeitet werden. Hierzu wird die XML-Datei zeilenweise eingelesen, und die zweite Zeile, die mit
-	 * <code>&lt;node name=</code> beginnt, ersetzt durch eine Zeile, die den korrekten KV beinhaltet. Anschließend werden die Einstellungen mit
+	 * <code>&lt;node name=</code> beginnt, ersetzt durch eine Zeile, die den korrekten KV beinhaltet. AnschlieÃŸend werden die Einstellungen mit
 	 * {@link Preferences#importPreferences(java.io.InputStream)} geladen.
-	 * @param reader Reader für die XML-Datei
+	 * @param reader Reader fÃ¼r die XML-Datei
 	 * @throws IOException IO-Fehler
 	 * @throws InvalidPreferencesFormatException Fehler im Format der importierten Datei
 	 */
@@ -768,17 +748,17 @@ public class SettingsHandler {
 	}
 
 	/**
-	 * Erstellt das Panel mit den Buttons zum Starten, Speichern, Ändern und Löschen der Einstellungen.
+	 * Erstellt das Panel mit den Buttons zum Starten, Speichern, Ã„ndern und LÃ¶schen der Einstellungen.
 	 *
-	 * @return das Panel mit den Buttons zum Starten, Speichern, Ändern und Löschen der Einstellungen
+	 * @return das Panel mit den Buttons zum Starten, Speichern, Ã„ndern und LÃ¶schen der Einstellungen
 	 */
 	private JPanel createModuleButtonPanel() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		_startButton.setText("Starten");
 		_saveAsButton.setText("Speichern unter ...");
-		_changeButton.setText("Ändern ...");
-		_deleteButton.setText("Löschen");
+		_changeButton.setText("Ã„ndern ...");
+		_deleteButton.setText("LÃ¶schen");
 
 		_startButton.setEnabled(false);
 		_saveAsButton.setEnabled(false);
@@ -973,7 +953,7 @@ public class SettingsHandler {
 		for(int i = 0; i < objectKeys.length; i++) {
 			String pidOrId = objectPrefs.get(objectKeys[i], "");
 			SystemObject systemObject = null;
-			try {		// prüfen ob es sich um eine id oder um eine pid handelt -> dann die entsprechenden getObject-Methoden aufrufen
+			try {		// prÃ¼fen ob es sich um eine id oder um eine pid handelt -> dann die entsprechenden getObject-Methoden aufrufen
 				long objectId = Long.parseLong(pidOrId);
 				systemObject = _dataModel.getObject(objectId);
 			}
@@ -1012,7 +992,7 @@ public class SettingsHandler {
 		}
 		settingsData.setKeyValueList(settingList);
 		if(!settingsData.isValid() && !missingObjectList.isEmpty()) {
-			_debug.warning("Die Einstellung (" + (title.equals("") ? moduleName : title) + ") ist ungültig.");
+			_debug.warning("Die Einstellung (" + (title.equals("") ? moduleName : title) + ") ist ungÃ¼ltig.");
 			_debug.finer("Erstes nicht gefundene Systemobjekt: " + missingObjectList);
 		}
 		return settingsData;
@@ -1028,7 +1008,7 @@ public class SettingsHandler {
 	}
 
 	/**
-	 * Mit dieser Methode können Einstellungsdaten übergeben werden. Diese werden dann in den Preferences gespeichert und in den Tabellen angezeigt.
+	 * Mit dieser Methode kÃ¶nnen Einstellungsdaten Ã¼bergeben werden. Diese werden dann in den Preferences gespeichert und in den Tabellen angezeigt.
 	 *
 	 * @param settingsData Einstellungsdaten
 	 */
@@ -1039,7 +1019,7 @@ public class SettingsHandler {
 			Preferences modulePrefs;
 			if(title == null || title.equals("")) {	// kein Title -> zuletzt verwendete Einstellungen
 				String[] children = _lastUsedPreferences.childrenNames();
-				// nächste Nummer ermitteln
+				// nÃ¤chste Nummer ermitteln
 				int nextNumber = 0;
 				int numberOfSubNodes = children.length;
 				if(numberOfSubNodes > 0) {
@@ -1047,12 +1027,12 @@ public class SettingsHandler {
 					nextNumber = Integer.parseInt(child) + 1;
 					if(nextNumber > (Integer.MAX_VALUE - 5)) {
 						_debug.error(
-								"Der Integer Zahlenraum reicht nicht mehr aus! Bitte alle Einstellungen aus der Liste der zuletzt verwendeten Einstellungen löschen und das Programm neu starten"
+								"Der Integer Zahlenraum reicht nicht mehr aus! Bitte alle Einstellungen aus der Liste der zuletzt verwendeten Einstellungen lÃ¶schen und das Programm neu starten"
 						);
 					}
 				}
-				// Falls die Anzahl der maximal darzustellenden Einstellungen größer als die obere Grenze ist, solange
-				// die Einträge löschen, bis es passt.
+				// Falls die Anzahl der maximal darzustellenden Einstellungen grÃ¶ÃŸer als die obere Grenze ist, solange
+				// die EintrÃ¤ge lÃ¶schen, bis es passt.
 				while(numberOfSubNodes >= _lastUsedPreferences.getInt("numberOfLastUsedSettings", 20)) {
 					_ignoreListChangeSelectionEvent = true;
 					_lastUsedPreferences.node(getOldestEntry(children)).removeNode();
@@ -1071,13 +1051,13 @@ public class SettingsHandler {
 			}
 			else {
 				if(_savedPreferences.nodeExists(title)) {
-					// Abfrage, ob bestehende Einstellung gelöscht werden soll, oder neuer Name vergeben soll
+					// Abfrage, ob bestehende Einstellung gelÃ¶scht werden soll, oder neuer Name vergeben soll
 					String headline = "Einstellung " + title + " existiert bereits.";
-					String message = "Bestehende Einstellung überschreiben?";
+					String message = "Bestehende Einstellung Ã¼berschreiben?";
 
 					if(JOptionPane.showConfirmDialog(_settingsPanel, message, headline, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane
 							.YES_OPTION) {
-						// überschreiben - Knoten auch aus der Tabelle löschen
+						// Ã¼berschreiben - Knoten auch aus der Tabelle lÃ¶schen
 						int row = 0;
 						String[] children = _savedPreferences.childrenNames();
 						for(int i = 0; i < children.length; i++) {
@@ -1090,7 +1070,7 @@ public class SettingsHandler {
 						_savedSettingsTableModel.removeRow(row);
 					}
 					else {
-						// nicht überschreiben - neuen Titel vergeben
+						// nicht Ã¼berschreiben - neuen Titel vergeben
 						String newTitle = JOptionPane.showInputDialog("Bitte anderen Namen vergeben: ", title);
 						if(newTitle != null && !newTitle.equals("")) {
 							settingsData.setTitle(newTitle);
@@ -1110,7 +1090,7 @@ public class SettingsHandler {
 			else {
 				modulePrefs.put("atg", "");
 			}
-			if(settingsData.getAspect() != null) {	// für den Parametereditor
+			if(settingsData.getAspect() != null) {	// fÃ¼r den Parametereditor
 				modulePrefs.put("asp", settingsData.getAspect().getPid());
 			}
 			else {
@@ -1163,7 +1143,7 @@ public class SettingsHandler {
 	}
 
 	/**
-	 * Gibt den ältesten Eintrag aus einem children-Array zurück. Hilfsfunktion von saveSettings.
+	 * Gibt den Ã¤ltesten Eintrag aus einem children-Array zurÃ¼ck. Hilfsfunktion von saveSettings.
 	 *
 	 * @param children Ein Array der Form <code>{"0000000000","0000000001","0000000002"}</code>
 	 *
@@ -1179,10 +1159,10 @@ public class SettingsHandler {
 	}
 
 	/**
-	 * Diese Methode lädt alle Einstellungen aus den Preferences und stellt sie in den Tabellen des SettingsHandlers dar. Diese Methode kann aufgerufen werden,
-	 * nachdem das Panel dargestellt wurde. Damit hat der Anwender eine schnellere Rückmeldung der Anwendung.
-	 * <p/>
-	 * Ist die Einstellung fehlerhaft, dann wird sie aus den Preferences gelöscht und in der Tabelle nicht angezeigt.
+	 * Diese Methode lÃ¤dt alle Einstellungen aus den Preferences und stellt sie in den Tabellen des SettingsHandlers dar. Diese Methode kann aufgerufen werden,
+	 * nachdem das Panel dargestellt wurde. Damit hat der Anwender eine schnellere RÃ¼ckmeldung der Anwendung.
+	 * <p>
+	 * Ist die Einstellung fehlerhaft, dann wird sie aus den Preferences gelÃ¶scht und in der Tabelle nicht angezeigt.
 	 *
 	 * @throws BackingStoreException falls beim Zugriff auf das Speicherungssystem ein Fehler aufgetreten ist
 	 */
@@ -1201,7 +1181,7 @@ public class SettingsHandler {
 		for(int i = 0; i < lastUsedChildren.length; i++) {
 			Preferences preferences = _lastUsedPreferences.node(lastUsedChildren[i]);
 			// in Tabelle eintragen
-			SettingsData settingsData = createSettingsData(preferences);	// hier können die Exceptions geworfen werden
+			SettingsData settingsData = createSettingsData(preferences);	// hier kÃ¶nnen die Exceptions geworfen werden
 			Vector v = loadLastUsedSettingsTableEntry(settingsData);
 			if(v != null) {
 				_lastUsedSettingsTableModel.addRow(v);
@@ -1211,7 +1191,7 @@ public class SettingsHandler {
 	}
 
 	/**
-	 * Aus einem Einstellungsobjekt (SettingsData) wird ein Tabelleneintrag für die zuletzt verwendeten Einstellungen erstellt.
+	 * Aus einem Einstellungsobjekt (SettingsData) wird ein Tabelleneintrag fÃ¼r die zuletzt verwendeten Einstellungen erstellt.
 	 *
 	 * @param settingsData die anzuzeigenden Einstellungen
 	 *
@@ -1222,7 +1202,7 @@ public class SettingsHandler {
 	}
 
 	/**
-	 * Aus einem Einstellungsobjekt (SettingsData) wird ein Tabelleneintrag für die gespeicherten Einstellungen erstellt.
+	 * Aus einem Einstellungsobjekt (SettingsData) wird ein Tabelleneintrag fÃ¼r die gespeicherten Einstellungen erstellt.
 	 *
 	 * @param settingsData die anzuzeigenden Einstellungen
 	 *
@@ -1235,12 +1215,12 @@ public class SettingsHandler {
 	}
 
 	/**
-	 * Lädt die übergebene Einstellung und erzeugt einen Eintrag für eine der beiden Tabellen ("Gespeicherte Einstellungen" oder "Zuletzt verwendete
+	 * LÃ¤dt die Ã¼bergebene Einstellung und erzeugt einen Eintrag fÃ¼r eine der beiden Tabellen ("Gespeicherte Einstellungen" oder "Zuletzt verwendete
 	 * Einstellungen").
 	 *
 	 * @param settingsData die anzuzeigende Einstellung
 	 *
-	 * @return einen Eintrag für eine Tabelle
+	 * @return einen Eintrag fÃ¼r eine Tabelle
 	 */
 	private Vector<String> loadTableEntry(final SettingsData settingsData) {
 		Vector<String> v = new Vector<String>();
@@ -1278,7 +1258,7 @@ public class SettingsHandler {
 				builder.append("... (insgesamt ");
 				builder.append(objectsSize);
 				builder.append(" Objekte); ");
-				break; //Der String wird nur zur Darstellung benutzt, es macht keinen Sinn, hier zigtausende Objekte einzufügen
+				break; //Der String wird nur zur Darstellung benutzt, es macht keinen Sinn, hier zigtausende Objekte einzufÃ¼gen
 			}
 		}
 		String result = "";
@@ -1333,7 +1313,7 @@ public class SettingsHandler {
 
 
 	/**
-	 * Diese Klasse weist einem Spaltenheader einer Tabelle einen Tooltip zu. Anhand der Mausposition wird ermittelt, über welcher Spalte sich die Maus befindet
+	 * Diese Klasse weist einem Spaltenheader einer Tabelle einen Tooltip zu. Anhand der Mausposition wird ermittelt, Ã¼ber welcher Spalte sich die Maus befindet
 	 * und welcher Tooltip dem Header zugewiesen wird.
 	 */
 	private static class ColumnHeaderToolTips extends MouseMotionAdapter {
@@ -1341,22 +1321,22 @@ public class SettingsHandler {
 		/** Speichert die aktuelle Spalte, die einen Tooltip anzeigt. Das reduziert die Aufrufe von <code>setToolTipText()</code>. */
 		TableColumn _currentColumn;
 
-		/** Speichert für jeden Spaltenkopf den Tooltip. */
+		/** Speichert fÃ¼r jeden Spaltenkopf den Tooltip. */
 		Map<TableColumn, String> _tooltips = new HashMap<TableColumn, String>();
 
 
 		/**
-		 * Wird als Tooltip <code>null</code> übergeben, dann wird der bestehende Eintrag gelöscht.
+		 * Wird als Tooltip <code>null</code> Ã¼bergeben, dann wird der bestehende Eintrag gelÃ¶scht.
 		 *
 		 * @param column  die Spalte, die einen Tooltip bekommt
-		 * @param tooltip der Tooltip für den Spaltenkopf
+		 * @param tooltip der Tooltip fÃ¼r den Spaltenkopf
 		 */
 		public void setToolTip(final TableColumn column, final String tooltip) {
 			if(tooltip == null) {
 				_tooltips.remove(column);
 			}
 			else {
-				_tooltips.put(column, tooltip);	// bestehender Tooltip wird überschrieben
+				_tooltips.put(column, tooltip);	// bestehender Tooltip wird Ã¼berschrieben
 			}
 		}
 

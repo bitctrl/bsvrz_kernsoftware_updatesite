@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.subscription;
@@ -32,11 +38,11 @@ import de.bsvrz.dav.daf.communication.lowLevel.telegrams.BaseSubscriptionInfo;
 
 /**
  * @author Kappich Systemberatung
- * @version $Revision: 6316 $
+ * @version $Revision$
  */
 public class ReceiverSubscription {
 
-	/** Representant der Emp‰nger */
+	/** Representant der Emp√§nger */
 	private ClientReceiverInterface _clientReceiver;
 
 	/** Der Objekt dieser Anmeldung */
@@ -52,7 +58,7 @@ public class ReceiverSubscription {
 	private long _timeInCache;
 
 	/**
-	 * Objekt, dass f¸r die Zwischenspeicherung und Auslieferung von empfangenen Datens‰tzen an den Receiver zust‰ndig ist, oder <code>null</code>, falls noch
+	 * Objekt, dass f√ºr die Zwischenspeicherung und Auslieferung von empfangenen Datens√§tzen an den Receiver zust√§ndig ist, oder <code>null</code>, falls noch
 	 * nicht angemeldet.
 	 */
 	private CollectingReceiver _collectingReceiver = null;
@@ -60,7 +66,7 @@ public class ReceiverSubscription {
 	/**
 	 * Erzeugt ein neues Objekt mit den gegebenen Parametern.
 	 *
-	 * @param client                    Empf‰nger
+	 * @param client                    Empf√§nger
 	 * @param systemObject              Objekt der Anmeldung
 	 * @param dataDescription           Informationen zur Beschreibung der Anmeldung
 	 * @param externalSimulationVariant Simulationsvariante
@@ -93,16 +99,16 @@ public class ReceiverSubscription {
 	}
 
 	/**
-	 * Gibt den Empf‰nger zur¸ck.
+	 * Gibt den Empf√§nger zur√ºck.
 	 *
-	 * @return Empf‰nger
+	 * @return Empf√§nger
 	 */
 	public final ClientReceiverInterface getClientReceiver() {
 		return _clientReceiver;
 	}
 
 	/**
-	 * Gibt das Systemobjekt zur¸ck.
+	 * Gibt das Systemobjekt zur√ºck.
 	 *
 	 * @return Systemobjekt
 	 */
@@ -111,7 +117,7 @@ public class ReceiverSubscription {
 	}
 
 	/**
-	 * Gibt die beschreibende Informationen der zu versendenden Daten zur¸ck.
+	 * Gibt die beschreibende Informationen der zu versendenden Daten zur√ºck.
 	 *
 	 * @return beschreibende Informationen
 	 */
@@ -120,34 +126,34 @@ public class ReceiverSubscription {
 	}
 
 	/**
-	 * Gibt an, ob Interesse an nachgelieferten oder an aktuellen Datens‰tzen besteht.
+	 * Gibt an, ob Interesse an nachgelieferten oder an aktuellen Datens√§tzen besteht.
 	 *
-	 * @return <code>true:</code> nachgelieferte Datens‰tze erw¸nscht, <code>false:</code> nachgelieferte Datens‰tze nicht erw¸nscht
+	 * @return <code>true:</code> nachgelieferte Datens√§tze erw√ºnscht, <code>false:</code> nachgelieferte Datens√§tze nicht erw√ºnscht
 	 */
 	public final boolean getDelayedDataFlag() {
 		return _receiveSubscriptionInfo.getDelayedDataFlag();
 	}
 
 	/**
-	 * Gibt an, ob Interesse an nur den ge‰nderten Datens‰tzen oder an allen Datens‰tzen besteht.
+	 * Gibt an, ob Interesse an nur den ge√§nderten Datens√§tzen oder an allen Datens√§tzen besteht.
 	 *
-	 * @return <code>true:</code> nur ge‰nderte Datens‰tze erw¸nscht, <code>false:</code> alle Datens‰tze erw¸nscht
+	 * @return <code>true:</code> nur ge√§nderte Datens√§tze erw√ºnscht, <code>false:</code> alle Datens√§tze erw√ºnscht
 	 */
 	public final boolean getDeltaDataFlag() {
 		return _receiveSubscriptionInfo.getDeltaDataFlag();
 	}
 
 	/**
-	 * Gibt an, ob die Applikation als ein normaler Empf‰nger f¸r dieses Datums angemeldet ist oder nicht.
+	 * Gibt an, ob die Applikation als ein normaler Empf√§nger f√ºr dieses Datums angemeldet ist oder nicht.
 	 *
-	 * @return <code>true:</code> Applikation ist normaler Emf‰nger, <code>false:</code> Applikation ist kein normaler Empf‰nger
+	 * @return <code>true:</code> Applikation ist normaler Emf√§nger, <code>false:</code> Applikation ist kein normaler Empf√§nger
 	 */
 	public final boolean isReceiver() {
 		return _receiveSubscriptionInfo.isReceiver();
 	}
 
 	/**
-	 * Gibt an, ob die Applikation als Senke f¸r dieses Datums angemeldet ist oder nicht.
+	 * Gibt an, ob die Applikation als Senke f√ºr dieses Datums angemeldet ist oder nicht.
 	 *
 	 * @return <code>true:</code>Applikation ist als Senke angemeldet, <code>false:</code>Applikation ist nicht als Senke angemeldet.
 	 */
@@ -156,7 +162,7 @@ public class ReceiverSubscription {
 	}
 
 	/**
-	 * Gibt die Mindestverweilzeit im Cache zur¸ck.
+	 * Gibt die Mindestverweilzeit im Cache zur√ºck.
 	 *
 	 * @return Mindestverweilzeit im Cache
 	 */
@@ -173,21 +179,21 @@ public class ReceiverSubscription {
 
 //	/**
 //	 * Setzt die Information, dass die Historie Daten nicht mehr gefragt sind.
-//	 * Dies geschieht nach der erhalt der l¸ckenlose Historiedaten.
+//	 * Dies geschieht nach der erhalt der l√ºckenlose Historiedaten.
 //	 */
 //	public final void setHistoryDataNotNeeded() {
 //		historyTime = 0;
 //	}
 
 //	/**
-//	 * Gibt der Zeitbereich der benˆtigten Historie zur¸ck
+//	 * Gibt der Zeitbereich der ben√∂tigten Historie zur√ºck
 //	 */
 //	public final long getHistoryTime() {
 //		return historyTime;
 //	}
 
 	/**
-	 * Gibt die Empfangsanmeldeinformationen zur¸ck.
+	 * Gibt die Empfangsanmeldeinformationen zur√ºck.
 	 *
 	 * @return Empfangsanmeldeinformationen
 	 */
@@ -196,7 +202,7 @@ public class ReceiverSubscription {
 	}
 
 	/**
-	 * Gibt die Basisanmeldeinformationen zur¸ck.
+	 * Gibt die Basisanmeldeinformationen zur√ºck.
 	 *
 	 * @return Basisanmeldeinformationen
 	 */
@@ -217,18 +223,18 @@ public class ReceiverSubscription {
 	}
 
 	/**
-	 * Setzt des Objekt, dass f¸r die Zwischenspeicherung und Auslieferung von empfangenen Datens‰tzen an den Receiver zust‰ndig ist.
+	 * Setzt des Objekt, dass f√ºr die Zwischenspeicherung und Auslieferung von empfangenen Datens√§tzen an den Receiver zust√§ndig ist.
 	 *
-	 * @param collectingReceiver Objekt, dass f¸r die Zwischenspeicherung und Auslieferung von empfangenen Datens‰tzen an den Receiver zust‰ndig ist.
+	 * @param collectingReceiver Objekt, dass f√ºr die Zwischenspeicherung und Auslieferung von empfangenen Datens√§tzen an den Receiver zust√§ndig ist.
 	 */
 	public void setCollectingReceiver(final CollectingReceiver collectingReceiver) {
 		_collectingReceiver = collectingReceiver;
 	}
 
 	/**
-	 * Bestimmt des Objekt, dass f¸r die Zwischenspeicherung und Auslieferung von empfangenen Datens‰tzen an den Receiver zust‰ndig ist.
+	 * Bestimmt des Objekt, dass f√ºr die Zwischenspeicherung und Auslieferung von empfangenen Datens√§tzen an den Receiver zust√§ndig ist.
 	 *
-	 * @return Objekt, dass f¸r die Zwischenspeicherung und Auslieferung von empfangenen Datens‰tzen an den Receiver zust‰ndig ist oder <code>null</code>, falls
+	 * @return Objekt, dass f√ºr die Zwischenspeicherung und Auslieferung von empfangenen Datens√§tzen an den Receiver zust√§ndig ist oder <code>null</code>, falls
 	 *         noch nicht angemeldet.
 	 */
 	public CollectingReceiver getCollectingReceiver() {

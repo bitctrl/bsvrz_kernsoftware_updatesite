@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.main.impl.archive.request;
 
@@ -36,12 +42,12 @@ import java.io.IOException;
 import java.io.ByteArrayOutputStream;
 
 /**
- * Diese Klasse stellt ein Objekt zur Verfügung, das ein Archivsystem beauftragt eine Simulationsvariante zu löschen.
+ * Diese Klasse stellt ein Objekt zur VerfÃ¼gung, das ein Archivsystem beauftragt eine Simulationsvariante zu lÃ¶schen.
  * Diese Klasse wird von der Klasse {@link StreamedArchiveRequester} benutzt.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
- * @version $Revision: 5064 $ / $Date: 2007-09-01 22:25:35 +0200 (Sat, 01 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class DeleteSimulationVariant implements ArchiveQueryResult {
 
@@ -51,24 +57,24 @@ public class DeleteSimulationVariant implements ArchiveQueryResult {
 	private final ArchiveQueryID _archiveRequestID;
 
 	/**
-	 * Konnte der Löschauftrag durchgeführt werden
+	 * Konnte der LÃ¶schauftrag durchgefÃ¼hrt werden
 	 */
 	private boolean _deleteSuccessful;
 
 	/**
-	 * Fehler, der beim löschen von Daten aufgetreten sein kann
+	 * Fehler, der beim lÃ¶schen von Daten aufgetreten sein kann
 	 */
 	private String _errorString;
 
 	/**
-	 * DebugLogger für Debug-Ausgaben
+	 * DebugLogger fÃ¼r Debug-Ausgaben
 	 */
 	private static final Debug _debug = Debug.getLogger();
 
 	private final StreamedArchiveRequester _streamedArchiveRequester;
 
 	/**
-	 * Speichert die Simulationsvariante, die gelöscht werden soll
+	 * Speichert die Simulationsvariante, die gelÃ¶scht werden soll
 	 */
 	private final short _simulationVariant;
 
@@ -102,19 +108,19 @@ public class DeleteSimulationVariant implements ArchiveQueryResult {
 		if (isRequestSuccessful() == false) {
 			return _errorString;
 		} else {
-			return "Die Archivanfrage(löschen) (" + _archiveRequestID.getIndexOfRequest() + ") war erfolgreich";
+			return "Die Archivanfrage(lÃ¶schen) (" + _archiveRequestID.getIndexOfRequest() + ") war erfolgreich";
 		}
 	}
 
 	/**
-	 * Diese Methode wird aufgerufen, wenn eine Antwort des Archivs auf den Löschauftrag vorliegt.
+	 * Diese Methode wird aufgerufen, wenn eine Antwort des Archivs auf den LÃ¶schauftrag vorliegt.
 	 *
 	 * @param data Antwort des Archivs
 	 */
 	public void archiveResponse(Data data) {
 		synchronized (this) {
 
-			// aus den Daten das byte-Array anfordern. In dem Array sind die Informationen, ob der Löschauftrag geklappt hat,
+			// aus den Daten das byte-Array anfordern. In dem Array sind die Informationen, ob der LÃ¶schauftrag geklappt hat,
 			// kodiert.
 			byte[] queryResponse = data.getUnscaledArray("daten").getByteArray();
 
@@ -143,13 +149,13 @@ public class DeleteSimulationVariant implements ArchiveQueryResult {
 	}
 
 	/**
-	 * Der Aufruf dieser Methode stößt die Löschfunktion des Archivsystems an. Alle Datensätze, die zu der angegebene
-	 * Simulation gehören, werden gelöscht.
+	 * Der Aufruf dieser Methode stÃ¶ÃŸt die LÃ¶schfunktion des Archivsystems an. Alle DatensÃ¤tze, die zu der angegebene
+	 * Simulation gehÃ¶ren, werden gelÃ¶scht.
 	 */
 	public void deleteSimulationVariant() {
 
 		// Im byte-Array wird die Serialisiererversion gespeichert, die Antwort des Archivs wird dann ebenfalls
-		// mit dieser Version serialisiert, und die Simulationsvariante, die gelöscht werden soll.
+		// mit dieser Version serialisiert, und die Simulationsvariante, die gelÃ¶scht werden soll.
 
 		// Die benutzte Serialisiererversion anfordern
 		final int serializerVersion = SerializingFactory.getDefaultVersion();

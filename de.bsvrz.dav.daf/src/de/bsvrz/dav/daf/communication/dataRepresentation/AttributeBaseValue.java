@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.dataRepresentation;
@@ -32,7 +38,7 @@ import java.io.IOException;
  * TBD
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5055 $
+ * @version $Revision$
  */
 public abstract class AttributeBaseValue {
 
@@ -51,7 +57,7 @@ public abstract class AttributeBaseValue {
 	}
 
 	/**
-	 * Gibt den Namen des Attributs zurück.
+	 * Gibt den Namen des Attributs zurÃ¼ck.
 	 *
 	 * @return der Name des Attributs
 	 */
@@ -60,7 +66,7 @@ public abstract class AttributeBaseValue {
 	}
 
 	/**
-	 * Gibt das Attribut zurück.
+	 * Gibt das Attribut zurÃ¼ck.
 	 *
 	 * @return das Attribut
 	 */
@@ -69,7 +75,7 @@ public abstract class AttributeBaseValue {
 	}
 
 	/**
-	 * Gibt den Wert des Attributs zurück.
+	 * Gibt den Wert des Attributs zurÃ¼ck.
 	 *
 	 * @return der Wert des Attributs
 	 */
@@ -87,13 +93,13 @@ public abstract class AttributeBaseValue {
 	 *
 	 * @param out Ausgabestrom
 	 *
-	 * @throws IOException Falls der Schreibvorgang nicht durchgeführt werden konnte.
+	 * @throws IOException Falls der Schreibvorgang nicht durchgefÃ¼hrt werden konnte.
 	 */
 	public abstract void writeValue(DataOutputStream out) throws IOException;
 
-	/** Überprüfft auf gleichheit dieses Attribute und den gegebenen Attributeswert */
+	/** ÃœberprÃ¼fft auf gleichheit dieses Attribute und den gegebenen Attributeswert */
 	/**
-	 * Überprüft, ob das Attribut/Attributwert mit dem angegebenen Attribut übereinstimmt.
+	 * ÃœberprÃ¼ft, ob das Attribut/Attributwert mit dem angegebenen Attribut Ã¼bereinstimmt.
 	 *
 	 * @param attributeBaseValue zu vergleichendes Attribut
 	 *

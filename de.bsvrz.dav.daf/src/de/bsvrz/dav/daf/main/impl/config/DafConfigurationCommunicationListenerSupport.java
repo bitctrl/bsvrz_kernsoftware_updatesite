@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config;
@@ -29,17 +35,17 @@ import de.bsvrz.sys.funclib.debug.Debug;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Verwaltet die Listener für die Kommunikation mit der Komfiguration.
+ * Verwaltet die Listener fÃ¼r die Kommunikation mit der Komfiguration.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13272 $
+ * @version $Revision$
  */
 public class DafConfigurationCommunicationListenerSupport {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
-	/** Speichert alle Beobachter, die an Kommunikationsänderungen zu diesem Objekts interessiert sind. */
+	/** Speichert alle Beobachter, die an KommunikationsÃ¤nderungen zu diesem Objekts interessiert sind. */
 	CopyOnWriteArrayList<ConfigurationCommunicationChangeListener> _configComListeners = new CopyOnWriteArrayList<ConfigurationCommunicationChangeListener>();
 
 	private boolean _configurationCommunicationActive = false;
@@ -61,7 +67,7 @@ public class DafConfigurationCommunicationListenerSupport {
 	/**
 	 * @see de.bsvrz.dav.daf.main.config.ConfigurationCommunicationInterface#isConfigurationCommunicationActive()
 	 *
-	 * @param listener Beobachter für Zustandsänderungen der Kommunikation.
+	 * @param listener Beobachter fÃ¼r ZustandsÃ¤nderungen der Kommunikation.
 	 */
 	public void addConfigurationCommunicationChangeListener(ConfigurationCommunicationChangeListener listener) {
 		synchronized(this) {
@@ -76,7 +82,7 @@ public class DafConfigurationCommunicationListenerSupport {
 	/**
 	 * @see de.bsvrz.dav.daf.main.config.ConfigurationCommunicationInterface#removeConfigurationCommunicationChangeListener(de.bsvrz.dav.daf.main.config.ConfigurationCommunicationChangeListener)
 	 *
-	 * @param listener Ein bisher für Zustandsänderungen der Kommunikation angemeldeter Beobachter.
+	 * @param listener Ein bisher fÃ¼r ZustandsÃ¤nderungen der Kommunikation angemeldeter Beobachter.
 	 */
 	public void removeConfigurationCommunicationChangeListener(ConfigurationCommunicationChangeListener listener) {
 		synchronized(this) {
@@ -87,9 +93,9 @@ public class DafConfigurationCommunicationListenerSupport {
 
 	/**
 	 * Schnittstelle um allen angemeldeten Listenern Bescheid zu geben, dass sich der Zustand der Kommunikation mit der verwaltenden Konfiguration
-	 * des angegebenen Objekts geändert hat.
+	 * des angegebenen Objekts geÃ¤ndert hat.
 	 *
-	 * @param object Objekt ({@link de.bsvrz.dav.daf.main.config.MutableSet} oder {@link de.bsvrz.dav.daf.main.config.DynamicObject}) zu dessen verwaltenden Konfiguration sich der Kommunikationszustand geändert hat
+	 * @param object Objekt ({@link de.bsvrz.dav.daf.main.config.MutableSet} oder {@link de.bsvrz.dav.daf.main.config.DynamicObject}) zu dessen verwaltenden Konfiguration sich der Kommunikationszustand geÃ¤ndert hat
 	 * @param configComStatus der aktuelle Kommunikationszustand. True bedeutet die Kommunikation steht, false zeigt eine Unterbrechung der Kommunikation an
 	 */
 	public void configurationCommunicationChange(ConfigurationCommunicationInterface object, boolean configComStatus) {
@@ -118,7 +124,7 @@ public class DafConfigurationCommunicationListenerSupport {
 	}
 
 	/**
-	 * Stellt sicher, dass die Anmeldung auf Änderungen des Kommunikationsstatus bei der lokalen Konfiguration erfolgt ist.
+	 * Stellt sicher, dass die Anmeldung auf Ã„nderungen des Kommunikationsstatus bei der lokalen Konfiguration erfolgt ist.
 	 */
 	private void ensureSubscribedState() {
 		try {
@@ -144,14 +150,14 @@ public class DafConfigurationCommunicationListenerSupport {
 					default:
 						_subscriptionState = NOT_SUBSCRIBED;
 						_configurationCommunicationActive = false;
-						_debug.error("Ungültige Antwort auf Anmeldung für Kommunikationsänderungen, communicationState", communicationState);
+						_debug.error("UngÃ¼ltige Antwort auf Anmeldung fÃ¼r KommunikationsÃ¤nderungen, communicationState", communicationState);
 						break;
 				}
 			}
 		}
 		catch(RequestException e) {
 			final String message =
-					"Kommunikationsproblem bei Anmeldung auf Änderungen des Kommunikationsstatus für " + _object;
+					"Kommunikationsproblem bei Anmeldung auf Ã„nderungen des Kommunikationsstatus fÃ¼r " + _object;
 			_debug.error(message, e);
 			try {
 				((DafDataModel)_object.getDataModel()).getConnection().disconnect(true, message + " " + e.getMessage());
@@ -172,7 +178,7 @@ public class DafConfigurationCommunicationListenerSupport {
 		}
 		catch(RequestException e) {
 			final String message =
-					"Kommunikationsproblem bei Abmeldung auf Änderungen des Kommunikationsstatus für " + _object;
+					"Kommunikationsproblem bei Abmeldung auf Ã„nderungen des Kommunikationsstatus fÃ¼r " + _object;
 			_debug.error(message, e);
 			try {
 				((DafDataModel)_object.getDataModel()).getConnection().disconnect(true, message + " " + e.getMessage());

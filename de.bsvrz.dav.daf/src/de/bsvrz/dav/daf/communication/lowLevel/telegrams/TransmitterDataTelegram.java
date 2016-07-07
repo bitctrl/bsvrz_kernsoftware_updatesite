@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel.telegrams;
@@ -29,16 +35,16 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Telegramm zur ‹bertragung der Anwendungsdaten. Mit diesem Telegramm werden die Anwendungsdaten ¸bertragen. Es kann in beide Richtungen benutzt werden. Die
+ * Telegramm zur √úbertragung der Anwendungsdaten. Mit diesem Telegramm werden die Anwendungsdaten √ºbertragen. Es kann in beide Richtungen benutzt werden. Die
  * Anwendungsdaten werden durch folgende Informationen gekennzeichnet: Konfigurationsobjekt (Objekt-Id), Attributgruppe, Aspekt, Simulationsvariante. Die zu
- * ¸bertragenden Anwendungsdaten werden ab einer bestimmten Grˆﬂe in mehrere Telegramme zerlegt. Um unnˆtige Redundanz zu vermeiden, werden die
- * Telegrammelemente Zeitstempel, Fehlerkennung sowie die Angaben zum Attributindikator nur im ersten Telegramm ¸bertragen.
+ * √ºbertragenden Anwendungsdaten werden ab einer bestimmten Gr√∂√üe in mehrere Telegramme zerlegt. Um unn√∂tige Redundanz zu vermeiden, werden die
+ * Telegrammelemente Zeitstempel, Fehlerkennung sowie die Angaben zum Attributindikator nur im ersten Telegramm √ºbertragen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11481 $
+ * @version $Revision$
  */
 public class TransmitterDataTelegram extends DataTelegram implements DataTelegramInterface{
-	/** Objekt f¸r Debugausgaben */
+	/** Objekt f√ºr Debugausgaben */
 	private static Debug _debug = Debug.getLogger();
 
 	/** Der Index dieses Telegramms */
@@ -61,17 +67,17 @@ public class TransmitterDataTelegram extends DataTelegram implements DataTelegra
 
 	/**
 	 * Fehlerkennung der Anwendungsdaten. 0: Daten vorhanden (kein Fehler). 1: Quelle vorhanden, aber Daten noch nicht lieferbar. 2: Quelle nicht vorhanden. 3:
-	 * Keine Rechte 8: Unzul‰ssige Anmeldung(2 Quellen, 2 Senken, 1 Quelle 1 Senke und umgekehrt)
+	 * Keine Rechte 8: Unzul√§ssige Anmeldung(2 Quellen, 2 Senken, 1 Quelle 1 Senke und umgekehrt)
 	 */
 	private byte _errorFlag;
 
-	/** Der Indikator zu den ƒnderungen der einzelnen Attribute der Attributgruppe. */
+	/** Der Indikator zu den √Ñnderungen der einzelnen Attribute der Attributgruppe. */
 	private byte _attributesIndicator[];
 
-	/** Die Teildatens‰tze als Bytestrom */
+	/** Die Teildatens√§tze als Bytestrom */
 	private byte _data[];
 
-	/** Die Information ¸ber die Datenfluﬂrichtung 0: Sender zum Zentraldatenverteiler 1: Zentraldatenverteiler an die Empf‰nger */
+	/** Die Information √ºber die Datenflu√ürichtung 0: Sender zum Zentraldatenverteiler 1: Zentraldatenverteiler an die Empf√§nger */
 	private byte _direction;
 
 	public TransmitterDataTelegram() {
@@ -82,7 +88,7 @@ public class TransmitterDataTelegram extends DataTelegram implements DataTelegra
 	 * Erzeugt neues TransmitterDataTelegram
 	 *
 	 * @param applicationDataTelegram Zerlegtes ApplicationDataTelegram
-	 * @param direction               Information ¸ber der Datenflussesrichtung 0: Sender zum Zentraldatenverteiler 1: Zentraldatenverteiler an die Empf‰nger
+	 * @param direction               Information √ºber der Datenflussesrichtung 0: Sender zum Zentraldatenverteiler 1: Zentraldatenverteiler an die Empf√§nger
 	 */
 	public TransmitterDataTelegram(ApplicationDataTelegram applicationDataTelegram, byte direction) {
 		type = TRANSMITTER_DATA_TELEGRAM_TYPE;
@@ -115,13 +121,13 @@ public class TransmitterDataTelegram extends DataTelegram implements DataTelegra
 	 * @param dataNumber           Laufende Nummer des Datensatzes
 	 * @param delayedDataFlag      Sind die Daten nachgeliefert
 	 * @param errorFlag            Fehlerkennung der Anwendungsdaten. 0: Daten vorhanden (kein fehler). 1: Quelle vorhanden aber Daten noch nicht lieferbar. 2:
-	 *                             Quelle nicht vorhanden. 3: Keine Rechte 8: Unzul‰ssige Anmeldung(2 quellen, 2 Senken, 1 Quelle 1 senke und umgekehrt)
-	 * @param attributesIndicator  gibt an ob sich ein Attribut ge‰ndert hat
+	 *                             Quelle nicht vorhanden. 3: Keine Rechte 8: Unzul√§ssige Anmeldung(2 quellen, 2 Senken, 1 Quelle 1 senke und umgekehrt)
+	 * @param attributesIndicator  gibt an ob sich ein Attribut ge√§ndert hat
 	 * @param data                 Teil des Datensatzes als Bytestrom
 	 * @param totalTelegramCount   Anzahl aller Teiltelegramme, in die der gesamte Datensatz zerlegt wurde
 	 * @param telegramNumber       Index des Teiltelegramms
 	 * @param dataTime             Zeitstempel des Telegramms
-	 * @param direction            Information ¸ber der Datenflussesrichtung 0: Sender zum Zentraldatenverteiler 1: Zentraldatenverteiler an die Empf‰nger
+	 * @param direction            Information √ºber der Datenflussesrichtung 0: Sender zum Zentraldatenverteiler 1: Zentraldatenverteiler an die Empf√§nger
 	 */
 	public TransmitterDataTelegram(
 			BaseSubscriptionInfo baseSubscriptionInfo,
@@ -165,14 +171,14 @@ public class TransmitterDataTelegram extends DataTelegram implements DataTelegra
 	 * @param dataNumber           Laufende Nummer des Datensatzes
 	 * @param delayedDataFlag      Sind die Daten nachgeliefert
 	 * @param errorFlag            Fehlerkennung der Anwendungsdaten. 0: Daten vorhanden (kein fehler). 1: Quelle vorhanden aber Daten noch nicht lieferbar. 2:
-	 *                             Quelle nicht vorhanden. 3: Keine Rechte 8: Unzul‰ssige Anmeldung(2 quellen, 2 Senken, 1 Quelle 1 senke und umgekehrt)
-	 * @param attributesIndicator  gibt an ob sich ein Attribut ge‰ndert hat
-	 * @param prior                Priorit‰t des Telegramms
+	 *                             Quelle nicht vorhanden. 3: Keine Rechte 8: Unzul√§ssige Anmeldung(2 quellen, 2 Senken, 1 Quelle 1 senke und umgekehrt)
+	 * @param attributesIndicator  gibt an ob sich ein Attribut ge√§ndert hat
+	 * @param prior                Priorit√§t des Telegramms
 	 * @param data                 Teil des Datensatzes als Bytestrom
 	 * @param totalTelegramCount   Anzahl aller Teiltelegramme, in die der gesamte Datensatz zerlegt wurde
 	 * @param telegramNumber       Index des Teiltelegramms
 	 * @param dataTime             Zeitstempel des Telegramms
-	 * @param direction            Information ¸ber der Datenflussesrichtung 0: Sender zum Zentraldatenverteiler 1: Zentraldatenverteiler an die Empf‰nger
+	 * @param direction            Information √ºber der Datenflussesrichtung 0: Sender zum Zentraldatenverteiler 1: Zentraldatenverteiler an die Empf√§nger
 	 */
 	public TransmitterDataTelegram(
 			BaseSubscriptionInfo baseSubscriptionInfo,
@@ -213,7 +219,7 @@ public class TransmitterDataTelegram extends DataTelegram implements DataTelegra
 	}
 
 	/**
-	 * Gibt die Basisanmeldeinformationen zur¸ck.
+	 * Gibt die Basisanmeldeinformationen zur√ºck.
 	 *
 	 * @return Basisanmeldeinformationen
 	 */
@@ -222,7 +228,7 @@ public class TransmitterDataTelegram extends DataTelegram implements DataTelegra
 	}
 
 	/**
-	 * Gibt an, ob Datens‰tze nachgeliefert worden sind. True-> versp‰tet, false-> nicht versp‰tet
+	 * Gibt an, ob Datens√§tze nachgeliefert worden sind. True-> versp√§tet, false-> nicht versp√§tet
 	 *
 	 * @return True wenn Daten nachgeliefert sind.
 	 */
@@ -231,7 +237,7 @@ public class TransmitterDataTelegram extends DataTelegram implements DataTelegra
 	}
 
 	/**
-	 * Gibt die Laufende Nummer des Datensatzes zur¸ck.
+	 * Gibt die Laufende Nummer des Datensatzes zur√ºck.
 	 *
 	 * @return Laufende Nummer des Datensatzes
 	 */
@@ -240,16 +246,16 @@ public class TransmitterDataTelegram extends DataTelegram implements DataTelegra
 	}
 
 	/**
-	 * Gibt die Zeit der Datens‰tze an.
+	 * Gibt die Zeit der Datens√§tze an.
 	 *
-	 * @return Zeit der Datens‰tze
+	 * @return Zeit der Datens√§tze
 	 */
 	public final long getDataTime() {
 		return _dataTime;
 	}
 
 	/**
-	 * Gibt die Fehlerinformationen zur¸ck.
+	 * Gibt die Fehlerinformationen zur√ºck.
 	 *
 	 * @return Fehlerinformationen
 	 */
@@ -258,7 +264,7 @@ public class TransmitterDataTelegram extends DataTelegram implements DataTelegra
 	}
 
 	/**
-	 * Gibt den Indikator zu den einzelnen Attributen der Attributgruppe zur¸ck.
+	 * Gibt den Indikator zu den einzelnen Attributen der Attributgruppe zur√ºck.
 	 *
 	 * @return Indikator
 	 */
@@ -267,7 +273,7 @@ public class TransmitterDataTelegram extends DataTelegram implements DataTelegra
 	}
 
 	/**
-	 * Gibt die Gesamtanzahl der Teiltelegramme des urspr¸nglichen Datensatzes zur¸ck.
+	 * Gibt die Gesamtanzahl der Teiltelegramme des urspr√ºnglichen Datensatzes zur√ºck.
 	 *
 	 * @return Gesamtanzahl der Teiltelegramme
 	 */
@@ -276,7 +282,7 @@ public class TransmitterDataTelegram extends DataTelegram implements DataTelegra
 	}
 
 	/**
-	 * Gibt die Telegrammnummer dieses Teiltelegramms zur¸ck
+	 * Gibt die Telegrammnummer dieses Teiltelegramms zur√ºck
 	 *
 	 * @return Telegrammnummer
 	 */
@@ -285,7 +291,7 @@ public class TransmitterDataTelegram extends DataTelegram implements DataTelegra
 	}
 
 	/**
-	 * Gibt den Bytestrom dieses Telegramms zur¸ck.
+	 * Gibt den Bytestrom dieses Telegramms zur√ºck.
 	 *
 	 * @return Bytestrom
 	 */
@@ -294,16 +300,16 @@ public class TransmitterDataTelegram extends DataTelegram implements DataTelegra
 	}
 
 	/**
-	 * Gibt die Datenfluﬂrichtung dieses Telegramms zur¸ck.
+	 * Gibt die Datenflu√ürichtung dieses Telegramms zur√ºck.
 	 *
-	 * @return Datenfluﬂrichtung
+	 * @return Datenflu√ürichtung
 	 */
 	public final byte getDirection() {
 		return _direction;
 	}
 
 	/**
-	 * Setzt die Datenfluﬂrichtung dieses Telegramms auf den neuen Wert.
+	 * Setzt die Datenflu√ürichtung dieses Telegramms auf den neuen Wert.
 	 *
 	 * @param newDirection neue Richtung
 	 */
@@ -349,12 +355,12 @@ public class TransmitterDataTelegram extends DataTelegram implements DataTelegra
 			str += "Richtung: Vom Sender zum Zentraldatenverteiler.\n";
 		}
 		else {
-			str += "Richtung: Vom Zentraldatenverteiler an die Empf‰nger.\n";
+			str += "Richtung: Vom Zentraldatenverteiler an die Empf√§nger.\n";
 		}
 		str += "Sendedaten Nummer: " + _dataNumber + "\n";
 		str += "Nachgelieferte Daten: " + _delayedDataFlag + "\n";
 		if(_telegramNumber == 0) {
-			str += "Datens‰tzezeit: " + new java.util.Date(_dataTime) + "\n";
+			str += "Datens√§tzezeit: " + new java.util.Date(_dataTime) + "\n";
 			str += "Fehler code: " + _errorFlag + "\n";
 			if(_attributesIndicator != null) {
 				str += "Attributsindikator: \n";
@@ -457,7 +463,7 @@ public class TransmitterDataTelegram extends DataTelegram implements DataTelegra
 			length += _data.length;
 		}
 		if(length != _length) {
-			throw new IOException("Falsche Telegramml‰nge");
+			throw new IOException("Falsche Telegramml√§nge");
 		}
 		priority = TelegramUtility.getPriority(this);
 		checkConsistency();

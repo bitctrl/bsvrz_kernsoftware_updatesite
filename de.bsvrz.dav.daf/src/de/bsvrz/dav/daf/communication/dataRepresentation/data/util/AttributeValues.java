@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.dataRepresentation.data.util;
@@ -41,7 +47,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /**
- * Klasse, die Hilfsmethoden zum Zugriff und zur Konvertierung von Attributwerten zur Verfügung stellt.
+ * Klasse, die Hilfsmethoden zum Zugriff und zur Konvertierung von Attributwerten zur VerfÃ¼gung stellt.
  *
  * @author Roland Schmitz (rs), Kappich Systemberatung
  * @version $Revision: none $, $Date: 01.12.2006 $, $Author: rs $
@@ -128,7 +134,7 @@ public class AttributeValues {
 					millis += number;
 				}
 				else {
-					throw new IllegalArgumentException("Ungültige relative Zeitangabe: " + splitted[i]);
+					throw new IllegalArgumentException("UngÃ¼ltige relative Zeitangabe: " + splitted[i]);
 				}
 			}
 			else {
@@ -158,7 +164,7 @@ public class AttributeValues {
 			}
 		}
 		throw new IllegalArgumentException(
-				"Ungültig Zeitangabe '" + text + "' (Unterstützte Formate: 'dd.MM.yy HH:mm:ss,SSS', 'dd.MM.yy HH:mm:ss', 'dd.MM.yy HH:mm', 'dd.MM.yy')"
+				"UngÃ¼ltig Zeitangabe '" + text + "' (UnterstÃ¼tzte Formate: 'dd.MM.yy HH:mm:ss,SSS', 'dd.MM.yy HH:mm:ss', 'dd.MM.yy HH:mm', 'dd.MM.yy')"
 		);
 	}
 
@@ -238,7 +244,7 @@ public class AttributeValues {
 	private static void checkText(final StringAttributeType stringAttributeType, final String textValue) {
 		final int maxLength = stringAttributeType.getMaxLength();
 		if(maxLength != 0 && maxLength < textValue.length()) {
-			throw new IllegalArgumentException("Attribut enthält mehr als die höchstens erlaubten " + maxLength + " Zeichen");
+			throw new IllegalArgumentException("Attribut enthÃ¤lt mehr als die hÃ¶chstens erlaubten " + maxLength + " Zeichen");
 		}
 	}
 
@@ -277,10 +283,10 @@ public class AttributeValues {
 		int location = Integer.parseInt(locationDistance[0]);
 		int distance = Integer.parseInt(locationDistance[1]);
 		if(location > 65535) {
-			throw new IllegalArgumentException("Wert im Location-Distance Format aber Location zu groß: " + location);
+			throw new IllegalArgumentException("Wert im Location-Distance Format aber Location zu groÃŸ: " + location);
 		}
 		if(distance > 255) {
-			throw new IllegalArgumentException("Wert im Location-Distance Format aber Distance zu groß: " + distance);
+			throw new IllegalArgumentException("Wert im Location-Distance Format aber Distance zu groÃŸ: " + distance);
 		}
 		return (location * 256) + distance;
 	}
@@ -317,8 +323,8 @@ public class AttributeValues {
 		}
 		else {
 			//Folgende Fallunterscheidung ist erforderlich um Rundungsfehler zu vermeiden
-			//Beispielsweise führt Math.round(0.95 / 0.1) zum falschen Ergebnis 9
-			//aber Math.round(0.95 * (1 / 0.1)) führt zum richtigen Ergebnis 10
+			//Beispielsweise fÃ¼hrt Math.round(0.95 / 0.1) zum falschen Ergebnis 9
+			//aber Math.round(0.95 * (1 / 0.1)) fÃ¼hrt zum richtigen Ergebnis 10
 			if(conversionFactor < 1.0) {
 				return Math.round(number.doubleValue() * (1 / conversionFactor));
 			}
@@ -346,11 +352,11 @@ public class AttributeValues {
 		synchronized(_parseNumberFormat) {
 			number = _parseNumberFormat.parse(textValue.replace('.', ','), parsePosition);
 		}
-		if(number == null) throw new IllegalArgumentException("Text " + textValue + " kann nicht in eine Fließkommazahl konvertiert werden");
+		if(number == null) throw new IllegalArgumentException("Text " + textValue + " kann nicht in eine FlieÃŸkommazahl konvertiert werden");
 		double doubleValue = number.doubleValue();
 		if(doubleAttributeType.getAccuracy() == DoubleAttributeType.FLOAT) {
 			if(doubleValue < -(Float.MAX_VALUE) || Float.MAX_VALUE < doubleValue) {
-				throw new IllegalArgumentException("Fließkommazahl " + number + " liegt außerhalb der Grenzen des 32 Bit Single-Formats");
+				throw new IllegalArgumentException("FlieÃŸkommazahl " + number + " liegt auÃŸerhalb der Grenzen des 32 Bit Single-Formats");
 			}
 		}
 		return doubleValue;

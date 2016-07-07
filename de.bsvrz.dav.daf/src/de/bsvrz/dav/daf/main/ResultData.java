@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main;
@@ -33,11 +39,11 @@ import java.util.*;
 
 /**
  * Ergebnisdatensatz zum Zugriff auf ein empfangenes Datentelegramm und zum Erzeugen eines zu versendenden Datentelegramms. Neben den konkreten Attributwerten
- * der jeweiligen Attributgruppe enthält ein Ergebnisdatensatz Headerinformationen, die in jedem Datentelegramm enthalten sind wie z.B Fehlerstatus, laufende
+ * der jeweiligen Attributgruppe enthÃ¤lt ein Ergebnisdatensatz Headerinformationen, die in jedem Datentelegramm enthalten sind wie z.B Fehlerstatus, laufende
  * Datensatznummer, Zeitstempel, Systemobjekt und Datenbeschreibung des Datensatzes sowie eine Kennzeichnung ob der Datensatz aktuell oder nachgeliefert ist.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 8005 $
+ * @version $Revision$
  */
 public class ResultData implements Dataset {
 
@@ -47,7 +53,7 @@ public class ResultData implements Dataset {
 	/** Die Zeit dieses Datensatzes */
 	private long time;
 
-	/** Das System-Objekt zu dem die Daten gehören */
+	/** Das System-Objekt zu dem die Daten gehÃ¶ren */
 	private SystemObject object;
 
 	/** Die 'Beschreibende Information' der zu versendenden Daten. */
@@ -66,13 +72,13 @@ public class ResultData implements Dataset {
 	private byte errorFlag;
 
 	/**
-	 * Erzeugt ein neues Ergebnis mit den übergebenen Eigenschaften.
+	 * Erzeugt ein neues Ergebnis mit den Ã¼bergebenen Eigenschaften.
 	 *
-	 * @param object          Das System-Objekt zu dem die Daten gehören.
+	 * @param object          Das System-Objekt zu dem die Daten gehÃ¶ren.
 	 * @param dataDescription Beschreibende Informationen der zu versendenden Daten
 	 * @param delayedData     <code>true</code>, wenn der im Ergebnis enthaltene Datensatz als nachgeliefert gekennzeichnet werden soll.
 	 * @param time            Zeitstempel dieses Datensatzes in Millisekunden seit 1970.
-	 * @param attributeValues Liste mit den Attributwerten des Ergebnisses oder <code>null</code>, wenn kein Datensatz zur Verfügung gestellt werden kann.
+	 * @param attributeValues Liste mit den Attributwerten des Ergebnisses oder <code>null</code>, wenn kein Datensatz zur VerfÃ¼gung gestellt werden kann.
 	 *
 	 * @deprecated Wurde ersetzt durch {@link #ResultData(SystemObject,DataDescription,long,Data,boolean)} bzw. durch {@link
 	 *             #ResultData(de.bsvrz.dav.daf.main.config.SystemObject,DataDescription,long,Data)}
@@ -106,13 +112,13 @@ public class ResultData implements Dataset {
 	}
 
 	/**
-	 * Erzeugt ein neues Ergebnis mit den übergebenen Eigenschaften. Die konkreten Attributwerte müssen in einem Data-Objekt zur Verfügung gestellt werden. Ein
+	 * Erzeugt ein neues Ergebnis mit den Ã¼bergebenen Eigenschaften. Die konkreten Attributwerte mÃ¼ssen in einem Data-Objekt zur VerfÃ¼gung gestellt werden. Ein
 	 * solches Datensatzobjekt kann mit der Methode {@link de.bsvrz.dav.daf.main.ClientDavInterface#createData} erzeugt werden.
 	 *
-	 * @param object          Das System-Objekt zu dem die Daten gehören.
+	 * @param object          Das System-Objekt zu dem die Daten gehÃ¶ren.
 	 * @param dataDescription Beschreibende Informationen der zu versendenden Daten
 	 * @param time            Zeitstempel dieses Datensatzes in Millisekunden seit 1970.
-	 * @param data            Datensatz mit den Attributwerten des Ergebnisses oder <code>null</code>, wenn kein Datensatz zur Verfügung gestellt werden kann.
+	 * @param data            Datensatz mit den Attributwerten des Ergebnisses oder <code>null</code>, wenn kein Datensatz zur VerfÃ¼gung gestellt werden kann.
 	 * @param delayedData     <code>true</code>, wenn der im Ergebnis enthaltene Datensatz als nachgeliefert gekennzeichnet werden soll.
 	 *
 	 * @see de.bsvrz.dav.daf.main.ClientDavInterface#createData
@@ -132,13 +138,13 @@ public class ResultData implements Dataset {
 	}
 
 	/**
-	 * Erzeugt ein neues Ergebnis mit den übergebenen Eigenschaften. Die konkreten Attributwerte müssen in einem Data-Objekt zur Verfügung gestellt werden. Ein
+	 * Erzeugt ein neues Ergebnis mit den Ã¼bergebenen Eigenschaften. Die konkreten Attributwerte mÃ¼ssen in einem Data-Objekt zur VerfÃ¼gung gestellt werden. Ein
 	 * solches Datensatzobjekt kann mit der Methode {@link de.bsvrz.dav.daf.main.ClientDavInterface#createData} erzeugt werden.
 	 *
-	 * @param object          Das System-Objekt zu dem die Daten gehören.
+	 * @param object          Das System-Objekt zu dem die Daten gehÃ¶ren.
 	 * @param dataDescription Beschreibende Informationen der zu versendenden Daten
 	 * @param time            Zeitstempel dieses Datensatzes in Millisekunden seit 1970.
-	 * @param data            Datensatz mit den Attributwerten des Ergebnisses oder <code>null</code>, wenn kein Datensatz zur Verfügung gestellt werden kann.
+	 * @param data            Datensatz mit den Attributwerten des Ergebnisses oder <code>null</code>, wenn kein Datensatz zur VerfÃ¼gung gestellt werden kann.
 	 * @param delayedData     <code>true</code>, wenn der im Ergebnis enthaltene Datensatz als nachgeliefert gekennzeichnet werden soll.
 	 * @param dataState       Gibt den Zustand des Datensatzes an.
 	 *
@@ -159,29 +165,29 @@ public class ResultData implements Dataset {
 	}
 
 	/**
-	 * Erzeugt ein neues Ergebnis mit den übergebenen Eigenschaften. Die konkreten Attributwerte müssen in einem Data-Objekt zur Verfügung gestellt werden. Ein
+	 * Erzeugt ein neues Ergebnis mit den Ã¼bergebenen Eigenschaften. Die konkreten Attributwerte mÃ¼ssen in einem Data-Objekt zur VerfÃ¼gung gestellt werden. Ein
 	 * solches Datensatzobjekt kann mit der Methode {@link de.bsvrz.dav.daf.main.ClientDavInterface#createData} erzeugt werden. Der erzeugte Datensatz wird nicht als nachgeliefert
 	 * markiert.
 	 *
-	 * @param object          Das System-Objekt zu dem die Daten gehören.
+	 * @param object          Das System-Objekt zu dem die Daten gehÃ¶ren.
 	 * @param dataDescription Beschreibende Informationen der zu versendenden Daten
 	 * @param time            Zeitstempel dieses Datensatzes in Millisekunden seit 1970.
-	 * @param data            Datensatz mit den Attributwerten des Ergebnisses oder <code>null</code>, wenn kein Datensatz zur Verfügung gestellt werden kann.
+	 * @param data            Datensatz mit den Attributwerten des Ergebnisses oder <code>null</code>, wenn kein Datensatz zur VerfÃ¼gung gestellt werden kann.
 	 */
 	public ResultData(SystemObject object, DataDescription dataDescription, long time, Data data) {
 		this(object, dataDescription, time, data, false);
 	}
 
 	/**
-	 * Erzeugt ein neues Ergebnis mit den übergebenen Eigenschaften.
+	 * Erzeugt ein neues Ergebnis mit den Ã¼bergebenen Eigenschaften.
 	 *
-	 * @param object          Das System-Objekt zu dem die Daten gehören.
+	 * @param object          Das System-Objekt zu dem die Daten gehÃ¶ren.
 	 * @param dataDescription Beschreibende Informationen der zu versendenden Daten
 	 * @param delayedData     <code>true</code>, wenn der im Ergebnis enthaltene Datensatz als nachgeliefert gekennzeichnet werden soll.
 	 * @param dataIndex       die laufende Nummer des Datensatzes
 	 * @param time            Zeitstempel dieses Datensatzes in Millisekunden seit 1970.
 	 * @param errorFlag       Fehlerkennung der Anwendungsdaten
-	 * @param data            Datensatz mit den Attributwerten des Ergebnisses oder <code>null</code>, wenn kein Datensatz zur Verfügung gestellt werden kann.
+	 * @param data            Datensatz mit den Attributwerten des Ergebnisses oder <code>null</code>, wenn kein Datensatz zur VerfÃ¼gung gestellt werden kann.
 	 */
 	public ResultData(
 			SystemObject object,
@@ -206,7 +212,7 @@ public class ResultData implements Dataset {
 	}
 
 	/**
-	 * Bestimmt das System-Objekt zu dem die im Ergebnis enthaltenen Daten gehören.
+	 * Bestimmt das System-Objekt zu dem die im Ergebnis enthaltenen Daten gehÃ¶ren.
 	 *
 	 * @return System-Objekt die enthaltenen Daten
 	 */
@@ -314,9 +320,9 @@ public class ResultData implements Dataset {
 	}
 
 	/**
-	 * Bestimmt ob keine Daten enthalten sind, weil die Quelle nicht verfügbar ist.
+	 * Bestimmt ob keine Daten enthalten sind, weil die Quelle nicht verfÃ¼gbar ist.
 	 *
-	 * @return <code>true</code> wenn keine Daten vorliegen, weil die Quelle nicht verfügbar ist, sonst <code>false</code>
+	 * @return <code>true</code> wenn keine Daten vorliegen, weil die Quelle nicht verfÃ¼gbar ist, sonst <code>false</code>
 	 */
 	public final boolean isNoSourceAvailable() {
 		return errorFlag == 2;
@@ -332,7 +338,7 @@ public class ResultData implements Dataset {
 	}
 
 	/**
-	 * Bestimmt ob keine Daten enthalten sind, weil die Anmeldung der Daten im Konflikt mit anderen Anmeldungen steht (z.B. mehrere Senken für die gleichen
+	 * Bestimmt ob keine Daten enthalten sind, weil die Anmeldung der Daten im Konflikt mit anderen Anmeldungen steht (z.B. mehrere Senken fÃ¼r die gleichen
 	 * Daten).
 	 *
 	 * @return <code>true</code> wenn keine Daten vorliegen, weil die Anmeldung im Konflikt mit anderen Anmeldungen steht, sonst <code>false</code>
@@ -342,7 +348,7 @@ public class ResultData implements Dataset {
 	}
 
 	/**
-	 * Gibt die Fehlerkennung der Anwendungsdaten zurück.
+	 * Gibt die Fehlerkennung der Anwendungsdaten zurÃ¼ck.
 	 *
 	 * @return <ul> <li>0: Daten vorhanden (Kein Fehler).</li> <li>1: Quelle vorhanden aber Daten (noch) nicht lieferbar.</li> <li>2: Quelle nicht vorhanden.</li>
 	 *         <li>3: Keine Zugriffsrechte.</li> <li>8: Keine eindeutige Quelle vorhanden.</li> </ul>
@@ -361,7 +367,7 @@ public class ResultData implements Dataset {
 	}
 
 	/**
-	 * Liefert die Kodierung des Datensatztyps zurück. Ein dem Datensatztyp entsprechendes Objekt kann z.B. mit der Methode {@link
+	 * Liefert die Kodierung des Datensatztyps zurÃ¼ck. Ein dem Datensatztyp entsprechendes Objekt kann z.B. mit der Methode {@link
 	 * de.bsvrz.dav.daf.main.DataState#getInstance(int)} erzeugt werden.
 	 *
 	 * @return Kodierung des Datensatztyps
@@ -372,7 +378,7 @@ public class ResultData implements Dataset {
 		return errorFlag + 1;
 	}
 
-	/** Diese Methode gibt eine String-Repräsentation in die Standardausgabe aus. */
+	/** Diese Methode gibt eine String-ReprÃ¤sentation in die Standardausgabe aus. */
 	public final void debug() {
 		System.out.println("Object: " + object);
 		System.out.println("AttributeGroup: " + dataDescription.getAttributeGroup());
@@ -396,7 +402,7 @@ public class ResultData implements Dataset {
 	}
 
 	/**
-	 * Liefert eine textuelle Beschreibung dieses Objekts zurück. Das genaue Format ist nicht festgelegt und kann sich ändern.
+	 * Liefert eine textuelle Beschreibung dieses Objekts zurÃ¼ck. Das genaue Format ist nicht festgelegt und kann sich Ã¤ndern.
 	 *
 	 * @return Beschreibung dieses Objekts.
 	 */

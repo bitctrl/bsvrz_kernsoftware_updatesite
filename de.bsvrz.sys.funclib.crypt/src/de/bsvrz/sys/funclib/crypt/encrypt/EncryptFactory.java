@@ -6,7 +6,7 @@
  * 
  * de.bsvrz.sys.funclib.crypt is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.crypt is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.crypt; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.crypt; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.crypt.encrypt;
@@ -26,17 +32,17 @@ import de.bsvrz.sys.funclib.crypt.EncryptDecryptProcedure;
 import de.bsvrz.sys.funclib.crypt.hmacmd5.HmacMD5;
 
 /**
- * Diese Klasse stellt Objekt zur Verfügung, die Texte verschlüsseln können.
+ * Diese Klasse stellt Objekt zur VerfÃ¼gung, die Texte verschlÃ¼sseln kÃ¶nnen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5010 $
+ * @version $Revision$
  */
 public class EncryptFactory {
 	/**
-	 * Erzeugt ein Objekt, mit dem Strings verschlüsselt werden können.
+	 * Erzeugt ein Objekt, mit dem Strings verschlÃ¼sselt werden kÃ¶nnen.
 	 *
-	 * @param encryptPractice Verfahren, mit dem die Daten verschlüsselt werden sollen
-	 * @return Objekt zum verschlüsseln von Strings
+	 * @param encryptPractice Verfahren, mit dem die Daten verschlÃ¼sselt werden sollen
+	 * @return Objekt zum verschlÃ¼sseln von Strings
 	 * @throws IllegalArgumentException Das angegebene Verfahren ist unbekannt
 	 */
 	public static final Encrypt getEncryptInstance(final EncryptDecryptProcedure encryptPractice) {
@@ -45,7 +51,7 @@ public class EncryptFactory {
 		} else if (encryptPractice == EncryptDecryptProcedure.HmacMD5) {
 			return new HmacMD5();
 		} else {
-			throw new IllegalArgumentException("Unbekanntes Entschlüsslungsverfahren " + encryptPractice.getName());
+			throw new IllegalArgumentException("Unbekanntes EntschlÃ¼sslungsverfahren " + encryptPractice.getName());
 		}
 	}
 }

@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel.telegrams;
@@ -28,14 +34,14 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Signalisiert die Bereitschaft, sich gegenüber seinem Kommunikationspartner zu authentifizieren. Mit diesem Systemtelegramm leitet ein Datenverteiler seine
- * Authentifizierung gegenüber seinem Kommunikationspartner ein. Dabei überträgt er seine ID und seinen Namen. Dieses Systemtelegramm wird zunächst von dem
- * Datenverteiler gesendet, der die Verbindung zu einem anderen Datenverteiler aufbauen möchte. Wenn er sich erfolgreich authentifizieren konnte, wird die
- * Authentifizierung in der anderen Richtung durchgeführt. Dieses Telegramm ist die Aufforderung an den Kommunikationspartner eine
- * Authentifizierungsaufforderung mit einem neuen zu verschlüsselnden Zufallstext zu senden.
+ * Signalisiert die Bereitschaft, sich gegenÃ¼ber seinem Kommunikationspartner zu authentifizieren. Mit diesem Systemtelegramm leitet ein Datenverteiler seine
+ * Authentifizierung gegenÃ¼ber seinem Kommunikationspartner ein. Dabei Ã¼bertrÃ¤gt er seine ID und seinen Namen. Dieses Systemtelegramm wird zunÃ¤chst von dem
+ * Datenverteiler gesendet, der die Verbindung zu einem anderen Datenverteiler aufbauen mÃ¶chte. Wenn er sich erfolgreich authentifizieren konnte, wird die
+ * Authentifizierung in der anderen Richtung durchgefÃ¼hrt. Dieses Telegramm ist die Aufforderung an den Kommunikationspartner eine
+ * Authentifizierungsaufforderung mit einem neuen zu verschlÃ¼sselnden Zufallstext zu senden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5059 $
+ * @version $Revision$
  */
 public class TransmitterAuthentificationTextRequest extends DataTelegram {
 
@@ -47,7 +53,7 @@ public class TransmitterAuthentificationTextRequest extends DataTelegram {
 		priority = CommunicationConstant.SYSTEM_TELEGRAM_PRIORITY;
 	}
 
-	/** @param transmitterId Identifikation des Datenverteilers, der sich authentifizieren möchte */
+	/** @param transmitterId Identifikation des Datenverteilers, der sich authentifizieren mÃ¶chte */
 	public TransmitterAuthentificationTextRequest(long transmitterId) {
 		type = TRANSMITTER_AUTHENTIFICATION_TEXT_REQUEST_TYPE;
 		priority = CommunicationConstant.SYSTEM_TELEGRAM_PRIORITY;
@@ -80,7 +86,7 @@ public class TransmitterAuthentificationTextRequest extends DataTelegram {
 		_transmitterId = in.readLong();
 		length = 8;
 		if(length != _length) {
-			throw new IOException("Falsche Telegrammlänge");
+			throw new IOException("Falsche TelegrammlÃ¤nge");
 		}
 	}
 }

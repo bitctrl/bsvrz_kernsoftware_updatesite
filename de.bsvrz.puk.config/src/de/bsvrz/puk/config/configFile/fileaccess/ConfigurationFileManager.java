@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.fileaccess;
@@ -28,27 +34,27 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Dieses Interface stellt eine Verwaltung für alle Konfigurationsdateien dar und ermöglicht den Zugriff auf diese. Die beschriebenen get-Methoden beziehen sich
+ * Dieses Interface stellt eine Verwaltung fÃ¼r alle Konfigurationsdateien dar und ermÃ¶glicht den Zugriff auf diese. Die beschriebenen get-Methoden beziehen sich
  * immer auf alle Konfigurationsdateien, die sich im Zugriff der Verwaltung befinden. Aus diesem Grund speichert die Verwaltung die aktiven Objekte zentral in
- * einer Datenstruktur und deligiert nötige Zugriffe auf die Datei an das jeweilige ConfigurationAreaFile-Objekt.
+ * einer Datenstruktur und deligiert nÃ¶tige Zugriffe auf die Datei an das jeweilige ConfigurationAreaFile-Objekt.
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Achim Wullenkord (AW)
  * @author Stephan Homeyer (sth)
- * @version $Revision: 12887 $ / $Date: 2014-10-10 13:15:15 +0200 (Fri, 10 Oct 2014) $ / ($Author: jh $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public interface ConfigurationFileManager {
 
 	/**
-	 * Diese Methode erstellt zu einem neuen Konfigurationsbereich eine Konfigurationsdatei und fügt den Bereich mit {@link #addAreaFile} den bestehenden Bereichen
-	 * hinzu. Der neue Konfigurationsbereich erhält den Zustand inaktiv. Soll er von der Konfiguration genutzt werden können, so muss er aktiviert werden.
+	 * Diese Methode erstellt zu einem neuen Konfigurationsbereich eine Konfigurationsdatei und fÃ¼gt den Bereich mit {@link #addAreaFile} den bestehenden Bereichen
+	 * hinzu. Der neue Konfigurationsbereich erhÃ¤lt den Zustand inaktiv. Soll er von der Konfiguration genutzt werden kÃ¶nnen, so muss er aktiviert werden.
 	 *
 	 * @param configurationAreaPid die Pid des neuen Konfigurationsbereichs
 	 * @param configurationAreaDir das Verzeichnis, in dem die Konfigurationsdatei angelegt werden soll
 	 *
 	 * @return der neue Konfigurationsbereich
 	 *
-	 * @throws IllegalArgumentException Falls die Argumente ungültig sind.
+	 * @throws IllegalArgumentException Falls die Argumente ungÃ¼ltig sind.
 	 * @throws IOException              Falls Fehler im Zusammenhang mit der Datei des Konfigurationsbereichs auftreten.
 	 * @throws NoSuchVersionException   TBD
 	 */
@@ -56,7 +62,7 @@ public interface ConfigurationFileManager {
 			throws IllegalArgumentException, IOException, NoSuchVersionException;
 
 	/**
-	 * Der aktuellen Konfiguration wird der angegebene Konfigurationsbereich hinzugefügt. Gibt es bereits einen Konfigurationsbereich mit der angegebenen Pid, wird
+	 * Der aktuellen Konfiguration wird der angegebene Konfigurationsbereich hinzugefÃ¼gt. Gibt es bereits einen Konfigurationsbereich mit der angegebenen Pid, wird
 	 * eine Fehlermeldung erzeugt.
 	 *
 	 * @param configurationAreaPid die Pid des Konfigurationsbereichs
@@ -65,10 +71,10 @@ public interface ConfigurationFileManager {
 	 * @param localVersionTimes    Diese Liste speichert zu jeder Version, die jemals aktiviert wurde, den Zeitpunkt an dem die Version aktiviert wurde. Die
 	 *                             Zeitpunkte beziehen sich auf die Zeit, an dem sie auf der Konfiguration, die diese Methode aufruft, aktiviert wurden.
 	 *
-	 * @return der hinzugefügte Konfigurationsbereich
+	 * @return der hinzugefÃ¼gte Konfigurationsbereich
 	 *
-	 * @throws IllegalArgumentException Falls der Konfigurationsbereich mit der Pid bereits zur Konfiguration hinzugefügt wurde.
-	 * @throws IllegalStateException    Die Datei, die den Konfigurationsbereich enthält, existiert nicht.
+	 * @throws IllegalArgumentException Falls der Konfigurationsbereich mit der Pid bereits zur Konfiguration hinzugefÃ¼gt wurde.
+	 * @throws IllegalStateException    Die Datei, die den Konfigurationsbereich enthÃ¤lt, existiert nicht.
 	 * @throws IOException              TBD
 	 * @throws NoSuchVersionException   TBD
 	 */
@@ -76,16 +82,16 @@ public interface ConfigurationFileManager {
 			throws IllegalArgumentException, IOException, NoSuchVersionException;
 
 	/**
-	 * Diese Methode gibt ein Objekt zurück, das den Konfigurationsbereich darstellt.
+	 * Diese Methode gibt ein Objekt zurÃ¼ck, das den Konfigurationsbereich darstellt.
 	 *
 	 * @param configurationAreaPid Pid des Konfigurationsbereichs
 	 *
-	 * @return Objekt, mit dem auf den Konfigurationsbereich zugegriffen werden kann. Ist kein Objekt vorhanden, wird <code>null</code> zurückgegeben.
+	 * @return Objekt, mit dem auf den Konfigurationsbereich zugegriffen werden kann. Ist kein Objekt vorhanden, wird <code>null</code> zurÃ¼ckgegeben.
 	 */
 	ConfigurationAreaFile getAreaFile(String configurationAreaPid);
 
 	/**
-	 * Gibt ein Objekt zurück, das über die Id identifiziert wird. Es werden alle Konfigurationsbereiche betrachtet, die mit {@link #addAreaFile} hinzugefügt
+	 * Gibt ein Objekt zurÃ¼ck, das Ã¼ber die Id identifiziert wird. Es werden alle Konfigurationsbereiche betrachtet, die mit {@link #addAreaFile} hinzugefÃ¼gt
 	 * wurden.
 	 *
 	 * @param id Id des Objekts
@@ -95,61 +101,61 @@ public interface ConfigurationFileManager {
 	SystemObjectInformationInterface getObject(long id);
 
 	/**
-	 * Diese Methode gibt ein Objekt zurück, das derzeit in einem Konfigurationsbereich aktiv ist. Es werden alle Konfigurationsbreiche geprüft, die mit {@link
-	 * #addAreaFile} hinzugefügt wurden. Objekte, die nur in Simulationen gültig sind werden hier nicht zurückgegeben,
+	 * Diese Methode gibt ein Objekt zurÃ¼ck, das derzeit in einem Konfigurationsbereich aktiv ist. Es werden alle Konfigurationsbreiche geprÃ¼ft, die mit {@link
+	 * #addAreaFile} hinzugefÃ¼gt wurden. Objekte, die nur in Simulationen gÃ¼ltig sind werden hier nicht zurÃ¼ckgegeben,
 	 * stattdessen ist {@link #getSimulationObject(String, short)} zu benutzen.
 	 *
 	 * @param pid Pid des Objekts, das gesucht werden soll
 	 *
-	 * @return Objekt, dessen Pid übergeben wurde oder <code>null</code> falls kein Objekt existiert
+	 * @return Objekt, dessen Pid Ã¼bergeben wurde oder <code>null</code> falls kein Objekt existiert
 	 */
 	SystemObjectInformationInterface getActiveObject(String pid);
 
 	/**
-	 * Gibt ein simulationsspezifisches Objekt anhand der Pid zurück. Es werden nur Objekte zurückgegeben, die in einer Simulation erzeugt
-	 * wurden und damit auch nur in dieser Simulation gültig sind.
+	 * Gibt ein simulationsspezifisches Objekt anhand der Pid zurÃ¼ck. Es werden nur Objekte zurÃ¼ckgegeben, die in einer Simulation erzeugt
+	 * wurden und damit auch nur in dieser Simulation gÃ¼ltig sind.
 	 * @param pid Pid
 	 * @param simulationVariant Simulationsvariante
-	 * @return Objekt, dessen Pid übergeben wurde oder <code>null</code> falls kein Objekt existiert
+	 * @return Objekt, dessen Pid Ã¼bergeben wurde oder <code>null</code> falls kein Objekt existiert
 	 */
 	SystemObjectInformationInterface getSimulationObject(String pid, short simulationVariant);
 
 	/**
-	 * Diese Methode gibt alle Objekte zurück, die derzeit in einem Konfigurationsbereich weder aktiv noch als ungültig markiert sind. Es werden alle
-	 * Konfigurationsbereiche geprüft, die mit {@link #addAreaFile} hinzugefügt wurden.
+	 * Diese Methode gibt alle Objekte zurÃ¼ck, die derzeit in einem Konfigurationsbereich weder aktiv noch als ungÃ¼ltig markiert sind. Es werden alle
+	 * Konfigurationsbereiche geprÃ¼ft, die mit {@link #addAreaFile} hinzugefÃ¼gt wurden.
 	 *
 	 * @param pid pid der gesuchten Objekte
 	 *
-	 * @return Alle Objekte, deren Pid mit der übergebenen Pid übereinstimmt. Konnte kein Objekt gefunden werden, wird eine leeres Array zurückgegeben
+	 * @return Alle Objekte, deren Pid mit der Ã¼bergebenen Pid Ã¼bereinstimmt. Konnte kein Objekt gefunden werden, wird eine leeres Array zurÃ¼ckgegeben
 	 */
 	SystemObjectInformationInterface[] getNewObjects(String pid) throws IllegalArgumentException;
 
 	/**
-	 * Diese Methode gibt alle Konfigurationsbereiche zurück, die mit {@link #addAreaFile} eingefügt wurden.
+	 * Diese Methode gibt alle Konfigurationsbereiche zurÃ¼ck, die mit {@link #addAreaFile} eingefÃ¼gt wurden.
 	 *
 	 * @return s.o.
 	 */
 	ConfigurationAreaFile[] getConfigurationAreas();
 
 	/**
-	 * Diese Methode gibt alle dynamischen Objekte zurück, die zu einer Simulationsvariante gehören. Der Zustand der dynamischen Objekte (gültig/ungültig) wird
-	 * dabei nicht berücksichtigt. Die Simulationsvariante muss dabei größer 0 sein.
+	 * Diese Methode gibt alle dynamischen Objekte zurÃ¼ck, die zu einer Simulationsvariante gehÃ¶ren. Der Zustand der dynamischen Objekte (gÃ¼ltig/ungÃ¼ltig) wird
+	 * dabei nicht berÃ¼cksichtigt. Die Simulationsvariante muss dabei grÃ¶ÃŸer 0 sein.
 	 *
-	 * @param simulationVariant Simulationsvariante, für die alle dynamischen Objekte zurückgegeben werden sollen. (Wertebereich 1...999)
+	 * @param simulationVariant Simulationsvariante, fÃ¼r die alle dynamischen Objekte zurÃ¼ckgegeben werden sollen. (Wertebereich 1...999)
 	 *
-	 * @return Liste mit dynamischen Objekten. Sind keine Objekte vorhande, wird eine leere Liste zurückgegeben.
+	 * @return Liste mit dynamischen Objekten. Sind keine Objekte vorhande, wird eine leere Liste zurÃ¼ckgegeben.
 	 *
 	 * @throws IllegalStateException Der Wert der Simulationsvariante ist nicht 1...999
 	 */
 	List<DynamicObjectInfo> getObjects(short simulationVariant) throws IllegalArgumentException;
 
 	/**
-	 * Diese Methode sichert alle Konfigurationsbereiche, die mit {@link #addAreaFile} übergeben wurden. In den einzelnen Konfigurationsbereichen werden alle
-	 * Änderungen, die an Objekten eines Konfigurationsbereichs vorgenommen wurden, persistent in die dafür vorgesehene Datei gespeichert.
+	 * Diese Methode sichert alle Konfigurationsbereiche, die mit {@link #addAreaFile} Ã¼bergeben wurden. In den einzelnen Konfigurationsbereichen werden alle
+	 * Ã„nderungen, die an Objekten eines Konfigurationsbereichs vorgenommen wurden, persistent in die dafÃ¼r vorgesehene Datei gespeichert.
 	 *
 	 * @throws IOException Es ist beim speichern der Versorgungsdateien zu einem Fehler gekommen. Es wurde trotz des Fehlers bei jeder Datei {@link
 	 *                     ConfigurationAreaFile#flush()} aufgerufen. Die zuletzt aufgetretene IOException
-	 *                     wird zurückgegeben.
+	 *                     wird zurÃ¼ckgegeben.
 	 */
 	void saveConfigurationAreaFiles() throws IOException;
 

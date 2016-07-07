@@ -3,13 +3,13 @@
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -18,8 +18,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.dataview;
@@ -44,14 +50,14 @@ import java.util.*;
 
 
 /**
- * Dieses Panel stellt die Datensätze, die das {@link DataViewModel Model} übergibt, in einem 
+ * Dieses Panel stellt die DatensÃ¤tze, die das {@link DataViewModel Model} Ã¼bergibt, in einem 
  * ScrollPane dar. Mit dem Konstruktor wird ein baumartiger Header erstellt, dessen Spaltenbreiten 
- * durch Schieberegler verändert werden kann. Damit dies funktioniert, muss nachdem der Header 
+ * durch Schieberegler verÃ¤ndert werden kann. Damit dies funktioniert, muss nachdem der Header 
  * erzeugt und dieser angezeigt (z.B. durch validate() oder durch Frame.setVisible()) wird 
  * mit der Methode {@link #initHeaderSize()} initialisiert werden.
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 11925 $
+ * @version $Revision$
  */
 
 @SuppressWarnings("serial")
@@ -67,7 +73,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	/** speichert die Attributgruppe */
 	private final AttributeGroup _attributeGroup;
 	
-	/** speichert alle Datensätze, die von der Applikation gesendet wurden */
+	/** speichert alle DatensÃ¤tze, die von der Applikation gesendet wurden */
 	private final List<DataTableObjectRenderer> _dtoRenderers = new ArrayList<DataTableObjectRenderer>();
 	
 	/** speichert das dargestellte ScrollPane */
@@ -82,16 +88,16 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	/** speichert den vertikalen Scrollbalken */
 	private final JScrollBar _verticalScrollBar = _scrollPane.getVerticalScrollBar();
 	
-	/** der obere Platzhalter für den Zeilenheader; wird nur für die Höhenarithmetik benötigt */
+	/** der obere Platzhalter fÃ¼r den Zeilenheader; wird nur fÃ¼r die HÃ¶henarithmetik benÃ¶tigt */
 	private final JPanel _emptyDummyUpperRowHeaderPanel = new JPanel();
 	
-	/** der untere Platzhalter des Zeilenheaders; wird nur für die Höhenarithmetik benötigt */
+	/** der untere Platzhalter des Zeilenheaders; wird nur fÃ¼r die HÃ¶henarithmetik benÃ¶tigt */
 	private final JPanel _emptyDummyLowerRowHeaderPanel = new JPanel();
 	
-	/** der obere Platzhalter für den Viewport; wird nur für die Höhenarithmetik benötigt */
+	/** der obere Platzhalter fÃ¼r den Viewport; wird nur fÃ¼r die HÃ¶henarithmetik benÃ¶tigt */
 	private final JPanel _emptyDummyUpperViewportPanel = new JPanel();
 	
-	/** der untere Platzhalter des Viewports; wird nur für die Höhenarithmetik benötigt */
+	/** der untere Platzhalter des Viewports; wird nur fÃ¼r die HÃ¶henarithmetik benÃ¶tigt */
 	private final JPanel _lowerViewportPanel = new JPanel();
 	
 	/** der sichtbare Teil des Zeilenheaders */
@@ -106,10 +112,10 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	/** der Index des letzten Datensatzes, der angezeigt wird */
 	private int _lastRow = 0;
 	
-	/** die sichtbare Höhe des Viewports */
+	/** die sichtbare HÃ¶he des Viewports */
 	private int _screenHeight;
 	
-	/** speichert das Zeitformat für die Spalte 'Zeit' */
+	/** speichert das Zeitformat fÃ¼r die Spalte 'Zeit' */
 	private final String TIME_FORMAT = "dd.MM.yyyy HH:mm:ss,SSS";
 	
 	/** die Breite des Zeilenheaders */
@@ -121,8 +127,8 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	/* ########### Konstruktor und Aufbau des Panels ########### */
 	
 	/**
-	 * Konstruktor. Benötigt eine Instanz des {@link DataViewModel}. Das Model gibt Benachrichtigungen, 
-	 * falls sich an den anzuzeigenden Daten etwas ändert.
+	 * Konstruktor. BenÃ¶tigt eine Instanz des {@link DataViewModel}. Das Model gibt Benachrichtigungen, 
+	 * falls sich an den anzuzeigenden Daten etwas Ã¤ndert.
 	 * 
 	 * @param model
 	 *            das DataViewModel
@@ -172,7 +178,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	 * Methode zur Ermittlung des Datensatzindex
 	 * 
 	 * @param key
-	 *            Schlüssel, wessen Datensatzindex gesucht wird
+	 *            SchlÃ¼ssel, wessen Datensatzindex gesucht wird
 	 * @return Datensatzindex
 	 */
 	public long getDataindex(String key) {
@@ -193,8 +199,8 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	 * Methode zur Ermittlung von Komponenten
 	 * 
 	 * @param keys
-	 *            die Schlüssel
-	 * @return die zugehörige Komponenten
+	 *            die SchlÃ¼ssel
+	 * @return die zugehÃ¶rige Komponenten
 	 */
 	public Map<JComponent, RowKey> findRowHeaderRows( final Set<RowKey> keys) {
 		Map<JComponent, RowKey> rowHeaderKeyMap = new HashMap<JComponent, RowKey>();
@@ -211,8 +217,8 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	 * Methode zur Ermittlung von RowElements
 	 * 
 	 * @param keys
-	 *            die Schlüssel
-	 * @return die zugehörige RowElements
+	 *            die SchlÃ¼ssel
+	 * @return die zugehÃ¶rige RowElements
 	 */
 	public Map<RowElement,CellKey> findRowElements( final Set<CellKey> keys) {
 		Map<RowElement,CellKey> rowElementKeyMap = new HashMap<RowElement, CellKey>();
@@ -226,8 +232,8 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	 * Methode zur Ermittlung von RowPanels
 	 * 
 	 * @param keys
-	 *            die Schlüssel
-	 * @return die zugehörige RowPanels
+	 *            die SchlÃ¼ssel
+	 * @return die zugehÃ¶rige RowPanels
 	 */
 	public Map<RowPanel,CellKey> findRowPanels( final Set<CellKey> keys) {
 		Map<RowPanel,CellKey> rowPanelKeyMap = new HashMap<RowPanel, CellKey>();
@@ -270,7 +276,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 		}
 	}
 	
-	/** Erstellt die Elemente für das Panel und ordnet diese an. */
+	/** Erstellt die Elemente fÃ¼r das Panel und ordnet diese an. */
 	private void createAndShowGui() {
 		setScrollPane();
 		
@@ -297,7 +303,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 		
 		// Aufbau des vertikalen ScrollBars
 		_scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		_verticalScrollBar.setUnitIncrement(20); // eine Zeile hat momentan 20 Pixel in der Höhe!
+		_verticalScrollBar.setUnitIncrement(20); // eine Zeile hat momentan 20 Pixel in der HÃ¶he!
 		_verticalScrollBar.setBlockIncrement(20); // wie oben
 		_verticalScrollBar.addAdjustmentListener(new VerticalScrollBarAdjustmentListener());
 		
@@ -308,7 +314,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	}
 	
 	/**
-	 * Erstellt den vollständigen Spaltenheader für das ScrollPane.
+	 * Erstellt den vollstÃ¤ndigen Spaltenheader fÃ¼r das ScrollPane.
 	 * 
 	 * @return Spaltenheader
 	 */
@@ -321,7 +327,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	}
 	
 	/**
-	 * Erstellt den initialen Zeilenheader für das ScrollPane.
+	 * Erstellt den initialen Zeilenheader fÃ¼r das ScrollPane.
 	 * 
 	 * @return Zeilenheader
 	 */
@@ -340,7 +346,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	}
 	
 	/**
-	 * Erstellt die Komponente für die obere linke Ecke im ScrollPane. Sie zeigt die Zeit und das Objekt an.
+	 * Erstellt die Komponente fÃ¼r die obere linke Ecke im ScrollPane. Sie zeigt die Zeit und das Objekt an.
 	 * 
 	 * @return die Komponente
 	 */
@@ -355,7 +361,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 		objectLabel.setBorder(new EtchedBorder());
 		objectLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		// passt die Breite dieser Headerspalte mit der Breite bei den Datensätzen?
+		// passt die Breite dieser Headerspalte mit der Breite bei den DatensÃ¤tzen?
 		JPanel dataKindPanel = new JPanel(new BorderLayout());
 		dataKindPanel.add(dataKindLabel, BorderLayout.CENTER);
 		
@@ -371,7 +377,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	}
 	
 	/**
-	 * Erstellt den initialen Viewport für das Scrollpane
+	 * Erstellt den initialen Viewport fÃ¼r das Scrollpane
 	 * 
 	 * @return Viewport des Scrollpanes
 	 */
@@ -389,10 +395,10 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 		return westViewport;
 	}
 	
-	/* ################ Hilfsmethoden für das DataViewPanel ################### */
+	/* ################ Hilfsmethoden fÃ¼r das DataViewPanel ################### */
 	
 	/**
-	 * Gibt den SelectionManager zurück.
+	 * Gibt den SelectionManager zurÃ¼ck.
 	 * 
 	 * @return den SelectionManager
 	 */
@@ -401,7 +407,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	}
 	
 	/**
-	 * Gibt den Spaltenheader zurück.
+	 * Gibt den Spaltenheader zurÃ¼ck.
 	 * 
 	 * @return den Spaltenheader
 	 */
@@ -410,8 +416,8 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	}
 	
 	/**
-	 * Die Größe des Headers wird initial gesetzt. Dies ist notwendig, damit die Headergröße durch die Maus 
-	 * verändert werden kann. Diese Methode muss nach dem Anzeigen der Tabelle, allerdings bevor die ersten 
+	 * Die GrÃ¶ÃŸe des Headers wird initial gesetzt. Dies ist notwendig, damit die HeadergrÃ¶ÃŸe durch die Maus 
+	 * verÃ¤ndert werden kann. Diese Methode muss nach dem Anzeigen der Tabelle, allerdings bevor die ersten 
 	 * Daten kommen, aufgerufen werden.
 	 * 
 	 * @see #setHeaderSizes(HeaderGrid,int)
@@ -419,7 +425,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	public void initHeaderSize() {
 		HeaderGrid.HeaderElement element = _headerGrid.getHeaderElement();
 		int elementWidth = element.getSize().width;
-		int viewportWidth = _scrollPane.getHorizontalScrollBar().getVisibleAmount() - _rowHeaderWidth; // 350 für den RowHeader
+		int viewportWidth = _scrollPane.getHorizontalScrollBar().getVisibleAmount() - _rowHeaderWidth; // 350 fÃ¼r den RowHeader
 		int percent;
 		if(elementWidth == 0 || elementWidth >= viewportWidth) {
 			percent = 0;
@@ -437,7 +443,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	}
 	
 	/**
-	 * Initialisiert die Größen aller Elemente des Headers rekursiv.
+	 * Initialisiert die GrÃ¶ÃŸen aller Elemente des Headers rekursiv.
 	 * 
 	 * @param headerGrid
 	 *            Spaltenheader
@@ -446,7 +452,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	 */
 	private void setHeaderSizes(HeaderGrid headerGrid, int percent) {
 		HeaderGrid.HeaderElement element = headerGrid.getHeaderElement();
-		element.setMinimumSize(new Dimension(0, 0)); // wird vom GridBagLayout nicht benötigt
+		element.setMinimumSize(new Dimension(0, 0)); // wird vom GridBagLayout nicht benÃ¶tigt
 		element.setMaximumSize(new Dimension(0, 0)); // wie setMinimumSize()
 		Dimension size = element.getSize();
 		headerGrid.getSplitter().setPreferredSize(new Dimension(5, size.height));
@@ -484,7 +490,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	 *            Objekt vom Typ <code>HeaderGrid</code>, von dem die Nachfolger bestimmt werden sollen.
 	 */
 	private void setHeaderSuccessors(HeaderGrid attributeList) {
-		/* Nachfolger bestimmen und anfügen */
+		/* Nachfolger bestimmen und anfÃ¼gen */
 		Object node = attributeList.getHeaderElement().getObject();
 		if(node instanceof AttributeGroup) { // es handelt sich um die Attributgruppe
 			AttributeGroup atg = (AttributeGroup)node;
@@ -511,17 +517,17 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	}
 	
 	/**
-	 * Hoffentlich bald überflüssig. Spätestens, wenn die Methode {@link #initHeaderSize()} 
+	 * Hoffentlich bald Ã¼berflÃ¼ssig. SpÃ¤testens, wenn die Methode {@link #initHeaderSize()} 
 	 * von der Applikation aufgerufen wird.
 	 * 
-	 * @return gibt <code>true</code> oder <code>false</code> zurück
+	 * @return gibt <code>true</code> oder <code>false</code> zurÃ¼ck
 	 */
 	public boolean getFirstRun() {
 		return _firstRun;
 	}
 	
 	/**
-	 * Kann auf false gesetzt werden, falls die Größen des Spaltenheaders initialisiert worden sind.
+	 * Kann auf false gesetzt werden, falls die GrÃ¶ÃŸen des Spaltenheaders initialisiert worden sind.
 	 * 
 	 * @param firstRun
 	 *            <code>true</code> ist Default-Einstellung
@@ -533,14 +539,14 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	/* ################### Methoden des DataViewListeners ############ */
 	
 	/**
-	 * Fügt eine beliebige Anzahl neuer Datensätze an die bestehenden Datensätze hinten an.
+	 * FÃ¼gt eine beliebige Anzahl neuer DatensÃ¤tze an die bestehenden DatensÃ¤tze hinten an.
 	 * 
-	 * Achtung: es ist nicht geklärt, ob diese Methode auch dafür sorgt, dass die Zeilen
-	 * der Datensätze sichtbar werden, falls sie im sichtbaren Bereich sind, oder ob dazu 
+	 * Achtung: es ist nicht geklÃ¤rt, ob diese Methode auch dafÃ¼r sorgt, dass die Zeilen
+	 * der DatensÃ¤tze sichtbar werden, falls sie im sichtbaren Bereich sind, oder ob dazu 
 	 * noch der AdjustmentListener getriggert werden muss. S. addDataTableObject(..).
 	 * 
 	 * @param dataTableObjects
-	 *            Liste neuer Datensätze
+	 *            Liste neuer DatensÃ¤tze
 	 */
 	public void addDataTableObjects(final List<DataTableObject> dataTableObjects) {
 		if(getFirstRun()) {
@@ -559,10 +565,10 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 						renderer.setLinks();
 						_lastRow = _dtoRenderers.indexOf(renderer);
 						
-						/* Kode wie dieser läßt einen Gruseln: die Höhen der beiden Komponeneten sind
-						 * voneinander abhängig, und was man nicht sieht: die Reihenfolge ist wichtig, 
-						 * wenn man irgendetwas an anderen Stellen ändert, z.B. bei der Behebung eines
-						 * Bugs zu Zeilenhöhen bei leeren Arrays! Also Vorsicht hier!
+						/* Kode wie dieser lÃ¤ÃŸt einen Gruseln: die HÃ¶hen der beiden Komponeneten sind
+						 * voneinander abhÃ¤ngig, und was man nicht sieht: die Reihenfolge ist wichtig, 
+						 * wenn man irgendetwas an anderen Stellen Ã¤ndert, z.B. bei der Behebung eines
+						 * Bugs zu ZeilenhÃ¶hen bei leeren Arrays! Also Vorsicht hier!
 						 */
 						final JComponent viewportRow = renderer.getViewportRow();
 						
@@ -578,7 +584,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 						_scrollPane.validate();
 					}
 					else {
-						// Höhe = alte Höhe des Panels + neue Höhe
+						// HÃ¶he = alte HÃ¶he des Panels + neue HÃ¶he
 						int lowerHeight = _lowerViewportPanel.getSize().height;
 						lowerHeight += renderer.getHeight();
 						setLowerPanel(lowerHeight);
@@ -591,13 +597,13 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	
 	/**
 	 * TBD
-	 * Fügt einen Datensatz an eine bestimmte Position der bisherigen Datensätze ein. Befindet sich 
-	 * die Position innerhalb der gerade dargestellten Datensätze, dann wird die Darstellung neu 
+	 * FÃ¼gt einen Datensatz an eine bestimmte Position der bisherigen DatensÃ¤tze ein. Befindet sich 
+	 * die Position innerhalb der gerade dargestellten DatensÃ¤tze, dann wird die Darstellung neu 
 	 * erzeugt und angezeigt.
 	 * 
-	 * DIESER KOMMENTAR IST FALSCH: Tatsächlich wird nur die erste Zeile ins Panel eingefügt, 
+	 * DIESER KOMMENTAR IST FALSCH: TatsÃ¤chlich wird nur die erste Zeile ins Panel eingefÃ¼gt, 
 	 * alle anderen kommen erst durch den AdjustmentListener hinzu. Da ein AdjustmentEvent
-	 * künstlich nur recht komisch auszulösen ist, hätte man das besser so wie beschrieben
+	 * kÃ¼nstlich nur recht komisch auszulÃ¶sen ist, hÃ¤tte man das besser so wie beschrieben
 	 * implementiert. TN, nach langer Fehlersuche.
 	 * 
 	 * @param index
@@ -621,17 +627,17 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 				_screenHeight = _verticalScrollBar.getVisibleAmount();
 				
 				if(_dtoRenderers.isEmpty()) {
-					// einfach hinzufügen, _firstRow, _lastRow setzen
+					// einfach hinzufÃ¼gen, _firstRow, _lastRow setzen
 					_dtoRenderers.add(renderer);
 					_firstRow = 0;
 					_lastRow = 0;
 					
 					renderer.setLinks();
 					
-					/* Kode wie dieser läßt einen Gruseln: die Höhen der beiden Komponeneten sind
-					 * voneinander abhängig, und was man nicht sieht: die Reihenfolge ist wichtig, 
-					 * wenn man irgendetwas an anderen Stellen ändert, z.B. bei der Behebung eines
-					 * Bugs zu Zeilenhöhen bei leeren Arrays! Also Vorsicht hier!
+					/* Kode wie dieser lÃ¤ÃŸt einen Gruseln: die HÃ¶hen der beiden Komponeneten sind
+					 * voneinander abhÃ¤ngig, und was man nicht sieht: die Reihenfolge ist wichtig, 
+					 * wenn man irgendetwas an anderen Stellen Ã¤ndert, z.B. bei der Behebung eines
+					 * Bugs zu ZeilenhÃ¶hen bei leeren Arrays! Also Vorsicht hier!
 					 */
 					JComponent rowHeaderRow = renderer.getRowHeaderRow(TIME_FORMAT);
 					JComponent viewportRow = renderer.getViewportRow();
@@ -646,7 +652,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 					_viewportPanel.add(viewportRow);
 				}
 				else {
-					// an Position index einen Datensatz einfügen
+					// an Position index einen Datensatz einfÃ¼gen
 					if(index < _firstRow) {
 						int height = renderer.getHeight();
 						setUpperPanel(_emptyDummyUpperViewportPanel.getSize().height + height);
@@ -666,15 +672,15 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 						}
 					}
 					else { // index >= _firstRow && index <= _lastRow
-						// erst einfügen, dann ggf. löschen
+						// erst einfÃ¼gen, dann ggf. lÃ¶schen
 						int position = index - _firstRow;
 						
 						renderer.setLinks();
 						
-						/* Kode wie dieser läßt einen Gruseln: die Höhen der beiden Komponeneten sind
-						 * voneinander abhängig, und was man nicht sieht: die Reihenfolge ist wichtig, 
-						 * wenn man irgendetwas an anderen Stellen ändert, z.B. bei der Behebung eines
-						 * Bugs zu Zeilenhöhen bei leeren Arrays! Also Vorsicht hier!
+						/* Kode wie dieser lÃ¤ÃŸt einen Gruseln: die HÃ¶hen der beiden Komponeneten sind
+						 * voneinander abhÃ¤ngig, und was man nicht sieht: die Reihenfolge ist wichtig, 
+						 * wenn man irgendetwas an anderen Stellen Ã¤ndert, z.B. bei der Behebung eines
+						 * Bugs zu ZeilenhÃ¶hen bei leeren Arrays! Also Vorsicht hier!
 						 */
 						JComponent rowHeaderRow = renderer.getRowHeaderRow(TIME_FORMAT);
 						JComponent viewportRow = renderer.getViewportRow();
@@ -702,7 +708,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 							viewportHeight += nextRenderer.getHeight();
 						}
 						newLastRow--;
-						for(int i = _lastRow; i > newLastRow; i--) { // überflüssige Zeilen löschen
+						for(int i = _lastRow; i > newLastRow; i--) { // Ã¼berflÃ¼ssige Zeilen lÃ¶schen
 							DataTableObjectRenderer nextRenderer = _dtoRenderers.get(i);
 							lowerHeight += nextRenderer.getHeight();
 							_rowHeaderPanel.remove(_rowHeaderPanel.getComponentCount() - 1);
@@ -719,14 +725,14 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	}
 	
 	/**
-	 * Alle bisherigen Datensätze werden gelöscht und die neuen werden übernommen. Die ersten Datensätze, 
-	 * die angezeigt werden können, werden dargestellt.
+	 * Alle bisherigen DatensÃ¤tze werden gelÃ¶scht und die neuen werden Ã¼bernommen. Die ersten DatensÃ¤tze, 
+	 * die angezeigt werden kÃ¶nnen, werden dargestellt.
 	 * 
-	 * Für diese Methode ist nicht klar, ob sie von den Problemen der Methode addDataTableObject
+	 * FÃ¼r diese Methode ist nicht klar, ob sie von den Problemen der Methode addDataTableObject
 	 * betroffen ist. 
 	 * 
 	 * @param dataTableObjects
-	 *            Liste neuer Datensätze
+	 *            Liste neuer DatensÃ¤tze
 	 */
 	public void setDataTableObjects(final List<DataTableObject> dataTableObjects) {
 		if(getFirstRun()) {
@@ -735,7 +741,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				// alle bisherigen Datensätze löschen
+				// alle bisherigen DatensÃ¤tze lÃ¶schen
 				
 
 				for(DataTableObjectRenderer renderer : _dtoRenderers) {
@@ -764,10 +770,10 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 						_lastRow = _dtoRenderers.indexOf(renderer);
 						
 						renderer.setLinks();
-						/* Kode wie dieser läßt einen Gruseln: die Höhen der beiden Komponeneten sind
-						 * voneinander abhängig, und was man nicht sieht: die Reihenfolge ist wichtig, 
-						 * wenn man irgendetwas an anderen Stellen ändert, z.B. bei der Behebung eines
-						 * Bugs zu Zeilenhöhen bei leeren Arrays! Also Vorsicht hier!
+						/* Kode wie dieser lÃ¤ÃŸt einen Gruseln: die HÃ¶hen der beiden Komponeneten sind
+						 * voneinander abhÃ¤ngig, und was man nicht sieht: die Reihenfolge ist wichtig, 
+						 * wenn man irgendetwas an anderen Stellen Ã¤ndert, z.B. bei der Behebung eines
+						 * Bugs zu ZeilenhÃ¶hen bei leeren Arrays! Also Vorsicht hier!
 						 */
 						JComponent rowHeaderRow = renderer.getRowHeaderRow(TIME_FORMAT);
 						JComponent viewportRow = renderer.getViewportRow();
@@ -783,7 +789,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 						_scrollPane.validate();
 					}
 					else {
-						// Höhe = alte Höhe des Panels + neue Höhe
+						// HÃ¶he = alte HÃ¶he des Panels + neue HÃ¶he
 						int lowerHeight = _lowerViewportPanel.getSize().height;
 						lowerHeight += renderer.getHeight();
 						setLowerPanel(lowerHeight);
@@ -795,15 +801,15 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	}
 	
 	/**
-	 * Löscht einen Datensatz an angegebener Position.
+	 * LÃ¶scht einen Datensatz an angegebener Position.
 	 * 
 	 * @param index
-	 *            Position des zu löschenden Datensatzes
+	 *            Position des zu lÃ¶schenden Datensatzes
 	 */
 	public void removeDataTableObject(final int index) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				// gibt es diesen Index überhaupt?
+				// gibt es diesen Index Ã¼berhaupt?
 				int upperHeight = _emptyDummyUpperViewportPanel.getSize().height;
 				int viewportHeight = _viewportPanel.getSize().height;
 				int lowerHeight = _lowerViewportPanel.getSize().height;
@@ -811,7 +817,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 				_screenHeight = _verticalScrollBar.getVisibleAmount();
 				
 				if(index >= _firstRow && index <= _lastRow) {
-					// welche Zeile löschen
+					// welche Zeile lÃ¶schen
 					
 					DataTableObjectRenderer renderer = _dtoRenderers.get(index);
 					viewportHeight -= renderer.getHeight();
@@ -821,7 +827,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 					int row = index - _firstRow;
 					_rowHeaderPanel.remove(row);
 					_viewportPanel.remove(row);
-					// ggf. neue hinzufügen - aber nur, wenn Datensatz existiert
+					// ggf. neue hinzufÃ¼gen - aber nur, wenn Datensatz existiert
 					if(_dtoRenderers.size() > 0 && _firstRow < _dtoRenderers.size()) {
 						DataTableObjectRenderer firstRenderer = _dtoRenderers.get(_firstRow);
 						int firstRowHeight = firstRenderer.getHeight();
@@ -852,7 +858,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 						
 						int componentCount = _viewportPanel.getComponentCount();
 						if(componentCount != ((_lastRow - _firstRow) + 1)) {
-							_debug.error("Anzahl der Komponenten stimmt nicht mit _firstRow und _lastRow überein!");
+							_debug.error("Anzahl der Komponenten stimmt nicht mit _firstRow und _lastRow Ã¼berein!");
 						}
 					}
 				}
@@ -866,7 +872,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 					else { // index > _lastRow
 						lowerHeight -= height;
 					}
-					_dtoRenderers.remove(index); // Datensatz löschen
+					_dtoRenderers.remove(index); // Datensatz lÃ¶schen
 				}
 				setUpperPanel(upperHeight);
 				setLowerPanel(lowerHeight);
@@ -906,17 +912,17 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 					int height = renderer.getHeight();
 					viewportHeight -= height;
 					renderer.unsetLinks();
-					// einfügen
+					// einfÃ¼gen
 					DataTableObjectRenderer newRenderer = new DataTableObjectRenderer(_headerGrid, dataTableObject, _selectionManager);
 					_dtoRenderers.set(index, newRenderer);
 					newRenderer.setLinks();
 					height = newRenderer.getHeight();
 					viewportHeight += height;
 					
-					/* Kode wie dieser läßt einen Gruseln: die Höhen der beiden Komponeneten sind
-					 * voneinander abhängig, und was man nicht sieht: die Reihenfolge ist wichtig, 
-					 * wenn man irgendetwas an anderen Stellen ändert, z.B. bei der Behebung eines
-					 * Bugs zu Zeilenhöhen bei leeren Arrays! Also Vorsicht hier!
+					/* Kode wie dieser lÃ¤ÃŸt einen Gruseln: die HÃ¶hen der beiden Komponeneten sind
+					 * voneinander abhÃ¤ngig, und was man nicht sieht: die Reihenfolge ist wichtig, 
+					 * wenn man irgendetwas an anderen Stellen Ã¤ndert, z.B. bei der Behebung eines
+					 * Bugs zu ZeilenhÃ¶hen bei leeren Arrays! Also Vorsicht hier!
 					 */
 					JComponent rowHeaderRow = newRenderer.getRowHeaderRow(TIME_FORMAT);
 					JComponent viewportRow = newRenderer.getViewportRow();
@@ -928,7 +934,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 					_rowHeaderPanel.add(rowHeaderRow, position);
 					_viewportPanel.add(viewportRow, position);
 					
-					// ist die Höhe auch hoch genug? ist auch genug im Fenster sichtbar?
+					// ist die HÃ¶he auch hoch genug? ist auch genug im Fenster sichtbar?
 					DataTableObjectRenderer firstRenderer = _dtoRenderers.get(_firstRow);
 					int firstRowHeight = firstRenderer.getHeight();
 					if(upperHeight + viewportHeight < value + _screenHeight + firstRowHeight) {
@@ -937,10 +943,10 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 							DataTableObjectRenderer lastRenderer = _dtoRenderers.get(_lastRow++);
 							lastRenderer.setLinks();
 							
-							/* Kode wie dieser läßt einen Gruseln: die Höhen der beiden Komponeneten sind
-							 * voneinander abhängig, und was man nicht sieht: die Reihenfolge ist wichtig, 
-							 * wenn man irgendetwas an anderen Stellen ändert, z.B. bei der Behebung eines
-							 * Bugs zu Zeilenhöhen bei leeren Arrays! Also Vorsicht hier!
+							/* Kode wie dieser lÃ¤ÃŸt einen Gruseln: die HÃ¶hen der beiden Komponeneten sind
+							 * voneinander abhÃ¤ngig, und was man nicht sieht: die Reihenfolge ist wichtig, 
+							 * wenn man irgendetwas an anderen Stellen Ã¤ndert, z.B. bei der Behebung eines
+							 * Bugs zu ZeilenhÃ¶hen bei leeren Arrays! Also Vorsicht hier!
 							 */
 							JComponent rowHeaderRow2 = lastRenderer.getRowHeaderRow(TIME_FORMAT);
 							JComponent viewportRow2 = lastRenderer.getViewportRow();
@@ -963,7 +969,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 					}
 					int anzahl = _viewportPanel.getComponentCount();
 					if(anzahl != ((_lastRow - _firstRow) + 1)) {
-						_debug.error("Anzahl der Komponenten stimmt nicht mit _firstRow und _lastRow überein!");
+						_debug.error("Anzahl der Komponenten stimmt nicht mit _firstRow und _lastRow Ã¼berein!");
 					}
 					_scrollPane.validate();
 				}
@@ -984,13 +990,13 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 		});
 	}
 	
-	/* ############## Methoden für das ScrollPane ############ */
+	/* ############## Methoden fÃ¼r das ScrollPane ############ */
 	
 	/**
-	 * Setzt für die oberen Platzhalter des Zeilenheaders und des Viewports die Höhe.
+	 * Setzt fÃ¼r die oberen Platzhalter des Zeilenheaders und des Viewports die HÃ¶he.
 	 * 
 	 * @param height
-	 *            die neue Höhe der Platzhalter
+	 *            die neue HÃ¶he der Platzhalter
 	 */
 	private void setUpperPanel(final int height) {
 		Dimension size = new Dimension(1, height);
@@ -1008,10 +1014,10 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	}
 	
 	/**
-	 * Setzt für die unteren Platzhalter des Zeilenheaders und des Viewports die Höhe.
+	 * Setzt fÃ¼r die unteren Platzhalter des Zeilenheaders und des Viewports die HÃ¶he.
 	 * 
 	 * @param height
-	 *            die neue Höhe der Platzhalter
+	 *            die neue HÃ¶he der Platzhalter
 	 */
 	public void setLowerPanel(final int height) {
 		Dimension size = new Dimension(1, height);
@@ -1030,17 +1036,17 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	}
 	
 	/**
-	 * Vergrößert den unteren Platzhalter um die angebene Höhe
+	 * VergrÃ¶ÃŸert den unteren Platzhalter um die angebene HÃ¶he
 	 * 
 	 * @param height
-	 *            die zu addierende Höhe für den Platzhalter
+	 *            die zu addierende HÃ¶he fÃ¼r den Platzhalter
 	 */
 	public void increaseLowerPanel(final int height) {
 		setLowerPanel( _lowerViewportPanel.getSize().height + height);
 	}
 	
 	/**
-	 * Prüft, wieviel Platz die Komponente in der Höhe verbraucht und ob sie noch in der ScrollPane 
+	 * PrÃ¼ft, wieviel Platz die Komponente in der HÃ¶he verbraucht und ob sie noch in der ScrollPane 
 	 * angezeigt werden kann.
 	 * 
 	 * @return gibt an, ob sie noch in der ScrollPane angezeigt werden kann
@@ -1061,9 +1067,9 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	}
 	
 	/**
-	 * Wird benötigt, um das Scrollverhalten des vertikalen Scrollbalkens zu steuern. Je nachdem, 
+	 * Wird benÃ¶tigt, um das Scrollverhalten des vertikalen Scrollbalkens zu steuern. Je nachdem, 
 	 * wohin der Scrollbalken verschoben wird, muss der Viewport aktualisiert werden, damit nicht 
-	 * zu allen Datensätzen die Komponenten angezeigt werden müssen. Dies spart Speicherplatz.
+	 * zu allen DatensÃ¤tzen die Komponenten angezeigt werden mÃ¼ssen. Dies spart Speicherplatz.
 	 */
 	private class VerticalScrollBarAdjustmentListener implements AdjustmentListener {
 		
@@ -1071,16 +1077,16 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 		/** Gibt an, welcher Datensatz der oberste noch sichtbare Datensatz im Fenster ist. */
 		private int _mostUpperDataTableObjectIndex;
 		
-		/** Die Höhe des obersten Platzhalters. */
+		/** Die HÃ¶he des obersten Platzhalters. */
 		private int _upperHeight;
 		
-		/** Die Höhe des Viewport im ScrollPane. */
+		/** Die HÃ¶he des Viewport im ScrollPane. */
 		private int _viewportHeight;
 		
 		/** Die aktuelle Position des Schiebers im vertikalen Scrollbalken. */
 		private int _scrollBarPosition;
 		
-		/** Die Höhe des unteren Platzhalters. */
+		/** Die HÃ¶he des unteren Platzhalters. */
 		private int _lowerHeight;
 		
 		private final Object _lock = new Object();
@@ -1088,7 +1094,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 		/* ############### Methoden der Klasse ############## */
 		
 		/** Ermittelt anhand des AdjustmentEvents den Index des obersten sichtbaren Datensatzes 
-		 * und die Höhe für den oberen Platzhalter. */
+		 * und die HÃ¶he fÃ¼r den oberen Platzhalter. */
 		private void initHeightsAndPosition( AdjustmentEvent e) {
 			_scrollBarPosition = e.getValue();
 			_screenHeight = _verticalScrollBar.getVisibleAmount();
@@ -1108,14 +1114,14 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 		}
 		
 		/**
-		 * Hier wird geprüft, welche Datensätze gerade im sichtbaren Bereich des ScrollPane 
-		 * angezeigt werden können. Datensätze, die fehlen, werden hinzugefügt,
-		 * Datensätze die nicht mehr benötigt werden, werden aus der Ansicht entfernt.
+		 * Hier wird geprÃ¼ft, welche DatensÃ¤tze gerade im sichtbaren Bereich des ScrollPane 
+		 * angezeigt werden kÃ¶nnen. DatensÃ¤tze, die fehlen, werden hinzugefÃ¼gt,
+		 * DatensÃ¤tze die nicht mehr benÃ¶tigt werden, werden aus der Ansicht entfernt.
 		 * 
 		 * Etwas genauer: Diese Methode ist die Implementation des AdjustmentListeners, und
 		 * mit Ausnahme einer ersten Zeile, werden hier die Zeilen in das Panel gesteckt.
-		 * Das Bedeutet, dass das Hinzufügen mit addDataTableObject ab der zweiten Zeile
-		 * nicht dazu führt, dass Zeilen erscheinen, sondern erst ein AdjustmentEvent.
+		 * Das Bedeutet, dass das HinzufÃ¼gen mit addDataTableObject ab der zweiten Zeile
+		 * nicht dazu fÃ¼hrt, dass Zeilen erscheinen, sondern erst ein AdjustmentEvent.
 		 * 
 		 * @param e
 		 *            Event vom Scrollbalken
@@ -1129,7 +1135,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 				
 				if(_mostUpperDataTableObjectIndex >= _firstRow && _mostUpperDataTableObjectIndex <= _lastRow) { 
 					// langsam nach unten scrollen: nach oben entschwindende Rows werden entfernt,
-					// von unten hinzukommende hinzugefügt.
+					// von unten hinzukommende hinzugefÃ¼gt.
 					while(_firstRow < _mostUpperDataTableObjectIndex) {
 						DataTableObjectRenderer nextRenderer = _dtoRenderers.get(_firstRow);
 						_viewportHeight -= nextRenderer.getHeight();
@@ -1149,10 +1155,10 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 						DataTableObjectRenderer lastRenderer = _dtoRenderers.get(_lastRow++);
 						lastRenderer.setLinks();
 						
-						/* Kode wie dieser läßt einen Gruseln: die Höhen der beiden Komponeneten sind
-						 * voneinander abhängig, und was man nicht sieht: die Reihenfolge ist wichtig, 
-						 * wenn man irgendetwas an anderen Stellen ändert, z.B. bei der Behebung eines
-						 * Bugs zu Zeilenhöhen bei leeren Arrays! Also Vorsicht hier!
+						/* Kode wie dieser lÃ¤ÃŸt einen Gruseln: die HÃ¶hen der beiden Komponeneten sind
+						 * voneinander abhÃ¤ngig, und was man nicht sieht: die Reihenfolge ist wichtig, 
+						 * wenn man irgendetwas an anderen Stellen Ã¤ndert, z.B. bei der Behebung eines
+						 * Bugs zu ZeilenhÃ¶hen bei leeren Arrays! Also Vorsicht hier!
 						 */
 						JComponent rowHeaderRow = lastRenderer.getRowHeaderRow(TIME_FORMAT);
 						JComponent viewportRow = lastRenderer.getViewportRow();
@@ -1179,7 +1185,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 					if(componentCount != ((_lastRow - _firstRow) + 1)) {
 						_debug.error("Anzahl der Komponenten (" + _viewportPanel.getComponentCount() + 
 								") stimmt nicht mit _firstRow (" + _firstRow
-								+ ") und _lastRow (" + _lastRow + ") überein!");
+								+ ") und _lastRow (" + _lastRow + ") Ã¼berein!");
 					}
 				}
 				else if(_mostUpperDataTableObjectIndex < _firstRow) { // nach oben scrollen
@@ -1196,13 +1202,13 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 					while(_upperHeight + _viewportHeight < 
 							_scrollBarPosition + _screenHeight + firstRowHeight && newLastRow <= _lastRow) {
 						DataTableObjectRenderer lastRenderer = _dtoRenderers.get(newLastRow);
-						if(newLastRow < _firstRow) { // neue Zeilen hinzufügen
+						if(newLastRow < _firstRow) { // neue Zeilen hinzufÃ¼gen
 							lastRenderer.setLinks();
 							
-							/* Kode wie dieser läßt einen Gruseln: die Höhen der beiden Komponeneten sind
-							 * voneinander abhängig, und was man nicht sieht: die Reihenfolge ist wichtig, 
-							 * wenn man irgendetwas an anderen Stellen ändert, z.B. bei der Behebung eines
-							 * Bugs zu Zeilenhöhen bei leeren Arrays! Also Vorsicht hier!
+							/* Kode wie dieser lÃ¤ÃŸt einen Gruseln: die HÃ¶hen der beiden Komponeneten sind
+							 * voneinander abhÃ¤ngig, und was man nicht sieht: die Reihenfolge ist wichtig, 
+							 * wenn man irgendetwas an anderen Stellen Ã¤ndert, z.B. bei der Behebung eines
+							 * Bugs zu ZeilenhÃ¶hen bei leeren Arrays! Also Vorsicht hier!
 							 */
 							JComponent rowHeaderRow = lastRenderer.getRowHeaderRow(TIME_FORMAT);
 							JComponent viewportRow = lastRenderer.getViewportRow();
@@ -1227,9 +1233,9 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 					newLastRow--; // _lastRow
 					index--;
 					
-					// letzte Elemente löschen
+					// letzte Elemente lÃ¶schen
 					if(newLastRow < _firstRow) {
-						// alles zwischen _firstRow und _lastRow löschen
+						// alles zwischen _firstRow und _lastRow lÃ¶schen
 						for(int i = _lastRow; i >= _firstRow; i--) {
 							DataTableObjectRenderer renderer = _dtoRenderers.get(i);
 							renderer.unsetLinks();
@@ -1237,7 +1243,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 							_viewportPanel.remove(_viewportPanel.getComponentCount() - 1);
 						}
 					}
-					if(newLastRow >= _firstRow) { // letzten Element löschen
+					if(newLastRow >= _firstRow) { // letzten Element lÃ¶schen
 						for(int i = _lastRow; i > newLastRow; i--) {
 							DataTableObjectRenderer renderer = _dtoRenderers.get(i);
 							renderer.unsetLinks();
@@ -1260,7 +1266,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 					setLowerPanel(_lowerHeight);
 					int anzahl = _viewportPanel.getComponentCount();
 					if(anzahl != (_lastRow - _firstRow + 1)) {
-						_debug.error("Anzahl der Komponenten stimmt nicht mit _firstRow und _lastRow überein!");
+						_debug.error("Anzahl der Komponenten stimmt nicht mit _firstRow und _lastRow Ã¼berein!");
 					}
 				}
 				else if(_mostUpperDataTableObjectIndex > _lastRow) { // 'schnell' nach unten scrollen
@@ -1285,10 +1291,10 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 						DataTableObjectRenderer lastRenderer = _dtoRenderers.get(_lastRow++);
 						lastRenderer.setLinks();
 						
-						/* Kode wie dieser läßt einen Gruseln: die Höhen der beiden Komponeneten sind
-						 * voneinander abhängig, und was man nicht sieht: die Reihenfolge ist wichtig, 
-						 * wenn man irgendetwas an anderen Stellen ändert, z.B. bei der Behebung eines
-						 * Bugs zu Zeilenhöhen bei leeren Arrays! Also Vorsicht hier!
+						/* Kode wie dieser lÃ¤ÃŸt einen Gruseln: die HÃ¶hen der beiden Komponeneten sind
+						 * voneinander abhÃ¤ngig, und was man nicht sieht: die Reihenfolge ist wichtig, 
+						 * wenn man irgendetwas an anderen Stellen Ã¤ndert, z.B. bei der Behebung eines
+						 * Bugs zu ZeilenhÃ¶hen bei leeren Arrays! Also Vorsicht hier!
 						 */
 						JComponent rowHeaderRow = lastRenderer.getRowHeaderRow(TIME_FORMAT);
 						JComponent viewportRow = lastRenderer.getViewportRow();
@@ -1317,7 +1323,7 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 					setLowerPanel(_lowerHeight);
 					int anzahl = _viewportPanel.getComponentCount();
 					if(anzahl != (_lastRow - _firstRow + 1)) {
-						_debug.error("Anzahl der Komponenten stimmt nicht mit _firstRow und _lastRow überein!");
+						_debug.error("Anzahl der Komponenten stimmt nicht mit _firstRow und _lastRow Ã¼berein!");
 					}
 				}
 				_scrollPane.validate();
@@ -1335,9 +1341,9 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	}
 	
 	/**
-	 * Gibt den Maximalwert des vertikalen Rollbalkens zurück.
+	 * Gibt den Maximalwert des vertikalen Rollbalkens zurÃ¼ck.
 	 * 
-	 * @return gibt den Maximalwert des vertikalen Rollbalkens zurück
+	 * @return gibt den Maximalwert des vertikalen Rollbalkens zurÃ¼ck
 	 */
 	public int getVerticalScrollBarsMaximumValue() {
 		return _verticalScrollBar.getMaximum();
@@ -1353,27 +1359,27 @@ public class DataViewPanel extends JPanel implements DataViewListener {
 	}
 	
 	/**
-	 * Gibt den Ausdehung des Knopfes der vertikalen Rollbalkens zurück.
+	 * Gibt den Ausdehung des Knopfes der vertikalen Rollbalkens zurÃ¼ck.
 	 * 
-	 * @return gibt den Ausdehung des Knopfes der vertikalen Rollbalkens zurück
+	 * @return gibt den Ausdehung des Knopfes der vertikalen Rollbalkens zurÃ¼ck
 	 */
 	public int getVerticalScrollBarsVisibleAmount() {
 		return _verticalScrollBar.getVisibleAmount();
 	}
 	
 	/**
-	 * Gibt die Höhe des sichtbaren Bereich des Viewports zurück.
+	 * Gibt die HÃ¶he des sichtbaren Bereich des Viewports zurÃ¼ck.
 	 * 
-	 * @return gibt die Höhe des sichtbaren Bereich des Viewports zurück
+	 * @return gibt die HÃ¶he des sichtbaren Bereich des Viewports zurÃ¼ck
 	 */
 	public int getVisibleViewPortHeight() {
 		return _screenHeight;
 	}
 	
 	/**
-	 * Gibt <code>true</code> zurück, wenn der horizontale Rolbalken sichtbar ist.
+	 * Gibt <code>true</code> zurÃ¼ck, wenn der horizontale Rolbalken sichtbar ist.
 	 * 
-	 * @return gibt <code>true</code> zurück, wenn der horizontale Rolbalken sichtbar ist
+	 * @return gibt <code>true</code> zurÃ¼ck, wenn der horizontale Rolbalken sichtbar ist
 	 */
 	public boolean isHorizontalScrollBarVisible() {
 		return _scrollPane.getHorizontalScrollBar().isVisible();

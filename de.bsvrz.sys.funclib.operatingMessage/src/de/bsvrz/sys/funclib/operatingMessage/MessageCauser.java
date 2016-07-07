@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.sys.funclib.operatingMessage.
  * 
  * de.bsvrz.sys.funclib.operatingMessage is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.operatingMessage is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.operatingMessage; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.operatingMessage; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.sys.funclib.operatingMessage;
 
@@ -24,11 +30,11 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
 
 /**
  * Diese Klasse stellt die Urlasserinformationen dar. Die Urlasserinformationen bestehen aus einer Referenz auf den
- * Benutzer, der die Betriebsmeldung erzeugt hat, einer Angabe der Ursache für die Meldung und eines Veranlassers für
+ * Benutzer, der die Betriebsmeldung erzeugt hat, einer Angabe der Ursache fÃ¼r die Meldung und eines Veranlassers fÃ¼r
  * die Meldung.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5052 $
+ * @version $Revision$
  */
 public class MessageCauser {
 	private final SystemObject _user;
@@ -42,7 +48,7 @@ public class MessageCauser {
 	}
 
 	/**
-	 * Gibt den Benutzer zurück, der die Betriebsmeldung erzeugt hat.
+	 * Gibt den Benutzer zurÃ¼ck, der die Betriebsmeldung erzeugt hat.
 	 *
 	 * @return der Benutzer
 	 */
@@ -51,7 +57,7 @@ public class MessageCauser {
 	}
 
 	/**
-	 * Gibt die Ursache für die Betriebsmeldung zurück.
+	 * Gibt die Ursache fÃ¼r die Betriebsmeldung zurÃ¼ck.
 	 *
 	 * @return die Ursache
 	 */
@@ -60,7 +66,7 @@ public class MessageCauser {
 	}
 
 	/**
-	 * Gibt den Veranlasser für die Betriebsmeldung zurück.
+	 * Gibt den Veranlasser fÃ¼r die Betriebsmeldung zurÃ¼ck.
 	 *
 	 * @return der Veranlasser
 	 */

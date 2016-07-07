@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.util.fileBackedQueue;
@@ -26,17 +32,17 @@ import java.util.Iterator;
 import java.util.Queue;
 
 /**
- * Eine Queue, die Elemente beim Überschreiten eines Grenzwertes ins Dateisystem auslagert und dadurch sehr viele Elemente aufnehmen kann. Diese Queue ist
+ * Eine Queue, die Elemente beim Ãœberschreiten eines Grenzwertes ins Dateisystem auslagert und dadurch sehr viele Elemente aufnehmen kann. Diese Queue ist
  * abgesehen vom Iterator threadsicher. Je nach Konstruktor verwendet die Queue einen benutzerdefinierten Serializer um die Objekte im Dateisystem abzulegen,
- * oder den Standard-Java-Serializer. Es gibt vordefinierte geerbte Queue-Klassen, die für einfache Datentypen optimierte Serializer benutzen. Für weitere
+ * oder den Standard-Java-Serializer. Es gibt vordefinierte geerbte Queue-Klassen, die fÃ¼r einfache Datentypen optimierte Serializer benutzen. FÃ¼r weitere
  * Datentypen ist ein benutzerdefinierter {@link QueueSerializer} zu implementieren. Wichtig: nachdem die Queue nicht mehr gebraucht wird sollte {@link
- * #clear()} aufgerufen werden um nicht mehr gebrauchten Speicher auf der Festplatte freizugeben.<br />Diese Queue ist auf mehrere gleichzeitige Einfügungen von
- * mehreren Threads spezialisiert. Das Auslesen von Objekten geht im allgemeinen sehr schnell, kann aber nur von einem Thread gleichzeitig durchgeführt
- * werden.<br />Für das Speichern im Dateisystem werden die Objekte serialisiert. Das heißt, die Objekte, die zu der Queue hinzugefügt werden sind
- * möglicherweise nicht identisch (im Sinne von Objektidentität) zu den Objekten, die aus der Queue ausgelesen werden.
+ * #clear()} aufgerufen werden um nicht mehr gebrauchten Speicher auf der Festplatte freizugeben.<br />Diese Queue ist auf mehrere gleichzeitige EinfÃ¼gungen von
+ * mehreren Threads spezialisiert. Das Auslesen von Objekten geht im allgemeinen sehr schnell, kann aber nur von einem Thread gleichzeitig durchgefÃ¼hrt
+ * werden.<br />FÃ¼r das Speichern im Dateisystem werden die Objekte serialisiert. Das heiÃŸt, die Objekte, die zu der Queue hinzugefÃ¼gt werden sind
+ * mÃ¶glicherweise nicht identisch (im Sinne von ObjektidentitÃ¤t) zu den Objekten, die aus der Queue ausgelesen werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 9474 $
+ * @version $Revision$
  * @see FileBackedLongQueue
  * @see FileBackedIntQueue
  * @see FileBackedShortQueue
@@ -56,15 +62,15 @@ public class FileBackedQueue<E> extends AbstractQueue<E> {
 	private final QueueSerializer<E> _queueSerializer;
 
 	/**
-	 * Erstellt eine neue Queue, die durch ein Dateisystem unterstützt wird und so recht groß werden kann. Um die Objekte in das Dateisystem zu speichern, ist
+	 * Erstellt eine neue Queue, die durch ein Dateisystem unterstÃ¼tzt wird und so recht groÃŸ werden kann. Um die Objekte in das Dateisystem zu speichern, ist
 	 * erforderlich, dass ein QueueSerializer angegeben wird, der die Objekte serialisiert und wieder deserialisiert.
 	 *
-	 * @param memoryCapacity     Wie viel Speicher in Bytes maximal im Arbeitsspeicher gehalten werden sollen. Es handelt sich um einen Richtwert, der geringfügig
-	 *                           (um die Größe eines Elements) überschritten werden kann. Berücksichtigt wird hier nicht der tatsächliche Arbeitsspeicherverbrauch,
-	 *                           sondern die Größe, die das Element verbrauchen würde, falls es serialisiert werden würde.
-	 * @param filesystemCapacity Wie viel Speicher in Bytes maximal im Dateisystem gehalten werden sollen. Es handelt sich um einen Richtwert, der geringfügig (um
-	 *                           maximal die Größe eines Elements minus 1 Byte) überschritten werden kann.
-	 * @param queueSerializer    Klasse, die das Deserialisieren von Objekten übernimmt.
+	 * @param memoryCapacity     Wie viel Speicher in Bytes maximal im Arbeitsspeicher gehalten werden sollen. Es handelt sich um einen Richtwert, der geringfÃ¼gig
+	 *                           (um die GrÃ¶ÃŸe eines Elements) Ã¼berschritten werden kann. BerÃ¼cksichtigt wird hier nicht der tatsÃ¤chliche Arbeitsspeicherverbrauch,
+	 *                           sondern die GrÃ¶ÃŸe, die das Element verbrauchen wÃ¼rde, falls es serialisiert werden wÃ¼rde.
+	 * @param filesystemCapacity Wie viel Speicher in Bytes maximal im Dateisystem gehalten werden sollen. Es handelt sich um einen Richtwert, der geringfÃ¼gig (um
+	 *                           maximal die GrÃ¶ÃŸe eines Elements minus 1 Byte) Ã¼berschritten werden kann.
+	 * @param queueSerializer    Klasse, die das Deserialisieren von Objekten Ã¼bernimmt.
 	 */
 	public FileBackedQueue(final int memoryCapacity, final long filesystemCapacity, final QueueSerializer<E> queueSerializer) {
 		if(memoryCapacity < 1) throw new IllegalArgumentException("memoryCapacity muss > 0 sein.");
@@ -77,12 +83,12 @@ public class FileBackedQueue<E> extends AbstractQueue<E> {
 	}
 
 	/**
-	 * Erstellt eine neue Queue, die durch ein Dateisystem unterstützt wird und so recht groß werden kann. Wird dieser Konstruktor benutzt, wird der
+	 * Erstellt eine neue Queue, die durch ein Dateisystem unterstÃ¼tzt wird und so recht groÃŸ werden kann. Wird dieser Konstruktor benutzt, wird der
 	 * Standard-Java-Serializer benutzt. Dieser ist bei kleinen oder primitiven Datentypen ineffektiv und funktioniert bei nicht serialisierbaren Klassen nicht.
 	 *
 	 * @param memoryCapacity     Wie viel Speicher in Bytes maximal im Arbeitsspeicher gehalten werden sollen.
-	 * @param filesystemCapacity Wie viel Speicher in Bytes maximal im Dateisystem gehalten werden sollen. Es handelt sich um einen Richtwert, der geringfügig (um
-	 *                           maximal die Größe eines Elements) überschritten werden kann.
+	 * @param filesystemCapacity Wie viel Speicher in Bytes maximal im Dateisystem gehalten werden sollen. Es handelt sich um einen Richtwert, der geringfÃ¼gig (um
+	 *                           maximal die GrÃ¶ÃŸe eines Elements) Ã¼berschritten werden kann.
 	 */
 	public FileBackedQueue(final int memoryCapacity, final long filesystemCapacity) {
 		if(memoryCapacity < 1) throw new IllegalArgumentException("memoryCapacity muss > 0 sein.");
@@ -95,7 +101,7 @@ public class FileBackedQueue<E> extends AbstractQueue<E> {
 
 	/**
 	 * Returns an iterator over the elements contained in this collection.
-	 * <p/>
+	 * <p>
 	 * It is imperative that the user manually synchronize on the returned collection when iterating over it:
 	 * <pre>
 	 *  Collection c = myFileBackedQueue;
@@ -200,9 +206,9 @@ public class FileBackedQueue<E> extends AbstractQueue<E> {
 	}
 
 	/**
-	 * Gibt den Speicher zurück, den die Objekte im Arbeitsspeicher verwenden. Das ist nicht zwingend die Menge an Arbeitsspeicher, die wirklich verbraucht wird,
-	 * sondern die Menge an Speicher, den die Objekte brauchen würden, wären sie in einer Datei serialisiert gespeichert. Dieser Wert kann kurzzeitig während des
-	 * Einfügens von Objekten getMemoryCapacity() überschreiten.
+	 * Gibt den Speicher zurÃ¼ck, den die Objekte im Arbeitsspeicher verwenden. Das ist nicht zwingend die Menge an Arbeitsspeicher, die wirklich verbraucht wird,
+	 * sondern die Menge an Speicher, den die Objekte brauchen wÃ¼rden, wÃ¤ren sie in einer Datei serialisiert gespeichert. Dieser Wert kann kurzzeitig wÃ¤hrend des
+	 * EinfÃ¼gens von Objekten getMemoryCapacity() Ã¼berschreiten.
 	 *
 	 * @return Menge an Speicher in Bytes
 	 */
@@ -211,29 +217,29 @@ public class FileBackedQueue<E> extends AbstractQueue<E> {
 	}
 
 	/**
-	 * Gibt die Kapazität des Caches in Bytes zurück, in dem die Objekte im Arbeitsspeicher gehalten werden. Das ist nicht zwingend die Menge an Arbeitsspeicher,
-	 * die verbraucht wird, sondern die Menge an Speicher, den die Objekte brauchen würden, wären sie in einer Datei serialisiert gespeichert.
+	 * Gibt die KapazitÃ¤t des Caches in Bytes zurÃ¼ck, in dem die Objekte im Arbeitsspeicher gehalten werden. Das ist nicht zwingend die Menge an Arbeitsspeicher,
+	 * die verbraucht wird, sondern die Menge an Speicher, den die Objekte brauchen wÃ¼rden, wÃ¤ren sie in einer Datei serialisiert gespeichert.
 	 *
-	 * @return Kapazität in Bytes
+	 * @return KapazitÃ¤t in Bytes
 	 */
 	public int getMemoryCapacity() {
 		return _memoryCapacity;
 	}
 
 	/**
-	 * Gibt den Festplattenplatz zurück, der von dieser Queue in Benutzung ist. Die Dateigröße kann aufgrund von Fragmentierung usw. größer sein.
+	 * Gibt den Festplattenplatz zurÃ¼ck, der von dieser Queue in Benutzung ist. Die DateigrÃ¶ÃŸe kann aufgrund von Fragmentierung usw. grÃ¶ÃŸer sein.
 	 *
-	 * @return Größe in Bytes
+	 * @return GrÃ¶ÃŸe in Bytes
 	 */
 	public synchronized long getDiskUsed() {
 		return _fileQueue.getDiskUsed();
 	}
 
 	/**
-	 * Gibt den maximal genutzen Festplattenplatz zurück, der von dieser Queue verwendet wird. Dieser Wert kann von getDiskUsed() um maximal eine Objektgröße
-	 * überschritten werden.
+	 * Gibt den maximal genutzen Festplattenplatz zurÃ¼ck, der von dieser Queue verwendet wird. Dieser Wert kann von getDiskUsed() um maximal eine ObjektgrÃ¶ÃŸe
+	 * Ã¼berschritten werden.
 	 *
-	 * @return Größe in Bytes
+	 * @return GrÃ¶ÃŸe in Bytes
 	 */
 	public long getDiskCapacity() {
 		return _fileQueue.getCapacity();
@@ -272,7 +278,7 @@ public class FileBackedQueue<E> extends AbstractQueue<E> {
 		}
 
 		public void remove() {
-			throw new UnsupportedOperationException("Nicht unterstützt");
+			throw new UnsupportedOperationException("Nicht unterstÃ¼tzt");
 		}
 	}
 }

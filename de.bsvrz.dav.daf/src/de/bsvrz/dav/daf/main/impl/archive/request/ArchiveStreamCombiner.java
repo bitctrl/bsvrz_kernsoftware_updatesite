@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.archive.request;
@@ -33,11 +39,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Diese Klasse bündelt bei Anfragen nach Pids eventuell mehrere Ergebnis-Streams (pro historischem Objekt) zu einem einzigen Stream (pro Pid),
+ * Diese Klasse bÃ¼ndelt bei Anfragen nach Pids eventuell mehrere Ergebnis-Streams (pro historischem Objekt) zu einem einzigen Stream (pro Pid),
  * sodass die Streams den angefragten Daten entsprechen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11925 $
+ * @version $Revision$
  */
 public class ArchiveStreamCombiner implements ArchiveDataQueryResult {
 	private ArchiveDataQueryResult _rawResult;
@@ -88,8 +94,8 @@ public class ArchiveStreamCombiner implements ArchiveDataQueryResult {
 	}
 
 	/**
-	 * Wird mehrmals aufgerufen. Vermerkt jeweils, wie zusammengehörige Streams zu bündeln sind.
-	 * @param size Anzahl zu bündelnder Streams, bei Anfragen ohne Pid 1
+	 * Wird mehrmals aufgerufen. Vermerkt jeweils, wie zusammengehÃ¶rige Streams zu bÃ¼ndeln sind.
+	 * @param size Anzahl zu bÃ¼ndelnder Streams, bei Anfragen ohne Pid 1
 	 * @param spec Originale Anfrage
 	 */
 	public void addQuery(final int size, final ArchiveDataSpecification spec) {
@@ -122,16 +128,16 @@ public class ArchiveStreamCombiner implements ArchiveDataQueryResult {
 			ArchiveData take = current().take();
 			if(take == null){
 				if(_currentIndex + 1 < _streamsToCombine.length){
-					// Nächsten Stream öffnen
+					// NÃ¤chsten Stream Ã¶ffnen
 					_currentIndex++;
 					take = current().take();
 				}
 			}
 			if(_currentIndex + 1 < _streamsToCombine.length){
 				if(take != null && take.getDataType() == DataState.END_OF_ARCHIVE){
-					// Ende-Archiv-Datensätze, die sich nicht am Ende befinden, in potentielle Datenlücken umwandeln
+					// Ende-Archiv-DatensÃ¤tze, die sich nicht am Ende befinden, in potentielle DatenlÃ¼cken umwandeln
 					if(!hasSendData){
-						// Wenn Stream komplett leer ist, ignorieren und nächsten Datensatz nehmen
+						// Wenn Stream komplett leer ist, ignorieren und nÃ¤chsten Datensatz nehmen
 						return take();
 					}
 					take = new StreamedArchiveData(
@@ -172,8 +178,8 @@ public class ArchiveStreamCombiner implements ArchiveDataQueryResult {
 			// Erstmal alle Stream wie gewohnt verketten
 			ArchiveDataStream parent = new CombinedStream(streamsToCombine, spec);
 
-			// dann alle Datensätze nacheinander in den (begrenzten) Puffer schieben
-			// sodass am Schluss nur die aktuellsten Datensätze übrig bleiben
+			// dann alle DatensÃ¤tze nacheinander in den (begrenzten) Puffer schieben
+			// sodass am Schluss nur die aktuellsten DatensÃ¤tze Ã¼brig bleiben
 			_spec = spec;
 			_buffer = new ArrayDeque<ArchiveData>();
 			try {
@@ -190,7 +196,7 @@ public class ArchiveStreamCombiner implements ArchiveDataQueryResult {
 							currentDataSets--;
 						}
 						while(_buffer.peekFirst() != null && _buffer.peekFirst().getDataType() == DataState.POSSIBLE_GAP){
-							// Potentielle Lücken am Anfang trimmen
+							// Potentielle LÃ¼cken am Anfang trimmen
 							first = _buffer.removeFirst();
 							if(shouldCount(first)){
 								currentDataSets--;
@@ -205,9 +211,9 @@ public class ArchiveStreamCombiner implements ArchiveDataQueryResult {
 		}
 
 		/**
-		 * Gibt zurück ob ein Datensatz bei Relativanfragen mitgezählt werden soll oder nicht.
+		 * Gibt zurÃ¼ck ob ein Datensatz bei Relativanfragen mitgezÃ¤hlt werden soll oder nicht.
 		 * @param aData Datum
-		 * @return true wenn mitgezählt werden soll, sonst false
+		 * @return true wenn mitgezÃ¤hlt werden soll, sonst false
 		 */
 		private static boolean shouldCount(final ArchiveData aData) {
 			return aData.getDataType() != DataState.END_OF_ARCHIVE;

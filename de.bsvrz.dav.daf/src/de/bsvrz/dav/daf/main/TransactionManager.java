@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main;
@@ -32,14 +38,14 @@ import java.util.Map;
  * Klasse, die Transaktionen verwaltet.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11481 $
+ * @version $Revision$
  */
 public class TransactionManager implements Transactions {
 
 	private final ClientDavConnection _connection;
 
 	/**
-	 * Bildet pro Datenidentifikation die Empfänger ab, die die Rohdaten empfangen und dann verarbeitet an die eigentliche Applikation weitergeben
+	 * Bildet pro Datenidentifikation die EmpfÃ¤nger ab, die die Rohdaten empfangen und dann verarbeitet an die eigentliche Applikation weitergeben
 	 */
 	private final Map<TransactionDataDescription, ClientReceiverInterface> _realReceivers = Collections.synchronizedMap(new HashMap<TransactionDataDescription, ClientReceiverInterface>());
 
@@ -49,7 +55,7 @@ public class TransactionManager implements Transactions {
 	private final Map<TransactionDataDescription, Collection<InnerDataSubscription>> _allowedDataIdentifications = new HashMap<TransactionDataDescription,Collection<InnerDataSubscription>>();
 
 	/**
-	 * Bildet pro Datenidentifikation bzw. Anmeldung die benötigten Datenidentifikationen ab.
+	 * Bildet pro Datenidentifikation bzw. Anmeldung die benÃ¶tigten Datenidentifikationen ab.
 	 */
 	private final Map<TransactionDataDescription, Collection<InnerDataSubscription>> _requiredDataIdentifications = new HashMap<TransactionDataDescription,Collection<InnerDataSubscription>>();
 
@@ -60,8 +66,8 @@ public class TransactionManager implements Transactions {
 	public TransactionManager(final ClientDavConnection connection) {
 		if(connection == null) throw new IllegalArgumentException("connection ist null");
 		if(connection.getDataModel().getType("typ.transaktion") == null ){
-			throw new IllegalStateException("Damit Transaktionen verwendet werden können, ist ein aktuelleres Datenmodell notwendig. Es wird "
-			                                + "kb.systemModellGlobal in Version 26 und kb.metaModellGlobal in Version 14 benötigt.");
+			throw new IllegalStateException("Damit Transaktionen verwendet werden kÃ¶nnen, ist ein aktuelleres Datenmodell notwendig. Es wird "
+			                                + "kb.systemModellGlobal in Version 26 und kb.metaModellGlobal in Version 14 benÃ¶tigt.");
 		}
 		_connection = connection;
 	}
@@ -79,7 +85,7 @@ public class TransactionManager implements Transactions {
 
 		testSubscribe(dataDescription, subscriptions);
 
-		if(subscriptions.size() < 1) throw new IllegalArgumentException("Es muss mindestens eine Datenanmeldung für eine Transaktions-Quelle geben.");
+		if(subscriptions.size() < 1) throw new IllegalArgumentException("Es muss mindestens eine Datenanmeldung fÃ¼r eine Transaktions-Quelle geben.");
 		_connection.triggerTransactionSender(sender, dataDescription, subscriptions);
 
 		try {
@@ -137,7 +143,7 @@ public class TransactionManager implements Transactions {
 			}
 			if(!found) {
 				throw new IllegalArgumentException(
-						"Folgende Datenidentifikation ist erforderlich für diese Transaktion, befindet sich aber nicht in den Daten: " + requiredSubscription
+						"Folgende Datenidentifikation ist erforderlich fÃ¼r diese Transaktion, befindet sich aber nicht in den Daten: " + requiredSubscription
 				);
 			}
 		}
@@ -189,8 +195,8 @@ public class TransactionManager implements Transactions {
 					}
 				}
 				if(!found) {
-					// Falls nicht, bei den Benötigen nachschauen, die sind in jedem Fall akzeptiert.
-					for(final Data item : data.getItem("benötigt")) {
+					// Falls nicht, bei den BenÃ¶tigen nachschauen, die sind in jedem Fall akzeptiert.
+					for(final Data item : data.getItem("benÃ¶tigt")) {
 						if(equals(item, subscription, dataDescription.getObject())) {
 							found = true;
 							break;
@@ -198,7 +204,7 @@ public class TransactionManager implements Transactions {
 					}
 				}
 				if(!found) {
-					// Falls weder bei den Akzeptierten noch Benötigten, Fehler werfen.
+					// Falls weder bei den Akzeptierten noch BenÃ¶tigten, Fehler werfen.
 					throw new IllegalArgumentException(
 							"Folgende Datenidentifikation befindet sich nicht in der Liste der erlaubten Anmeldungen: " + subscription
 					);
@@ -208,8 +214,8 @@ public class TransactionManager implements Transactions {
 
 		final Collection<InnerDataSubscription> required = new ArrayList<InnerDataSubscription>();
 
-		// Nachschauen, ob alle benötigten Datenidentifikationen vorhanden sind
-		for(final Data item : data.getItem("benötigt")) {
+		// Nachschauen, ob alle benÃ¶tigten Datenidentifikationen vorhanden sind
+		for(final Data item : data.getItem("benÃ¶tigt")) {
 			boolean found = false;
 			for(final InnerDataSubscription subscription : subscriptions) {
 				if(equals(item, subscription, dataDescription.getObject())) {
@@ -220,7 +226,7 @@ public class TransactionManager implements Transactions {
 			}
 			if(!found) {
 				throw new IllegalArgumentException(
-						"Folgende Datenidentifikation ist erforderlich für diese Transaktion, befindet sich aber nicht in den Anmeldungen: " + item
+						"Folgende Datenidentifikation ist erforderlich fÃ¼r diese Transaktion, befindet sich aber nicht in den Anmeldungen: " + item
 				);
 			}
 		}
@@ -230,12 +236,12 @@ public class TransactionManager implements Transactions {
 	}
 
 	/**
-	 * Prüft, ob die Datenidentifikation in einem Data-Objekt mit einer Datenidentifikation in einer InnerDataSubscription übereinstimmt, und ob das Transaktionsobjekt
-	 * übereinstimmt, wenn NurTransaktionsObjekt im Data festgelegt ist.
+	 * PrÃ¼ft, ob die Datenidentifikation in einem Data-Objekt mit einer Datenidentifikation in einer InnerDataSubscription Ã¼bereinstimmt, und ob das Transaktionsobjekt
+	 * Ã¼bereinstimmt, wenn NurTransaktionsObjekt im Data festgelegt ist.
 	 * @param item Data-Objekt
 	 * @param subscription Anmelde-Info
-	 * @param transactionObject Transaktionsobjekt (zur Prüfung von NurTransaktionsObjekt)
-	 * @return true wenn Übereinstimmung, sonst false
+	 * @param transactionObject Transaktionsobjekt (zur PrÃ¼fung von NurTransaktionsObjekt)
+	 * @return true wenn Ãœbereinstimmung, sonst false
 	 */
 	private boolean equals(
 			final Data item, final InnerDataSubscription subscription, final SystemObject transactionObject) {
@@ -252,7 +258,7 @@ public class TransactionManager implements Transactions {
 		final SystemObject requiredAspect = item.getReferenceValue("Aspekt").getSystemObject();
 		if(requiredAspect != null && !subscription.getAspect().equals(requiredAspect)) return false;
 
-		// Sonst true zurückgeben
+		// Sonst true zurÃ¼ckgeben
 		return true;
 	}
 
@@ -281,14 +287,14 @@ public class TransactionManager implements Transactions {
 		if(subscriptions == null) throw new IllegalArgumentException("subscriptions ist null");
 
 		testSubscribe(dataDescription, subscriptions);
-		if(subscriptions.size() < 1) throw new IllegalArgumentException("Es muss mindestens eine Datenanmeldung für eine Transaktions-Senke geben.");
+		if(subscriptions.size() < 1) throw new IllegalArgumentException("Es muss mindestens eine Datenanmeldung fÃ¼r eine Transaktions-Senke geben.");
 		subscribeReceiver(receiver, dataDescription, subscriptions);
 		_allowedDataIdentifications.put(dataDescription, subscriptions);
 	}
 
 	/**
-	 * Meldet eine Senke oder einen Empfänger an
-	 * @param receiver Empfänger
+	 * Meldet eine Senke oder einen EmpfÃ¤nger an
+	 * @param receiver EmpfÃ¤nger
 	 * @param dataDescription Datenbeschreibung
 	 * @param subscriptions Innere Anmeldungen falls Senke, sonst null
 	 * @throws OneSubscriptionPerSendData Fehler
@@ -297,7 +303,7 @@ public class TransactionManager implements Transactions {
 			final TransactionReceiverInterface receiver,
 			final TransactionDataDescription dataDescription,
 			final Collection<InnerDataSubscription> subscriptions) throws OneSubscriptionPerSendData {
-		if(_realReceivers.containsKey(dataDescription)) throw new OneSubscriptionPerSendData("Für diese Datenidentifikation ist bereits ein Empfänger angemeldet.");
+		if(_realReceivers.containsKey(dataDescription)) throw new OneSubscriptionPerSendData("FÃ¼r diese Datenidentifikation ist bereits ein EmpfÃ¤nger angemeldet.");
 		final ClientReceiverInterface realReceiver = new TransactionReceiver(receiver);
 		_realReceivers.put(dataDescription, realReceiver);
 		_connection.triggerTransactionReceiver(realReceiver, dataDescription, subscriptions);

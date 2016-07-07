@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main.impl.config.telegrams;
@@ -26,11 +32,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Diese Klasse stellt ein Antworttelegramm zur Ungültigkeitserklärung dar. Durch dieses Telegramm  Ungültigkeit eines Objektes bestätigt bzw das Fehlschlagen
- * der Ungültigkeitserklärung mitgeteilt
+ * Diese Klasse stellt ein Antworttelegramm zur UngÃ¼ltigkeitserklÃ¤rung dar. Durch dieses Telegramm  UngÃ¼ltigkeit eines Objektes bestÃ¤tigt bzw das Fehlschlagen
+ * der UngÃ¼ltigkeitserklÃ¤rung mitgeteilt
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5054 $
+ * @version $Revision$
  */
 public class ObjectInvalidateAnswer extends ConfigTelegram {
 
@@ -40,10 +46,10 @@ public class ObjectInvalidateAnswer extends ConfigTelegram {
 	/** Die Id des Objektes */
 	private long _objectId;
 
-	/** Die Information ob die Aktion erfolgreich durchgeführt worden ist */
+	/** Die Information ob die Aktion erfolgreich durchgefÃ¼hrt worden ist */
 	private boolean _success;
 
-	/** Erzeugt ein neues Objekt ohne Parameter. Die Parameter werden zu einem Späteren Zeitpunkt über die read-Methode eingelesen. */
+	/** Erzeugt ein neues Objekt ohne Parameter. Die Parameter werden zu einem SpÃ¤teren Zeitpunkt Ã¼ber die read-Methode eingelesen. */
 	public ObjectInvalidateAnswer() {
 		_type = OBJECT_INVALIDATE_ANSWER_TYPE;
 	}
@@ -51,7 +57,7 @@ public class ObjectInvalidateAnswer extends ConfigTelegram {
 	/**
 	 * Erzeugt ein neues Objekt mit den gegebenen Parametern.
 	 *
-	 * @param configTime Zeitpunkt in Sekunden seit 1970 an dem das Objekt ungültig geworden ist.
+	 * @param configTime Zeitpunkt in Sekunden seit 1970 an dem das Objekt ungÃ¼ltig geworden ist.
 	 * @param objectId   Id des Objektes
 	 * @param success    true erfolgreich invalidiert, false nicht erfolgreich invalidiert
 	 */
@@ -63,16 +69,16 @@ public class ObjectInvalidateAnswer extends ConfigTelegram {
 	}
 
 	/**
-	 * Zeitpunkt an dem das Objekt ungültig geworden ist
+	 * Zeitpunkt an dem das Objekt ungÃ¼ltig geworden ist
 	 *
-	 * @return Zeitpunkt in Sekunden seit 1970 an dem das Objekt ungültig geworden ist.
+	 * @return Zeitpunkt in Sekunden seit 1970 an dem das Objekt ungÃ¼ltig geworden ist.
 	 */
 	public final long getConfigTime() {
 		return _configTime;
 	}
 
 	/**
-	 * Gibt die Id des Objektes zurück
+	 * Gibt die Id des Objektes zurÃ¼ck
 	 *
 	 * @return Die Id des Objektes
 	 */

@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.dataview.selectionManagement;
@@ -26,30 +32,30 @@ import de.bsvrz.pat.sysbed.dataview.RowKey;
 import java.util.Set;
 
 /**
- * Diese Klasse stellt einen Listener dar, welcher ƒnderungen an Selektionen registriert.
+ * Diese Klasse stellt einen Listener dar, welcher √Ñnderungen an Selektionen registriert.
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 7993 $
+ * @version $Revision$
  * 
  */
 public interface SelectionListener {
 	/**
-	 * Diese Methode teilt mit, welche CellKeys sich ge‰ndert haben.
+	 * Diese Methode teilt mit, welche CellKeys sich ge√§ndert haben.
 	 * 
 	 * @param selectionManager
-	 *            Klasse, in der sich was ge‰ndert hat.
+	 *            Klasse, in der sich was ge√§ndert hat.
 	 * @param keys
-	 *            Schl¸ssel, die sich ge‰ndert haben.
+	 *            Schl√ºssel, die sich ge√§ndert haben.
 	 */
 	public void cellSelectionChanged( SelectionManager selectionManager, Set<CellKey> keys);
 	
 	/**
-	 * Diese Methode teilt mit, welche RowKeys sich ge‰ndert haben.
+	 * Diese Methode teilt mit, welche RowKeys sich ge√§ndert haben.
 	 * 
 	 * @param selectionManager
-	 *            Klasse, in der sich was ge‰ndert hat.
+	 *            Klasse, in der sich was ge√§ndert hat.
 	 * @param keys
-	 *            Schl¸ssel, die sich ge‰ndert haben.
+	 *            Schl√ºssel, die sich ge√§ndert haben.
 	 */
 	public void rowSelectionChanged( SelectionManager selectionManager, Set<RowKey> keys);
 }

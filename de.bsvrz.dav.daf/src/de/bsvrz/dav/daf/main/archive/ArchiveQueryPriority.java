@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,36 +15,42 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.main.archive;
 
 /**
- * Diese Klasse stellt eine feste Anzahl von Priorit‰tsobjekten zur Verf¸gung.
+ * Diese Klasse stellt eine feste Anzahl von Priorit√§tsobjekten zur Verf√ºgung.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5064 $
+ * @version $Revision$
  */
 public final class ArchiveQueryPriority {
 
 	/**
-	 * hˆchste Priorit‰t
+	 * h√∂chste Priorit√§t
 	 */
 	public static final ArchiveQueryPriority HIGH = new ArchiveQueryPriority("High", 1);
 	/**
-	 * mittlere Priorit‰t
+	 * mittlere Priorit√§t
 	 */
 	public static final ArchiveQueryPriority MEDIUM = new ArchiveQueryPriority("Medium", 2);
 	/**
-	 * niedrigste Priorit‰t
+	 * niedrigste Priorit√§t
 	 */
 	public static final ArchiveQueryPriority LOW = new ArchiveQueryPriority("Low", 3);
 
 	/**
 	 * Diese Methode erlaubt es, eine Referenz auf ein Objekt der Klasse anzufordern.
 	 *
-	 * @param priority Code, der die Priorit‰t identifiziert (1,2,3)
+	 * @param priority Code, der die Priorit√§t identifiziert (1,2,3)
 	 * @return Referenz auf ein Objekt dieser Klasse
 	 */
 	public static ArchiveQueryPriority getInstance(int priority) {
@@ -56,23 +62,23 @@ public final class ArchiveQueryPriority {
 			case 3:
 				return LOW;
 			default:
-				throw new IllegalArgumentException("Undefinierte Priorit‰t");
+				throw new IllegalArgumentException("Undefinierte Priorit√§t");
 		}
 	}
 
 	/**
-	 * Gibt die Priorit‰t eines Objektes als <code>int</code> zur¸ck
+	 * Gibt die Priorit√§t eines Objektes als <code>int</code> zur√ºck
 	 *
-	 * @return Priorit‰t des Objekts
+	 * @return Priorit√§t des Objekts
 	 */
 	public int getCode() {
 		return _priorityInt;
 	}
 
 	/**
-	 * Gibt die Priorit‰t eines Objektes als <code>String</code> zur¸ck
+	 * Gibt die Priorit√§t eines Objektes als <code>String</code> zur√ºck
 	 *
-	 * @return Priorit‰t des Objekts
+	 * @return Priorit√§t des Objekts
 	 */
 	public String getStringPriority() {
 		return _priorityString;
@@ -80,7 +86,7 @@ public final class ArchiveQueryPriority {
 
 	/**
 	 * Wandelt das Objekt in einen String um
-	 * @return Priorit‰t als String
+	 * @return Priorit√§t als String
 	 */
 	public String toString() {
 		return _priorityString + " " + _priorityInt;

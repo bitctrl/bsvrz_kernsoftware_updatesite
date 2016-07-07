@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel.telegrams;
@@ -30,20 +36,20 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Implementierung von Anmeldelistentelegrammen, die zwischen Datenverteilern zum Austausch von Informationen über angemeldete Objekte, Attributgruppen und
+ * Implementierung von Anmeldelistentelegrammen, die zwischen Datenverteilern zum Austausch von Informationen Ã¼ber angemeldete Objekte, Attributgruppen und
  * Aspekte verwendet werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13173 $
+ * @version $Revision$
  */
 public class TransmitterListsUpdate extends DataTelegram {
 
-	/** Objekt-ID des Datenverteilers, zu dem Informationen für die Objekt- und Attributgruppenliste übertragen wird. */
+	/** Objekt-ID des Datenverteilers, zu dem Informationen fÃ¼r die Objekt- und Attributgruppenliste Ã¼bertragen wird. */
 	private long transmitterId;
 
 	/**
-	 * Deltaindikator, der anzeigt, ob die komplette Objekt- und Attributgruppenliste für den Datenverteiler übermittelt wird [0] oder ob nur Änderungen zu den
-	 * Listen übertragen werden [1].
+	 * Deltaindikator, der anzeigt, ob die komplette Objekt- und Attributgruppenliste fÃ¼r den Datenverteiler Ã¼bermittelt wird [0] oder ob nur Ã„nderungen zu den
+	 * Listen Ã¼bertragen werden [1].
 	 */
 	private boolean delta;
 
@@ -64,7 +70,7 @@ public class TransmitterListsUpdate extends DataTelegram {
 	/**
 	 * Returns a string representation of the object. In general, the <code>toString</code> method returns a string that "textually represents" this object. The
 	 * result should be a concise but informative representation that is easy for a person to read. It is recommended that all subclasses override this method.
-	 * <p/>
+	 * <p>
 	 * The <code>toString</code> method for class <code>Object</code> returns a string consisting of the name of the class of which the object is an instance, the
 	 * at-sign character `<code>@</code>', and the unsigned hexadecimal representation of the hash code of the object. In other words, this method returns a string
 	 * equal to the value of: <blockquote>
@@ -130,7 +136,7 @@ public class TransmitterListsUpdate extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die Id des lieferanten Datenverteilers zurück
+	 * Gibt die Id des lieferanten Datenverteilers zurÃ¼ck
 	 *
 	 * @return die Id des lieferanten Datenverteilers
 	 */
@@ -139,16 +145,16 @@ public class TransmitterListsUpdate extends DataTelegram {
 	}
 
 	/**
-	 * Gibt zurück, ob nur die Änderungen oder alle Informationen übertragen werden
+	 * Gibt zurÃ¼ck, ob nur die Ã„nderungen oder alle Informationen Ã¼bertragen werden
 	 *
-	 * @return <code>true</code>, wenn nur Änderungen, <code>false</code>, wenn alle Informationen übertragen werden
+	 * @return <code>true</code>, wenn nur Ã„nderungen, <code>false</code>, wenn alle Informationen Ã¼bertragen werden
 	 */
 	public final boolean isDeltaMessage() {
 		return delta;
 	}
 
 	/**
-	 * Gibt die hinzugekommenden Objekten zurück
+	 * Gibt die hinzugekommenden Objekten zurÃ¼ck
 	 *
 	 * @return die hinzugekommenden Objekten
 	 */
@@ -157,7 +163,7 @@ public class TransmitterListsUpdate extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die zu entfernenden Objekten zurück
+	 * Gibt die zu entfernenden Objekten zurÃ¼ck
 	 *
 	 * @return die zu entfernenden Objekten
 	 */
@@ -166,7 +172,7 @@ public class TransmitterListsUpdate extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die hinzugekommenden Kombinationen der Attributesgruppen und Aspkten zurück
+	 * Gibt die hinzugekommenden Kombinationen der Attributesgruppen und Aspkten zurÃ¼ck
 	 *
 	 * @return die hinzugekommenden Kombinationen
 	 */
@@ -175,7 +181,7 @@ public class TransmitterListsUpdate extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die zu entfernenden Kombinationen der Attributesgruppen und Aspkten zurück
+	 * Gibt die zu entfernenden Kombinationen der Attributesgruppen und Aspkten zurÃ¼ck
 	 *
 	 * @return die zu entfernenden Kombinationen
 	 */
@@ -186,7 +192,7 @@ public class TransmitterListsUpdate extends DataTelegram {
 	public final String parseToString() {
 		String str = "Systemtelegramm Datenverteileranmeldelisten Aktuallisierung:\n";
 		str += "Lieferant Datenverteiler-Id: " + transmitterId + "\n";
-		str += "Änderungen Flage: " + delta + "\n";
+		str += "Ã„nderungen Flage: " + delta + "\n";
 		if(objectsToAdd != null) {
 			str += "Hinzugekommende Objekte: [ ";
 			for(int i = 0; i < objectsToAdd.length; ++i) {
@@ -195,7 +201,7 @@ public class TransmitterListsUpdate extends DataTelegram {
 			str += " ]\n";
 		}
 		if(objectsToRemove != null) {
-			str += "Gelöschte Objekte: [ ";
+			str += "GelÃ¶schte Objekte: [ ";
 			for(int i = 0; i < objectsToRemove.length; ++i) {
 				str += " " + objectsToRemove[i] + " ";
 			}
@@ -209,7 +215,7 @@ public class TransmitterListsUpdate extends DataTelegram {
 			str += " ]\n";
 		}
 		if(attributeGroupAspectsToRemove != null) {
-			str += "Gelöschte Kombinationen der AG-A: [ ";
+			str += "GelÃ¶schte Kombinationen der AG-A: [ ";
 			for(int i = 0; i < attributeGroupAspectsToRemove.length; ++i) {
 				str += " " + attributeGroupAspectsToRemove[i] + " ";
 			}
@@ -312,7 +318,7 @@ public class TransmitterListsUpdate extends DataTelegram {
 		}
 		_debug.fine("Anmeldelistentelegramm empfangen: ", this);
 		if(length != _length) {
-			throw new IOException("Falsche Telegrammlänge, erwartet " + length + " empfangen " + _length);
+			throw new IOException("Falsche TelegrammlÃ¤nge, erwartet " + length + " empfangen " + _length);
 		}
 	}
 }

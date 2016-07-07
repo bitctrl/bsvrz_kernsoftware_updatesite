@@ -1,13 +1,13 @@
 /*
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.dataview;
@@ -29,21 +35,21 @@ import de.bsvrz.sys.funclib.debug.Debug;
 import java.util.*;
 
 /**
- * Diese Klasse verwaltet Datensätze ({@link DataTableObject}) einer Attributgruppe. Änderungen werden allen Listenern - etwa {@link DataViewPanel
+ * Diese Klasse verwaltet DatensÃ¤tze ({@link DataTableObject}) einer Attributgruppe. Ã„nderungen werden allen Listenern - etwa {@link DataViewPanel
  * DataViewPanels} - mitgeteilt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 12604 $
+ * @version $Revision$
  */
 public class DataViewModel implements CellKeyServer {
 
 	/** speichert die darzustellende Attributgruppe */
 	private final AttributeGroup _attributeGroup;
 
-	/** speichert alle Datensätze, die von der Applikation übergeben werden */
+	/** speichert alle DatensÃ¤tze, die von der Applikation Ã¼bergeben werden */
 	private final List<DataTableObject> _dataTableObjects = new ArrayList<DataTableObject>();
 
-	/** speichert zu jedem Objekt den letzten zu betrachtenden Datensatz, wobei der Schlüssel die Id des Systemobjects innerhalb des DataTableObjects ist */
+	/** speichert zu jedem Objekt den letzten zu betrachtenden Datensatz, wobei der SchlÃ¼ssel die Id des Systemobjects innerhalb des DataTableObjects ist */
 	private final Map<Long, DataTableObject> _currentDataTableObjects = new HashMap<Long, DataTableObject>();
 
 	/** speichert alle angemeldeten Listener */
@@ -66,7 +72,7 @@ public class DataViewModel implements CellKeyServer {
 
 
 	/**
-	 * Gibt die Attributgruppe zurück.
+	 * Gibt die Attributgruppe zurÃ¼ck.
 	 *
 	 * @return Attributgruppe
 	 */
@@ -75,7 +81,7 @@ public class DataViewModel implements CellKeyServer {
 	}
 
 	/**
-	 * Fügt einen Datensatz an bestehende Daten hinten an.
+	 * FÃ¼gt einen Datensatz an bestehende Daten hinten an.
 	 *
 	 * @param dataTableObject neuer Datensatz
 	 */
@@ -86,19 +92,19 @@ public class DataViewModel implements CellKeyServer {
 	}
 
 	/**
-	 * Fügt mehrere Datensätze an bestehende Daten hinten an.
+	 * FÃ¼gt mehrere DatensÃ¤tze an bestehende Daten hinten an.
 	 *
-	 * @param dataTableObjects Liste mit anzuzeigenden Datensätzen
+	 * @param dataTableObjects Liste mit anzuzeigenden DatensÃ¤tzen
 	 */
 	public void addDatasetsBelow(final List<DataTableObject> dataTableObjects) {
 		synchronized(_dataTableObjects) {
-			_dataTableObjects.addAll(dataTableObjects);	// einmal werden die neuen Datensätze hier abgespeichert
+			_dataTableObjects.addAll(dataTableObjects);	// einmal werden die neuen DatensÃ¤tze hier abgespeichert
 		}
-		fireAddDatasets(dataTableObjects); // zum anderen werden die neuen Datensätze weitergereicht zur Online-Tabelle
+		fireAddDatasets(dataTableObjects); // zum anderen werden die neuen DatensÃ¤tze weitergereicht zur Online-Tabelle
 	}
 
 	/**
-	 * Fügt einen neuen Datensatz oben in der Tabelle ein.
+	 * FÃ¼gt einen neuen Datensatz oben in der Tabelle ein.
 	 *
 	 * @param dataTableObject der neue Datensatz
 	 */
@@ -110,9 +116,9 @@ public class DataViewModel implements CellKeyServer {
 	}
 
 	/**
-	 * Festlegung aller Datensätze.
+	 * Festlegung aller DatensÃ¤tze.
 	 *
-	 * @param dataTableObjects Liste mit den Datensätzen
+	 * @param dataTableObjects Liste mit den DatensÃ¤tzen
 	 *
 	 * @see #addDatasetAbove(DataTableObject)
 	 * @see #addDatasetBelow(DataTableObject)
@@ -126,7 +132,7 @@ public class DataViewModel implements CellKeyServer {
 	}
 
 	/**
-	 * Führt ein Update hinsichtlich der Aktualität der Datensätze durch: die übergebenene Datensätze werden als aktuellste Versionen behandelt.
+	 * FÃ¼hrt ein Update hinsichtlich der AktualitÃ¤t der DatensÃ¤tze durch: die Ã¼bergebenene DatensÃ¤tze werden als aktuellste Versionen behandelt.
 	 *
 	 * @param dataTableObjects auszuwertende Daten
 	 */
@@ -135,7 +141,7 @@ public class DataViewModel implements CellKeyServer {
 		for(DataTableObject dataTableObject : dataTableObjects) {
 			_currentDataTableObjects.put(dataTableObject.getObject().getId(), dataTableObject);
 		}
-		// anschließend zu allen Systemobjekten ihren Wert (=letzter gültiger Wert) rausholen
+		// anschlieÃŸend zu allen Systemobjekten ihren Wert (=letzter gÃ¼ltiger Wert) rausholen
 		final List<DataTableObject> datasetList = new LinkedList<DataTableObject>();
 		Set<Long> keySet = _currentDataTableObjects.keySet();
 		for(Long objectID : keySet) {
@@ -145,7 +151,7 @@ public class DataViewModel implements CellKeyServer {
 	}
 
 	/**
-	 * Es werden alle Datensätze gelöscht.
+	 * Es werden alle DatensÃ¤tze gelÃ¶scht.
 	 */
 	public void removeDataSets() {
 		List<DataTableObject> dataTableObjects = new ArrayList<DataTableObject>(_dataTableObjects);
@@ -156,16 +162,16 @@ public class DataViewModel implements CellKeyServer {
 	}
 
 	/**
-	 * Gibt alle Datensätze zurück.
+	 * Gibt alle DatensÃ¤tze zurÃ¼ck.
 	 *
-	 * @return alle Datensätze
+	 * @return alle DatensÃ¤tze
 	 */
 	public List<DataTableObject> getDataTableObjects() {
 		return _dataTableObjects;
 	}
 
 	/*
-		 * Gehört zur Implementation des CellKeyServers.
+		 * GehÃ¶rt zur Implementation des CellKeyServers.
 		 */
 
 	public List<CellKey> getCellKeysBetween(final CellKey key1, final CellKey key2) {
@@ -179,7 +185,7 @@ public class DataViewModel implements CellKeyServer {
 		}
 	}
 	/*
-     * Gehört zur Implementation des CellKeyServers. 
+     * GehÃ¶rt zur Implementation des CellKeyServers. 
      */
 
 	public List<CellKey> getCellKeys(final RowKey rowKey) {
@@ -188,7 +194,7 @@ public class DataViewModel implements CellKeyServer {
 		return dataTableObject.getAllCellKeys();
 	}
 	/*
-     * Gehört zur Implementation des CellKeyServers. 
+     * GehÃ¶rt zur Implementation des CellKeyServers. 
      */
 
 	public List<CellKey> getCellKeysBetween(final RowKey rowKey1, final RowKey rowKey2) {
@@ -207,7 +213,7 @@ public class DataViewModel implements CellKeyServer {
 		return theCellKeys;
 	}
 	/*
-     * Gehört zur Implementation des CellKeyServers. 
+     * GehÃ¶rt zur Implementation des CellKeyServers. 
      */
 
 	public List<CellKey> getAllCellKeys() {
@@ -219,7 +225,7 @@ public class DataViewModel implements CellKeyServer {
 		return theCellKeys;
 	}
 	/*
-     * Gehört zur Implementation des CellKeyServers. 
+     * GehÃ¶rt zur Implementation des CellKeyServers. 
      */
 
 	public List<RowKey> getRowKeysBetween(final RowKey rowKey1, final RowKey rowKey2) {
@@ -237,11 +243,11 @@ public class DataViewModel implements CellKeyServer {
 		return theRowKeys;
 	}
 
-	/* ################ Methoden für die KeysBetween-Implementation ######## */
+	/* ################ Methoden fÃ¼r die KeysBetween-Implementation ######## */
 
 	/*
-		 * Diese Methode ist der eigentliche Kern der Methode getCellKeysBetween, die für zwei beliebige CellKeys
-		 * ein nicht-leeres Ergebnis liefert, während diese Methode dies nur dann macht, wenn der Index von
+		 * Diese Methode ist der eigentliche Kern der Methode getCellKeysBetween, die fÃ¼r zwei beliebige CellKeys
+		 * ein nicht-leeres Ergebnis liefert, wÃ¤hrend diese Methode dies nur dann macht, wenn der Index von
 		 * <code>key1</code> kleiner gleich dem von <code>key2</code> ist.
 		 */
 
@@ -294,7 +300,7 @@ public class DataViewModel implements CellKeyServer {
 	}
 
 	/*
-	 * Der Index eines CellKeys ist der Index seines Datensatzes in der Liste aller Datensätze.
+	 * Der Index eines CellKeys ist der Index seines Datensatzes in der Liste aller DatensÃ¤tze.
 	 */
 
 	private int getIndex(final CellKey key) {
@@ -319,7 +325,7 @@ public class DataViewModel implements CellKeyServer {
 	}
 
 	/*
-		 * Der Index eines RowKeys ist der Index seines Datensatzes in der Liste aller Datensätze.
+		 * Der Index eines RowKeys ist der Index seines Datensatzes in der Liste aller DatensÃ¤tze.
 		 */
 
 	private int getIndex(final RowKey key) {
@@ -343,7 +349,7 @@ public class DataViewModel implements CellKeyServer {
 		return -1;
 	}
 
-	/* ################ Listener - Funktionalität ############### */
+	/* ################ Listener - FunktionalitÃ¤t ############### */
 
 	/**
 	 * Meldet einen Listener beim Model an.
@@ -364,9 +370,9 @@ public class DataViewModel implements CellKeyServer {
 	}
 
 	/**
-	 * Alle Listener werden benachrichtigt, dass einer oder mehrere Datensätze an die bestehenden Datensätze angefügt wurden. Diese werden auch übergeben.
+	 * Alle Listener werden benachrichtigt, dass einer oder mehrere DatensÃ¤tze an die bestehenden DatensÃ¤tze angefÃ¼gt wurden. Diese werden auch Ã¼bergeben.
 	 *
-	 * @param datasets neue Datensätze
+	 * @param datasets neue DatensÃ¤tze
 	 */
 	private void fireAddDatasets(final List<DataTableObject> datasets) {
 		List<DataTableObject> unmodifiableList = Collections.unmodifiableList(datasets);
@@ -376,7 +382,7 @@ public class DataViewModel implements CellKeyServer {
 	}
 
 	/**
-	 * Alle Listener werden benachrichtigt, dass ein Datensatz an eine bestimmte Position der bestehenden Datensätze eingefügt wurde.
+	 * Alle Listener werden benachrichtigt, dass ein Datensatz an eine bestimmte Position der bestehenden DatensÃ¤tze eingefÃ¼gt wurde.
 	 *
 	 * @param index           Position des neuen Datensatzes
 	 * @param dataTableObject der neue Datensatz
@@ -388,10 +394,10 @@ public class DataViewModel implements CellKeyServer {
 	}
 
 	/**
-	 * Alle Listener werden benachrichtigt, dass die bisherigen Datensätze gelöscht und # durch die neuen (übergebenen) Datensätze ersetzt werden. Diese werden
-	 * auch übergeben.
+	 * Alle Listener werden benachrichtigt, dass die bisherigen DatensÃ¤tze gelÃ¶scht und # durch die neuen (Ã¼bergebenen) DatensÃ¤tze ersetzt werden. Diese werden
+	 * auch Ã¼bergeben.
 	 *
-	 * @param datasets neue Datensätze
+	 * @param datasets neue DatensÃ¤tze
 	 */
 	private void fireSetDatasets(final List<DataTableObject> datasets) {
 		final List<DataTableObject> unmodifiableList = Collections.unmodifiableList(datasets);
@@ -401,8 +407,8 @@ public class DataViewModel implements CellKeyServer {
 	}
 
 	/**
-	 * Alle Listener werden benachrichtigt, dass die bisherigen Datensätze gelöscht werden. Diese werden
-	 * auch übergeben.
+	 * Alle Listener werden benachrichtigt, dass die bisherigen DatensÃ¤tze gelÃ¶scht werden. Diese werden
+	 * auch Ã¼bergeben.
 	 *
 	 * @param datasets der alte Datensatz
 	 */

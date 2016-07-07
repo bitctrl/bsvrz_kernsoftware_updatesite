@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel.telegrams;
@@ -30,7 +36,7 @@ import java.io.IOException;
  * DAV gespeichert.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5047 $
+ * @version $Revision$
  */
 public class RoutingUpdate {
 
@@ -43,7 +49,7 @@ public class RoutingUpdate {
 	/** Involvierte Datenverteiler dieser Verbindung */
 	private long[] _involvedTransmitters;
 
-	/** Erzeugt ein neues Objekt ohne Parameter. Die Parameter werden zu einem späteren Zeitpunkt über die read-Methode eingelesen. */
+	/** Erzeugt ein neues Objekt ohne Parameter. Die Parameter werden zu einem spÃ¤teren Zeitpunkt Ã¼ber die read-Methode eingelesen. */
 	public RoutingUpdate() {
 	}
 
@@ -88,7 +94,7 @@ public class RoutingUpdate {
 	}
 
 	/**
-	 * Gibt ein String zurück, der dieses Datensatzes beschreibt
+	 * Gibt ein String zurÃ¼ck, der dieses Datensatzes beschreibt
 	 *
 	 * @return Der String, der dieses Datensatzes beschreibt
 	 */
@@ -146,9 +152,9 @@ public class RoutingUpdate {
 	}
 
 	/**
-	 * Gibt die Länge dieses Objekts in bytes zurück
+	 * Gibt die LÃ¤nge dieses Objekts in bytes zurÃ¼ck
 	 *
-	 * @return die Länge dieses Telegrams
+	 * @return die LÃ¤nge dieses Telegrams
 	 */
 	public final int getLength() {
 		return 12 + (_involvedTransmitters == null ? 0 : _involvedTransmitters.length * 8);

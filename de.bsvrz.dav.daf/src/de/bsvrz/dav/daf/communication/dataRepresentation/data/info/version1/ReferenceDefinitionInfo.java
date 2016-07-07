@@ -1,11 +1,11 @@
 /*
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.communication.dataRepresentation.data.info.version1;
 
@@ -25,9 +31,9 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
 /**
  * Klasse, die noch zu dokumentieren ist.
  *
- * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * @author Kappich+Kni√ü Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 13508 $ / $Date: 2015-05-20 17:09:30 +0200 (Wed, 20 May 2015) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class ReferenceDefinitionInfo extends AttributeTypeDefinitionInfo {
 	public ReferenceDefinitionInfo(ReferenceAttributeType referenceAttributeType) {
@@ -51,7 +57,7 @@ public class ReferenceDefinitionInfo extends AttributeTypeDefinitionInfo {
 			if(pid!=null && !pid.equals("")) return pid;
 		}
 		catch(Exception e) {
-			//Fehler beim Lesen der pid -> weiter mit R¸ckgabe der id
+			//Fehler beim Lesen der pid -> weiter mit R√ºckgabe der id
 		}
 		try {
 			return String.valueOf(id);
@@ -113,7 +119,7 @@ public class ReferenceDefinitionInfo extends AttributeTypeDefinitionInfo {
 		try {
 			if(id == 0) return null;
 			SystemObject object = getAttributeType().getDataModel().getObject(id);
-			if(object == null) throw new IllegalStateException("Ung¸ltiges Objekt mit id " + id);
+			if(object == null) throw new IllegalStateException("Ung√ºltiges Objekt mit id " + id);
 			return object;
 		}
 		catch(Exception e) {

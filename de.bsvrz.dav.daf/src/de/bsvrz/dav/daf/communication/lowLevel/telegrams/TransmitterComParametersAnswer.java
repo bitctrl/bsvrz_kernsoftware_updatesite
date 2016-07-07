@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel.telegrams;
@@ -28,17 +34,17 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Verhandlung der Verbindungsparameter (Server). In diesem Systemtelegramm werden die vom Datenverteiler festgelegten Verbindungsparameter ¸bertragen.
+ * Verhandlung der Verbindungsparameter (Server). In diesem Systemtelegramm werden die vom Datenverteiler festgelegten Verbindungsparameter √ºbertragen.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5059 $
+ * @version $Revision$
  */
 public class TransmitterComParametersAnswer extends DataTelegram {
 
-	/** Die Zeit nach der sp‰testens ein keepalive Telegramm geschickt werden muss, wenn in dieser Zeit kein Telegramm empfangen wurde. */
+	/** Die Zeit nach der sp√§testens ein keepalive Telegramm geschickt werden muss, wenn in dieser Zeit kein Telegramm empfangen wurde. */
 	private long _keepAliveSendTimeOut;
 
-	/** Die Zeit in der sp‰testens ein Telegramm empfangen werden muss, sonst wird die Verbindung terminiert. */
+	/** Die Zeit in der sp√§testens ein Telegramm empfangen werden muss, sonst wird die Verbindung terminiert. */
 	private long _keepAliveReceiveTimeOut;
 
 	public TransmitterComParametersAnswer() {
@@ -61,7 +67,7 @@ public class TransmitterComParametersAnswer extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die Zeit zur¸ck, nach der sp‰testens ein keepalive Telegramm geschickt werden muss, wenn in dieser Zeit kein Telegramm empfangen wurde.
+	 * Gibt die Zeit zur√ºck, nach der sp√§testens ein keepalive Telegramm geschickt werden muss, wenn in dieser Zeit kein Telegramm empfangen wurde.
 	 *
 	 * @return die Keepalivesendezeit
 	 */
@@ -70,7 +76,7 @@ public class TransmitterComParametersAnswer extends DataTelegram {
 	}
 
 	/**
-	 * Gibt die Zeit zur¸ck, in der sp‰testens ein Telegramm empfangen werden muss, sonst wird die Verbindung terminiert.
+	 * Gibt die Zeit zur√ºck, in der sp√§testens ein Telegramm empfangen werden muss, sonst wird die Verbindung terminiert.
 	 *
 	 * @return die Keepaliveempfangszeit
 	 */
@@ -97,7 +103,7 @@ public class TransmitterComParametersAnswer extends DataTelegram {
 		_keepAliveReceiveTimeOut = in.readLong();
 		length = 16;
 		if(length != _length) {
-			throw new IOException("Falsche Telegramml‰nge");
+			throw new IOException("Falsche Telegramml√§nge");
 		}
 	}
 }

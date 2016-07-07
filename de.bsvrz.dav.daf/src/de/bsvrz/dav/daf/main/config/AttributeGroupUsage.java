@@ -1,12 +1,12 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * Copyright 2006 by Kappich Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.main.config;
 
@@ -25,30 +31,30 @@ package de.bsvrz.dav.daf.main.config;
  *
  * @author Stephan Homeyer (sth), Kappich Systemberatung
  * @author Roland Schmitz (rs), Kappich Systemberatung
- * @version $Revision: 5052 $ / $Date: 2007-08-31 20:02:55 +0200 (Fri, 31 Aug 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  * @see "TPuK1-77"
  */
 public interface AttributeGroupUsage extends ConfigurationObject {
 	/**
-	 * Bestimmt die Attributgruppe, die in Datensätzen dieser Attributgruppenverwendung benutzt wird.
+	 * Bestimmt die Attributgruppe, die in DatensÃ¤tzen dieser Attributgruppenverwendung benutzt wird.
 	 *
 	 * @see "TPuK1-78"
 	 */
 	AttributeGroup getAttributeGroup();
 
 	/**
-	 * Bestimmt den Aspekt, der in Datensätzen dieser Attributgruppenverwendung benutzt wird.
+	 * Bestimmt den Aspekt, der in DatensÃ¤tzen dieser Attributgruppenverwendung benutzt wird.
 	 *
 	 * @see "TPuK1-79"
 	 */
 	Aspect getAspect();
 
 	/**
-	 * Bestimmt, ob die durch diese Attributgruppenverwendung festgelegte Kombination von Attributgruppe und Aspekt für
-	 * konfigurierende oder für Online-Datensätze benutzt wird.
+	 * Bestimmt, ob die durch diese Attributgruppenverwendung festgelegte Kombination von Attributgruppe und Aspekt fÃ¼r
+	 * konfigurierende oder fÃ¼r Online-DatensÃ¤tze benutzt wird.
 	 *
-	 * @return <code>true</code>, wenn diese Attributgruppenverwendung für konfigurierende Datensätze benutzt wird oder
-	 *         <code>false</code>, wenn diese Attributgruppenverwendung für Online-Datensätze benutzt wird.
+	 * @return <code>true</code>, wenn diese Attributgruppenverwendung fÃ¼r konfigurierende DatensÃ¤tze benutzt wird oder
+	 *         <code>false</code>, wenn diese Attributgruppenverwendung fÃ¼r Online-DatensÃ¤tze benutzt wird.
 	 * @see "TPuK1-80"
 	 */
 	boolean isConfigurating();
@@ -64,56 +70,56 @@ public interface AttributeGroupUsage extends ConfigurationObject {
 	boolean isExplicitDefined();
 
 	/**
-	 * Bestimmt die Verwendungsmöglichkeiten von Online- oder konfigurierenden Datensätzen dieser
+	 * Bestimmt die VerwendungsmÃ¶glichkeiten von Online- oder konfigurierenden DatensÃ¤tzen dieser
 	 * Atributgruppenverwendung.
 	 *
-	 * @return Verwendungsmöglichkeiten dieser Attributgruppenverwendung.
+	 * @return VerwendungsmÃ¶glichkeiten dieser Attributgruppenverwendung.
 	 * @see "TPuk1-82 und TPuK1-83"
 	 */
 	Usage getUsage();
 
 	/**
-	 * Aufzählung der verschiedenen Verwendungsmöglichkeiten einer Attributgruppenverwendung.
+	 * AufzÃ¤hlung der verschiedenen VerwendungsmÃ¶glichkeiten einer Attributgruppenverwendung.
 	 *
 	 * @see AttributeGroupUsage#getUsage
 	 */
 	public enum Usage {
 		/**
-		 * Verwendung für Konfigurierende Datensätze, die notwendigerweise versorgt werden müssen und nach Aktivierung nicht
-		 * mehr geändert werden dürfen.
+		 * Verwendung fÃ¼r Konfigurierende DatensÃ¤tze, die notwendigerweise versorgt werden mÃ¼ssen und nach Aktivierung nicht
+		 * mehr geÃ¤ndert werden dÃ¼rfen.
 		 */
 		RequiredConfigurationData("datensatzNotwendig", 1),
 
 		/**
-		 * Verwendung für Konfigurierende Datensätze, die notwendigerweise versorgt werden müssen und auch nach Aktivierung
-		 * geändert werden dürfen.
+		 * Verwendung fÃ¼r Konfigurierende DatensÃ¤tze, die notwendigerweise versorgt werden mÃ¼ssen und auch nach Aktivierung
+		 * geÃ¤ndert werden dÃ¼rfen.
 		 */
-		ChangeableRequiredConfigurationData("datensatzNotwendigUndÄnderbar", 2),
+		ChangeableRequiredConfigurationData("datensatzNotwendigUndÃ„nderbar", 2),
 
 		/**
-		 * Verwendung für Konfigurierende Datensätze, die nicht notwendigerweise versorgt werden müssen und nach Aktivierung
-		 * nicht mehr geändert werden dürfen.
+		 * Verwendung fÃ¼r Konfigurierende DatensÃ¤tze, die nicht notwendigerweise versorgt werden mÃ¼ssen und nach Aktivierung
+		 * nicht mehr geÃ¤ndert werden dÃ¼rfen.
 		 */
 		OptionalConfigurationData("datensatzOptional", 3),
 
 		/**
-		 * Verwendung für Konfigurierende Datensätze, die nicht notwendigerweise versorgt werden müssen und nach Aktivierung
-		 * geändert werden dürfen.
+		 * Verwendung fÃ¼r Konfigurierende DatensÃ¤tze, die nicht notwendigerweise versorgt werden mÃ¼ssen und nach Aktivierung
+		 * geÃ¤ndert werden dÃ¼rfen.
 		 */
-		ChangeableOptionalConfigurationData("datensatzOptionalUndÄnderbar", 4),
+		ChangeableOptionalConfigurationData("datensatzOptionalUndÃ„nderbar", 4),
 
 		/**
-		 * Verwendung für Online-Datensätze, die nur als Quelle oder einfacher Empfänger angemeldet werden dürfen.
+		 * Verwendung fÃ¼r Online-DatensÃ¤tze, die nur als Quelle oder einfacher EmpfÃ¤nger angemeldet werden dÃ¼rfen.
 		 */
 		OnlineDataAsSourceReceiver("quelle", 5),
 
 		/**
-		 * Verwendung für Online-Datensätze, die nur als einfacher Sender oder Senke angemeldet werden dürfen.
+		 * Verwendung fÃ¼r Online-DatensÃ¤tze, die nur als einfacher Sender oder Senke angemeldet werden dÃ¼rfen.
 		 */
 		OnlineDataAsSenderDrain("senke", 6),
 
 		/**
-		 * Verwendung für Online-Datensätze, die mit beliebigen Rollen angemeldet werden dürfen.
+		 * Verwendung fÃ¼r Online-DatensÃ¤tze, die mit beliebigen Rollen angemeldet werden dÃ¼rfen.
 		 */
 		OnlineDataAsSourceReceiverOrSenderDrain("quelleUndSenke", 7);
 

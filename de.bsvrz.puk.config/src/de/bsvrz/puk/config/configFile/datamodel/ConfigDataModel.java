@@ -1,13 +1,13 @@
 /*
  * Copyright 2008 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -53,15 +59,15 @@ import java.util.*;
 /**
  * Implementierung des Datenmodells auf Seiten der Konfiguration zum Zugriff auf die Konfigurationsdaten. Die {@link
  * de.bsvrz.puk.config.main.managementfile.ConfigurationManagementFile Verwaltungsdaten} und die {@link ConfigurationFileManager Konfigurationsdaten} werden
- * hier zusammengeführt und entsprechend des {@link DataModel Datenmodells} zur Verfügung gestellt.
+ * hier zusammengefÃ¼hrt und entsprechend des {@link DataModel Datenmodells} zur VerfÃ¼gung gestellt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13267 $
+ * @version $Revision$
  * @see DataModel
  */
 public class ConfigDataModel implements DataModel, ConfigurationControl {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 	public static final int PROTOCOL_VERSION = 1;
 
@@ -77,19 +83,19 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	/** Speichert die Basistypen der Konfiguration. */
 	private List<SystemObjectType> _baseTypes;
 
-	/** Speichert die größte Objekt-Id, die in einem Konfigurationsbereich vorkam, der vom Verantwortlichen der Konfiguration verändert werden darf. */
+	/** Speichert die grÃ¶ÃŸte Objekt-Id, die in einem Konfigurationsbereich vorkam, der vom Verantwortlichen der Konfiguration verÃ¤ndert werden darf. */
 	private long _nextObjectId = -1;
 
-	/** Attribugruppenverwendung für Konfigurationsleseanfragen */
+	/** Attribugruppenverwendung fÃ¼r Konfigurationsleseanfragen */
 	private AttributeGroupUsage _configurationReadRequestUsage;
 
-	/** Attribugruppenverwendung für Konfigurationsleseantworten */
+	/** Attribugruppenverwendung fÃ¼r Konfigurationsleseantworten */
 	private AttributeGroupUsage _configurationReadReplyUsage;
 
-	/** Attribugruppenverwendung für Konfigurationsschreibanfragen */
+	/** Attribugruppenverwendung fÃ¼r Konfigurationsschreibanfragen */
 	private AttributeGroupUsage _configurationWriteRequestUsage;
 
-	/** Attribugruppenverwendung für Konfigurationsschreibantworten */
+	/** Attribugruppenverwendung fÃ¼r Konfigurationsschreibantworten */
 	private AttributeGroupUsage _configurationWriteReplyUsage;
 
 	/** Kodierung des Konfigurationsverantwortlichen der Konfiguration */
@@ -98,7 +104,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	/** Der Konfigurationsverantwortliche der Konfiguration. */
 	private ConfigurationAuthority _configurationAuthority;
 
-	/** Flag, mit dem die Konsistenzprüfung entscheiden soll, ob doppelte Pids in verschiedenen Konfigurationsbereichen erlaubt sind. */
+	/** Flag, mit dem die KonsistenzprÃ¼fung entscheiden soll, ob doppelte Pids in verschiedenen Konfigurationsbereichen erlaubt sind. */
 	private boolean _allowDoublePids = false;
 
 	private final Set<MutableSetExtFileStorage> _dirtyMutableSets = Collections.synchronizedSet(new HashSet<MutableSetExtFileStorage>());
@@ -131,29 +137,29 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	 *
 	 * @param adminFile Datei mit den Verwaltungsdaten der Konfiguration oder leere Datei.
 	 * @param ignoreDependencyErrorsInConsistencyCheck
-	 *                  Flag zum ignorieren fehlender Abhängigkeiten zwischen Konfigurationsbereichen
+	 *                  Flag zum ignorieren fehlender AbhÃ¤ngigkeiten zwischen Konfigurationsbereichen
 	 */
 	public ConfigDataModel(File adminFile, boolean ignoreDependencyErrorsInConsistencyCheck) {
 		_ignoreDependencyErrorsInConsistencyCheck = ignoreDependencyErrorsInConsistencyCheck;
 
 		// Falls es im Konstruktor zu einem Fehler kommt, wird die close()-Methode aufgerufen,
-		// damit alle lock-Dateien, die bisher erzeugt wurden, wieder gelöscht werden.
+		// damit alle lock-Dateien, die bisher erzeugt wurden, wieder gelÃ¶scht werden.
 		try {
 			long startTime = System.currentTimeMillis();    // Startzeit gibt an, wann das Datenmodell eingeladen wird
 
-			// Erstellt ein Objekt für den Zugriff auf die Verwaltungsdaten.
-			_adminFile = adminFile;    // wird nur für toString benötigt
+			// Erstellt ein Objekt fÃ¼r den Zugriff auf die Verwaltungsdaten.
+			_adminFile = adminFile;    // wird nur fÃ¼r toString benÃ¶tigt
 			_managementFile = new ManagementFile(adminFile);
 
-			// Prüfung der für die Konfiguration selbst notwendigen Konfigurationsbereiche 
+			// PrÃ¼fung der fÃ¼r die Konfiguration selbst notwendigen Konfigurationsbereiche 
 			checkRequiredArea("kb.metaModellGlobal", 12);
 			checkRequiredArea("kb.systemModellGlobal", 19);
 			checkRequiredArea("kb.fachModellGlobal", 7);
 
-			// Erstellt ein Objekt für den Zugriff auf die Konfigurationsbereiche mit deren Systemobjekten.
+			// Erstellt ein Objekt fÃ¼r den Zugriff auf die Konfigurationsbereiche mit deren Systemobjekten.
 			_configurationFileManager = new ConfigFileManager();
 
-			// Liste von Pids von Konfigurationsbereichen, die in eine neue Version überführt wurden
+			// Liste von Pids von Konfigurationsbereichen, die in eine neue Version Ã¼berfÃ¼hrt wurden
 			List<String> configurationAreaWithNewActivatedVersion = new ArrayList<String>();
 
 			// ermittelt alle in den Verwaltungsdaten angegebenen Konfigurationsbereiche
@@ -161,8 +167,8 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			_debug.finer("Anzahl der Konfigurationsbereiche, die in der Verwaltungsdatei stehen", managementInfos.size());
 
 			// Speichert zu jedem Bereich die Pid als String und die Version(short), in der der Bereich benutzt werden soll.
-			// Dieser Zwischenschritt muss gemacht werden (den Bereich über die Pid identifizieren), da der Bereich erst am Ende
-			// des Konstruktors zur Verfügung steht.
+			// Dieser Zwischenschritt muss gemacht werden (den Bereich Ã¼ber die Pid identifizieren), da der Bereich erst am Ende
+			// des Konstruktors zur VerfÃ¼gung steht.
 			final Map<String, Short> areasAndVersionsMap = new LinkedHashMap<String, Short>();
 
 			for(ConfigurationAreaManagementInfo managementInfo : managementInfos) {
@@ -181,16 +187,16 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 				}
 				catch(Exception ex) {
 					final String errorMessage =
-							"Der Konfigurationsbereich mit der Pid " + managementInfo.getPid() + " konnte der Konfiguration nicht hinzugefügt werden.";
+							"Der Konfigurationsbereich mit der Pid " + managementInfo.getPid() + " konnte der Konfiguration nicht hinzugefÃ¼gt werden.";
 					_debug.error(errorMessage, ex);
 					throw new IllegalStateException(errorMessage, ex);
 				}
 				manualGc();
-			}// for, über alle Bereiche der Datei
+			}// for, Ã¼ber alle Bereiche der Datei
 
-			// alle Konfigurationsbereiche, die eine neue Version erhalten haben, werden, wenn zulässig, reorganisiert.
+			// alle Konfigurationsbereiche, die eine neue Version erhalten haben, werden, wenn zulÃ¤ssig, reorganisiert.
 
-			_debug.finer("Anzahl der Konfigurationsbereiche, die in eine neue Version überführt wurden", configurationAreaWithNewActivatedVersion.size());
+			_debug.finer("Anzahl der Konfigurationsbereiche, die in eine neue Version Ã¼berfÃ¼hrt wurden", configurationAreaWithNewActivatedVersion.size());
 
 			for(String pid : configurationAreaWithNewActivatedVersion) {
 				final ConfigurationArea configurationArea = getAllConfigurationAreas().get(pid);
@@ -203,7 +209,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 				}
 			}
 
-			// Falls ein Konfigurationsbereich in eine neue Version überführt wurde, haben sich die Verwaltungsinfos geändert - deshalb müssen sie gesichert werden.
+			// Falls ein Konfigurationsbereich in eine neue Version Ã¼berfÃ¼hrt wurde, haben sich die Verwaltungsinfos geÃ¤ndert - deshalb mÃ¼ssen sie gesichert werden.
 			if(configurationAreaWithNewActivatedVersion.size() > 0) {
 				try {
 					_managementFile.save();
@@ -215,7 +221,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 				}
 			}
 
-			// nächste zu aktivierende Version festlegen
+			// nÃ¤chste zu aktivierende Version festlegen
 			for(ConfigurationAreaManagementInfo managementInfo : managementInfos) {
 
 				ConfigurationAreaFile areaFile = _configurationFileManager.getAreaFile(managementInfo.getPid());
@@ -228,8 +234,8 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 					}
 					
 					/* Der Bereich konnte nicht gefunden werden, dann ist configurationArea == null und es wird eine
-					 * NullpointerException ausgelöst. Diese wird gefangen, dafür wird eine neue erzeugt, die eine
-					 * hilfreiche Fehlermeldung enthält.
+					 * NullpointerException ausgelÃ¶st. Diese wird gefangen, dafÃ¼r wird eine neue erzeugt, die eine
+					 * hilfreiche Fehlermeldung enthÃ¤lt.
 					 */
 					short transferableVersion;
 					short activatableVersion;
@@ -240,21 +246,21 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 					catch(NullPointerException e) {
 						throw new RuntimeException(
 								"Fehler beim Zugriff auf den Bereich " + managementInfo.getPid() +
-								", bitte Groß-/Kleinschreibung der Pid in der Verwaltungsdatei prüfen.", e
+								", bitte GroÃŸ-/Kleinschreibung der Pid in der Verwaltungsdatei prÃ¼fen.", e
 						);
 					}
 
 					short modifiableVersion = configurationArea.getActiveVersion();
 					if(transferableVersion > modifiableVersion) modifiableVersion = transferableVersion;
 					if(activatableVersion > modifiableVersion) modifiableVersion = activatableVersion;
-					modifiableVersion++;    // um eins erhöhen!!
+					modifiableVersion++;    // um eins erhÃ¶hen!!
 					areaFile.setNextActiveVersion(modifiableVersion);
-					//				_debug.info("Nächste zu aktivierende Version " + modifiableVersion + " des KB " + managementInfo.getPid());
+					//				_debug.info("NÃ¤chste zu aktivierende Version " + modifiableVersion + " des KB " + managementInfo.getPid());
 				} // Falls die Bereichsdatei noch nicht existiert, muss auch keine Versionsnummer angegeben werden. Dies wird beim Erstellen des Bereichs gesetzt!
 				manualGc();
 			}
 
-			// Überprüfung auf Eindeutigkeit der Kodierung des Konfigurationsverantwortlichen
+			// ÃœberprÃ¼fung auf Eindeutigkeit der Kodierung des Konfigurationsverantwortlichen
 			checkCodingOfConfigurationAuthority();
 
 			_configurationReadRequestUsage = getAttributeGroup("atg.konfigurationsAnfrage").getAttributeGroupUsage(getAspect("asp.anfrage"));
@@ -262,7 +268,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			_configurationWriteRequestUsage = getAttributeGroup("atg.konfigurationsSchreibAnfrage").getAttributeGroupUsage(getAspect("asp.anfrage"));
 			_configurationWriteReplyUsage = getAttributeGroup("atg.konfigurationsSchreibAntwort").getAttributeGroupUsage(getAspect("asp.antwort"));
 
-			// Enthält alle Bereiche und deren Versionen in den die Bereiche benutzt werden.
+			// EnthÃ¤lt alle Bereiche und deren Versionen in den die Bereiche benutzt werden.
 			final List<ConfigAreaAndVersion> areasAndVersions = new ArrayList<ConfigAreaAndVersion>();
 
 			final Set<String> allAreasPid = areasAndVersionsMap.keySet();
@@ -280,16 +286,16 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 				}
 			}
 
-			// Abhängigkeiten nur prüfen, wenn mindestens Version 9 des Metamodells vorliegt
+			// AbhÃ¤ngigkeiten nur prÃ¼fen, wenn mindestens Version 9 des Metamodells vorliegt
 			final ConfigurationArea metaModelArea = getConfigurationArea("kb.metaModellGlobal");
 			if(metaModelArea != null && metaModelArea.getActiveVersion() >= 9) {
-				// Alle Bereiche, die benutzt werden sollen, stehen mit der zu nutzenden Version zur Verfügung. Können
-				// die Beziehungen zwischen den Bereichen aufgelöst werden ?
-				// Wenn der Test positiv verläuft, muss kein weiterer Test auf Abhängigkeiten gemacht werden (bei Aktivierung, Übergabe, usw.),
-				// da das geladene Datenmodell alle Bereiche im Zugriff hat, die benötigt werden um Abhängigkeiten aufzulösen.
+				// Alle Bereiche, die benutzt werden sollen, stehen mit der zu nutzenden Version zur VerfÃ¼gung. KÃ¶nnen
+				// die Beziehungen zwischen den Bereichen aufgelÃ¶st werden ?
+				// Wenn der Test positiv verlÃ¤uft, muss kein weiterer Test auf AbhÃ¤ngigkeiten gemacht werden (bei Aktivierung, Ãœbergabe, usw.),
+				// da das geladene Datenmodell alle Bereiche im Zugriff hat, die benÃ¶tigt werden um AbhÃ¤ngigkeiten aufzulÃ¶sen.
 				checkAreaDependency(areasAndVersions);
 			}
-			// Folgende Zeilen initialisieren die Liste ConfigSystemObjectType._allElements für alle dynamischen Typen.
+			// Folgende Zeilen initialisieren die Liste ConfigSystemObjectType._allElements fÃ¼r alle dynamischen Typen.
 			// Dies ist erforderlich, da dies ansonsten beim ersten Erzeugen eines Objekts gemacht wird und das neu erzeugte Elemente doppelt eingetragen wird.
 			List<SystemObject> dynamicTypes = getType("typ.dynamischerTyp").getElements();
 			for(SystemObject dynamicType : dynamicTypes) {
@@ -308,10 +314,10 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	private void manualGc() {
-		// Nachdem der Bereich in den Speicher geladen wurde, wird die GC erzwungen. Dies ist nötig, da das Programm
+		// Nachdem der Bereich in den Speicher geladen wurde, wird die GC erzwungen. Dies ist nÃ¶tig, da das Programm
 		// sehr viele externe Ressourcen anfordert, die nicht sofort freigegeben werden. Somit "stauen" sich diese Ressourcen im
-		// Speicher und führen dann zu einer Fehlermeldung (entweder OutOfMemory oder "Not Enough Swap Space").
-		// jh: manueller System.gc() ist eigentlich immer eine schlechte Idee, standardmäßig deaktiviert.
+		// Speicher und fÃ¼hren dann zu einer Fehlermeldung (entweder OutOfMemory oder "Not Enough Swap Space").
+		// jh: manueller System.gc() ist eigentlich immer eine schlechte Idee, standardmÃ¤ÃŸig deaktiviert.
 		if(System.getProperty("config.manual.gc") != null) System.gc();
 	}
 
@@ -328,17 +334,17 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Diese Methode prüft, ob die Kodierung des Konfigurationsverantwortlichen dieser Konfiguration eindeutig ist. Es darf also keinen aktuellen
+	 * Diese Methode prÃ¼ft, ob die Kodierung des Konfigurationsverantwortlichen dieser Konfiguration eindeutig ist. Es darf also keinen aktuellen
 	 * Konfigurationsverantwortlichen geben, der die gleiche Kodierung verwendet. Ansonsten wird eine Ausnahme gemeldet.
 	 *
 	 * @throws IllegalStateException Falls die Kodierung des Konfigurationsverantwortlichen nicht eindeutig ist.
 	 */
 	private void checkCodingOfConfigurationAuthority() throws IllegalStateException {
 		final ConfigurationAuthority authority = getConfigurationAuthority();
-		// Die Prüfung auf != null ist notwendig, da bei neu zu erstellenden Bereichen auch ein noch nicht vorhandener Verantwortlicher erzeugt werden kann.
+		// Die PrÃ¼fung auf != null ist notwendig, da bei neu zu erstellenden Bereichen auch ein noch nicht vorhandener Verantwortlicher erzeugt werden kann.
 		// Dann ist der Konfigurationsverantwortliche noch null.
 		if(authority != null) {
-//			System.out.println("Überprüfe KV:");
+//			System.out.println("ÃœberprÃ¼fe KV:");
 //			printAuthority(authority);
 //			System.out.println("Vergleich mit anderen KV");
 			short authorityCoding = authority.getCoding();
@@ -357,7 +363,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 //							ConfigurationAuthority configurationAuthority = (ConfigurationAuthority)object;
 //							final Data data = configurationAuthority.getConfigurationData(getAttributeGroup("atg.konfigurationsVerantwortlicherLaufendeNummer"));
 //							if(data != null) {
-//								// Überprüfung, da Datensatz optional
+//								// ÃœberprÃ¼fung, da Datensatz optional
 //								final long dataValue = data.getUnscaledValue("laufendeNummer").longValue();
 //								System.out.println("dataValue = " + dataValue);
 //							}
@@ -386,33 +392,33 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 //	}
 
 	/**
-	 * Ermittelt die bisher größte vergebene Objekt-Id der Konfigurationsbereiche, die vom Verantwortlichen der Konfiguration verändert werden darf.
+	 * Ermittelt die bisher grÃ¶ÃŸte vergebene Objekt-Id der Konfigurationsbereiche, die vom Verantwortlichen der Konfiguration verÃ¤ndert werden darf.
 	 *
 	 * @return eine neue noch nicht vergebene Objekt-Id
 	 */
 	synchronized long getNextObjectId() {
-		// größte bisher vergebene Objekt-Id ermitteln, falls noch nicht ermittelt
+		// grÃ¶ÃŸte bisher vergebene Objekt-Id ermitteln, falls noch nicht ermittelt
 		if(_nextObjectId == -1) {
-			// größte laufende Nummer ermitteln
+			// grÃ¶ÃŸte laufende Nummer ermitteln
 			final long runningNumber = getRunningNumberOfAuthority();
 
 			// Kodierung ermitteln
 			long coding = getCodingOfAuthority();
 
-			// laufende Nummer und Kodierung zusammenführen
+			// laufende Nummer und Kodierung zusammenfÃ¼hren
 			coding = (coding << 48); // Kodierung des KV an die richtige Position der ID verschieben
 			_nextObjectId = (runningNumber | coding);
 		}
 
-		// ID um eins erhöhen
+		// ID um eins erhÃ¶hen
 		_nextObjectId++;
 
-		_debug.fine("Nächste zu vergebene ID", idOutput(_nextObjectId));
-//		System.out.println("Nächste zu vergebene ID = " + idOutput(_nextObjectId));
+		_debug.fine("NÃ¤chste zu vergebene ID", idOutput(_nextObjectId));
+//		System.out.println("NÃ¤chste zu vergebene ID = " + idOutput(_nextObjectId));
 
-		// die letzten 40 Bit prüfen
+		// die letzten 40 Bit prÃ¼fen
 		if((_nextObjectId & 0xFFFFFFFFFFL) == 0) {
-			final String errorMessage = "Der Wertebereich für die laufende Nummer einer ID reicht nicht mehr aus: " + _nextObjectId;
+			final String errorMessage = "Der Wertebereich fÃ¼r die laufende Nummer einer ID reicht nicht mehr aus: " + _nextObjectId;
 			_debug.warning(errorMessage);
 			throw new IllegalStateException(errorMessage);
 		}
@@ -425,7 +431,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			_debug.warning("Laufende Nummer konnte nicht am Konfigurationsverantwortlichen gespeichert werden", ex.toString());
 		}
 
-		// neue Id zurückgeben
+		// neue Id zurÃ¼ckgeben
 		return _nextObjectId;
 	}
 
@@ -467,9 +473,9 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Ermittelt die größte laufende Nummer zu einem Konfigurationsverantwortlichen.
+	 * Ermittelt die grÃ¶ÃŸte laufende Nummer zu einem Konfigurationsverantwortlichen.
 	 *
-	 * @return Größte laufende Nummer eines Konfigurationsverantwortlichen.
+	 * @return GrÃ¶ÃŸte laufende Nummer eines Konfigurationsverantwortlichen.
 	 */
 	private long getRunningNumberOfAuthority() {
 		long runningNumber = 0;
@@ -479,7 +485,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			final ConfigurationAreaFile areaFile = _configurationFileManager.getAreaFile(configurationArea.getPid());
 			// falls der KV des Bereichs gleich dem KV der Konfiguration ist, dann ...
 			if(configurationAuthorityPid.equals(configurationArea.getConfigurationAuthority().getPid())) {
-				// größte bisher vergebene laufende Nummer ermitteln
+				// grÃ¶ÃŸte bisher vergebene laufende Nummer ermitteln
 				long greatestConsecutiveNumber = areaFile.getGreatestId();
 //					_debug.finest("Konfigurationsbereich " + configurationArea.getPidOrNameOrId() + " greatestConsecutiveNumber " + idOutput(greatestConsecutiveNumber));
 				if(greatestConsecutiveNumber > runningNumber) runningNumber = greatestConsecutiveNumber;
@@ -493,7 +499,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			// asp.eigenschaften
 			final Data data = authority.getConfigurationData(getAttributeGroup("atg.konfigurationsVerantwortlicherLaufendeNummer"));
 			if(data != null) {
-				// Überprüfung, da Datensatz optional
+				// ÃœberprÃ¼fung, da Datensatz optional
 				final long dataValue = data.getUnscaledValue("laufendeNummer").longValue();
 				if(dataValue > runningNumber) runningNumber = dataValue;
 			}
@@ -508,7 +514,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	 *
 	 * @param id anzuzeigende Objekt-ID
 	 *
-	 * @return String-Repräsentation der Objekt-ID
+	 * @return String-ReprÃ¤sentation der Objekt-ID
 	 */
 	String idOutput(long id) {
 		StringBuffer result = new StringBuffer();
@@ -526,9 +532,9 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Liefert die Verwaltung für die Konfigurationsdateien.
+	 * Liefert die Verwaltung fÃ¼r die Konfigurationsdateien.
 	 *
-	 * @return die Verwaltung für die Konfigurationsdateien
+	 * @return die Verwaltung fÃ¼r die Konfigurationsdateien
 	 */
 	public ConfigurationFileManager getConfigurationFileManager() {
 		synchronized(_configurationFileManager) {
@@ -537,7 +543,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Gibt das Objekt für Änderungen an der Verwaltungsdatei zurück.
+	 * Gibt das Objekt fÃ¼r Ã„nderungen an der Verwaltungsdatei zurÃ¼ck.
 	 *
 	 * @return das Objekt zur Manipulation der Verwaltungsdatei
 	 */
@@ -547,7 +553,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 
 	public ConfigurationAuthority getConfigurationAuthority() {
 		// Bei der Erstellung eines neuen KV in einem neuen Bereich ist der KV der Konfiguration == null. Dieser kann aber bei der Erstellung
-		// direkt gesetzt werden. Was zur Folge hat, dass weitere Objekte in seiner Verantwortung erstellt werden können.
+		// direkt gesetzt werden. Was zur Folge hat, dass weitere Objekte in seiner Verantwortung erstellt werden kÃ¶nnen.
 		if(_configurationAuthority == null) {
 			synchronized(_managementFile) {
 				_configurationAuthority = (ConfigurationAuthority)getObject(_managementFile.getConfigurationAuthority());
@@ -561,7 +567,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Gibt zum angegebenen Konfigurationsbereich die Versionsinformationen zurück, wann welche Version aktiviert wurde.
+	 * Gibt zum angegebenen Konfigurationsbereich die Versionsinformationen zurÃ¼ck, wann welche Version aktiviert wurde.
 	 *
 	 * @param configurationArea der Konfigurationsbereich
 	 *
@@ -575,11 +581,11 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Gibt zu einem Konfigurationsbereich dessen Verwaltungsinformationen zurück.
+	 * Gibt zu einem Konfigurationsbereich dessen Verwaltungsinformationen zurÃ¼ck.
 	 *
 	 * @param pid Pid des Konfigurationsbereichs
 	 *
-	 * @return Verwaltungsinformationen des gewünschten Konfigurationsbereichs
+	 * @return Verwaltungsinformationen des gewÃ¼nschten Konfigurationsbereichs
 	 */
 	public ConfigurationAreaManagementInfo getConfigurationAreaManagementInfo(String pid) {
 		synchronized(_managementFile) {
@@ -592,16 +598,16 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Führt die Konsistenzprüfung aus und gibt das Ergebnis im Fehlerfalls auf dem Bildschirm aus.
+	 * FÃ¼hrt die KonsistenzprÃ¼fung aus und gibt das Ergebnis im Fehlerfalls auf dem Bildschirm aus.
 	 *
 	 * @param configurationAreas     Konfigurationsbereiche in den zu betrachtenden Versionen.
-	 * @param kindOfConsistencyCheck Art der durchzuführenden Prüfung.
+	 * @param kindOfConsistencyCheck Art der durchzufÃ¼hrenden PrÃ¼fung.
 	 *
-	 * @return Ergebnisse der Konsistenzprüfung
+	 * @return Ergebnisse der KonsistenzprÃ¼fung
 	 */
 	private ConsistencyCheckResultInterface checkConsistency(
 			Collection<ConfigAreaAndVersion> configurationAreas, KindOfConsistencyCheck kindOfConsistencyCheck) {
-		// Konsistenzprüfung ausführen
+		// KonsistenzprÃ¼fung ausfÃ¼hren
 		final ConsistencyCheckResultInterface consistencyCheckResult = new ConsistencyCheck(
 				configurationAreas.toArray(new ConfigAreaAndVersion[configurationAreas.size()]), this
 		).startConsistencyCheck(kindOfConsistencyCheck);
@@ -609,7 +615,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 		// Ergebnis ausgeben
 		printConsistencyCheckResult(configurationAreas, consistencyCheckResult);
 
-		// zurückgeben
+		// zurÃ¼ckgeben
 		return consistencyCheckResult;
 	}
 
@@ -624,28 +630,28 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 		if(consistencyCheckResult.warnings() || consistencyCheckResult.interferenceErrors() || consistencyCheckResult.localError()) {
 			// Wenn es zu einem Fehler gekommen ist, wird alles ausgegeben
 			final StringBuilder warningText = new StringBuilder();
-			warningText.append("Probleme bei der Konsistenzprüfung. Geprüfte Bereiche:\n");
+			warningText.append("Probleme bei der KonsistenzprÃ¼fung. GeprÃ¼fte Bereiche:\n");
 			warningText.append(areaList);
 			warningText.append(consistencyCheckResult.toString());
 			_debug.warning(warningText.toString());
 		}
 		else {
 			// Kein Fehler
-			_debug.config("Keine Probleme bei der Konsistenzprüfung. Geprüfte Bereiche:\n" + areaList.toString());
+			_debug.config("Keine Probleme bei der KonsistenzprÃ¼fung. GeprÃ¼fte Bereiche:\n" + areaList.toString());
 		}
 	}
 
 	public ConsistencyCheckResultInterface activateConfigurationAreas(Collection<ConfigAreaAndVersion> configurationAreas) throws ConfigurationChangeException {
 
-		// Enthält keine Version 0 mehr, alle Versionen wurden angepaßt
+		// EnthÃ¤lt keine Version 0 mehr, alle Versionen wurden angepaÃŸt
 		final Collection<ConfigAreaAndVersion> simplifiedAreaAndVersion = new ArrayList<ConfigAreaAndVersion>();
 
-		// Die übergebenen Versionen können den Wert "0" enthalten. Dies wird als "nimm die größt mögliche Version" interpretiert.
-		// Im Fall der aktivierung bedeutet dies die neuste Version für den Bereich, wenn der KV für den Bereich verantwortlich ist.
-		// Ist der KV nicht verantwortlich, so wird die "zur Übernahme freigegebene" Version benutzt.
+		// Die Ã¼bergebenen Versionen kÃ¶nnen den Wert "0" enthalten. Dies wird als "nimm die grÃ¶ÃŸt mÃ¶gliche Version" interpretiert.
+		// Im Fall der aktivierung bedeutet dies die neuste Version fÃ¼r den Bereich, wenn der KV fÃ¼r den Bereich verantwortlich ist.
+		// Ist der KV nicht verantwortlich, so wird die "zur Ãœbernahme freigegebene" Version benutzt.
 
 		for(ConfigAreaAndVersion configAreaAndVersion : configurationAreas) {
-			// Version, die gesetzt wird. Dies kann entweder die übergebene Version sein oder eine andere, falls 0 übergeben wurde.
+			// Version, die gesetzt wird. Dies kann entweder die Ã¼bergebene Version sein oder eine andere, falls 0 Ã¼bergeben wurde.
 			short version = configAreaAndVersion.getVersion();
 			if(configAreaAndVersion.getVersion() == 0) {
 				final ConfigConfigurationArea configConfigurationArea = (ConfigConfigurationArea)configAreaAndVersion.getConfigArea();
@@ -665,21 +671,21 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			consistencyCheckResult = checkConsistencyAndFixErrors(simplifiedAreaAndVersion, KindOfConsistencyCheck.LOCAL_ACTIVATION);
 
 			if(!consistencyCheckResult.interferenceErrors() && !consistencyCheckResult.localError()) {
-				// Es gibt weder lokale noch Interferenzfehler, also können die Bereiche aktiviert werden.
+				// Es gibt weder lokale noch Interferenzfehler, also kÃ¶nnen die Bereiche aktiviert werden.
 
-				// Die Konfiguration darf alle Bereiche aktivieren, für die sie verantwortlich ist.
-				// Bereiche, für die sie nicht verantwortlich ist, dürfen nur in der Version aktiviert werden, die auch
-				// für die Aktivierung freigegeben sind.
-				// Die Version, in der der Bereich aktiviert werden soll, muss größer als die aktuelle Version
-				// (es gibt keine Rücksprünge).
-				// Es wird als erstes geprüft, ob die Versionen auch wirklich aktiviert werden dürfen, ist dies der Fall
-				// wird die Aktivierung durchgeführt (Motto, alles oder nichts wird aktiviert)
+				// Die Konfiguration darf alle Bereiche aktivieren, fÃ¼r die sie verantwortlich ist.
+				// Bereiche, fÃ¼r die sie nicht verantwortlich ist, dÃ¼rfen nur in der Version aktiviert werden, die auch
+				// fÃ¼r die Aktivierung freigegeben sind.
+				// Die Version, in der der Bereich aktiviert werden soll, muss grÃ¶ÃŸer als die aktuelle Version
+				// (es gibt keine RÃ¼cksprÃ¼nge).
+				// Es wird als erstes geprÃ¼ft, ob die Versionen auch wirklich aktiviert werden dÃ¼rfen, ist dies der Fall
+				// wird die Aktivierung durchgefÃ¼hrt (Motto, alles oder nichts wird aktiviert)
 
 				for(ConfigAreaAndVersion configAreaAndVersion : simplifiedAreaAndVersion) {
-					// Bereich, der in eine neue Version überführt werden soll
+					// Bereich, der in eine neue Version Ã¼berfÃ¼hrt werden soll
 					final ConfigurationArea configurationArea = configAreaAndVersion.getConfigArea();
 
-					// Die zu aktivierende Version muss größer als die aktuell laufende Version sein
+					// Die zu aktivierende Version muss grÃ¶ÃŸer als die aktuell laufende Version sein
 					// wenn die Versionsnummern gleich sind, ist dies kein Fehler, es muss nur nicht aktiviert werden
 					if(configAreaAndVersion.getVersion() < configurationArea.getActiveVersion()) {
 						throw new IllegalArgumentException(
@@ -689,33 +695,33 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 					}
 
 					if(!getConfigurationAuthorityPid().equals(configurationArea.getConfigurationAuthority().getPid())) {
-						// Die Konfiguration ist nicht der Konfigurationsverantwortliche für den Bereich
+						// Die Konfiguration ist nicht der Konfigurationsverantwortliche fÃ¼r den Bereich
 						if(configAreaAndVersion.getVersion() > configurationArea.getActivatableVersion()) {
 							// Die Version darf nicht aktiviert werden, da sie nicht zur Aktivierung freigegeben wurde
 							_debug.warning(
 									"Der Konfigurationsbereich " + configurationArea.getPid() + " sollte in Version " + configAreaAndVersion.getVersion()
-									+ " aktiviert werden. Die größte zur Aktivierung freigegebene Version war " + configurationArea.getActivatableVersion()
+									+ " aktiviert werden. Die grÃ¶ÃŸte zur Aktivierung freigegebene Version war " + configurationArea.getActivatableVersion()
 							);
 							throw new IllegalStateException(
 									"Der Konfigurationsbereich " + configurationArea.getPid() + " sollte in Version " + configAreaAndVersion.getVersion()
-									+ " aktiviert werden. Die größte zur Aktivierung freigegebene Version war " + configurationArea.getActivatableVersion()
+									+ " aktiviert werden. Die grÃ¶ÃŸte zur Aktivierung freigegebene Version war " + configurationArea.getActivatableVersion()
 							);
 						}
 					}
-				} // for, prüfen ob die Konfigurationsbereiche wirklich aktiviert werden dürfen
+				} // for, prÃ¼fen ob die Konfigurationsbereiche wirklich aktiviert werden dÃ¼rfen
 
-				// Die Prüfung war erfolgreich, also dürfen alle Bereiche aktiviert werden
+				// Die PrÃ¼fung war erfolgreich, also dÃ¼rfen alle Bereiche aktiviert werden
 				for(ConfigAreaAndVersion configAreaAndVersion : simplifiedAreaAndVersion) {
 					final ConfigurationArea configurationArea = getAllConfigurationAreas().get(configAreaAndVersion.getConfigArea().getPid());
-					// nur wenn die neue Version größer als die bisherige ist, wird aktiviert.
+					// nur wenn die neue Version grÃ¶ÃŸer als die bisherige ist, wird aktiviert.
 					if(configAreaAndVersion.getVersion() > configAreaAndVersion.getConfigArea().getActiveVersion()) {
-						// die Verwaltungsinfo erhält den Auftrag den Bereich in einer bestimmten Version zu aktivieren
+						// die Verwaltungsinfo erhÃ¤lt den Auftrag den Bereich in einer bestimmten Version zu aktivieren
 						final ConfigurationAreaManagementInfo configurationAreaManagementInfo = getConfigurationAreaManagementInfo(configAreaAndVersion.getConfigArea().getPid());
 						configurationAreaManagementInfo.setNextActiveVersion(configAreaAndVersion.getVersion());
 
-						// nur wenn der Konfigurationsverantwortliche identisch mit dem des Bereichs ist, muss die modifizierbare Version geändert werden
-						// Ist die derzeitige zukünftige Version gleich der Version, die aktiviert werden soll ?
-						// ja) zukünftige Version raufzählen
+						// nur wenn der Konfigurationsverantwortliche identisch mit dem des Bereichs ist, muss die modifizierbare Version geÃ¤ndert werden
+						// Ist die derzeitige zukÃ¼nftige Version gleich der Version, die aktiviert werden soll ?
+						// ja) zukÃ¼nftige Version raufzÃ¤hlen
 						// nein) nichts machen
 
 						if(getConfigurationAuthorityPid().equals(configurationArea.getConfigurationAuthority().getPid())) {
@@ -727,29 +733,29 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 						}
 					}
 
-					// Bereiche, in denen kein Objekt und keine Menge verändert wurde, aber der Konfigurationsverantwortliche geändert wurde, wird dies berücksichtigt
+					// Bereiche, in denen kein Objekt und keine Menge verÃ¤ndert wurde, aber der Konfigurationsverantwortliche geÃ¤ndert wurde, wird dies berÃ¼cksichtigt
 					if(getConfigurationAuthorityPid().equals(configurationArea.getConfigurationAuthority().getPid())) {
-						// Falls ein neuer Zuständiger beim Bereich eingetragen wurde, wird er hier dem Zuständigen zugewiesen.
+						// Falls ein neuer ZustÃ¤ndiger beim Bereich eingetragen wurde, wird er hier dem ZustÃ¤ndigen zugewiesen.
 						final AttributeGroup configurationAreaAtg = getAttributeGroup("atg.konfigurationsBereichEigenschaften");
 						final Aspect configurationAreaAsp = getAspect("asp.eigenschaften");
 
 						final Data data = configurationArea.getConfigurationData(configurationAreaAtg, configurationAreaAsp);
-						final SystemObject newAuthority = data.getReferenceValue("neuerZuständiger").getSystemObject();
+						final SystemObject newAuthority = data.getReferenceValue("neuerZustÃ¤ndiger").getSystemObject();
 						if(newAuthority != null) {
 							// es wurde ein neuer Konfigurationsverantwortlicher angegeben
 							((ConfigConfigurationArea)configurationArea).activateNewAuthority(newAuthority);
 							_debug.info(
-									"Der Konfigurationsverantwortliche des Bereichs " + configurationArea.getPidOrNameOrId() + " wurde geändert in "
+									"Der Konfigurationsverantwortliche des Bereichs " + configurationArea.getPidOrNameOrId() + " wurde geÃ¤ndert in "
 									+ newAuthority.getPidOrNameOrId()
 							);
 						}
 					}
 				} // for, Aktivierung der Bereiche
 
-				// Konfigurationsdatei und die Bereichsdateien speichern. Es muss kein close Aufgerufen werden, da die Konfiguration ganz normal weiterläuft.
+				// Konfigurationsdatei und die Bereichsdateien speichern. Es muss kein close Aufgerufen werden, da die Konfiguration ganz normal weiterlÃ¤uft.
 				save();
 
-				// Alle Bereiche wurden aktiviert, das positive Ergebnis der Konsistenzprüfung wird zurückgegeben
+				// Alle Bereiche wurden aktiviert, das positive Ergebnis der KonsistenzprÃ¼fung wird zurÃ¼ckgegeben
 
 				// Den Benutzer benachrichtigen, was alles in welcher Version aktiviert wurde.
 				// Speichert die Bereiche und die Version in denen sie aktiviert wurde
@@ -760,47 +766,47 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 				}
 
 				_debug.info("Aktivierung erfolgreich, aktivierte Bereiche: " + "\n" + areas.toString());
-			} // if (Konsistenzprüfung == fehlerfrei)
+			} // if (KonsistenzprÃ¼fung == fehlerfrei)
 		}
 		catch(Exception ex) {
-			// fängt alle geworfenen Exceptions und gibt hierfür eine ConfigurationChangeException weiter, damit der Anwender der Methode nur eine Exception abfangen muss
+			// fÃ¤ngt alle geworfenen Exceptions und gibt hierfÃ¼r eine ConfigurationChangeException weiter, damit der Anwender der Methode nur eine Exception abfangen muss
 			throw new ConfigurationChangeException(ex);
 		}
 		return consistencyCheckResult;
 	}
 
 	/**
-	 * Diese Methode beauftragt die Konfiguration alle Konfigurationsbereiche einer Konsistenzprüfung zu unterziehen und behebbare Probleme zu beheben. Diese
-	 * Methode kann unabhängig von der Aktivierung {@link #activateConfigurationAreas} oder Freigabe {@link #releaseConfigurationAreasForTransfer} aufgerufen
+	 * Diese Methode beauftragt die Konfiguration alle Konfigurationsbereiche einer KonsistenzprÃ¼fung zu unterziehen und behebbare Probleme zu beheben. Diese
+	 * Methode kann unabhÃ¤ngig von der Aktivierung {@link #activateConfigurationAreas} oder Freigabe {@link #releaseConfigurationAreasForTransfer} aufgerufen
 	 * werden.
 	 *
-	 * @param configurationAreas Definiert alle Konfigurationsbereiche, die einer Konsistenzprüfung unterzogen werden sollen. Der Bereich wird über seine Pid
-	 *                           identifiziert, zusätzlich wird die Version angegeben in der der Konfigurationsbereich geprüft werden soll. Alle Bereiche der
-	 *                           Konfiguration, die nicht angegeben werden, werden in die Prüfung einbezogen und zwar mit ihrer aktuellen Version und müssen somit
+	 * @param configurationAreas Definiert alle Konfigurationsbereiche, die einer KonsistenzprÃ¼fung unterzogen werden sollen. Der Bereich wird Ã¼ber seine Pid
+	 *                           identifiziert, zusÃ¤tzlich wird die Version angegeben in der der Konfigurationsbereich geprÃ¼ft werden soll. Alle Bereiche der
+	 *                           Konfiguration, die nicht angegeben werden, werden in die PrÃ¼fung einbezogen und zwar mit ihrer aktuellen Version und mÃ¼ssen somit
 	 *                           nicht explizit angegeben werden.
 	 *
-	 * @return Ergebnis der Konsistenzprüfung
+	 * @return Ergebnis der KonsistenzprÃ¼fung
 	 */
 	public ConsistencyCheckResultInterface checkConsistencyAndFixErrors(final Collection<ConfigAreaAndVersion> configurationAreas) {
 		return checkConsistencyAndFixErrors(configurationAreas, KindOfConsistencyCheck.CONSISTENCY_CHECK);
 	}
 
 	/**
-	 * Diese Methode beauftragt die Konfiguration alle Konfigurationsbereiche einer Konsistenzprüfung zu unterziehen und behebbare Probleme zu beheben.
+	 * Diese Methode beauftragt die Konfiguration alle Konfigurationsbereiche einer KonsistenzprÃ¼fung zu unterziehen und behebbare Probleme zu beheben.
 	 *
-	 * @param configurationAreas     Definiert alle Konfigurationsbereiche, die einer Konsistenzprüfung unterzogen werden sollen. Der Bereich wird über seine Pid
-	 *                               identifiziert, zusätzlich wird die Version angegeben in der der Konfigurationsbereich geprüft werden soll. Alle Bereiche der
-	 *                               Konfiguration, die nicht angegeben werden, werden in die Prüfung einbezogen und zwar mit ihrer aktuellen Version und müssen
+	 * @param configurationAreas     Definiert alle Konfigurationsbereiche, die einer KonsistenzprÃ¼fung unterzogen werden sollen. Der Bereich wird Ã¼ber seine Pid
+	 *                               identifiziert, zusÃ¤tzlich wird die Version angegeben in der der Konfigurationsbereich geprÃ¼ft werden soll. Alle Bereiche der
+	 *                               Konfiguration, die nicht angegeben werden, werden in die PrÃ¼fung einbezogen und zwar mit ihrer aktuellen Version und mÃ¼ssen
 	 *                               somit nicht explizit angegeben werden.
-	 * @param kindOfConsistencyCheck Art der Prüfung
+	 * @param kindOfConsistencyCheck Art der PrÃ¼fung
 	 *
-	 * @return Ergebnis der Konsistenzprüfung
+	 * @return Ergebnis der KonsistenzprÃ¼fung
 	 */
 	private ConsistencyCheckResultInterface checkConsistencyAndFixErrors(
 			final Collection<ConfigAreaAndVersion> configurationAreas, final KindOfConsistencyCheck kindOfConsistencyCheck) {
 		final ConsistencyCheckResultInterface result;
 
-		// Erst eine Prüfung durchführen und nachsehen, ob behebbare Fehler vorhanden sind.
+		// Erst eine PrÃ¼fung durchfÃ¼hren und nachsehen, ob behebbare Fehler vorhanden sind.
 		final ConsistencyCheckResultInterface firstRun = checkConsistency(configurationAreas, kindOfConsistencyCheck);
 		final List<FixableConsistencyCheckResultEntry> fixableErrors = getFixableErrors(firstRun);
 
@@ -812,7 +818,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			fixErrors(fixableErrors);
 
 
-			// Zählen, wie viele Fehler behoben werden konnten
+			// ZÃ¤hlen, wie viele Fehler behoben werden konnten
 			int failed = 0;
 			int fixed = 0;
 
@@ -831,16 +837,16 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 					"Anzahl nicht erfolgreich behobene Probleme: " + failed
 			);
 
-			// ... erneut eine Prüfung durchführen ...
+			// ... erneut eine PrÃ¼fung durchfÃ¼hren ...
 			final ConsistencyCheckResultInterface secondRun = new ConsistencyCheck(
 					configurationAreas.toArray(new ConfigAreaAndVersion[configurationAreas.size()]), this
 			).startConsistencyCheck(kindOfConsistencyCheck);
 
-			// ... und die (hoffentlich) behobenen Fehler dem Ergebnis mit dem Ergebnis der zweiten Prüfung vereinigen, damit der Benutzer über diese informiert wird.
+			// ... und die (hoffentlich) behobenen Fehler dem Ergebnis mit dem Ergebnis der zweiten PrÃ¼fung vereinigen, damit der Benutzer Ã¼ber diese informiert wird.
 			// Dabei werden immer noch vorhandene behebbare Fehler als echte lokale Fehler gewertet.
 			final ConsistencyCheckResult tmp = new ConsistencyCheckResult();
 
-			// Die Probleme hinzufügen, die bereits behoben wurden (oder wo das Beheben zumindest versucht wurde)
+			// Die Probleme hinzufÃ¼gen, die bereits behoben wurden (oder wo das Beheben zumindest versucht wurde)
 			for(final FixableConsistencyCheckResultEntry fixableError : fixableErrors) {
 				tmp.addEntry(fixableError);
 			}
@@ -911,11 +917,11 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 					_configurationFileManager.getAreaFile(configurationArea.getPid()).restructure(mode);
 				}
 				catch(IOException e) {
-					// Fängt alle Fehler ab, kommt es zu einem Fehler, wird die Reorganisation unterbrochen und der
+					// FÃ¤ngt alle Fehler ab, kommt es zu einem Fehler, wird die Reorganisation unterbrochen und der
 					// Ursprungszustand bleibt erhalten
 					_debug.error(
 							"Fehler bei der Reorganisation in " + configurationArea
-									+ ". Die Reorganisation wurde abgebrochen, es wird ohne Änderung in der Ursprungsdate normal weitergearbeitet.", e
+									+ ". Die Reorganisation wurde abgebrochen, es wird ohne Ã„nderung in der Ursprungsdatei normal weitergearbeitet.", e
 					);
 				}
 			}
@@ -925,25 +931,25 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	public ConsistencyCheckResultInterface releaseConfigurationAreasForTransfer(Collection<ConfigAreaAndVersion> configurationAreas)
 			throws ConfigurationChangeException {
 
-		// Damit Bereiche zur Übernahme freigegeben werden dürfen, darf es zu keinem lokalen Fehler bei der Konsistenzprüfung kommen
+		// Damit Bereiche zur Ãœbernahme freigegeben werden dÃ¼rfen, darf es zu keinem lokalen Fehler bei der KonsistenzprÃ¼fung kommen
 
 		// Falls die Version, in der ein Bereich freigegeben werden soll 0 ist, so muss diese 0 in eine richtige Version
 		// umgewandelt werden
 
-		// Enthält nur Versionen ungleich 0
+		// EnthÃ¤lt nur Versionen ungleich 0
 		final Collection<ConfigAreaAndVersion> simplifiedConfigurationAreasAndVersion = new ArrayList<ConfigAreaAndVersion>();
 
-		// Alle Bereiche der Konfiguration werden in der neusten Version freigegeben (für diese Bereiche muss die Konf. auch KV sein)
+		// Alle Bereiche der Konfiguration werden in der neusten Version freigegeben (fÃ¼r diese Bereiche muss die Konf. auch KV sein)
 		for(ConfigAreaAndVersion configAreaAndVersion : configurationAreas) {
 
-			// Es dürfen nur Bereiche freigegeben werden, für die die Konfiguration auch verantwortlich ist
+			// Es dÃ¼rfen nur Bereiche freigegeben werden, fÃ¼r die die Konfiguration auch verantwortlich ist
 			if(!getConfigurationAuthorityPid().equals(configAreaAndVersion.getConfigArea().getConfigurationAuthority().getPid())) {
 				_debug.warning(
-						"Die Konfiguration ist für den Konfigurationsbereich " + configAreaAndVersion.getConfigArea().getPid()
+						"Die Konfiguration ist fÃ¼r den Konfigurationsbereich " + configAreaAndVersion.getConfigArea().getPid()
 						+ " nicht der Konfigurationsverantwortliche. Darf diesen also auch nicht freigeben."
 				);
 				throw new ConfigurationChangeException(
-						"Die Konfiguration ist für den Konfigurationsbereich " + configAreaAndVersion.getConfigArea().getPid()
+						"Die Konfiguration ist fÃ¼r den Konfigurationsbereich " + configAreaAndVersion.getConfigArea().getPid()
 						+ " nicht der Konfigurationsverantwortliche."
 				);
 			}
@@ -957,61 +963,61 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			simplifiedConfigurationAreasAndVersion.add(new ConfigAreaAndVersion(configAreaAndVersion.getConfigArea(), version));
 		}
 
-		// Die Konsistenzprüfung prüft die nicht übergebenen Bereiche in deren aktueller Version
+		// Die KonsistenzprÃ¼fung prÃ¼ft die nicht Ã¼bergebenen Bereiche in deren aktueller Version
 		final ConsistencyCheckResultInterface consistencyCheckResult;
 		try {
 			consistencyCheckResult = checkConsistencyAndFixErrors(
 					simplifiedConfigurationAreasAndVersion, KindOfConsistencyCheck.RELEASE_FOR_TRANSFER
 			);
 
-			// damit der Vorgang ganz oder gar nicht durchgeführt wird, muss erst geprüft werden, ob es den Datensatz und die Attributgruppenverwendung gibt
-			// und ob der Datensatz geändert werden darf
-			final AttributeGroup atg = getAttributeGroup("atg.konfigurationsBereichÜbernahmeInformationen");
+			// damit der Vorgang ganz oder gar nicht durchgefÃ¼hrt wird, muss erst geprÃ¼ft werden, ob es den Datensatz und die Attributgruppenverwendung gibt
+			// und ob der Datensatz geÃ¤ndert werden darf
+			final AttributeGroup atg = getAttributeGroup("atg.konfigurationsBereichÃœbernahmeInformationen");
 			final AttributeGroupUsage atgUsage = atg.getAttributeGroupUsage(getAspect("asp.eigenschaften"));
 			if(atgUsage == null || (atgUsage.getUsage() != AttributeGroupUsage.Usage.ChangeableOptionalConfigurationData
 			                        && atgUsage.getUsage() != AttributeGroupUsage.Usage.ChangeableRequiredConfigurationData)) {
-				throw new ConfigurationChangeException("Die Attributgruppenverwendung existiert nicht, oder läßt keine Änderungen an den Datensätzen zu.");
+				throw new ConfigurationChangeException("Die Attributgruppenverwendung existiert nicht, oder lÃ¤ÃŸt keine Ã„nderungen an den DatensÃ¤tzen zu.");
 			}
 
 			if(!consistencyCheckResult.localError()) {
-				// Es gab keinen lokalen Fehler, die Bereiche dürfen zur Übernahme freigegeben werden
+				// Es gab keinen lokalen Fehler, die Bereiche dÃ¼rfen zur Ãœbernahme freigegeben werden
 
-				// Prüfen, ob die Konfiguration für alle angegebenen Bereiche auch der Konfigurationsverantwortliche ist (dies ist bereits weiter oben geschehen).
-				// Prüfen, ob die neue übernahme Version größer als die bisherige ist
+				// PrÃ¼fen, ob die Konfiguration fÃ¼r alle angegebenen Bereiche auch der Konfigurationsverantwortliche ist (dies ist bereits weiter oben geschehen).
+				// PrÃ¼fen, ob die neue Ã¼bernahme Version grÃ¶ÃŸer als die bisherige ist
 				for(ConfigAreaAndVersion configAreaAndVersion : simplifiedConfigurationAreasAndVersion) {
 					final ConfigurationArea configurationArea = configAreaAndVersion.getConfigArea();
 
-					// Es darf zu keinem Rücksprung der Versionen kommen
+					// Es darf zu keinem RÃ¼cksprung der Versionen kommen
 					if(configurationArea.getTransferableVersion() > configAreaAndVersion.getVersion()) {
 						// Die zu setzende Version ist kleiner
 						_debug.warning(
-								"Die Version zur Freigabe für den Konfigurationsbereich " + configurationArea.getPid() + " ist "
+								"Die Version zur Freigabe fÃ¼r den Konfigurationsbereich " + configurationArea.getPid() + " ist "
 								+ configurationArea.getTransferableVersion() + " und sollte auf Version " + configAreaAndVersion.getVersion()
 								+ " gesetzt werden."
 						);
 						throw new ConfigurationChangeException(
-								"Die Version zur Freigabe für den Konfigurationsbereich " + configurationArea.getPid() + " ist "
+								"Die Version zur Freigabe fÃ¼r den Konfigurationsbereich " + configurationArea.getPid() + " ist "
 								+ configurationArea.getTransferableVersion() + " und sollte auf Version " + configAreaAndVersion.getVersion()
 								+ " gesetzt werden."
 						);
 					}
 
-					// prüfen, ob der Datensatz existiert
+					// prÃ¼fen, ob der Datensatz existiert
 					if(configurationArea.getConfigurationData(atg) == null) {
 						throw new ConfigurationChangeException("Der Datensatz zur Speicherung der Versionsnummern ist nicht vorhanden.");
 					}
 				}
 
-				// zur Übernahme freigeben
+				// zur Ãœbernahme freigeben
 				for(ConfigAreaAndVersion configAreaAndVersion : simplifiedConfigurationAreasAndVersion) {
 					final ConfigurationArea configurationArea = configAreaAndVersion.getConfigArea();
-					// wenn die Versionen gleich sind, ändert sich nichts, nur wenn die gespeicherte Version
-					// kleiner als die neue Version ist, wird der Datensatz geändert.
+					// wenn die Versionen gleich sind, Ã¤ndert sich nichts, nur wenn die gespeicherte Version
+					// kleiner als die neue Version ist, wird der Datensatz geÃ¤ndert.
 					if(configurationArea.getTransferableVersion() < configAreaAndVersion.getVersion()) {
 						// Datensatz anpassen
 						_debug.info(
 								"Konfigurationsbereich " + configurationArea.getPid() + " wird in Version " + configAreaAndVersion.getVersion()
-								+ " zur Übernahme freigegeben"
+								+ " zur Ãœbernahme freigegeben"
 						);
 						((ConfigConfigurationArea)configurationArea).setTransferableVersion(configAreaAndVersion.getVersion());
 					}
@@ -1031,33 +1037,33 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	public void releaseConfigurationAreasForActivation(Collection<ConfigAreaAndVersion> configurationAreas) throws ConfigurationChangeException {
 
 		try {
-			// Die Bereiche sind in Ordnung und können zur Aktivierung freigegeben werden
-			// damit der Vorgang ganz oder gar nicht durchgeführt wird, muss erst geprüft werden, ob es den Datensatz und die Attributgruppenverwendung gibt
-			// und ob der Datensatz geändert werden darf
-			final AttributeGroup atg = getAttributeGroup("atg.konfigurationsBereichÜbernahmeInformationen");
+			// Die Bereiche sind in Ordnung und kÃ¶nnen zur Aktivierung freigegeben werden
+			// damit der Vorgang ganz oder gar nicht durchgefÃ¼hrt wird, muss erst geprÃ¼ft werden, ob es den Datensatz und die Attributgruppenverwendung gibt
+			// und ob der Datensatz geÃ¤ndert werden darf
+			final AttributeGroup atg = getAttributeGroup("atg.konfigurationsBereichÃœbernahmeInformationen");
 			final AttributeGroupUsage atgUsage = atg.getAttributeGroupUsage(getAspect("asp.eigenschaften"));
 			if(atgUsage == null || (atgUsage.getUsage() != AttributeGroupUsage.Usage.ChangeableOptionalConfigurationData
 			                        && atgUsage.getUsage() != AttributeGroupUsage.Usage.ChangeableRequiredConfigurationData)) {
-				throw new ConfigurationChangeException("Die Attributgruppenverwendung existiert nicht, oder läßt keine Änderungen an den Datensätzen zu.");
+				throw new ConfigurationChangeException("Die Attributgruppenverwendung existiert nicht, oder lÃ¤ÃŸt keine Ã„nderungen an den DatensÃ¤tzen zu.");
 			}
 
-			// Wenn zu einem Bereich die Version 0 gefordert wird, ist dies als "gebe mit der höchst möglichen Version frei"
+			// Wenn zu einem Bereich die Version 0 gefordert wird, ist dies als "gebe mit der hÃ¶chst mÃ¶glichen Version frei"
 			// zu interpretieren. Diese Version muss aber erst rausgefunden werden.
 
-			// Enthält nur Versionen ungleich 0
+			// EnthÃ¤lt nur Versionen ungleich 0
 			final Collection<ConfigAreaAndVersion> simplifiedConfigurationAreasAndVersion = new ArrayList<ConfigAreaAndVersion>(configurationAreas.size());
 
 			for(ConfigAreaAndVersion configAreaAndVersion : configurationAreas) {
 				final ConfigAreaAndVersion simplifiedVersion;
 
 				if(configAreaAndVersion.getVersion() == 0) {
-					// Version muss gesucht werden. Es wird die lokal aktivierte Version für andere freigegeben.
+					// Version muss gesucht werden. Es wird die lokal aktivierte Version fÃ¼r andere freigegeben.
 					simplifiedVersion = new ConfigAreaAndVersion(
 							configAreaAndVersion.getConfigArea(), configAreaAndVersion.getConfigArea().getActiveVersion()
 					);
 				}
 				else {
-					// Die alten Werte können benutzt werden
+					// Die alten Werte kÃ¶nnen benutzt werden
 					simplifiedVersion = configAreaAndVersion;
 				}
 				simplifiedConfigurationAreasAndVersion.add(simplifiedVersion);
@@ -1066,15 +1072,15 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			for(ConfigAreaAndVersion configAreaAndVersion : simplifiedConfigurationAreasAndVersion) {
 				final ConfigurationArea configurationArea = configAreaAndVersion.getConfigArea();
 
-				// Die Konfigurations muss für den Bereich verantwortlich sein
+				// Die Konfigurations muss fÃ¼r den Bereich verantwortlich sein
 				if(!getConfigurationAuthorityPid().equals(configurationArea.getConfigurationAuthority().getPid())) {
-					// Die Konfigurations ist für den Bereich nicht verantwortlich
+					// Die Konfigurations ist fÃ¼r den Bereich nicht verantwortlich
 					_debug.warning(
-							"Die Konfiguration ist für den Konfigurationsbereich " + configurationArea.getPid()
+							"Die Konfiguration ist fÃ¼r den Konfigurationsbereich " + configurationArea.getPid()
 							+ " nicht der Konfigurationsverantwortliche. Darf diesen also auch nicht freigeben."
 					);
 					throw new IllegalStateException(
-							"Die Konfiguration ist für den Konfigurationsbereich " + configurationArea.getPid() + " nicht der Konfigurationsverantwortliche."
+							"Die Konfiguration ist fÃ¼r den Konfigurationsbereich " + configurationArea.getPid() + " nicht der Konfigurationsverantwortliche."
 					);
 				}
 
@@ -1082,45 +1088,45 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 				if(!(configAreaAndVersion.getVersion() <= configurationArea.getActiveVersion())) {
 					// Die Version ist lokal noch nicht aktiviert worden
 					throw new IllegalArgumentException(
-							"In einem Konfigurationsbereich sollte eine Version zur Aktivierung freigegeben werden, die gewünschte Version wurde aber lokal nicht aktiviert. Betroffener Konfigurationsbereich: "
+							"In einem Konfigurationsbereich sollte eine Version zur Aktivierung freigegeben werden, die gewÃ¼nschte Version wurde aber lokal nicht aktiviert. Betroffener Konfigurationsbereich: "
 							+ configurationArea.getPid() + " aktive Version: " + configurationArea.getActiveVersion()
 							+ " Version, die zur Aktivierung freigegeben werden sollte: " + configAreaAndVersion.getVersion()
 					);
 				}
 
-				// Die neue Version, die zur Aktivierung freigegeben wird, muss höher sein als die letzte Version, die zur Aktivierung freigegeben wurde (keine Rücksprünge)
+				// Die neue Version, die zur Aktivierung freigegeben wird, muss hÃ¶her sein als die letzte Version, die zur Aktivierung freigegeben wurde (keine RÃ¼cksprÃ¼nge)
 				if(configurationArea.getActivatableVersion() > configAreaAndVersion.getVersion()) {
 					_debug.warning(
-							"Die Version zur Freigabe der Aktivierung für den Konfigurationsbereich " + configurationArea.getPid() + " ist "
+							"Die Version zur Freigabe der Aktivierung fÃ¼r den Konfigurationsbereich " + configurationArea.getPid() + " ist "
 							+ configurationArea.getActivatableVersion() + " und sollte auf Version " + configAreaAndVersion.getVersion() + " gesetzt werden."
 					);
 					throw new IndexOutOfBoundsException(
-							"Die Version zur Freigabe der Aktivierung für den Konfigurationsbereich " + configurationArea.getPid() + " ist "
+							"Die Version zur Freigabe der Aktivierung fÃ¼r den Konfigurationsbereich " + configurationArea.getPid() + " ist "
 							+ configurationArea.getActivatableVersion() + " und sollte auf Version " + configAreaAndVersion.getVersion() + " gesetzt werden."
 					);
 				}
 
-				// prüfen, ob der Datensatz existiert
+				// prÃ¼fen, ob der Datensatz existiert
 				if(configurationArea.getConfigurationData(atg) == null) {
 					throw new ConfigurationChangeException("Der Datensatz zur Speicherung der Versionsnummern ist nicht vorhanden.");
 				}
-			} // for, alle Bereiche prüfen
+			} // for, alle Bereiche prÃ¼fen
 
 			// zur Aktivierung freigeben
 			for(ConfigAreaAndVersion configAreaAndVersion : simplifiedConfigurationAreasAndVersion) {
 				final ConfigurationArea configurationArea = configAreaAndVersion.getConfigArea();
 				final short newActivatableVersion = configAreaAndVersion.getVersion();
-				// wenn die Versionen gleich sind, muss der Datensatz nicht geändert werden - nur wenn die neue Version
-				// größer als die bisherige ist wird der Datensatz geändert.
+				// wenn die Versionen gleich sind, muss der Datensatz nicht geÃ¤ndert werden - nur wenn die neue Version
+				// grÃ¶ÃŸer als die bisherige ist wird der Datensatz geÃ¤ndert.
 				if(configurationArea.getActivatableVersion() < newActivatableVersion) {
 					// Datensatz anpassen
 					_debug.info(
 							"Konfigurationsbereich " + configurationArea.getPid() + " wird in Version " + newActivatableVersion
-							+ " zur Übernahme und Aktivierung freigegeben"
+							+ " zur Ãœbernahme und Aktivierung freigegeben"
 					);
-					// Abfrage damit die übernehmbare Version nicht verkleinert wird.
+					// Abfrage damit die Ã¼bernehmbare Version nicht verkleinert wird.
 					if(configurationArea.getTransferableVersion() < newActivatableVersion) {
-						// Bei Veränderung der aktivierbaren Version wird die übernehmbare Version mit vergrößert.
+						// Bei VerÃ¤nderung der aktivierbaren Version wird die Ã¼bernehmbare Version mit vergrÃ¶ÃŸert.
 						((ConfigConfigurationArea)configurationArea).setTransferableVersion(newActivatableVersion);
 					}
 					((ConfigConfigurationArea)configurationArea).setActivatableVersion(newActivatableVersion);
@@ -1162,15 +1168,15 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 		// Falls die Version, in der ein Bereich freigegeben werden soll 0 ist, so muss diese 0 in eine richtige Version
 		// umgewandelt werden
 
-		// Enthält alle Bereiche, die in der höchst möglichen Version zur Aktivierung freigegeben werden sollen. Alle Bereiche, die hier nicht eingetragen sind,
-		// und für die der KV verantwortlich ist, werden in der "zur Aktivierung freigegeben" Version geprüft.
-		// Als Schlüssel dient der Bereich, als Value der Bereich und die zu aktivierende Version.
+		// EnthÃ¤lt alle Bereiche, die in der hÃ¶chst mÃ¶glichen Version zur Aktivierung freigegeben werden sollen. Alle Bereiche, die hier nicht eingetragen sind,
+		// und fÃ¼r die der KV verantwortlich ist, werden in der "zur Aktivierung freigegeben" Version geprÃ¼ft.
+		// Als SchlÃ¼ssel dient der Bereich, als Value der Bereich und die zu aktivierende Version.
 		final Map<ConfigurationArea, ConfigAreaAndVersion> areaWithHighestPossibleVersion = new HashMap<ConfigurationArea, ConfigAreaAndVersion>();
 		for(ConfigAreaAndVersion configurationAreaAndVersion : configurationAreas) {
 			areaWithHighestPossibleVersion.put(configurationAreaAndVersion.getConfigArea(), configurationAreaAndVersion);
 		}
 
-		// Enthält nur Versionen ungleich 0
+		// EnthÃ¤lt nur Versionen ungleich 0
 		final Collection<ConfigAreaAndVersion> simplifiedConfigurationAreasAndVersion = new ArrayList<ConfigAreaAndVersion>();
 
 		// Alle Bereich der Konfiguration
@@ -1181,7 +1187,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			   || area.getConfigurationAuthority().getPid().equals(getConfigurationAuthorityPid())) {
 				final ConfigAreaAndVersion simplifiedConfigAreaAndVersion;
 				if(areaWithHighestPossibleVersion.containsKey(area)) {
-					// Der Bereich soll in der höchst möglichen Version freigegeben werden oder aber in der übergebenen Version.
+					// Der Bereich soll in der hÃ¶chst mÃ¶glichen Version freigegeben werden oder aber in der Ã¼bergebenen Version.
 					final ConfigAreaAndVersion areaAndVersion = areaWithHighestPossibleVersion.get(area);
 
 					short version = areaAndVersion.getVersion();
@@ -1194,20 +1200,20 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 					simplifiedConfigAreaAndVersion = new ConfigAreaAndVersion(area, version);
 				}
 				else {
-					// Der Bereich soll nicht für andere freigegeben werden. Da ihn aber andere benutzen, muss die Version, in der er für anderen
-					// zur Aktivierung freigegeben wurde, bei der Konsistenzprüfung benutzt werden.
+					// Der Bereich soll nicht fÃ¼r andere freigegeben werden. Da ihn aber andere benutzen, muss die Version, in der er fÃ¼r anderen
+					// zur Aktivierung freigegeben wurde, bei der KonsistenzprÃ¼fung benutzt werden.
 					simplifiedConfigAreaAndVersion = new ConfigAreaAndVersion(area, area.getActivatableVersion());
 				}
 
 				simplifiedConfigurationAreasAndVersion.add(simplifiedConfigAreaAndVersion);
 			}
 			else {
-				// Der KV ist für den Bereich nicht verantwortlich, aber vielleicht soll ja fälschlicherweise ein Bereich freigegeben werden, der
+				// Der KV ist fÃ¼r den Bereich nicht verantwortlich, aber vielleicht soll ja fÃ¤lschlicherweise ein Bereich freigegeben werden, der
 				// gar nicht freigegeben werden darf.
 				if(areaWithHighestPossibleVersion.containsKey(area)) {
 					// Ja, der Bereich sollte freigegeben werden. Der KV darf das aber gar nicht.
 
-					final String errorText = "Die Konfiguration ist für den Konfigurationsbereich " + area.getPid()
+					final String errorText = "Die Konfiguration ist fÃ¼r den Konfigurationsbereich " + area.getPid()
 					                         + " nicht der Konfigurationsverantwortliche. Darf diesen also auch nicht freigeben.";
 
 					_debug.warning(errorText);
@@ -1216,46 +1222,46 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			}
 		}
 
-		// Die Konsistenzprüfung prüft die nicht übergebenen Bereiche in deren aktueller Version.
+		// Die KonsistenzprÃ¼fung prÃ¼ft die nicht Ã¼bergebenen Bereiche in deren aktueller Version.
 		final ConsistencyCheckResultInterface consistencyCheckResult;
 		try {
 			consistencyCheckResult = checkConsistencyAndFixErrors(
 					simplifiedConfigurationAreasAndVersion, KindOfConsistencyCheck.RELEASE_FOR_ACTIVATION_WITHOUT_LOCAL_ACTIVATION
 			);
 
-			// damit der Vorgang ganz oder gar nicht durchgeführt wird, muss erst geprüft werden, ob es den Datensatz und die Attributgruppenverwendung gibt
-			// und ob der Datensatz geändert werden darf
-			final AttributeGroup atg = getAttributeGroup("atg.konfigurationsBereichÜbernahmeInformationen");
+			// damit der Vorgang ganz oder gar nicht durchgefÃ¼hrt wird, muss erst geprÃ¼ft werden, ob es den Datensatz und die Attributgruppenverwendung gibt
+			// und ob der Datensatz geÃ¤ndert werden darf
+			final AttributeGroup atg = getAttributeGroup("atg.konfigurationsBereichÃœbernahmeInformationen");
 			final AttributeGroupUsage atgUsage = atg.getAttributeGroupUsage(getAspect("asp.eigenschaften"));
 			if(atgUsage == null || (atgUsage.getUsage() != AttributeGroupUsage.Usage.ChangeableOptionalConfigurationData
 			                        && atgUsage.getUsage() != AttributeGroupUsage.Usage.ChangeableRequiredConfigurationData)) {
-				throw new ConfigurationChangeException("Die Attributgruppenverwendung existiert nicht, oder läßt keine Änderungen an den Datensätzen zu.");
+				throw new ConfigurationChangeException("Die Attributgruppenverwendung existiert nicht, oder lÃ¤ÃŸt keine Ã„nderungen an den DatensÃ¤tzen zu.");
 			}
 
 			if(!consistencyCheckResult.localError()) {
-				// Es gab keine lokalen, die Bereiche dürfen durch andere Aktiviert werden, obwohl der KV den Bereich noch nicht aktiviert hat
+				// Es gab keine lokalen, die Bereiche dÃ¼rfen durch andere Aktiviert werden, obwohl der KV den Bereich noch nicht aktiviert hat
 
-				// Prüfen, ob die Konfiguration für alle angegebenen Bereiche auch der Konfigurationsverantwortliche ist (dies ist bereits weiter oben geschehen).
-				// Prüfen, ob die neue übernahme Version größer als die bisherige ist
+				// PrÃ¼fen, ob die Konfiguration fÃ¼r alle angegebenen Bereiche auch der Konfigurationsverantwortliche ist (dies ist bereits weiter oben geschehen).
+				// PrÃ¼fen, ob die neue Ã¼bernahme Version grÃ¶ÃŸer als die bisherige ist
 				for(ConfigAreaAndVersion configAreaAndVersion : simplifiedConfigurationAreasAndVersion) {
 					final ConfigurationArea configurationArea = configAreaAndVersion.getConfigArea();
 
-					// Es darf zu keinem Rücksprung der Versionen kommen
+					// Es darf zu keinem RÃ¼cksprung der Versionen kommen
 					if(configurationArea.getTransferableVersion() > configAreaAndVersion.getVersion()) {
 						// Die zu setzende Version ist kleiner
 						_debug.warning(
-								"Die Version zur Freigabe für den Konfigurationsbereich " + configurationArea.getPid() + " ist "
+								"Die Version zur Freigabe fÃ¼r den Konfigurationsbereich " + configurationArea.getPid() + " ist "
 								+ configurationArea.getTransferableVersion() + " und sollte auf Version " + configAreaAndVersion.getVersion()
 								+ " gesetzt werden."
 						);
 						throw new IllegalArgumentException(
-								"Die Version zur Freigabe für den Konfigurationsbereich " + configurationArea.getPid() + " ist "
+								"Die Version zur Freigabe fÃ¼r den Konfigurationsbereich " + configurationArea.getPid() + " ist "
 								+ configurationArea.getTransferableVersion() + " und sollte auf Version " + configAreaAndVersion.getVersion()
 								+ " gesetzt werden."
 						);
 					}
 
-					// prüfen, ob der Datensatz existiert
+					// prÃ¼fen, ob der Datensatz existiert
 					if(configurationArea.getConfigurationData(atg) == null) {
 						throw new ConfigurationChangeException("Der Datensatz zur Speicherung der Versionsnummern ist nicht vorhanden.");
 					}
@@ -1264,15 +1270,15 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 				// zur aktivierung durch andere freigeben
 				for(ConfigAreaAndVersion configAreaAndVersion : simplifiedConfigurationAreasAndVersion) {
 
-					// Es müssen 3 Versionen angepaßt werden:
-					// 1) Die Version, die durch andere übernommen werden darf (wenn diese Version kleiner ist, als die die aktiviert werden darf)
+					// Es mÃ¼ssen 3 Versionen angepaÃŸt werden:
+					// 1) Die Version, die durch andere Ã¼bernommen werden darf (wenn diese Version kleiner ist, als die die aktiviert werden darf)
 					// 2) Die Version, die durch andere aktviert werden darf
-					// 3) Version, in der neue Konfigurationsobjekte angelegt werden. Diese muss nur erhöht werden, wenn die Version, die durch andere aktiviert
+					// 3) Version, in der neue Konfigurationsobjekte angelegt werden. Diese muss nur erhÃ¶ht werden, wenn die Version, die durch andere aktiviert
 					// werden darf gleich der Version ist, in der neue Konfigurationsobjekte angelegt werden.
 
 					final ConfigurationArea configurationArea = configAreaAndVersion.getConfigArea();
-					// wenn die Versionen gleich sind, ändert sich nichts, nur wenn die gespeicherte Version
-					// kleiner als die neue Version ist, wird der Datensatz geändert.
+					// wenn die Versionen gleich sind, Ã¤ndert sich nichts, nur wenn die gespeicherte Version
+					// kleiner als die neue Version ist, wird der Datensatz geÃ¤ndert.
 					if(configurationArea.getTransferableVersion() < configAreaAndVersion.getVersion()) {
 						// Datensatz anpassen
 						_debug.info(
@@ -1283,21 +1289,21 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 						((ConfigConfigurationArea)configurationArea).setTransferableVersion(configAreaAndVersion.getVersion());
 					}
 
-					// Andere dürfen diese Version nun aktivieren
+					// Andere dÃ¼rfen diese Version nun aktivieren
 					((ConfigConfigurationArea)configurationArea).setActivatableVersion(configAreaAndVersion.getVersion());
 
-					// Die Version, in der neue Konfigurationsobjekte entstehen, muss vielleicht angepaßt werden.
+					// Die Version, in der neue Konfigurationsobjekte entstehen, muss vielleicht angepaÃŸt werden.
 					final ConfigurationAreaFile areaFile = getConfigurationFileManager().getAreaFile(configAreaAndVersion.getConfigArea().getPid());
 					short nextActiveVersion = areaFile.getNextActiveVersion();
 
 					// Abfrage auf == und nicht <= weil in "configAreaAndVersion.getVersion()" ein Wert stehen kann der < ist.
-					// Beispiel: Die letzten Änderungen wurden in Version 4 gemacht, dann wird auf Version 5 benutzt. Aber in 5
-					// wurde noch nichts geändert. Dann steht in nextActiveVersion die 5 und in configAreaAndVersion.getVersion() die 4.
-					// In Version 5 können aber problemslos neue Objekte eingefügt werden. Bei der Abfrage <= würde Version 5 einfach übersprungen und eine
+					// Beispiel: Die letzten Ã„nderungen wurden in Version 4 gemacht, dann wird auf Version 5 benutzt. Aber in 5
+					// wurde noch nichts geÃ¤ndert. Dann steht in nextActiveVersion die 5 und in configAreaAndVersion.getVersion() die 4.
+					// In Version 5 kÃ¶nnen aber problemslos neue Objekte eingefÃ¼gt werden. Bei der Abfrage <= wÃ¼rde Version 5 einfach Ã¼bersprungen und eine
 					// Version verschenkt.
 					if(nextActiveVersion == configAreaAndVersion.getVersion()) {
 
-						// Neue Objekte würden in einer Version entstehen, die bereits für andere freigegeben wurde.
+						// Neue Objekte wÃ¼rden in einer Version entstehen, die bereits fÃ¼r andere freigegeben wurde.
 						// Es muss eine neue Version gesetzt werden, in der neue Objekte entstehen.
 
 						areaFile.setNextActiveVersion((short)(nextActiveVersion + 1));
@@ -1322,7 +1328,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			ConfigurationAuthority configurationAuthority = configurationArea.getConfigurationAuthority();
 
 			if(!configurationAuthority.getPid().equals(_managementFile.getConfigurationAuthority())) {
-				// KB nicht änderbar, da falscher KV
+				// KB nicht Ã¤nderbar, da falscher KV
 				continue;
 			}
 
@@ -1337,13 +1343,13 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Gibt das Objekt mit der angegebenen Pid aus Sicht der angegebenen Simulation zurück. Das heißt im Detail:
+	 * Gibt das Objekt mit der angegebenen Pid aus Sicht der angegebenen Simulation zurÃ¼ck. Das heiÃŸt im Detail:
 	 * <ul>
-	 *     <li>Bei Anfragen mit Simulationsvariante 0 werden nur "normale" aktive Objekte zurückgegeben.</li>
-	 *     <li>Bei Anfragen aus Simulationen wird entweder ein Objekt derselben Simulation zurückgegeben,
-	 *     oder ein "normales" aktives Objekt. "normale" Objekte werden aber nur zurückgegeben, wenn der Typ
+	 *     <li>Bei Anfragen mit Simulationsvariante 0 werden nur "normale" aktive Objekte zurÃ¼ckgegeben.</li>
+	 *     <li>Bei Anfragen aus Simulationen wird entweder ein Objekt derselben Simulation zurÃ¼ckgegeben,
+	 *     oder ein "normales" aktives Objekt. "normale" Objekte werden aber nur zurÃ¼ckgegeben, wenn der Typ
 	 *     des Objektes nicht speziell in der Simulation behandelt wird. Wird der Typ speziell behandelt
-	 *     ist das Objekt in der Simulation nicht gültig und es wird stattdessen null zurückgegeben.</li>
+	 *     ist das Objekt in der Simulation nicht gÃ¼ltig und es wird stattdessen null zurÃ¼ckgegeben.</li>
 	 * </ul>
 	 * @param pid                  Pid
 	 * @param simulationVariant    Simulation
@@ -1362,9 +1368,9 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 				if(systemObjectInformation == null) {
 					// Falls kein simulationsspezifisches Objekt gefunden wurde, "normales" aktives Objekt suchen
 					systemObjectInformation = _configurationFileManager.getActiveObject(pid);
-					// jetzt muss noch geprüft werden, dass das Objekt in dieser Simulation gültig ist, d. h.
+					// jetzt muss noch geprÃ¼ft werden, dass das Objekt in dieser Simulation gÃ¼ltig ist, d. h.
 					// der Typ des Objekts darf nicht in der Simulationsstrecke definiert worden sein,
-					// sonst wäre dieses nicht-simulierte Objekt dort ungültig
+					// sonst wÃ¤re dieses nicht-simulierte Objekt dort ungÃ¼ltig
 					checkSimulationObject = true;
 				}
 			}
@@ -1375,7 +1381,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 		if(systemObjectInformation != null) {
 			SystemObject systemObject = createSystemObject(systemObjectInformation);
 			if(checkSimulationObject){
-				// Jetzt muss noch geprüft werden ob das "normale" Objekt in der Simulation gültig ist
+				// Jetzt muss noch geprÃ¼ft werden ob das "normale" Objekt in der Simulation gÃ¼ltig ist
 				if(!objectIsValidInSimulation(systemObject, simulationVariant)){
 					_debug.fine("Zur angegebenen PID " + pid + " gibt es kein Objekt in Simulation " + simulationVariant + "!");
 					return null;
@@ -1445,7 +1451,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Gibt zu einer ID die Pid zurück.
+	 * Gibt zu einer ID die Pid zurÃ¼ck.
 	 *
 	 * @param id die ID des Objekts
 	 *
@@ -1465,7 +1471,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Erstellt, wenn es noch nicht existiert, ein neues System-Object und gibt es zurück. Diese Methode wird verwendet, falls der Konfigurationsbereich nicht
+	 * Erstellt, wenn es noch nicht existiert, ein neues System-Object und gibt es zurÃ¼ck. Diese Methode wird verwendet, falls der Konfigurationsbereich nicht
 	 * bekannt ist.
 	 *
 	 * @param systemObjectInfo das korrespondierende Objekt aus den Konfigurationsdateien
@@ -1477,9 +1483,9 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Erstellt, wenn es noch nicht existiert, ein neues System-Objekt und gibt es zurück.
+	 * Erstellt, wenn es noch nicht existiert, ein neues System-Objekt und gibt es zurÃ¼ck.
 	 *
-	 * @param systemObjectInfo  das korrespondierende Objekt für die Dateioperationen des SystemObjekts
+	 * @param systemObjectInfo  das korrespondierende Objekt fÃ¼r die Dateioperationen des SystemObjekts
 	 * @param configurationArea Konfigurationsbereich des System-Objekt
 	 *
 	 * @return das neue System-Objekt
@@ -1584,13 +1590,13 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			else if(typePid.equals(Pid.Type.TYPE)) {
 				systemObject = new ConfigConfigurationObjectType(configurationArea, systemObjectInfo);
 			}
-			else {    // Sonderbehandlung verschiedener Fälle
+			else {    // Sonderbehandlung verschiedener FÃ¤lle
 //				SystemObjectType type = (SystemObjectType) getObject(typePid);
-				// hier brauche ich die ID, da ich sonst zukünftige Typen nicht erhalte
+				// hier brauche ich die ID, da ich sonst zukÃ¼nftige Typen nicht erhalte
 				SystemObjectType type = (SystemObjectType)getObject(systemObjectInfo.getTypeId());
 				if(type == null) {
 					throw new NullPointerException(
-							"Beim Anlegen eines Systemobjekts konnte der zugehörige Typ nicht ermittelt werden. ObjektInfo: " + systemObjectInfo
+							"Beim Anlegen eines Systemobjekts konnte der zugehÃ¶rige Typ nicht ermittelt werden. ObjektInfo: " + systemObjectInfo
 					);
 				}
 				final SystemObjectType typeType = type.getType();
@@ -1608,30 +1614,30 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 					);
 				}
 				if(typeTypePid.equals(Pid.Type.OBJECT_SET_TYPE)) {    // es handelt sich um eine Menge
-					if(((ObjectSetType)type).isMutable()) {    // veränderbare Menge
+					if(((ObjectSetType)type).isMutable()) {    // verÃ¤nderbare Menge
 						systemObject = new ConfigMutableSet(configurationArea, systemObjectInfo);
 					}
-					else {    // nicht veränderbare Menge
+					else {    // nicht verÃ¤nderbare Menge
 						systemObject = new ConfigNonMutableSet(configurationArea, systemObjectInfo);
 					}
 				}
 				else if(type.isConfigurating()) {
 					// der Typ zeigt an, dass das Objekt ein konfigurierendes Objekt ist
 					if(type.inheritsFrom(getType(Pid.Type.CONFIGURATION_AUTHORITY))) {
-						// damit auch die autarke Organisationseinheit berücksichtigt wird
+						// damit auch die autarke Organisationseinheit berÃ¼cksichtigt wird
 						systemObject = new ConfigConfigurationAuthority(configurationArea, systemObjectInfo);
 					}
 					else if(type.inheritsFrom(getType(Pid.Type.DAV_APPLICATION))) {
-						// für den Datenverteiler
+						// fÃ¼r den Datenverteiler
 						systemObject = new ConfigDavApplication(configurationArea, systemObjectInfo);
 					}
-					else {            // für alle anderen Konfigurationsobjekte
+					else {            // fÃ¼r alle anderen Konfigurationsobjekte
 						systemObject = new ConfigConfigurationObject(configurationArea, systemObjectInfo);
 					}
 				}
-				else {    // wenn keiner der oberen Fälle zutrifft, dann muss es ein dynamisches Objekt sein
+				else {    // wenn keiner der oberen FÃ¤lle zutrifft, dann muss es ein dynamisches Objekt sein
 					if(type.inheritsFrom(getType(Pid.Type.CLIENT_APPLICATION))) {
-						// für die verschiedenen Applikationen
+						// fÃ¼r die verschiedenen Applikationen
 						systemObject = new ConfigClientApplication(configurationArea, systemObjectInfo);
 					}
 					else {    // alle anderen dynamischen Objekte
@@ -1663,7 +1669,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 						configurationAreas.put(objectInfo.getPid(), (ConfigurationArea)createSystemObject(objectInfo));
 					}
 					else {
-						throw new IllegalStateException("Es gibt mehr als einen zukünftigen Konfigurationsbereich mit dieser Pid: " + managementInfo.getPid());
+						throw new IllegalStateException("Es gibt mehr als einen zukÃ¼nftigen Konfigurationsbereich mit dieser Pid: " + managementInfo.getPid());
 					}
 				}
 				else {
@@ -1787,7 +1793,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 		return null;
 	}
 
-//	/** @deprecated Kodierung von Attributgruppen wird nicht mehr unterstützt. */
+//	/** @deprecated Kodierung von Attributgruppen wird nicht mehr unterstÃ¼tzt. */
 //	public AttributeGroup getAttributeGroup(short attributeGroupCode) {
 //		final List<SystemObject> atgs = getType(Pid.Type.ATTRIBUTE_GROUP).getObjects();
 //		for(SystemObject systemObject : atgs) {
@@ -1800,7 +1806,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 //		return null;
 //	}
 
-//	/** @deprecated Kodierung von Aspekten wird nicht mehr unterstützt. */
+//	/** @deprecated Kodierung von Aspekten wird nicht mehr unterstÃ¼tzt. */
 //	public Aspect getAspect(short aspectCode) {
 //		for(SystemObject systemObject : getType(Pid.Type.ASPECT).getObjects()) {
 //			Aspect asp = (Aspect)systemObject;
@@ -1813,15 +1819,15 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 //	}
 
 	public ConfigurationObject createConfigurationObject(ConfigurationObjectType type, String pid, String name, List<? extends ObjectSet> sets) throws ConfigurationChangeException {
-		throw new ConfigurationChangeException("Methode DataModel.createConfigurationObject(..) wird nicht mehr unterstützt.");
+		throw new ConfigurationChangeException("Methode DataModel.createConfigurationObject(..) wird nicht mehr unterstÃ¼tzt.");
 	}
 
 	public DynamicObject createDynamicObject(SystemObjectType type, String pid, String name) throws ConfigurationChangeException {
-		throw new ConfigurationChangeException("Methode DataModel.createDynamicObject(..) wird nicht mehr unterstützt.");
+		throw new ConfigurationChangeException("Methode DataModel.createDynamicObject(..) wird nicht mehr unterstÃ¼tzt.");
 	}
 
 	/**
-	 * Löscht alle dynamischen Objekte mit der angegebenen Simulationsvariante permanent.
+	 * LÃ¶scht alle dynamischen Objekte mit der angegebenen Simulationsvariante permanent.
 	 *
 	 * @param simulationVariant die Simulationsvariante
 	 */
@@ -1840,9 +1846,9 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Ermittelt, welche Objekte endgültig gelöscht werden können und markiert diese.
+	 * Ermittelt, welche Objekte endgÃ¼ltig gelÃ¶scht werden kÃ¶nnen und markiert diese.
 	 * Entfernt historische Referenzen in dynamischen Mengen
-	 * @param spec Spezifikation, welche Objekttypen nach welchen Zeiträumen gelöscht werden dürfen
+	 * @param spec Spezifikation, welche Objekttypen nach welchen ZeitrÃ¤umen gelÃ¶scht werden dÃ¼rfen
 	 */
 	public void doMaintenance(final MaintenanceSpec spec) {
 		if(spec == null) throw new IllegalArgumentException("spec ist null");
@@ -1859,7 +1865,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			ConfigurationAuthority configurationAuthority = configurationArea.getConfigurationAuthority();
 
 			if(!configurationAuthority.getPid().equals(_managementFile.getConfigurationAuthority())) {
-				// KB nicht änderbar, da falscher KV
+				// KB nicht Ã¤nderbar, da falscher KV
 				continue;
 			}
 
@@ -1870,7 +1876,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			// Typen dieser Objekte ermitteln
 			final Set<Long> typeIds = new HashSet<Long>();
 
-			// Ersetzbar durch Lambda für Java 8
+			// Ersetzbar durch Lambda fÃ¼r Java 8
 			areaFile.forEachOldDynamicObject(new Consumer<DynamicObjectInfo>() {
 				                                 @Override
 				                                 public void accept(final DynamicObjectInfo dynamicObjectInfo) {
@@ -1880,15 +1886,15 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 
 			final Set<Long> referencedObjects = collectReferences(typeIds);
 
-			// Zum merken, welche Objekte gelöscht werden sollen
-			// (alle werden gleichzeitig gelöscht um Restrukturierungsaufwand zu verringern)
+			// Zum merken, welche Objekte gelÃ¶scht werden sollen
+			// (alle werden gleichzeitig gelÃ¶scht um Restrukturierungsaufwand zu verringern)
 			final List<Long> objectsToDelete = new ArrayList<Long>();
 
-			// Ersetzbar durch Lambda für Java 8
+			// Ersetzbar durch Lambda fÃ¼r Java 8
 			areaFile.forEachOldDynamicObject(new Consumer<DynamicObjectInfo>() {
 				                                 @Override
 				                                 public void accept(final DynamicObjectInfo dynamicObjectInfo) {
-					                                 // Wenn die Parameter das Löschen erlauben und das Objekt nicht referenziert wird, löschen
+					                                 // Wenn die Parameter das LÃ¶schen erlauben und das Objekt nicht referenziert wird, lÃ¶schen
 					                                 if(!referencedObjects.contains(dynamicObjectInfo.getID()) && spec.canDeleteObject(dynamicObjectInfo)){
 						                                 _debug.fine("Bereinigtes Objekt", dynamicObjectInfo);
 						                                 objectsToDelete.add(dynamicObjectInfo.getID());
@@ -1896,7 +1902,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 				                                 }
 			                                 });
 
-			// Gefundene Objekte als löschbar markieren (für den nächste Neust
+			// Gefundene Objekte als lÃ¶schbar markieren (fÃ¼r den nÃ¤chste Neust
 			if(!objectsToDelete.isEmpty()) {
 				areaFile.markObjectsForDeletion(objectsToDelete);
 				numDynObjects += objectsToDelete.size();
@@ -1923,13 +1929,13 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			}
 		}
 
-		_debug.info(numDynObjects + " dynamische Objekte für das endgültige Löschen vorbereitet und " + numSetReferences + " historische Mengenreferenzen bereinigt.");
+		_debug.info(numDynObjects + " dynamische Objekte fÃ¼r das endgÃ¼ltige LÃ¶schen vorbereitet und " + numSetReferences + " historische Mengenreferenzen bereinigt.");
 	}
 
 	/**
-	 * Gibt alle Objekte der angegebenen Typen zurück, die von einem beliebigen gültigen, anderen Objekt referenziert werden
+	 * Gibt alle Objekte der angegebenen Typen zurÃ¼ck, die von einem beliebigen gÃ¼ltigen, anderen Objekt referenziert werden
 	 * @param typeIds Menge mit Typ-IDs von Objekten, zu denen Referenzen gesucht werden sollen
-	 * @return Alle Objekt der angegebenen typen, die von einem anderen gültigen Objekt referenziert werden.
+	 * @return Alle Objekt der angegebenen typen, die von einem anderen gÃ¼ltigen Objekt referenziert werden.
 	 */
 	private Set<Long> collectReferences(final Set<Long> typeIds) {
 		final Set<Long> result = new HashSet<Long>();
@@ -1960,13 +1966,13 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Sammelt alle von gültigen Objekten referenzierte ObjektIds. Diese dürfen nicht bereinigt werden.
-	 * @param referencedObjects Rückgabe-Set
+	 * Sammelt alle von gÃ¼ltigen Objekten referenzierte ObjektIds. Diese dÃ¼rfen nicht bereinigt werden.
+	 * @param referencedObjects RÃ¼ckgabe-Set
 	 * @param typeIds
 	 * @param object Zu behandelndes Objekt
 	 */
 	private void collectReferences(final Set<Long> referencedObjects, final Set<Long> typeIds, final SystemObject object) {
-		if(!object.isValid()) return; // Nicht rekursiv nach referenzierten Objekten suchen, wenn selbst nicht gültig
+		if(!object.isValid()) return; // Nicht rekursiv nach referenzierten Objekten suchen, wenn selbst nicht gÃ¼ltig
 
 		if(object instanceof ConfigurationObject) {
 			ConfigurationObject confOb = (ConfigurationObject) object;
@@ -2002,14 +2008,14 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Gibt die Objekte zurück, die aus Sicht der angegebenen Simulationsvariante zu der angegebenen Pid in dem angegebenen Zeitraum gültig
+	 * Gibt die Objekte zurÃ¼ck, die aus Sicht der angegebenen Simulationsvariante zu der angegebenen Pid in dem angegebenen Zeitraum gÃ¼ltig
 	 * waren.
 	 *
-	 * @param pid               die Pid der gewünschten Objekte
+	 * @param pid               die Pid der gewÃ¼nschten Objekte
 	 * @param startTime         der zu betachtende Startzeitpunkt des Anfragezeitraums
 	 * @param endTime           der zu betrachtende Endzeitpunkt des Anfragezeitraums
 	 * @param simulationVariant die Simulationsvariante
-	 * @return Die Objekte, die zu der angegebenen Pid in dem angegebenen Zeitraum in der angegebenen Simulation gültig waren.
+	 * @return Die Objekte, die zu der angegebenen Pid in dem angegebenen Zeitraum in der angegebenen Simulation gÃ¼ltig waren.
 	 */
 	public Collection<SystemObject> getObjects(String pid, long startTime, long endTime, short simulationVariant) {
 		// alle Bereiche durchgehen
@@ -2029,10 +2035,10 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Prüft, ob ein Objekt in der angegebenen Simulation gültig ist
-	 * @param systemObject Zu prüfendes Objekt
-	 * @param simulationVariant Sumulationsvariante der zu prüfenden Simulation oder 0 falls keine Simulation verwendet wird
-	 * @return true: Objekt ist gültig, false sonst. Insbesondere ist ein Objekt dann gültig wenn
+	 * PrÃ¼ft, ob ein Objekt in der angegebenen Simulation gÃ¼ltig ist
+	 * @param systemObject Zu prÃ¼fendes Objekt
+	 * @param simulationVariant Sumulationsvariante der zu prÃ¼fenden Simulation oder 0 falls keine Simulation verwendet wird
+	 * @return true: Objekt ist gÃ¼ltig, false sonst. Insbesondere ist ein Objekt dann gÃ¼ltig wenn
 	 * <ul>
 	 *     <li>Keine Simulation verwendet wird und das Objekt auch nicht simuliert ist
 	 *     <li>Eine Simulation verwendet wird und das Objekt dieselbe Simulationsvariante besitzt
@@ -2053,7 +2059,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 					return true;
 				}
 				if(objectSimulationVariant != 0){
-					// Objekte fremder Simulationen sind nicht gültig
+					// Objekte fremder Simulationen sind nicht gÃ¼ltig
 					return false;
 				}
 				ConfigSimulationObject simulationObject = getSimulation(simulationVariant);
@@ -2062,7 +2068,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 					return false;
 				}
 				if(simulationObject.isSpecialTreatedDynamicObjectType((DynamicObjectType) configDynamicObject.getType())){
-					// Typ ist in Simulationsstrecke eingetragen, gewöhliches Objekt ist daher in dieser Simulation nicht gültig
+					// Typ ist in Simulationsstrecke eingetragen, gewÃ¶hliches Objekt ist daher in dieser Simulation nicht gÃ¼ltig
 					return false;
 				}
 			}
@@ -2079,12 +2085,12 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Gibt alle Objekte unabhängig von der Simulationsvariante zurück
-	 * @param configurationAreas      Konfigurationsbereiche, die zu berücksichtigen sind. Wird <code>null</code> übergeben, so gilt dies als Wildcard und alle
+	 * Gibt alle Objekte unabhÃ¤ngig von der Simulationsvariante zurÃ¼ck
+	 * @param configurationAreas      Konfigurationsbereiche, die zu berÃ¼cksichtigen sind. Wird <code>null</code> Ã¼bergeben, so gilt dies als Wildcard und alle
 	 *                                Konfigurationsbereiche werden betrachtet.
-	 * @param systemObjectTypes       Objekttypen, die zu berücksichtigen sind. Wird <code>null</code> übergeben, so gilt dies als Wildcard und alle Objekttypen
+	 * @param systemObjectTypes       Objekttypen, die zu berÃ¼cksichtigen sind. Wird <code>null</code> Ã¼bergeben, so gilt dies als Wildcard und alle Objekttypen
 	 *                                werden betrachtet.
-	 * @param objectTimeSpecification Gibt den Gültigkeitsbereich der geforderten Objekte an.
+	 * @param objectTimeSpecification Gibt den GÃ¼ltigkeitsbereich der geforderten Objekte an.
 	 *
 	 * @return Objekte
 	 *
@@ -2094,10 +2100,10 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			final Collection<ConfigurationArea> configurationAreas,
 			final Collection<SystemObjectType> systemObjectTypes,
 			ObjectTimeSpecification objectTimeSpecification) {
-		// Liste, die alle ermittelten Objekte enthält
+		// Liste, die alle ermittelten Objekte enthÃ¤lt
 		final Collection<SystemObject> objects = new ArrayList<SystemObject>();
 
-		// alle Konfigurationsbereiche, die zu berücksichtigen sind, ermitteln
+		// alle Konfigurationsbereiche, die zu berÃ¼cksichtigen sind, ermitteln
 		final List<ConfigurationArea> areas;
 		if(configurationAreas == null) {
 			areas = new ArrayList<ConfigurationArea>();
@@ -2117,7 +2123,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 		// alle Objekt-Typen, die zu betrachten sind, ermitteln - also auch die Typen, die die angegebenen Typen erweitern
 		final Set<SystemObjectType> relevantObjectTypes = new HashSet<SystemObjectType>();
 		if(systemObjectTypes == null) {
-			// es wurde keine Einschränkung der Typen gegeben -> alle Typen ermitteln
+			// es wurde keine EinschrÃ¤nkung der Typen gegeben -> alle Typen ermitteln
 			// die Typen eines TypTyp-Objekts ermittelt man mit getElements()!
 			relevantObjectTypes.add(getTypeTypeObject());
 			final List<SystemObject> typeTypeElements = getTypeTypeObject().getElements();
@@ -2126,7 +2132,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			}
 		}
 		else {
-			// die Typen eines Typ-Objekts werden über die Sub-Types ermittelt.
+			// die Typen eines Typ-Objekts werden Ã¼ber die Sub-Types ermittelt.
 			for(SystemObjectType objectType : systemObjectTypes) {
 				relevantObjectTypes.add(objectType);
 				relevantObjectTypes.addAll(getAllSubTypes(objectType));
@@ -2143,12 +2149,12 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Gibt alle Objekte zurück, außer Objekten die in Simulationen sind
-	 * @param configurationAreas      Konfigurationsbereiche, die zu berücksichtigen sind. Wird <code>null</code> übergeben, so gilt dies als Wildcard und alle
+	 * Gibt alle Objekte zurÃ¼ck, auÃŸer Objekten die in Simulationen sind
+	 * @param configurationAreas      Konfigurationsbereiche, die zu berÃ¼cksichtigen sind. Wird <code>null</code> Ã¼bergeben, so gilt dies als Wildcard und alle
 	 *                                Konfigurationsbereiche werden betrachtet.
-	 * @param systemObjectTypes       Objekttypen, die zu berücksichtigen sind. Wird <code>null</code> übergeben, so gilt dies als Wildcard und alle Objekttypen
+	 * @param systemObjectTypes       Objekttypen, die zu berÃ¼cksichtigen sind. Wird <code>null</code> Ã¼bergeben, so gilt dies als Wildcard und alle Objekttypen
 	 *                                werden betrachtet.
-	 * @param objectTimeSpecification Gibt den Gültigkeitsbereich der geforderten Objekte an.
+	 * @param objectTimeSpecification Gibt den GÃ¼ltigkeitsbereich der geforderten Objekte an.
 	 *
 	 * @return Objekte
 	 *
@@ -2162,12 +2168,12 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Gibt alle Objekte zurück, die in einer bestimmten Simulation gültig sind
-	 * @param configurationAreas      Konfigurationsbereiche, die zu berücksichtigen sind. Wird <code>null</code> übergeben, so gilt dies als Wildcard und alle
+	 * Gibt alle Objekte zurÃ¼ck, die in einer bestimmten Simulation gÃ¼ltig sind
+	 * @param configurationAreas      Konfigurationsbereiche, die zu berÃ¼cksichtigen sind. Wird <code>null</code> Ã¼bergeben, so gilt dies als Wildcard und alle
 	 *                                Konfigurationsbereiche werden betrachtet.
-	 * @param systemObjectTypes       Objekttypen, die zu berücksichtigen sind. Wird <code>null</code> übergeben, so gilt dies als Wildcard und alle Objekttypen
+	 * @param systemObjectTypes       Objekttypen, die zu berÃ¼cksichtigen sind. Wird <code>null</code> Ã¼bergeben, so gilt dies als Wildcard und alle Objekttypen
 	 *                                werden betrachtet.
-	 * @param objectTimeSpecification Gibt den Gültigkeitsbereich der geforderten Objekte an.
+	 * @param objectTimeSpecification Gibt den GÃ¼ltigkeitsbereich der geforderten Objekte an.
 	 * @param simulationVariant       Simulationsvariante
 	 * @return Objekte
 	 */
@@ -2188,9 +2194,9 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	public UserAdministration getUserAdministration() {
-		// Wird diese Methode gebraucht, so muss die Klasse {@link de.bsvrz.puk.config.main.authentication.ConfigAuthentication} entsprechen geändert werden
-		// und benutzt werden. (Die Klasse muss das UserAdmin Interface implementieren und dann kann die Klasse hier zurückgegeben werden)
-		throw new UnsupportedOperationException("Diese Funktionalität wird nicht unterstützt.");
+		// Wird diese Methode gebraucht, so muss die Klasse {@link de.bsvrz.puk.config.main.authentication.ConfigAuthentication} entsprechen geÃ¤ndert werden
+		// und benutzt werden. (Die Klasse muss das UserAdmin Interface implementieren und dann kann die Klasse hier zurÃ¼ckgegeben werden)
+		throw new UnsupportedOperationException("Diese FunktionalitÃ¤t wird nicht unterstÃ¼tzt.");
 	}
 
 	public BackupResult backupConfigurationFiles(final String targetDirectory, final BackupProgressCallback callback) throws ConfigurationTaskException {
@@ -2230,9 +2236,9 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Gibt die String-Repräsentation dieser Klasse zurück. Der Wert kann sich ändern.
+	 * Gibt die String-ReprÃ¤sentation dieser Klasse zurÃ¼ck. Der Wert kann sich Ã¤ndern.
 	 *
-	 * @return die String-Repräsentation dieser Klasse
+	 * @return die String-ReprÃ¤sentation dieser Klasse
 	 */
 	public String toString() {
 		return "Konfiguration { Verwaltungsdatei = '" + _adminFile.getPath() + "'}";
@@ -2244,7 +2250,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	 * @throws java.io.IOException Fehler, die beim Speichern der Verwaltungsdaten oder der Konfigurationsdateien auftreten, werden hier weitergereicht.
 	 */
 	public void save() throws IOException {
-		// Dateien mit der Elementzugehörigkeit von dynamischen Mengen speichern
+		// Dateien mit der ElementzugehÃ¶rigkeit von dynamischen Mengen speichern
 		saveSetElementsFiles();
 		// Verwaltungsdatei speichern
 		getManagementFile().save();
@@ -2254,7 +2260,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 
 	public void close() {
 		try {
-			// Dateien mit der Elementzugehörigkeit von dynamischen Mengen speichern
+			// Dateien mit der ElementzugehÃ¶rigkeit von dynamischen Mengen speichern
 			saveSetElementsFiles();
 			final ConfigurationManagementFile configurationManagementFile = getManagementFile();
 			// configurationManagementFile kann null sein, wenn der Konstruktor vor dem Setzen des Fields auf eine Exception gelaufen ist,
@@ -2267,7 +2273,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			e.printStackTrace();
 			_debug.error(
 					"Fehler beim Speichern der Verwaltungsdaten-Datei " + getManagementFile()
-					+ ". Das System wird weiter heruntergefahren und soviele Daten wie möglich gesichert.", e
+					+ ". Das System wird weiter heruntergefahren und soviele Daten wie mÃ¶glich gesichert.", e
 			);
 		}
 		finally {
@@ -2300,8 +2306,8 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 		try {
 			// Verwaltungseintrag holen bzw. neu anlegen
 			ConfigurationAreaManagementInfo managementInfo = getConfigurationAreaManagementInfo(areaPid);
-			// Sans, STS, KonfigAss: Neuer Eintrag in Verwaltungsdatei wird hier NICHT, sondern - falls erforderlich - später, unmittelbar vor save() angelegt
-			// Prüfen, ob der Konfigurationsverantwortliche bereits existiert - damit ist die Pid-Überprüfung geschehen.
+			// Sans, STS, KonfigAss: Neuer Eintrag in Verwaltungsdatei wird hier NICHT, sondern - falls erforderlich - spÃ¤ter, unmittelbar vor save() angelegt
+			// PrÃ¼fen, ob der Konfigurationsverantwortliche bereits existiert - damit ist die Pid-ÃœberprÃ¼fung geschehen.
 			ConfigurationAuthority authority = (ConfigurationAuthority)getObject(authorityPid);
 			if(authority == null) {
 				// ID zuweisen
@@ -2314,7 +2320,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 					areaPid, managementInfo != null ? managementInfo.getDirectory() : _adminFile.getParentFile()
 			);
 
-			areaFile.setNextActiveVersion((short)1);    // Version festlegen, ab der die Objekte gültig werden sollen
+			areaFile.setNextActiveVersion((short)1);    // Version festlegen, ab der die Objekte gÃ¼ltig werden sollen
 			final SystemObjectType objectType = getType("typ.konfigurationsBereich");
 			final ConfigurationObjectInfo areaInfo = areaFile.createConfigurationObject(getNextObjectId(), objectType.getId(), areaPid, areaName);
 			final ConfigurationArea configurationArea = (ConfigurationArea)createSystemObject(areaInfo);
@@ -2328,23 +2334,23 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 				setConfigurationAuthority(authority);
 			}
 
-			// Aspekt Eigenschaften wird für verschiedene Datensätze benötigt
+			// Aspekt Eigenschaften wird fÃ¼r verschiedene DatensÃ¤tze benÃ¶tigt
 			final Aspect propertyAsp = getAspect("asp.eigenschaften");
 
-			// konfigurierenden Datensatz für den Konfigurationsverantwortlichen anlegen.
+			// konfigurierenden Datensatz fÃ¼r den Konfigurationsverantwortlichen anlegen.
 			final AttributeGroup areaPropertyAtg = getAttributeGroup("atg.konfigurationsBereichEigenschaften");
 			Data areaPropertyData = AttributeBaseValueDataFactory.createAdapter(areaPropertyAtg, AttributeHelper.getAttributesValues(areaPropertyAtg));
-			areaPropertyData.getReferenceValue("zuständiger").setSystemObject(authority);
-			areaPropertyData.getReferenceValue("neuerZuständiger").setSystemObject(null);
+			areaPropertyData.getReferenceValue("zustÃ¤ndiger").setSystemObject(authority);
+			areaPropertyData.getReferenceValue("neuerZustÃ¤ndiger").setSystemObject(null);
 
 			final AttributeGroupUsage areaPropertyAtgUsage = areaPropertyAtg.getAttributeGroupUsage(propertyAsp);
 			((ConfigSystemObject)configurationArea).createConfigurationData(areaPropertyAtgUsage, areaPropertyData);
 
-			// konfigurierenden Datensatz für die Versionsnummern anlegen
-			final AttributeGroup areaReleaseAtg = getAttributeGroup("atg.konfigurationsBereichÜbernahmeInformationen");
+			// konfigurierenden Datensatz fÃ¼r die Versionsnummern anlegen
+			final AttributeGroup areaReleaseAtg = getAttributeGroup("atg.konfigurationsBereichÃœbernahmeInformationen");
 			Data areaReleaseData = AttributeBaseValueDataFactory.createAdapter(areaReleaseAtg, AttributeHelper.getAttributesValues(areaReleaseAtg));
 			areaReleaseData.getUnscaledValue("aktivierbareVersion").set((short)0);
-			areaReleaseData.getUnscaledValue("übernehmbareVersion").set((short)0);
+			areaReleaseData.getUnscaledValue("Ã¼bernehmbareVersion").set((short)0);
 			final AttributeGroupUsage areaReleaseAtgUsage = areaReleaseAtg.getAttributeGroupUsage(propertyAsp);
 			((ConfigSystemObject)configurationArea).createConfigurationData(areaReleaseAtgUsage, areaReleaseData);
 
@@ -2357,7 +2363,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 			// Verwaltungsdatei und Konfigurationsdatei abspeichern
 			save();
 
-			// Objekt des Konfigurationsbereichs wird zurückgegeben
+			// Objekt des Konfigurationsbereichs wird zurÃ¼ckgegeben
 			_debug.info("Ein neuer Konfigurationsbereich mit der Pid '" + configurationArea.getPid() + "' wurde angelegt.");
 			return configurationArea;
 		}
@@ -2369,7 +2375,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	public ConfigurationArea createConfigurationArea(String name, String pid, String authorityPid) throws ConfigurationChangeException {
-		// prüfen, ob es ein aktives Objekt des Konfigurationsverantwortlichen gibt
+		// prÃ¼fen, ob es ein aktives Objekt des Konfigurationsverantwortlichen gibt
 		if(getObject(authorityPid) != null) {
 			return createConfigurationArea(name, pid, null, authorityPid, null, 0);
 		}
@@ -2379,7 +2385,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Gibt zu einem Konfigurationsbereich die aktuellen Objekte zurück.
+	 * Gibt zu einem Konfigurationsbereich die aktuellen Objekte zurÃ¼ck.
 	 *
 	 * @param configurationArea der Konfigurationsbereich
 	 *
@@ -2400,11 +2406,11 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Gibt zu einem Konfigurationsbereich die noch nicht aktuellen Objekte zurück.
+	 * Gibt zu einem Konfigurationsbereich die noch nicht aktuellen Objekte zurÃ¼ck.
 	 *
 	 * @param configurationArea der Konfigurationsbereich
 	 *
-	 * @return die zukünftigen Objekte des angegebenen Konfigurationsbereichs
+	 * @return die zukÃ¼nftigen Objekte des angegebenen Konfigurationsbereichs
 	 *
 	 * @see ConfigurationArea
 	 */
@@ -2423,9 +2429,9 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	/**
 	 * Bestimmt die Attributgruppenverwendung mit der angegebenen Datenverteiler-Identifizierung.
 	 *
-	 * @param usageIdentification Identifizierung dieser Attributgruppenverwendung bei der Kommunikation über den Datenverteiler.
+	 * @param usageIdentification Identifizierung dieser Attributgruppenverwendung bei der Kommunikation Ã¼ber den Datenverteiler.
 	 *
-	 * @return Zur Identifizierung gehörende Attributgruppenverwendung.
+	 * @return Zur Identifizierung gehÃ¶rende Attributgruppenverwendung.
 	 */
 	public AttributeGroupUsage getAttributeGroupUsage(final long usageIdentification) {
 		if(usageIdentification == AttributeGroupUsageIdentifications.CONFIGURATION_READ_REQUEST) {
@@ -2449,18 +2455,18 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 
 
 	/**
-	 * Prüft, ob eventuelle Abhängigkeiten zwischen den Bereichen aufgelöst werden können.
-	 * <p/>
-	 * Bei optionalen Abhängigkeiten, die nicht aufgelöst werden können, wird eine Warnung ausgegeben.
-	 * <p/>
-	 * Bei notwendigen Abhängigkeiten, die nicht aufgelöst werden können, wird ein Error Ausgegeben. Nachdem alle nicht aufgelösten notwendigen Abhängigkeiten
+	 * PrÃ¼ft, ob eventuelle AbhÃ¤ngigkeiten zwischen den Bereichen aufgelÃ¶st werden kÃ¶nnen.
+	 * <p>
+	 * Bei optionalen AbhÃ¤ngigkeiten, die nicht aufgelÃ¶st werden kÃ¶nnen, wird eine Warnung ausgegeben.
+	 * <p>
+	 * Bei notwendigen AbhÃ¤ngigkeiten, die nicht aufgelÃ¶st werden kÃ¶nnen, wird ein Error Ausgegeben. Nachdem alle nicht aufgelÃ¶sten notwendigen AbhÃ¤ngigkeiten
 	 * ausgegeben wurden, wird eine Exception geworfen.
-	 * <p/>
-	 * Wurden bei einem Bereich noch keine Abhängigkeiten geprüft, wird eine Warnung ausgegeben.
+	 * <p>
+	 * Wurden bei einem Bereich noch keine AbhÃ¤ngigkeiten geprÃ¼ft, wird eine Warnung ausgegeben.
 	 *
-	 * @param areasAndVersions Bereiche und deren Versionen die auf Abhängigikeit geprüft werden sollen.
+	 * @param areasAndVersions Bereiche und deren Versionen die auf AbhÃ¤ngigikeit geprÃ¼ft werden sollen.
 	 *
-	 * @throws IllegalStateException Es wurden notwendige Abhängigkeiten zwischen Bereichen gefunden, die nicht aufgelöst werden konnten.
+	 * @throws IllegalStateException Es wurden notwendige AbhÃ¤ngigkeiten zwischen Bereichen gefunden, die nicht aufgelÃ¶st werden konnten.
 	 */
 	private void checkAreaDependency(Collection<ConfigAreaAndVersion> areasAndVersions) {
 		final AreaDependencyChecker dependencyChecker = new AreaDependencyChecker();
@@ -2471,29 +2477,29 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Setzt das Flag, mit dem die Konsistenzprüfung entscheiden soll, ob doppelte Pids in verschiedenen Konfigurationsbereichen erlaubt sind.
+	 * Setzt das Flag, mit dem die KonsistenzprÃ¼fung entscheiden soll, ob doppelte Pids in verschiedenen Konfigurationsbereichen erlaubt sind.
 	 *
-	 * @param allowDoublePids <code>true</code> falls doppelte Pids in verschiedenen Konfigurationsbereichen von der Konsistenzprüfung zugelassen werden sollen.
+	 * @param allowDoublePids <code>true</code> falls doppelte Pids in verschiedenen Konfigurationsbereichen von der KonsistenzprÃ¼fung zugelassen werden sollen.
 	 */
 	public void setAllowDoublePids(final boolean allowDoublePids) {
 		_allowDoublePids = allowDoublePids;
 	}
 
 	/**
-	 * Liefert das Flag, mit dem die Konsistenzprüfung entscheiden soll, ob doppelte Pids in verschiedenen Konfigurationsbereichen erlaubt sind.
+	 * Liefert das Flag, mit dem die KonsistenzprÃ¼fung entscheiden soll, ob doppelte Pids in verschiedenen Konfigurationsbereichen erlaubt sind.
 	 *
-	 * @return <code>true</code> falls doppelte Pids in verschiedenen Konfigurationsbereichen von der Konsistenzprüfung zugelassen werden sollen.
+	 * @return <code>true</code> falls doppelte Pids in verschiedenen Konfigurationsbereichen von der KonsistenzprÃ¼fung zugelassen werden sollen.
 	 */
 	public boolean getAllowDoublePids() {
 		return _allowDoublePids;
 	}
 
 	/**
-	 * Setzt das Flag, mit dem die Konsistenzprüfung entscheidet, ob Fehler bei der Prüfung der Abhängigkeiten in der Konsistenzprüfung ignoriert werden oder zum
-	 * Abbruch führen sollen. werden sollen.
+	 * Setzt das Flag, mit dem die KonsistenzprÃ¼fung entscheidet, ob Fehler bei der PrÃ¼fung der AbhÃ¤ngigkeiten in der KonsistenzprÃ¼fung ignoriert werden oder zum
+	 * Abbruch fÃ¼hren sollen. werden sollen.
 	 *
 	 * @param ignoreDependencyErrorsInConsistencyCheck
-	 *         <code>true</code> falls Fehler bei der Prüfung der Abhängigkeiten in der Konsistenzprüfung ignoriert werden sollen.
+	 *         <code>true</code> falls Fehler bei der PrÃ¼fung der AbhÃ¤ngigkeiten in der KonsistenzprÃ¼fung ignoriert werden sollen.
 	 */
 	public void setIgnoreDependencyErrorsInConsistencyCheck(final boolean ignoreDependencyErrorsInConsistencyCheck) {
 		_ignoreDependencyErrorsInConsistencyCheck = ignoreDependencyErrorsInConsistencyCheck;
@@ -2509,19 +2515,23 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	public void saveSetElementsFiles() {
+		// toArray, damit threadsicher eine Kopie erstellt wird. safeElementsData nicht synchronisiert ausfÃ¼hren
+		MutableSetExtFileStorage[] arrayCopy;
 		synchronized(_dirtyMutableSets) {
-			for(MutableSetExtFileStorage dirtyMutableSet : _dirtyMutableSets) {
-				dirtyMutableSet.saveElementsData();
-			}
+			arrayCopy = _dirtyMutableSets.toArray(new MutableSetExtFileStorage[0]);
+			_dirtyMutableSets.clear();
+		}
+		for(MutableSetExtFileStorage dirtyMutableSet : arrayCopy) {
+			dirtyMutableSet.saveElementsData();
 		}
 	}
 
 	/**
-	 * Leitet die Aktualisierungsnachrichten bzgl. Änderungen von dynamischen Mengen und dynamischen Typen an das entsprechende Verwaltungsobjekt weiter.
+	 * Leitet die Aktualisierungsnachrichten bzgl. Ã„nderungen von dynamischen Mengen und dynamischen Typen an das entsprechende Verwaltungsobjekt weiter.
 	 *
-	 * @param mutableCollectionSupport Verwaltungsobjekt für Aktualisierungsnachrichten
-	 * @param simulationVariant        Simulationsvariante der Änderung
-	 * @param addedElements            Hinzugefügte Elemente der dynamischen Zusammenstellung
+	 * @param mutableCollectionSupport Verwaltungsobjekt fÃ¼r Aktualisierungsnachrichten
+	 * @param simulationVariant        Simulationsvariante der Ã„nderung
+	 * @param addedElements            HinzugefÃ¼gte Elemente der dynamischen Zusammenstellung
 	 * @param removedElements          Entfernte Elemente der dynamischen Zusammenstellung
 	 */
 	public void sendCollectionChangedNotification(
@@ -2533,7 +2543,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Gibt das Verzeichnis für Sicherungen der Konfigurationsdateien zurück
+	 * Gibt das Verzeichnis fÃ¼r Sicherungen der Konfigurationsdateien zurÃ¼ck
 	 *
 	 * @return das Verzeichnis, in dem Konfigurationsdateien gesichert werden sollen. null wenn keines festgelegt wurde
 	 */
@@ -2560,7 +2570,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Gibt die Benutzerverwaltung zurück, falls über setUserManagement festgelegt
+	 * Gibt die Benutzerverwaltung zurÃ¼ck, falls Ã¼ber setUserManagement festgelegt
 	 *
 	 * @return eine ConfigAuthentication oder null falls keine festgelegt wurde
 	 */
@@ -2569,7 +2579,7 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Setzt die Simulationsverwaltung die für manche Funktionen benötigt wird
+	 * Setzt die Simulationsverwaltung die fÃ¼r manche Funktionen benÃ¶tigt wird
 	 * @param simulationHandler Klasse zur Abfrage nach Simulationen
 	 */
 	public void setSimulationHandler(final SimulationHandler simulationHandler) {
@@ -2578,15 +2588,15 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 
 	/**
 	 * Bei Simulationen muss sichergestellt sein, dass Konfigurationsdaten von dynamischen Objekten aus Simulationen keine (assoziativen)
-	 * Referenzen auf Objekte enthalten, die in dieser Simulation nicht gültig sind.
-	 * <p/>
-	 * Ebenfalls dürfen für das Löschen vorgemerkte Objekte nicht referenziert werden
-	 * <p/>
-	 * Diese Prüfung wird hier vorgenommen und kann von verschiedenen Stellen aus aufgerufen werden
+	 * Referenzen auf Objekte enthalten, die in dieser Simulation nicht gÃ¼ltig sind.
+	 * <p>
+	 * Ebenfalls dÃ¼rfen fÃ¼r das LÃ¶schen vorgemerkte Objekte nicht referenziert werden
+	 * <p>
+	 * Diese PrÃ¼fung wird hier vorgenommen und kann von verschiedenen Stellen aus aufgerufen werden
 	 *
 	 * @param referencingObject Referenzierendes Objekt
 	 * @param data              Konfigurationsdaten
-	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException Wird geworfen wenn Referenzen ungültig sind
+	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException Wird geworfen wenn Referenzen ungÃ¼ltig sind
 	 */
 	public void verifyDataReferences(final ConfigSystemObject referencingObject, final Data data) throws ConfigurationChangeException{
 		if(referencingObject instanceof ConfigDynamicObject) {
@@ -2600,15 +2610,15 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 
 	/**
 	 * Bei Simulationen muss sichergestellt sein, dass Konfigurationsdaten von dynamischen Objekten aus Simulationen keine (assoziativen)
-	 * Referenzen auf Objekte enthalten, die in dieser Simulation nicht gültig sind.
-	 * <p/>
-	 * Ebenfalls dürfen für das Löschen vorgemerkte Objekte nicht referenziert werden
-	 * <p/>
-	 * Diese Prüfung wird hier vorgenommen und kann von verschiedenen Stellen aus aufgerufen werden
+	 * Referenzen auf Objekte enthalten, die in dieser Simulation nicht gÃ¼ltig sind.
+	 * <p>
+	 * Ebenfalls dÃ¼rfen fÃ¼r das LÃ¶schen vorgemerkte Objekte nicht referenziert werden
+	 * <p>
+	 * Diese PrÃ¼fung wird hier vorgenommen und kann von verschiedenen Stellen aus aufgerufen werden
 	 *
 	 * @param simulationVariant Simulationsvariante des dynamischen Objekts
 	 * @param data              Konfigurationsdaten
-	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException Wird geworfen wenn Referenzen ungültig sind
+	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException Wird geworfen wenn Referenzen ungÃ¼ltig sind
 	 */
 	public void verifyDataReferences(final short simulationVariant, final Data data) throws ConfigurationChangeException {
 		if(simulationVariant == 0) return;
@@ -2626,13 +2636,13 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 
 					if(referenceAttributeType.getReferenceType() == ReferenceType.ASSOCIATION) {
 						if(!objectIsValidInSimulation(systemObject, simulationVariant)) {
-							throw new ConfigurationChangeException("Das referenzierte Objekt \"" + systemObject + "\" ist in dieser Simulation nicht gültig");
+							throw new ConfigurationChangeException("Das referenzierte Objekt \"" + systemObject + "\" ist in dieser Simulation nicht gÃ¼ltig");
 						}
 					}
 					else {
 						synchronized(this) {
 							if(referenceAllowed(systemObject)) {
-								throw new ConfigurationChangeException("Das referenzierte Objekt \"" + systemObject + "\" ist nicht mehr gültig");
+								throw new ConfigurationChangeException("Das referenzierte Objekt \"" + systemObject + "\" ist nicht mehr gÃ¼ltig");
 							}
 						}
 					}
@@ -2642,8 +2652,8 @@ public class ConfigDataModel implements DataModel, ConfigurationControl {
 	}
 
 	/**
-	 * Gibt <tt>true</tt> zurück, wenn das angegebene Objekt referenziert werden darf. Ein Objekt darf nicht mehr Referenziert werden,
-	 * wenn es fürs endgültige Löschen vorgemerkt wurde-
+	 * Gibt <tt>true</tt> zurÃ¼ck, wenn das angegebene Objekt referenziert werden darf. Ein Objekt darf nicht mehr Referenziert werden,
+	 * wenn es fÃ¼rs endgÃ¼ltige LÃ¶schen vorgemerkt wurde-
 	 * @return <tt>true</tt>, wenn das angegebene Objekt referenziert werden darf, sonst <tt>false</tt>
 	 */
 	public boolean referenceAllowed(final SystemObject systemObject) {

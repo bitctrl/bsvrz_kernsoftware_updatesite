@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.plugins.datgen;
@@ -45,12 +51,12 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Diese Klasse implementiert das {@link de.bsvrz.pat.sysbed.plugins.api.ExternalModule Modul} "Datengenerator" f¸r eine Applikation. Es gibt zwei Mˆglichkeiten, den Datengenerator zu
- * starten. Entweder durch ‹bergabe einer Datenidentifikation. Dann wird ein Dialog angezeigt, damit weitere Einstellungen vorgenommen werden kˆnnen. Oder,
- * falls schon alle Einstellungen vorhanden sind, dann kann der Datengenerator direkt, durch ‹bergabe der Parameter gestartet werden.
+ * Diese Klasse implementiert das {@link de.bsvrz.pat.sysbed.plugins.api.ExternalModule Modul} "Datengenerator" f√ºr eine Applikation. Es gibt zwei M√∂glichkeiten, den Datengenerator zu
+ * starten. Entweder durch √úbergabe einer Datenidentifikation. Dann wird ein Dialog angezeigt, damit weitere Einstellungen vorgenommen werden k√∂nnen. Oder,
+ * falls schon alle Einstellungen vorhanden sind, dann kann der Datengenerator direkt, durch √úbergabe der Parameter gestartet werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5084 $
+ * @version $Revision$
  * @see de.bsvrz.pat.sysbed.plugins.api.ExternalModule
  */
 public class DatGenModule extends ExternalModuleAdapter {
@@ -64,7 +70,7 @@ public class DatGenModule extends ExternalModuleAdapter {
 
 	/* ############# Methoden ############## */
 	/**
-	 * Gibt den Namen des Moduls zur¸ck.
+	 * Gibt den Namen des Moduls zur√ºck.
 	 *
 	 * @return der Name des Moduls
 	 */
@@ -73,7 +79,7 @@ public class DatGenModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Gibt den Text des Buttons zur¸ck.
+	 * Gibt den Text des Buttons zur√ºck.
 	 *
 	 * @return Text des Buttons
 	 */
@@ -82,7 +88,7 @@ public class DatGenModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Gibt den aktuellen Tooltip zur¸ck.
+	 * Gibt den aktuellen Tooltip zur√ºck.
 	 *
 	 * @return aktueller Tooltip
 	 */
@@ -91,9 +97,9 @@ public class DatGenModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Diese Methode erh‰lt eine Datenidentifikation und startet den {@link DatGenDialog Dialog} zur Auswahl der Einstellungen des Datengenerators.
+	 * Diese Methode erh√§lt eine Datenidentifikation und startet den {@link DatGenDialog Dialog} zur Auswahl der Einstellungen des Datengenerators.
 	 *
-	 * @param settingsData enth‰lt die ausgew‰hlte Datenidentifikation
+	 * @param settingsData enth√§lt die ausgew√§hlte Datenidentifikation
 	 */
 	public void startModule(final SettingsData settingsData) {
 		_dialog = new DatGenDialog();
@@ -101,9 +107,9 @@ public class DatGenModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Diese Methode erh‰lt alle Einstellungen f¸r den Datengenerator und startet diesen ohne den Dialog anzuzeigen.
+	 * Diese Methode erh√§lt alle Einstellungen f√ºr den Datengenerator und startet diesen ohne den Dialog anzuzeigen.
 	 *
-	 * @param settingsData die Einstellungen f¸r den Datengenerator
+	 * @param settingsData die Einstellungen f√ºr den Datengenerator
 	 */
 	public void startSettings(final SettingsData settingsData) {
 		_dialog = new DatGenDialog();
@@ -111,7 +117,7 @@ public class DatGenModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * Diese Methode erh‰lt alle Einstellungen f¸r den Datengenerator und startet den {@link DatGenDialog Dialog} und f¸llt ihn entsprechend der Einstellungen.
+	 * Diese Methode erh√§lt alle Einstellungen f√ºr den Datengenerator und startet den {@link DatGenDialog Dialog} und f√ºllt ihn entsprechend der Einstellungen.
 	 *
 	 * @param settingsData die Einstellungsdaten
 	 */
@@ -121,34 +127,34 @@ public class DatGenModule extends ExternalModuleAdapter {
 	}
 
 	/**
-	 * ‹berpr¸ft, ob die ausgew‰hlte Datenidentifikation f¸r dieses Modul zutrifft oder nicht.
+	 * √úberpr√ºft, ob die ausgew√§hlte Datenidentifikation f√ºr dieses Modul zutrifft oder nicht.
 	 *
-	 * @param settingsData enth‰lt die ausgew‰hlte Datenidentifikation
+	 * @param settingsData enth√§lt die ausgew√§hlte Datenidentifikation
 	 *
-	 * @return gibt an, ob die ausgew‰hlte Datenidentifikation f¸r dieses Modul zutrifft
+	 * @return gibt an, ob die ausgew√§hlte Datenidentifikation f√ºr dieses Modul zutrifft
 	 */
 	public boolean isPreselectionValid(final SettingsData settingsData) {
 		if(!super.isPreselectionValid(settingsData)) {
-			_tooltipText = "Genau eine Attributgruppe, ein Aspekt und mindestens ein Objekt m¸ssen ausgew‰hlt sein.";
+			_tooltipText = "Genau eine Attributgruppe, ein Aspekt und mindestens ein Objekt m√ºssen ausgew√§hlt sein.";
 			return false;
 		}
 
-		// ATGV pr¸fen
+		// ATGV pr√ºfen
 		final AttributeGroupUsage atgUsage = settingsData.getAttributeGroup().getAttributeGroupUsage(settingsData.getAspect());
 		if(atgUsage == null || atgUsage.isConfigurating()) {
-			_tooltipText = "Es muss eine Online-Attributgruppenverwendung ausgew‰hlt werden.";
+			_tooltipText = "Es muss eine Online-Attributgruppenverwendung ausgew√§hlt werden.";
 			return false;
 		}
-		_tooltipText = "Auswahl ¸bernehmen";
+		_tooltipText = "Auswahl √ºbernehmen";
 		return true;
 	}
 
 
 	/* ############# Klasse DatGenDialog ############ */
 	/**
-	 * Stellt einen Dialog dar, womit Parameter f¸r den Datengenerator eingestellt werden kˆnnen. Durch bet‰tigen des "OK"-Buttons werden die Einstellungen
-	 * ¸bernommen, der Datengenerator gestartet und der Dialog geschlossen. Durch bet‰tigen des "Speichern unter ..."-Buttons werden nur die Einstellungen
-	 * gespeichert. Und durch bet‰tigen des "Abbrechen"-Buttons wird der Dialog wieder geschlossen.
+	 * Stellt einen Dialog dar, womit Parameter f√ºr den Datengenerator eingestellt werden k√∂nnen. Durch bet√§tigen des "OK"-Buttons werden die Einstellungen
+	 * √ºbernommen, der Datengenerator gestartet und der Dialog geschlossen. Durch bet√§tigen des "Speichern unter ..."-Buttons werden nur die Einstellungen
+	 * gespeichert. Und durch bet√§tigen des "Abbrechen"-Buttons wird der Dialog wieder geschlossen.
 	 */
 	private class DatGenDialog implements DialogInterface {
 
@@ -158,37 +164,37 @@ public class DatGenModule extends ExternalModuleAdapter {
 		/** speichert die Datenidentifikationsauswahl */
 		private DataIdentificationChoice _dataIdentificationChoice;
 
-		/** gibt die Einheit f¸r den Zyklus an */
+		/** gibt die Einheit f√ºr den Zyklus an */
 		private final String[] _cycleUnit = {"Tage", "Stunden", "Minuten", "Sekunden", "Millisekunden"};
 
-		/** gibt an, welche Rollen zur Verf¸gung stehen */
+		/** gibt an, welche Rollen zur Verf√ºgung stehen */
 		private final String[] _roleUnit = {"Quelle", "Sender"};
 
-		/** das Eingabefeld f¸r den Zyklus */
+		/** das Eingabefeld f√ºr den Zyklus */
 		private JSpinner _cycleSpinner;
 
-		/** die Auswahl f¸r die Einheit des Zyklus */
+		/** die Auswahl f√ºr die Einheit des Zyklus */
 		private JComboBox _cycleComboBox;
 
-		/** gibt an, ob die Anzahl der zu erstellenden Datens‰tze beschr‰nkt ist */
+		/** gibt an, ob die Anzahl der zu erstellenden Datens√§tze beschr√§nkt ist */
 		private boolean _areDatasetsLimited = false;
 
-		/** enth‰lt die Anzahl der zu erzeugenden Datens‰tze */
+		/** enth√§lt die Anzahl der zu erzeugenden Datens√§tze */
 		private JSpinner _limitedDatasetsSpinner;
 
 		/** hiermit kann die Spreizung der Daten angegeben werden */
 		private JSlider _spreadSlider;
 
-		/** hier¸ber kann die Rolle angegeben werden */
+		/** hier√ºber kann die Rolle angegeben werden */
 		private JComboBox _roleComboBox;
 
-		/** hiermit kann ausgew‰hlt werden, ob die Anzahl der Datens‰tze beschr‰nkt sein sollen, oder nicht */
+		/** hiermit kann ausgew√§hlt werden, ob die Anzahl der Datens√§tze beschr√§nkt sein sollen, oder nicht */
 		private JCheckBox _limitedDatasetsCheckBox;
 
 		/** speichert ein Objekt der Ausgabeoptionen */
 		private OutputOptionsPanel _outputOptions;
 
-		/** Stellt die untere Schaltfl‰chen-Leiste dar. */
+		/** Stellt die untere Schaltfl√§chen-Leiste dar. */
 		private ButtonBar _buttonBar;
 
 
@@ -198,9 +204,9 @@ public class DatGenModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Mit dieser Methode kˆnnen die Datenidentifikationsdaten ¸bergeben werden. Der Dialog wird mit Default-Werten dargestellt.
+		 * Mit dieser Methode k√∂nnen die Datenidentifikationsdaten √ºbergeben werden. Der Dialog wird mit Default-Werten dargestellt.
 		 *
-		 * @param data enth‰lt die ausgew‰hlte Datenidentifikation
+		 * @param data enth√§lt die ausgew√§hlte Datenidentifikation
 		 */
 		public void setDataIdentification(final SettingsData data) {
 			if(_dialog == null) {
@@ -214,7 +220,7 @@ public class DatGenModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Diese Methode zeigt den Dialog an und tr‰gt die Einstellungsdaten in die entsprechenden Felder ein.
+		 * Diese Methode zeigt den Dialog an und tr√§gt die Einstellungsdaten in die entsprechenden Felder ein.
 		 *
 		 * @param data Einstellungsdaten
 		 */
@@ -270,7 +276,7 @@ public class DatGenModule extends ExternalModuleAdapter {
 			}
 		}
 
-		/** Erstellt den Dialog. Bestandteil ist die Datenidentifikation, Generatoroptionen, Anmeldeoptionen und die Rolle f¸r den Datengenerator. */
+		/** Erstellt den Dialog. Bestandteil ist die Datenidentifikation, Generatoroptionen, Anmeldeoptionen und die Rolle f√ºr den Datengenerator. */
 		private void createDialog() {
 			_dialog = new JDialog();
 			_dialog.setTitle(getButtonText());
@@ -307,7 +313,7 @@ public class DatGenModule extends ExternalModuleAdapter {
 			limitedDatasetsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 			_limitedDatasetsSpinner = new JSpinner(new SpinnerNumberModel(10, 1, Integer.MAX_VALUE, 1));
 			_limitedDatasetsSpinner.setEnabled(false);
-			_limitedDatasetsCheckBox = new JCheckBox("Beschr‰nkte Anzahl zu erzeugender Datens‰tze: ");
+			_limitedDatasetsCheckBox = new JCheckBox("Beschr√§nkte Anzahl zu erzeugender Datens√§tze: ");
 			_limitedDatasetsCheckBox.addItemListener(
 					new ItemListener() {
 						public void itemStateChanged(ItemEvent e) {
@@ -328,7 +334,7 @@ public class DatGenModule extends ExternalModuleAdapter {
 
 			JPanel spreadPanel = new JPanel();
 			spreadPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-			JLabel spreadLabel = new JLabel("Spreizung der Datens‰tze je Intervall: ");
+			JLabel spreadLabel = new JLabel("Spreizung der Datens√§tze je Intervall: ");
 			_spreadSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
 			_spreadSlider.setPaintLabels(true);
 			_spreadSlider.setPaintTicks(true);
@@ -365,7 +371,7 @@ public class DatGenModule extends ExternalModuleAdapter {
 			pane.add(_outputOptions);
 
 			// untere Buttonleiste
-			_buttonBar = new ButtonBar(this);     // brauche noch ‹bergabeparameter
+			_buttonBar = new ButtonBar(this);     // brauche noch √úbergabeparameter
 			_dialog.getRootPane().setDefaultButton(_buttonBar.getAcceptButton());
 			pane.add(_buttonBar);
 		}
@@ -378,7 +384,7 @@ public class DatGenModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Gibt den Zyklus des Datengenerators zur¸ck. Der Zyklus gibt an, in welchen Abst‰nden Daten generiert werden.
+		 * Gibt den Zyklus des Datengenerators zur√ºck. Der Zyklus gibt an, in welchen Abst√§nden Daten generiert werden.
 		 *
 		 * @return der Zyklus des Datengenerators
 		 *
@@ -444,9 +450,9 @@ public class DatGenModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Gibt zur¸ck, wieviele Datens‰tze erzeugt werden sollen.
+		 * Gibt zur√ºck, wieviele Datens√§tze erzeugt werden sollen.
 		 *
-		 * @return Anzahl zu erzeugender Datens‰tze
+		 * @return Anzahl zu erzeugender Datens√§tze
 		 */
 		private String getLimitedDatasets() {
 			if(_areDatasetsLimited) {
@@ -458,9 +464,9 @@ public class DatGenModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Mit dieser Methode kann die Anzahl zu erzeugender Datens‰tze gesetzt werden.
+		 * Mit dieser Methode kann die Anzahl zu erzeugender Datens√§tze gesetzt werden.
 		 *
-		 * @param number Anzahl zu erzeugender Datens‰tze
+		 * @param number Anzahl zu erzeugender Datens√§tze
 		 */
 		private void setLimitedDatasets(final int number) {
 			_limitedDatasetsCheckBox.setSelected(true);
@@ -468,9 +474,9 @@ public class DatGenModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Gibt die Spreizung der Datens‰tze zur¸ck.
+		 * Gibt die Spreizung der Datens√§tze zur√ºck.
 		 *
-		 * @return Spreizung der Datens‰tze
+		 * @return Spreizung der Datens√§tze
 		 */
 		private String getSpreading() {
 			int value = _spreadSlider.getValue();
@@ -478,16 +484,16 @@ public class DatGenModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Mit dieser Methode kann die Spreizung zu erzeugender Datens‰tze festgelegt werden.
+		 * Mit dieser Methode kann die Spreizung zu erzeugender Datens√§tze festgelegt werden.
 		 *
-		 * @param spreading Spreizung der Datens‰tze
+		 * @param spreading Spreizung der Datens√§tze
 		 */
 		private void setSpreading(final int spreading) {
 			_spreadSlider.setValue(spreading);
 		}
 
 		/**
-		 * Gibt die ausgew‰hlte Rolle f¸r den Datengenerator zur¸ck.
+		 * Gibt die ausgew√§hlte Rolle f√ºr den Datengenerator zur√ºck.
 		 *
 		 * @return die Rolle
 		 */
@@ -502,7 +508,7 @@ public class DatGenModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Setzt die Rolle f¸r den Datengenerator.
+		 * Setzt die Rolle f√ºr den Datengenerator.
 		 *
 		 * @param role die Rolle des Datengenerators
 		 */
@@ -518,7 +524,7 @@ public class DatGenModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Gibt zur¸ck, wie detailliert die Daten ausgegeben werden sollen.
+		 * Gibt zur√ºck, wie detailliert die Daten ausgegeben werden sollen.
 		 *
 		 * @return Detaillierungsgrad
 		 */
@@ -536,9 +542,9 @@ public class DatGenModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Gibt den vollst‰ndigen Pfad (incl. Dateinamen) zur¸ck, welcher f¸r die Ausgabe vorgesehen ist.
+		 * Gibt den vollst√§ndigen Pfad (incl. Dateinamen) zur√ºck, welcher f√ºr die Ausgabe vorgesehen ist.
 		 *
-		 * @return Pfad incl. Dateiname f¸r die Ausgabe
+		 * @return Pfad incl. Dateiname f√ºr die Ausgabe
 		 */
 		private String getFileName() {
 			// wenn hier nichts drin steht, darf der "OK"-Button nicht enabled sein
@@ -546,9 +552,9 @@ public class DatGenModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * ‹bergibt den Dateinamen an die {@link OutputOptionsPanel Ausgabeoptionen}.
+		 * √úbergibt den Dateinamen an die {@link OutputOptionsPanel Ausgabeoptionen}.
 		 *
-		 * @param fileName Pfad incl. Dateiname f¸r die Ausgabe
+		 * @param fileName Pfad incl. Dateiname f√ºr die Ausgabe
 		 */
 		private void setFileName(final String fileName) {
 			_outputOptions.setFileName(fileName);
@@ -609,7 +615,7 @@ public class DatGenModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Sammelt alle Einstellungen in einer Liste und gibt sie zur¸ck. Die Liste enth‰lt die Parameter f¸r den Datengenerator.
+		 * Sammelt alle Einstellungen in einer Liste und gibt sie zur√ºck. Die Liste enth√§lt die Parameter f√ºr den Datengenerator.
 		 *
 		 * @param settingsData Einstellungsdaten
 		 *
@@ -647,7 +653,7 @@ public class DatGenModule extends ExternalModuleAdapter {
 		}
 
 		/**
-		 * Durch bet‰tigen des "OK"-Buttons wird der Datengenerator mit den eingestellten Parametern in einem neuen Fenster gestartet und dieser Dialog wird
+		 * Durch bet√§tigen des "OK"-Buttons wird der Datengenerator mit den eingestellten Parametern in einem neuen Fenster gestartet und dieser Dialog wird
 		 * geschlossen.
 		 */
 		public void doOK() {
@@ -657,14 +663,14 @@ public class DatGenModule extends ExternalModuleAdapter {
 			saveSettings(settingsData);
 		}
 
-		/** Durch bet‰tigen des "Abbrechen"-Buttons wird der Dialog geschlossen. */
+		/** Durch bet√§tigen des "Abbrechen"-Buttons wird der Dialog geschlossen. */
 		public void doCancel() {
 			_dialog.setVisible(false);
 			_dialog.dispose();
 		}
 
 		/**
-		 * Durch bet‰tigen des "Speichern unter ..."-Buttons werden die Einstellungen gespeichert.
+		 * Durch bet√§tigen des "Speichern unter ..."-Buttons werden die Einstellungen gespeichert.
 		 *
 		 * @param title Titel der Einstellungen
 		 */

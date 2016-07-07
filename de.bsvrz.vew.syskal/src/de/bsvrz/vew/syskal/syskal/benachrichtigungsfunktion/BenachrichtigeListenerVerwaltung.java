@@ -28,7 +28,7 @@ package de.bsvrz.vew.syskal.syskal.benachrichtigungsfunktion;
 import javax.swing.event.EventListenerList;
 
 /**
- * Verwaltungsklasse, welche die benötigten Listenerfunktionalitäten bereitstellt
+ * Verwaltungsklasse, welche die benÃ¶tigten ListenerfunktionalitÃ¤ten bereitstellt
  * 
  * @version $Revision: 1.1 $ / $Date: 2009/09/24 12:49:16 $ / ($Author: Pittner $)
  * 
@@ -50,7 +50,7 @@ public class BenachrichtigeListenerVerwaltung
   }
 
   /**
-   * Fügt Listerner zur Liste hinzu
+   * FÃ¼gt Listerner zur Liste hinzu
    * 
    * @param listener
    */
@@ -72,7 +72,7 @@ public class BenachrichtigeListenerVerwaltung
   }
 
   /**
-   * Entfernt den übergebenen Listener
+   * Entfernt den Ã¼bergebenen Listener
    * 
    * @param listener
    */

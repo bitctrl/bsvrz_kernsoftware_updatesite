@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel;
@@ -24,24 +30,24 @@ package de.bsvrz.dav.daf.communication.lowLevel;
 import de.bsvrz.dav.daf.main.CommunicationError;
 
 /**
- * Eine Implementierung der Interfaces ServerConnectionInterface und ConnectionInterface, die zusätzlich dieses Interfaces implementiert, verwaltet und
- * berücksichtigt zusätzliche Einstellungen, die über die Methoden setParameters() und getParameters() gesetzt bzw. abgefragt werden können.
+ * Eine Implementierung der Interfaces ServerConnectionInterface und ConnectionInterface, die zusÃ¤tzlich dieses Interfaces implementiert, verwaltet und
+ * berÃ¼cksichtigt zusÃ¤tzliche Einstellungen, die Ã¼ber die Methoden setParameters() und getParameters() gesetzt bzw. abgefragt werden kÃ¶nnen.
  * @author Kappich Systemberatung
- * @version $Revision: 7692 $
+ * @version $Revision$
  */
 public interface ParameterizedConnectionInterface {
 
 	/**
-	 * Setzt zusätzliche Einstellungen, die von der Implementierung berücksichtigt werden sollen. Der Aufbau und die Bedeutung der Parameter wird durch die
+	 * Setzt zusÃ¤tzliche Einstellungen, die von der Implementierung berÃ¼cksichtigt werden sollen. Der Aufbau und die Bedeutung der Parameter wird durch die
 	 * konkreten Implementierungen dieses Interfaces selbst festgelegt.
-	 * @param parameters Einstellungen, die von der Implementierung berücksichtigt werden sollen.
+	 * @param parameters Einstellungen, die von der Implementierung berÃ¼cksichtigt werden sollen.
 	 */
 	void setParameters(String parameters);
 
 	/**
-	 * Liefert die zusätzliche Einstellungen, die von der Implementierung berücksichtigt werden sollen. Der Aufbau und die Bedeutung der Parameter wird durch
+	 * Liefert die zusÃ¤tzliche Einstellungen, die von der Implementierung berÃ¼cksichtigt werden sollen. Der Aufbau und die Bedeutung der Parameter wird durch
 	 * die konkreten Implementierungen dieses Interfaces selbst festgelegt.
-	 * @return Einstellungen, die von der Implementierung berücksichtigt werden sollen.
+	 * @return Einstellungen, die von der Implementierung berÃ¼cksichtigt werden sollen.
 	 */
 	String getParameters();
 

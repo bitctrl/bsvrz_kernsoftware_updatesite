@@ -5,7 +5,7 @@
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,18 +14,24 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.communication.lowLevel;
 
 /**
- * Speichert die Parameter für die Kommunikation zwischen Applikation und Datenverteiler. Darin enthalten sind das Timeout zum Senden und Empfangen von
- * KeepAlive-Telegrammen, der Füllgrad des Sendepuffers, die Zeit zwischen zwei Durchsatzprüfungen und der minimale Verbindungsdurchsatz.
+ * Speichert die Parameter fÃ¼r die Kommunikation zwischen Applikation und Datenverteiler. Darin enthalten sind das Timeout zum Senden und Empfangen von
+ * KeepAlive-Telegrammen, der FÃ¼llgrad des Sendepuffers, die Zeit zwischen zwei DurchsatzprÃ¼fungen und der minimale Verbindungsdurchsatz.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 12968 $
+ * @version $Revision$
  */
 public class CommunicationParameters implements Cloneable {
 
@@ -35,10 +41,10 @@ public class CommunicationParameters implements Cloneable {
 	/** Das Timeout zum Senden von KeepAlive-Telegrammen. */
 	private long _receiveKeepAliveTimeout;
 
-	/** Füllgrad des Sendepuffers bei dem die Durchsatzprüfung gestartet wird. */
+	/** FÃ¼llgrad des Sendepuffers bei dem die DurchsatzprÃ¼fung gestartet wird. */
 	private float _throughputControlSendBufferFactor;
 
-	/** Die Zeit zwichen zwei Durchsatzprüfungen in Millisekunden */
+	/** Die Zeit zwichen zwei DurchsatzprÃ¼fungen in Millisekunden */
 	private long _throughputControlInterval;
 
 	/** Der minimale Verbindungsdurchsatz. */
@@ -49,20 +55,20 @@ public class CommunicationParameters implements Cloneable {
 	}
 
 	/**
-	 * Bestimmt das Timeout zum Senden von KeepAlive-Telegrammen. Der Wert dient als Vorschlag für die Verhandlung mit dem Datenverteiler, der den zu verwendenden
+	 * Bestimmt das Timeout zum Senden von KeepAlive-Telegrammen. Der Wert dient als Vorschlag fÃ¼r die Verhandlung mit dem Datenverteiler, der den zu verwendenden
 	 * Wert festlegt.
 	 *
-	 * @return Vorschlag für das Timeout zum Senden von KeepAlive-Telegrammen in Millisekunden.
+	 * @return Vorschlag fÃ¼r das Timeout zum Senden von KeepAlive-Telegrammen in Millisekunden.
 	 */
 	public long getSendKeepAliveTimeout() {
 		return _sendKeepAliveTimeout;
 	}
 
 	/**
-	 * Setzt das Timeout zum Senden von KeepAlive-Telegrammen. Der Wert dient als Vorschlag für die Verhandlung mit dem Datenverteiler, der den zu verwendenden
+	 * Setzt das Timeout zum Senden von KeepAlive-Telegrammen. Der Wert dient als Vorschlag fÃ¼r die Verhandlung mit dem Datenverteiler, der den zu verwendenden
 	 * Wert festlegt.
 	 *
-	 * @param timeout Vorschlag für das Timeout zum Senden von KeepAlive-Telegrammen in Millisekunden.
+	 * @param timeout Vorschlag fÃ¼r das Timeout zum Senden von KeepAlive-Telegrammen in Millisekunden.
 	 */
 	public void setSendKeepAliveTimeout(long timeout) {
 		if(timeout > 0) {
@@ -74,20 +80,20 @@ public class CommunicationParameters implements Cloneable {
 	}
 
 	/**
-	 * Bestimmt das KeepAlive-Timeout beim Empfang von Telegrammen. Der Wert dient als Vorschlag für die Verhandlung mit dem Datenverteiler, der den zu
+	 * Bestimmt das KeepAlive-Timeout beim Empfang von Telegrammen. Der Wert dient als Vorschlag fÃ¼r die Verhandlung mit dem Datenverteiler, der den zu
 	 * verwendenden Wert festlegt.
 	 *
-	 * @return Vorschlag für das KeepAlive-Timeout beim Empfang von Telegrammen in Millisekunden.
+	 * @return Vorschlag fÃ¼r das KeepAlive-Timeout beim Empfang von Telegrammen in Millisekunden.
 	 */
 	public long getReceiveKeepAliveTimeout() {
 		return _receiveKeepAliveTimeout;
 	}
 
 	/**
-	 * Setzt das KeepAlive-Timeout beim Empfang von Telegrammen. Der Wert dient als Vorschlag für die Verhandlung mit dem Datenverteiler, der den zu verwendenden
+	 * Setzt das KeepAlive-Timeout beim Empfang von Telegrammen. Der Wert dient als Vorschlag fÃ¼r die Verhandlung mit dem Datenverteiler, der den zu verwendenden
 	 * Wert festlegt.
 	 *
-	 * @param timeout Vorschlag für das KeepAlive-Timeout beim Empfang von Telegrammen in Millisekunden.
+	 * @param timeout Vorschlag fÃ¼r das KeepAlive-Timeout beim Empfang von Telegrammen in Millisekunden.
 	 */
 	public void setReceiveKeepAliveTimeout(long timeout) {
 		if(timeout > 0) {
@@ -99,25 +105,25 @@ public class CommunicationParameters implements Cloneable {
 	}
 
 	/**
-	 * Bestimmt den Füllgrad des Sendepuffers bei dem die Durchsatzprüfung gestartet wird.
+	 * Bestimmt den FÃ¼llgrad des Sendepuffers bei dem die DurchsatzprÃ¼fung gestartet wird.
 	 *
-	 * @return Füllgrad des Sendepuffers als Wert zwischen 0 und 1.
+	 * @return FÃ¼llgrad des Sendepuffers als Wert zwischen 0 und 1.
 	 */
 	public float getThroughputControlSendBufferFactor() {
 		return _throughputControlSendBufferFactor;
 	}
 
 	/**
-	 * Definiert den Füllgrad des Sendepuffers bei dem die Durchsatzprüfung gestartet wird.
+	 * Definiert den FÃ¼llgrad des Sendepuffers bei dem die DurchsatzprÃ¼fung gestartet wird.
 	 *
-	 * @param sendBufferFactor Füllgrad des Sendepuffers als Wert zwischen 0 und 1.
+	 * @param sendBufferFactor FÃ¼llgrad des Sendepuffers als Wert zwischen 0 und 1.
 	 */
 	public void setThroughputControlSendBufferFactor(float sendBufferFactor) {
 		_throughputControlSendBufferFactor = sendBufferFactor;
 	}
 
 	/**
-	 * Bestimmt die Intervalldauer für die Durchsatzmessung bei aktivierter Durchsatzprüfung.
+	 * Bestimmt die Intervalldauer fÃ¼r die Durchsatzmessung bei aktivierter DurchsatzprÃ¼fung.
 	 *
 	 * @return Intervalldauer in Millisekunden.
 	 */
@@ -126,7 +132,7 @@ public class CommunicationParameters implements Cloneable {
 	}
 
 	/**
-	 * Setzt die Intervalldauer für die Durchsatzmessung bei aktivierter Durchsatzprüfung.
+	 * Setzt die Intervalldauer fÃ¼r die Durchsatzmessung bei aktivierter DurchsatzprÃ¼fung.
 	 *
 	 * @param interval Intervalldauer in Millisekunden.
 	 */
@@ -135,7 +141,7 @@ public class CommunicationParameters implements Cloneable {
 	}
 
 	/**
-	 * Bestimmt den minimal erlaubten Verbindungsdurchsatz bei aktivierter Durchsatzprüfung.
+	 * Bestimmt den minimal erlaubten Verbindungsdurchsatz bei aktivierter DurchsatzprÃ¼fung.
 	 *
 	 * @return Mindestdurchsatz in Byte pro Sekunde.
 	 */
@@ -144,7 +150,7 @@ public class CommunicationParameters implements Cloneable {
 	}
 
 	/**
-	 * Setzt den minimal erlaubten Verbindungsdurchsatz bei aktivierter Durchsatzprüfung.
+	 * Setzt den minimal erlaubten Verbindungsdurchsatz bei aktivierter DurchsatzprÃ¼fung.
 	 *
 	 * @param throughput Mindestdurchsatz in Byte pro Sekunde.
 	 */

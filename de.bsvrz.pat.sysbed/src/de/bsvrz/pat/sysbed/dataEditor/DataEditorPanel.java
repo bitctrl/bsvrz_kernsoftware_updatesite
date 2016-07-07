@@ -1,13 +1,13 @@
 /*
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.dataEditor;
@@ -48,15 +54,15 @@ import java.util.List;
 
 /**
  * Diese Klasse stellt einen Datensatz in strukturierter Form (entsprechend der Attributgruppe) in einem JPanel dar. Die einzelnen Attribute sind entsprechend
- * der Einschränkungen des Datenmodells editierbar. Bei Bedarf kann auch eine nicht editierbar Form gewählt werden.
+ * der EinschrÃ¤nkungen des Datenmodells editierbar. Bei Bedarf kann auch eine nicht editierbar Form gewÃ¤hlt werden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13226 $
+ * @version $Revision$
  * @see #DataEditorPanel(de.bsvrz.dav.daf.main.ClientDavInterface)
  * @see #setData(de.bsvrz.dav.daf.main.Data)
  * @see #setResultData(de.bsvrz.dav.daf.main.ResultData)
  */
-public class DataEditorPanel extends JPanel {
+public class DataEditorPanel extends AbstractEditorPanel {
 
 	/** ein Zahlenformat */
 	private static final NumberFormat _integerNumberFormat = NumberFormat.getNumberInstance();
@@ -64,10 +70,10 @@ public class DataEditorPanel extends JPanel {
 	/** Genauigkeit des Zahlenformats */
 	private static final NumberFormat _precisionTestNumberFormat;
 
-	/** Hintergrundfarbe eines Attributwertes, der nicht definiert ist und nicht über den Datenvertiler verschickt werden kann. */
+	/** Hintergrundfarbe eines Attributwertes, der nicht definiert ist und nicht Ã¼ber den Datenvertiler verschickt werden kann. */
 	private static final Color _backgroundUndefinedValue = new Color(Color.HSBtoRGB(0f, 0.75f, 1.0f));
 
-	/** Hintergrundfarbe eines Attributwertes, der über den Datenvertiler verschickt werden kann. */
+	/** Hintergrundfarbe eines Attributwertes, der Ã¼ber den Datenvertiler verschickt werden kann. */
 	private static final Color _backgroundColorDefinedValue = Color.WHITE;
 
 	/** String der ausgegeben wird, wenn der Attributwert "undefiniert" ist. Der String entspricht dabei nicht dem wahren undefiniert Wert. */
@@ -77,7 +83,7 @@ public class DataEditorPanel extends JPanel {
 	private static final String _defaultValueString = "Default-Wert";
 
 	/**
-	 * Das Zahlenformat erhält eine Formatierung.
+	 * Das Zahlenformat erhÃ¤lt eine Formatierung.
 	 */
 	private static ImageIcon _iconAdd;
 
@@ -146,6 +152,7 @@ public class DataEditorPanel extends JPanel {
 	 *
 	 * @param data darzustellende Daten
 	 */
+	@Override
 	public void setData(final Data data) {
 		_debug.finer("data" , data);
 		_data = data;
@@ -164,8 +171,9 @@ public class DataEditorPanel extends JPanel {
 	/**
 	 * Diese Methode erstellt generisch eine Ansicht der Daten.
 	 *
-	 * @param resultData Ergebnisdatensatz, welcher die darzustellenden Daten enthält
+	 * @param resultData Ergebnisdatensatz, welcher die darzustellenden Daten enthÃ¤lt
 	 */
+	@Override
 	public void setResultData(final ResultData resultData) {
 		final Data data = resultData.getData();
 		_data = (data == null ? null : data.createModifiableCopy());
@@ -183,7 +191,7 @@ public class DataEditorPanel extends JPanel {
 		_dataPane.repaint();
 	}
 
-	public void showData() {
+	private void showData() {
 		int dataComplexity = getDataComplexity(_data);
 		_debug.info("DataComplex", dataComplexity);
 		if(!_overrideComplexityWarning && dataComplexity > 1000){
@@ -197,7 +205,7 @@ public class DataEditorPanel extends JPanel {
 
 	private Component createComplexityWarningPanel() {
 		JPanel jPanel = new JPanel();
-		jPanel.add(new JLabel("Der Datensatz ist sehr komplex und kann zu Problemen bei der Darstellung führen."));
+		jPanel.add(new JLabel("Der Datensatz ist sehr komplex und kann zu Problemen bei der Darstellung fÃ¼hren."));
 		JButton button = new JButton("Trotzdem anzeigen");
 		jPanel.add(button);
 		jPanel.setPreferredSize(new Dimension(400, 400));
@@ -226,19 +234,21 @@ public class DataEditorPanel extends JPanel {
 	}
 
 	/**
-	 * Hierüber kann bestimmt werden, ob die angezeigten Textfelder, etc. editierbar sind, oder nicht.
+	 * HierÃ¼ber kann bestimmt werden, ob die angezeigten Textfelder, etc. editierbar sind, oder nicht.
 	 *
 	 * @param editable gibt an, ob die angezeigten Komponenten editierbar sein sollen
 	 */
+	@Override
 	public void setEditable(final boolean editable) {
 		_editable = editable;
 	}
 
 	/**
-	 * Gibt die Daten zurück, die aktuell angezeigt werden.
+	 * Gibt die Daten zurÃ¼ck, die aktuell angezeigt werden.
 	 *
 	 * @return die aktuellen Daten
 	 */
+	@Override
 	public Data getData() {
 		return _data;
 	}
@@ -246,7 +256,7 @@ public class DataEditorPanel extends JPanel {
 	/* ################ Private Methoden ################# */
 
 	/**
-	 * An dieser Stelle wird eine Komponente generisch zusammengestellt, die die übergebenen Daten darstellt.
+	 * An dieser Stelle wird eine Komponente generisch zusammengestellt, die die Ã¼bergebenen Daten darstellt.
 	 *
 	 * @param data die darzustellenden Daten
 	 *
@@ -302,7 +312,7 @@ public class DataEditorPanel extends JPanel {
 				if(_editable) {
 					final JButton changeButton = new JButton(_iconFolder);
 					styleIconButton(changeButton);
-					changeButton.setToolTipText("Referenz ändern");
+					changeButton.setToolTipText("Referenz Ã¤ndern");
 					changeButton.addActionListener(
 							new ActionListener() {
 								public void actionPerformed(ActionEvent e) {
@@ -365,7 +375,7 @@ public class DataEditorPanel extends JPanel {
 						comboBox.setSelectedItem(data.asTextValue().getValueText());
 					}
 					else {
-						// Damit wenn kein Range vorhanden ist, eine Eingabe möglich ist
+						// Damit wenn kein Range vorhanden ist, eine Eingabe mÃ¶glich ist
 						comboBox.setEditable(true);
 						comboBox.getEditor().getEditorComponent().setBackground(_backgroundUndefinedValue);
 						comboBox.setSelectedItem(_undefinedString);
@@ -445,7 +455,8 @@ public class DataEditorPanel extends JPanel {
 			box.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(data.getName() + ": "), new EmptyBorder(5, 20, 5, 5)));
 			if(data.isArray()) {
 				final JPanel arrayHeaderBox = new JPanel(new FlowLayout(FlowLayout.LEFT,3,0));
-				arrayHeaderBox.add(new JLabel("Arraygröße:"));
+				arrayHeaderBox.add(new JLabel("ArraygrÃ¶ÃŸe:"));
+				arrayHeaderBox.setOpaque(false);
 				final Data.Array array = data.asArray();
 				if(array.isCountVariable() && _editable) {
 					SpinnerNumberModel spinnerModel = new SpinnerNumberModel(array.getLength(), 0, 9999, 1);
@@ -484,7 +495,7 @@ public class DataEditorPanel extends JPanel {
 					arrayHeaderBox.add(addEntryButton);
 					if(data.getAttributeType() instanceof ReferenceAttributeType) {
 						final JButton addMultipleEntriesButton = new JButton(_iconAddFolder);
-						addMultipleEntriesButton.setToolTipText("Objekte hinzufügen");
+						addMultipleEntriesButton.setToolTipText("Objekte hinzufÃ¼gen");
 						ReferenceAttributeType att = (ReferenceAttributeType)data.getAttributeType();
 						SystemObjectType objectType = att.getReferencedObjectType();
 						final List<SystemObjectType> types = new LinkedList<SystemObjectType>();
@@ -493,11 +504,11 @@ public class DataEditorPanel extends JPanel {
 							DataModel configuration = _connection.getDataModel();
 							types.add(configuration.getType("typ.konfigurationsObjekt"));
 							types.add(configuration.getType("typ.dynamischesObjekt"));
-							title = "Beliebige Objekte hinzufügen";
+							title = "Beliebige Objekte hinzufÃ¼gen";
 						}
 						else {
 							types.add(objectType);
-							title = "Objekte vom Typ " + objectType.getNameOrPidOrId() + " hinzufügen";
+							title = "Objekte vom Typ " + objectType.getNameOrPidOrId() + " hinzufÃ¼gen";
 						}
 						addMultipleEntriesButton.addActionListener(
 								new ActionListener() {
@@ -509,7 +520,7 @@ public class DataEditorPanel extends JPanel {
 											final int objectsToChoose = array.getMaxCount() - array.getLength();
 											if(objectsToChoose <= 0)
 											{
-												JOptionPane.showMessageDialog(addMultipleEntriesButton, "Das Array kann keine zusätzlichen Objekte mehr aufnehmen.");
+												JOptionPane.showMessageDialog(addMultipleEntriesButton, "Das Array kann keine zusÃ¤tzlichen Objekte mehr aufnehmen.");
 												return;
 											}
 											dialog.setMaximumSelectedObjects(objectsToChoose);
@@ -597,11 +608,11 @@ public class DataEditorPanel extends JPanel {
 	}
 
 	/**
-	 * Erstellt eine Box für Daten in einem Array, bei denen zusätzlich Buttons für Kopieren, Löschen, einfügen usw. vorhanden sind
-	 * @param data Daten-Objekt für das die Box erstellt werden soll
+	 * Erstellt eine Box fÃ¼r Daten in einem Array, bei denen zusÃ¤tzlich Buttons fÃ¼r Kopieren, LÃ¶schen, einfÃ¼gen usw. vorhanden sind
+	 * @param data Daten-Objekt fÃ¼r das die Box erstellt werden soll
 	 * @param index Index im Array
 	 * @param array Array
-	 * @param scrollbox Steuerelement, das für die Arrayeinträge zuständig ist
+	 * @param scrollbox Steuerelement, das fÃ¼r die ArrayeintrÃ¤ge zustÃ¤ndig ist
 	 * @return Die erstellte Box
 	 */
 	private Box createBoxWithArrayButtons(final Data data, final int index, final Data.Array array, final JSpinner scrollbox) {
@@ -611,12 +622,12 @@ public class DataEditorPanel extends JPanel {
 		final JPanel contextPanel = new JPanel();
 		contextPanel.setLayout(new FlowLayout(FlowLayout.LEFT,3,0));
 		contextPanel.setPreferredSize(new Dimension(100,22));
+		contextPanel.setOpaque(false);
 
-
-		// Button zum einfügen von Elementen
+		// Button zum einfÃ¼gen von Elementen
 		final JButton insertButton = new JButton(_iconAdd);
 		styleIconButton(insertButton);
-		insertButton.setToolTipText("Eintrag einfügen");
+		insertButton.setToolTipText("Eintrag einfÃ¼gen");
 		insertButton.addActionListener(
 				new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -631,11 +642,11 @@ public class DataEditorPanel extends JPanel {
 		);
 		contextPanel.add(insertButton);
 
-		// Button zum Einfügen von mehreren (Referenz-)Elementen
+		// Button zum EinfÃ¼gen von mehreren (Referenz-)Elementen
 		if(data.getAttributeType() instanceof ReferenceAttributeType) {
 			final JButton insertMultipleButton = new JButton(_iconAddFolder);
 			styleIconButton(insertMultipleButton);
-			insertMultipleButton.setToolTipText("Objekte hinzufügen");
+			insertMultipleButton.setToolTipText("Objekte hinzufÃ¼gen");
 			insertMultipleButton.addActionListener(
 					new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
@@ -647,11 +658,11 @@ public class DataEditorPanel extends JPanel {
 								DataModel configuration = _connection.getDataModel();
 								types.add(configuration.getType("typ.konfigurationsObjekt"));
 								types.add(configuration.getType("typ.dynamischesObjekt"));
-								title = "Beliebige Objekte hinzufügen";
+								title = "Beliebige Objekte hinzufÃ¼gen";
 							}
 							else {
 								types.add(objectType);
-								title = "Objekte vom Typ " + objectType.getNameOrPidOrId() + " hinzufügen";
+								title = "Objekte vom Typ " + objectType.getNameOrPidOrId() + " hinzufÃ¼gen";
 							}
 							PreselectionDialog dialog = new PreselectionDialog(title, insertMultipleButton, null, types);
 							dialog.setMaximumSelectedAspects(0);
@@ -659,7 +670,7 @@ public class DataEditorPanel extends JPanel {
 							if(array.isCountLimited()) {
 								final int objectsToChoose = array.getMaxCount() - array.getLength();
 								if(objectsToChoose <= 0) {
-									JOptionPane.showMessageDialog(insertMultipleButton, "Das Array kann keine zusätzlichen Objekte mehr aufnehmen.");
+									JOptionPane.showMessageDialog(insertMultipleButton, "Das Array kann keine zusÃ¤tzlichen Objekte mehr aufnehmen.");
 									return;
 								}
 								dialog.setMaximumSelectedObjects(objectsToChoose);
@@ -690,7 +701,7 @@ public class DataEditorPanel extends JPanel {
 			contextPanel.add(insertMultipleButton);
 		}
 
-		// Button zum Klonen von Einträgen
+		// Button zum Klonen von EintrÃ¤gen
 		final JButton cloneButton = new JButton(_iconCopy);
 		styleIconButton(cloneButton);
 		cloneButton.setToolTipText("Eintrag duplizieren");
@@ -707,7 +718,7 @@ public class DataEditorPanel extends JPanel {
 		);
 		contextPanel.add(cloneButton);
 
-		//Button zum Löschen von Einträgen
+		//Button zum LÃ¶schen von EintrÃ¤gen
 		final JButton removeButton = new JButton(_iconRemove);
 		styleIconButton(removeButton);
 		removeButton.setToolTipText("Eintrag entfernen");
@@ -727,14 +738,14 @@ public class DataEditorPanel extends JPanel {
 	}
 
 	/**
-	 * Hilfsmethode zum setzen einer Arraylänge. Damit keine unschönen Runtime-Exceptions entstehen wird hier der Bereich noch einmal geprüft.
+	 * Hilfsmethode zum setzen einer ArraylÃ¤nge. Damit keine unschÃ¶nen Runtime-Exceptions entstehen wird hier der Bereich noch einmal geprÃ¼ft.
 	 * @param array Array
-	 * @param newLength neue Länge
+	 * @param newLength neue LÃ¤nge
 	 */
 	private void setArrayLength(final Data.Array array, final int newLength) {
 		if(array.isCountVariable() && array.getMaxCount() > 0){
 			if(array.getMaxCount() < newLength || newLength < 0){
-				JOptionPane.showMessageDialog(this, "Array-Länge " + newLength + " außerhalb des gültigen Bereichs: 0 - " + array.getMaxCount());
+				JOptionPane.showMessageDialog(this, "Array-LÃ¤nge " + newLength + " auÃŸerhalb des gÃ¼ltigen Bereichs: 0 - " + array.getMaxCount());
 
 				
 			}
@@ -809,7 +820,7 @@ public class DataEditorPanel extends JPanel {
 	}
 
 	/**
-	 * Überprüft, ob der eingegebene Wert auch ein zulässiger Wert ist.
+	 * ÃœberprÃ¼ft, ob der eingegebene Wert auch ein zulÃ¤ssiger Wert ist.
 	 *
 	 * @param comboBox  Komponente, wo der neue Wert eingegeben wurde
 	 * @param suffixBox das Feld mit dem Suffix
@@ -836,12 +847,12 @@ public class DataEditorPanel extends JPanel {
 			}
 		}
 		catch(Exception ex) {
-			_debug.error("In einem Dateneingabedialog (z.B. Parametereditor) wurde in einer Combobox ein Wert eingegeben, der nicht im gültigen Wertebereich des jeweiligen Attributtyps liegt.",ex);
+			_debug.error("In einem Dateneingabedialog (z.B. Parametereditor) wurde in einer Combobox ein Wert eingegeben, der nicht im gÃ¼ltigen Wertebereich des jeweiligen Attributtyps liegt.",ex);
 		}
 	}
 
 	/**
-	 * Überprüft, ob der eingegebene Wert auch ein zulässiger Wert ist.
+	 * ÃœberprÃ¼ft, ob der eingegebene Wert auch ein zulÃ¤ssiger Wert ist.
 	 *
 	 * @param textBox   Komponente, wo der neue Wert eingegeben wurde
 	 * @param suffixBox das Feld mit dem Suffix
@@ -872,7 +883,7 @@ public class DataEditorPanel extends JPanel {
 			// und der Benutzer muss sich Gedanken um den Wert machen
 			textBox.setBackground(_backgroundUndefinedValue);
 			textBox.setText(_undefinedString);
-			_debug.error("In einem Dateneingabedialog (z.B. Parametereditor) wurde in einem Textfeld ein Wert eingegeben, der nicht im gültigen Wertebereich des jeweiligen Attributtyps liegt." + ex);
+			_debug.error("In einem Dateneingabedialog (z.B. Parametereditor) wurde in einem Textfeld ein Wert eingegeben, der nicht im gÃ¼ltigen Wertebereich des jeweiligen Attributtyps liegt." + ex);
 		}
 	}
 }

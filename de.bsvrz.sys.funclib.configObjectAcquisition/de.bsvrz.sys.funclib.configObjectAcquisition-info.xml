@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package name="de.bsvrz.sys.funclib.configObjectAcquisition">
+  <license name="LGPL" />
+  <release name="Kernsoftware 3.8.0" />
+  <version number="3.8.0-201605310843" />
+  <revision number="d58abd853623583ae993aeaddb28ed369c11fc37" />
+  <compile time="31.05.2016 08:47:52" />
+  <depends-on-compiled packages="de.bsvrz.dav.daf, de.bsvrz.sys.funclib.dataSerializer, de.bsvrz.sys.funclib.communicationStreams, de.bsvrz.sys.funclib.debug" />
+  <depends-on-source packages="" />
+  <depends-on-lib jars="" />
+  <jvm version="1.8" />
+</package>

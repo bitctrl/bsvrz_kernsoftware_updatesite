@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -23,37 +29,37 @@ package de.bsvrz.puk.config.configFile.datamodel;
 import de.bsvrz.dav.daf.main.config.SystemObject;
 
 /**
- * Interface zum Abfragen von Mengenelementen (Elementen einer änderbaren Menge)
+ * Interface zum Abfragen von Mengenelementen (Elementen einer Ã¤nderbaren Menge)
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13074 $
+ * @version $Revision$
  */
 public interface MutableElementInterface {
 	/**
-	 * Gibt das System-Objekt zurück.
+	 * Gibt das System-Objekt zurÃ¼ck.
 	 *
 	 * @return das System-Objekt
 	 */
 	SystemObject getObject();
 
 	/**
-	 * Gibt den Zeitstempel zurück, der angibt, seit wann das Element zur Menge gehört.
+	 * Gibt den Zeitstempel zurÃ¼ck, der angibt, seit wann das Element zur Menge gehÃ¶rt.
 	 *
-	 * @return Zeitstempel, seit dem das Element zur Menge gehört
+	 * @return Zeitstempel, seit dem das Element zur Menge gehÃ¶rt
 	 */
 	long getStartTime();
 
 	/**
-	 * Gibt den Zeitstempel zurück, der angibt, seit wann das Element nicht mehr zur Menge gehört.
+	 * Gibt den Zeitstempel zurÃ¼ck, der angibt, seit wann das Element nicht mehr zur Menge gehÃ¶rt.
 	 *
-	 * @return Zeitstempel, seit dem das Element nicht mehr zur Menge gehört
+	 * @return Zeitstempel, seit dem das Element nicht mehr zur Menge gehÃ¶rt
 	 */
 	long getEndTime();
 
 	/**
-	 * Gibt die Simulationsvariante dieses Elements zurück, in der das Objekt dieser dynamischen Menge hinzugefügt wurde.
+	 * Gibt die Simulationsvariante dieses Elements zurÃ¼ck, in der das Objekt dieser dynamischen Menge hinzugefÃ¼gt wurde.
 	 *
-	 * @return die Simulationsvariante, in welcher das Objekt der Menge hinzugefügt wurde.
+	 * @return die Simulationsvariante, in welcher das Objekt der Menge hinzugefÃ¼gt wurde.
 	 */
 	short getSimulationVariant();
 }

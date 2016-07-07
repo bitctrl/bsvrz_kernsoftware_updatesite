@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.preselection.treeFilter.standard;
@@ -35,11 +41,11 @@ import de.bsvrz.pat.sysbed.preselection.treeFilter.plugins.api.ExtendedFilter;
 import java.util.*;
 
 /**
- * Die Klasse <code>Filter</code> speichert ein Kriterium und die dazugehörigen Werte und bietet Methoden an, um Systemobjekte anhand des Kriteriums zu
+ * Die Klasse <code>Filter</code> speichert ein Kriterium und die dazugehÃ¶rigen Werte und bietet Methoden an, um Systemobjekte anhand des Kriteriums zu
  * filtern.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5055 $
+ * @version $Revision$
  */
 public class Filter {
 
@@ -49,7 +55,7 @@ public class Filter {
 	/** speichert das Kriterium des Filters */
 	private String _criteria;
 
-	/** speichert die Einträge zum Kriterium */
+	/** speichert die EintrÃ¤ge zum Kriterium */
 	private String[] _values;
 
 	/** speichert die Verbindung zum Datenverteiler */
@@ -88,7 +94,7 @@ public class Filter {
 	}
 
 	/**
-	 * Die übergebenen Systemobjekte werden entsprechend des Kriteriums gefiltert und zurückgegeben.
+	 * Die Ã¼bergebenen Systemobjekte werden entsprechend des Kriteriums gefiltert und zurÃ¼ckgegeben.
 	 *
 	 * @param systemObjects die zu filternden Systemobjekte
 	 *
@@ -106,7 +112,7 @@ public class Filter {
 	}
 
 	/**
-	 * Die Systemobjekte werden in Abhängigkeit vom Kriterium gefiltert.
+	 * Die Systemobjekte werden in AbhÃ¤ngigkeit vom Kriterium gefiltert.
 	 *
 	 * @param systemObjects die zu filternden System-Objekte
 	 *
@@ -173,7 +179,7 @@ public class Filter {
 			}
 		}
 		else if(_criteria.equals("Attributgruppe")) {
-			// AttributGruppen für alle Values holen
+			// AttributGruppen fÃ¼r alle Values holen
 			for(int i = 0; i < _values.length; i++) {
 				String value = _values[i];
 				List resultList;
@@ -282,7 +288,7 @@ public class Filter {
 			}
 		}
 		else {
-			_debug.error("Dieses Kriterium '" + _criteria + "' wird nicht unterstützt. Verwenden Sie dafür einen Erweiterten Filter.");
+			_debug.error("Dieses Kriterium '" + _criteria + "' wird nicht unterstÃ¼tzt. Verwenden Sie dafÃ¼r einen Erweiterten Filter.");
 			tempObjects = systemObjects;
 		}
 		return tempObjects;

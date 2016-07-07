@@ -1,13 +1,13 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniß Systemberatung, Aachen
+ * Copyright 2004 by Kappich+KniÃŸ Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.sys.funclib.commandLineArgs.
  * 
  * de.bsvrz.sys.funclib.commandLineArgs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.commandLineArgs is distributed in the hope that it will be useful,
@@ -16,8 +16,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.commandLineArgs; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.commandLineArgs; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.commandLineArgs;
@@ -33,36 +39,36 @@ import java.util.*;
 /**
  * Klasse zum Zugriff auf die Aufrufargumente einer Applikation.
  * Eine Applikation bekommt die Aufrufargumente von der Laufzeitumgebung in einem String-Array als Parameter
- * der <code>main</code>-Funktion übergeben. Dieses String-Array wird dem Konstruktor dieser Klasse übergeben.
+ * der <code>main</code>-Funktion Ã¼bergeben. Dieses String-Array wird dem Konstruktor dieser Klasse Ã¼bergeben.
  * Mit der Methode {@link #fetchArgument} kann auf die einzelnen Argumente zugegriffen werden.
  * Beim Zugriff auf ein Argument wird der entsprechende Eintrag im String-Array auf <code>null</code> gesetzt.
  * Nach dem Zugriff auf alle von einer Applikation
- * unterstützten Argumente kann mit der Methode {@link #ensureAllArgumentsUsed} sichergestellt werden, daß alle
+ * unterstÃ¼tzten Argumente kann mit der Methode {@link #ensureAllArgumentsUsed} sichergestellt werden, daÃŸ alle
  * angegebenen Argumente verwendet wurden.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 11270 $
+ * @version $Revision$
  */
 public class ArgumentList {
 	/**
-	 * Speichert eine Kopie der ursprünglichen Aufrufargumente der Applikation, die dem Konstruktor übergeben wurden.
+	 * Speichert eine Kopie der ursprÃ¼nglichen Aufrufargumente der Applikation, die dem Konstruktor Ã¼bergeben wurden.
 	 */
 	private final String[] _initialArgumentStrings;
 
 	/**
-	 * Speichert eine Referenz auf die Aufrufargumente der Applikation, die dem Konstruktor übergeben wurden.
-	 * Nachdem ein Argument interpretiert wurde, wird es im übergebenen Array auf <code>null</code> gesetzt.
+	 * Speichert eine Referenz auf die Aufrufargumente der Applikation, die dem Konstruktor Ã¼bergeben wurden.
+	 * Nachdem ein Argument interpretiert wurde, wird es im Ã¼bergebenen Array auf <code>null</code> gesetzt.
 	 *
 	 */
 	private final String[] _argumentStrings;
 
 	/**
-	 * Erzeugt eine neue Argumentliste und initialisiert diese mit den übergebenen Aufrufargumenten der Applikation.
+	 * Erzeugt eine neue Argumentliste und initialisiert diese mit den Ã¼bergebenen Aufrufargumenten der Applikation.
 	 * Einzelne Argumente, die von der Applikation bereits interpretiert wurden, sollten vorher auf den Wert <code>null</code>
 	 * gesetzt werden, damit sie nicht nochmal interpretiert werden.
 	 *
-	 * @param argumentStrings  String-Array, das die Aufrufargumente enthält, die der Applikation beim Aufruf der
-	 *                         main-Funktion übergeben werden.
+	 * @param argumentStrings  String-Array, das die Aufrufargumente enthÃ¤lt, die der Applikation beim Aufruf der
+	 *                         main-Funktion Ã¼bergeben werden.
  	 */
 	public ArgumentList(String[] argumentStrings) {
 		_argumentStrings= argumentStrings;
@@ -71,24 +77,24 @@ public class ArgumentList {
 	}
 
 	/**
-	 * Liefert ein bestimmtes Argument zurück und setzt es im String-Array, das beim Konstruktor übergeben wurde,
-	 * auf <code>null</code>. Im übergebenen Parameter der Funktion wird der Name des Arguments und bei Bedarf
+	 * Liefert ein bestimmtes Argument zurÃ¼ck und setzt es im String-Array, das beim Konstruktor Ã¼bergeben wurde,
+	 * auf <code>null</code>. Im Ã¼bergebenen Parameter der Funktion wird der Name des Arguments und bei Bedarf
 	 * (durch ein Gleich-Zeichen getrennt) ein Default-Wert angegeben.
-	 * Die Aufrufargumente müssen dem Format "argumentName=argumentWert" entsprechen:
+	 * Die Aufrufargumente mÃ¼ssen dem Format "argumentName=argumentWert" entsprechen:
 	 * Beim Zugriff auf ein Argument muss der Argument-Name angegeben werden. Ergebnis des Zugriffs ist ein
-	 * Objekt der Klasse {@link Argument} über das der Wert des Arguments abgefragt werden kann.
-	 * Wenn das gewünschte Argument in der Argumentliste gefunden wurde, wird der entsprechende Eintrag im
-	 * String-Array, das dem {@link #ArgumentList Konstruktor} übergeben wurde, auf den Wert <code>null</code> gesetzt.
+	 * Objekt der Klasse {@link Argument} Ã¼ber das der Wert des Arguments abgefragt werden kann.
+	 * Wenn das gewÃ¼nschte Argument in der Argumentliste gefunden wurde, wird der entsprechende Eintrag im
+	 * String-Array, das dem {@link #ArgumentList Konstruktor} Ã¼bergeben wurde, auf den Wert <code>null</code> gesetzt.
 	 * Wenn auf ein Argument zugegriffen wird, das in der Argumentlist nicht mehr vorhanden ist, weil es bereits vorher
-	 * interpretiert wurde, dann wird der entsprechende Wert aus der initialen Argumentliste erneut zurückgegeben.
+	 * interpretiert wurde, dann wird der entsprechende Wert aus der initialen Argumentliste erneut zurÃ¼ckgegeben.
 	 * Wenn auf ein Argument zugegriffen wird, das in der initialen Argumentliste nicht vorhanden ist,
 	 * wird als Wert der Default-Wert benutzt, wenn dieser im Parameter der Methode (durch ein Gleichzeichen vom
-	 * Argumentnamen getrennt) angegeben wurde. Wenn das gewünschte Argument nicht in der Argumentliste enthalten
+	 * Argumentnamen getrennt) angegeben wurde. Wenn das gewÃ¼nschte Argument nicht in der Argumentliste enthalten
 	 * ist und kein Default-Wert angegeben wurde, wird eine Ausnahme generiert.
-	 * @param nameAndOptionalDefault  Name des gewünschten Arguments und optional durch ein Gleichzeichen getrennt
+	 * @param nameAndOptionalDefault  Name des gewÃ¼nschten Arguments und optional durch ein Gleichzeichen getrennt
 	 *                                der Default-Wert des Arguments.
-	 * @return  Ein Argument-Objekt über das mit verschiedenen Methoden auf den Wert des Arguments zugegriffen werden kann.
-	 * @throws IllegalArgumentException  Wenn kein Wert für das gewünschte Argument ermittelt werden konnte.
+	 * @return  Ein Argument-Objekt Ã¼ber das mit verschiedenen Methoden auf den Wert des Arguments zugegriffen werden kann.
+	 * @throws IllegalArgumentException  Wenn kein Wert fÃ¼r das gewÃ¼nschte Argument ermittelt werden konnte.
 	 */
 	public Argument fetchArgument(String nameAndOptionalDefault) {
 		int defaultSeparatorPosition= nameAndOptionalDefault.indexOf("=");
@@ -112,7 +118,7 @@ public class ArgumentList {
 	}
 
 	/**
-	 * Prüft, ob ein bestimmtes Argument vorhanden ist und noch nicht interpretiert wurde.
+	 * PrÃ¼ft, ob ein bestimmtes Argument vorhanden ist und noch nicht interpretiert wurde.
 	 *
 	 * @param name Name des gesuchten Arguments.
 	 * @return <code>true</code> Wenn das gesuchte Argument in der Argumentliste enthalten ist und noch nicht interpretiert
@@ -129,7 +135,7 @@ public class ArgumentList {
 	}
 
 	/**
-	 * Diese Methode stellt sicher, daß alle Argumente interpretiert wurden.
+	 * Diese Methode stellt sicher, daÃŸ alle Argumente interpretiert wurden.
 	 * @throws IllegalStateException  Wenn in der Argumentliste noch nicht ausgewertete Argumente enthalten sind.
 	 */
 	public void ensureAllArgumentsUsed() {
@@ -155,8 +161,8 @@ public class ArgumentList {
 	}
 
 	/**
-	 * Liefert den Namen des nächsten noch nicht interpretierten Arguments zurück.
-	 * @return  Name des nächsten noch nicht interpretierten Arguments.
+	 * Liefert den Namen des nÃ¤chsten noch nicht interpretierten Arguments zurÃ¼ck.
+	 * @return  Name des nÃ¤chsten noch nicht interpretierten Arguments.
 	 * @throws IllegalStateException  Wenn bereits alle Argumente interpretiert wurden.
 	 */
 	public String getNextArgumentName() {
@@ -168,15 +174,15 @@ public class ArgumentList {
 	}
 
 	/**
-	 * Liefert das erste noch nicht interpretierte Argument zurück und setzt es im String-Array, das beim Konstruktor übergeben wurde,
-	 * auf <code>null</code>. Die Aufrufargumente müssen dem Format "argumentName=argumentWert" entsprechen:
+	 * Liefert das erste noch nicht interpretierte Argument zurÃ¼ck und setzt es im String-Array, das beim Konstruktor Ã¼bergeben wurde,
+	 * auf <code>null</code>. Die Aufrufargumente mÃ¼ssen dem Format "argumentName=argumentWert" entsprechen:
 	 * Beim Zugriff auf ein Argument muss der Argument-Name angegeben werden. Ergebnis des Zugriffs ist ein
-	 * Objekt der Klasse {@link Argument} über das der Wert des Arguments abgefragt werden kann. Für Argumente die kein
+	 * Objekt der Klasse {@link Argument} Ã¼ber das der Wert des Arguments abgefragt werden kann. FÃ¼r Argumente die kein
 	 * Gleichzeichen mit folgendem argumentWert enthalten, wird als Wert der Text "wahr" angenommen.
 	 * Der entsprechende Eintrag im
-	 * String-Array, das dem {@link #ArgumentList Konstruktor} übergeben wurde, wird auf den Wert <code>null</code> gesetzt.
+	 * String-Array, das dem {@link #ArgumentList Konstruktor} Ã¼bergeben wurde, wird auf den Wert <code>null</code> gesetzt.
 	 * Wenn in der Argumentliste kein Argument mehr enthalten war, wird eine Ausnahme generiert.
-	 * @return  Ein Argument-Objekt über das mit verschiedenen Methoden auf den Wert des Arguments zugegriffen werden kann.
+	 * @return  Ein Argument-Objekt Ã¼ber das mit verschiedenen Methoden auf den Wert des Arguments zugegriffen werden kann.
 	 * @throws IllegalStateException  Wenn bereits alle Argumente interpretiert wurden.
 	 */
 	public Argument fetchNextArgument() {
@@ -203,8 +209,8 @@ public class ArgumentList {
 	}
 
 	/**
-	 * Liefert ein Feld mit den noch nicht ausgewerteten Argumenten der Aufrufliste zurück und setzt die
-	 * entsprechenden Einträge im String-Array, das beim Konstruktor übergeben wurde,
+	 * Liefert ein Feld mit den noch nicht ausgewerteten Argumenten der Aufrufliste zurÃ¼ck und setzt die
+	 * entsprechenden EintrÃ¤ge im String-Array, das beim Konstruktor Ã¼bergeben wurde,
 	 * auf <code>null</code>.
 	 * @return  Feld mit Argument-Objekten der noch nicht ausgewerteten Argumente.
 	 */
@@ -241,11 +247,11 @@ public class ArgumentList {
 //		}
 
 		/**
-		 * Erzeugt ein neues Argument-Objekt aus dem übergebenen Argument-Text.
+		 * Erzeugt ein neues Argument-Objekt aus dem Ã¼bergebenen Argument-Text.
 		 * Der Argument-Text muss folgenden Aufbau haben: "argumentName=argumentWert".
 		 * Name und Wert des Argument-Objekts werden entsprechend gesetzt.
-		 * Wenn der Argument-Text kein Gleichzeichen enthält, dann wird der ganze
-		 * Argument-Text als Name des Arguments interpretiert und es wird vermerkt, daß das
+		 * Wenn der Argument-Text kein Gleichzeichen enthÃ¤lt, dann wird der ganze
+		 * Argument-Text als Name des Arguments interpretiert und es wird vermerkt, daÃŸ das
 		 * Argument keinen Wert hat.
 		 */
 		Argument(String argumentString) {
@@ -261,6 +267,25 @@ public class ArgumentList {
 		}
 
 		/**
+		 * Erzeugt ein neues Argument-Objekt aus den Ã¼bergebenen Parametern
+		 * @param name Name des neuen Arguments
+		 * @param value Wert des neuen Arguments
+		 */
+		private Argument(String name, String value) {
+				_name= name;
+				_value= value;
+		}
+
+
+		/**
+		 * Erzeugt ein neues Argument dessen Wert aus dem Namen dieses Arguments Ã¼bernommen wird.
+		 * @return Neues Argument-Objekt
+		 */
+		public Argument toArgumentWithNameAsValue() {
+			return new Argument(getName(), getName());
+		}
+
+		/**
 		 * Bestimmt den Namen des Arguments.
 		 * @return  Name des Arguments.
 		 */
@@ -269,9 +294,9 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Überprüft, ob das Argument einen Wert hat. Wenn das Argument keinen Wert
+		 * ÃœberprÃ¼ft, ob das Argument einen Wert hat. Wenn das Argument keinen Wert
 		 * hat, kann nur noch mit der Methode #{@link #booleanValue} auf den Wert
-		 * zugegriffen werden, ohne daß eine Ausnahme generiert wird.
+		 * zugegriffen werden, ohne daÃŸ eine Ausnahme generiert wird.
 		 * @return <code>true</code>, falls das Argument einen Wert hat; sonst <code>false</code>.
 		 */
 		public boolean hasValue() {
@@ -290,12 +315,12 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Gibt den Wert des Arguments als <code>boolean</code> Wert zurück.
+		 * Gibt den Wert des Arguments als <code>boolean</code> Wert zurÃ¼ck.
 		 * Die Argumentwerte "wahr", "ja", "1" werden zum Boolschen Wert <code>true</code> konvertiert;
 		 * die Argumentwerte "falsch", "nein", "0" werden zum Boolschen Wert <code>false</code> konvertiert.
-		 * Die Groß-/Kleinschreibung des Argumentwerts hat beim Vergleich keine Relevanz.
+		 * Die GroÃŸ-/Kleinschreibung des Argumentwerts hat beim Vergleich keine Relevanz.
 		 * Wenn das Argument keinen Wert hat, dann wird als Ergebnis der Konvertierung <code>true</code>
-		 * zurückgegeben.
+		 * zurÃ¼ckgegeben.
 		 * @return  Der konvertierte Argumentwert.
 		 * @throws IllegalArgumentException  Wenn der Argumentwert nicht konvertiert werden konnte.
 		 */
@@ -304,14 +329,14 @@ public class ArgumentList {
 			String value= _value.toLowerCase();
 			if(value.equals("wahr") || value.equals("ja") || value.equals("1")) return true;
 			if(value.equals("falsch") || value.equals("nein") || value.equals("0")) return false;
-			//englische Varianten werden auch unterstützt:
+			//englische Varianten werden auch unterstÃ¼tzt:
 			if(value.equals("true") || value.equals("yes")) return true;
 			if(value.equals("false") || value.equals("no")) return false;
 			else throw new java.lang.IllegalArgumentException("Argument " + getName() + " hat keinen boolschen Wert: " + getValue());
 		}
 
 		/**
-		 * Gibt den Wert des Arguments als <code>byte</code> Wert zurück.
+		 * Gibt den Wert des Arguments als <code>byte</code> Wert zurÃ¼ck.
 		 * Der Argumentwert wird in einen Zahlwert vom Typ <code>byte</code> konvertiert.
 		 * @return  Der konvertierte Argumentwert.
 		 * @throws NumberFormatException  Wenn der Argumentwert nicht konvertiert werden konnte.
@@ -327,7 +352,7 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Gibt den Wert des Arguments als <code>short</code> Wert zurück.
+		 * Gibt den Wert des Arguments als <code>short</code> Wert zurÃ¼ck.
 		 * Der Argumentwert wird in einen Zahlwert vom Typ <code>short</code> konvertiert.
 		 * @return  Der konvertierte Argumentwert.
 		 * @throws NumberFormatException  Wenn der Argumentwert nicht konvertiert werden konnte.
@@ -343,7 +368,7 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Gibt den Wert des Arguments als <code>int</code> Wert zurück.
+		 * Gibt den Wert des Arguments als <code>int</code> Wert zurÃ¼ck.
 		 * Der Argumentwert wird in einen Zahlwert vom Typ <code>int</code> konvertiert.
 		 * @return  Der konvertierte Argumentwert.
 		 * @throws NumberFormatException  Wenn der Argumentwert nicht konvertiert werden konnte.
@@ -359,7 +384,7 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Gibt den Wert des Arguments als <code>long</code> Wert zurück.
+		 * Gibt den Wert des Arguments als <code>long</code> Wert zurÃ¼ck.
 		 * Der Argumentwert wird in einen Zahlwert vom Typ <code>long</code> konvertiert.
 		 * @return  Der konvertierte Argumentwert.
 		 * @throws NumberFormatException  Wenn der Argumentwert nicht konvertiert werden konnte.
@@ -375,7 +400,7 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Gibt den Wert des Arguments als <code>float</code> Wert zurück.
+		 * Gibt den Wert des Arguments als <code>float</code> Wert zurÃ¼ck.
 		 * Der Argumentwert wird in einen Zahlwert vom Typ <code>float</code> konvertiert.
 		 * @return  Der konvertierte Argumentwert.
 		 * @throws NumberFormatException  Wenn der Argumentwert nicht konvertiert werden konnte.
@@ -391,7 +416,7 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Gibt den Wert des Arguments als <code>double</code> Wert zurück.
+		 * Gibt den Wert des Arguments als <code>double</code> Wert zurÃ¼ck.
 		 * Der Argumentwert wird in einen Zahlwert vom Typ <code>double</code> konvertiert.
 		 * @return  Der konvertierte Argumentwert.
 		 * @throws NumberFormatException  Wenn der Argumentwert nicht konvertiert werden konnte.
@@ -407,13 +432,13 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Gibt den Wert des Arguments als <code>byte</code> Wert zurück.
+		 * Gibt den Wert des Arguments als <code>byte</code> Wert zurÃ¼ck.
 		 * Der Argumentwert wird in einen Zahlwert vom Typ <code>byte</code> konvertiert
-		 * und überprüft, ob der Wert nicht ausserhalb der angegebenen Grenzen liegt.
+		 * und Ã¼berprÃ¼ft, ob der Wert nicht ausserhalb der angegebenen Grenzen liegt.
 		 * @param minimum  Kleinster erlaubter Wert.
-		 * @param maximum  Größter erlaubter Wert.
+		 * @param maximum  GrÃ¶ÃŸter erlaubter Wert.
 		 * @return  Der konvertierte Argumentwert.
-		 * @throws IllegalArgumentException  Wenn der Wert kleiner als das Minimum oder größer als das Maximum ist.
+		 * @throws IllegalArgumentException  Wenn der Wert kleiner als das Minimum oder grÃ¶ÃŸer als das Maximum ist.
 		 * @throws NumberFormatException  Wenn der Argumentwert nicht konvertiert werden konnte.
 		 * @throws IllegalStateException  Wenn das Argument keinen Wert hat.
 		 */
@@ -433,13 +458,13 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Gibt den Wert des Arguments als <code>short</code> Wert zurück.
+		 * Gibt den Wert des Arguments als <code>short</code> Wert zurÃ¼ck.
 		 * Der Argumentwert wird in einen Zahlwert vom Typ <code>short</code> konvertiert
-		 * und überprüft, ob der Wert nicht ausserhalb der angegebenen Grenzen liegt.
+		 * und Ã¼berprÃ¼ft, ob der Wert nicht ausserhalb der angegebenen Grenzen liegt.
 		 * @param minimum  Kleinster erlaubter Wert.
-		 * @param maximum  Größter erlaubter Wert.
+		 * @param maximum  GrÃ¶ÃŸter erlaubter Wert.
 		 * @return  Der konvertierte Argumentwert.
-		 * @throws IllegalArgumentException  Wenn der Wert kleiner als das Minimum oder größer als das Maximum ist.
+		 * @throws IllegalArgumentException  Wenn der Wert kleiner als das Minimum oder grÃ¶ÃŸer als das Maximum ist.
 		 * @throws NumberFormatException  Wenn der Argumentwert nicht konvertiert werden konnte.
 		 * @throws IllegalStateException  Wenn das Argument keinen Wert hat.
 		 */
@@ -459,13 +484,13 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Gibt den Wert des Arguments als <code>int</code> Wert zurück.
+		 * Gibt den Wert des Arguments als <code>int</code> Wert zurÃ¼ck.
 		 * Der Argumentwert wird in einen Zahlwert vom Typ <code>int</code> konvertiert
-		 * und überprüft, ob der Wert nicht ausserhalb der angegebenen Grenzen liegt.
+		 * und Ã¼berprÃ¼ft, ob der Wert nicht ausserhalb der angegebenen Grenzen liegt.
 		 * @param minimum  Kleinster erlaubter Wert.
-		 * @param maximum  Größter erlaubter Wert.
+		 * @param maximum  GrÃ¶ÃŸter erlaubter Wert.
 		 * @return  Der konvertierte Argumentwert.
-		 * @throws IllegalArgumentException  Wenn der Wert kleiner als das Minimum oder größer als das Maximum ist.
+		 * @throws IllegalArgumentException  Wenn der Wert kleiner als das Minimum oder grÃ¶ÃŸer als das Maximum ist.
 		 * @throws NumberFormatException  Wenn der Argumentwert nicht konvertiert werden konnte.
 		 * @throws IllegalStateException  Wenn das Argument keinen Wert hat.
 		 */
@@ -485,13 +510,13 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Gibt den Wert des Arguments als <code>long</code> Wert zurück.
+		 * Gibt den Wert des Arguments als <code>long</code> Wert zurÃ¼ck.
 		 * Der Argumentwert wird in einen Zahlwert vom Typ <code>long</code> konvertiert
-		 * und überprüft, ob der Wert nicht ausserhalb der angegebenen Grenzen liegt.
+		 * und Ã¼berprÃ¼ft, ob der Wert nicht ausserhalb der angegebenen Grenzen liegt.
 		 * @param minimum  Kleinster erlaubter Wert.
-		 * @param maximum  Größter erlaubter Wert.
+		 * @param maximum  GrÃ¶ÃŸter erlaubter Wert.
 		 * @return  Der konvertierte Argumentwert.
-		 * @throws IllegalArgumentException  Wenn der Wert kleiner als das Minimum oder größer als das Maximum ist.
+		 * @throws IllegalArgumentException  Wenn der Wert kleiner als das Minimum oder grÃ¶ÃŸer als das Maximum ist.
 		 * @throws NumberFormatException  Wenn der Argumentwert nicht konvertiert werden konnte.
 		 * @throws IllegalStateException  Wenn das Argument keinen Wert hat.
 		 */
@@ -511,13 +536,13 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Gibt den Wert des Arguments als <code>float</code> Wert zurück.
+		 * Gibt den Wert des Arguments als <code>float</code> Wert zurÃ¼ck.
 		 * Der Argumentwert wird in einen Zahlwert vom Typ <code>float</code> konvertiert
-		 * und überprüft, ob der Wert nicht ausserhalb der angegebenen Grenzen liegt.
+		 * und Ã¼berprÃ¼ft, ob der Wert nicht ausserhalb der angegebenen Grenzen liegt.
 		 * @param minimum  Kleinster erlaubter Wert.
-		 * @param maximum  Größter erlaubter Wert.
+		 * @param maximum  GrÃ¶ÃŸter erlaubter Wert.
 		 * @return  Der konvertierte Argumentwert.
-		 * @throws IllegalArgumentException  Wenn der Wert kleiner als das Minimum oder größer als das Maximum ist.
+		 * @throws IllegalArgumentException  Wenn der Wert kleiner als das Minimum oder grÃ¶ÃŸer als das Maximum ist.
 		 * @throws NumberFormatException  Wenn der Argumentwert nicht konvertiert werden konnte.
 		 * @throws IllegalStateException  Wenn das Argument keinen Wert hat.
 		 */
@@ -537,13 +562,13 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Gibt den Wert des Arguments als <code>double</code> Wert zurück.
+		 * Gibt den Wert des Arguments als <code>double</code> Wert zurÃ¼ck.
 		 * Der Argumentwert wird in einen Zahlwert vom Typ <code>double</code> konvertiert
-		 * und überprüft, ob der Wert nicht ausserhalb der angegebenen Grenzen liegt.
+		 * und Ã¼berprÃ¼ft, ob der Wert nicht ausserhalb der angegebenen Grenzen liegt.
 		 * @param minimum  Kleinster erlaubter Wert.
-		 * @param maximum  Größter erlaubter Wert.
+		 * @param maximum  GrÃ¶ÃŸter erlaubter Wert.
 		 * @return  Der konvertierte Argumentwert.
-		 * @throws IllegalArgumentException  Wenn der Wert kleiner als das Minimum oder größer als das Maximum ist.
+		 * @throws IllegalArgumentException  Wenn der Wert kleiner als das Minimum oder grÃ¶ÃŸer als das Maximum ist.
 		 * @throws NumberFormatException  Wenn der Argumentwert nicht konvertiert werden konnte.
 		 * @throws IllegalStateException  Wenn das Argument keinen Wert hat.
 		 */
@@ -564,7 +589,7 @@ public class ArgumentList {
 
 
 		/**
-		 * Gibt den Wert des Arguments als Datei-Identifikation zurück.
+		 * Gibt den Wert des Arguments als Datei-Identifikation zurÃ¼ck.
 		 * Der Argumentwert wird als Dateiname der Datei interpretiert.
 		 * @return  Dateiobjekt zum Zugriff auf die durch den Argumentwert identifizierten Datei.
 		 * @throws IllegalStateException  Wenn das Argument keinen Wert hat.
@@ -574,8 +599,8 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Gibt den Wert des Arguments als Datei-Identifikation einer existierenden Datei zurück.
-		 * Der Argumentwert wird als Dateiname der Datei interpretiert. Es wird geprüft, ob die
+		 * Gibt den Wert des Arguments als Datei-Identifikation einer existierenden Datei zurÃ¼ck.
+		 * Der Argumentwert wird als Dateiname der Datei interpretiert. Es wird geprÃ¼ft, ob die
 		 * Datei existiert.
 		 * @return  Dateiobjekt zum Zugriff auf die durch den Argumentwert identifizierten Datei.
 		 * @throws IllegalArgumentException  Wenn die identifizierte Datei nicht existiert.
@@ -588,8 +613,8 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Gibt den Wert des Arguments als Datei-Identifikation einer lesbaren Datei zurück.
-		 * Der Argumentwert wird als Dateiname der Datei interpretiert. Es wird geprüft, ob die
+		 * Gibt den Wert des Arguments als Datei-Identifikation einer lesbaren Datei zurÃ¼ck.
+		 * Der Argumentwert wird als Dateiname der Datei interpretiert. Es wird geprÃ¼ft, ob die
 		 * Datei existiert und ob ein lesender Zugriff erlaubt ist.
 		 * @return  Dateiobjekt zum Zugriff auf die durch den Argumentwert identifizierten Datei.
 		 * @throws IllegalArgumentException  Wenn die identifizierte Datei nicht existiert oder nicht lesbar ist.
@@ -602,8 +627,8 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Gibt den Wert des Arguments als Datei-Identifikation einer beschreibaren Datei zurück.
-		 * Der Argumentwert wird als Dateiname der Datei interpretiert. Es wird geprüft, ob die
+		 * Gibt den Wert des Arguments als Datei-Identifikation einer beschreibaren Datei zurÃ¼ck.
+		 * Der Argumentwert wird als Dateiname der Datei interpretiert. Es wird geprÃ¼ft, ob die
 		 * Datei existiert und ob ein schreibender Zugriff erlaubt ist.
 		 * @return  Dateiobjekt zum Zugriff auf die durch den Argumentwert identifizierten Datei.
 		 * @throws IllegalArgumentException  Wenn die identifizierte Datei nicht existiert oder nicht beschreibar ist.
@@ -616,8 +641,8 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Gibt den Wert des Arguments als Datei-Identifikation einer beschreibaren Datei zurück.
-		 * Der Argumentwert wird als Dateiname der Datei interpretiert. Es wird geprüft, ob die
+		 * Gibt den Wert des Arguments als Datei-Identifikation einer beschreibaren Datei zurÃ¼ck.
+		 * Der Argumentwert wird als Dateiname der Datei interpretiert. Es wird geprÃ¼ft, ob die
 		 * Datei existiert und ob ein schreibender Zugriff erlaubt ist.
 		 * @param createIfNotExistent  Wenn die spezifizierte Datei nicht existiert und dieser Parameter
 		 *                             den Wert <code>true</code> hat, wird eine neue Datei erzeugt.
@@ -634,8 +659,8 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Gibt den Wert des Arguments als Datei-Identifikation einer änderbaren Datei zurück.
-		 * Der Argumentwert wird als Dateiname der Datei interpretiert. Es wird geprüft, ob die
+		 * Gibt den Wert des Arguments als Datei-Identifikation einer Ã¤nderbaren Datei zurÃ¼ck.
+		 * Der Argumentwert wird als Dateiname der Datei interpretiert. Es wird geprÃ¼ft, ob die
 		 * Datei existiert und ob ein lesender und schreibender Zugriff erlaubt ist.
 		 * @return  Dateiobjekt zum Zugriff auf die durch den Argumentwert identifizierten Datei.
 		 * @throws IllegalArgumentException  Wenn die identifizierte Datei nicht existiert oder nicht
@@ -649,8 +674,8 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Gibt den Wert des Arguments als Datei-Identifikation einer änderbaren Datei zurück.
-		 * Der Argumentwert wird als Dateiname der Datei interpretiert. Es wird geprüft, ob die
+		 * Gibt den Wert des Arguments als Datei-Identifikation einer Ã¤nderbaren Datei zurÃ¼ck.
+		 * Der Argumentwert wird als Dateiname der Datei interpretiert. Es wird geprÃ¼ft, ob die
 		 * Datei existiert und ob ein lesender und schreibender Zugriff erlaubt ist.
 		 * @param createIfNotExistent  Wenn die spezifizierte Datei nicht existiert und dieser Parameter
 		 *                             den Wert <code>true</code> hat, wird eine neue Datei erzeugt.
@@ -667,8 +692,8 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Gibt den Wert des Arguments als Datei-Identifikation eines Dateiverzeichnisses zurück.
-		 * Der Argumentwert wird als Dateiname des Dateiverzeichnisses interpretiert. Es wird geprüft, ob die
+		 * Gibt den Wert des Arguments als Datei-Identifikation eines Dateiverzeichnisses zurÃ¼ck.
+		 * Der Argumentwert wird als Dateiname des Dateiverzeichnisses interpretiert. Es wird geprÃ¼ft, ob die
 		 * spezifizierte Datei existiert und ein Verzeichnis ist.
 		 * @return  Dateiobjekt zum Zugriff auf das durch den Argumentwert identifizierte Dateiverzeichnis.
 		 * @throws IllegalArgumentException  Wenn die identifizierte Datei nicht existiert oder kein Verzeichnis ist.
@@ -706,17 +731,17 @@ public class ArgumentList {
 			ValueCase valueCase= validValues.get(value);
 			if(valueCase!=null) return valueCase;
 			throw new IllegalArgumentException(
-				"Argument " + getName() + " hat einen ungültigen Wert: \"" + value +
+				"Argument " + getName() + " hat einen ungÃ¼ltigen Wert: \"" + value +
 				"\", erlaubt sind folgende Werte:" + validValues.getInfo()
 			);
 		}
 
 		/**
 		 * Bestimmt den Wert des Arguments als Enum-Konstante.
-		 * @param typeClass Klasse von dem der Enum-Wert eingelesen werden soll. Unterstützt native Enum-Klassen und Enum-ähnliche Klassen,
-		 *                  mit festen öffentlichen Konstanten. Groß- und Kleinschreibung wird ignoriert.
+		 * @param typeClass Klasse von dem der Enum-Wert eingelesen werden soll. UnterstÃ¼tzt native Enum-Klassen und Enum-Ã¤hnliche Klassen,
+		 *                  mit festen Ã¶ffentlichen Konstanten. GroÃŸ- und Kleinschreibung wird ignoriert.
 		 * @return  Wert des Arguments.
-		 * @throws IllegalArgumentException  Wenn der Argumentwert leer oder ungültig ist.
+		 * @throws IllegalArgumentException  Wenn der Argumentwert leer oder ungÃ¼ltig ist.
 		 */
 		public <E> E asEnum(final Class<E> typeClass) {
 			final List<String> validValues = new ArrayList<String>();
@@ -747,7 +772,7 @@ public class ArgumentList {
 				}
 			}
 			throw new IllegalArgumentException(
-					"Argument " + getName() + " hat einen ungültigen Wert: \"" + value +
+					"Argument " + getName() + " hat einen ungÃ¼ltigen Wert: \"" + value +
 							"\", erlaubt sind folgende Werte: " + validValues
 			);
 		}
@@ -757,15 +782,15 @@ public class ArgumentList {
 		 * Der Argumentwert muss dabei einem der folgenden folgenden Formate entsprechen:
 		 * <code>"Protokoll:Adresse:Subadresse"</code> , <code>"Adresse:Subadresse"</code> , <code>"Adresse"</code>.
 		 * <code>Protokoll</code> spezifiziert den das zu verwendende Kommunikationsprotokoll,
-		 * <code>Adresse</code> spezifiziert die Geräteadresse (z.B. IP-Adresse oder Rechnername),
+		 * <code>Adresse</code> spezifiziert die GerÃ¤teadresse (z.B. IP-Adresse oder Rechnername),
 		 * <code>Subadresse</code> spezifiziert die zu verwendende Subadresse (z.B. Portnummer bei TCP).
 		 * Als <code>Protokoll</code>  und <code>Adresse</code> werden beliebige Texte akzeptiert,
 		 * Als <code>Subadresse</code> werden beliebige Zahlen vom Typ <code>int</code> akzeptiert.
 		 * Wenn <code>Protokoll</code> nicht angegeben wurde, wird das entsprechende Feld auf den leerer Text gesetzt,
 		 * wenn keine Subadresse angegeben wurde, wird das entsprechende Feld auf den Wert 0 gesetzt.
-		 * Weitere Prüfungen und die Behandlung der Defaults sind abhängig von der Anwendung und dem verwendeten
-		 * Protokoll und müssen an anderer Stelle stattfinden.
-		 * @return  Objekt der Klasse CommunicationAddress über das auf Protokoll, Adresse und Subadresse zugegriffen
+		 * Weitere PrÃ¼fungen und die Behandlung der Defaults sind abhÃ¤ngig von der Anwendung und dem verwendeten
+		 * Protokoll und mÃ¼ssen an anderer Stelle stattfinden.
+		 * @return  Objekt der Klasse CommunicationAddress Ã¼ber das auf Protokoll, Adresse und Subadresse zugegriffen
 		 *          werden kann.
 		 */
 		CommunicationAddress asCommunicationAddress() {
@@ -837,7 +862,7 @@ public class ArgumentList {
 		 * im Argument enthalten ist, wird als Datum der Tag benutzt, an dem
 		 * das Programm gestartet wurde. Wenn nur eine Datumsangabe im Argument
 		 * enthalten ist, dann wird als Zeitangabe 0:00 Uhr Lokalzeit benutzt.
-		 * Bei Datumsangaben mit zweistelliger Jahreszahl wird ein Jahr gewählt,
+		 * Bei Datumsangaben mit zweistelliger Jahreszahl wird ein Jahr gewÃ¤hlt,
 		 * das im Bereich von 80 Jahren vor und 20 Jahren nach dem aktuellen Jahr
 		 * liegt.
 		 * Als spezieller Wert wird der Text "jetzt" erkannt und durch die
@@ -887,9 +912,9 @@ public class ArgumentList {
 		/**
 		 * Interpretiert den Wert des Arguments als relative Zeitangabe.
 		 * Das Argument muss aus einer Liste von Zahlen und Einheiten bestehen.
-		 * Als Einheiten sind "t" und "Tag[e]" für Tage, "h" und "Stunde[n]" für Stunden,
-		 * "m" und "Minute[n]" für Minuten, "s" und "Sekunde[n]" für Sekunden
-		 * sowie "ms" und "Millisekunden[e]" für Millisekunden erkannt.
+		 * Als Einheiten sind "t" und "Tag[e]" fÃ¼r Tage, "h" und "Stunde[n]" fÃ¼r Stunden,
+		 * "m" und "Minute[n]" fÃ¼r Minuten, "s" und "Sekunde[n]" fÃ¼r Sekunden
+		 * sowie "ms" und "Millisekunden[e]" fÃ¼r Millisekunden erkannt.
 		 * Die Einzelnen Werte werden in Millisekunden umgerechnet und aufsummiert.
 		 * Als spezieller Wert wird der Text "jetzt" erkannt und als "0 Sekunden"
 		 * interpretiert.
@@ -921,7 +946,7 @@ public class ArgumentList {
 					else if(word.equals("ms") || word.startsWith("milli")) {
 						millis+= number;
 					}
-					else throw new IllegalArgumentException("Ungültige relative Zeitangabe: " + splitted[i]);
+					else throw new IllegalArgumentException("UngÃ¼ltige relative Zeitangabe: " + splitted[i]);
 				}
 				else if(number!=0) throw new IllegalArgumentException("Einheit bei relativer Zeitangabe fehlt");
 			}
@@ -929,7 +954,7 @@ public class ArgumentList {
 		}
 
 		/**
-		 * Erzeugt eine Zeichenkette, die den Namen und den Wert des Arguments enthält.
+		 * Erzeugt eine Zeichenkette, die den Namen und den Wert des Arguments enthÃ¤lt.
 		 * @return  Zeichenkette mit Name und Wert des Arguments.
 		 * @throws IllegalStateException  Wenn das Argument keinen Wert hat.
 		 */
@@ -967,8 +992,8 @@ public class ArgumentList {
 	}
 
 	/**
-	 * Liefert das String-Array mit den noch nicht interpretierten Aufrufargumenten der Applikation zurück.
-	 * Das zurückgegebene Objekt ist das selbe Objekt mit dem der Konstruktor aufgerufen wurde, allerdings
+	 * Liefert das String-Array mit den noch nicht interpretierten Aufrufargumenten der Applikation zurÃ¼ck.
+	 * Das zurÃ¼ckgegebene Objekt ist das selbe Objekt mit dem der Konstruktor aufgerufen wurde, allerdings
 	 * ist zu beachten, dass die Elemente des Arrays, die bereits mit den Methoden {@link #fetchArgument} bzw.
 	 * {@link #fetchNextArgument} interpretiert wurden, im Array auf <code>null</code> gesetzt wurden.
 	 * @return Das String-Array mit den noch nicht interpretierten Aufrufargumenten der Applikation.
@@ -978,8 +1003,8 @@ public class ArgumentList {
 	}
 
 	/**
-	 * Liefert das String-Array mit den initialen Aufrufargumenten der Applikation zurück.
-	 * Das zurückgegebene Array enthält die selben Aufrufargumente die dem Konstruktor übergeben wurden.
+	 * Liefert das String-Array mit den initialen Aufrufargumenten der Applikation zurÃ¼ck.
+	 * Das zurÃ¼ckgegebene Array enthÃ¤lt die selben Aufrufargumente die dem Konstruktor Ã¼bergeben wurden.
 	 * @return Das String-Array mit den initialen Aufrufargumenten der Applikation.
 	 */
 	public String[] getInitialArgumentStrings() {
@@ -1130,7 +1155,7 @@ public class ArgumentList {
 			while(nameIterator.hasNext()) {
 				result.append('"').append((String)nameIterator.next()).append('"').append(", ");
 			}
-			result.append("(").append(_ignoreCase ? "ohne" : "mit").append(" Prüfung der Groß-/Kleinschreibung)");
+			result.append("(").append(_ignoreCase ? "ohne" : "mit").append(" PrÃ¼fung der GroÃŸ-/Kleinschreibung)");
 			if(_description!=null) {
 				result.append(System.getProperty("line.separator")).append("      Zweck: ").append(_description);
 			}
@@ -1139,8 +1164,8 @@ public class ArgumentList {
 	}
 
 	/**
-	 * Liefert eine textuelle Beschreibung dieser Argumentliste mit den initialen Argumenten zurück.
-	 * Das genaue Format ist nicht festgelegt und kann sich ändern.
+	 * Liefert eine textuelle Beschreibung dieser Argumentliste mit den initialen Argumenten zurÃ¼ck.
+	 * Das genaue Format ist nicht festgelegt und kann sich Ã¤ndern.
 	 * @return Beschreibung dieser Argumentliste.
 	 */
 	public String toString() {

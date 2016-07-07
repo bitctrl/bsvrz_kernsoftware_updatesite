@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.sys.funclib.operatingMessage.
  * 
  * de.bsvrz.sys.funclib.operatingMessage is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.operatingMessage is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.operatingMessage; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.operatingMessage; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.sys.funclib.operatingMessage;
 
@@ -26,16 +32,17 @@ import de.bsvrz.sys.funclib.debug.Debug;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.UUID;
 
 /**
  * Diese Klasse dient zur Erzeugung von Betriebsmeldungen. Diese Klasse ist als Singleton erstellt. Somit wird nur ein
  * Objekt dieser Klasse angelegt. Durch die {@link #init init-Methode} wird die Verbindung zum Datenverteiler und die
- * Kennung der Applikation an das Sender-Objekt übergeben. Mit Hilfe der verschiedenen {@link #sendMessage
- * sendMessage-Methoden} können Betriebsmeldungen an die Betriebsmeldungsverwaltung abgesetzt werden.<p> Existiert noch
- * keine Verbindung zum Datenverteiler beim Senden einer Betriebsmeldung, so wird eine <i>Warnung</i> zurückgegeben.
+ * Kennung der Applikation an das Sender-Objekt Ã¼bergeben. Mit Hilfe der verschiedenen {@link #sendMessage
+ * sendMessage-Methoden} kÃ¶nnen Betriebsmeldungen an die Betriebsmeldungsverwaltung abgesetzt werden.<p> Existiert noch
+ * keine Verbindung zum Datenverteiler beim Senden einer Betriebsmeldung, so wird eine <i>Warnung</i> zurÃ¼ckgegeben.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 12989 $
+ * @version $Revision$
  * @see #init
  * @see #sendMessage
  */
@@ -44,10 +51,10 @@ public class MessageSender {
 	 * Das Singleton wird in jedem Fall erzeugt. Sollte jedoch die Verbindung zum Datenverteiler noch nicht vorhanden sein,
 	 * wird bei {@link #sendMessage} eine Warnung ausgegeben!
 	 */
-	private static MessageSender INSTANCE = new MessageSender();
+	private static final MessageSender INSTANCE = new MessageSender();
 
 	/**
-	 * DebugLogger für Debug-Ausgaben
+	 * DebugLogger fÃ¼r Debug-Ausgaben
 	 */
 	private static Debug _debug;
 
@@ -57,7 +64,7 @@ public class MessageSender {
 	private ClientDavInterface _connection = null;
 
 	/**
-	 * Das Sende-Objekt für den Versand von Betriebsmeldungen.
+	 * Das Sende-Objekt fÃ¼r den Versand von Betriebsmeldungen.
 	 */
 	private OperatingMessageSender _operatingMessageSender;
 
@@ -81,7 +88,7 @@ public class MessageSender {
 
 	/**
 	 * LaufendeNummer: Laufende Nummerierung der durch die Applikation seit dem Applikationsstart erzeugten
-	 * Informationsmeldungen. Aus der Kombination von ApplikationsID und LaufendeNummer lässt sich prüfen, ob Meldungen
+	 * Informationsmeldungen. Aus der Kombination von ApplikationsID und LaufendeNummer lÃ¤sst sich prÃ¼fen, ob Meldungen
 	 * verloren wurden.
 	 */
 	private long _consecutiveNumber;
@@ -92,12 +99,12 @@ public class MessageSender {
 	private SystemObjectType _applicationType;
 
 	/**
-	 * Für jede Applikation eindeutige Kennung, die nach einem Neustart gleich bleibt.
+	 * FÃ¼r jede Applikation eindeutige Kennung, die nach einem Neustart gleich bleibt.
 	 */
 	private String _applicationLabel;
 
 	/**
-	 * Die Urlasserinformation, falls keine übergeben wird. Sie besteht aus dem lokalen Benutzer, der sich beim
+	 * Die Urlasserinformation, falls keine Ã¼bergeben wird. Sie besteht aus dem lokalen Benutzer, der sich beim
 	 * Datenverteiler angemeldet hat und ohne die Angabe einer Ursache und eines Veranlassers.
 	 */
 	private MessageCauser _causer;
@@ -122,7 +129,7 @@ public class MessageSender {
 	}
 
 	/**
-	 * Gibt die Instanz dieser Klasse zurück. Ein neues Objekt wird erstellt, falls noch keines vorhanden ist.
+	 * Gibt die Instanz dieser Klasse zurÃ¼ck. Ein neues Objekt wird erstellt, falls noch keines vorhanden ist.
 	 *
 	 * @return Objekt dieser Klasse
 	 */
@@ -131,7 +138,7 @@ public class MessageSender {
 	}
 
 	/**
-	 * Initialisiert das Objekt indem die Verbindung zum Datenverteiler und die Kennung der Applikation übergeben wird.
+	 * Initialisiert das Objekt indem die Verbindung zum Datenverteiler und die Kennung der Applikation Ã¼bergeben wird.
 	 *
 	 * @param connection       Verbindung zum Datenverteiler
 	 * @param applicationName  Name der Applikation
@@ -141,7 +148,7 @@ public class MessageSender {
 		try {
 			_messageObject = connection.getLocalConfigurationAuthority();
 			if (_messageObject == null || !_messageObject.isOfType("typ.betriebsMeldungsVerwaltung")) {
-				_debug.warning("Der lokale Konfigurationsverantworliche besitzt nicht den Typ: BetriebsMeldungsVerwaltung. Betriebsmeldungen können nicht verschickt werden!");
+				_debug.warning("Der lokale Konfigurationsverantworliche besitzt nicht den Typ: BetriebsMeldungsVerwaltung. Betriebsmeldungen kÃ¶nnen nicht verschickt werden!");
 				_messageObject = null;
 				return;
 			}
@@ -156,7 +163,7 @@ public class MessageSender {
 			_applicationLabel = applicationLabel;
 			_rootName = applicationName;
 
-			// Standard-Urlasser, falls keiner übergeben wurde
+			// Standard-Urlasser, falls keiner Ã¼bergeben wurde
 			_causer = new MessageCauser(_connection.getLocalUser(), "", "");
 
 			// Datenidentifikation ermitteln und Anmeldung als Sender
@@ -191,10 +198,11 @@ public class MessageSender {
 
 	/**
 	 * Bei dieser Betriebsmeldung wird neben dem MeldungsTyp, der MeldungsKlasse und des Meldungstextes noch eine ID und ob
-	 * es sich hierbei um eine GutMeldung handelt, übergeben.
+	 * es sich hierbei um eine GutMeldung handelt, Ã¼bergeben.
 	 *
 	 * @param id               ID der Meldung. Dieses Attribut kann von der Applikation gesetzt werden, um einen Bezug zu
-	 *                         einer vorherigen Meldung herzustellen.
+	 *                         einer vorherigen Meldung herzustellen. Falls die ID null oder ein Leerstring ist, wird eine zufÃ¤llige ID generiert.
+	 *                         Die ID wird zur Bildugn der PID des Meldungsobjekts von der Betriebsmeldungsverwaltung benutzt.
 	 * @param type             der MeldungsTyp
 	 * @param messageTypeAddOn der MeldungsTypZusatz
 	 * @param grade            die MeldungsKlasse
@@ -202,7 +210,7 @@ public class MessageSender {
 	 * @param message          Text der Meldung
 	 */
 	public void sendMessage(String id, MessageType type, String messageTypeAddOn, MessageGrade grade, MessageState state, String message) {
-		if (messageTypeAddOn == null || messageTypeAddOn.equals("")) messageTypeAddOn = getCallPosition(new Throwable());
+		if (messageTypeAddOn == null || messageTypeAddOn.isEmpty()) messageTypeAddOn = getCallPosition(new Throwable());
 		sendMessage(id, type, messageTypeAddOn, grade, null, state, _causer, message);
 	}
 
@@ -214,35 +222,36 @@ public class MessageSender {
 	 * @param grade            die MeldungsKlasse
 	 * @param referenceObject  Referenz auf ein beliebiges Konfigurationsobjekt, auf das sich die Meldung bezieht.
 	 * @param causer           Urlasserinformation (Referenz auf den Benutzer, der die Meldung erzeugt hat, Angabe einer
-	 *                         Ursache für die Meldung und der Veranlasser für die Meldung).
+	 *                         Ursache fÃ¼r die Meldung und der Veranlasser fÃ¼r die Meldung).
 	 *                         Wenn <code>causer==null</code>, dann wird als Urlasser der angemeldete Benutzer mit
 	 *                         leerer Ursache und Veranlasser verschickt.
 	 * @param message          Text der Meldung
 	 */
 	public void sendMessage(MessageType type, String messageTypeAddOn, MessageGrade grade, SystemObject referenceObject, MessageCauser causer, String message) {
-		if (messageTypeAddOn == null || messageTypeAddOn.equals("")) messageTypeAddOn = getCallPosition(new Throwable());
+		if (messageTypeAddOn == null || messageTypeAddOn.isEmpty()) messageTypeAddOn = getCallPosition(new Throwable());
 		sendMessage("", type, messageTypeAddOn, grade, referenceObject, MessageState.MESSAGE, causer, message);
 	}
 
 	/**
-	 * Die vollständige Betriebsmeldung. Sie enthält alle Parameter, die für eine Betriebsmeldung in Frage kommen können.
+	 * Die vollstÃ¤ndige Betriebsmeldung. Sie enthÃ¤lt alle Parameter, die fÃ¼r eine Betriebsmeldung in Frage kommen kÃ¶nnen.
 	 *
 	 * @param id               ID der Meldung. Dieses Attribut kann von der Applikation gesetzt werden, um einen Bezug zu
-	 *                         einer vorherigen Meldung herzustellen.
+	 *                         einer vorherigen Meldung herzustellen. Falls die ID null oder ein Leerstring ist, wird eine zufÃ¤llige ID generiert.
+	 *                         Die ID wird zur Bildugn der PID des Meldungsobjekts von der Betriebsmeldungsverwaltung benutzt.
 	 * @param type             der MeldungsTyp
 	 * @param messageTypeAddOn der MeldungsTypZusatz
 	 * @param grade            die MeldungsKlasse
 	 * @param referenceObject  Referenz auf ein beliebiges Konfigurationsobjekt, auf das sich die Meldung bezieht.
 	 * @param state            Gibt den Zustand einer Meldung an.
 	 * @param causer           Urlasserinformation (Referenz auf den Benutzer, der die Meldung erzeugt hat, Angabe einer
-	 *                         Ursache für die Meldung und der Veranlasser für die Meldung).
+	 *                         Ursache fÃ¼r die Meldung und der Veranlasser fÃ¼r die Meldung).
 	 *                         Wenn <code>causer==null</code>, dann wird als Urlasser der angemeldete Benutzer mit
 	 *                         leerer Ursache und Veranlasser verschickt.
 	 * @param message          Text der Meldung
 	 */
 	public void sendMessage(String id, MessageType type, String messageTypeAddOn, MessageGrade grade, SystemObject referenceObject, MessageState state, MessageCauser causer, String message) {
 		if (_messageObject == null) {
-			final String errorMessage = "Betriebsmeldungen können nicht verschickt werden. Die Initialisierung ist nicht erfolgt oder war fehlerhaft. Es gibt kein passendes BetriebsMeldungsVerwaltungs-Objekt. Evtl. besitzt der lokale Konfigurationsverantwortliche den Typ Betriebsmeldungsverwaltung nicht.";
+			final String errorMessage = "Betriebsmeldungen kÃ¶nnen nicht verschickt werden. Die Initialisierung ist nicht erfolgt oder war fehlerhaft. Es gibt kein passendes BetriebsMeldungsVerwaltungs-Objekt. Evtl. besitzt der lokale Konfigurationsverantwortliche den Typ Betriebsmeldungsverwaltung nicht.";
 			_debug.warning(errorMessage);
 			return;
 
@@ -256,7 +265,11 @@ public class MessageSender {
 		data.getReferenceValue("ApplikationsTyp").setSystemObject(_applicationType);
 		data.getTextValue("ApplikationsKennung").setText(_applicationLabel);
 
-		// Werte, die durch sendMessage übergeben wurden
+		if(id == null || id.isEmpty()){
+			id = UUID.randomUUID().toString();
+		}
+		
+		// Werte, die durch sendMessage Ã¼bergeben wurden
 		data.getTextValue("ID").setText(id);
 		data.getTextValue("MeldungsTyp").setText(type.getMessageType());
 		data.getTextValue("MeldungsTypZusatz").setText(messageTypeAddOn);
@@ -272,7 +285,7 @@ public class MessageSender {
 		if( causer == null ) {
 			causer = _causer;
 		}
-		// der Urlasser benötigt eine Extrabehandlung
+		// der Urlasser benÃ¶tigt eine Extrabehandlung
 		final Data causerData = data.getItem("Urlasser");
 		causerData.getReferenceValue("BenutzerReferenz").setSystemObject(causer.getUser());
 		causerData.getTextValue("Ursache").setText(causer.getCause());
@@ -289,7 +302,7 @@ public class MessageSender {
 	 *
 	 * @return die Aufrufposition der Betriebsmeldung
 	 */
-	private String getCallPosition(Throwable t) {
+	String getCallPosition(Throwable t) {
 		StringBuilder callPosition = new StringBuilder();
 		if (t.getStackTrace().length > 1) {
 			StackTraceElement traceElement = t.getStackTrace()[1];
@@ -306,16 +319,16 @@ public class MessageSender {
 	}
 
 	/**
-	 * Gibt die laufende Nummer zurück und erhöht sie um eins.
+	 * Gibt die laufende Nummer zurÃ¼ck und erhÃ¶ht sie um eins.
 	 *
 	 * @return die laufende Nummer
 	 */
-	private long nextConsecutiveNumber() {
+	private synchronized long nextConsecutiveNumber() {
 		return _consecutiveNumber++;
 	}
 
 	/**
-	 * Die ApplikationsKennung kann mit dieser Methode nachträglich gesetzt werden.
+	 * Die ApplikationsKennung kann mit dieser Methode nachtrÃ¤glich gesetzt werden.
 	 *
 	 * @param applicationLabel ApplikationsKennung - eindeutige Kennung dieser Applikation
 	 */
@@ -324,8 +337,8 @@ public class MessageSender {
 	}
 
 	/**
-	 * Setzt die Größe der Warteschlange, in der Betriebsmeldungen gehalten werden solange es noch keine Sendesteuerung gibt. (Standardwert:100)
-	 * @param maxQueueSize neue Größe (>=0)
+	 * Setzt die GrÃ¶ÃŸe der Warteschlange, in der Betriebsmeldungen gehalten werden solange es noch keine Sendesteuerung gibt. (Standardwert:100)
+	 * @param maxQueueSize neue GrÃ¶ÃŸe (>=0)
 	 */
 	public void setMaxQueueSize(final int maxQueueSize) {
 		if(maxQueueSize < 0) throw new IllegalArgumentException("maxQueueSize = " +maxQueueSize);
@@ -340,12 +353,12 @@ public class MessageSender {
 		private byte _state = STOP_SENDING;
 
 		/**
-		 * In dieser Queue warten Datensätze wenn aktuell die Betriebsmeldungsverwaltung nicht erreichbar ist (bzw. keine positive Sendesteuerung vorliegt)
+		 * In dieser Queue warten DatensÃ¤tze wenn aktuell die Betriebsmeldungsverwaltung nicht erreichbar ist (bzw. keine positive Sendesteuerung vorliegt)
 		 */
 		private final Deque<ResultData> _waitQueue = new ArrayDeque<ResultData>();
 
 		public void dataRequest(SystemObject object, DataDescription dataDescription, byte state) {
-			_debug.finest("Änderung der Sendesteuerung", state);
+			_debug.finest("Ã„nderung der Sendesteuerung", state);
 			synchronized(_waitQueue) {
 				_state = state;
 				if(state == START_SENDING){
@@ -391,9 +404,9 @@ public class MessageSender {
 		private void enqueue(final ResultData data) {
 			_waitQueue.addLast(data);
 			while(_waitQueue.size() > _maxQueueSize){
-				// Bei Queue-Überlauf älteste Nachrichten entfernen und auf Debug ausgeben
+				// Bei Queue-Ãœberlauf Ã¤lteste Nachrichten entfernen und auf Debug ausgeben
 				ResultData removed = _waitQueue.removeFirst();
-				_debug.warning("Senden ist nicht möglich, da die Sendesteuerung negativ und der Zwischenspeicher voll ist. Evtl. fehlt die Betriebsmeldungsverwaltung. " +
+				_debug.warning("Senden ist nicht mÃ¶glich, da die Sendesteuerung negativ und der Zwischenspeicher voll ist. Evtl. fehlt die Betriebsmeldungsverwaltung. " +
 						               "Folgende Meldung wurde nicht verschickt", removed.getData());
 			}
 		}

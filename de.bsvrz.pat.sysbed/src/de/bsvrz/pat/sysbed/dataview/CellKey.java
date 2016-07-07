@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.dataview;
@@ -28,19 +34,19 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
- * Ein CellKey ist eine Objektreferenz für ein Feld in den eigentlichen Daten
+ * Ein CellKey ist eine Objektreferenz fÃ¼r ein Feld in den eigentlichen Daten
  * des DataViewFrames. Da der DataViewFrame bzw. das DataViewPanel nur die
- * gerade zu visualisierenden Swing-Komponenten bereithält, benötigt man
+ * gerade zu visualisierenden Swing-Komponenten bereithÃ¤lt, benÃ¶tigt man
  * eine solche Objektreferenz, um sich etwa Dinge wie die Selektion merken
- * zu können.
+ * zu kÃ¶nnen.
  * Ein CellKey ist trotzdem kein schlankes Objekt.
  * Ein CellKey wird in der Regel mit einem String der Form "<Pid oder Id eines Systemobjekts>:<Datensatzindex>:<Attributbeschreibung>"
  * konstruiert. Die Attributbeschreibung ist genauer im Konstruktor beschrieben. Hier sei nur angemerkt,
- * dass sie Informationen zur Attributgruppe, aber nicht zum Aspekt enthält. Möglicherweise kann man
- * die ATG entfernen oder eines Tages noch den Aspekt hinzufügen.
+ * dass sie Informationen zur Attributgruppe, aber nicht zum Aspekt enthÃ¤lt. MÃ¶glicherweise kann man
+ * die ATG entfernen oder eines Tages noch den Aspekt hinzufÃ¼gen.
  * 
  * @author Kappich Systemberatung
- * @version $Revision: 13326 $
+ * @version $Revision$
  * 
  */
 public class CellKey {
@@ -64,32 +70,32 @@ public class CellKey {
 	/** Statt Strings merkt sich jeder CellKey nur die Indizes in der entsprechenden Lookup-Map. */
 	final private Integer[] _attributeNamePartArrayValues; 
 	
-	// In Pids sind Doopelpunkt und Komma verboten, so daß sie hier als Trennungszeichen benutzt werden können.
+	// In Pids sind Doopelpunkt und Komma verboten, so daÃŸ sie hier als Trennungszeichen benutzt werden kÃ¶nnen.
 	private static String FIRST_SEPARATOR = ":";
 	private static String SECOND_SEPARATOR = ",";
 	
 	private static Pattern FIRST_SEPARATOR_PATTERN = Pattern.compile( FIRST_SEPARATOR);
 	private static Pattern SECOND_SEPARATOR_PATTERN = Pattern.compile( SECOND_SEPARATOR);
 	
-	/** Eine Lookup-Map für den Attributgruppennamen zur gegebenen, internen Id. */
+	/** Eine Lookup-Map fÃ¼r den Attributgruppennamen zur gegebenen, internen Id. */
 	private static Map<Integer, String> _idToAttributGroupMap = new HashMap<Integer, String>();
-	/** Eine Lookup-Map für den internen Index zum Attributgruppennamen. */
+	/** Eine Lookup-Map fÃ¼r den internen Index zum Attributgruppennamen. */
 	private static Map<String, Integer> _attributGroupToIdMap = new HashMap<String, Integer>();
-	/** Die nächste zu vergebende interne Attributgruppen-Id. */
+	/** Die nÃ¤chste zu vergebende interne Attributgruppen-Id. */
 	private static Integer _nextAttributeGroupId = 1;
 	
-	/** Eine Lookup-Map für die interne Id der PID. */
+	/** Eine Lookup-Map fÃ¼r die interne Id der PID. */
 	private static Map<String, Integer> _pidToInternalIdMap = new HashMap<String, Integer>();
-	/** Eine Lookup-Map für die PID zur internen Id. */
+	/** Eine Lookup-Map fÃ¼r die PID zur internen Id. */
 	private static Map<Integer, String> _internalIdToPidMap = new HashMap<Integer, String>();
-	/** Die nächste zu vergebende interne PID-Id. */
+	/** Die nÃ¤chste zu vergebende interne PID-Id. */
 	private static Integer _nextInternalIdForPid = 1;
 	
-	/** Eine Lookup-Map für die interne Id des Parts. */
+	/** Eine Lookup-Map fÃ¼r die interne Id des Parts. */
 	private static Map<String, Integer> _partToInternalIdMap = new HashMap<String, Integer>();
-	/** Eine Lookup-Map für die Part zur internen Id. */
+	/** Eine Lookup-Map fÃ¼r die Part zur internen Id. */
 	private static Map<Integer, String> _internalIdToPartMap = new HashMap<Integer, String>();
-	/** Die nächste zu vergebende interne Part-Id. */
+	/** Die nÃ¤chste zu vergebende interne Part-Id. */
 	private static Integer _nextInternalIdForPart = 1;
 	
 	/** Der in der Zelle darzustellende Text. */
@@ -98,10 +104,10 @@ public class CellKey {
 	/**
 	 * Konstruktor zum Anlegen eines CellKeys.
 	 * Ein normaler CellKey beschreibt eine Zelle in einer Row; allerdings gibt
-	 * es die übergreifenden Zeilen für die "Keine-Daten-Fälle", die mit superColumn = true
-	 * konstruiert werden müssen.
+	 * es die Ã¼bergreifenden Zeilen fÃ¼r die "Keine-Daten-FÃ¤lle", die mit superColumn = true
+	 * konstruiert werden mÃ¼ssen.
 	 * 
-	 * @param cellKey Schlüssel
+	 * @param cellKey SchlÃ¼ssel
 	 */
 	public CellKey( final String cellKey, final boolean superColumn) {
 		_superColumn = superColumn;
@@ -170,14 +176,14 @@ public class CellKey {
 	/**
 	 * Gibt an, ob der CellKey eine Super-Spalte beschreibt oder eine normale Spalte.
 	 * 
-	 * @return steht der CellKey für eine Super-Spalte?
+	 * @return steht der CellKey fÃ¼r eine Super-Spalte?
 	 */
 	public boolean isSuperColumn() {
 		return _superColumn;
 	}
 	
 	/**
-	 * Gibt den String aus dem der CellKey konstruiert wurde zurück.
+	 * Gibt den String aus dem der CellKey konstruiert wurde zurÃ¼ck.
 	 * 
 	 * @return der String, aus dem der CellKey konstruiert wurde
 	 */
@@ -188,7 +194,7 @@ public class CellKey {
 	}
 	
 	/**
-	 * Gibt den Datensatzindex des CellKeys zurück.
+	 * Gibt den Datensatzindex des CellKeys zurÃ¼ck.
 	 * @return Datensatzindex des CellKeys
 	 */
 	public long getDataIndex() {
@@ -196,7 +202,7 @@ public class CellKey {
 	}
 	
 	/**
-	 * Gibt die Pid des Datensatzes des CellKeys zurück.
+	 * Gibt die Pid des Datensatzes des CellKeys zurÃ¼ck.
 	 * 
 	 * @return Pid des Datensatzes
 	 */
@@ -205,7 +211,7 @@ public class CellKey {
 	}
 	
 	/**
-	 * Gibt den Attributname des CellKeys inklusive Attributgruppe zurück.
+	 * Gibt den Attributname des CellKeys inklusive Attributgruppe zurÃ¼ck.
 	 * @return Attributname des CellKeys inklusive Attributgruppe
 	 */
 	public String getAttributeName() {
@@ -219,7 +225,7 @@ public class CellKey {
 	}
 	
 	/**
-	 * Gibt den Attributname ohne Attributgruppe, aber mit den Array-Informationen des CellKeys zurück.
+	 * Gibt den Attributname ohne Attributgruppe, aber mit den Array-Informationen des CellKeys zurÃ¼ck.
 	 * 
 	 * @return Attributname ohne Attributgruppe, aber mit den Array-Informationen ds CellKeys
 	 */
@@ -251,7 +257,7 @@ public class CellKey {
 	}
 	
 	/**
-	 * Gibt die Array-Informationen des CellKeys zurück.
+	 * Gibt die Array-Informationen des CellKeys zurÃ¼ck.
 	 * 
 	 * @return die Array-Informationen des CellKeys
 	 */
@@ -276,7 +282,7 @@ public class CellKey {
 	}
 	
 	/**
-	 * Entfernt alle Indizes aus den Arrays des übergebenen Strings und gibt das Ergebnis zurück.
+	 * Entfernt alle Indizes aus den Arrays des Ã¼bergebenen Strings und gibt das Ergebnis zurÃ¼ck.
 	 * 
 	 * @param s ein String, z.B. eine Attributbeschreibung mit Array-Informationen
 	 * @return der String s ohne Indizes in den Array-Informationen 
@@ -286,7 +292,7 @@ public class CellKey {
 	}
 	
 	/**
-	 * Entfernt alle Arrays aus dem übergebenen String und gibt das Ergebnis zurück.
+	 * Entfernt alle Arrays aus dem Ã¼bergebenen String und gibt das Ergebnis zurÃ¼ck.
 	 * 
 	 * @param s  ein String, z.B. eine Attributbeschreibung mit Array-Informationen
 	 * @return der String s ohne seine Array-Informationen 
@@ -296,7 +302,7 @@ public class CellKey {
 	}
 	
 	/**
-	 * Gibt den ersten Integer zwischen einer [ und einer ] innerhalb von s zurück.
+	 * Gibt den ersten Integer zwischen einer [ und einer ] innerhalb von s zurÃ¼ck.
 	 * 
 	 * @param s ein String
 	 * @return der erste Integer zwischen einer [ und einer ] innerhalb von s
@@ -333,7 +339,7 @@ public class CellKey {
 	}
 	
 	/**
-	 * Gestattet einen Vergleich des CellKeys this mit dem übergebenen CellKey. Definiert die
+	 * Gestattet einen Vergleich des CellKeys this mit dem Ã¼bergebenen CellKey. Definiert die
 	 * Ordnung auf den Spalten bei der Interval-Selektion.
 	 * 
 	 * @param attributeGroup die Attributgruppe
@@ -350,7 +356,7 @@ public class CellKey {
 				lastIndex1 = getAttributePartArrayValue(index);
 				lastIndex2 = key.getAttributePartArrayValue(index);
 				if ( lastIndex1 >= 0) { // d.h. es handelt sich um Indizes
-					if ( lastIndex1 != lastIndex2) { // es ist schon eine Entscheidung möglich!
+					if ( lastIndex1 != lastIndex2) { // es ist schon eine Entscheidung mÃ¶glich!
 						return (lastIndex1 <= lastIndex2);
 					}
 				}
@@ -387,7 +393,7 @@ public class CellKey {
 	}
 	
 	/**
-	 * Gibt genau dann <code>true</code> zurück, wenn der CellKey <code>this</code> sich zwischen den Spaltenschranken
+	 * Gibt genau dann <code>true</code> zurÃ¼ck, wenn der CellKey <code>this</code> sich zwischen den Spaltenschranken
 	 * befindet.
 	 * 
 	 * @param attributeGroup die Attributgruppe
@@ -421,7 +427,7 @@ public class CellKey {
 	}
 	
 	/**
-	 * Gibt die kleinere, d.h. weiter links stehende CellKeyColumn der beiden CellKeys zurück.
+	 * Gibt die kleinere, d.h. weiter links stehende CellKeyColumn der beiden CellKeys zurÃ¼ck.
 	 *  
 	 * @param attributeGroup die Attributgruppe
 	 * @param key1 ein CellKey
@@ -446,12 +452,12 @@ public class CellKey {
 		return null;
 	}
 	/**
-	 * Gibt die größere, d.h. weiter rechts stehende CellKeyColumn der beiden CellKeys zurück.
+	 * Gibt die grÃ¶ÃŸere, d.h. weiter rechts stehende CellKeyColumn der beiden CellKeys zurÃ¼ck.
 	 *  
 	 * @param attributeGroup die Attributgruppe
 	 * @param key1 ein CellKey
 	 * @param key2 noch ein CellKey
-	 * @return der größere der beiden CellKeys
+	 * @return der grÃ¶ÃŸere der beiden CellKeys
 	 */
 	public static CellKeyColumn maxColumn( final AttributeGroup attributeGroup, final CellKey key1, final CellKey key2) {
 		final CellKeyColumn column1 = new CellKeyColumn( key1);
@@ -474,7 +480,7 @@ public class CellKey {
 	}
 	
 	/**
-	 * Gibt den Text, der in der Zelle angezeigt werden soll, zurück.
+	 * Gibt den Text, der in der Zelle angezeigt werden soll, zurÃ¼ck.
 	 * 
 	 * @return den Text, der in der Zelle angezeigt werden soll
 	 */
@@ -507,7 +513,7 @@ public class CellKey {
 	}
 
 	/**
-	 * Gibt das erste Trennzeichen in der String-Darstellung des CellKeys zurück.
+	 * Gibt das erste Trennzeichen in der String-Darstellung des CellKeys zurÃ¼ck.
 	 * 
      * @return das erste Trennzeichen in der String-Darstellung des CellKeys
      */
@@ -516,7 +522,7 @@ public class CellKey {
     }
 
 	/**
-	 * Gibt das zweite Trennzeichen in der String-Darstellung des CellKeys zurück.
+	 * Gibt das zweite Trennzeichen in der String-Darstellung des CellKeys zurÃ¼ck.
 	 * 
      * @return das zweite Trennzeichen in der String-Darstellung des CellKeys
      */

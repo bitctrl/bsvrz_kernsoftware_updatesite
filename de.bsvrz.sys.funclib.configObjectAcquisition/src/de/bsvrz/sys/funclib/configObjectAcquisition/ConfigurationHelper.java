@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.sys.funclib.configObjectAcquisition.
  * 
  * de.bsvrz.sys.funclib.configObjectAcquisition is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.sys.funclib.configObjectAcquisition is distributed in the hope that it will be useful,
@@ -15,8 +15,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.sys.funclib.configObjectAcquisition; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.sys.funclib.configObjectAcquisition; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.sys.funclib.configObjectAcquisition;
@@ -33,10 +39,10 @@ import de.bsvrz.dav.daf.main.config.SystemObject;
 import de.bsvrz.dav.daf.main.config.SystemObjectType;
 
 /**
- * Hilfsfunktion(en) f¸r den Zugriff auf die Konfiguration
+ * Hilfsfunktion(en) f√ºr den Zugriff auf die Konfiguration
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5065 $
+ * @version $Revision$
  */
 public class ConfigurationHelper {
 

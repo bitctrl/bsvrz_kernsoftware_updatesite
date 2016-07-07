@@ -2,13 +2,13 @@
  * Copyright 2010 by Kappich Systemberatung, Aachen
  * Copyright 2009 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.pat.sysbed.
  * 
- * de.bsvrz.pat.sysbed is free software; you can redistribute it and/or modify
+ * de.bsvrz.pat.sysbed is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.pat.sysbed is distributed in the hope that it will be useful,
@@ -17,44 +17,46 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.pat.sysbed; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.pat.sysbed.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.pat.sysbed.dataview;
 
-import de.bsvrz.dav.daf.main.ClientDavInterface;
-import de.bsvrz.dav.daf.main.ClientReceiverInterface;
-import de.bsvrz.dav.daf.main.DataDescription;
-import de.bsvrz.dav.daf.main.ReceiveOptions;
-import de.bsvrz.dav.daf.main.ReceiverRole;
-import de.bsvrz.dav.daf.main.ResultData;
+import de.bsvrz.dav.daf.main.*;
 import de.bsvrz.dav.daf.main.config.Aspect;
 import de.bsvrz.dav.daf.main.config.AttributeGroup;
 import de.bsvrz.dav.daf.main.config.SystemObject;
+import de.bsvrz.pat.sysbed.main.GenericTestMonitorApplication;
 import de.bsvrz.sys.funclib.debug.Debug;
 
-import java.awt.*;
+import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
+import java.awt.Container;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.*;
-
 /**
  * Ein Dialog, welcher die gelieferten Online- oder Archivdaten in Tabellenform dargestellt.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13173 $
+ * @version $Revision$
  * @see DataViewPanel
  */
 public class DataViewFrame implements PrintFrame {
 
-	/** hängt einen neuen Datensatz unten an die Dargestellten an */
+	/** hÃ¤ngt einen neuen Datensatz unten an die Dargestellten an */
 	public static final int ADD_BELOW = 0;
 
-	/** fügt einen neuen Datensatz oben vor die Dargestellten ein */
+	/** fÃ¼gt einen neuen Datensatz oben vor die Dargestellten ein */
 	public static final int ADD_ABOVE = 1;
 
 	/** stellt nur den neuesten Datensatz dar */
@@ -147,8 +149,8 @@ public class DataViewFrame implements PrintFrame {
 	}
 
 	/**
-	 * Ein Konstruktor, der nur das allernötigste liefert; er ist private, weil er nur in initPrintFrame zur Anwendung kommt. Das resultierende Objekt kennt keine
-	 * Dynamik und keine Änderung der Selektion.
+	 * Ein Konstruktor, der nur das allernÃ¶tigste liefert; er ist private, weil er nur in initPrintFrame zur Anwendung kommt. Das resultierende Objekt kennt keine
+	 * Dynamik und keine Ã„nderung der Selektion.
 	 *
 	 * @param connection        die Datenverteiler-Verbindung
 	 * @param attributeGroup    die Attributgruppe
@@ -182,7 +184,7 @@ public class DataViewFrame implements PrintFrame {
 	}
 
 	/**
-	 * Gibt das UnsubscribingJFrame-Objekt zurück.
+	 * Gibt das UnsubscribingJFrame-Objekt zurÃ¼ck.
 	 *
 	 * @return das UnsubscribingJFrame-Objekt
 	 */
@@ -191,7 +193,7 @@ public class DataViewFrame implements PrintFrame {
 	}
 
 	/**
-	 * Gibt das DataViewPanel zurück.
+	 * Gibt das DataViewPanel zurÃ¼ck.
 	 *
 	 * @return das DataViewPanel
 	 */
@@ -200,42 +202,42 @@ public class DataViewFrame implements PrintFrame {
 	}
 
 	/**
-	 * Setzt die Empfängeroptionen.
+	 * Setzt die EmpfÃ¤ngeroptionen.
 	 *
-	 * @param receiveOptions die Empfängeroptionen
+	 * @param receiveOptions die EmpfÃ¤ngeroptionen
 	 */
 	public void setReceiveOptions(final ReceiveOptions receiveOptions) {
 		_receiveOptions = receiveOptions;
 	}
 
 	/**
-	 * Setzt die Empfängerrolle.
+	 * Setzt die EmpfÃ¤ngerrolle.
 	 *
-	 * @param receiverRole die Empfängerrolle
+	 * @param receiverRole die EmpfÃ¤ngerrolle
 	 */
 	public void setReceiverRole(final ReceiverRole receiverRole) {
 		_receiverRole = receiverRole;
 	}
 
 	/**
-	 * Zeigt die in der Liste übergebenen konfigurierenden Daten an.
+	 * Zeigt die in der Liste Ã¼bergebenen konfigurierenden Daten an.
 	 *
 	 * @param configuringData die konfigurierenden Daten
 	 */
 	public void showConfigurationData(final List<DataTableObject> configuringData) {
-		_frame.setTitle("Konfigurierende Daten (Attributgruppe: " + _attributeGroup.getNameOrPidOrId() + ", Aspekt: " + _aspect.getNameOrPidOrId() + ")");
+		_frame.setTitle(GenericTestMonitorApplication.getTitle("Konfigurierende Daten (Attributgruppe: " + _attributeGroup.getNameOrPidOrId() + ", Aspekt: " + _aspect.getNameOrPidOrId() + ")", _connection));
 		_frame.setVisible(true);
 		_dataViewModel.setDatasets(configuringData);
 	}
 
 	/**
-	 * Zeigt die Onlinedaten der angemeldeten Datenidentifikation an. Der Parameter gibt an, an welcher Stelle neue Daten eingefügt werden sollen. Zur Auswahl
-	 * stehen: <ul> <li>0: unten einfügen</li> <li>1: oben einfügen</li> <li>2: nur neueste Daten anzeigen</li> </ul>
+	 * Zeigt die Onlinedaten der angemeldeten Datenidentifikation an. Der Parameter gibt an, an welcher Stelle neue Daten eingefÃ¼gt werden sollen. Zur Auswahl
+	 * stehen: <ul> <li>0: unten einfÃ¼gen</li> <li>1: oben einfÃ¼gen</li> <li>2: nur neueste Daten anzeigen</li> </ul>
 	 *
 	 * @param displayOptions gibt an, wie neue Daten dargestellt werden sollen
 	 */
 	public void showOnlineData(int displayOptions) {
-		_frame.setTitle("Onlinetabelle (Attributgruppe: " + _attributeGroup.getNameOrPidOrId() + ", Aspekt: " + _aspect.getNameOrPidOrId() + ")");
+		_frame.setTitle(GenericTestMonitorApplication.getTitle("Onlinetabelle (Attributgruppe: " + _attributeGroup.getNameOrPidOrId() + ", Aspekt: " + _aspect.getNameOrPidOrId() + ")", _connection));
 		_frame.setVisible(true);
 		ClientReceiverInterface receiver = new DataViewReceiver(displayOptions);
 		try {
@@ -246,7 +248,7 @@ public class DataViewFrame implements PrintFrame {
 			_frame.setVisible(false);
 			_frame.dispose();
 			_debug.error(
-					"Beim Öffnen einer neuen Onlinetabelle ist bei der Anmeldung der gewünschten Datenidentifikationen ein Fehler aufgetreten (siehe Exception)",
+					"Beim Ã–ffnen einer neuen Onlinetabelle ist bei der Anmeldung der gewÃ¼nschten Datenidentifikationen ein Fehler aufgetreten (siehe Exception)",
 					ex
 			);
 			throw new IllegalStateException(ex.getMessage());
@@ -259,8 +261,8 @@ public class DataViewFrame implements PrintFrame {
 		private int _displayOptions = 0;
 
 		/**
-		 * Mit dem Konstruktor wird ein Parameter übergeben, der angibt, an welcher Stelle neue Daten eingefügt werden sollen. Zur Auswahl stehen: <ul> <li>0: unten
-		 * einfügen</li> <li>1: oben einfügen</li> <li>2: nur neueste Daten anzeigen</li> </ul>
+		 * Mit dem Konstruktor wird ein Parameter Ã¼bergeben, der angibt, an welcher Stelle neue Daten eingefÃ¼gt werden sollen. Zur Auswahl stehen: <ul> <li>0: unten
+		 * einfÃ¼gen</li> <li>1: oben einfÃ¼gen</li> <li>2: nur neueste Daten anzeigen</li> </ul>
 		 *
 		 * @param displayOptions gibt an, wie neue Daten dargestellt werden sollen
 		 */

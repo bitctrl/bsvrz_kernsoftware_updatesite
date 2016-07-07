@@ -1,11 +1,11 @@
 /*
- * Copyright 2005 by Kappich+Kniß Systemberatung Aachen (K2S)
+ * Copyright 2005 by Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,57 +14,63 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main;
 
 /**
- * Objekte dieser Klasse repräsentieren die verschiedenen Zustände von Datensätzen (Datensatztyp) (siehe Datensatztyp in
+ * Objekte dieser Klasse reprÃ¤sentieren die verschiedenen ZustÃ¤nde von DatensÃ¤tzen (Datensatztyp) (siehe Datensatztyp in
  * den Technische Anforderungen zum Archivsystem).
  *
- * @author Kappich+Kniß Systemberatung Aachen (K2S)
+ * @author Kappich+KniÃŸ Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 11248 $ / $Date: 2013-04-30 18:18:30 +0200 (Tue, 30 Apr 2013) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public final class DataState {
 
 	/**
-	 * Datensatztyp für Datensätze die Nutzdaten enthalten (siehe Technische Anforderungen Archivsystem).
+	 * Datensatztyp fÃ¼r DatensÃ¤tze die Nutzdaten enthalten (siehe Technische Anforderungen Archivsystem).
 	 */
 	public static final DataState DATA = new DataState("Nutzdaten", 1);
 
 	/**
-	 * Datensatztyp für leere Datensätze, die von der Quelle ohne Attributwerte versendet wurden (siehe Technische
+	 * Datensatztyp fÃ¼r leere DatensÃ¤tze, die von der Quelle ohne Attributwerte versendet wurden (siehe Technische
 	 * Anforderungen Archivsystem).
 	 */
 	public static final DataState NO_DATA = new DataState("Keine Daten", 2);
 
 	/**
-	 * Datensatztyp für leere Datensätze, die vom Datenverteiler generiert wurden, weil keine Quelle für die entsprechenden
+	 * Datensatztyp fÃ¼r leere DatensÃ¤tze, die vom Datenverteiler generiert wurden, weil keine Quelle fÃ¼r die entsprechenden
 	 * Daten existiert. (siehe Technische Anforderungen Archivsystem).
 	 */
 	public static final DataState NO_SOURCE = new DataState("Keine Quelle", 3);
 
 	/**
-	 * Datensatztyp für leere Datensätze, die vom Datenverteiler generiert wurden, weil nicht die erforderlichen Rechte zum
+	 * Datensatztyp fÃ¼r leere DatensÃ¤tze, die vom Datenverteiler generiert wurden, weil nicht die erforderlichen Rechte zum
 	 * Empfang der Daten vorliegen. (siehe Technische Anforderungen Archivsystem).
 	 */
 	public static final DataState NO_RIGHTS = new DataState("Keine Rechte", 4);
 
 	/**
-	 * Datensatztyp für leere Datensätze, die vom Archivsystem generiert wurden, um eine potentielle Datenlücke zu
+	 * Datensatztyp fÃ¼r leere DatensÃ¤tze, die vom Archivsystem generiert wurden, um eine potentielle DatenlÃ¼cke zu
 	 * markieren. (siehe Technische Anforderungen Archivsystem).
 	 */
-	public static final DataState POSSIBLE_GAP = new DataState("Potentielle Datenlücke", 5);
+	public static final DataState POSSIBLE_GAP = new DataState("Potentielle DatenlÃ¼cke", 5);
 
 	/**
-	 * Datensatztyp für leere Datensätze, die vom Archivsystem in jeden Datensatzstrom eingefügt werden, um das Ende eines
+	 * Datensatztyp fÃ¼r leere DatensÃ¤tze, die vom Archivsystem in jeden Datensatzstrom eingefÃ¼gt werden, um das Ende eines
 	 * Datensatzstroms einer Teilanfrage zu markieren. Der Datenzeitstempel bei Verwendung dieses Typs gibt an, bis wann
-	 * der letzte reguläre Datensatz gültig ist, d.h. der Datenzeitstempel enthält den Datenzeitstempel des Datensatzes,
-	 * der dem letzten übertragenen regulären Datensatz folgen würde, oder falls es noch keinen Nachfolger gibt den
-	 * Datenzeitstempel des letzten übertragenen regulären Datensatzes. (Siehe auch Technische Anforderungen
+	 * der letzte regulÃ¤re Datensatz gÃ¼ltig ist, d.h. der Datenzeitstempel enthÃ¤lt den Datenzeitstempel des Datensatzes,
+	 * der dem letzten Ã¼bertragenen regulÃ¤ren Datensatz folgen wÃ¼rde, oder falls es noch keinen Nachfolger gibt den
+	 * Datenzeitstempel des letzten Ã¼bertragenen regulÃ¤ren Datensatzes. (Siehe auch Technische Anforderungen
 	 * Archivsystem).
 	 *
 	 * @see de.bsvrz.dav.daf.main.impl.archive.PersistentDataStreamSupplier
@@ -73,34 +79,34 @@ public final class DataState {
 	public static final DataState END_OF_ARCHIVE = new DataState("Ende Archivdaten", 6);
 
 	/**
-	 * Datensatztyp für leere Datensätze, die vom Archivsystem in den Antwort-Datensatzstrom von Teilanfragen eingefügt
-	 * wird, um Bereiche zu markieren, die gelöscht (und nicht gesichert) wurden. Der Datenzeitstempel bei Verwendung
-	 * dieses Typs enthält den Datenzeitstempel des ersten gelöschten Datensatz im gelöschten Bereich. (Siehe auch
+	 * Datensatztyp fÃ¼r leere DatensÃ¤tze, die vom Archivsystem in den Antwort-Datensatzstrom von Teilanfragen eingefÃ¼gt
+	 * wird, um Bereiche zu markieren, die gelÃ¶scht (und nicht gesichert) wurden. Der Datenzeitstempel bei Verwendung
+	 * dieses Typs enthÃ¤lt den Datenzeitstempel des ersten gelÃ¶schten Datensatz im gelÃ¶schten Bereich. (Siehe auch
 	 * Technische Anforderungen Archivsystem).
 	 */
-	public static final DataState DELETED_BLOCK = new DataState("Gelöschter Bereich", 7);
+	public static final DataState DELETED_BLOCK = new DataState("GelÃ¶schter Bereich", 7);
 
 	/**
-	 * Datensatztyp für leere Datensätze, die vom Archivsystem in den Antwort-Datensatzstrom von Teilanfragen eingefügt
-	 * wird, um Bereiche zu markieren, die ausgelagert (d.h. gesichert und gelöscht) wurden. Der Datenzeitstempel bei
-	 * Verwendung dieses Typs enthält den Datenzeitstempel des ersten gelöschten Datensatz im ausgelagerten Bereich. (Siehe
+	 * Datensatztyp fÃ¼r leere DatensÃ¤tze, die vom Archivsystem in den Antwort-Datensatzstrom von Teilanfragen eingefÃ¼gt
+	 * wird, um Bereiche zu markieren, die ausgelagert (d.h. gesichert und gelÃ¶scht) wurden. Der Datenzeitstempel bei
+	 * Verwendung dieses Typs enthÃ¤lt den Datenzeitstempel des ersten gelÃ¶schten Datensatz im ausgelagerten Bereich. (Siehe
 	 * auch Technische Anforderungen Archivsystem).
 	 */
 	public static final DataState UNAVAILABLE_BLOCK = new DataState("Ausgelagerter Bereich", 8);
 
 	/**
-	 * Datensatztyp für leere Datensätze, die vom Datenverteiler versendet werden können, wenn eine Anmeldung von Daten im
-	 * Konflikt mit anderen Anmeldungen steht (z.B. mehrere Senken für die gleichen Daten).
+	 * Datensatztyp fÃ¼r leere DatensÃ¤tze, die vom Datenverteiler versendet werden kÃ¶nnen, wenn eine Anmeldung von Daten im
+	 * Konflikt mit anderen Anmeldungen steht (z.B. mehrere Senken fÃ¼r die gleichen Daten).
 	 */
-	public static final DataState INVALID_SUBSCRIPTION = new DataState("Ungültige Anmeldung", 9);
+	public static final DataState INVALID_SUBSCRIPTION = new DataState("UngÃ¼ltige Anmeldung", 9);
 
 	/**
-	 * Liefert einen zur angegebenen Kodierung korrespondierenden Datensatztyp zurück. Die Kodierung des Datensatztyps kann
+	 * Liefert einen zur angegebenen Kodierung korrespondierenden Datensatztyp zurÃ¼ck. Die Kodierung des Datensatztyps kann
 	 * mit der Methode {@link #getCode()} bestimmt werden.
 	 *
-	 * @param code Kodierung des gewünschten Datensatztyps.
+	 * @param code Kodierung des gewÃ¼nschten Datensatztyps.
 	 * @return Zur angegebenen Kodierung korrespondierender Datensatztyp.
-	 * @throws IllegalArgumentException Wenn eine ungültige Kodierung übergeben wurde.
+	 * @throws IllegalArgumentException Wenn eine ungÃ¼ltige Kodierung Ã¼bergeben wurde.
 	 * @see #getCode
 	 */
 	public static final DataState getInstance(int code) {
@@ -142,7 +148,7 @@ public final class DataState {
 	/**
 	 * Returns a hash code value for the object. This method is supported for the benefit of hashtables such as those
 	 * provided by <code>java.util.Hashtable</code>.
-	 * <p/>
+	 * <p>
 	 * The general contract of <code>hashCode</code> is: <ul> <li>Whenever it is invoked on the same object more than once
 	 * during an execution of a Java application, the <tt>hashCode</tt> method must consistently return the same integer,
 	 * provided no information used in <tt>equals</tt> comparisons on the object is modified. This integer need not remain
@@ -152,7 +158,7 @@ public final class DataState {
 	 * according to the {@link Object#equals(Object)} method, then calling the <tt>hashCode</tt> method on each of the two
 	 * objects must produce distinct integer results.  However, the programmer should be aware that producing distinct
 	 * integer results for unequal objects may improve the performance of hashtables. </ul>
-	 * <p/>
+	 * <p>
 	 * As much as is reasonably practical, the hashCode method defined by class <tt>Object</tt> does return distinct
 	 * integers for distinct objects. (This is typically implemented by converting the internal address of the object into
 	 * an integer, but this implementation technique is not required by the Java<font size="-2"><sup>TM</sup></font>
@@ -167,8 +173,8 @@ public final class DataState {
 	}
 
 	/**
-	 * Liefert eine textuelle Beschreibung dieses Datensatztyps zurück. Das genaue Format ist nicht festgelegt und kann
-	 * sich ändern.
+	 * Liefert eine textuelle Beschreibung dieses Datensatztyps zurÃ¼ck. Das genaue Format ist nicht festgelegt und kann
+	 * sich Ã¤ndern.
 	 *
 	 * @return Beschreibung dieses Objekts.
 	 */

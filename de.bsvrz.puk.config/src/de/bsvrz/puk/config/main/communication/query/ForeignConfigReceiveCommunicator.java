@@ -3,9 +3,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main.communication.query;
@@ -37,10 +43,10 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * Klasse, die sich auf Antworten anderer Konfigurationen anmeldet und diese an die jeweils intern angemeldeten Objekte weiterleitet
  *
  * @author Kappich Systemberatung
- * @version $Revision: 9184 $
+ * @version $Revision$
  */
 public class ForeignConfigReceiveCommunicator {
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	private final ClientDavInterface _connection;
@@ -49,7 +55,7 @@ public class ForeignConfigReceiveCommunicator {
 
 	private DataState _dataStateReceiver = DataState.INVALID_SUBSCRIPTION;
 
-	/** Für Antworten */
+	/** FÃ¼r Antworten */
 	private final DataDescription _responseDescription;
 
 	private ClientReceiverInterface _receiver;

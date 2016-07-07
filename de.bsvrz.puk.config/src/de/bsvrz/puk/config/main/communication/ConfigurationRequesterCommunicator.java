@@ -5,9 +5,9 @@
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -16,14 +16,18 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-StraÃŸe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.main.communication;
 
-import de.bsvrz.dav.daf.communication.dataRepresentation.AttributeBaseValue;
-import de.bsvrz.dav.daf.communication.dataRepresentation.AttributeListValue;
 import de.bsvrz.dav.daf.communication.dataRepresentation.AttributeValue;
 import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.ByteArrayAttribute;
 import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.ByteAttribute;
@@ -32,7 +36,6 @@ import de.bsvrz.dav.daf.communication.dataRepresentation.datavalue.StringAttribu
 import de.bsvrz.dav.daf.main.*;
 import de.bsvrz.dav.daf.main.config.*;
 import de.bsvrz.dav.daf.main.impl.config.*;
-import de.bsvrz.dav.daf.main.impl.config.request.RemoteRequestManager;
 import de.bsvrz.dav.daf.main.impl.config.telegrams.*;
 import de.bsvrz.puk.config.configFile.datamodel.ConfigDataModel;
 import de.bsvrz.puk.config.main.authentication.Authentication;
@@ -49,9 +52,9 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Diese Klasse empfängt Telegramme vom Typ "atg.konfigurationsAnfrage" und "atg.konfigurationsSchreibAnfrage" und verschickt Telegramme vom Typ
+ * Diese Klasse empfÃ¤ngt Telegramme vom Typ "atg.konfigurationsAnfrage" und "atg.konfigurationsSchreibAnfrage" und verschickt Telegramme vom Typ
  * "atg.konfigurationsAntwort" und "atg.konfigurationsSchreibAntwort".
- * <p/>
+ * <p>
  * Die Telegramme vom Typ "atg.konfigurationsAnfrage" und "atg.konfigurationsSchreibAnfrage" werden interpretiert und an das Datenmodell weitergereicht. Die
  * Antwort des Datenmodells wird in Telegrammen vom Typ "atg.konfigurationsAntwort" und "atg.konfigurationsSchreibAntwort" an die anfragende Applikation
  * verschickt.
@@ -61,7 +64,7 @@ import java.util.*;
  */
 class ConfigurationRequesterCommunicator {
 
-	/** DebugLogger für Debug-Ausgaben */
+	/** DebugLogger fÃ¼r Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	private final AsyncRequestQueue _asyncRequestQueue;
@@ -76,15 +79,10 @@ class ConfigurationRequesterCommunicator {
 
 	private final DataDescription _writeAnswerDataDescription;
 
-	/** Dient zum anfragen anderer Konfigurationen */
-	private final RemoteRequestManager _remoteRequestManager;
-
-	/** Wird benötigt um "isUserValid" zu bearbeiten */
+	/** Wird benÃ¶tigt um "isUserValid" zu bearbeiten */
 	private final Authentication _authentication;
 
-	private final Map _clientInfos = new TreeMap();
-
-	private Map _code2AuthorityMap = new HashMap();
+	private final Map<SystemObject, ClientInfo> _clientInfos = new TreeMap<SystemObject, ClientInfo>();
 
 	private final ConfigurationArea _defaultConfigArea;
 
@@ -93,22 +91,22 @@ class ConfigurationRequesterCommunicator {
 	private final SenderRole SENDER_ROLE = SenderRole.sender();
 
 	/**
-	 * Enthält die Objekte, die in der Antwort auf die von Applikationen initial gestellte Anfrage nach Meta-Objekten enthalten sind.
-	 * Die Antwort enthält alle gültigen Aspekte, Attribute,
+	 * EnthÃ¤lt die Objekte, die in der Antwort auf die von Applikationen initial gestellte Anfrage nach Meta-Objekten enthalten sind.
+	 * Die Antwort enthÃ¤lt alle gÃ¼ltigen Aspekte, Attribute,
 	 * Attributgruppen, Attributgruppenverwendungen, Attributtypen, Konfigurationsbereiche, Konfigurationsverantwortlichem, Mengenverwendungen, Typen,
-	 * Wertebereiche und Werteustände.
+	 * Wertebereiche und WerteustÃ¤nde.
 	 */
 	private SystemObject[] _metaDataObjects;
 
 	/**
-	 * Enthält die minimalen Objekte zum Stellen von neuartigen Konfigurationsanfragen
+	 * EnthÃ¤lt die minimalen Objekte zum Stellen von neuartigen Konfigurationsanfragen
 	 */
 	private SystemObject[] _metaDataObjectsMinimal;
 
 	private ForeignObjectManager _foreignObjectManager = null;
 
 	/**
-	 * Klasse mit Informationen über Simulationen (kann initial null sein)
+	 * Klasse mit Informationen Ã¼ber Simulationen (kann initial null sein)
 	 */
 	private SimulationHandler _simulationHandler;
 	public static final String[] META_TYPES = new String[]{
@@ -202,7 +200,7 @@ class ConfigurationRequesterCommunicator {
 		);
 		if(defaultConfigAreaArray.getLength() != 1) {
 			throw new IllegalArgumentException(
-					"Kein Default-Bereich für neue Objekte am Konfigurationsverantwortlichen versorgt: " + _configAuthority.getPid()
+					"Kein Default-Bereich fÃ¼r neue Objekte am Konfigurationsverantwortlichen versorgt: " + _configAuthority.getPid()
 			);
 		}
 
@@ -210,11 +208,10 @@ class ConfigurationRequesterCommunicator {
 		_defaultConfigArea = (ConfigurationArea)dataModel.getObject(defaultConfigAreaPid);
 		if(_defaultConfigArea == null) {
 			throw new IllegalArgumentException(
-					"Default-Bereich '" + defaultConfigAreaPid + "' für neue Objekte am Konfigurationsverantwortlichen '" + _configAuthority.getPid()
+					"Default-Bereich '" + defaultConfigAreaPid + "' fÃ¼r neue Objekte am Konfigurationsverantwortlichen '" + _configAuthority.getPid()
 					+ "' nicht gefunden"
 			);
 		}
-		_remoteRequestManager = RemoteRequestManager.getInstance(_connection);
 
 		_metaDataObjects = getMetaDataObjects();
 		_metaDataObjectsMinimal = getMetaDataObjectsMinimal();
@@ -228,7 +225,7 @@ class ConfigurationRequesterCommunicator {
 				_dataModel.getAttributeGroup("atg.konfigurationsSchreibAntwort"), answerAspect, (short)0
 		);
 
-		// Als Senke für Konfigurationsanfragen anmelden
+		// Als Senke fÃ¼r Konfigurationsanfragen anmelden
 		Aspect requestAspect = _dataModel.getAspect("asp.anfrage");
 		final DataDescription requestDataDescription = new DataDescription(
 				_dataModel.getAttributeGroup("atg.konfigurationsAnfrage"), requestAspect, (short)0
@@ -250,9 +247,9 @@ class ConfigurationRequesterCommunicator {
 	}
 
 	/**
-	 * Ermittelt die Objekte, die in der Antwort auf die von Applikationen initial gestellte Anfrage nach Meta-Objekten enthalten sind. Die Antwort enthält alle
-	 * gültigen Aspekte, Attribute, Attributgruppen, Attributgruppenverwendungen, Attributtypen, Konfigurationsbereiche, Konfigurationsverantwortlichem,
-	 * Mengenverwendungen, Typen, Wertebereiche und Wertezustände.
+	 * Ermittelt die Objekte, die in der Antwort auf die von Applikationen initial gestellte Anfrage nach Meta-Objekten enthalten sind. Die Antwort enthÃ¤lt alle
+	 * gÃ¼ltigen Aspekte, Attribute, Attributgruppen, Attributgruppenverwendungen, Attributtypen, Konfigurationsbereiche, Konfigurationsverantwortlichem,
+	 * Mengenverwendungen, Typen, Wertebereiche und WertezustÃ¤nde.
 	 *
 	 * @return Array mit allen relevanten Meta-Objekten
 	 */
@@ -374,15 +371,15 @@ class ConfigurationRequesterCommunicator {
 
 		private final SystemObject _client;
 
-		private List _answers = null;
+		private List<ResultData> _answers = null;
 
-		private List _writeAnswers = null;
+		private List<ResultData> _writeAnswers = null;
 
 		private ClientInfo(SystemObject client) throws OneSubscriptionPerSendData, ConfigurationException {
 			_client = client;
 			if(WAIT_FOR_SEND_CONTROL) {
-				_answers = new LinkedList();
-				_writeAnswers = new LinkedList();
+				_answers = new LinkedList<ResultData>();
+				_writeAnswers = new LinkedList<ResultData>();
 			}
 			_connection.subscribeSender(this, client, _answerDataDescription, SENDER_ROLE);
 			_connection.subscribeSender(this, client, _writeAnswerDataDescription, SENDER_ROLE);
@@ -413,7 +410,7 @@ class ConfigurationRequesterCommunicator {
 		}
 
 		/**
-		 * Signalisiert einer Sendenden Quelle dass ihre Daten von einem Empfänger angemeldet wurden. Die Quelle wird damit aufgefordert Daten zu versenden.
+		 * Signalisiert einer Sendenden Quelle dass ihre Daten von einem EmpfÃ¤nger angemeldet wurden. Die Quelle wird damit aufgefordert Daten zu versenden.
 		 *
 		 * @param object          Die Anmeldeinformation der zu versendenden Daten.
 		 * @param dataDescription Beschreibende Informationen zu den abzumeldenden Daten.
@@ -421,7 +418,7 @@ class ConfigurationRequesterCommunicator {
 		 */
 		public void dataRequest(SystemObject object, DataDescription dataDescription, byte state) {
 			try {
-				//System.out.println("Sendesteuerung für " + dataDescription.getAttributeGroup().getNameOrPidOrId() + ": " + state);
+				//System.out.println("Sendesteuerung fÃ¼r " + dataDescription.getAttributeGroup().getNameOrPidOrId() + ": " + state);
 				if(state != 0) {
 					boolean terminate = false;
 					if(dataDescription.getAttributeGroup() == _answerDataDescription.getAttributeGroup()) {
@@ -435,10 +432,10 @@ class ConfigurationRequesterCommunicator {
 						}
 					}
 					if(terminate) {
-						/** Nicht object sondern _client für die Ausgaben verwenden. Normalerweise ist beides dasselbe Objekt, aber wenn das Objekt der lokalen
+						/** Nicht object sondern _client fÃ¼r die Ausgaben verwenden. Normalerweise ist beides dasselbe Objekt, aber wenn das Objekt der lokalen
 						/ Konfiguration unbekannt ist, befindet sich nur in _client das {@link UnknownObject}.*/
 						_debug.info(
-								dataDescription.getAttributeGroup().getName() + " wird für " + _client.getType().getNameOrPidOrId() + " " + _client.getName() + " id "
+								dataDescription.getAttributeGroup().getName() + " wird fÃ¼r " + _client.getType().getNameOrPidOrId() + " " + _client.getName() + " id "
 								+ _client.getId() + " abgemeldet"
 						);
 						_connection.unsubscribeSender(this, _client, dataDescription);
@@ -449,20 +446,20 @@ class ConfigurationRequesterCommunicator {
 					synchronized(this) {
 						if(dataDescription.getAttributeGroup() == _answerDataDescription.getAttributeGroup()) {
 							if(_answers != null) {
-								Iterator i = _answers.iterator();
+								Iterator<ResultData> i = _answers.iterator();
 								while(i.hasNext()) {
 									//System.out.println("sending queued request answer");
-									_connection.sendData((ResultData)i.next());
+									_connection.sendData(i.next());
 								}
 								_answers = null;
 							}
 						}
 						else if(dataDescription.getAttributeGroup() == _writeAnswerDataDescription.getAttributeGroup()) {
 							if(_writeAnswers != null) {
-								Iterator i = _writeAnswers.iterator();
+								Iterator<ResultData> i = _writeAnswers.iterator();
 								while(i.hasNext()) {
 									//System.out.println("sending queued write request answer");
-									_connection.sendData((ResultData)i.next());
+									_connection.sendData(i.next());
 								}
 								_writeAnswers = null;
 							}
@@ -476,7 +473,7 @@ class ConfigurationRequesterCommunicator {
 		}
 
 		/**
-		 * Liefert <code>true</code> zurück, um den Datenverteiler-Applikationsfunktionenen zu signalisieren, dass eine Sendesteuerung erwünscht ist.
+		 * Liefert <code>true</code> zurÃ¼ck, um den Datenverteiler-Applikationsfunktionenen zu signalisieren, dass eine Sendesteuerung erwÃ¼nscht ist.
 		 *
 		 * @param object          Wird ignoriert.
 		 * @param dataDescription Wird ignoriert.
@@ -505,7 +502,7 @@ class ConfigurationRequesterCommunicator {
 		}
 		if(sender != null) {
 			if(!sender.isValid()) {
-				message.append("Als Absender einer Konfigurationsanfrage ist ein nicht mehr gültiges Objekt angegeben\n");
+				message.append("Als Absender einer Konfigurationsanfrage ist ein nicht mehr gÃ¼ltiges Objekt angegeben\n");
 			}
 			if(!(sender instanceof ClientApplication) && !(sender instanceof DavApplication)) {
 				message.append(
@@ -526,7 +523,7 @@ class ConfigurationRequesterCommunicator {
 			message.append("  Id des Absenders: ").append(senderId).append("\n");
 			message.append("  SystemObjekt des Absenders: ").append(sender).append("\n");
 			message.append(
-					"  Eine mögliche Ursache dieses Problems könnte sein, dass beim Start des Datenverteilers die im Aufrufparameter -datenverteilerId= "
+					"  Eine mÃ¶gliche Ursache dieses Problems kÃ¶nnte sein, dass beim Start des Datenverteilers die im Aufrufparameter -datenverteilerId= "
 					+ "angegebene Objekt-Id nicht korrekt ist.\n" + "  Folgende Datenverteiler sind der Konfiguration bekannt:\n"
 			);
 			final SystemObjectType davType = _connection.getDataModel().getType("typ.datenverteiler");
@@ -538,7 +535,7 @@ class ConfigurationRequesterCommunicator {
 			}
 			message.append(formatter.toString());
 			_debug.error(message.toString());
-			throw new IllegalArgumentException("Ungültiges SystemObjekt des Absenders einer Konfigurationsanfrage: id " + senderId);
+			throw new IllegalArgumentException("UngÃ¼ltiges SystemObjekt des Absenders einer Konfigurationsanfrage: id " + senderId);
 		}
 
 		_debug.finer("ApplikationsID: " + sender.getId());
@@ -553,7 +550,7 @@ class ConfigurationRequesterCommunicator {
 		ConfigTelegram request = ConfigTelegram.getTelegram(requestType, null);
 		request.read(new DataInputStream(new ByteArrayInputStream(requestData)));
 		ConfigTelegram answer = null;
-		ClientInfo clientInfo = (ClientInfo)_clientInfos.get(sender);
+		ClientInfo clientInfo = _clientInfos.get(sender);
 		if(clientInfo == null) {
 			clientInfo = new ClientInfo(sender);
 			_clientInfos.put(sender, clientInfo);
@@ -648,11 +645,11 @@ class ConfigurationRequesterCommunicator {
 								SystemObjectType type = (SystemObjectType)typeObject;
 								_debug.finer(" type: " + type.getNameOrPidOrId());
 								List<SystemObject> elementList = type.getElements();
-								Iterator elementIterator = elementList.iterator();
+								Iterator<SystemObject> elementIterator = elementList.iterator();
 								int metaIterator = 0;
 								DafSystemObject[] metaTypeElements = new DafSystemObject[elementList.size()];
 								while(elementIterator.hasNext()) {
-									metaTypeElements[metaIterator++] = getMetaObject((SystemObject)elementIterator.next());
+									metaTypeElements[metaIterator++] = getMetaObject(elementIterator.next());
 								}
 								objects[i] = new ObjectsList(ids[i], metaTypeElements, null);
 							}
@@ -684,16 +681,12 @@ class ConfigurationRequesterCommunicator {
 				SystemObject object;
 				final DafSystemObject metaObject;
 				if(type instanceof ConfigurationObjectType) {
-					_debug.warning("Neue Konfigurationsobjekte können noch nicht online erzeugt werden");
+					_debug.warning("Neue Konfigurationsobjekte kÃ¶nnen noch nicht online erzeugt werden");
 					metaObject = null;
 				}
 				else {
 					if(r.getPid() == null || _dataModel.getObject(r.getPid()) == null) {
 						object = _defaultConfigArea.createDynamicObject((DynamicObjectType)type, r.getPid(), r.getName());
-//						object = _dataModel.createDynamicObject(type, r.getPid(), r.getName());
-
-						
-
 
 						metaObject = getMetaObject(object);
 						_debug.finer(" neues Objekt: " + metaObject.getId() + ":" + metaObject.getPid() + ":" + metaObject.getName());
@@ -719,20 +712,20 @@ class ConfigurationRequesterCommunicator {
 				AttributeGroup connectionPropertiesAtg = _dataModel.getAttributeGroup("atg.datenverteilerTopologie");
 				AttributeGroup davPropertiesAtg = _dataModel.getAttributeGroup("atg.datenverteilerEigenschaften");
 				Iterator connectionIterator = _dataModel.getType("typ.datenverteilerVerbindung").getElements().iterator();
-				List connectionInfoList = new LinkedList();
+				List<TransmitterConnectionInfo> connectionInfoList = new LinkedList<TransmitterConnectionInfo>();
 				while(connectionIterator.hasNext()) {
 					ConfigurationObject connection = (ConfigurationObject)connectionIterator.next();
 					try {
 						Data connectionProperties = connection.getConfigurationData(connectionPropertiesAtg);
 						if(connectionProperties == null) {
-							_debug.warning("keine Topologie-Informationen für Verbindung " + connection.getNameOrPidOrId());
+							_debug.warning("keine Topologie-Informationen fÃ¼r Verbindung " + connection.getNameOrPidOrId());
 							continue;
 						}
 						//davEigenschaften der betroffenen Datenverteiler holen
 						SystemObject dav1 = connectionProperties.getReferenceValue("datenverteilerA").getSystemObject();
 						Data dav1Properties = dav1.getConfigurationData(davPropertiesAtg);
 						if(dav1Properties == null) {
-							_debug.warning("keine Eigenschaften für Datenverteiler " + dav1.getNameOrPidOrId());
+							_debug.warning("keine Eigenschaften fÃ¼r Datenverteiler " + dav1.getNameOrPidOrId());
 							continue;
 						}
 						String dav1Address = dav1Properties.getTextValue("adresse").getText();
@@ -740,7 +733,7 @@ class ConfigurationRequesterCommunicator {
 						SystemObject dav2 = connectionProperties.getReferenceValue("datenverteilerB").getSystemObject();
 						Data dav2Properties = dav2.getConfigurationData(davPropertiesAtg);
 						if(dav2Properties == null) {
-							_debug.warning("keine Eigenschaften für Datenverteiler " + dav2.getNameOrPidOrId());
+							_debug.warning("keine Eigenschaften fÃ¼r Datenverteiler " + dav2.getNameOrPidOrId());
 							continue;
 						}
 						String dav2Address = dav2Properties.getTextValue("adresse").getText();
@@ -757,22 +750,22 @@ class ConfigurationRequesterCommunicator {
 						//if(dav1.getId()==davId || dav2.getId()==davId)
 						altConnections = connection.getObjectSet("Ersatzverbindungen");
 						if(altConnections != null) {
-							List altTransmitterInfos1 = new LinkedList();
-							List altTransmitterInfos2 = new LinkedList();
-							List altConnectionList = altConnections.getElements();
-							Iterator altConnectionIterator = altConnectionList.iterator();
+							List<TransmitterInfo> altTransmitterInfos1 = new LinkedList<TransmitterInfo>();
+							List<TransmitterInfo> altTransmitterInfos2 = new LinkedList<TransmitterInfo>();
+							List<SystemObject> altConnectionList = altConnections.getElements();
+							Iterator<SystemObject> altConnectionIterator = altConnectionList.iterator();
 							while(altConnectionIterator.hasNext()) {
-								SystemObject altConnection = (SystemObject)altConnectionIterator.next();
+								SystemObject altConnection = altConnectionIterator.next();
 								try {
 									Data altConnectionProperties = altConnection.getConfigurationData(connectionPropertiesAtg);
 									if(altConnectionProperties == null) {
-										_debug.warning("keine Topologie-Informationen für Ersatz-Verbindung " + altConnection.getNameOrPidOrId());
+										_debug.warning("keine Topologie-Informationen fÃ¼r Ersatz-Verbindung " + altConnection.getNameOrPidOrId());
 										continue;
 									}
 									SystemObject altDavA = altConnectionProperties.getReferenceValue("datenverteilerA").getSystemObject();
 									SystemObject altDavB = altConnectionProperties.getReferenceValue("datenverteilerB").getSystemObject();
 									SystemObject altDav = null;
-									List altTransmitterInfos = null;
+									List<TransmitterInfo> altTransmitterInfos = null;
 									if(altDavA == dav1) {
 										altDav = altDavB;
 										altTransmitterInfos = altTransmitterInfos1;
@@ -792,7 +785,7 @@ class ConfigurationRequesterCommunicator {
 									if(altDav != null) {
 										Data altDavProperties = altDav.getConfigurationData(davPropertiesAtg);
 										if(altDavProperties == null) {
-											_debug.warning("keine Eigenschaften für Datenverteiler " + dav2.getNameOrPidOrId());
+											_debug.warning("keine Eigenschaften fÃ¼r Datenverteiler " + dav2.getNameOrPidOrId());
 											continue;
 										}
 										TransmitterInfo altTransmitterInfo = new TransmitterInfo(
@@ -853,7 +846,7 @@ class ConfigurationRequesterCommunicator {
 									transmitterInfo2,
 									connectionProperties.getScaledValue("wichtung").shortValue(),
 									(byte)((direction == 0) ? 0 : 2),
-									// 0 heißt Ersatzverbindung, 2 heißt doppelte verbindung
+									// 0 heiÃŸt Ersatzverbindung, 2 heiÃŸt doppelte verbindung
 									connectionProperties.getTimeValue("ersatzverbindungsWartezeit").getMillis(),
 									altConnections == null,
 									altTransmitterArray1,
@@ -866,7 +859,7 @@ class ConfigurationRequesterCommunicator {
 									transmitterInfo1,
 									connectionProperties.getScaledValue("wichtung").shortValue(),
 									(byte)((direction == 0) ? 0 : 2),
-									// 0 heißt Ersatzverbindung, 2 heißt doppelte verbindung
+									// 0 heiÃŸt Ersatzverbindung, 2 heiÃŸt doppelte verbindung
 									connectionProperties.getTimeValue("ersatzverbindungsWartezeit").getMillis(),
 									altConnections == null,
 									altTransmitterArray2,
@@ -900,14 +893,14 @@ class ConfigurationRequesterCommunicator {
 //			}
 			case ConfigTelegram.AUTHENTIFICATION_REQUEST_TYPE: {
 				// Bedingung 1: Der Benutzer muss als Objekt in der Konfiguration vorhanden sein
-				// Bedingung 2: Der Benutzername muss mit dem gespeicherten Passwort übereinstimmen
+				// Bedingung 2: Der Benutzername muss mit dem gespeicherten Passwort Ã¼bereinstimmen
 				AuthentificationRequest r = (AuthentificationRequest)request;
 
 				_debug.finer("AUTHENTIFICATION_REQUEST_TYPE: " + r.getUserName() + ":");
-				Iterator i = _dataModel.getType("typ.benutzer").getObjects().iterator();
+				Iterator<SystemObject> i = _dataModel.getType("typ.benutzer").getObjects().iterator();
 				try {
 					while(i.hasNext()) {
-						SystemObject benutzer = (SystemObject)i.next();
+						SystemObject benutzer = i.next();
 						if(r.getUserName().equals(benutzer.getName())) {
 							// answer = new AuthentificationAnswer(benutzer.getId());
 							_debug.finer(" gefunden, id " + benutzer.getId());
@@ -918,7 +911,7 @@ class ConfigurationRequesterCommunicator {
 							answer = new AuthentificationAnswer(benutzer.getId());
 							break;
 						}
-					} // while über alle Benutzer
+					} // while Ã¼ber alle Benutzer
 
 					if(answer == null) {
 						answer = new AuthentificationAnswer(-1);
@@ -928,7 +921,7 @@ class ConfigurationRequesterCommunicator {
 					}
 				}
 				catch(Exception e) {
-					// Benutzer/Passwort Kombination paßt nicht
+					// Benutzer/Passwort Kombination paÃŸt nicht
 					answer = new AuthentificationAnswer(-1);
 					_debug.warning( "Authentifizierung fehlgeschlagen", e);
 				}
@@ -983,7 +976,7 @@ class ConfigurationRequesterCommunicator {
 					answer = new ObjectSetNameAnswer(0, r.getObjectId(), true);
 				}
 				catch(Exception e) {
-					_debug.warning("Objektname konnte nicht geändert werden", e);
+					_debug.warning("Objektname konnte nicht geÃ¤ndert werden", e);
 				}
 				if(answer == null) answer = new ObjectSetNameAnswer(0, r.getObjectId(), false);
 
@@ -991,9 +984,9 @@ class ConfigurationRequesterCommunicator {
 				break;
 			}
 			default: {
-				_debug.warning("Ungültige Anfrage: " + request.parseToString());
+				_debug.warning("UngÃ¼ltige Anfrage: " + request.parseToString());
 				throw new IllegalArgumentException(
-						"Ungültige Konfigurationsanfrage:" + " TelegrammTyp:" + requestType + ", absender:" + finalSender + ", absenderZeichen:" + senderReference
+						"UngÃ¼ltige Konfigurationsanfrage:" + " TelegrammTyp:" + requestType + ", absender:" + finalSender + ", absenderZeichen:" + senderReference
 				);
 			}
 		}
@@ -1008,15 +1001,15 @@ class ConfigurationRequesterCommunicator {
 	}
 
 	/**
-	 * Gibt true zurück, wenn die neuen Konfigurationsanfragen nicht verfügbar sind, sonst false.
-	 * @return true wenn die alten Konfigurationsanfragen aufgrund eines veralteten Datenmodells benutzt werden müssen.
+	 * Gibt true zurÃ¼ck, wenn die neuen Konfigurationsanfragen nicht verfÃ¼gbar sind, sonst false.
+	 * @return true wenn die alten Konfigurationsanfragen aufgrund eines veralteten Datenmodells benutzt werden mÃ¼ssen.
 	 */
 	private boolean oldDataModel() {
 		IntegerAttributeType att;
 		att = (IntegerAttributeType) _dataModel.getAttributeType("att.konfigurationsAnfrageNachrichtenTypLesend");
 		for(IntegerValueState state : att.getStates()) {
 			if(state.getName().equals("ObjekteAnfragenMitTyp")){
-				// Neues Datenmodell ist verfügbar
+				// Neues Datenmodell ist verfÃ¼gbar
 				return false;
 			}
 		}
@@ -1042,16 +1035,16 @@ class ConfigurationRequesterCommunicator {
 			throws IOException, SendSubscriptionNotConfirmed {
 		//Anmelden wenn noch nicht passiert
 		DataDescription resultDataDescription;
-		List attributeValues = new ArrayList(4);
+		List<AttributeValue> attributeValues = new ArrayList<AttributeValue>(4);
 		if(isWriteRequest) {
 			resultDataDescription = _writeAnswerDataDescription;
 		}
 		else {
 			resultDataDescription = _answerDataDescription;
 		}
-		Iterator attributesIterator = resultDataDescription.getAttributeGroup().getAttributes().iterator();
+		Iterator<Attribute> attributesIterator = resultDataDescription.getAttributeGroup().getAttributes().iterator();
 		while(attributesIterator.hasNext()) {
-			Attribute attribute = (Attribute)attributesIterator.next();
+			Attribute attribute = attributesIterator.next();
 			AttributeValue attributeValue = new AttributeValue(null, attribute);
 			if("absenderId".equals(attribute.getName())) {
 				attributeValue.setValue(new LongAttribute(_configAuthority.getId()));
@@ -1081,51 +1074,22 @@ class ConfigurationRequesterCommunicator {
 		clientInfo.sendData(isWriteRequest, result);
 	}
 
-	private ConfigurationAuthority getConfigurationAuthority(long id) {
-		ConfigurationAuthority authority = (ConfigurationAuthority)_code2AuthorityMap.get(new Short((short)(id >> 48)));
-		return authority;
-	}
-
-	private void appendDataValues(List valueList, List dataValueList) {
-		Iterator i = valueList.iterator();
-		while(i.hasNext()) {
-			AttributeBaseValue value = (AttributeBaseValue)i.next();
-			if(value instanceof AttributeValue) {
-				dataValueList.add(value.getValue());
-			}
-			else {
-				if(value instanceof AttributeListValue) {
-					try {
-						appendDataValues(
-								Arrays.asList((AttributeBaseValue[])((AttributeListValue)value).getAttributeBaseValues()), dataValueList
-						);
-					}
-					catch(ConfigurationException e) {
-						e.printStackTrace();
-						throw new RuntimeException(e);
-					}
-				}
-			}
-		}
-	}
-
-
-	private static long[] getIds(List systemObjects) {
+	private static long[] getIds(List<ObjectSet> systemObjects) {
 		long[] ids = new long[systemObjects.size()];
 		int i = 0;
-		Iterator iterator = systemObjects.iterator();
+		Iterator<ObjectSet> iterator = systemObjects.iterator();
 		while(iterator.hasNext()) {
-			ids[i++] = ((SystemObject)iterator.next()).getId();
+			ids[i++] = (iterator.next()).getId();
 		}
 		return ids;
 	}
 
-	private static ArrayList getIdsAsLongArrayList(List systemObjects) {
-		ArrayList ids = new ArrayList(systemObjects.size());
+	private static ArrayList<Long> getIdsAsLongArrayList(List<SystemObject> systemObjects) {
+		ArrayList<Long> ids = new ArrayList<Long>(systemObjects.size());
 		int i = 0;
-		Iterator iterator = systemObjects.iterator();
+		Iterator<SystemObject> iterator = systemObjects.iterator();
 		while(iterator.hasNext()) {
-			SystemObject element = (SystemObject)iterator.next();
+			SystemObject element = iterator.next();
 			//System.out.println("adding " + element.getId());
 			ids.add(new Long(element.getId()));
 		}
@@ -1447,7 +1411,7 @@ class ConfigurationRequesterCommunicator {
 				);
 			}
 			else if(object instanceof SystemObjectType) {
-				_debug.warning("Ungültiger Typ der weder konfigurierend noch dynamisch ist " + object);
+				_debug.warning("UngÃ¼ltiger Typ der weder konfigurierend noch dynamisch ist " + object);
 				return null;
 			}
 			else if(object instanceof AttributeGroupUsage) {
@@ -1517,7 +1481,7 @@ class ConfigurationRequesterCommunicator {
 		}
 		else {
 			Thread.dumpStack();
-			_debug.warning("Keine Objekt-Konvertierung möglich: " + object);
+			_debug.warning("Keine Objekt-Konvertierung mÃ¶glich: " + object);
 			return null;
 		}
 	}

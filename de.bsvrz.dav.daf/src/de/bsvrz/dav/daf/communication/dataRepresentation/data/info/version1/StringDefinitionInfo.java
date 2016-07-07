@@ -1,11 +1,11 @@
 /*
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -14,8 +14,14 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 package de.bsvrz.dav.daf.communication.dataRepresentation.data.info.version1;
 
@@ -24,9 +30,9 @@ import de.bsvrz.dav.daf.main.config.StringAttributeType;
 /**
  * Klasse, die noch zu dokumentieren ist.
  *
- * @author Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * @author Kappich+Kni√ü Systemberatung Aachen (K2S)
  * @author Roland Schmitz (rs)
- * @version $Revision: 5084 $ / $Date: 2007-09-03 10:42:50 +0200 (Mon, 03 Sep 2007) $ / ($Author: rs $)
+ * @version $Revision$ / $Date$ / ($Author$)
  */
 public class StringDefinitionInfo extends AttributeTypeDefinitionInfo {
 	public StringDefinitionInfo(StringAttributeType stringAttributeType) {
@@ -43,8 +49,8 @@ public class StringDefinitionInfo extends AttributeTypeDefinitionInfo {
 
 	public int getSize(byte[] bytes, int offset) {
 		// Strings werden mit writeUTF kodiert.
-		// Vorneweg ist eine 2 Byte unsigned L‰ngenangabe in Big-Endian Format, die die Anzahl der folgenden Bytes
-		// enth‰lt.
+		// Vorneweg ist eine 2 Byte unsigned L√§ngenangabe in Big-Endian Format, die die Anzahl der folgenden Bytes
+		// enth√§lt.
 		return 2 + ((bytes[offset] & 0xff) << 8 | bytes[offset + 1] & 0xff);
 	}
 
@@ -63,14 +69,14 @@ public class StringDefinitionInfo extends AttributeTypeDefinitionInfo {
 		while(offset < endOffset) {
 			b = bytes[offset];
 			if((b & 0x80) == 0) {
-				// 1 Byte f¸r Zeichen 0x0001 .. 0x007f
+				// 1 Byte f√ºr Zeichen 0x0001 .. 0x007f
 				result.append((char)b);
 				offset += 1;
 			}
 			else {
 				switch(b & 0xe0) {
 				case 0xc0:
-					// 2 Bytes f¸r Zeichen 0x0000 und 0x0080 .. 0x07ff
+					// 2 Bytes f√ºr Zeichen 0x0000 und 0x0080 .. 0x07ff
 					result.append((char)(
 										  ((bytes[offset + 0] & 0x1f) << 6) |
 						                    ((bytes[offset + 1] & 0x3f) << 0)
@@ -78,7 +84,7 @@ public class StringDefinitionInfo extends AttributeTypeDefinitionInfo {
 					offset += 2;
 					break;
 				case 0xe0:
-					// 3 Bytes f¸r Zeichen 0x0800 .. 0xffff
+					// 3 Bytes f√ºr Zeichen 0x0800 .. 0xffff
 					result.append((char)(
 					        ((bytes[offset + 0] & 0x1f) << 12) |
 					        ((bytes[offset + 1] & 0x3f) << 6) |
@@ -87,7 +93,7 @@ public class StringDefinitionInfo extends AttributeTypeDefinitionInfo {
 					offset += 3;
 					break;
 				default:
-					throw new RuntimeException("Ung¸ltige utf8 kodierung: " + (int)b);
+					throw new RuntimeException("Ung√ºltige utf8 kodierung: " + (int)b);
 				}
 			}
 		}

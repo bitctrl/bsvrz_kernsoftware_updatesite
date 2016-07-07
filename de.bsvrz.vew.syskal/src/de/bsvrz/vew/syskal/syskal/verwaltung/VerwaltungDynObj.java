@@ -110,7 +110,7 @@ public class VerwaltungDynObj implements Verwaltung, ClientSenderInterface
   }
 
   /**
-   * Fügt das dynamische Objekt der Menge hinzu
+   * FÃ¼gt das dynamische Objekt der Menge hinzu
    * 
    * @param set
    *        die Pid der Menge
@@ -270,7 +270,7 @@ public class VerwaltungDynObj implements Verwaltung, ClientSenderInterface
    * @param dd
    *        die Datenbeschreibung
    * @param resultData
-   *        die parametrirenden Datensätze, verpackt in einem ResultData
+   *        die parametrirenden DatensÃ¤tze, verpackt in einem ResultData
    * @return
    *        true, wenns funktioniert hat
    *        
@@ -366,7 +366,7 @@ public class VerwaltungDynObj implements Verwaltung, ClientSenderInterface
   }
 
   /**
-   * Fügt das dynamische Objekt der Menge hinzu
+   * FÃ¼gt das dynamische Objekt der Menge hinzu
    * 
    * @param pid
    *        die Pid der Menge

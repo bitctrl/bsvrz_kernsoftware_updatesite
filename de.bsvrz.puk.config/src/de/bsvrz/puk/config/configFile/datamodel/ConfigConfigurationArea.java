@@ -2,13 +2,13 @@
  * Copyright 2008 by Kappich Systemberatung, Aachen
  * Copyright 2007 by Kappich Systemberatung, Aachen
  * Copyright 2006 by Kappich Systemberatung Aachen
- * Copyright 2006 by Kappich+Kniﬂ Systemberatung Aachen (K2S)
+ * Copyright 2006 by Kappich+Kni√ü Systemberatung Aachen (K2S)
  * 
  * This file is part of de.bsvrz.puk.config.
  * 
- * de.bsvrz.puk.config is free software; you can redistribute it and/or modify
+ * de.bsvrz.puk.config is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.puk.config is distributed in the hope that it will be useful,
@@ -17,8 +17,14 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with de.bsvrz.puk.config; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.puk.config.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.puk.config.configFile.datamodel;
@@ -44,11 +50,11 @@ import java.util.*;
  * Implementierung des Konfigurationsbereichs auf Seiten der Konfiguration.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 13141 $
+ * @version $Revision$
  */
 public class ConfigConfigurationArea extends ConfigConfigurationObject implements ConfigurationArea, ConfigConfigurationAreaInterface {
 
-	/** DebugLogger f¸r Debug-Ausgaben */
+	/** DebugLogger f√ºr Debug-Ausgaben */
 	private static final Debug _debug = Debug.getLogger();
 
 	/** Eine Referenz auf das Datenmodell. */
@@ -58,18 +64,18 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	private ConfigurationAuthority _configurationAuthority = null;
 
 	/**
-	 * Diese Liste enth‰lt alle Abh‰ngigkeiten des Bereichs. Die Abh‰ngigkeiten sind dabei in der Reihenfolge ihres Auftretens gespeichert. Der letzte Eintrag ist
-	 * somit die letzte Abh‰ngigkeite, die eingetragen wurde (und somit die aktuellste).
+	 * Diese Liste enth√§lt alle Abh√§ngigkeiten des Bereichs. Die Abh√§ngigkeiten sind dabei in der Reihenfolge ihres Auftretens gespeichert. Der letzte Eintrag ist
+	 * somit die letzte Abh√§ngigkeite, die eingetragen wurde (und somit die aktuellste).
 	 */
 	private final List<ConfigurationAreaDependency> _areaDependencyList = new ArrayList<ConfigurationAreaDependency>();
 
 	/**
-	 * Mit dieser Verwendung kann ein Datensatz engefordert werden, der die Abh‰ngigkeiten dieses Bereichs enth‰lt. Ist der Wert <code>null</code>, so ist die
-	 * benˆtigte ATG nicht bekannt und der Mechanismus wird nicht benutzt.
+	 * Mit dieser Verwendung kann ein Datensatz engefordert werden, der die Abh√§ngigkeiten dieses Bereichs enth√§lt. Ist der Wert <code>null</code>, so ist die
+	 * ben√∂tigte ATG nicht bekannt und der Mechanismus wird nicht benutzt.
 	 */
 	private final AttributeGroupUsage _atguForDependencies;
 
-	/** Mit diesem Enum kann angegeben werden, ob ein dynamisches Objekt, ein Konfigurationsobjekt oder ein konfigurierender Datensatz ge‰ndert wurde. */
+	/** Mit diesem Enum kann angegeben werden, ob ein dynamisches Objekt, ein Konfigurationsobjekt oder ein konfigurierender Datensatz ge√§ndert wurde. */
 	enum KindOfLastChange {
 
 		DynamicObject,
@@ -78,16 +84,16 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Konstruktor eines System-Objekt f¸r einen Konfigurationsbereich.
+	 * Konstruktor eines System-Objekt f√ºr einen Konfigurationsbereich.
 	 *
-	 * @param dataModel        das Datenmodell, welches alle Konfigurationsbereiche enth‰lt
+	 * @param dataModel        das Datenmodell, welches alle Konfigurationsbereiche enth√§lt
 	 * @param systemObjectInfo das korrespondierende Objekt aus den Konfigurationsdateien
 	 */
 	public ConfigConfigurationArea(ConfigDataModel dataModel, SystemObjectInformationInterface systemObjectInfo) {
 		super(null, systemObjectInfo);
 		_dataModel = dataModel;
 
-		final AttributeGroup attributeGroup = _dataModel.getAttributeGroup("atg.konfigurationsBereichAbh‰ngigkeiten");
+		final AttributeGroup attributeGroup = _dataModel.getAttributeGroup("atg.konfigurationsBereichAbh√§ngigkeiten");
 		if(attributeGroup != null) {
 			_atguForDependencies = attributeGroup.getAttributeGroupUsage(
 					_dataModel.getAspect(
@@ -97,7 +103,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 			loadDependencyDataSets();
 		}
 		else {
-			// Die Konfiguration unterst¸tzt die ATG nicht
+			// Die Konfiguration unterst√ºtzt die ATG nicht
 			_atguForDependencies = null;
 		}
 	}
@@ -111,8 +117,8 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	}
 
 	public synchronized ConfigurationAuthority getConfigurationAuthority() {
-		// Der KV wird hier gecached, damit sichergestellt ist, dass sich der KV zur Laufzeit niemals ‰ndert. Erst bei einem Neustart der Konfiguration
-		// kann er sich ‰ndern.
+		// Der KV wird hier gecached, damit sichergestellt ist, dass sich der KV zur Laufzeit niemals √§ndert. Erst bei einem Neustart der Konfiguration
+		// kann er sich √§ndern.
 		if(_configurationAuthority == null) {
 			final AttributeGroup atg = getDataModel().getAttributeGroup("atg.konfigurationsBereichEigenschaften");
 			if(atg == null) throw new IllegalStateException("Attributgruppe atg.konfigurationsBereichEigenschaften wurde nicht gefunden");
@@ -125,7 +131,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 						+ " konnte nicht gelesen werden."
 				);
 			}
-			_configurationAuthority = (ConfigurationAuthority)data.getReferenceValue("zust‰ndiger").getSystemObject();
+			_configurationAuthority = (ConfigurationAuthority)data.getReferenceValue("zust√§ndiger").getSystemObject();
 			if(_configurationAuthority == null) {
 				throw new IllegalStateException(
 						"Der Konfigurationsverantwortliche des Konfigurationsbereichs " + getNameOrPidOrId() + " konnte nicht ermittelt werden."
@@ -137,13 +143,13 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 
 	@Override
 	public void setConfigurationData(final AttributeGroupUsage atgUsage, final Data data) throws ConfigurationChangeException {
-		// Verhindern, dass der Parameter des Konfigurationsverantwortlichen ge‰ndert wird.
+		// Verhindern, dass der Parameter des Konfigurationsverantwortlichen ge√§ndert wird.
 		final AttributeGroupUsage usage = getDataModel().getAttributeGroup("atg.konfigurationsBereichEigenschaften").getAttributeGroupUsage(
 				getDataModel().getAspect("asp.eigenschaften")
 		);
 		if(atgUsage.equals(usage)){
-			if(!data.getReferenceValue("zust‰ndiger").getSystemObject().equals(getConfigurationAuthority())){
-				throw new ConfigurationChangeException("Der Konfigurationsverantwortliche eines Konfigurationsbereichs kann nicht ge‰ndert werden.");
+			if(!data.getReferenceValue("zust√§ndiger").getSystemObject().equals(getConfigurationAuthority())){
+				throw new ConfigurationChangeException("Der Konfigurationsverantwortliche eines Konfigurationsbereichs kann nicht ge√§ndert werden.");
 			}
 		}
 
@@ -152,7 +158,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Wird w‰hrend der Aktivierung aufgerufen um den neuen KV zu setzen. Der Weg ¸ber setConfigurationData() ist nicht mˆglich,
+	 * Wird w√§hrend der Aktivierung aufgerufen um den neuen KV zu setzen. Der Weg √ºber setConfigurationData() ist nicht m√∂glich,
 	 * da dort das Setzen des KV eine Exception produziert.
 	 * @param newAuthority
 	 * @throws ConfigurationChangeException
@@ -162,15 +168,15 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 		final Aspect configurationAreaAsp = getDataModel().getAspect("asp.eigenschaften");
 
 		final Data data = getConfigurationData(configurationAreaAtg, configurationAreaAsp);
-		data.getReferenceValue("zust‰ndiger").setSystemObject(newAuthority); // Zust‰ndigen setzen
-		data.getReferenceValue("neuerZust‰ndiger").setSystemObject(null);    // neuen Zust‰ndigen lˆschen
+		data.getReferenceValue("zust√§ndiger").setSystemObject(newAuthority); // Zust√§ndigen setzen
+		data.getReferenceValue("neuerZust√§ndiger").setSystemObject(null);    // neuen Zust√§ndigen l√∂schen
 		
 		super.setConfigurationData(configurationAreaAtg.getAttributeGroupUsage(configurationAreaAsp), data);   // Datensatz speichern
 	}
 
 	public short getActivatableVersion() {
 		Data data = getConfigurationData(
-				getDataModel().getAttributeGroup("atg.konfigurationsBereich‹bernahmeInformationen"), getDataModel().getAspect("asp.eigenschaften")
+				getDataModel().getAttributeGroup("atg.konfigurationsBereich√úbernahmeInformationen"), getDataModel().getAspect("asp.eigenschaften")
 		);
 		if(data != null) {
 			return data.getUnscaledValue("aktivierbareVersion").shortValue();
@@ -181,14 +187,14 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Setzt die Version, die zur ‹bernahme und Aktivierung dieses Konfigurationsbereichs in anderen Konfigurationen freigegeben werden soll.
+	 * Setzt die Version, die zur √úbernahme und Aktivierung dieses Konfigurationsbereichs in anderen Konfigurationen freigegeben werden soll.
 	 *
-	 * @param activatableVersion die Versionsnummer, die zur ‹bernahme und Aktivierung dieses Konfigurationsbereichs freigegeben werden soll
+	 * @param activatableVersion die Versionsnummer, die zur √úbernahme und Aktivierung dieses Konfigurationsbereichs freigegeben werden soll
 	 *
 	 * @throws ConfigurationChangeException Falls die Versionsnummer nicht am Konfigurationsbereich gespeichert werden kann.
 	 */
 	void setActivatableVersion(short activatableVersion) throws ConfigurationChangeException {
-		final AttributeGroup atg = getDataModel().getAttributeGroup("atg.konfigurationsBereich‹bernahmeInformationen");
+		final AttributeGroup atg = getDataModel().getAttributeGroup("atg.konfigurationsBereich√úbernahmeInformationen");
 		Data data = getConfigurationData(atg);
 		// Datensatz muss vorhanden sein, da ein neuer Bereich immer mit diesem Datensatz erzeugt wird.
 		if(data != null) {
@@ -197,41 +203,41 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 		}
 		else {
 			throw new ConfigurationChangeException(
-					"Die Version, die zur ‹bernahme und Aktivierung freigegeben werden soll, konnte nicht geschrieben werden, da der Datensatz nicht vorhanden ist."
+					"Die Version, die zur √úbernahme und Aktivierung freigegeben werden soll, konnte nicht geschrieben werden, da der Datensatz nicht vorhanden ist."
 			);
 		}
 	}
 
 	public short getTransferableVersion() {
 		Data data = getConfigurationData(
-				getDataModel().getAttributeGroup("atg.konfigurationsBereich‹bernahmeInformationen"), getDataModel().getAspect("asp.eigenschaften")
+				getDataModel().getAttributeGroup("atg.konfigurationsBereich√úbernahmeInformationen"), getDataModel().getAspect("asp.eigenschaften")
 		);
 		if(data != null) {
-			return data.getUnscaledValue("¸bernehmbareVersion").shortValue();
+			return data.getUnscaledValue("√ºbernehmbareVersion").shortValue();
 		}
 		else {
-			throw new IllegalStateException("Die ¸bernehmbare Version des Konfigurationsbereichs " + getNameOrPidOrId() + " konnte nicht ermittelt werden.");
+			throw new IllegalStateException("Die √ºbernehmbare Version des Konfigurationsbereichs " + getNameOrPidOrId() + " konnte nicht ermittelt werden.");
 		}
 	}
 
 	/**
-	 * Setzt die Version, die zur ‹bernahme dieses Konfigurationsbereichs in anderen Konfigurationen freigegeben werden soll.
+	 * Setzt die Version, die zur √úbernahme dieses Konfigurationsbereichs in anderen Konfigurationen freigegeben werden soll.
 	 *
-	 * @param transferableVersion die Versionsnummer, die zur ‹bernahme dieses Konfigurationsbereichs freigegeben werden soll
+	 * @param transferableVersion die Versionsnummer, die zur √úbernahme dieses Konfigurationsbereichs freigegeben werden soll
 	 *
 	 * @throws ConfigurationChangeException Falls die Versionsnummer nicht am Konfigurationsbereich gespeichert werden kann.
 	 */
 	void setTransferableVersion(short transferableVersion) throws ConfigurationChangeException {
-		final AttributeGroup atg = getDataModel().getAttributeGroup("atg.konfigurationsBereich‹bernahmeInformationen");
+		final AttributeGroup atg = getDataModel().getAttributeGroup("atg.konfigurationsBereich√úbernahmeInformationen");
 		Data data = getConfigurationData(atg);
 		// Datensatz muss vorhanden sein, da ein neuer Bereich immer mit diesem Datensatz erzeugt wird.
 		if(data != null) {
-			data.getUnscaledValue("¸bernehmbareVersion").set(transferableVersion);
+			data.getUnscaledValue("√ºbernehmbareVersion").set(transferableVersion);
 			setConfigurationData(atg, data);
 		}
 		else {
 			throw new ConfigurationChangeException(
-					"Die Version, die zur ‹bernahme freigegeben werden soll, konnte nicht geschrieben werden, da der Datensatz nicht vorhanden ist."
+					"Die Version, die zur √úbernahme freigegeben werden soll, konnte nicht geschrieben werden, da der Datensatz nicht vorhanden ist."
 			);
 		}
 	}
@@ -241,62 +247,62 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	}
 
 	public short getModifiableVersion() {
-		// ver‰nderbare Version
+		// ver√§nderbare Version
 		final ConfigurationAreaFile areaFile = getDataModel().getConfigurationFileManager().getAreaFile(getPid());
 		return areaFile.getNextActiveVersion();
 	}
 
 	/**
-	 * Gibt die in Bearbeitung befindliche Version zur¸ck, wenn ƒnderungen in dieser Version dieses Bereichs stattgefunden haben. ƒnderungen kˆnnen sein: <ul>
-	 * <li>Objekt wurde auf ung¸ltig gesetzt</li> <li>Objekt wurde erstellt</li> <li>Elemente wurden einer Menge hinzugef¸gt</li> <li>Elemente wurden aus einer
+	 * Gibt die in Bearbeitung befindliche Version zur√ºck, wenn √Ñnderungen in dieser Version dieses Bereichs stattgefunden haben. √Ñnderungen k√∂nnen sein: <ul>
+	 * <li>Objekt wurde auf ung√ºltig gesetzt</li> <li>Objekt wurde erstellt</li> <li>Elemente wurden einer Menge hinzugef√ºgt</li> <li>Elemente wurden aus einer
 	 * Menge entfernt</li> </ul>
-	 * <p/>
-	 * Wurden keine ƒnderungen in der in Bearbeitung befindlichen Version vorgenommen, wird die Version davor zur¸ckgegeben.
+	 * <p>
+	 * Wurden keine √Ñnderungen in der in Bearbeitung befindlichen Version vorgenommen, wird die Version davor zur√ºckgegeben.
 	 *
-	 * @return Falls ƒnderungen in der in Bearbeitung befindlichen Version durchgef¸hrt wurden, wird diese Version zur¸ckgegeben, sonst die Version davor.
+	 * @return Falls √Ñnderungen in der in Bearbeitung befindlichen Version durchgef√ºhrt wurden, wird diese Version zur√ºckgegeben, sonst die Version davor.
 	 */
 	public short getLastModifiedVersion() {
 		final short modifiableVersion = getModifiableVersion();
 
-		// Hier wird gepr¸ft, ob ein aktuelles Objekt in der "modifiableVersion" auf ung¸ltig gesetzt wurde.
-		// Ist dies der Fall, wird die "modifiableVersion" zur¸ckgegeben.
+		// Hier wird gepr√ºft, ob ein aktuelles Objekt in der "modifiableVersion" auf ung√ºltig gesetzt wurde.
+		// Ist dies der Fall, wird die "modifiableVersion" zur√ºckgegeben.
 		final Collection<SystemObject> currentObjects = getCurrentObjects();
 		for(SystemObject currentObject : currentObjects) {
-			// Dynamische Objekte m¸ssen nicht gepr¸ft werden, da sie sofort g¸ltig sind
+			// Dynamische Objekte m√ºssen nicht gepr√ºft werden, da sie sofort g√ºltig sind
 			if(currentObject instanceof ConfigurationObject) {
 				final ConfigurationObject configurationObject = (ConfigurationObject)currentObject;
 				if(configurationObject.getNotValidSince() == modifiableVersion) {
-					// dieses Objekt wurde auf ung¸ltig gesetzt
+					// dieses Objekt wurde auf ung√ºltig gesetzt
 					return modifiableVersion;
 				}
 			}
 		}
-		// Kein aktuelles Objekt wurde in der "modifiableVersion" auf ung¸ltig gesetzt
+		// Kein aktuelles Objekt wurde in der "modifiableVersion" auf ung√ºltig gesetzt
 
-		// Hier werden die zuk¸nftig aktuellen Objekte gepr¸ft, ob sie in der "modifiableVersion auf ung¸ltig gesetzt oder erstellt wurde.
-		// Ist dies der Fall, wird die "modifiableVersion" zur¸ckgegeben.
+		// Hier werden die zuk√ºnftig aktuellen Objekte gepr√ºft, ob sie in der "modifiableVersion auf ung√ºltig gesetzt oder erstellt wurde.
+		// Ist dies der Fall, wird die "modifiableVersion" zur√ºckgegeben.
 		final Collection<SystemObject> newObjects = getNewObjects();
 		for(SystemObject newObject : newObjects) {
-			// da die Methode getNewObjects() nur KonfigurationsObjekte zur¸ckgibt, muss hier nicht gepr¸ft werden
+			// da die Methode getNewObjects() nur KonfigurationsObjekte zur√ºckgibt, muss hier nicht gepr√ºft werden
 			final ConfigurationObject configurationObject = (ConfigurationObject)newObject;
 			if(configurationObject.getNotValidSince() == modifiableVersion || configurationObject.getValidSince() == modifiableVersion) {
-				// es gibt zuk¸nftige Objekte, die in der "modifiableVersion" ung¸ltig werden
+				// es gibt zuk√ºnftige Objekte, die in der "modifiableVersion" ung√ºltig werden
 				// es gibt neu erstellte Objekte in der Version "modifiableVersion"
 				return modifiableVersion;
 			}
 		}
 
-		// Pr¸ft die Mengen mit Referenzierungsart "Assoziation" dieses Bereichs, ob Elemente in
-		// der Version "modifiableVersion" ung¸ltig oder neu hinzugef¸gt wurden/werden.
+		// Pr√ºft die Mengen mit Referenzierungsart "Assoziation" dieses Bereichs, ob Elemente in
+		// der Version "modifiableVersion" ung√ºltig oder neu hinzugef√ºgt wurden/werden.
 		final Collection<SystemObjectType> objectTypes = new LinkedList<SystemObjectType>();
 		objectTypes.add(getDataModel().getType("typ.konfigurationsMenge"));
 		final Collection<SystemObject> systemObjects = getObjects(objectTypes, ObjectTimeSpecification.valid());
 		for(SystemObject systemObject : systemObjects) {
 			if(systemObject instanceof ConfigNonMutableSet) {
 				final ConfigNonMutableSet nonMutableSet = (ConfigNonMutableSet)systemObject;
-				// nur versionierte Mengen m¸ssen betrachtet werden
+				// nur versionierte Mengen m√ºssen betrachtet werden
 				if(nonMutableSet.getObjectSetType().getReferenceType() == ReferenceType.ASSOCIATION) {
-					// dieser Menge wurde in der "modifiableVersion" mindestens ein Element hinzugef¸gt oder entfernt
+					// dieser Menge wurde in der "modifiableVersion" mindestens ein Element hinzugef√ºgt oder entfernt
 					if(nonMutableSet.isSetChanged(modifiableVersion)) return modifiableVersion;
 				}
 			}
@@ -306,8 +312,8 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 			}
 		}
 
-		// Pr¸fung auf unversionierte ƒnderungen
-		AttributeGroup attributeGroup = _dataModel.getAttributeGroup("atg.konfigurationsBereichUnversionierteƒnderungen");
+		// Pr√ºfung auf unversionierte √Ñnderungen
+		AttributeGroup attributeGroup = _dataModel.getAttributeGroup("atg.konfigurationsBereichUnversionierte√Ñnderungen");
 		if(attributeGroup != null){
 			Data configurationData = getConfigurationData(attributeGroup);
 			if(configurationData != null){
@@ -317,16 +323,16 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 			}
 		}
 
-		// Weder ein aktuelles noch ein zuk¸nftiges Objekt oder eine Menge wurde in der "modifiableVersion" ge‰ndert.
-		// Aus diese Grund, wird die "modifiableVersion" - 1 zur¸ckgegeben.
+		// Weder ein aktuelles noch ein zuk√ºnftiges Objekt oder eine Menge wurde in der "modifiableVersion" ge√§ndert.
+		// Aus diese Grund, wird die "modifiableVersion" - 1 zur√ºckgegeben.
 		// MAX(ActiveVersion, ActivatableVersion, TransferableVersion) = ModifiableVersion - 1;
 		return (short)(modifiableVersion - 1);
 	}
 
 	public long getTimeOfLastDynamicChange() {
-		Data data = getConfigurationData(getDataModel().getAttributeGroup("atg.konfigurationsBereichƒnderungsZeiten"));
+		Data data = getConfigurationData(getDataModel().getAttributeGroup("atg.konfigurationsBereich√ÑnderungsZeiten"));
 		if(data != null) {
-			return data.getTimeValue("LetzteƒnderungszeitDynamischesObjekt").getMillis();
+			return data.getTimeValue("Letzte√ÑnderungszeitDynamischesObjekt").getMillis();
 		}
 		else {
 			return 0;
@@ -334,9 +340,9 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	}
 
 	public long getTimeOfLastNonActiveConfigurationChange() {
-		Data data = getConfigurationData(getDataModel().getAttributeGroup("atg.konfigurationsBereichƒnderungsZeiten"));
+		Data data = getConfigurationData(getDataModel().getAttributeGroup("atg.konfigurationsBereich√ÑnderungsZeiten"));
 		if(data != null) {
-			return data.getTimeValue("LetzteƒnderungszeitKonfigurationsObjekt").getMillis();
+			return data.getTimeValue("Letzte√ÑnderungszeitKonfigurationsObjekt").getMillis();
 		}
 		else {
 			return 0;
@@ -344,9 +350,9 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	}
 
 	public long getTimeOfLastActiveConfigurationChange() {
-		Data data = getConfigurationData(getDataModel().getAttributeGroup("atg.konfigurationsBereichƒnderungsZeiten"));
+		Data data = getConfigurationData(getDataModel().getAttributeGroup("atg.konfigurationsBereich√ÑnderungsZeiten"));
 		if(data != null) {
-			return data.getTimeValue("LetzteƒnderungszeitDatensatz").getMillis();
+			return data.getTimeValue("Letzte√ÑnderungszeitDatensatz").getMillis();
 		}
 		else {
 			return 0;
@@ -357,7 +363,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 		// alle Objekt-Typen, die zu betrachten sind, ermitteln - also auch die Typen, die die angegebenen Typen erweitern
 		final Set<SystemObjectType> relevantObjectTypes = new HashSet<SystemObjectType>();
 		if(systemObjectTypes == null) {
-			// es wurde keine Einschr‰nkung der Typen gegeben -> alle Typen ermitteln
+			// es wurde keine Einschr√§nkung der Typen gegeben -> alle Typen ermitteln
 			// die Typen eines TypTyp-Objekts ermittelt man mit getElements()!
 			relevantObjectTypes.add(getDataModel().getTypeTypeObject());
 			final List<SystemObject> typeTypeElements = getDataModel().getTypeTypeObject().getElements();
@@ -366,7 +372,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 			}
 		}
 		else {
-			// die Typen eines Typ-Objekts werden ¸ber die Sub-Types ermittelt.
+			// die Typen eines Typ-Objekts werden √ºber die Sub-Types ermittelt.
 			for(SystemObjectType objectType : systemObjectTypes) {
 				relevantObjectTypes.add(objectType);
 				relevantObjectTypes.addAll(getDataModel().getAllSubTypes(objectType));
@@ -409,7 +415,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 				endTime = timeSpecification.getEndTime();
 			}
 
-			// lokale Zeit f¸r aktivierte Versionen (LOCAL_ACTIVATION_TIME)
+			// lokale Zeit f√ºr aktivierte Versionen (LOCAL_ACTIVATION_TIME)
 			systemObjectInfos = areaFile.getObjects(
 					startTime, endTime, ConfigurationAreaTime.LOCAL_ACTIVATION_TIME, timeSpecification.getType(), typeIds
 			);
@@ -434,14 +440,14 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 
 	public ConfigurationObject createConfigurationObject(ConfigurationObjectType type, String pid, String name, Collection<? extends ObjectSet> sets)
 			throws ConfigurationChangeException {
-		// wenn bei der pid oder dem namen "null" ¸bergeben wird, wird der Leerstring ("") verwendet.
+		// wenn bei der pid oder dem namen "null" √ºbergeben wird, wird der Leerstring ("") verwendet.
 		if(pid == null) pid = "";
 		if(name == null) name = "";
-		// 1. pr¸fen, ob ¸berhaupt ge‰ndert werden darf
+		// 1. pr√ºfen, ob √ºberhaupt ge√§ndert werden darf
 		{
 			if(checkChangePermit()) {
 
-				// Namen und Pids d¸rfen nur eine L‰nge von 255 Zeichen besitzen
+				// Namen und Pids d√ºrfen nur eine L√§nge von 255 Zeichen besitzen
 				checkNameLength(name);
 				checkPidLength(pid);
 
@@ -454,26 +460,26 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 					short modifiableVersion = getModifiableVersion();
 					short transferableVersion = getTransferableVersion();
 
-					// wurde keine Pid angegeben, so muss auch nicht ¸berpr¸ft werden (z.B. beim Erstellen von Mengen)
+					// wurde keine Pid angegeben, so muss auch nicht √ºberpr√ºft werden (z.B. beim Erstellen von Mengen)
 					if(!pid.equals("")) {
 						SystemObjectInformationInterface[] systemObjectInfos = fileManager.getNewObjects(pid);
 						if(systemObjectInfos.length > 0) {
-							// zuk¸nftige Elemente ¸berpr¸fen
+							// zuk√ºnftige Elemente √ºberpr√ºfen
 							for(SystemObjectInformationInterface systemObjectInfo : systemObjectInfos) {
 								ConfigurationObjectInfo configurationObjectInfo = (ConfigurationObjectInfo)systemObjectInfo;
 								if(configurationObjectInfo.getFirstValidVersion() > transferableVersion && (
 										configurationObjectInfo.getFirstInvalidVersion() == 0
 										|| configurationObjectInfo.getFirstInvalidVersion() > modifiableVersion)) {
 									throw new IllegalStateException(
-											"Es existiert bereits ein zuk¸nftiges Objekt mit gleicher Pid '" + pid + "' in diesem Bereich "
+											"Es existiert bereits ein zuk√ºnftiges Objekt mit gleicher Pid '" + pid + "' in diesem Bereich "
 											+ getConfigurationArea() + ": " + systemObjectInfo
 									);
 								}
 							}
 						}
 					}
-					// ein zuk¸nftiges kollidierendes Objekt existiert nicht
-					// aktuell g¸ltiges Objekt ¸berp¸fen
+					// ein zuk√ºnftiges kollidierendes Objekt existiert nicht
+					// aktuell g√ºltiges Objekt √ºberp√ºfen
 					SystemObject existAnotherObject = getDataModel().getObject(pid);
 					if(existAnotherObject != null && existAnotherObject.getConfigurationArea() == getConfigurationArea()
 					   && !existAnotherObject.getType().isConfigurating()) {
@@ -490,7 +496,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 					throw new ConfigurationChangeException(errorMessage, ex);
 				}
 
-				// 2. n‰chste freie ID ermitteln
+				// 2. n√§chste freie ID ermitteln
 				long nextObjectId = configDataModel.getNextObjectId();
 				final ConfigurationAreaFile areaFile = fileManager.getAreaFile(getPid());
 				final ConfigurationObjectInfo objectInfo = areaFile.createConfigurationObject(nextObjectId, type.getId(), pid, name);
@@ -504,7 +510,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 			}
 			else {
 				throw new ConfigurationChangeException(
-						"F¸r diesen Konfigurationsbereich " + getNameOrPidOrId()
+						"F√ºr diesen Konfigurationsbereich " + getNameOrPidOrId()
 						+ " ist die Konfiguration nicht berechtigt ein neues KonfigurationsObjekt anzulegen."
 				);
 			}
@@ -517,14 +523,14 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 
 	/**
 	 * Erzeugt ein neues dynamisches System-Objekt eines vorgegebenen Typs mit einer angegebenen PID. Optional kann der Name des neuen Objekts vorgegeben werden.
-	 * Das neue Objekt wird sofort g¸ltig.
+	 * Das neue Objekt wird sofort g√ºltig.
 	 *
 	 * @param type              Typ des neuen Objekts
 	 * @param pid               PID des neuen Objekts. Der leere String ("") oder <code>null</code> wird als "keine PID" interpretiert.
-	 * @param name              Name des neuen Objekts (kann sp‰ter ver‰ndert werden)
+	 * @param name              Name des neuen Objekts (kann sp√§ter ver√§ndert werden)
 	 * @param simulationVariant Simulationsvariante des neuen Objekts
 	 *
-	 * @return Stellvertreterobjekt f¸r das neu angelegte dynamische Objekt.
+	 * @return Stellvertreterobjekt f√ºr das neu angelegte dynamische Objekt.
 	 *
 	 * @throws ConfigurationChangeException Wenn das Objekt nicht erzeugt werden konnte.
 	 */
@@ -544,20 +550,20 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Diese Methode pr¸ft, ob eine Abh‰ngigkeit gegen¸ber einer anderen Abh‰ngigkeite neuere Informationen enth‰lt, bei diesem Vergleich wird die Art der
-	 * Abh‰ngigkeit nicht ber¸cksichtigt. Ein Vergleich ist nur dann sinnvoll, wenn beide Abh‰ngigkeiten den selben Bereich referenzieren.
-	 * <p/>
-	 * <p/>
-	 * Definition: Eine Abh‰ngigkeit(A_neu) enth‰lt gegen¸ber einer anderen Abh‰ngigkeit(A_alt) neuere Informationen, wenn:<br> <ul> <li>1) Die Version in der die
-	 * Abh‰ngigkeite entdeckt wurde in A_Neu grˆﬂer ist, als die der Abh‰ngigkeit A_alt. Zus‰tzlich muss noch die Version, in der der abh‰ngige Bereich benˆtigt
-	 * wird, grˆﬂer sein als die aktuell gespeicherte Version. Oder aber A_alt war optional und A_neu ist notwendig. </li> <li>2) Sind die in 1) genannten
-	 * Versionen gleich, so wird dann eine neuere Information gefunden, wenn die Version, in der der Abh‰ngige Bereich benˆtigt wird, von A_neu grˆﬂer ist als die
+	 * Diese Methode pr√ºft, ob eine Abh√§ngigkeit gegen√ºber einer anderen Abh√§ngigkeite neuere Informationen enth√§lt, bei diesem Vergleich wird die Art der
+	 * Abh√§ngigkeit nicht ber√ºcksichtigt. Ein Vergleich ist nur dann sinnvoll, wenn beide Abh√§ngigkeiten den selben Bereich referenzieren.
+	 * <p>
+	 * <p>
+	 * Definition: Eine Abh√§ngigkeit(A_neu) enth√§lt gegen√ºber einer anderen Abh√§ngigkeit(A_alt) neuere Informationen, wenn:<br> <ul> <li>1) Die Version in der die
+	 * Abh√§ngigkeite entdeckt wurde in A_Neu gr√∂√üer ist, als die der Abh√§ngigkeit A_alt. Zus√§tzlich muss noch die Version, in der der abh√§ngige Bereich ben√∂tigt
+	 * wird, gr√∂√üer sein als die aktuell gespeicherte Version. Oder aber A_alt war optional und A_neu ist notwendig. </li> <li>2) Sind die in 1) genannten
+	 * Versionen gleich, so wird dann eine neuere Information gefunden, wenn die Version, in der der Abh√§ngige Bereich ben√∂tigt wird, von A_neu gr√∂√üer ist als die
 	 * Version, die in A_alt gespeichert ist.</li> <li></li> <li></li> </ul>
 	 *
-	 * @param oldAreaDependency   Abh‰ngigkeit mit vermeindlich ‰lteren Informationen
-	 * @param newerAreaDependency Abh‰ngigkeit mit vermeindlich neueren Informationen als <code>oldAreaDependency</code>
+	 * @param oldAreaDependency   Abh√§ngigkeit mit vermeindlich √§lteren Informationen
+	 * @param newerAreaDependency Abh√§ngigkeit mit vermeindlich neueren Informationen als <code>oldAreaDependency</code>
 	 *
-	 * @return <code>true</code>, wenn newerAreaDependency neuere Informationen enth‰lt als <code>oldAreaDependency</code>; <code>false</code>, sonst.
+	 * @return <code>true</code>, wenn newerAreaDependency neuere Informationen enth√§lt als <code>oldAreaDependency</code>; <code>false</code>, sonst.
 	 */
 	private boolean hasNewVersionInformation(ConfigurationAreaDependency oldAreaDependency, ConfigurationAreaDependency newerAreaDependency) {
 		if(newerAreaDependency.getDependencyOccurredAtVersion() > oldAreaDependency.getDependencyOccurredAtVersion()) {
@@ -583,7 +589,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 				}
 			}
 			else {
-				// Die Version, in der die Abh‰ngigkeit entdeckt wurde ist kleiner. Also kann sie keine neueren Infos besitzen.
+				// Die Version, in der die Abh√§ngigkeit entdeckt wurde ist kleiner. Also kann sie keine neueren Infos besitzen.
 				// 2)
 				return false;
 			}
@@ -591,13 +597,13 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Pr¸ft, ob die Art der Abh‰ngigkeite eine neue Information enth‰lt. Definition: Eine neue Abh‰ngigkeite A_neu enth‰lt dann eine neuere Information als eine
-	 * alte Abh‰ngigkeite A_alt wenn: <ul> <li>1) Die Abh‰ngigkeite A_neu notwendig ist und die alte Abh‰ngigkeit A_alt optional</li> </ul>
+	 * Pr√ºft, ob die Art der Abh√§ngigkeite eine neue Information enth√§lt. Definition: Eine neue Abh√§ngigkeite A_neu enth√§lt dann eine neuere Information als eine
+	 * alte Abh√§ngigkeite A_alt wenn: <ul> <li>1) Die Abh√§ngigkeite A_neu notwendig ist und die alte Abh√§ngigkeit A_alt optional</li> </ul>
 	 *
-	 * @param oldAreaDependency   Abh‰ngigkeit, die bisher gespeichert wurde.
-	 * @param newerAreaDependency Abh‰ngigkeit, die vielleicht gespeichert werden soll
+	 * @param oldAreaDependency   Abh√§ngigkeit, die bisher gespeichert wurde.
+	 * @param newerAreaDependency Abh√§ngigkeit, die vielleicht gespeichert werden soll
 	 *
-	 * @return <code>true</code>, wenn die neue Abh‰ngigkeite neue Informationen enth‰lt; <code>false</code>, sonst.
+	 * @return <code>true</code>, wenn die neue Abh√§ngigkeite neue Informationen enth√§lt; <code>false</code>, sonst.
 	 */
 	private boolean hasNewStateInformation(ConfigurationAreaDependency oldAreaDependency, ConfigurationAreaDependency newerAreaDependency) {
 		if(newerAreaDependency.getKind() == ConfigurationAreaDependencyKind.REQUIRED
@@ -610,9 +616,9 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Erzeugt eine neue Abh‰ngigkeit die "notwendig" ist.
+	 * Erzeugt eine neue Abh√§ngigkeit die "notwendig" ist.
 	 *
-	 * @param areaDependence Abh‰ngigkeit, die kopiert wird.
+	 * @param areaDependence Abh√§ngigkeit, die kopiert wird.
 	 *
 	 * @return Kopie von <code>areaDependence</code> mit der Eigenschaft notwendig.
 	 */
@@ -626,123 +632,123 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Speichert eine Abh‰ngigkeit dieses Bereichs. Besteht bereits eine Abh‰ngigkeit (gleiche Versionen, gleiche Breiche), so wird die Abh‰ngigkeit nicht erneut
+	 * Speichert eine Abh√§ngigkeit dieses Bereichs. Besteht bereits eine Abh√§ngigkeit (gleiche Versionen, gleiche Breiche), so wird die Abh√§ngigkeit nicht erneut
 	 * gespeichert.
-	 * <p/>
-	 * Wurde eine Abh‰ngigkeit gespeichert, die den Typ OPTIONAL {@link ConfigurationAreaDependencyKind} und es soll eine Abh‰ngigkeit REQUIRED gespeichert werden,
-	 * so wird die optionale Abh‰ngigkeit ersetzt. Umgekehrt ist dies nicht mˆglich.
-	 * <p/>
-	 * <p/>
-	 * Ist der Bereich bereits von einem anderen Bereich abh‰ngig (notwendig) und es soll eine Abh‰ngigkeit optional hinzugef¸gt werden (dessen needed Version >
-	 * als die notwendige Abh‰ngigkeit), so wird diese Abh‰ngigkeit automatisch auf "notwendig" gesetzt. Damit wird verhindert, das eine Abh‰ngigkeit, die
+	 * <p>
+	 * Wurde eine Abh√§ngigkeit gespeichert, die den Typ OPTIONAL {@link ConfigurationAreaDependencyKind} und es soll eine Abh√§ngigkeit REQUIRED gespeichert werden,
+	 * so wird die optionale Abh√§ngigkeit ersetzt. Umgekehrt ist dies nicht m√∂glich.
+	 * <p>
+	 * <p>
+	 * Ist der Bereich bereits von einem anderen Bereich abh√§ngig (notwendig) und es soll eine Abh√§ngigkeit optional hinzugef√ºgt werden (dessen needed Version >
+	 * als die notwendige Abh√§ngigkeit), so wird diese Abh√§ngigkeit automatisch auf "notwendig" gesetzt. Damit wird verhindert, das eine Abh√§ngigkeit, die
 	 * notwendig war, durch Versionswechsel wieder auf optional gesetzt werden kann.
-	 * <p/>
-	 * Ist der Konfiguration die Attributgruppe zum speichern der Datens‰tze nicht bekannt, so die Abh‰ngigkeiten ignoriert und nichts gemacht.
+	 * <p>
+	 * Ist der Konfiguration die Attributgruppe zum speichern der Datens√§tze nicht bekannt, so die Abh√§ngigkeiten ignoriert und nichts gemacht.
 	 *
-	 * @param areaDependencies Abh‰ngigkeiten, die gespeichert werden soll.
+	 * @param areaDependencies Abh√§ngigkeiten, die gespeichert werden soll.
 	 *
 	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException
-	 *          Wird geworfen, wenn der Datensatz, der die Abh‰ngigkeiten enth‰lt, nicht gespeichert werden kann.
+	 *          Wird geworfen, wenn der Datensatz, der die Abh√§ngigkeiten enth√§lt, nicht gespeichert werden kann.
 	 */
 	synchronized public void addAreaDependency(Collection<ConfigurationAreaDependency> areaDependencies) throws ConfigurationChangeException {
 
 		if(_atguForDependencies != null) {
 			/**
-			 * Speichert die neuste Abh‰ngigkeit(value) zu einem Bereich (Key). Der neuste Eintrag wird aus den ¸bergebenen Abh‰ngigkeiten rausgesucht.
+			 * Speichert die neuste Abh√§ngigkeit(value) zu einem Bereich (Key). Der neuste Eintrag wird aus den √ºbergebenen Abh√§ngigkeiten rausgesucht.
 			 */
 			final Map<String, ConfigurationAreaDependency> newestDependence = new HashMap<String, ConfigurationAreaDependency>();
 
 			for(ConfigurationAreaDependency areaDependency : areaDependencies) {
-				// Abh‰ngigkeite, die als letztes betrachtet wurde
+				// Abh√§ngigkeite, die als letztes betrachtet wurde
 				final ConfigurationAreaDependency lastFoundDependence = newestDependence.get(areaDependency.getDependantArea());
 
 				if(lastFoundDependence != null) {
-					// Enth‰lt die neue Abh‰ngigkeit neuere Informationen?
+					// Enth√§lt die neue Abh√§ngigkeit neuere Informationen?
 
 					if(hasNewVersionInformation(lastFoundDependence, areaDependency) == true) {
-						// Die neue Abh‰ngigkeit enth‰lt neuere Informationen (hˆhere Versionsnummern).
-						// Also muss die alte Abh‰ngigkeite gelˆscht werden und durch die neue ersetzt werden. Dabei ist zu beachten, ob die
-						// Abh‰ngigkeiten notwendig sind.
+						// Die neue Abh√§ngigkeit enth√§lt neuere Informationen (h√∂here Versionsnummern).
+						// Also muss die alte Abh√§ngigkeite gel√∂scht werden und durch die neue ersetzt werden. Dabei ist zu beachten, ob die
+						// Abh√§ngigkeiten notwendig sind.
 						if(lastFoundDependence.getKind() == ConfigurationAreaDependencyKind.REQUIRED) {
-							// Die alte Abh‰ngigkeite war notwendig, also sind alle anderen auch notwendig.
+							// Die alte Abh√§ngigkeite war notwendig, also sind alle anderen auch notwendig.
 							newestDependence.put(areaDependency.getDependantArea(), createRequiredDependence(areaDependency));
 						}
 						else {
-							// Die alte Abh‰ngigkeit war optional, also kann die neue Abh‰ngigkeite die alte einfach ersetzen.
+							// Die alte Abh√§ngigkeit war optional, also kann die neue Abh√§ngigkeite die alte einfach ersetzen.
 							newestDependence.put(areaDependency.getDependantArea(), areaDependency);
 						}
 					}
 					else if(hasNewStateInformation(lastFoundDependence, areaDependency) == true) {
-						// Die Versionen bringen keine neuen Informationen, aber die neue Abh‰ngigkeite war notwendig und die bisher gespeicherte
-						// war nur optional. Also muss die bisher gespeicherte Abh‰ngigkeit auf "notwendig" ge‰ndert werden
+						// Die Versionen bringen keine neuen Informationen, aber die neue Abh√§ngigkeite war notwendig und die bisher gespeicherte
+						// war nur optional. Also muss die bisher gespeicherte Abh√§ngigkeit auf "notwendig" ge√§ndert werden
 						newestDependence.put(lastFoundDependence.getDependantArea(), createRequiredDependence(lastFoundDependence));
 					}
 				}
 				else {
-					// bisher gab es zu dem Bereich noch keine Abh‰ngigkeit
+					// bisher gab es zu dem Bereich noch keine Abh√§ngigkeit
 					newestDependence.put(areaDependency.getDependantArea(), areaDependency);
 				}
-			} // Alle ¸bergebenen Abh‰ngigkeiten nach der Abh‰ngigkeit durchsuchen, die die neuste darstellt
+			} // Alle √ºbergebenen Abh√§ngigkeiten nach der Abh√§ngigkeit durchsuchen, die die neuste darstellt
 
-			// An dieser Stelle steht in der Map <code>newestDependence</code> zu jedem abh‰ngigen Bereich die jeweils neuste
-			// Abh‰ngigkeite, die ¸bergeben wurde.
-			// Nun kann mit der zuletzt gespeicherten Abh‰ngigkeit verglichen werden.
+			// An dieser Stelle steht in der Map <code>newestDependence</code> zu jedem abh√§ngigen Bereich die jeweils neuste
+			// Abh√§ngigkeite, die √ºbergeben wurde.
+			// Nun kann mit der zuletzt gespeicherten Abh√§ngigkeit verglichen werden.
 
-			// Enth‰lt die Abh‰ngigkeit aus der Map neuere Informationen als die bisher gespeicherte Abh‰ngigkeite, wird
-			// die neue Abh‰ngigkeite zus‰tzlich gespeichert.
+			// Enth√§lt die Abh√§ngigkeit aus der Map neuere Informationen als die bisher gespeicherte Abh√§ngigkeite, wird
+			// die neue Abh√§ngigkeite zus√§tzlich gespeichert.
 
 			final Collection<ConfigurationAreaDependency> possibleNewDependencies = newestDependence.values();
 
-			// Alle bisher gespeicherte Abh‰ngigkeiten werden in _areaDependencyList in der Reihenfolge ihres eintreffens gespeichert.
+			// Alle bisher gespeicherte Abh√§ngigkeiten werden in _areaDependencyList in der Reihenfolge ihres eintreffens gespeichert.
 			// Die Liste muss also vom Ende zum Anfang untersucht werden.
 
-			// Die Gˆﬂe der Liste muss gespeichert werden, da die neuen Elemente direkt in die Liste eingef¸gt werden.
+			// Die G√∂√üe der Liste muss gespeichert werden, da die neuen Elemente direkt in die Liste eingef√ºgt werden.
 			final int oldSize = _areaDependencyList.size() - 1;
 
-			// Diese Liste speichert alle Abh‰ngigkeiten, die an dem bestehenden Datensatz zus‰tzlich gespeichert werden m¸ssen. Alle Versionen und
-			// vorallem die Art der Abh‰ngigkeit sind bereits richtig gesetzt.
+			// Diese Liste speichert alle Abh√§ngigkeiten, die an dem bestehenden Datensatz zus√§tzlich gespeichert werden m√ºssen. Alle Versionen und
+			// vorallem die Art der Abh√§ngigkeit sind bereits richtig gesetzt.
 			final Collection<ConfigurationAreaDependency> saveNewAreaDependencies = new ArrayList<ConfigurationAreaDependency>();
 
 			for(ConfigurationAreaDependency possibleNewDependence : possibleNewDependencies) {
-				// Wird benˆtigt um zu erkennen, dass eine neue Abh‰ngigkeite eingef¸gt werden muss (bisher gab es zu dem Bereich noch keine Abh‰ngigkeit)
+				// Wird ben√∂tigt um zu erkennen, dass eine neue Abh√§ngigkeite eingef√ºgt werden muss (bisher gab es zu dem Bereich noch keine Abh√§ngigkeit)
 				boolean areaFound = false;
 				for(int nr = oldSize; nr >= 0; nr--) {
-					// Eine Abh‰ngigkeite, die schon gespeichert wurde
+					// Eine Abh√§ngigkeite, die schon gespeichert wurde
 					final ConfigurationAreaDependency savedDependence = _areaDependencyList.get(nr);
 
-					// Wenn die abh‰ngigen Bereiche gleich sind kann verglichen werden.
+					// Wenn die abh√§ngigen Bereiche gleich sind kann verglichen werden.
 					if(possibleNewDependence.getDependantArea().equals(savedDependence.getDependantArea())) {
-						// Der Bereich stimmt. Da die neusten Abh‰ngigkeiten immer an das Ende der Liste geh‰ngt werden, kann die Suche hier enden.
+						// Der Bereich stimmt. Da die neusten Abh√§ngigkeiten immer an das Ende der Liste geh√§ngt werden, kann die Suche hier enden.
 						areaFound = true;
 
-						// Nun muss gepr¸ft werden, ob die neue Abh‰ngigkeit ¸berhaupt neue Informationen beinhaltet.
+						// Nun muss gepr√ºft werden, ob die neue Abh√§ngigkeit √ºberhaupt neue Informationen beinhaltet.
 						if(hasNewVersionInformation(savedDependence, possibleNewDependence) == true) {
-							// Wenn die gespeicherte Abh‰ngigkeite notwendig gewesen ist, so muss es auch die neue sein.
+							// Wenn die gespeicherte Abh√§ngigkeite notwendig gewesen ist, so muss es auch die neue sein.
 							if(savedDependence.getKind() == ConfigurationAreaDependencyKind.REQUIRED) {
 								saveNewAreaDependencies.add(createRequiredDependence(possibleNewDependence));
 							}
 							else {
-								// Die Abh‰ngigkeit kann so gespeichert werden wie sie ist.
+								// Die Abh√§ngigkeit kann so gespeichert werden wie sie ist.
 								saveNewAreaDependencies.add(possibleNewDependence);
 							}
 						}
 						else if(hasNewStateInformation(savedDependence, possibleNewDependence) == true) {
-							// Die Versionen unterscheiden sich nicht, aber die alte Abh‰ngigkeite war optional und die neue ist
-							// notwendig. Die alte Abh‰ngigkeite wird nicht ge‰ndert.
+							// Die Versionen unterscheiden sich nicht, aber die alte Abh√§ngigkeite war optional und die neue ist
+							// notwendig. Die alte Abh√§ngigkeite wird nicht ge√§ndert.
 							saveNewAreaDependencies.add(possibleNewDependence);
-						}// Im else-Fall muss nichts gemacht werden, die neue Abh‰ngigkeite bringt keine neuen Informationen und muss somit nicht gespeichert werden.
+						}// Im else-Fall muss nichts gemacht werden, die neue Abh√§ngigkeite bringt keine neuen Informationen und muss somit nicht gespeichert werden.
 
 						break;
 					}
 				}// alle gespeicherten Bereiche betrachten
 
 				if(areaFound == false) {
-					// Es gab zu dem Bereich noch keine Abh‰ngigkeit. Dies ist die erste Abh‰ngigkeit zu dem Bereich.
+					// Es gab zu dem Bereich noch keine Abh√§ngigkeit. Dies ist die erste Abh√§ngigkeit zu dem Bereich.
 					saveNewAreaDependencies.add(possibleNewDependence);
 				}
-			}// Pr¸fung, ob die gefundenen Abh‰ngigkeiten ¸berhaupt gespeichert werden m¸ssen.
+			}// Pr√ºfung, ob die gefundenen Abh√§ngigkeiten √ºberhaupt gespeichert werden m√ºssen.
 
-			// Die gefundenen Abh‰gigkeiten in die Datenstruktur eintragen und dann an den bestehnden Datensatz anh‰ngen.
+			// Die gefundenen Abh√§gigkeiten in die Datenstruktur eintragen und dann an den bestehnden Datensatz anh√§ngen.
 			_areaDependencyList.addAll(saveNewAreaDependencies);
 			writeDependencyDataSet(saveNewAreaDependencies);
 		}// Wird eine alte Konfiguration ohne die ATG benutzt, wird nichts gemacht. Da der Datensatz nicht geschrieben werden kann.
@@ -753,20 +759,20 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 			return getConfigurationData(_atguForDependencies) != null;
 		}
 		else {
-			// Dieser Fallunterschied ist eigentlich nicht nˆtig, da getConfigurationData() null zur¸ck gibt, wenn null ¸bergeben wird.
+			// Dieser Fallunterschied ist eigentlich nicht n√∂tig, da getConfigurationData() null zur√ºck gibt, wenn null √ºbergeben wird.
 			// Aber diese Implementierung garantiert ein gleichbleibendes Verhalten.
 			return false;
 		}
 	}
 
 	/**
-	 * Schreibt einen Datensatz, der alle Abh‰ngigkeiten dieses Bereich zu anderen Bereichen speichert. Gibt es bereits einen Datensatz, wird dieser um die neuen
-	 * Abh‰ngigkeiten erweitert. Die neuen Abh‰ngigkeiten werden ans Ende des Arrays geschrieben.
+	 * Schreibt einen Datensatz, der alle Abh√§ngigkeiten dieses Bereich zu anderen Bereichen speichert. Gibt es bereits einen Datensatz, wird dieser um die neuen
+	 * Abh√§ngigkeiten erweitert. Die neuen Abh√§ngigkeiten werden ans Ende des Arrays geschrieben.
 	 *
-	 * @param areaDependencies Neue Abh‰ngigkeiten, die am Ende des Datensatzes (Array) eingef¸gt werden sollen.
+	 * @param areaDependencies Neue Abh√§ngigkeiten, die am Ende des Datensatzes (Array) eingef√ºgt werden sollen.
 	 *
 	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException
-	 *          Der Datensatz darf nicht ge‰ndert werden, weil der Konfigurationsverantwortliche der Konfiguration keinen Zugriff auf diesen Bereich hat.
+	 *          Der Datensatz darf nicht ge√§ndert werden, weil der Konfigurationsverantwortliche der Konfiguration keinen Zugriff auf diesen Bereich hat.
 	 */
 	synchronized private void writeDependencyDataSet(final Collection<ConfigurationAreaDependency> areaDependencies) throws ConfigurationChangeException {
 
@@ -777,11 +783,11 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 				return;
 			}
 
-			// Datensatz, der bisher die Abh‰ngigkeiten enth‰lt
+			// Datensatz, der bisher die Abh√§ngigkeiten enth√§lt
 			Data dataSetWithDependencies = getConfigurationData(_atguForDependencies);
 
 			if(dataSetWithDependencies == null) {
-				// Der Datensatz wurde bisher noch nicht gesetzt. Die erste Abh‰ngigkeit soll angelegt werden. Damit muss ein Datensatz erzeugt werden.
+				// Der Datensatz wurde bisher noch nicht gesetzt. Die erste Abh√§ngigkeit soll angelegt werden. Damit muss ein Datensatz erzeugt werden.
 				final Data newDependancyDataSet = AttributeBaseValueDataFactory.createAdapter(
 						_atguForDependencies.getAttributeGroup(), AttributeHelper.getAttributesValues(_atguForDependencies.getAttributeGroup())
 				);
@@ -791,19 +797,19 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 				dataSetWithDependencies = getConfigurationData(_atguForDependencies);
 			} // Neuen Datensatz anlegen ende
 
-			// Der bestehende Datensatz muss um die neuen Eintr‰ge erweitert werden.
-			final Data.Array dependencyArray = dataSetWithDependencies.getItem("KonfigurationsAbh‰ngigkeiten").asArray();
+			// Der bestehende Datensatz muss um die neuen Eintr√§ge erweitert werden.
+			final Data.Array dependencyArray = dataSetWithDependencies.getItem("KonfigurationsAbh√§ngigkeiten").asArray();
 			final int oldArrayLength = dependencyArray.getLength();
 			dependencyArray.setLength(oldArrayLength + areaDependencies.size());
 
-			// Speichert die Stelle, an der der n‰chste Datensatz eingef¸gt werden soll.
+			// Speichert die Stelle, an der der n√§chste Datensatz eingef√ºgt werden soll.
 			int indexCounter = oldArrayLength;
 
 			for(ConfigurationAreaDependency dependence : areaDependencies) {
-				// Eine Abh‰ngigkeit, die im Datensatz gespeichert wird
+				// Eine Abh√§ngigkeit, die im Datensatz gespeichert wird
 				final Data oneDependencyInDataSet = dependencyArray.getItem(indexCounter);
 
-				oneDependencyInDataSet.getItem("Abh‰ngigkeitEntstandenInVersion").asUnscaledValue().set(dependence.getDependencyOccurredAtVersion());
+				oneDependencyInDataSet.getItem("Abh√§ngigkeitEntstandenInVersion").asUnscaledValue().set(dependence.getDependencyOccurredAtVersion());
 				oneDependencyInDataSet.getItem("BereichNotwendig").asTextValue().setText(dependence.getDependantArea());
 				oneDependencyInDataSet.getItem("VersionNotwendig").asUnscaledValue().set(dependence.getNeededVersion());
 				String value = dependence.getKind().getValue();
@@ -819,24 +825,24 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Diese Methode l‰dt alle Abh‰ngigkeiten aus dem Datensatz <code>_atguForDependancies</code> in die<code>_areaDependencyList</code>.
-	 * <p/>
-	 * Der Datensatz speichert die Abh‰ngigkeiten in der Reihenfolge LIFO. Der letzte und damit neuste Eintrag befindet sich am Ende.
+	 * Diese Methode l√§dt alle Abh√§ngigkeiten aus dem Datensatz <code>_atguForDependancies</code> in die<code>_areaDependencyList</code>.
+	 * <p>
+	 * Der Datensatz speichert die Abh√§ngigkeiten in der Reihenfolge LIFO. Der letzte und damit neuste Eintrag befindet sich am Ende.
 	 */
 	private void loadDependencyDataSets() {
 
 		if(_atguForDependencies != null) {
 			final Data dataWithDependencies = getConfigurationData(_atguForDependencies);
-			// Gibt es keinen Datensatz, wird nichts gemacht. Sobald es Abh‰ngigkeiten gibt, wird der Datensatz automatisch angelegt.
+			// Gibt es keinen Datensatz, wird nichts gemacht. Sobald es Abh√§ngigkeiten gibt, wird der Datensatz automatisch angelegt.
 			if(dataWithDependencies != null) {
-				final Data.Array allDependenciesInDataSets = dataWithDependencies.getItem("KonfigurationsAbh‰ngigkeiten").asArray();
+				final Data.Array allDependenciesInDataSets = dataWithDependencies.getItem("KonfigurationsAbh√§ngigkeiten").asArray();
 
 				int index = 0;
 
 				for(int nr = 0; nr < allDependenciesInDataSets.getLength(); nr++) {
 					final Data oneDependencyDataSet = allDependenciesInDataSets.getItem(index);
 					index++;
-					final short dependencyOccuredAt = oneDependencyDataSet.getItem("Abh‰ngigkeitEntstandenInVersion").asUnscaledValue().shortValue();
+					final short dependencyOccuredAt = oneDependencyDataSet.getItem("Abh√§ngigkeitEntstandenInVersion").asUnscaledValue().shortValue();
 
 					final String pidDependencyArea = oneDependencyDataSet.getItem("BereichNotwendig").asTextValue().getValueText();
 
@@ -857,12 +863,12 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Pr¸ft, ob zwei Abh‰ngigkeiten identisch sind. Welche Werte genau gepr¸ft werden, ist von den ‹bergabeparametern abh‰ngig.
+	 * Pr√ºft, ob zwei Abh√§ngigkeiten identisch sind. Welche Werte genau gepr√ºft werden, ist von den √úbergabeparametern abh√§ngig.
 	 *
 	 * @param first  Erster Bereich
 	 * @param second Zweiter Bereich
 	 *
-	 * @return <code>true</code>, wenn die beiden Bereiche unter Ber¸cksichtigung der Parameter logisch identisch sind.
+	 * @return <code>true</code>, wenn die beiden Bereiche unter Ber√ºcksichtigung der Parameter logisch identisch sind.
 	 */
 	private boolean equalsConfigurationAreaDependancy(final ConfigurationAreaDependency first, ConfigurationAreaDependency second) {
 		if(first == second) return true;
@@ -887,19 +893,19 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Diese Methode gibt alle eingetragenen Konfigurations‰nderungen zur¸ck, die in der Versorgungsdatei eingetragen wurden.
+	 * Diese Methode gibt alle eingetragenen Konfigurations√§nderungen zur√ºck, die in der Versorgungsdatei eingetragen wurden.
 	 *
-	 * @return Alle eingetragenen ƒnderungen oder eine leere Collection, falls keine Eintr‰ge gemacht wurden.
+	 * @return Alle eingetragenen √Ñnderungen oder eine leere Collection, falls keine Eintr√§ge gemacht wurden.
 	 */
 	public Collection<ConfigurationAreaChangeInformation> getChangeLogs() {
 
 		final List<ConfigurationAreaChangeInformation> logs = new ArrayList<ConfigurationAreaChangeInformation>();
 
-		final AttributeGroup atg = _dataModel.getAttributeGroup("atg.konfigurationsƒnderungen");
+		final AttributeGroup atg = _dataModel.getAttributeGroup("atg.konfigurations√Ñnderungen");
 		Data data = _dataModel.getConfigurationArea(getPid()).getConfigurationData(atg);
 		if(data != null) {
 			// Data auslesen und Array erzeugen
-			final Data.Array array = data.getArray("Konfigurationsƒnderung");
+			final Data.Array array = data.getArray("Konfigurations√Ñnderung");
 			for(int i = 0; i < array.getLength(); i++) {
 				Data item = array.getItem(i);
 				logs.add(
@@ -919,15 +925,15 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 
 	/**
 	 * Erzeugt ein neues dynamisches System-Objekt eines vorgegebenen Typs mit einer angegebenen PID. Optional kann der Name des neuen Objekts vorgegeben werden.
-	 * Das neue Objekt wird sofort g¸ltig. Zus‰tzlich kˆnnen alle Datens‰tze ¸bergeben werden.
+	 * Das neue Objekt wird sofort g√ºltig. Zus√§tzlich k√∂nnen alle Datens√§tze √ºbergeben werden.
 	 *
 	 * @param type              Typ des neuen Objekts
 	 * @param pid               PID des neuen Objekts. Der leere String ("") oder <code>null</code> wird als "keine PID" interpretiert.
-	 * @param name              Name des neuen Objekts (kann sp‰ter ver‰ndert werden)
-	 * @param data              Datens‰tze f¸r das dynamische Objekt
+	 * @param name              Name des neuen Objekts (kann sp√§ter ver√§ndert werden)
+	 * @param data              Datens√§tze f√ºr das dynamische Objekt
 	 * @param simulationVariant Simulationsvariante des neuen Objekts
 	 *
-	 * @return Stellvertreterobjekt f¸r das neu angelegte dynamische Objekt.
+	 * @return Stellvertreterobjekt f√ºr das neu angelegte dynamische Objekt.
 	 *
 	 * @throws ConfigurationChangeException Wenn das Objekt nicht erzeugt werden konnte.
 	 */
@@ -938,11 +944,11 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Pr¸ft, ob ein Name l‰nger als 255 Zeichen ist.
+	 * Pr√ºft, ob ein Name l√§nger als 255 Zeichen ist.
 	 *
 	 * @param name Name oder <code>null</code>
 	 *
-	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException Der Name ist l‰nger als 255 Zeichen
+	 * @throws de.bsvrz.dav.daf.main.config.ConfigurationChangeException Der Name ist l√§nger als 255 Zeichen
 	 */
 	private void checkNameLength(final String name) throws ConfigurationChangeException {
 		if(name != null) {
@@ -950,17 +956,17 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 				return;
 			}
 			else {
-				throw new ConfigurationChangeException("Der Name ist l‰nger als 255 Zeichen " + name + " L‰nge " + name.length());
+				throw new ConfigurationChangeException("Der Name ist l√§nger als 255 Zeichen " + name + " L√§nge " + name.length());
 			}
 		}
 	}
 
 	/**
-	 * Pr¸ft, ob die Pid l‰nger als 255 Zeichen ist.
+	 * Pr√ºft, ob die Pid l√§nger als 255 Zeichen ist.
 	 *
 	 * @param pid Pid oder <code>null</code>
 	 *
-	 * @throws ConfigurationChangeException Die Pid ist l‰nger als 255 Zeichen
+	 * @throws ConfigurationChangeException Die Pid ist l√§nger als 255 Zeichen
 	 */
 	private void checkPidLength(final String pid) throws ConfigurationChangeException {
 		if(pid != null) {
@@ -968,23 +974,23 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 				return;
 			}
 			else {
-				throw new ConfigurationChangeException("Die Pid ist l‰nger als 255 Zeichen " + pid + " L‰nge " + pid.length());
+				throw new ConfigurationChangeException("Die Pid ist l√§nger als 255 Zeichen " + pid + " L√§nge " + pid.length());
 			}
 		}
 	}
 
 	/**
 	 * Erzeugt ein neues dynamisches System-Objekt eines vorgegebenen Typs mit einer angegebenen PID. Optional kann der Name des neuen Objekts vorgegeben werden.
-	 * Das neue Objekt wird sofort g¸ltig. Zus‰tzlich kˆnnen alle Datens‰tze ¸bergeben werden.
+	 * Das neue Objekt wird sofort g√ºltig. Zus√§tzlich k√∂nnen alle Datens√§tze √ºbergeben werden.
 	 *
 	 * @param type              Typ des neuen Objekts
 	 * @param pid               PID des neuen Objekts. Der leere String ("") oder <code>null</code> wird als "keine PID" interpretiert.
-	 * @param name              Name des neuen Objekts (kann sp‰ter ver‰ndert werden)
-	 * @param data              Datens‰tze f¸r das dynamische Objekt
+	 * @param name              Name des neuen Objekts (kann sp√§ter ver√§ndert werden)
+	 * @param data              Datens√§tze f√ºr das dynamische Objekt
 	 * @param simulationVariant Simulationsvariante des neuen Objekts
-	 * @param checkDatasets     gibt an, ob gepr¸ft werden soll, ob die notwendigen Datens‰tze vorhanden sind
+	 * @param checkDatasets     gibt an, ob gepr√ºft werden soll, ob die notwendigen Datens√§tze vorhanden sind
 	 *
-	 * @return Stellvertreterobjekt f¸r das neu angelegte dynamische Objekt.
+	 * @return Stellvertreterobjekt f√ºr das neu angelegte dynamische Objekt.
 	 *
 	 * @throws ConfigurationChangeException Wenn das Objekt nicht erzeugt werden konnte.
 	 */
@@ -996,12 +1002,12 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 			final short simulationVariant,
 			final boolean checkDatasets
 	) throws ConfigurationChangeException {
-		// wenn bei der pid oder dem namen "null" ¸bergeben wird, wird der Leerstring ("") verwendet.
+		// wenn bei der pid oder dem namen "null" √ºbergeben wird, wird der Leerstring ("") verwendet.
 		if(pid == null) pid = "";
 		if(name == null) name = "";
 		if(checkChangePermit()) {
 
-			// Namen und Pids d¸rfen nur eine L‰nge von 255 Zeichen besitzen
+			// Namen und Pids d√ºrfen nur eine L√§nge von 255 Zeichen besitzen
 			checkNameLength(name);
 			checkPidLength(pid);
 
@@ -1027,20 +1033,20 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 						requiredAtgUsages.add(atgUsage);
 					}
 
-					// Pr¸fen, ob die Attributgruppe am Typ definiert ist
+					// Pr√ºfen, ob die Attributgruppe am Typ definiert ist
 					if(type instanceof ConfigDynamicObjectType) {
 						ConfigDynamicObjectType objectType = (ConfigDynamicObjectType) type;
 						objectType.validateAttributeGroup(atgUsage.getAttributeGroup());
 					}
 				}
 			}
-			// pr¸fen, ob auch alle notwendigen Datens‰tze am dynamischen Objekt vorhanden sind
+			// pr√ºfen, ob auch alle notwendigen Datens√§tze am dynamischen Objekt vorhanden sind
 			for(AttributeGroup attributeGroup : type.getAttributeGroups()) {
 				for(AttributeGroupUsage atgUsage : attributeGroup.getAttributeGroupUsages()) {
 					if(atgUsage.getUsage() == AttributeGroupUsage.Usage.ChangeableRequiredConfigurationData
 					   || atgUsage.getUsage() == AttributeGroupUsage.Usage.RequiredConfigurationData) {
 						if(!requiredAtgUsages.contains(atgUsage)) {
-							final String message = "Es wurden nicht alle notwendigen Datens‰tze f¸r das dynamische Objekt " + pid + " angegeben.";
+							final String message = "Es wurden nicht alle notwendigen Datens√§tze f√ºr das dynamische Objekt " + pid + " angegeben.";
 							if(checkDatasets) {
 								_debug.error(message);
 								throw new ConfigurationChangeException(message);
@@ -1065,7 +1071,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 
 
 			if(data != null && !data.isEmpty()) {
-				// Datens‰tze am dynamischen Objekt speichern
+				// Datens√§tze am dynamischen Objekt speichern
 				for(DataAndATGUsageInformation dataAndATGUsageInformation : data) {
 					final AttributeGroupUsage atgUsage = dataAndATGUsageInformation.getAttributeGroupUsage();
 					try {
@@ -1092,7 +1098,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 				}
 			}
 
-			// beim createSystemObject f¸r dynamische Objekte wird (im Konstruktor von ConfigDynamicObject) der Typ benachrichtigt,
+			// beim createSystemObject f√ºr dynamische Objekte wird (im Konstruktor von ConfigDynamicObject) der Typ benachrichtigt,
 			// dass ein neues Objekt angelegt wurde
 			final DynamicObject dynamicObject = (DynamicObject)configDataModel.createSystemObject(objectInfo);
 			_debug.fine("Neues dynamisches Objekt angelegt: " + dynamicObject.getPidOrNameOrId() + " Id: " + dynamicObject.getId());
@@ -1101,8 +1107,8 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 		}
 		else {
 			throw new ConfigurationChangeException(
-					"Es konnte kein neues dynamisches Objekt f¸r diesen Bereich " + getNameOrPidOrId()
-					+ " angelegt werden, da die Konfiguration keine Berechtigung hierf¸r hat."
+					"Es konnte kein neues dynamisches Objekt f√ºr diesen Bereich " + getNameOrPidOrId()
+					+ " angelegt werden, da die Konfiguration keine Berechtigung hierf√ºr hat."
 			);
 		}
 	}
@@ -1122,7 +1128,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 			for(ObjectSet objectSet : sets) {
 				serializer.writeLong(objectSet.getId());
 			}
-			objectInfo.setConfigurationData(-1, out.toByteArray()); // die ATGV "-1" ist f¸r Mengen fest implementiert
+			objectInfo.setConfigurationData(-1, out.toByteArray()); // die ATGV "-1" ist f√ºr Mengen fest implementiert
 			setTimeOfLastChanges(KindOfLastChange.ConfigurationData);
 			out.close();
 		}
@@ -1134,7 +1140,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Gibt die Versionsnummer dieses Konfigurationsbereichs zur¸ck, die zur angegebenen Zeit aktiv war.
+	 * Gibt die Versionsnummer dieses Konfigurationsbereichs zur√ºck, die zur angegebenen Zeit aktiv war.
 	 *
 	 * @param time die Zeit, zu der die Versionsnummer des Konfigurationsbereichs gesucht wird
 	 *
@@ -1142,7 +1148,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	 */
 	short getVersionAtAssignedTime(long time) {
 		final List<VersionInfo> versionInfos = getDataModel().getVersionInfoOfConfigurationArea(getConfigurationArea());
-		for(int i = versionInfos.size() - 1; i >= 0; i--) {	// Schleife durchl‰uft die Liste r¸ckw‰rts
+		for(int i = versionInfos.size() - 1; i >= 0; i--) {	// Schleife durchl√§uft die Liste r√ºckw√§rts
 			VersionInfo versionInfo = versionInfos.get(i);
 			if(versionInfo.getActivationTime() <= time) return versionInfo.getVersion();
 		}
@@ -1150,9 +1156,9 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Gibt die Aktivierungszeit dieses Konfigurationsbereichs zur angegebenen Versionsnummer zur¸ck.
+	 * Gibt die Aktivierungszeit dieses Konfigurationsbereichs zur angegebenen Versionsnummer zur√ºck.
 	 *
-	 * @param version die Versionsnummer, dessen Aktivierungszeit gew¸nscht ist
+	 * @param version die Versionsnummer, dessen Aktivierungszeit gew√ºnscht ist
 	 *
 	 * @return die Aktivierungszeit der angegebenen Version dieses Konfigurationsbereichs oder <code>0</code>, falls zur Version kein Eintrag vorliegt
 	 */
@@ -1165,8 +1171,8 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Wurde ein dynamisches Objekt, ein Konfigurationsobjekt (welches noch nicht aktiviert ist) oder ein ‰nderbarer konfigurierender Datensatz ge‰ndert, so wird
-	 * die ƒnderungszeit in dem Attribut des Datensatzes eingetragen und abgespeichert.
+	 * Wurde ein dynamisches Objekt, ein Konfigurationsobjekt (welches noch nicht aktiviert ist) oder ein √§nderbarer konfigurierender Datensatz ge√§ndert, so wird
+	 * die √Ñnderungszeit in dem Attribut des Datensatzes eingetragen und abgespeichert.
 	 *
 	 * @param kind gibt an, welche der drei Zeiten angepasst werden muss
 	 */
@@ -1179,7 +1185,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 			long timeOfConfigurationData = 0;
 
 			// bisherige Daten werden aus dem Byte-Array eingelesen, da ich kein Data habe, wenn noch kein Datensatz existiert.
-			final AttributeGroup atg = getDataModel().getAttributeGroup("atg.konfigurationsBereichƒnderungsZeiten");
+			final AttributeGroup atg = getDataModel().getAttributeGroup("atg.konfigurationsBereich√ÑnderungsZeiten");
 			final Aspect asp = getDataModel().getAspect("asp.eigenschaften");
 			final AttributeGroupUsage atgUsage = atg.getAttributeGroupUsage(asp);
 			byte[] bytes = getConfigurationDataBytes(atgUsage);
@@ -1192,7 +1198,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 				in.close();
 			}
 
-			// welche Zeit hat sich ge‰ndert?
+			// welche Zeit hat sich ge√§ndert?
 			if(kind == KindOfLastChange.DynamicObject) {
 				timeOfDynamicObject = time;
 			}
@@ -1204,7 +1210,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 			}
 			else {
 				throw new RuntimeException(
-						"Die Zeiten der letzten ƒnderung eines Bereichs kˆnnen nicht ver‰ndert werden, da die angegebene Art '" + kind + "'unbekannt ist."
+						"Die Zeiten der letzten √Ñnderung eines Bereichs k√∂nnen nicht ver√§ndert werden, da die angegebene Art '" + kind + "'unbekannt ist."
 				);
 			}
 
@@ -1218,7 +1224,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 			out.close();
 		}
 		catch(Exception ex) {
-			final String errorMessage = "Der Datensatz mit der letzten ƒnderung eines Objekts oder Datensatzes konnte am Bereich " + getNameOrPidOrId()
+			final String errorMessage = "Der Datensatz mit der letzten √Ñnderung eines Objekts oder Datensatzes konnte am Bereich " + getNameOrPidOrId()
 			                            + " nicht geschrieben werden.";
 			_debug.error(errorMessage, ex);
 			throw new RuntimeException(errorMessage, ex);
@@ -1226,7 +1232,7 @@ public class ConfigConfigurationArea extends ConfigConfigurationObject implement
 	}
 
 	/**
-	 * Pr¸ft, ob es einen Wert im Datensatz <code>atg.konfigurationsBereichƒnderungsZeiten</code> gibt, der <code>Undefiniert (0)</code> ist, und ersetzt diesen
+	 * Pr√ºft, ob es einen Wert im Datensatz <code>atg.konfigurationsBereich√ÑnderungsZeiten</code> gibt, der <code>Undefiniert (0)</code> ist, und ersetzt diesen
 	 * mit der aktuellen Zeit.
 	 */
 	public void initialiseTimeOfLastChanges() {

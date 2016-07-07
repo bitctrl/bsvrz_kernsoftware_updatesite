@@ -1,12 +1,12 @@
 /*
  * Copyright 2007 by Kappich Systemberatung, Aachen
- * Copyright 2004 by Kappich+Kniﬂ Systemberatung, Aachen
+ * Copyright 2004 by Kappich+Kni√ü Systemberatung, Aachen
  * 
  * This file is part of de.bsvrz.dav.daf.
  * 
  * de.bsvrz.dav.daf is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  * 
  * de.bsvrz.dav.daf is distributed in the hope that it will be useful,
@@ -15,55 +15,61 @@
  * GNU Lesser General Public License for more details.
  * 
  * You should have received a copy of the GNU Lesser General Public License
- * along with de.bsvrz.dav.daf; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with de.bsvrz.dav.daf; If not, see <http://www.gnu.org/licenses/>.
+
+ * Contact Information:
+ * Kappich Systemberatung
+ * Martin-Luther-Stra√üe 14
+ * 52062 Aachen, Germany
+ * phone: +49 241 4090 436 
+ * mail: <info@kappich.de>
  */
 
 package de.bsvrz.dav.daf.main;
 
 /**
- * Verwaltung von Anmeldeoptionen bei Empfangsanmeldungen. Die Klasse verwaltet, ob eine Anmeldung sich <ul> <li>auf ge‰nderte und nicht ge‰nderte Datens‰tze
- * (Normal)</li> <li>nur auf ge‰nderte Datens‰tze (Delta)</li> <li>auch auf nachgelieferte Datens‰tze (Nachgeliefert)</li> </ul> bezieht.
+ * Verwaltung von Anmeldeoptionen bei Empfangsanmeldungen. Die Klasse verwaltet, ob eine Anmeldung sich <ul> <li>auf ge√§nderte und nicht ge√§nderte Datens√§tze
+ * (Normal)</li> <li>nur auf ge√§nderte Datens√§tze (Delta)</li> <li>auch auf nachgelieferte Datens√§tze (Nachgeliefert)</li> </ul> bezieht.
  *
  * @author Kappich Systemberatung
- * @version $Revision: 5055 $
+ * @version $Revision$
  * @see ClientDavInterface#subscribeReceiver
  */
 public final class ReceiveOptions {
 
-	/** Anmeldung bezieht sich auf ge‰nderte und nicht ge‰nderte Datens‰tze. */
+	/** Anmeldung bezieht sich auf ge√§nderte und nicht ge√§nderte Datens√§tze. */
 	private static final ReceiveOptions NORMAL = new ReceiveOptions(false, false);
 
-	/** Anmeldung bezieht sich nur auf ge‰nderte Datens‰tze. */
+	/** Anmeldung bezieht sich nur auf ge√§nderte Datens√§tze. */
 	private static final ReceiveOptions DELTA = new ReceiveOptions(true, false);
 
-	/** Anmeldung bezieht sich auf online aktuelle Datens‰tze und auf nachgelieferte Datens‰tze. */
+	/** Anmeldung bezieht sich auf online aktuelle Datens√§tze und auf nachgelieferte Datens√§tze. */
 	private static final ReceiveOptions DELAYED = new ReceiveOptions(false, true);
 
-	/** Speichert, ob sich die Anmeldung nur auf ge‰nderte Datens‰tze bezieht. */
+	/** Speichert, ob sich die Anmeldung nur auf ge√§nderte Datens√§tze bezieht. */
 	private final boolean onlyDelta;
 
-	/** Speichert, ob sich die Anmeldung auch auf nachgelieferte Datens‰tze bezieht. */
+	/** Speichert, ob sich die Anmeldung auch auf nachgelieferte Datens√§tze bezieht. */
 	private final boolean withDelayedData;
 
 	/**
-	 * Erzeugt Empfangsanmeldeoptionen mit den spezifizierten Werten f¸r die Optionen "Delta", "Nachgeliefert".
+	 * Erzeugt Empfangsanmeldeoptionen mit den spezifizierten Werten f√ºr die Optionen "Delta", "Nachgeliefert".
 	 *
-	 * @param onlyDelta       <code>true</code>, wenn die Anmeldung sich nur auf ge‰nderte Datens‰tze beziehen soll.
-	 * @param withDelayedData <code>true</code>, wenn die Anmeldung sich auch auf nachgelieferte Datens‰tze beziehen soll.
+	 * @param onlyDelta       <code>true</code>, wenn die Anmeldung sich nur auf ge√§nderte Datens√§tze beziehen soll.
+	 * @param withDelayedData <code>true</code>, wenn die Anmeldung sich auch auf nachgelieferte Datens√§tze beziehen soll.
 	 */
 	public ReceiveOptions(boolean onlyDelta, boolean withDelayedData) {
 		if(onlyDelta && withDelayedData) {
-			throw new IllegalArgumentException("Delta Anmeldung mit nachgelieferten Datens‰tzen nicht erlaubt");
+			throw new IllegalArgumentException("Delta Anmeldung mit nachgelieferten Datens√§tzen nicht erlaubt");
 		}
 		this.onlyDelta = onlyDelta;
 		this.withDelayedData = withDelayedData;
 	}
 
 	/**
-	 * Erzeugt Empfangsanmeldeoptionen mit dem spezifizierten Wert f¸r die Option "Delta". Es werden keine "Nachgelieferten" Daten angemeldet.
+	 * Erzeugt Empfangsanmeldeoptionen mit dem spezifizierten Wert f√ºr die Option "Delta". Es werden keine "Nachgelieferten" Daten angemeldet.
 	 *
-	 * @param onlyDelta <code>true</code>, wenn die Anmeldung sich nur auf ge‰nderte Datens‰tze beziehen soll.
+	 * @param onlyDelta <code>true</code>, wenn die Anmeldung sich nur auf ge√§nderte Datens√§tze beziehen soll.
 	 */
 	public ReceiveOptions(boolean onlyDelta) {
 		this(onlyDelta, false);
@@ -93,7 +99,7 @@ public final class ReceiveOptions {
 	}
 
 	/**
-	 * Liefert eine textuelle Beschreibung dieses Objekts zur¸ck.
+	 * Liefert eine textuelle Beschreibung dieses Objekts zur√ºck.
 	 *
 	 * @return Beschreibung dieses Objekts.
 	 */
@@ -101,12 +107,12 @@ public final class ReceiveOptions {
 		if(this.equals(NORMAL)) return "Normal";
 		if(this.equals(DELTA)) return "Delta";
 		if(this.equals(DELAYED)) return "Nachgeliefert";
-		throw new IllegalStateException("Delta Anmeldung mit nachgelieferten Datens‰tzen nicht erlaubt");
+		throw new IllegalStateException("Delta Anmeldung mit nachgelieferten Datens√§tzen nicht erlaubt");
 	}
 
 	/**
-	 * Erzeugt Empfangsanmeldeoptionen mit festgelegten Werten f¸r die Optionen. Die Anmeldung erfolgt mit "Delta", d.h eine Anmeldung bezieht sich nur auf
-	 * ge‰nderte Daten. Es werden keine "Nachgelieferten" Daten angemeldet.
+	 * Erzeugt Empfangsanmeldeoptionen mit festgelegten Werten f√ºr die Optionen. Die Anmeldung erfolgt mit "Delta", d.h eine Anmeldung bezieht sich nur auf
+	 * ge√§nderte Daten. Es werden keine "Nachgelieferten" Daten angemeldet.
 	 *
 	 * @return Anmeldeoptionen mit aktivierter Delta-Option
 	 */
@@ -115,8 +121,8 @@ public final class ReceiveOptions {
 	}
 
 	/**
-	 * Erzeugt Empfangsanmeldeoptionen mit festgelegten Werten f¸r die Optionen. Die Anmeldung erfolgt ohne "Delta", d.h eine Anmeldung bezieht sich nicht nur auf
-	 * ge‰nderte Daten, sondern auch auf unver‰nderte Datens‰tze. Die Anmeldung bezieht sich auch auf "Nachgelieferte" Daten.
+	 * Erzeugt Empfangsanmeldeoptionen mit festgelegten Werten f√ºr die Optionen. Die Anmeldung erfolgt ohne "Delta", d.h eine Anmeldung bezieht sich nicht nur auf
+	 * ge√§nderte Daten, sondern auch auf unver√§nderte Datens√§tze. Die Anmeldung bezieht sich auch auf "Nachgelieferte" Daten.
 	 *
 	 * @return Anmeldeoptionen mit aktivierter Nachgeliefert-Option
 	 */
@@ -125,8 +131,8 @@ public final class ReceiveOptions {
 	}
 
 	/**
-	 * Erzeugt Empfangsanmeldeoptionen mit festgelegten Werten f¸r die Optionen. Die Anmeldung erfolgt ohne "Delta", d.h eine Anmeldung bezieht sich nicht nur auf
-	 * ge‰nderte Daten, sondern auch auf unver‰nderte Datens‰tze. Es werden keine "Nachgelieferten" Daten angemeldet..
+	 * Erzeugt Empfangsanmeldeoptionen mit festgelegten Werten f√ºr die Optionen. Die Anmeldung erfolgt ohne "Delta", d.h eine Anmeldung bezieht sich nicht nur auf
+	 * ge√§nderte Daten, sondern auch auf unver√§nderte Datens√§tze. Es werden keine "Nachgelieferten" Daten angemeldet..
 	 *
 	 * @return Anmeldeoptionen mit deaktivierter Delta-Option und deaktivierter Nachgeliefert-Option
 	 */
@@ -135,18 +141,18 @@ public final class ReceiveOptions {
 	}
 
 	/**
-	 * Bestimmt, ob sich eine Anmeldung mit diesen Optionen "mit Delta" erfolgt, d.h. sich nur auf ge‰nderte Datens‰tze bezieht.
+	 * Bestimmt, ob sich eine Anmeldung mit diesen Optionen "mit Delta" erfolgt, d.h. sich nur auf ge√§nderte Datens√§tze bezieht.
 	 *
-	 * @return <code>true</code>, wenn die Anmeldung sich nur auf ge‰nderte Datens‰tze bezieht; sonst <code>false</code>.
+	 * @return <code>true</code>, wenn die Anmeldung sich nur auf ge√§nderte Datens√§tze bezieht; sonst <code>false</code>.
 	 */
 	public final boolean withDelta() {
 		return onlyDelta;
 	}
 
 	/**
-	 * Bestimmt, ob sich eine Anmeldung mit diesen Optionen auch auf nachgelieferte Datens‰tze bezieht.
+	 * Bestimmt, ob sich eine Anmeldung mit diesen Optionen auch auf nachgelieferte Datens√§tze bezieht.
 	 *
-	 * @return <code>true</code>, wenn die Anmeldung sich auch auf nachgelieferte Datens‰tze bezieht; sonst <code>false</code>.
+	 * @return <code>true</code>, wenn die Anmeldung sich auch auf nachgelieferte Datens√§tze bezieht; sonst <code>false</code>.
 	 */
 	public final boolean withDelayed() {
 		return withDelayedData;
