@@ -55,7 +55,7 @@
 		<tycho-surefire-version>0.18.0</tycho-surefire-version>
 		<maven-site-plugin-version>3.2</maven-site-plugin-version>
 		<maven-project-info-reports-plugin-version>2.4</maven-project-info-reports-plugin-version>
-		<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<taglist-maven-plugin-version>2.4</taglist-maven-plugin-version>
 		<maven-checkstyle-plugin-version>2.10</maven-checkstyle-plugin-version>
 		<maven-surefire-report-plugin-version>2.12</maven-surefire-report-plugin-version>
