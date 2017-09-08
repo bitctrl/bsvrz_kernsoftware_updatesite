@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/de.bsvrz.buv.vew.feature_0.0.0.jar" id="de.bsvrz.buv.vew.feature" version="0.0.0">
+      <category name="de.bsvrz.vew"/>
+   </feature>
+   <feature url="features/de.bsvrz.buv.daf.feature_0.0.0.jar" id="de.bsvrz.buv.daf.feature" version="0.0.0">
+      <category name="de.bsvrz.daf"/>
+   </feature>
+   <category-def name="de.bsvrz.daf" label="Datenverteiler Applikationsfunktionen"/>
+   <category-def name="de.bsvrz.vew" label="Segment Verwaltung"/>
+</site>

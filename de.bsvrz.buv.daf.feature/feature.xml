@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.bsvrz.buv.daf.feature"
+      label="%featureName"
+      version="3.9.2"
+      provider-name="%featureProvider">
+
+   <description>
+      %descriptionText
+   </description>
+
+   <copyright>
+      %copyrightText
+   </copyright>
+
+   <license url="http://www.gnu.org/licenses/gpl-2.0.html">
+      %licenseText
+   </license>
+
+   <requires>
+      <import plugin="de.bsvrz.sys.funclib.debug" version="3.9.2" match="greaterOrEqual"/>
+      <import plugin="de.bsvrz.sys.funclib.commandLineArgs" version="3.9.2" match="greaterOrEqual"/>
+      <import plugin="de.bsvrz.sys.funclib.timeout" version="3.9.2" match="greaterOrEqual"/>
+      <import plugin="de.bsvrz.sys.funclib.filelock" version="3.9.2" match="greaterOrEqual"/>
+      <import plugin="de.bsvrz.sys.funclib.crypt" version="3.9.2" match="greaterOrEqual"/>
+      <import plugin="de.bsvrz.sys.funclib.hexdump" version="3.9.2" match="greaterOrEqual"/>
+      <import plugin="de.bsvrz.sys.funclib.concurrent" version="3.9.2" match="greaterOrEqual"/>
+      <import plugin="de.bsvrz.dav.daf" version="3.9.2" match="compatible"/>
+   </requires>
+
+   <plugin
+         id="de.bsvrz.dav.daf"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.bsvrz.puk.config"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.bsvrz.sys.funclib.application"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.bsvrz.sys.funclib.asyncReceiver"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.bsvrz.sys.funclib.commandLineArgs"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.bsvrz.sys.funclib.concurrent"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.bsvrz.sys.funclib.configObjectAcquisition"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.bsvrz.sys.funclib.crypt"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.bsvrz.sys.funclib.dataIdentificationSettings"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.bsvrz.sys.funclib.debug"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.bsvrz.sys.funclib.filelock"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.bsvrz.sys.funclib.hexdump"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.bsvrz.sys.funclib.operatingMessage"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.bsvrz.sys.funclib.timeout"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.bsvrz.sys.funclib.xmlSupport"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.bsvrz.sys.funclib.communicationStreams"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.bsvrz.sys.funclib.dataSerializer"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.bsvrz.sys.funclib.consoleProcessFrame"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.bsvrz.pat.datgen"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.bsvrz.pat.onlprot"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.bsvrz.pat.sysbed"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.bsvrz.pat.sysprot"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.bsvrz.sys.funclib.losb"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.bsvrz.sys.funclib.kappich"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.kappich.sys.funclib.json"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.nimbusds.srp6a"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
