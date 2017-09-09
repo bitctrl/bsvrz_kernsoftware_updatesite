@@ -28,6 +28,7 @@
       <import plugin="de.bsvrz.sys.funclib.operatingMessage" version="3.9.2" match="greaterOrEqual"/>
       <import plugin="de.bsvrz.sys.funclib.application" version="3.9.2" match="greaterOrEqual"/>
       <import plugin="de.bsvrz.dav.daf" version="3.9.2" match="greaterOrEqual"/>
+      <import plugin="de.bsvrz.sys.funclib.dambach" version="1.2.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
