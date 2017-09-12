@@ -70,17 +70,17 @@
 		</dependency>
 		<dependency>
 			<groupId>de.bsvrz.sys</groupId>
-			<artifactId>de.bsvrz.sys.funclib.communicationStreams</artifactId>
-			<version>${kernsoftware.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>de.bsvrz.sys</groupId>
 			<artifactId>de.bsvrz.sys.funclib.concurrent</artifactId>
 			<version>${kernsoftware.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>de.bsvrz.sys</groupId>
 			<artifactId>de.bsvrz.sys.funclib.configObjectAcquisition</artifactId>
+			<version>${kernsoftware.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>de.bsvrz.sys</groupId>
+			<artifactId>de.bsvrz.sys.funclib.consoleProcessFrame</artifactId>
 			<version>${kernsoftware.version}</version>
 		</dependency>
 		<dependency>
