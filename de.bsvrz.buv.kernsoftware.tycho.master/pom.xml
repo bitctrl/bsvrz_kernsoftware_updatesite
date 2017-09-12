@@ -85,22 +85,12 @@
 		</dependency>
 		<dependency>
 			<groupId>de.bsvrz.sys</groupId>
-			<artifactId>de.bsvrz.sys.funclib.consoleProcessFrame</artifactId>
-			<version>${kernsoftware.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>de.bsvrz.sys</groupId>
 			<artifactId>de.bsvrz.sys.funclib.crypt</artifactId>
 			<version>${kernsoftware.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>de.bsvrz.sys</groupId>
 			<artifactId>de.bsvrz.sys.funclib.dataIdentificationSettings</artifactId>
-			<version>${kernsoftware.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>de.bsvrz.sys</groupId>
-			<artifactId>de.bsvrz.sys.funclib.dataSerializer</artifactId>
 			<version>${kernsoftware.version}</version>
 		</dependency>
 		<dependency>
