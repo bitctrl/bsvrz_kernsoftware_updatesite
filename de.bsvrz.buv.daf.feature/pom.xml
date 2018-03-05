@@ -8,7 +8,7 @@
 		<groupId>de.bsvrz.buv</groupId>
 		<artifactId>de.bsvrz.buv.kernsoftware.tycho.master</artifactId>
 		<version>3.9.2</version>
-		<relativePath>../de.bsvrz.buv.kernsoftware.tycho.master/pom.xml</relativePath>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>de.bsvrz.buv.daf.feature</artifactId>

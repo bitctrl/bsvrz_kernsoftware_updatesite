@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="de.bsvrz.buv.vew.feature"
+      id="de.bsvrz.buv.sys.feature"
       label="%featureName"
-      version="2.0.0.qualifier"
+      version="1.3.1"
       provider-name="%featureProvider">
 
    <description>
@@ -18,14 +18,7 @@
    </license>
 
    <plugin
-         id="org.eclipse.fx.javafx"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="de.bsvrz.vew.syskal"
+         id="de.bsvrz.sys.funclib.dynobj"
          download-size="0"
          install-size="0"
          version="0.0.0"

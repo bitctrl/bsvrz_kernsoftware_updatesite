@@ -11,8 +11,8 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>de.bsvrz.buv.vew.feature</artifactId>
+	<artifactId>de.bsvrz.buv.sys.feature</artifactId>
 	<packaging>eclipse-feature</packaging>
 
-	<version>2.0.0-SNAPSHOT</version>
+	<version>1.3.1</version>
 </project>
