@@ -12,7 +12,7 @@
 	<name>Kernsoftware Updateseite</name>
 	<modules>
 		<module>de.bsvrz.buv.daf.feature</module>
-		<module>de.bsvrz.buv.vew.feature</module>
+ 		<module>de.bsvrz.buv.vew.feature</module>
 		<module>de.bsvrz.buv.sys.feature</module>
 		<module>de.bsvrz.buv.kernsoftware.repository</module>
 	</modules>
