@@ -17,10 +17,6 @@
       %licenseText
    </license>
 
-   <includes
-         id="org.eclipse.fx.runtime.min.feature"
-         version="0.0.0"/>
-
    <requires>
       <import feature="org.eclipse.fx.runtime.min.feature" version="3.0.0.201705220748"/>
    </requires>
