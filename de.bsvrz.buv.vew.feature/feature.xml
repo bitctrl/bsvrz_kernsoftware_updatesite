@@ -19,6 +19,7 @@
 
    <requires>
       <import feature="org.eclipse.fx.runtime.min.feature" version="3.0.0.201705220748"/>
+      <import plugin="org.eclipse.fx.javafx"/>
    </requires>
 
    <plugin
