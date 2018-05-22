@@ -6,7 +6,7 @@
 
 	<groupId>de.bsvrz.buv</groupId>
 	<artifactId>de.bsvrz.buv.kernsoftware.tycho.master</artifactId>
-	<version>3.9.2</version>
+	<version>3.10.0</version>
 	<packaging>pom</packaging>
 
 	<name>Kernsoftware Updateseite</name>
@@ -20,7 +20,7 @@
 	<properties>
 		<tycho-version>1.1.0</tycho-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<kernsoftware.version>3.9.2</kernsoftware.version>
+		<kernsoftware.version>3.10.0</kernsoftware.version>
 	</properties>
 
 	<dependencies>
@@ -135,7 +135,7 @@
 			<version>${kernsoftware.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>de.kappich</groupId>
+			<groupId>de.kappich.sys</groupId>
 			<artifactId>de.kappich.sys.funclib.json</artifactId>
 			<version>${kernsoftware.version}</version>
 		</dependency>
@@ -159,6 +159,12 @@
 	</dependencies>
 
 	<repositories>
+
+		<repository>
+			<id>nerz-public</id>
+			<name>NERZ Maven Repository</name>
+			<url>http://h2727649.stratoserver.net:8081/repository/nerz-maven-public/</url>
+		</repository>
 		<repository>
 			<id>bintray-bitctrl-maven</id>
 			<name>bintray</name>
@@ -166,6 +172,9 @@
 		</repository>
 		<repository>
 			<id>bitctrl.nexus.snapshot</id>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
 			<name>bitctrl-nexus-snapshot</name>
 			<url>http://bitctrlbuildserver:8081/nexus/repository/snapshots/</url>
 		</repository>

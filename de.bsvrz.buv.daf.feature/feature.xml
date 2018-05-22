@@ -2,7 +2,7 @@
 <feature
       id="de.bsvrz.buv.daf.feature"
       label="%featureName"
-      version="3.9.2"
+      version="3.10.0"
       provider-name="%featureProvider">
 
    <description>
@@ -18,14 +18,14 @@
    </license>
 
    <requires>
-      <import plugin="de.bsvrz.sys.funclib.debug" version="3.9.2" match="greaterOrEqual"/>
-      <import plugin="de.bsvrz.sys.funclib.commandLineArgs" version="3.9.2" match="greaterOrEqual"/>
-      <import plugin="de.bsvrz.sys.funclib.timeout" version="3.9.2" match="greaterOrEqual"/>
-      <import plugin="de.bsvrz.sys.funclib.filelock" version="3.9.2" match="greaterOrEqual"/>
-      <import plugin="de.bsvrz.sys.funclib.crypt" version="3.9.2" match="greaterOrEqual"/>
-      <import plugin="de.bsvrz.sys.funclib.hexdump" version="3.9.2" match="greaterOrEqual"/>
-      <import plugin="de.bsvrz.sys.funclib.concurrent" version="3.9.2" match="greaterOrEqual"/>
-      <import plugin="de.bsvrz.dav.daf" version="3.9.2" match="compatible"/>
+      <import plugin="de.bsvrz.sys.funclib.debug" version="3.10.0" match="greaterOrEqual"/>
+      <import plugin="de.bsvrz.sys.funclib.commandLineArgs" version="3.10.0" match="greaterOrEqual"/>
+      <import plugin="de.bsvrz.sys.funclib.timeout" version="3.10.0" match="greaterOrEqual"/>
+      <import plugin="de.bsvrz.sys.funclib.filelock" version="3.10.0" match="greaterOrEqual"/>
+      <import plugin="de.bsvrz.sys.funclib.crypt" version="3.10.0" match="greaterOrEqual"/>
+      <import plugin="de.bsvrz.sys.funclib.hexdump" version="3.10.0" match="greaterOrEqual"/>
+      <import plugin="de.bsvrz.sys.funclib.concurrent" version="3.10.0" match="greaterOrEqual"/>
+      <import plugin="de.bsvrz.dav.daf" version="3.10.0" match="compatible"/>
    </requires>
 
    <plugin
@@ -175,6 +175,13 @@
 
    <plugin
          id="com.nimbusds.srp6a"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.google.guava"
          download-size="0"
          install-size="0"
          version="0.0.0"

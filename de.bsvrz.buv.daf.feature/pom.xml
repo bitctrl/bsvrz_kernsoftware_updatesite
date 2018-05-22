@@ -7,12 +7,12 @@
 	<parent>
 		<groupId>de.bsvrz.buv</groupId>
 		<artifactId>de.bsvrz.buv.kernsoftware.tycho.master</artifactId>
-		<version>3.9.2</version>
+		<version>3.10.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>de.bsvrz.buv.daf.feature</artifactId>
-	<version>3.9.2</version>
+	<version>3.10.0</version>
 	<packaging>eclipse-feature</packaging>
 
 </project>
