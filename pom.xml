@@ -159,7 +159,7 @@
 	<repositories>
 
 		<repository>
-			<id>nerz-public</id>
+			<id>nerz.nexus</id>
 			<name>NERZ Maven Repository</name>
 			<url>http://h2727649.stratoserver.net:8081/repository/nerz-maven-public/</url>
 		</repository>
